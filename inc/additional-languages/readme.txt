@@ -1,0 +1,1 @@
+additional languages can be placed here on languagesfolder for an automatic integration, e.g. for modifications.

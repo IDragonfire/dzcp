@@ -1,0 +1,24 @@
+<form name="paycheck" action="?action=admin&amp;do=editpaycheck&amp;id=[id]" method="post" onsubmit="return(DZCP.submitButton())">
+<tr>
+  <td class="contentHead" align="center" colspan="2"><span class="fontBold">[head]</span></td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="100"><span class="fontBold">[user]:</span></td>
+  <td class="contentMainFirst" align="center">[puser]</td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="100"><span class="fontBold">[payed_till]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="t" value="[t]" class="inputField_dis_small"
+    onfocus="this.className='inputField_en_small';"
+    onblur="this.className='inputField_dis_small';">.
+    <input type="text" name="m" value="[m]" class="inputField_dis_small"
+    onfocus="this.className='inputField_en_small';"
+    onblur="this.className='inputField_dis_small';">.
+    <input type="text" name="j" value="[j]" class="inputField_dis_mid"
+    onfocus="this.className='inputField_en_mid';"
+    onblur="this.className='inputField_dis_mid';"></td>
+</tr>
+<tr>
+  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[value]" class="submit"></td>
+</tr>

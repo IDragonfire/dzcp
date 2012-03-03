@@ -1,0 +1,130 @@
+############################################################
+## Lizenzbestimmungen für deV!L`z Clanportal, kurz "DZCP" ##
+############################################################
+# Stand: 18.12.2006 #
+#####################
+
+#########################
+# 1.	Lizenzerklärung #
+#########################
+
+1.1	In dieser Lizenz werden die Rahmenbedingungen zwischen dem
+	Lizenzgeber und Autoren Frank Herrmann und dem jeweiligen
+	Lizenznehmer und Endnutzer von deV!L`z Clanportal geregelt.
+
+######################################################
+# 2.	Berechtigungen durch den Erwerb der Software #
+######################################################
+
+2.1	Mit dem Erwerb/Download der vom Lizenzgeber bereitgestellten Software
+	ist der Lizenznehmer berechtigt diese beliebig oft auf einem Server
+	zu installieren.
+
+2.2	Der Lizenznehmer hat das Recht auf eigenes Risiko die 
+	Software zu verändern und auf eigene Bedürfnisse anzupassen.
+
+2.3	Die Software darf in angepasster oder veränderter Form nur dann 
+	an Dritte weitergegeben werden, wenn dem Lizenznehmer dadurch kein 
+	finanzieller Vorteil entsteht. In diesem Falle gilt jedoch weiter
+	ausnahmelos der folgende Abschnitt 2.4.
+
+2.4	Mit der kostenfreien Nutzung der Software ist der Nutzer 
+	dazu verpflichtet auf jeder Seite den originalen 
+	Copyright-/Linkvermerk zu tragen. Eine Veränderung bzw. Entfernung dieses 
+	Copyright-/Linkvermerks ist nur durch den Erwerb einer Lizenz
+	und eines domaingebundenen Lizenzcodes gestattet. Näheres dazu kann auf 
+	www.codeking.eu in der Rubrik "Leistungen" entnommen werden.
+
+2.5	Sollten vom Lizenznehmer Sicherheitslücken aufgedeckt werden, darf nur der 
+	Lizenzgeber informiert werden um eine schnelle Behebung dieser
+	zu gewährleisten.
+	Dem Lizenznehmer ist es nicht gestattet diese Informationen weiter zu 
+	publizieren oder an Personen, die nicht dem Team von DZCP  angehören, 
+	weiterzugeben. Bei Verstoß tritt automatisch der Abschnitt 5.2 in Kraft.
+
+2.6	Der Lizenzgeber behält sich für die Zukunft vor, auf installierten Seiten
+	Werbung zu schalten. Dies gilt jedoch nicht für Seiten, die eine gültige
+	Lizenz erworben haben. Ob und wann der Lizenzgeber von diesem Recht gebrauch
+	macht ist dabei jedoch noch völlig offen.
+
+##############################
+# 3.	kommerzielle Nutzung #
+##############################
+
+3.1	Jegliche kommerzielle Nutzung in Verbindung mit dieser Software ist nur 
+	mit dem Erwerb einer kommerziellen Lizenz möglich.
+	Dazu zählen der Einsatz der Software auf gewinnorientierten Seiten, 
+	Firmenseiten, der Verkauf von fertig angepassten Templates/Designs 
+	oder sonstige Dinge, mit dem der Lizenznehmer Einnahmen/Gewinne
+	erwirtschaften würde.
+	Näheres zu einer gewerblichen Lizenz kann auf www.codeking.eu 
+	in der Rubrik "Leistungen" entnommen werden.
+
+3.2	Dem Lizenznehmer ist es als einzigstes gestattet Einnahmen mit Hilfe von 
+	Werbemitteln verschiedenster Partnerprogramme (z.B. Google AdSense,
+ 	LayerAds, Adbutler, etc) unter der Benutzung dieser Software zu 
+	erwirtschaften.
+
+#######################
+# 4.	Lauffähigkeit #
+#######################
+
+4.1	Der Lizenzgeber kann aufgrund der unterschiedlichen Vorraussetzungen bei 
+	Webhostern und Servern keine Garantie geben, das die Software bei jeglicher 
+	Konfiguration lauffähig ist.
+
+4.2	Der Lizenzgeber ist zu keinerlei Support verpflichtet. Jegliche 
+	Supportanfrage kann daher kommentarlos gelöscht werden. Das DZCP soll 
+	sich nach dem 'User helfen User' - Prinzip im Forum unter www.dzcp.de 
+	gegenseitig unterstützen.
+
+########################
+# 5.	Lizenzverstöße #
+########################
+
+5.1	Bei Verstößen gegen den Lizenzvertrag ist der Lizenzgeber oder 
+	ein durch den Lizenzgeber Bevollmächtigter berechtigt, die Lizenz 
+	jederzeit zurückzuziehen und für nichtig zu erklären. In diesem Falle wäre
+	die weitere Nutzung der Software strafbar.
+
+5.2	Bei Verstößen gegen diese Lizenz ist der Lizenzgeber berechtigt 
+	umgehend rechtliche Schritte einzuleiten. Der Lizenzgeber ist 
+	darüber hinaus befugt für entstandene Schäden einen Schadensersatz zu 
+	fordern.
+
+##################################
+# 6.  Regelungen im Schadensfall #
+##################################
+
+6.1	Für eventuelle Schäden, die durch den Einsatz dieser Software 
+	entstehen, kann der Lizenzgeber nicht haftbar gemacht werden.
+
+6.2	Das Risiko für die Nutzung und den Einsatz der Software obligt einzig
+	und allein dem Lizenznehmer.
+
+6.3	Für die Form und Inhalte der Seiten ist der jeweilige Lizenznehmer 
+	verantwortlich. Eine Kontrolle der Inhalte ist für den Lizenzgeber 
+	unzumutbar und wird daher abgelehnt.
+
+###############################
+# 7.	Salvatorische Klausel #
+###############################
+
+7.1	Sollten Teile dieser Lizenz ungültig werden oder gegen geltende 
+	rechtliche Regelungen verstoßen, werden diese Regelungen durch die gängigen
+	geltenden gesetzlichen Regelungen ersetzt, welche dem Ziel und Zweck des 
+	jeweiligen Lizenzpunktes am Nächsten kommt.
+
+7.2	Im Falle des unwirksam werden einzelner Teile der Lizenz bleiben die 
+	restlichen Bedingungen jedoch weiter bestehen.
+
+#####################
+# 8.	Rechtliches #
+#####################
+
+8.1	Die Software ist durch internationales Recht geschützt. Grundsätzlich kann 
+	jeder die Software kostenfrei benutzen, solange sich der Nutzer mit dem 
+	hier dargestellten Lizenzabkommen einverstanden erklärt.
+
+8.2	Mit dieser Lizenz wird nur das Recht zur Nutzung der Software übertragen, 
+	jedoch nicht das Eigentum der Software.

@@ -1,0 +1,23 @@
+<br />
+<table class="hperc" cellspacing="0">
+  <tr>
+    <td>
+      <form id="navAjaxFVote" name="navAjaxFVote" action="../votes/?action=do&amp;what=fvote&amp;id=[vid]" method="post" onsubmit="return(DZCP.ajaxFVote([vid]))">
+    		<input name="fid" type="hidden" id="fid" value="[fid]" />
+    		<input name="kid" type="hidden" id="kid" value="[kid]" />
+    		<table class="navContent" cellspacing="2">
+          <tr>
+    		    <td colspan="2"><span class="fontBold">[umfrage]: [titel]</span></td>
+    		  </tr>
+    		  <tr>
+            <td colspan="2"><hr /></td>
+          </tr>
+          [results]
+          <tr>
+            <td colspan="2" class="navVoteButton">[votebutton]</td>
+          </tr>
+        </table>
+      </form>
+    </td>
+  </tr>
+</table>

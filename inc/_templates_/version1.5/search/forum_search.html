@@ -1,0 +1,26 @@
+<tr>
+  <td class="contentHead" colspan="2" align="center"><span class="fontBold">[head]</span></td>
+</tr>
+<form name="fsearch" action="fsearch.php" method="get" onsubmit="return(DZCP.submitButton())">
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[suchwort]:</span></td>
+  <td class="contentMainFirst" width="75%" align="center">
+    <input type="text" name="suchwort" value="[s_suchwort]" class="inputField_dis"
+    onfocus="this.className='inputField_en';" 
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[kat]:</span></td>
+  <td class="contentMainFirst" width="75%" align="center">
+    <select name="kat" class="dropdown">
+      <option value="all">[all]</option>
+      [kats]
+    </select>
+  </td>
+</tr>
+<tr>
+  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[what]" class="submit" /></td>
+</tr>
+</form>
+[show]

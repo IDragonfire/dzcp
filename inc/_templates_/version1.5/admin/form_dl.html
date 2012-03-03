@@ -1,0 +1,59 @@
+<form enctype="multipart/form-data" name="dlformular" action="?admin=dladmin&amp;do=[do]" method="post" onsubmit="return(DZCP.submitButton())">
+<script language="javascript" type="text/javascript">
+function fileBrowser() 
+{
+	var connector = "../inc/tinymce/filemanager/browser.php?Connector=connectors/php/connector.php?Type=/";
+  	
+	tinyfck_field = 'download';
+	tinyfck = '';
+  downloadForm = true;
+
+  window.open(connector, "tinyfck" + new Date().getTime(), "modal,width=670,height=400");
+}
+</script>
+<tr>
+  <td class="contentHead" align="center" colspan="2"><span class="fontBold">[admin_head]</span></td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[kat]:</span></td>
+  <td class="contentMainFirst" width="75%" align="center">
+    <select name="kat" class="dropdown">
+      [kats]
+    </select>
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[download]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input id="download" name="download" type="text" value="[ddownload]" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';">
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[url]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <table class="hperc" cellspacing="0" style="width:1%">
+      <tr>
+        <td>
+          <input id="url" name="url" type="text" value="[durl]"class="inputField_dis"
+          onfocus="this.className='inputField_en';"
+          onblur="this.className='inputField_dis';" />
+        </td>
+        <td style="padding-left:3px">
+          <a id="dladmin" href="javascript:fileBrowser()"><img src="../inc/tinymce/themes/advanced/images/browse.gif" alt="" /></a>
+        </td>
+      </tr>
+    </table>
+  </td>                 
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[beschreibung]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <textarea id="beschreibung" name="beschreibung" cols="0" rows="0" class="editorStyleMini">[dbeschreibung]</textarea>
+  </td>
+</tr>
+<tr>
+  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[what]" class="submit" /></td>
+</tr>
+</form>

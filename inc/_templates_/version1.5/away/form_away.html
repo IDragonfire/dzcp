@@ -1,0 +1,30 @@
+<form action="?action=[action]" method="post" onsubmit="return(DZCP.submitButton())">
+   [error]
+   <tr>
+    <td class="contentHead" colspan="4" align="center"><span class="fontBold">[head]</span></td>
+   </tr>
+   <tr>
+     <td class="contentMainSecond" align="right"><span class="fontBold">[reason]:</span></td>
+     <td class="contentMainSecond" align="left" >
+      <input name="titel" type="text" value="[titel]" /><i class="small">&nbsp;(max. 30)</i></td>
+     </tr>
+     <tr>
+         <td class="contentMainSecond" align="right"><span class="fontBold">[from]:</span></td>
+         <td class="contentMainSecond" align="left">[date1]</td>
+      </tr>
+      <tr>
+         <td class="contentMainSecond" align="right"><span class="fontBold">[to]:</span></td>
+         <td class="contentMainSecond" align="left">[date2]</td>
+     </tr>
+     <tr>
+  <td class="contentMainTop" colspan="3" align="center"><span class="fontBold">[comment]:</span></td>
+</tr>
+<tr>
+  <td class="contentMainSecond" align="center" colspan="3">
+    <textarea id="reason" name="reason" cols="0" rows="0" class="editorStyle">[text]</textarea>
+  </td>
+</tr>
+<tr>
+  <td class="contentBottom" colspan="5"><input id="contentSubmit" type="submit" class="submit" value="[submit]" /></td>
+</tr>
+</form>

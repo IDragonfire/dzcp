@@ -1,0 +1,58 @@
+/*---------------------------------------------
+Atrributes of the Resourcemanager
+---------------------------------------------*/
+body
+{
+	background-color: #FFF;
+}
+
+form
+{
+	margin: 0px;
+	padding: 0px;
+}
+
+.browserFrame
+{
+	border: 0px solid #000;
+}
+
+body.FileArea
+{
+	background-color: #ffffff;
+}
+
+body, td, input, select
+{
+	font-size: 11px;
+	font-family: 'Microsoft Sans Serif' , Arial, Helvetica, Verdana;
+}
+
+.ActualFolder
+{
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.PopupButtons
+{
+	border-top: #d5d59d 1px solid;
+	background-color: #e3e3c7;
+	padding: 7px 10px 7px 10px;
+}
+
+.Button, button, #btnUpload
+{
+	color: #000;
+  cursor: pointer;
+}
+
+.FolderListCurrentFolder img
+{
+	background-image: url(images/FolderOpened.gif);
+}
+
+.FolderListFolder img
+{
+	background-image: url(images/Folder.gif);
+}

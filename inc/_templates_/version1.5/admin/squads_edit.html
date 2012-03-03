@@ -1,0 +1,96 @@
+<tr>
+  <td class="contentHead" colspan="2" align="center"><span class="fontBold">[memberadminaddheader]</span></td>
+</tr>
+<form enctype="multipart/form-data" action="?admin=squads&amp;do=editsquad&amp;id=[id]" method="post" onsubmit="return(DZCP.submitButton())"> 
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[squad]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="squad" value="[ssquad]" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[game]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="game" value="[sgame]" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';">
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[icon]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <select name="icon" class="dropdown">
+      [gameicons]
+    </select>
+    <br />[upload]
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[desc]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <textarea id="beschreibung" name="beschreibung" cols="0" rows="0" class="editorStyleMini">[beschreibung]</textarea>
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[pos]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <select name="position" class="dropdown">
+      <option value="1">[first]</option>
+      [positions]
+    </select>
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[status]: <img class="helpicon" src="../inc/images/help.gif" onmouseover="DZCP.showInfo('[sstatus]')" onmouseout="DZCP.hideInfo()" alt="" /></span></td>
+  <td class="contentMainFirst" align="center">
+    <select name="status" class="dropdown">
+      <option value="0">[inaktiv]</option>
+      <option value="1" [cstatus]>[aktiv]</option>
+    </select>
+  </td>
+</tr> 
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[navi]: <img class="helpicon" src="../inc/images/help.gif" onmouseover="DZCP.showInfo('[nav_info]')" onmouseout="DZCP.hideInfo()" alt="" /></span></td>
+  <td class="contentMainFirst" align="center">
+    <select name="navi" class="dropdown">
+      <option value="lazy">[no_navi]</option>
+			[navigation]
+    </select>
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[roster]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <select name="roster" class="dropdown">
+      <option value="0">[dontshow]</option>
+      <option value="1" [selr]>[show]</option>
+    </select>
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[teams]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <select name="team_show" class="dropdown">
+      <option value="0">[dontshow]</option>
+      <option value="1" [selt]>[show]</option>
+    </select>
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[banner]:</span></td>
+  <td class="contentMainFirst" align="center">
+    [image] <input type="file" name="banner" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[logo]:</span><br /><small><i>100px x 100px</i></small></td> 
+  <td class="contentMainFirst" align="center">
+    [logoimage] <input type="file" name="logo" />
+  </td>
+</tr>
+<tr>
+  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[value]" class="submit"></td>
+</tr>
+</form>

@@ -1,0 +1,112 @@
+<tr>
+  <td class="contentHead" colspan="3" [onclick]>
+    <table class="hperc" cellspacing="0">
+      <tr>
+        <td style="width:1%">[img]</td>
+        <td style="text-align:center"><span class="fontBold">[head]</span></td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" colspan="3" id="more1" [style]>
+    <form id="search" name="search" action="" method="get" onsubmit="return(DZCP.submitButton())">
+    <input type="hidden" name="do" value="search" />
+    <input type="hidden" name="si_board" value="true" />
+    <table class="hperc" cellspacing="2">
+      <tr>
+        <td><span class="fontBold">[searchwords]:</span></td>
+        <td style="text-align:center">
+          <input class="inputField_dis" type="text" name="search" value="[search]" 
+          onfocus="this.className='inputField_en'" 
+          onblur="this.className='inputField_dis'" />
+        </td>
+      </tr>
+      <tr>
+        <td></td>
+        <td style="text-align:center">
+          <select name="con" class="dropdown">
+            <option value="and">[con_and]</option>
+            <option value="or" [chkcon]>[con_or]</option>
+          </select>
+        </td>
+      </tr>
+<!--
+      <tr>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2" class="searchHead"><span class="fontBold">[searchin]</span></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2"><input type="checkbox" name="si_board" class="checkbox" value="true" [si_board] /> <span class="fontBold">[board]</span></td>
+      </tr>
+-->
+      <tr>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <table class="hperc" cellspacing="0">
+            <tr>
+              <td style="width:12px"></td>
+              <td style="text-align:center">
+                <ul class="search">
+                  <li><label class="searchKat" style="border-bottom:1px solid #000" for="allkat"><input type="checkbox" class="chksearch" name="allkat" id="allkat" value="true" [all_board] onchange="DZCP.hideForumAll()" />&nbsp;&nbsp;[all]</label></li>
+                  [fkats]
+                </ul>
+              </td>
+              <td style="width:12px"></td>
+              <td style="width:45%">
+                <table class="hperc" cellspacing="1">
+                  <tr>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <fieldset class="search">
+								        <legend class="search"><span class="fontBold">[searcharea]</span></legend>
+									      <input type="radio" name="area" class="checkbox" value="posts" [acheck1] />
+                        [full]<br />
+      									<input type="radio" name="area" class="checkbox" value="topic" [acheck2] />
+                        [intitle]
+								      </fieldset>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;</td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <fieldset class="search">
+								        <legend class="search"><span class="fontBold">[type]</span></legend>
+									      <input type="radio" name="type" class="checkbox" value="text" [tcheck1] />
+                        [text]<br />
+      									<input type="radio" name="type" class="checkbox" value="autor" [tcheck2] />
+                        [autor]
+								      </fieldset>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+      </tr>
+      <tr>
+        <td style="text-align:center" colspan="2"><input id="contentSubmit" type="submit" class="submit" value="[value]" /></td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+      </tr>
+    </table>
+    </form>
+  </td>
+</tr>
+[show]

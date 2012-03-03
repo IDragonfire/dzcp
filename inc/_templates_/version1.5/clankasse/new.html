@@ -1,0 +1,35 @@
+<form name="clankasse" action="?action=admin&amp;do=add" method="post" onsubmit="return(DZCP.submitButton())">
+<tr>
+  <td class="contentHead" align="center" colspan="2"><span class="fontBold">[newhead]</span></td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[datum]:</span></td>
+  <td class="contentMainFirst" align="center">[dropdown_date]</td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[transaktion]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <select name="transaktion" class="dropdown">
+      [trans]
+    </select> [vonan]
+    <input type="text" name="member" class="inputField_dis_mid"
+    onfocus="this.className='inputField_en_mid';"
+    onblur="this.className='inputField_dis_mid';">
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="100"><span class="fontBold">[betrag]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <select name="pm" class="dropdown">
+      <option value="0">+</option>
+      <option value="1">-</option>
+    </select>
+    <input type="text" name="betrag" size="4" class="inputField_dis_mid"
+    onfocus="this.className='inputField_en_mid';"
+    onblur="this.className='inputField_dis_mid';"><span class="fontBold"> €</span>
+  </td>
+</tr>
+<tr>
+  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[value]" class="submit"></td>
+</tr>
+</form>

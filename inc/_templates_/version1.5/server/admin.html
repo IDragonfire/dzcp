@@ -1,0 +1,28 @@
+<tr>
+  <td class="contentHead" colspan="2" align="center"><span class="fontBold">[head]</span></td>
+</tr>
+<form name="banned" action="?action=admin&amp;do=edit&amp;id=[id]" method="post" onsubmit="return(DZCP.submitButton())">
+<tr>
+  <td class="contentMainTop" width="150"><span class="fontBold">[esteamid]:</span></td>
+  <td class="contentMainFirst" align="center">[steamid]</td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[enick]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="nick" value="[nick]" class="inputField_dis"
+    onfocus="this.className='inputField_en';" 
+    onblur="this.className='inputField_dis';">
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[ereason]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="reason" value="[reason]" class="inputField_dis"
+    onfocus="this.className='inputField_en';" 
+    onblur="this.className='inputField_dis';">
+  </td>
+</tr>
+<tr>
+  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[what]" class="submit"></td>
+</tr>
+</form>
