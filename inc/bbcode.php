@@ -1108,21 +1108,13 @@ function links($hp)
 //-> Funktion um Passwoerter generieren zu lassen
 function mkpwd()
 {
-  $k = array("b","c","d","f","g","h","j","k","l","m","n","p","r","s","t","v","w","x","y","z");
-  $v = array("a","e","i","o","u");
-  $z = array("1","2","3","4","5","6","7","8","9","0");
-  srand ((double)microtime()*1000000);
-  for($f=1; $f<=4; $f++)
-  {
-    $pwd.=$k[rand(0,19)];
-    $pwd.=$v[rand(0,4)];
-  }
-  for($f=1; $f<=2; $f++)
-  {
-    $zahl.=$z[rand(0,10)];
-  }
-
-  return $pwd.$zahl;
+    $chars = '1234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $pw = '';
+    $len = strlen($chars) - 1;
+    for($i = 0; $i < 10; $i++) {
+        $pw .= $chars{rand(0, $len)};
+    }
+    return $pw;
 }
 //-> set cookies
 function set_cookie($name, $value = '', $path = '/', $secure = false, $http_only = true)
