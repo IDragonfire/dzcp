@@ -406,7 +406,7 @@ function BadwordFilter($txt)
 //-> Funktion um Bestimmte Textstellen zu markieren
 function hl($text, $word)
 {
-  if($_SESSION['search_type'] == 'text')
+  if(!empty($_GET['hl']) && $_SESSION['search_type'] == 'text')
   {
     if($_SESSION['search_con'] == 'or')
     {
