@@ -233,7 +233,7 @@ case 'show';
                                            "showmore" => $showmore,
                                            "icq" => "",
                                            "text" => bbcode($get['text']),
-                                           "datum" => date("j.m.y H:i", $get['datum'])._uhr,
+                                           "datum" => date("j.m.y H:i", intval($get['datum']))._uhr,
                                            "links" => $links,
                                            "autor" => autor($get['autor'])));
   }
