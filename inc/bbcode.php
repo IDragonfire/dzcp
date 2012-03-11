@@ -1108,11 +1108,11 @@ function links($hp)
 //-> Funktion um Passwoerter generieren zu lassen
 function mkpwd()
 {
-    $chars = '1234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $c = '1234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $pw = '';
-    $len = strlen($chars) - 1;
+    $len = strlen($c) - 1;
     for($i = 0; $i < 10; $i++) {
-        $pw .= $chars{rand(0, $len)};
+        $pw .= $c{rand(0, $len)};
     }
     return $pw;
 }
