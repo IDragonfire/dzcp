@@ -3,12 +3,13 @@
     mode                              : 'specific_textareas',
     editor_selector                   : 'editorStyleWord',
   	theme                             : 'advanced',
-    plugins                           : 'contextmenu,dzcp,advimage,paste,flash,table,fullscreen,inlinepopups,spellchecker',
+	skin 							  : 'o2k7',
+	skin_variant 					  : 'silver',  	
+    plugins                           : 'contextmenu,dzcp,inlinepopups,spellchecker,advhr,fullscreen,visualchars,insertdatetime,searchreplace,paste,directionality,table',
     language                          : (lng == 'de' ? lng : 'en'),
-  	theme_advanced_buttons1           : 'bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,link,unlink,|,pastephp,|,forecolor,'
-                                      + 'backcolor,|,smileys,flags,',
-  	theme_advanced_buttons2           : 'paste,pastetext,pasteword,|,image,|,tablecontrols,|,dzcpuser',
-   	theme_advanced_buttons3           : 'formatselect,fontselect,fontsizeselect,|,sub,sup,|,outdent,indent,|,fullscreen,clip,spellchecker,code,youtube',
+	theme_advanced_buttons1 		  : 'bold,italic,underline,strikethrough,|,justifyleft,justifycenter,justifyright,justifyfull,|,undo,redo,|,cut,copy,paste,pastetext,pasteword,|,search,replace,|,bullist,numlist,|,outdent,indent',					
+  	theme_advanced_buttons2           : 'forecolor,backcolor,|,link,unlink,pastephp,anchor,image,clip,code,|,insertdate,inserttime,|,dzcpuser,smileys,flags,youtube,googlevideo,myvideo,vimeo,xfire,gt,divx,golemvideo',
+   	theme_advanced_buttons3           : 'tablecontrols,|,hr,visualaid,|,charmap,advhr,|,ltr,rtl,|,fullscreen',
     extended_valid_elements           : 'img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name|style],'
                                       + 'hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]',
    	theme_advanced_toolbar_location   : 'top',

@@ -1,8 +1,11 @@
 /**
- * $Id: editor_plugin_src.js 539 2008-01-14 19:08:58Z spocke $
+ * editor_plugin_src.js
  *
- * @author Moxiecode
- * @copyright Copyright © 2004-2008, Moxiecode Systems AB, All rights reserved.
+ * Copyright 2009, Moxiecode Systems AB
+ * Released under LGPL License.
+ *
+ * License: http://tinymce.moxiecode.com/license
+ * Contributing: http://tinymce.moxiecode.com/contributing
  */
 
 (function() {
@@ -47,7 +50,7 @@
 				longname : 'Advanced link',
 				author : 'Moxiecode Systems AB',
 				authorurl : 'http://tinymce.moxiecode.com',
-				infourl : 'http://wiki.moxiecode.com//TinyMCE:Plugins/advlink',
+				infourl : 'http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/advlink',
 				version : tinymce.majorVersion + "." + tinymce.minorVersion
 			};
 		}

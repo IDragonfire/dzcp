@@ -154,7 +154,7 @@ function userid()
   return $get['id'];
 }
 //-> Templateswitch
-$files = get_files('../inc/_templates_/');
+$files = get_files('../inc/_templates_/',true);
 $folder = $files[0];
 if($_COOKIE[$prev.'tmpdir'] != NULL)
 {
@@ -171,7 +171,7 @@ function lang($lng,$pfad='')
   global $charset;
   if(!file_exists(basePath."/inc/lang/languages/".$lng.".php"))
   {
-    $files = get_files(basePath.'/inc/lang/languages/');
+    $files = get_files(basePath.'/inc/lang/languages/',false,true);
     $lng = str_replace('.php','',$files[0]);
   }
 	
@@ -181,7 +181,7 @@ function lang($lng,$pfad='')
 //-> Sprachdateien auflisten
 function languages()
 {
-  $files = get_files('../inc/lang/languages/');
+  $files = get_files('../inc/lang/languages/',false,true);
   for($i=0;$i<=count($files)-1;$i++)
   {
     $file = str_replace('.php','',$files[$i]);
@@ -213,69 +213,56 @@ function settings($what)
 
   return $get[$what];
 }
+
+// PHP-Code farbig anzeigen und Liste erstellen
+function printPHPCode($txt)
+{
+	$txt = explode("\n", str_replace(array("\r\n", "\r"), "\n", $txt));
+	$line_count = 1; $formatted_code = "";
+
+	foreach ($txt as $code_line)
+	{
+		$lines .= "&nbsp;".$line_count.".&nbsp;<br>";
+		$line_count++;
+          
+		if (ereg('<\?(php)?[^[:graph:]]', $code_line))
+			$formatted_code .= str_replace(array('<code>', '</code>'), '', highlight_string($code_line, true)).'<br>';
+		else
+			$formatted_code .= ereg_replace('(&lt;\?php&nbsp;)+', '', str_replace(array('<code>', '</code>'), '', highlight_string('<?php '.$code_line, true))).'<br>';
+	}
+
+	return '<table border="0" cellpadding="0" cellspacing="0" style="width:470px; border-style: solid; border-width:1px; padding: 0px; border-color: white black black white">
+	<tr>
+		<td width="100%" colspan="2"  style="border-style: solid; border-width:1px; border-color: white; background-color: #999999; font-family:Arial; color:white; font-weight:bold;">Php-Code:</td>
+	</tr>
+	<tr>
+		<td width="3%" valign="top" style="background-color: #CCCCCC; border-style: solid; border-width:1px; border-color: white;"><code>'.$lines.'</code></td>
+		<td width="97%" valign="top" style="background-color: #F0F0F0;"><div style="white-space: nowrap; width:470px; overflow: auto;"><code>'.$formatted_code.'</code></div></td>
+	</tr>
+	</table>';
+}
+
+function parseTagsRecursive($eingabe)
+{
+	$regex = '#\[php]((?:[^[]|\[(?!/?php])|(?R))+)\[/php]#';
+	$from_php_convert = array("&lt;","&gt;","&#34;","&amp;","&quot;");
+	$to_php_convert = array("<",">","\"","&",'"');
+	
+	if (is_array($eingabe)) 
+	{ 
+		$eingabe[1] = str_replace($from_php_convert,$to_php_convert,$eingabe[1]);
+		$eingabe = printPHPCode($eingabe[1]); 
+	}
+
+	return preg_replace_callback($regex, 'parseTagsRecursive', $eingabe);
+}
+
 //-> PHP-Code farbig anzeigen
 function highlight_text($txt)
 {
-  while(preg_match("=\[php\](.*)\[/php\]=Uis",$txt)!=FALSE)
-  {
-    $res = preg_match("=\[php\](.*)\[/php\]=Uis",$txt,$matches);
-
-    $src = $matches[1];
-    $src = str_replace('<?php','',$src);
-    $src = str_replace('<?php','',$src);
-    $src = str_replace('?>','',$src);
-    $src = str_replace("&#39;", "'", $src);
-    $src = str_replace("&#34;", "\"", $src);
-    $src = str_replace("&amp;","&",$src);
-    $src = str_replace("&lt;","<",$src);
-    $src = str_replace("&gt;",">",$src);
-    $src = str_replace('<?php','&#60;?',$src);
-    $src = str_replace('?>','?&#62;',$src);
-    $src = str_replace("&quot;","\"",$src);
-    $src = str_replace("&nbsp;"," ",$src);
-    $src = str_replace("&nbsp;"," ",$src);
-    $src = str_replace("<p>","\n",$src);
-    $src = str_replace("</p>","",$src);
-    $l = explode("<br />", $src);
-    $src = preg_replace("#\<br(.*?)\>#is","\n",$src);
-
-    $src = '<?php'.$src.' ?>';
-
-    $colors = array(
-      '#111111' => 'string', '#222222' => 'comment', '#333333' => 'keyword',
-      '#444444' => 'bg',     '#555555' => 'default', '#666666' => 'html'
-    );
-
-    foreach ($colors as $color => $key)
-      ini_set('highlight.'.$key, $color);
-// Farben ersetzen & highlighten
-     $src = preg_replace(
-      '!style="color: (#\d{6})"!e',
-      '"class=\"".$prefix.$colors["\1"]."\""',
-      highlight_string($src, TRUE)
-    );
-
-// PHP-Tags komplett entfernen
-    $src = str_replace('&lt;?php','',$src);
-    $src = str_replace('?&gt;','',$src);
-    $src = str_replace('&amp;</span><span class="comment">#60;?','&lt;?',$src);
-    $src = str_replace('?&amp;</span><span class="comment">#62;','?&gt;',$src);
-    $src = str_replace('&amp;#60;?','&lt;?',$src);
-    $src = str_replace('?&amp;#62;','?&gt;',$src);
-    $src = str_replace(":", "&#58;", $src);
-    $src = str_replace("(", "&#40;", $src);
-    $src = str_replace(")", "&#41;", $src);
-    $src = str_replace("^", "&#94;", $src);
-// Zeilen zaehlen
-    for($i=1;$i<=count($l)+1;$i++)
-      $lines .= $i.".<br />";
-// Ausgabe
-    $code = '<div class="codeHead">&nbsp;&nbsp;&nbsp;Code:</div><div class="code"><table style="width:100%;padding:0px" cellspacing="0"><tr><td class="codeLines">'.$lines.'</td><td class="codeContent">'.$src.'</td></table></div>';
-
-    $txt = preg_replace("=\[php\](.*)\[/php\]=Uis",$code,$txt,1);
-  }
-  return $txt;
+	return parseTagsRecursive($txt); ## BUG FIX ##
 }
+
 //-> Glossarfunktion
 $gl_words = array();
 $gl_desc = array();
@@ -347,25 +334,128 @@ function glossar($txt)
   return $txt;
 }
 //-> Replaces
-function replace($txt,$type=0,$no_vid_tag=0)
+function replace($txt,$type=false,$no_vid_tag=false)
 {
-  $txt = str_replace("&#34;","\"",$txt);
+ 	global $chkMe;
+ 
+  	$var = array("/&gt;/i","/&lt;/i","/&quot;/i","/&amp;/i");
+	$repl = array(">","<","\"","&");
+	$txt = preg_replace($var, $repl, $txt);
+  
+  	if(!$type)
+    	$txt = preg_replace("#<img src=\"(.*?)\" mce_src=\"(.*?)\"(.*?)\>#i","<img src=\"$2\" alt=\"\">",$txt);
 
-  if($type == 1)
-    $txt = preg_replace("#<img src=\"(.*?)\" mce_src=\"(.*?)\"(.*?)\>#i","<img src=\"$2\" alt=\"\">",$txt);
-
-  $var = array("/\[url\](.*?)\[\/url\]/",
-               "/\[img\](.*?)\[\/img\]/",
-               "/\[url\=(http\:\/\/)?(.*?)\](.*?)\[\/url\]/");
+ 	 $var = array("/\[url\](.*?)\[\/url\]/",
+            	   "/\[img\](.*?)\[\/img\]/",
+             	  "/\[url\=(http\:\/\/)?(.*?)\](.*?)\[\/url\]/",
+			 	  "/\[b\](.*?)\[\/b\]/",
+				  "/\[i\](.*?)\[\/i\]/",
+				  "/\[u\](.*?)\[\/u\]/",
+				  "/\[color\=(.*?)\](.*?)\[\/color\]/",
+				  "/\[size\=(.*?)\](.*?)\[\/size\]/",
+				  "/\[font\=(.*?)\](.*?)\[\/font\]/",
+				  "/\[left\](.*?)\[\/left\]/",
+				  "/\[center\](.*?)\[\/center\]/",
+				  "/\[right\](.*?)\[\/right\]/",
+				  "/\[email\](.*?)\[\/email\]/",
+				  "/\[email\=(.*?)\](.*?)\[\/email\]/",
+				  "/\[list\](.*?)\[\/list\]/",
+				  "#\[center]#si",
+				  "#\[/center]#si");
 
 	$repl = array("<a href=\"$1\" target=\"_blank\">$1</a>",
-                "<img src=\"$1\" class=\"resizeImage\" alt=\"\" />",
-                "<a href=\"http://$2\" target=\"_blank\">$3</a>");
+                "<img height=\"400\" width=\"500\" src=\"$1\" class=\"resizeImage\" alt=\"\" />",
+                "<a href=\"http://$2\" target=\"_blank\">$3</a>",
+				"<b>\"$1\"</b>",
+				"<em>\"$1\"</em>",
+				"<u>\"$1\"</u>",
+				"<font color=\"$1\">$2</font>",
+				"<font size=\"$1\">$2</font>",
+				"<font face=\"$1\">$2</font>",
+				"<div align=\"left\">$1</div>",
+				"<div align=\"center\">$1</div>",
+				"<div align=\"right\">$1</div>",
+				"<a href=\"mailto:$1\">$1</a>",
+				"<a href=\"mailto:$1\">$2</a>",
+				"<li>\"$1\"</li>",
+				"<center>",
+				"</center>");
 
 	$txt = preg_replace($var,$repl,$txt);
+	
+	if(strstr($txt,'[*]'))
+			{
+			$matches = explode('[*]',$txt);
+			
+			foreach($matches as $i=>$str)
+				{
+				$str = trim($str);
+				
+				if(empty($str))
+					{
+					unset($matches[$i]);
+					continue;
+					}
+				
+				$matches[$i] = '<li>'.$str.'</li>';
+				}
+			
+			$txt = implode('',$matches);
+			}
+	
+	$txt = preg_replace("#(\/li|ul|ol type=\"a\"|ol type=\"1\")>(.*)*<(li|\/ol|\/ul){1}>#sSU",'\\1><\\3>',$txt);
+	
+	if(!$no_vid_tag)
+	{
+		$var = array("#\[googlevideo\](.*?)\[\/googlevideo\]#Uis",
+					 "#\[myvideo\](.*?)\[\/myvideo\]#Uis",
+					 "#\[youtube\]http\:\/\/www.youtube.com\/watch\?v\=(.*)\[\/youtube\]#Uis",
+					 "#\[divx\](.*?)\[\/divx\]#Uis",
+					 "#\[vimeo\]([0-9]{0,})\[\/vimeo\]#Uis",
+					 "#\[xfire\](.*?)\[\/xfire\]#Uis",
+					 "#\[gt\](.*?)\[\/gt\]#Uis",
+					 "#\[golem\](.*?)\[\/golem\]#Uis");
+	
+		$repl = array("<embed id=VideoPlayback src=http://video.google.de/googleplayer.swf?docid=-$1&hl=de&fs=true style=width:425px;height:344px allowFullScreen=true allowScriptAccess=always type=application/x-shockwave-flash> </embed>",
+			
+		"<object wmode=\"opaque\" style=\"width: 425px; height: 344px;\" type=\"application/x-shockwave-flash\" data=\"http://www.myvideo.de/movie/$1\"> </param>
+		<param name=\"wmode\" value=\"opaque\">
+		<param name=\"movie\" value=\"http://www.myvideo.de/movie/$1\"><param name=\"AllowFullscreen\" value=\"true\"></object>",
+						  
+		"<object width=\"425\" height=\"344\" wmode=\"opaque\"><param name=\"movie\" value=\"http://www.youtube.com/v/$1&hl=de_DE&fs=1&color1=0x3a3a3a&color2=0x999999&border=0\"></param><param name=\"allowFullScreen\" value=\"true\"></param><param name=\"allowscriptaccess\" value=\"always\"></param>
+		<param name=\"wmode\" value=\"opaque\"><embed src=\"http://www.youtube.com/v/$1&hl=de_DE&fs=1&color1=0x3a3a3a&color2=0x999999&border=0\" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"425\" height=\"344\"></embed></object>",
+		
+						  
+		"<object classid=\"clsid:67DABFBF-D0AB-41fa-9C46-CC0F21721616\" width=\"425\" height=\"344\" wmode=\"opaque\" codebase=\"http://go.divx.com/plugin/DivXBrowserPlugin.cab\">
+		<param name=\"custommode\" value=\"none\" /><param name=\"autoPlay\" value=\"false\" /><param name=\"src\" value=\"$1\" />
+		<embed type=\"video/divx\" src=\"$1\" custommode=\"none\" width=\"425\" height=\"344\" autoPlay=\"false\" pluginspage=\"http://go.divx.com/plugin/download/\"></embed></object>",
+		
+		"<object width=\"425\" height=\"344\" wmode=\"opaque\"><param name=\"allowfullscreen\" value=\"true\" /></param>
+		<param name=\"wmode\" value=\"opaque\">
+		<param name=\"allowscriptaccess\" value=\"always\" /><param name=\"movie\" value=\"http://www.vimeo.com/moogaloop.swf?clip_id=\\1&server=www.vimeo.com&show_title=1&show_byline=1&show_portrait=0&color=&fullscreen=1\" /><embed src=\"http://www.vimeo.com/moogaloop.swf?clip_id=\\1&server=www.vimeo.com&show_title=1&show_byline=1&show_portrait=0&color=&fullscreen=1\" type=\"application/x-shockwave-flash\" allowfullscreen=\"true\" allowscriptaccess=\"always\" width=\"425\" height=\"344\"></embed></object>",
+		
+		"<object width=\"425\" height=\"344\" wmode=\"opaque\"></param>
+		<param name=\"wmode\" value=\"opaque\">
+		<embed src=\"http://media.xfire.com/swf/embedplayer.swf\" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"425\" height=\"344\" flashvars=\"videoid=\\1\"></embed></object>",
+		
+		"<embed src=\"http://www.gametrailers.com/remote_wrap.php?mid=\\1\" swLiveConnect=\"true\" name=\"gtembed\" align=\"middle\" allowScriptAccess=\"sameDomain\" allowFullScreen=\"true\" quality=\"high\" pluginspage=\"http://www.macromedia.com/go/getflashplayer\" type=\"application/x-shockwave-flash\" width=\"425\" height=\"344\"></embed>",
+		
+		"<object width=\"480\" height=\"270\" wmode=\"opaque\"></param>
+		<param name=\"wmode\" value=\"opaque\">
+		<param name=\"movie\" value=\"http://video.golem.de/player/videoplayer.swf?id=$1&autoPl=false\"></param><param name=\"allowFullScreen\" value=\"true\"></param><param name=\"AllowScriptAccess\" value=\"always\"><embed src=\"http://video.golem.de/player/videoplayer.swf?id=$1&autoPl=false\" type=\"application/x-shockwave-flash\" allowfullscreen=\"true\" AllowScriptAccess=\"always\" width=\"480\" height=\"270\"></embed></object>");
+		
+		$txt = preg_replace($var,$repl,$txt);
+	}
+	
+	if($chkMe >= 1)
+	{
+		$txt=str_replace('[hide]','<br />',$txt);
+		$txt=str_replace('[/hide]','<br />',$txt);
+	}
+	else
+	$txt = preg_replace("#\[hide\](.*?)\[\/hide\]#si", "",$txt); 
 
-  $txt = preg_replace_callback("#\<img(.*?)\>#",
-                create_function(
+    $txt = preg_replace_callback("#\<img(.*?)\>#", create_function(
                                  '$img',
                                  'if(preg_match("#class#i",$img[1]))
                                     return "<img".$img[1].">";
@@ -373,18 +463,7 @@ function replace($txt,$type=0,$no_vid_tag=0)
                                 '
                                ),
                                $txt);
-
-  if($no_vid_tag == 0)
-  {
-	  $txt = preg_replace_callback("#\[youtube\]http\:\/\/www.youtube.com\/watch\?v\=(.*)\[\/youtube\]#Uis", #
-					create_function(
-									 '$yt',
-									 '
-									  $width = 425; $height = 344;
-									  return "<object width=\"".$width."\" height=\"".$height."\"><param name=\"movie\" value=\"http://www.youtube.com/v/".trim($yt[1])."&amp;hl=de&amp;fs=1\"></param><param name=\"allowFullScreen\" value=\"true\"></param><param name=\"allowscriptaccess\" value=\"always\"></param><embed src=\"http://www.youtube.com/v/".trim($yt[1])."&amp;hl=de&amp;fs=1\" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"".$width."\" height=\"".$height."\"></embed></object>";
-									'
-								   ), $txt);
-  }
+							   
                                
   $txt = str_replace("\"","&#34;",$txt);
   $txt = preg_replace("#(\w){1,1}(&nbsp;)#Uis","$1 ",$txt);
@@ -406,7 +485,7 @@ function BadwordFilter($txt)
 //-> Funktion um Bestimmte Textstellen zu markieren
 function hl($text, $word)
 {
-  if(!empty($_GET['hl']) && $_SESSION['search_type'] == 'text')
+  if($_SESSION['search_type'] == 'text')
   {
     if($_SESSION['search_con'] == 'or')
     {
@@ -457,18 +536,21 @@ function re_bbcode($txt)
 
 	return $txt;
 }
+
 //Diverse BB-Codefunktionen
-function bbcode($txt, $tinymce=0, $no_vid=0)
+function bbcode($txt, $tinymce=0, $no_vid=false)
 {
+  if(!$no_vid)
+  	$txt = highlight_text($txt);
+  		
   $txt = BadwordFilter($txt);
   $txt = replace($txt,$tinymce,$no_vid); 
-  $txt = highlight_text($txt);
   $txt = re_bbcode($txt);
   $txt = strip_tags($txt,"<br><object><em><param><embed><strong><iframe><hr><table><tr><td><div><span><a><b><font><i><u><p><ul><ol><li><br /><img>");
   $txt = smileys($txt);
   
-  if($no_vid == 0)
-  $txt = glossar($txt);
+  if(!$no_vid)
+  	$txt = glossar($txt);
   
   $txt = str_replace("&#34;","\"",$txt);
   $txt = str_replace('<p></p>', '<p>&nbsp;</p>', $txt);
@@ -496,12 +578,12 @@ function bbcode_nletter_plain($txt)
 }
 function bbcode_html($txt,$tinymce=0)
 {
+  $txt = highlight_text($txt);
   $txt = str_replace("&lt;","<",$txt);
   $txt = str_replace("&gt;",">",$txt);
   $txt = str_replace("&quot;","\"",$txt);
   $txt = BadwordFilter($txt);
-  $txt = replace($txt,$tinymce);
-  $txt = highlight_text($txt);
+  $txt = replace($txt,$tinymce,$no_vid);
   $txt = re_bbcode($txt);
   $txt = smileys($txt);
   $txt = glossar($txt);
@@ -547,7 +629,7 @@ function re_entry($txt)
 //-> Smileys ausgeben
 function smileys($txt)
 {
-  $files = get_files('../inc/images/smileys');
+  $files = get_files('../inc/images/smileys',false,true);
   for($i=0; $i<count($files); $i++)
   {
     $smileys = $files[$i];
@@ -670,20 +752,41 @@ function wrap($str, $width = 75, $break = "\n", $cut = true)
 {
   return strtr(str_replace(htmlentities($break), $break, htmlentities(wordwrap(html_entity_decode($str), $width, $break, $cut), ENT_QUOTES)), array_flip(get_html_translation_table(HTML_SPECIALCHARS, ENT_COMPAT)));
 }
-//-> Funktion um Dateien aus einem Verzeichnis auszulesen
-function get_files($dir)
+## Funktion um Dateien oder Verzeichnisse auszulesen ##
+function get_files($dir,$only_dir=false,$only_files=false)
 {
-  $dp = @opendir($dir);
-  $files = array();
-  while($file = @readdir($dp))
-  {
-    if($file != '.' && $file != '..')
-      array_push($files, $file);
-  }
-  @closedir($dp);
-  sort($files);
-
-  return($files);
+	$dp = @opendir($dir);
+	$files = array();
+  
+	if($only_dir) //Nur Ordner
+	{
+		while($file = @readdir($dp))
+		{
+			if($file != '.' && $file != '..' && !is_file($dir.'/'.$file))
+				array_push($files, $file);
+		}	  
+	}
+	else if($only_files) //Nur Dateien
+	{
+		while($file = @readdir($dp))
+		{
+			if($file != '.' && $file != '..' && is_file($dir.'/'.$file))
+				array_push($files, $file);
+		}
+	}
+	else // Ordner & Dateien
+	{
+		while($file = @readdir($dp))
+		{
+			if($file != '.' && $file != '..')
+			array_push($files, $file);
+		}
+	}
+	  
+	@closedir($dp);
+	sort($files);
+	
+	return($files);
 }
 //-> Funktion um eine Datei im Web auf Existenz zu prüfen
 function fileExists($url)
@@ -1108,13 +1211,21 @@ function links($hp)
 //-> Funktion um Passwoerter generieren zu lassen
 function mkpwd()
 {
-    $chars = '1234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $pw = '';
-    $len = strlen($chars) - 1;
-    for($i = 0; $i < 10; $i++) {
-        $pw .= $chars{rand(0, $len)};
-    }
-    return $pw;
+  $k = array("b","c","d","f","g","h","j","k","l","m","n","p","r","s","t","v","w","x","y","z");
+  $v = array("a","e","i","o","u");
+  $z = array("1","2","3","4","5","6","7","8","9","0");
+  srand ((double)microtime()*1000000);
+  for($f=1; $f<=4; $f++)
+  {
+    $pwd.=$k[rand(0,19)];
+    $pwd.=$v[rand(0,4)];
+  }
+  for($f=1; $f<=2; $f++)
+  {
+    $zahl.=$z[rand(0,10)];
+  }
+
+  return $pwd.$zahl;
 }
 //-> set cookies
 function set_cookie($name, $value = '', $path = '/', $secure = false, $http_only = true)
@@ -1573,7 +1684,7 @@ function dropdown($what, $wert, $age = 0)
 //Games fuer den Livestatus
 function sgames($game = '')
 {
-  $protocols = get_files(basePath.'/inc/server_query/');
+  $protocols = get_files(basePath.'/inc/server_query/',false,true);
   foreach($protocols AS $protocol)
   {
     unset($gamemods, $server_name_config);
@@ -2045,6 +2156,7 @@ function infos($checkBrowser = "")
       elseif(preg_match("/MSIE 6/i",$data))     $browser = "IE 6";
       elseif(preg_match("/MSIE 7/i",$data))     $browser = "IE 7";
       elseif(preg_match("/MSIE 8/i",$data))     $browser = "IE 8";
+      elseif(preg_match("/MSIE 9/i",$data))     $browser = "IE 9";
       elseif(preg_match("/Mozilla/i",$data))    $browser = "Mozilla";
       else                                      $browser = _unknown_browser;
 
@@ -2265,7 +2377,7 @@ function getBoardPermissions($checkID = 0, $pos = 0)
   return $i_forum;
 }
 //-> Neue Funktionen einbinden, sofern vorhanden
-if($f = get_files(basePath.'/inc/additional-functions/'))
+if($f = get_files(basePath.'/inc/additional-functions/',false,true))
 {
   foreach($f AS $func)
   {
@@ -2278,7 +2390,7 @@ if($f = get_files(basePath.'/inc/additional-functions/'))
   }
 }
 //-> Neue Languages einbinden, sofern vorhanden
-if($l = get_files(basePath.'/inc/additional-languages/'.$language.'/'))
+if($l = get_files(basePath.'/inc/additional-languages/'.$language.'/',false,true))
 {
 	foreach($l AS $languages)
 	{
@@ -2346,7 +2458,7 @@ function page($index,$title,$where,$time,$wysiwyg='')
     }
     
 //init templateswitch
-    $tmps = get_files('../inc/_templates_/');
+    $tmps = get_files('../inc/_templates_/',true);
     for($i=0; $i<count($tmps); $i++)
     {
       if($gets['tmpdir'] == $tmps[$i]) $selt = "selected=\"selected\"";
