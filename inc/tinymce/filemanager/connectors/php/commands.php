@@ -104,7 +104,7 @@ function CreateFolder( $resourceType, $currentFolder )
 
 	if ( isset( $_GET['NewFolderName'] ) )
 	{
-		$sNewFolderName = convertFileName($_GET['NewFolderName']) ;
+		$sNewFolderName = $_GET['NewFolderName'] ;
 
 		if ( strpos( $sNewFolderName, '..' ) !== FALSE )
 			$sErrorNumber = '102' ;		// Invalid folder name.
@@ -207,5 +207,18 @@ function FileUpload( $resourceType, $currentFolder )
 	echo '</script>' ;
 
 	exit ;
+}
+
+function convertFileName($txt)
+{
+  $txt = str_replace("Ä","ae",$txt);
+  $txt = str_replace("ä","ae",$txt);
+  $txt = str_replace("Ü","ue",$txt);
+  $txt = str_replace("ü","ue",$txt);
+  $txt = str_replace("Ö","oe",$txt);
+  $txt = str_replace("ö","oe",$txt);
+  $txt = str_replace("ß","ss",$txt);
+
+  return $txt;
 }
 ?>

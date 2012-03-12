@@ -1,11 +1,8 @@
 /**
- * editor_plugin_src.js
+ * $Id: editor_plugin_src.js 201 2007-02-12 15:56:56Z spocke $
  *
- * Copyright 2009, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://tinymce.moxiecode.com/license
- * Contributing: http://tinymce.moxiecode.com/contributing
+ * @author Moxiecode
+ * @copyright Copyright © 2004-2008, Moxiecode Systems AB, All rights reserved.
  */
 
 (function() {
@@ -17,7 +14,7 @@
 
 			// Register commands
 			ed.addCommand('mceNonBreaking', function() {
-				ed.execCommand('mceInsertContent', false, (ed.plugins.visualchars && ed.plugins.visualchars.state) ? '<span data-mce-bogus="1" class="mceItemHidden mceItemNbsp">&nbsp;</span>' : '&nbsp;');
+				ed.execCommand('mceInsertContent', false, (ed.plugins.visualchars && ed.plugins.visualchars.state) ? '<span class="mceItemHidden mceVisualNbsp">&middot;</span>' : '&nbsp;');
 			});
 
 			// Register buttons
@@ -25,12 +22,11 @@
 
 			if (ed.getParam('nonbreaking_force_tab')) {
 				ed.onKeyDown.add(function(ed, e) {
-					if (e.keyCode == 9) {
-						e.preventDefault();
-	
+					if (tinymce.isIE && e.keyCode == 9) {
 						ed.execCommand('mceNonBreaking');
 						ed.execCommand('mceNonBreaking');
 						ed.execCommand('mceNonBreaking');
+						tinymce.dom.Event.cancel(e);
 					}
 				});
 			}
@@ -41,7 +37,7 @@
 				longname : 'Nonbreaking space',
 				author : 'Moxiecode Systems AB',
 				authorurl : 'http://tinymce.moxiecode.com',
-				infourl : 'http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/nonbreaking',
+				infourl : 'http://wiki.moxiecode.com//TinyMCE:Plugins/nonbreaking',
 				version : tinymce.majorVersion + "." + tinymce.minorVersion
 			};
 		}

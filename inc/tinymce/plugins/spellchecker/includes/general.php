@@ -25,7 +25,7 @@ if (isset($config['general.engine']))
  * @param String $default_value Default value to return if value not found.
  * @return String request value by name without magic quoting or default value.
  */
-function getRequestParam($name, $default_value = false) {
+function getRequestParam($name, $default_value = false, $sanitize = false) {
 	if (!isset($_REQUEST[$name]))
 		return $default_value;
 
@@ -33,12 +33,12 @@ function getRequestParam($name, $default_value = false) {
 		$newarray = array();
 
 		foreach ($_REQUEST[$name] as $name => $value)
-			$newarray[$name] = $value;
+			$newarray[formatParam($name, $sanitize)] = formatParam($value, $sanitize);
 
 		return $newarray;
 	}
 
-	return $_REQUEST[$name];
+	return formatParam($_REQUEST[$name], $sanitize);
 }
 
 function &getLogger() {

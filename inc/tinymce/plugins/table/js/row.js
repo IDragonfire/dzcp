@@ -8,7 +8,7 @@ function init() {
 
 	var inst = tinyMCEPopup.editor;
 	var dom = inst.dom;
-	var trElm = dom.getParent(inst.selection.getStart(), "tr");
+	var trElm = dom.getParent(inst.selection.getNode(), "tr");
 	var formObj = document.forms[0];
 	var st = dom.parseStyle(dom.getAttrib(trElm, "style"));
 
@@ -19,71 +19,43 @@ function init() {
 	var height = trimSize(getStyle(trElm, 'height', 'height'));
 	var className = dom.getAttrib(trElm, 'class');
 	var bgcolor = convertRGBToHex(getStyle(trElm, 'bgcolor', 'backgroundColor'));
-	var backgroundimage = getStyle(trElm, 'background', 'backgroundImage').replace(new RegExp("url\\(['\"]?([^'\"]*)['\"]?\\)", 'gi'), "$1");
+	var backgroundimage = getStyle(trElm, 'background', 'backgroundImage').replace(new RegExp("url\\('?([^']*)'?\\)", 'gi'), "$1");;
 	var id = dom.getAttrib(trElm, 'id');
 	var lang = dom.getAttrib(trElm, 'lang');
 	var dir = dom.getAttrib(trElm, 'dir');
 
+	// Setup form
+	addClassesToList('class', 'table_row_styles');
+	TinyMCE_EditableSelects.init();
+
+	formObj.bgcolor.value = bgcolor;
+	formObj.backgroundimage.value = backgroundimage;
+	formObj.height.value = height;
+	formObj.id.value = id;
+	formObj.lang.value = lang;
+	formObj.style.value = dom.serializeStyle(st);
+	selectByValue(formObj, 'align', align);
+	selectByValue(formObj, 'valign', valign);
+	selectByValue(formObj, 'class', className, true, true);
 	selectByValue(formObj, 'rowtype', rowtype);
+	selectByValue(formObj, 'dir', dir);
 
-	// Any cells selected
-	if (dom.select('td.mceSelected,th.mceSelected', trElm).length == 0) {
-		// Setup form
-		addClassesToList('class', 'table_row_styles');
-		TinyMCE_EditableSelects.init();
+	// Resize some elements
+	if (isVisible('backgroundimagebrowser'))
+		document.getElementById('backgroundimage').style.width = '180px';
 
-		formObj.bgcolor.value = bgcolor;
-		formObj.backgroundimage.value = backgroundimage;
-		formObj.height.value = height;
-		formObj.id.value = id;
-		formObj.lang.value = lang;
-		formObj.style.value = dom.serializeStyle(st);
-		selectByValue(formObj, 'align', align);
-		selectByValue(formObj, 'valign', valign);
-		selectByValue(formObj, 'class', className, true, true);
-		selectByValue(formObj, 'dir', dir);
-
-		// Resize some elements
-		if (isVisible('backgroundimagebrowser'))
-			document.getElementById('backgroundimage').style.width = '180px';
-
-		updateColor('bgcolor_pick', 'bgcolor');
-	} else
-		tinyMCEPopup.dom.hide('action');
+	updateColor('bgcolor_pick', 'bgcolor');
 }
 
 function updateAction() {
 	var inst = tinyMCEPopup.editor, dom = inst.dom, trElm, tableElm, formObj = document.forms[0];
 	var action = getSelectValue(formObj, 'action');
 
-	if (!AutoValidator.validate(formObj)) {
-		tinyMCEPopup.alert(AutoValidator.getErrorMessages(formObj).join('. ') + '.');
-		return false;
-	}
-
 	tinyMCEPopup.restoreSelection();
-	trElm = dom.getParent(inst.selection.getStart(), "tr");
-	tableElm = dom.getParent(inst.selection.getStart(), "table");
+	trElm = dom.getParent(inst.selection.getNode(), "tr");
+	tableElm = dom.getParent(inst.selection.getNode(), "table");
 
-	// Update all selected rows
-	if (dom.select('td.mceSelected,th.mceSelected', trElm).length > 0) {
-		tinymce.each(tableElm.rows, function(tr) {
-			var i;
-
-			for (i = 0; i < tr.cells.length; i++) {
-				if (dom.hasClass(tr.cells[i], 'mceSelected')) {
-					updateRow(tr, true);
-					return;
-				}
-			}
-		});
-
-		inst.addVisual();
-		inst.nodeChanged();
-		inst.execCommand('mceEndUndoLevel');
-		tinyMCEPopup.close();
-		return;
-	}
+	inst.execCommand('mceBeginUndoLevel');
 
 	switch (action) {
 		case "row":
@@ -126,19 +98,19 @@ function updateRow(tr_elm, skip_id, skip_parent) {
 
 	// Update row element
 	if (!skip_id)
-		dom.setAttrib(tr_elm, 'id', formObj.id.value);
+		tr_elm.setAttribute('id', formObj.id.value);
 
-	dom.setAttrib(tr_elm, 'align', getSelectValue(formObj, 'align'));
-	dom.setAttrib(tr_elm, 'vAlign', getSelectValue(formObj, 'valign'));
-	dom.setAttrib(tr_elm, 'lang', formObj.lang.value);
-	dom.setAttrib(tr_elm, 'dir', getSelectValue(formObj, 'dir'));
-	dom.setAttrib(tr_elm, 'style', dom.serializeStyle(dom.parseStyle(formObj.style.value)));
+	tr_elm.setAttribute('align', getSelectValue(formObj, 'align'));
+	tr_elm.setAttribute('vAlign', getSelectValue(formObj, 'valign'));
+	tr_elm.setAttribute('lang', formObj.lang.value);
+	tr_elm.setAttribute('dir', getSelectValue(formObj, 'dir'));
+	tr_elm.setAttribute('style', dom.serializeStyle(dom.parseStyle(formObj.style.value)));
 	dom.setAttrib(tr_elm, 'class', getSelectValue(formObj, 'class'));
 
 	// Clear deprecated attributes
-	dom.setAttrib(tr_elm, 'background', '');
-	dom.setAttrib(tr_elm, 'bgColor', '');
-	dom.setAttrib(tr_elm, 'height', '');
+	tr_elm.setAttribute('background', '');
+	tr_elm.setAttribute('bgColor', '');
+	tr_elm.setAttribute('height', '');
 
 	// Set styles
 	tr_elm.style.height = getCSSSize(formObj.height.value);
@@ -166,10 +138,13 @@ function updateRow(tr_elm, skip_id, skip_parent) {
 		if (newParent == null) {
 			newParent = doc.createElement(dest);
 
-			if (theTable.firstChild.nodeName == 'CAPTION')
-				inst.dom.insertAfter(newParent, theTable.firstChild);
-			else
-				theTable.insertBefore(newParent, theTable.firstChild);
+			if (dest == "thead") {
+				if (theTable.firstChild.nodeName == 'CAPTION')
+					inst.dom.insertAfter(newParent, theTable.firstChild);
+				else
+					theTable.insertBefore(newParent, theTable.firstChild);
+			} else
+				theTable.appendChild(newParent);
 		}
 
 		// append the row to the new parent
