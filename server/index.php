@@ -25,7 +25,7 @@ default:
         $player_list = '';
         if($get['status'] != "nope" && file_exists(basePath.'/inc/server_query/'.$get['status'].'.php'))
         {
-          if(time() - @filemtime(basePath.'/__cache/gameserver_'.intval($get['id']).'_'.$language.'.html') > $c['cache_server'])
+          if(time() - @filemtime(basePath.'/__cache/gameserver_'.intval($get['id']).'_'.$language.'.html') > 0/*$c['cache_server']*/)
           {
           if(!function_exists('server_query_'.$get['status']))
           {
@@ -104,10 +104,10 @@ default:
             if($time == 1)   $showtime    = '<td width="90" class="contentHead"><span class="fontBold">'._server_time.'</span></td>';
             else             $showtime   = '';
   
-            unset($playerstats); $color = 0;
+            unset($playerstats);
             foreach($player_list as $key=>$player)
             {
-              $player['name'] = htmlentities(utf8_decode($player['name']), ENT_QUOTES);
+              $player['name'] = htmlentities($player['name'], ENT_QUOTES);
               $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
   
               if($score == 1)  { $colspan++; $show_score   = '<td class="'.$class.'" align="center">'.$player['score'].'</td>'; }
@@ -164,7 +164,10 @@ default:
             $moreicon = "expand";
           }
   
-  		  $klapp = show(_klapptext_link, array("link" => _server_splayerstats, "id" => $get['id'], "moreicon" => $moreicon));
+          $klapp = show(_klapptext_server_link, array("link" => _server_splayerstats,
+                                                      "id" => $get['id'],
+                                                      "moreicon" => $moreicon));
+  
           $index .= show($dir."/server_show", array("showscore" => $showscore,
                                                     "showdeaths" => $showdeaths,
                                                     "showskill" => $showskill,
@@ -179,11 +182,11 @@ default:
                                                     "status_img" => $image_status,
                                                     "pwd_img" => $image_pwd,
                                                     "colspan" => (empty($colspan) ? '' : ' colspan="'.$colspan.'"'),
-  						    		                "data_status" => $server['status'],
-  								                    "data_gametype" => $server['gametype'],
-  								                    "data_gamemod" => re($server_name),
-  								                    "launch" => strtr($server_link, array('{IP}' => $get['ip'], '{S_PORT}' => $get['port'])),
-  									                "port" => $get['port'],
+  						    		                        		  "data_status" => $server['status'],
+  								                            		  "data_gametype" => $server['gametype'],
+  								                            		  "data_gamemod" => re($server_name),
+  								                            		  "launch" => strtr($server_link, array('{IP}' => $get['ip'], '{S_PORT}' => $get['port'])),
+  									                            	  "port" => $get['port'],
                                                     "aktplayers" => $server['players'],
                                                     "maxplayers" => $server['maxplayers'],
                                                     "map" => (empty($server['mapname']) ? '-' : re($server['mapname'])),
@@ -204,10 +207,9 @@ default:
                                                     "frags" => _server_frags,
                                                     "time" => _server_time,
                                                     "ip" => $get['ip'],
-          											"join" => strtr($server_link, array('{IP}' => $get['ip'], '{S_PORT}' => $get['port'])),
                                                     "playerstats" => $playerstats,
                                                     "name" => re($server['hostname']),
-  									                "image_map" => $image_map));
+  									                            	  "image_map" => $image_map));
 
           $fp = @fopen(basePath.'/__cache/gameserver_'.intval($get['id']).'_'.$language.'.html', 'w');
                 @fwrite($fp, $index);

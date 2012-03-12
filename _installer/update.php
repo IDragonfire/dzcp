@@ -70,7 +70,8 @@ if($_GET['agb'])
               </table>';
       } else {
         _c('_installer',$pfad,$host,$user,$pwd);  
-        _c('_installer/update.php',$pfad,$host,$user,$pwd);
+        _c('_installer/update.php',$pfad,$host,$user,$pwd);  
+        _c('_installer/install.php',$pfad,$host,$user,$pwd);
         _c('__cache',$pfad,$host,$user,$pwd);
         _c('rss.xml',$pfad,$host,$user,$pwd);
         _c('admin',$pfad,$host,$user,$pwd);
@@ -116,6 +117,7 @@ if($_GET['agb'])
   }
 //Check Installfiles
   $cm = _i('../_installer',1);
+  $cm .= _i('../_installer/install.php');
   $cm .= _i('../_installer/update.php');
 //Check Scriptfiles
   $c = _i('../__cache',1);
@@ -425,7 +427,6 @@ case 'database';
 				update_mysql_1_5_1();
 				update_mysql_1_5_2();
 				update_mysql_1_5_4();
-				update_mysql_1_5_5_3();
       } elseif($_POST['version'] == "1.2.x") {
         update_mysql_1_3();
         update_mysql_1_4();
@@ -433,35 +434,26 @@ case 'database';
 				update_mysql_1_5_1();
 				update_mysql_1_5_2();
 				update_mysql_1_5_4();
-				update_mysql_1_5_5_3();
       } elseif($_POST['version'] == "1.3.x") {
         update_mysql_1_4();
         update_mysql_1_5();
 				update_mysql_1_5_1();
 				update_mysql_1_5_2();
 				update_mysql_1_5_4();
-				update_mysql_1_5_5_3();
       } elseif($_POST['version'] == "1.4.x") {
         update_mysql_1_5();
 				update_mysql_1_5_1();
 				update_mysql_1_5_2();
 				update_mysql_1_5_4();
-				update_mysql_1_5_5_3();
       } elseif($_POST['version'] == "1.5") {
         update_mysql_1_5_1();
 				update_mysql_1_5_2();
 				update_mysql_1_5_4();
-				update_mysql_1_5_5_3();
       } elseif($_POST['version'] == "1.5.1") {
         update_mysql_1_5_2();
 				update_mysql_1_5_4();
-				update_mysql_1_5_5_3();
-      } elseif($_POST['version'] == "1.5.2") {
+      } elseif($_POST['version'] == "1.5.2 oder 1.5.3") {
         update_mysql_1_5_4();
-        		update_mysql_1_5_5_3();
-      }
-    	elseif($_POST['version'] == "1.5.5.2") {
-        update_mysql_1_5_5_3();
       }
       
       header("Location: update.php?action=done");

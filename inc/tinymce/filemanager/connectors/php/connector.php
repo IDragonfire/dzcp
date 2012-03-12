@@ -18,19 +18,6 @@
  * 		Frederico Caldeira Knabben (fredck@fckeditor.net)
  */
 
-function convertFileName($txt)
-{
-  $txt = str_replace("Ä","ae",$txt);
-  $txt = str_replace("ä","ae",$txt);
-  $txt = str_replace("Ü","ue",$txt);
-  $txt = str_replace("ü","ue",$txt);
-  $txt = str_replace("Ö","oe",$txt);
-  $txt = str_replace("ö","oe",$txt);
-  $txt = str_replace("ß","ss",$txt);
-  $txt = str_replace(" ","_",$txt);
-  return $txt;
-}
-
 include('config.php') ;
 include('util.php') ;
 include('io.php') ;
@@ -88,7 +75,7 @@ function DoResponse()
 	// File Upload doesn't have to Return XML, so it must be intercepted before anything.
 	if ( $sCommand == 'FileUpload' )
 	{
-		FileUpload( $sResourceType, convertFileName($sCurrentFolder) ) ;
+		FileUpload( $sResourceType, $sCurrentFolder ) ;
 		return ;
 	}
   
@@ -104,7 +91,7 @@ function DoResponse()
 			GetFoldersAndFiles( $sResourceType, $sCurrentFolder ) ;
 			break ;
 		case 'CreateFolder' :
-			CreateFolder( $sResourceType, convertFileName($sCurrentFolder) ) ;
+			CreateFolder( $sResourceType, $sCurrentFolder ) ;
 			break ;
 	}
 

@@ -151,7 +151,7 @@ oIcons.GetIcon = function( fileName )
       <frame src="frmresourcetype.html" scrolling="no" frameborder="no">
 			<frame name="frmFolders" src="frmfolders.html" scrolling="auto" frameborder="yes">
 
-		<frameset rows="87,*,50" cols="*" framespacing="0">
+		<frameset rows="50,*,50" framespacing="0">
 			<frame name="frmActualFolder" src="frmactualfolder.php" scrolling="no" frameborder="no">
 			<frame name="frmResourcesList" src="frmresourceslist.html" scrolling="auto" frameborder="yes">
 			<frameset cols="170,*,1" framespacing="0" frameborder="no">

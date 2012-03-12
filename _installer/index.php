@@ -1,3 +1,3 @@
 <?php
-  header('Location: update.php');
+  header('Location: install.php');
 ?>

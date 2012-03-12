@@ -456,7 +456,7 @@ define('_config_forum_kats_add', 'Neue Kategorie hinzuf&uuml;gen');
 define('_config_c_lnews', 'Men&uuml;: Last News');
 define('_msg_new', 'Neue Nachricht schreiben');
 define('_gallery_show_admin', 'Galerie hinzuf&uuml;gen');
-define('_dl_titel', '<span class="fontBold">[name]</span> - ');
+define('_dl_titel', '<span class="fontBold">[name]</span> - [cnt] [file]');
 define('_config_artikel', 'Artikel');
 define('_config_forum', 'Forenkategorien');
 define('_config_server', 'Server');

@@ -1,11 +1,8 @@
 /**
- * editor_plugin_src.js
+ * $Id: editor_plugin_src.js 677 2008-03-07 13:52:41Z spocke $
  *
- * Copyright 2009, Moxiecode Systems AB
- * Released under LGPL License.
- *
- * License: http://tinymce.moxiecode.com/license
- * Contributing: http://tinymce.moxiecode.com/contributing
+ * @author Moxiecode
+ * @copyright Copyright © 2004-2008, Moxiecode Systems AB, All rights reserved.
  */
 
 (function() {
@@ -14,7 +11,7 @@
 			// Register commands
 			ed.addCommand('mceAdvImage', function() {
 				// Internal image object like a flash placeholder
-				if (ed.dom.getAttrib(ed.selection.getNode(), 'class', '').indexOf('mceItem') != -1)
+				if (ed.dom.getAttrib(ed.selection.getNode(), 'class').indexOf('mceItem') != -1)
 					return;
 
 				ed.windowManager.open({
@@ -39,7 +36,7 @@
 				longname : 'Advanced image',
 				author : 'Moxiecode Systems AB',
 				authorurl : 'http://tinymce.moxiecode.com',
-				infourl : 'http://wiki.moxiecode.com/index.php/TinyMCE:Plugins/advimage',
+				infourl : 'http://wiki.moxiecode.com//TinyMCE:Plugins/advimage',
 				version : tinymce.majorVersion + "." + tinymce.minorVersion
 			};
 		}
