@@ -834,77 +834,82 @@ case 'details';
 
   if($_GET['do'] == "add")
   {
-    if(!ipcheck("cwid(".$_GET['id'].")", $flood_cwcom))
+		if(settings("reg_cwcomments") == "1" && $chkMe == "unlogged")
     {
-      if(isset($userid))
-        $toCheck = empty($_POST['comment']);
-      else
-        $toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['comment']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
-        
-      if($toCheck)
-		  {
-        if(isset($userid))
-        {
-		      if(empty($_POST['comment'])) $error = _empty_eintrag;
-          $form = show("page/editor_regged", array("nick" => autor($userid),
-                                                   "von" => _autor));
-        } else {
-          if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir])) $error = _error_invalid_regcode; 
-          elseif(empty($_POST['nick'])) $error = _empty_nick;
-		      elseif(empty($_POST['email'])) $error = _empty_email;
-		      elseif(!check_email($_POST['email'])) $error = _error_invalid_email;
-		      elseif(empty($_POST['comment'])) $error = _empty_eintrag;
-          $form = show("page/editor_notregged", array("nickhead" => _nick,
-                                                      "emailhead" => _email,
-                                                      "hphead" => _hp));
-        }
-        
-		    $error = show("errors/errortable", array("error" => $error));
-		    $index = show("page/comments_add", array("titel" => _cw_comments_add,
-				    																		 "nickhead" => _nick,
-						    																 "bbcodehead" => _bbcode,
-								    														 "emailhead" => _email,
-										    												 "hphead" => _hp,
-                                                 "b1" => $u_b1,
-                                                 "b2" => $u_b2,
-                                                 "ip" => _iplog_info,
-                                                 "security" => _register_confirm,
-                                                 "what" => _button_value_add,
-                                                 "sec" => $dir,
-                                                 "form" => $form,
-                                                 "preview" => _preview,
-                                                 "action" => '?action=details&amp;do=add&amp;id='.$_GET['id'],
-                                                 "prevurl" => '../clanwars/?action=compreview&id='.$_GET['id'],
-														    								 "id" => $_GET['id'],
-                                                 "show" => "",
-																		    				 "postemail" => $_POST['email'],
-																				    		 "posthp" => links($_POST['hp']),
-																						     "postnick" => re($_POST['nick']),
-												    										 "posteintrag" => re_bbcode($_POST['comment']),
-														    								 "error" => $error,
-																		    				 "eintraghead" => _eintrag));
-	    } else {
-	      $qry = db("INSERT INTO ".$db['cw_comments']."
-                   SET `cw`       = '".((int)$_GET['id'])."',
-                       `datum`    = '".((int)time())."',
-                       `nick`     = '".up($_POST['nick'])."',
-                       `email`    = '".up($_POST['email'])."',
-                       `hp`       = '".links($_POST['hp'])."',
-                       `reg`      = '".((int)$userid)."',
-                       `comment`  = '".up($_POST['comment'],1)."',
-                       `ip`       = '".$userip."'");
-
-        $cwid = "cwid(".$_GET['id'].")";
-        $qry = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".$userip."',
-                       `what` = '".$cwid."',
-                       `time` = '".((int)time())."'");
-
-	      $index = info(_comment_added, "?action=details&amp;id=".$_GET['id']."");
-	    }
+      $index = error(_error_have_to_be_logged, 1);
     } else {
-      $index = error(show(_error_flood_post, array("sek" => $flood_cwcom)), 1);
-    }
+			if(!ipcheck("cwid(".$_GET['id'].")", $flood_cwcom))
+			{
+				if(isset($userid))
+					$toCheck = empty($_POST['comment']);
+				else
+					$toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['comment']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
+					
+				if($toCheck)
+				{
+					if(isset($userid))
+					{
+						if(empty($_POST['comment'])) $error = _empty_eintrag;
+						$form = show("page/editor_regged", array("nick" => autor($userid),
+																										 "von" => _autor));
+					} else {
+						if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir])) $error = _error_invalid_regcode; 
+						elseif(empty($_POST['nick'])) $error = _empty_nick;
+						elseif(empty($_POST['email'])) $error = _empty_email;
+						elseif(!check_email($_POST['email'])) $error = _error_invalid_email;
+						elseif(empty($_POST['comment'])) $error = _empty_eintrag;
+						$form = show("page/editor_notregged", array("nickhead" => _nick,
+																												"emailhead" => _email,
+																												"hphead" => _hp));
+					}
+					
+					$error = show("errors/errortable", array("error" => $error));
+					$index = show("page/comments_add", array("titel" => _cw_comments_add,
+																									 "nickhead" => _nick,
+																									 "bbcodehead" => _bbcode,
+																									 "emailhead" => _email,
+																									 "hphead" => _hp,
+																									 "b1" => $u_b1,
+																									 "b2" => $u_b2,
+																									 "ip" => _iplog_info,
+																									 "security" => _register_confirm,
+																									 "what" => _button_value_add,
+																									 "sec" => $dir,
+																									 "form" => $form,
+																									 "preview" => _preview,
+																									 "action" => '?action=details&amp;do=add&amp;id='.$_GET['id'],
+																									 "prevurl" => '../clanwars/?action=compreview&id='.$_GET['id'],
+																									 "id" => $_GET['id'],
+																									 "show" => "",
+																									 "postemail" => $_POST['email'],
+																									 "posthp" => links($_POST['hp']),
+																									 "postnick" => re($_POST['nick']),
+																									 "posteintrag" => re_bbcode($_POST['comment']),
+																									 "error" => $error,
+																									 "eintraghead" => _eintrag));
+				} else {
+					$qry = db("INSERT INTO ".$db['cw_comments']."
+										 SET `cw`       = '".((int)$_GET['id'])."',
+												 `datum`    = '".((int)time())."',
+												 `nick`     = '".up($_POST['nick'])."',
+												 `email`    = '".up($_POST['email'])."',
+												 `hp`       = '".links($_POST['hp'])."',
+												 `reg`      = '".((int)$userid)."',
+												 `comment`  = '".up($_POST['comment'],1)."',
+												 `ip`       = '".$userip."'");
+	
+					$cwid = "cwid(".$_GET['id'].")";
+					$qry = db("INSERT INTO ".$db['ipcheck']."
+										 SET `ip`   = '".$userip."',
+												 `what` = '".$cwid."',
+												 `time` = '".((int)time())."'");
+	
+					$index = info(_comment_added, "?action=details&amp;id=".$_GET['id']."");
+				}
+			} else {
+				$index = error(show(_error_flood_post, array("sek" => $flood_cwcom)), 1);
+			}
+		}
   } 
 
   if($_GET['do'] == "delete") 
