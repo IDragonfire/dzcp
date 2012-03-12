@@ -1,7 +1,7 @@
 <?php
 ob_start();
 
-  define(basePath, dirname(__FILE__));
+  define('basePath', dirname(__FILE__));
 
   include(basePath."/inc/config.php");
   include(basePath."/inc/bbcode.php");
