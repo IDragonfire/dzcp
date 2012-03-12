@@ -31,7 +31,7 @@ global $Config ;
 
   $Config['UserFilesAbsolutePath'] = '' ;
 
-  $Config['AllowedExtensions']	= array('swf','fla','flv','jpg','gif','jpeg','png','avi','mpg','mpeg','wmv','zip','rar','txt','bmp','doc','pdf','mp3') ;
-  $Config['DeniedExtensions']  	= array('php','php3','php5','phtml','asp','aspx','ascx','jsp','pl','bat','exe','reg','cgi');
+  $Config['AllowedExtensions']	= array('psd','7z', 'aiff', 'exe', 'ace','asf', 'avi', 'bmp', 'csv', 'doc', 'fla', 'flv', 'gif', 'gz', 'gzip', 'jpeg', 'jpg', 'mid', 'mov', 'mp3', 'mp4', 'mpc', 'mpeg', 'mpg', 'ods', 'odt', 'pdf', 'png', 'ppt', 'pxd', 'qt', 'ram', 'rar', 'rm', 'rmi', 'rmvb', 'rtf', 'sdc', 'sitd', 'swf', 'sxc', 'sxw', 'tar', 'tgz', 'tif', 'tiff', 'txt', 'vsd', 'wav', 'wma', 'wmv', 'xls', 'xml', 'zip') ;
+  $Config['DeniedExtensions']  	= array('php','php3','php5','phtml','asp','aspx','ascx','jsp','pl','bat','reg','cgi');
 
 ?>

@@ -779,7 +779,7 @@ case 'thread';
                                           "posthp" => $get['t_hp'],
                                           "admin" => $admin,
                     					  "vote" => $vote,
-                                          "posteintrag" => bbcode($get['t_text'],0,1)));
+                                          "posteintrag" => $get['t_text']));
     } else {
       $index = error(_error_wrong_permissions, 1);
     }

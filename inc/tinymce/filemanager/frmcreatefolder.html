@@ -30,6 +30,19 @@ function SetCurrentFolder( resourceType, folderPath )
 	oConnector.CurrentFolder = folderPath
 }
 
+function replaceUmlauts(string, index)
+{
+		    var anArray = new Array(2);
+		    anArray[0] = new Array("Ö", "ö", "Ä", "ä", "Ü", "ü", "ß", " ");
+		    anArray[1] = new Array("Oe", "oe", "Ae", "ae", "Ue", "ue", "sz", "_");
+		    
+		    for (var i=0; i<anArray[index].length; i++){
+				myRegExp = new RegExp(anArray[index][i],"g");
+				string = string.replace(myRegExp, anArray[(index==0?1:0)][i]);
+			}
+		    return string;
+}
+
 function CreateFolder()
 {
 	var sFolderName ;
@@ -46,7 +59,7 @@ function CreateFolder()
 			break ;
 	}
 	
-	oConnector.SendCommand( 'CreateFolder', 'NewFolderName=' + escape( sFolderName) , CreateFolderCallBack ) ;
+	oConnector.SendCommand( 'CreateFolder', 'NewFolderName=' + replaceUmlauts(escape( sFolderName),0) , CreateFolderCallBack ) ;
 }
 
 function CreateFolderCallBack( fckXml )

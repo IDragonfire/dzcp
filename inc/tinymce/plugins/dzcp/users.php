@@ -1,5 +1,5 @@
 <?php
-  define(basePath, '../../../../');
+  define("basePath", '../../../../');
   include basePath.'/inc/config.php';
 
   if(empty($_GET['sort']) || $_GET['sort'] == 'clan')
@@ -33,7 +33,7 @@
 		<table style="width:230px" border="0" cellspacing="0" cellpadding="1">
       <tr>
         <td colspan="2" style="text-align:center">
-          <select name="sort" style="width:190px"  class="mceSelect" onchange="sort(this.value)">
+          <select name="sort" style="width:190px"  class="mceSelect" onChange="sort(this.value)">
             <option value="all">{#dzcp.users_all}</option>
             <option value="clan" <?php echo $sel?>>{#dzcp.users_clan}</option>
           </select>

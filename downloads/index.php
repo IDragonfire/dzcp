@@ -63,18 +63,25 @@ default:
       else $dltitel = _site_stats_files;
     
     
-      $kat = show(_dl_titel, array("id" => $get['id'],
-                                   "icon" => $moreicon,
-                                   "file" => $dltitel,
-                                   "cnt" => $cntKat,
-                                   "name" => re($get['name'])));
-                                 
+      $kat = show(_dl_titel, array("id" => $get['id'], "name" => re($get['name'])));   
       $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-  
-      $kats .= show($dir."/download_kats", array("kat" => $kat,
+      
+       if($_GET['show'] == $get['id'])
+       {
+       $display = "show";
+       $moreicon = "collapse";
+       } else {
+       $display = "none";
+       $moreicon = "expand";
+       }
+          
+      $klapp = show(_klapptext_link, array("link" => $kat, "id" => $get['id'], "moreicon" => $moreicon));
+      $kats .= show($dir."/download_kats", array("files" => $cntKat.' '.$dltitel,
                                                  "class" => $class,
+      											 "display" => $display,
                                                  "kid" => $get['id'],
                                                  "img" => $img,
+      											 "klapp" => $klapp,
                                                  "download" => _dl_file,
                                                  "hits" => _hits,
                                                  "show" => $show,
@@ -84,16 +91,14 @@ default:
     }
   }
   
-  $index = show($dir."/downloads", array("kats" => $kats,
-                                         "head" => _downloads_head));
+  $index = show($dir."/downloads", array("kats" => $kats, "head" => _downloads_head));
 break;
 case 'download';
   if(settings("reg_dl") == 1 && $chkMe == "unlogged")
   {
     $index = error(_error_unregistered);
   } else {
-    $qry = db("SELECT * FROM ".$db['downloads']."
-               WHERE id = '".intval($_GET['id'])."'");
+    $qry = db("SELECT * FROM ".$db['downloads']." WHERE id = '".intval($_GET['id'])."'");
     $get = _fetch($qry);
 
     $file = preg_replace("#added...#Uis", "files/", $get['url']);
@@ -135,8 +140,8 @@ case 'download';
       if($size == false) $date = 'n/a';
       else $date = date("d.m.Y H:i",@filemtime($file))._uhr;
     } else $date = date("d.m.Y H:i",$get['date'])._uhr;
-    $lastdate = date("d.m.Y H:i",@fileatime($file))._uhr;
     
+    $lastdate = date("d.m.Y H:i",$get['last_dl'])._uhr;
     $index = show($dir."/info", array("head" => _dl_info,
                                       "headd" => _dl_info2,
                                       "getfile" => $getfile,
@@ -185,9 +190,7 @@ case 'getfile';
       $dlFile = "files/".$file;
     else $dlFile = $get['url'];
 
-    $upd = db("UPDATE ".$db['downloads']."
-               SET `hits` = hits+1
-               WHERE id = '".intval($_GET['id'])."'");   
+    $upd = db("UPDATE ".$db['downloads']." SET `hits` = hits+1, `last_dl` = '".time()."' WHERE id = '".intval($_GET['id'])."'"); 
 //download file
     header("Location: ".$dlFile);
   }
