@@ -63,25 +63,18 @@ default:
       else $dltitel = _site_stats_files;
     
     
-      $kat = show(_dl_titel, array("id" => $get['id'], "name" => re($get['name'])));   
+      $kat = show(_dl_titel, array("id" => $get['id'],
+                                   "icon" => $moreicon,
+                                   "file" => $dltitel,
+                                   "cnt" => $cntKat,
+                                   "name" => re($get['name'])));
+                                 
       $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
       
-       if($_GET['show'] == $get['id'])
-       {
-       $display = "show";
-       $moreicon = "collapse";
-       } else {
-       $display = "none";
-       $moreicon = "expand";
-       }
-          
-      $klapp = show(_klapptext_link, array("link" => $kat, "id" => $get['id'], "moreicon" => $moreicon));
-      $kats .= show($dir."/download_kats", array("files" => $cntKat.' '.$dltitel,
+      $kats .= show($dir."/download_kats", array("kat" => $kat,
                                                  "class" => $class,
-      											 "display" => $display,
                                                  "kid" => $get['id'],
                                                  "img" => $img,
-      											 "klapp" => $klapp,
                                                  "download" => _dl_file,
                                                  "hits" => _hits,
                                                  "show" => $show,
@@ -91,14 +84,16 @@ default:
     }
   }
   
-  $index = show($dir."/downloads", array("kats" => $kats, "head" => _downloads_head));
+  $index = show($dir."/downloads", array("kats" => $kats,
+                                         "head" => _downloads_head));
 break;
 case 'download';
   if(settings("reg_dl") == 1 && $chkMe == "unlogged")
   {
     $index = error(_error_unregistered);
   } else {
-    $qry = db("SELECT * FROM ".$db['downloads']." WHERE id = '".intval($_GET['id'])."'");
+    $qry = db("SELECT * FROM ".$db['downloads']."
+               WHERE id = '".intval($_GET['id'])."'");
     $get = _fetch($qry);
 
     $file = preg_replace("#added...#Uis", "files/", $get['url']);
