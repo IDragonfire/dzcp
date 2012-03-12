@@ -1,5 +1,5 @@
 <?php
-  define(basePath, '../../../../');
+  define('basePath', '../../../../');
   include basePath.'/inc/config.php';
 
   if(empty($_GET['sort']) || $_GET['sort'] == 'clan')

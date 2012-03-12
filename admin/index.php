@@ -19,7 +19,7 @@ $dir = "admin";
   {
     $index = error(_error_wrong_permissions, 1);
   } else {
-    define(_adminMenu, true);
+    define('_adminMenu', true);
     if(file_exists(basePath.'/admin/menu/'.strtolower($_GET['admin']).'.php'))
     {
       include(basePath.'/admin/menu/'.strtolower($_GET['admin']).'.php');
@@ -30,7 +30,7 @@ $dir = "admin";
                WHERE user = '".intval($userid)."'");
     $check = _fetch($qry);
 
-    define(_holder,"['[link]','?admin=[name]','background-image:url(menu/[name].gif);'],\n");
+    define('_holder',"['[link]','?admin=[name]','background-image:url(menu/[name].gif);'],\n");
 
     unset($amenu);
     $files = get_files(basePath.'/admin/menu/');
