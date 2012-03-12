@@ -70,7 +70,7 @@ default:
                                    "name" => re($get['name'])));
                                  
       $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-  
+      
       $kats .= show($dir."/download_kats", array("kat" => $kat,
                                                  "class" => $class,
                                                  "kid" => $get['id'],
@@ -135,8 +135,8 @@ case 'download';
       if($size == false) $date = 'n/a';
       else $date = date("d.m.Y H:i",@filemtime($file))._uhr;
     } else $date = date("d.m.Y H:i",$get['date'])._uhr;
-    $lastdate = date("d.m.Y H:i",@fileatime($file))._uhr;
     
+    $lastdate = date("d.m.Y H:i",$get['last_dl'])._uhr;
     $index = show($dir."/info", array("head" => _dl_info,
                                       "headd" => _dl_info2,
                                       "getfile" => $getfile,
@@ -185,9 +185,7 @@ case 'getfile';
       $dlFile = "files/".$file;
     else $dlFile = $get['url'];
 
-    $upd = db("UPDATE ".$db['downloads']."
-               SET `hits` = hits+1
-               WHERE id = '".intval($_GET['id'])."'");   
+    $upd = db("UPDATE ".$db['downloads']." SET `hits` = hits+1, `last_dl` = '".time()."' WHERE id = '".intval($_GET['id'])."'"); 
 //download file
     header("Location: ".$dlFile);
   }
