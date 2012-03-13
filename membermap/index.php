@@ -10,64 +10,30 @@ lang($language);
 $where = 'Mitgliederkarte';
 $dir = "membermap";
 ## SECTIONS ##
-  $icon = getimagesize('../inc/images/mappin.png');
+ 
+$mm_qry = db('SELECT u.`id`, u.`nick`, u.`city`, u.`gmaps_koord` FROM ' .  $db['users'] . ' u WHERE u.`gmaps_koord` != ""');
+$mm_coords = '';
+$mm_infos = '';
+$i = 0;
 
-  if(settings('gmaps_who') == 1) $w = 'WHERE level > 1 AND level != 0';
-  else                           $w = 'WHERE level != 0';
-
-  $qry = db("SELECT id,city,gmaps_koord,country FROM ".$db['users']."
-             ".$w."
-             AND city != ''
-             AND gmaps_koord != ''
-             GROUP BY gmaps_koord");
-  while($get = _fetch($qry))
-  {
-    $userInfos="";
-    $chk = db("SELECT id,city,gmaps_koord,country FROM ".$db['users']."
-              ".$w." AND gmaps_koord = '".$get['gmaps_koord']."'");
-    if(_rows($chk) > 1)
-    {
-      $qryn = db("SELECT id,city,gmaps_koord,country FROM ".$db['users']."
-                  ".$w." AND gmaps_koord = '".$get['gmaps_koord']."'
-                  ORDER BY level DESC");
-      $i=0;
-      while($getn = _fetch($qryn))
-      {
-        $tr="";
-        $koord = re($getn['gmaps_koord']);
-        $koord = str_replace('&#40;','',str_replace('&#41;','',$koord));
-        $koord = str_replace('(','',str_replace(')','',$koord));
-        $koord = explode(",",$koord);
-        $ort = re($getn['city']);
-        if($i == 3){
-          $i = 0;
-          $tr = '</tr><tr>';
-        }
-        $userInfos .= $tr.'<td><div id="memberMapInner"><b>'.rawautor($getn['id']).'</b><br /><b>'._position.':</b> '.getrank($getn['id']).'<br />'.userpic($getn['id']).'</div></td>';
-        $i++;
-      }
-
-      $members .= 'initMember(new GLatLng('.$koord[0].','.$koord[1].'), \'<tr><td><b style="font-size:13px">&nbsp;'.$ort.'</b></td></tr><tr>'.$userInfos.'</tr>\', 0);';
-    } else {                
-      if($get['level'] != 1) $team = 1;
-      else                   $team = 0;
-
-      $koord = re($get['gmaps_koord']);
-      $koord = str_replace('&#40;','',str_replace('&#41;','',$koord));
-      $koord = str_replace('(','',str_replace(')','',$koord));
-      $koord = explode(",",$koord);
-      $ort = re($get['city']);
-
-      $members .= 'initMember(new GLatLng('.$koord[0].','.$koord[1].'), \'<tr><td><b style="font-size:13px">&nbsp;'.$ort.'</b></td></tr><tr><td><div id="memberMapInner"><b>'.rawautor($get['id']).'</b><br /><b>'._position.':</b> '.getrank($get['id']).'<br />'.userpic($get['id']).'</div></td></tr>\', '.$team.');';
+while($mm_get = _fetch($mm_qry)) {
+    if($i > 0) {
+        $mm_coords .= ',';
+        $mm_infos .= ',';
     }
-  }
+    #TODO: use re function 
+    $mm_coords .= 'new google.maps.LatLng' . $mm_get['gmaps_koord'];
+    $userInfos = '<td><div id="memberMapInner"><b>' . rawautor($mm_get['id']).'</b><br /><b>' . _position . 
+                   ':</b> ' . getrank($mm_get['id']) . '<br />' . userpic($mm_get['id']) . '</div></td>';
+    $tmp = '<tr><td><b style="font-size:13px">&nbsp;' . re($mm_get['city']) . '</b></td></tr><tr>' . $userInfos . '</tr>';
+    $mm_infos .= "'" . $tmp . "'";
+    $i++;
+}
 
-  $index = show($dir."/membermap", array("key" => settings('gmaps_key'),
-                                         "iconsizex" => $icon[0],
-                                         "iconsizey" => $icon[1],
-                                         "members" => addslashes($members),
-                                         "head" => _membermap
-                                        ));
+$index = show($dir."/membermap", array('head' => _membermap,
+                                     'mm_coords' => $mm_coords,
+                                     'mm_infos' => $mm_infos
+                                    ));
 ## SETTINGS ##
 $title = $pagetitle." - ".$where."";
 $time_end = generatetime();
