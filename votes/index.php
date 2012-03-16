@@ -196,7 +196,7 @@ case 'do';
                           `what` = '".$vid2."',
                           `time` = '".time()."'");
                           
-          $index = info(_vote_successful, "?action=show&amp;id=".$_GET['id']."");
+          if(!isset($_GET['ajax'])) $index = info(_vote_successful, "?action=show&amp;id=".$_GET['id']."");
         }
       } else {
         if(ipcheck("vid_".$_GET['id'])) $index = error(_error_voted_again,1);
