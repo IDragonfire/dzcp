@@ -2093,6 +2093,11 @@ case 'post';
 																								 "ltext" => $getdp['text'],
 																								 "ntext" => up($_POST['eintrag'],1)));
 		
+                        $qry = db("UPDATE ".$db['f_threads']."
+                                           SET `lp`   = '".time()."'
+                                           WHERE kid = '".intval($_GET['kid'])."'
+                                           AND id = '".intval($_GET['id'])."'");
+        
 						$qry = db("UPDATE ".$db['f_posts']."
 											 SET `date`   = '".time()."',
 													 `text`   = '".$text."'
@@ -2106,8 +2111,8 @@ case 'post';
 																								 "ntext" => up($_POST['eintrag'],1)));
 		
 						$qry = db("UPDATE ".$db['f_threads']."
-											 SET `t_date`   = '".time()."',
-													 `t_text`   = '".$text."'
+											 SET `lp`   = '".time()."',
+											 `t_text`   = '".$text."'
 											 WHERE id = '".$gettdp['id']."'");	 	  
 			} else {
 				$qry = db("INSERT INTO ".$db['f_posts']."
