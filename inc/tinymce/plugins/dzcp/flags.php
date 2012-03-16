@@ -74,8 +74,8 @@ function get_files($dir)
     $t=1;
     for($i=0; $i<count($files); $i++) 
     {
-      unset($tr1);
-      unset($tr2);
+      $tr1 = '';
+      $tr2 = '';
       
       if(
         $files[$i] != 'de.gif' && $files[$i] != 'en.gif' && $files[$i] != 'eu.gif' && $files[$i] != 'at.gif' && $files[$i] != 'ch.gif'
