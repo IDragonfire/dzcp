@@ -2040,12 +2040,15 @@ function infos($checkBrowser = "")
 
       if(preg_match("/Opera/i",$data))          $browser = "Opera";
       elseif(preg_match("/Konqueror/i",$data))  $browser = "Konqueror";
-      elseif(preg_match("/Firefox/i",$data))    $browser = "Firefox";
-      elseif(preg_match("/MSIE 5/i",$data))     $browser = "IE 5";
-      elseif(preg_match("/MSIE 6/i",$data))     $browser = "IE 6";
-      elseif(preg_match("/MSIE 7/i",$data))     $browser = "IE 7";
-      elseif(preg_match("/MSIE 8/i",$data))     $browser = "IE 8";
-      elseif(preg_match("/Mozilla/i",$data))    $browser = "Mozilla";
+      elseif(preg_match("/Firefox/i",$data))    $browser = "Mozilla Firefox";
+	  elseif(preg_match("/chrome/i",$data))     $browser = "Google Chrome";
+	  elseif(preg_match("/Safari/i",$data))     $browser = "Safari";
+      elseif(preg_match("/MSIE 5/i",$data))     $browser = "Internet Explorer 5";
+      elseif(preg_match("/MSIE 6/i",$data))     $browser = "Internet Explorer 6";
+      elseif(preg_match("/MSIE 7/i",$data))     $browser = "Internet Explorer 7";
+      elseif(preg_match("/MSIE 8/i",$data))     $browser = "Internet Explorer 8";
+	  elseif(preg_match("/MSIE 9/i",$data))     $browser = "Internet Explorer 9";
+	  elseif(preg_match("/MSIE 10/i",$data))     $browser = "Internet Explorer 10";
       else                                      $browser = _unknown_browser;
 
       $res = "<script language=\"javascript\" type=\"text/javascript\">
