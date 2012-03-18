@@ -26,7 +26,7 @@
         <td class="contentMainFirst" align="center">
           <input type="text" name="clanname" value="[clanname]" class="inputField_dis"
           onfocus="this.className='inputField_en';"
-          onblur="this.className='inputField_dis';" />
+          onblur="this.className='inputField_dis';"/>
         </td>
       </tr>
       <tr>
@@ -40,7 +40,7 @@
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_mailfrom]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="mailfrom" value="[mailfrom]" class="inputField_dis"
+          <input type="email" name="mailfrom" value="[mailfrom]" class="inputField_dis"
           onfocus="this.className='inputField_en';"
           onblur="this.className='inputField_dis';" />
           <br />[mailfrom_info]
@@ -92,7 +92,7 @@
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_upicsize]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="m_upicsize" value="[m_upicsize]" class="inputField_dis_mid"
+          <input type="number" min="0" name="m_upicsize" value="[m_upicsize]" class="inputField_dis_mid"
           onfocus="this.className='inputField_en_mid';"
           onblur="this.className='inputField_dis_mid';" />
           <br />[upicsize]
@@ -101,7 +101,7 @@
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_gallerypics]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="m_gallerypics" value="[m_gallerypics]" class="inputField_dis_mid"
+          <input type="number" min="0" name="m_gallerypics" value="[m_gallerypics]" class="inputField_dis_mid"
           onfocus="this.className='inputField_en_mid';"
           onblur="this.className='inputField_dis_mid';" />
           <br />[gallerypics]
@@ -110,7 +110,7 @@
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_maxwidth]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="maxwidth" value="[maxwidth]" class="inputField_dis_mid"
+          <input type="number" min="0" name="maxwidth" value="[maxwidth]" class="inputField_dis_mid"
           onfocus="this.className='inputField_en_mid';"
           onblur="this.className='inputField_dis_mid';" /> px
           <br />[maxwidth_info]
@@ -119,7 +119,7 @@
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_gallery]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="m_gallery" value="[m_gallery]" class="inputField_dis_mid"
+          <input type="number" min="0" name="m_gallery" value="[m_gallery]" class="inputField_dis_mid"
           onfocus="this.className='inputField_en_mid';"
           onblur="this.className='inputField_dis_mid';" />
           <br />[gallery]
@@ -128,7 +128,7 @@
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_zeichen]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="zeichen" value="[zeichen]" class="inputField_dis_mid"
+          <input type="number" min="0" name="zeichen" value="[zeichen]" class="inputField_dis_mid"
           onfocus="this.className='inputField_en_mid';"
           onblur="this.className='inputField_dis_mid';" />
           <br />[zeichen_info]
@@ -137,7 +137,7 @@
       <tr>
         <td class="contentMainTop"><span class="fontBold">[counter_start]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="counter_start" value="[c_start]" class="inputField_dis_mid"
+          <input type="number" name="counter_start" value="[c_start]" class="inputField_dis_mid"
           onfocus="this.className='inputField_en_mid';"
           onblur="this.className='inputField_dis_mid';" />
           <br />[c_start_info]
@@ -202,24 +202,6 @@
         </td>
       </tr>			
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[gmaps_who]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <select name="gmaps_who" class="dropdown">
-            <option value="0">[gmaps_who_all]</option>
-            <option value="1" [sel_gm]>[gmaps_who_mem]</option>
-          </select>
-        </td>
-      </tr>
-      <tr>
-        <td class="contentMainTop"><span class="fontBold">[gmaps_key]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="gmaps_key" value="[c_gmaps_key]" class="inputField_dis"
-          onfocus="this.className='inputField_en';"
-          onblur="this.className='inputField_dis';" />
-          <br />[gmaps_key_info]          
-        </td>
-      </tr>
-      <tr>
         <td class="contentMainTop"><span class="fontBold">[direct_refresh]:</span></td>
         <td class="contentMainFirst" align="center">
           <select name="direct_refresh" class="dropdown">
@@ -248,7 +230,7 @@
       <tr>
         <td class="contentMainTop" width="180"><span class="fontBold">Teamspeak:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="cache_teamspeak" value="[cache_teamspeak]" class="inputField_dis_mid"
+          <input type="number" min="0" name="cache_teamspeak" value="[cache_teamspeak]" class="inputField_dis_mid"
           onfocus="this.className='inputField_en_mid';"
           onblur="this.className='inputField_dis_mid';" style="width:50" /> [seconds]
         </td>
@@ -256,7 +238,7 @@
       <tr>
         <td class="contentMainTop"><span class="fontBold">Gameserver Refresh:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="cache_server" value="[cache_server]" class="inputField_dis_mid"
+          <input type="number" min="0" name="cache_server" value="[cache_server]" class="inputField_dis_mid"
           onfocus="this.className='inputField_en_mid';"
           onblur="this.className='inputField_dis_mid';" style="width:50" /> [seconds]
         </td>
@@ -515,226 +497,226 @@
     <table class="hperc" cellspacing="0">
       <tr>
         <td class="contentMainTop" style="width:180px"><span class="fontBold">[teamrow]:</span><br /><span class="fontItalic">[teamrow_info]</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="teamrow" value="[c_teamrow]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="teamrow" value="[c_teamrow]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop" style="width:180px"><span class="fontBold">[c_m_lnews]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_lnews" value="[m_lnews]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_lnews" value="[m_lnews]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop" style="width:180px"><span class="fontBold">[c_m_lartikel]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_lartikel" value="[m_lartikel]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_lartikel" value="[m_lartikel]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_ftopics]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_ftopics" value="[m_ftopics]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_ftopics" value="[m_ftopics]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_topdl]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_topdl" value="[m_topdl]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_topdl" value="[m_topdl]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_lwars]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_lwars" value="[m_lwars]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_lwars" value="[m_lwars]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_nwars]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_nwars" value="[m_nwars]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_nwars" value="[m_nwars]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_events]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_events" value="[m_events]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_events" value="[m_events]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>	  
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_l_reguser]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_lreg" value="[m_lreg]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_lreg" value="[m_lreg]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_artikel]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_artikel" value="[m_artikel]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_artikel" value="[m_artikel]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_adminartikel]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_adminartikel" value="[m_adminartikel]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_adminartikel" value="[m_adminartikel]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
 	  <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_away]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_away" value="[m_away]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_away" value="[m_away]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_news]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_news" value="[m_news]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_news" value="[m_news]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_comments]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_comments" value="[m_comments]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_comments" value="[m_comments]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_archivnews]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_archivnews" value="[m_archivnews]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_archivnews" value="[m_archivnews]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_adminnews]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_adminnews" value="[m_adminnews]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_adminnews" value="[m_adminnews]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_gb]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_gb" value="[m_gb]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_gb" value="[m_gb]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_usergb]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_usergb" value="[m_usergb]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_usergb" value="[m_usergb]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_fthreads]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_fthreads" value="[m_fthreads]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_fthreads" value="[m_fthreads]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_fposts]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_fposts" value="[m_fposts]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_fposts" value="[m_fposts]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_clankasse]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_clankasse" value="[m_clankasse]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_clankasse" value="[m_clankasse]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_userlist]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_userlist" value="[m_userlist]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_userlist" value="[m_userlist]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_banned]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_banned" value="[m_banned]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_banned" value="[m_banned]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_shout]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_shout" value="[m_shout]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_shout" value="[m_shout]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_shouta]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_shouta" value="[m_shouta]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_shouta" value="[m_shouta]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_clanwars]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_clanwars" value="[m_clanwars]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_clanwars" value="[m_clanwars]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[reg_cw]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_cwcomments" value="[m_cwcomments]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_cwcomments" value="[m_cwcomments]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_m_awards]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input type="text" name="m_awards" value="[m_awards]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+        <td class="contentMainFirst" align="center">max.
+          <input type="number" min="0" name="m_awards" value="[m_awards]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
     </table>
@@ -756,57 +738,57 @@
       <tr>
         <td class="contentMainTop" style="width:180px"><span class="fontBold">[c_f_forum]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="f_forum" value="[f_forum]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="f_forum" value="[f_forum]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />[seconds]
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_f_gb]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="f_gb" value="[f_gb]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="f_gb" value="[f_gb]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />[seconds]
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_f_membergb]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="f_membergb" value="[f_membergb]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="f_membergb" value="[f_membergb]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />[seconds]
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_f_shout]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="f_shout" value="[f_shout]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="f_shout" value="[f_shout]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />[seconds]
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_f_newscom]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="f_newscom" value="[f_newscom]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="f_newscom" value="[f_newscom]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />[seconds]
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_f_artikelcom]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="f_artikelcom" value="[f_artikelcom]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="f_artikelcom" value="[f_artikelcom]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />[seconds]
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[reg_cw]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="f_cwcom" value="[f_cwcom]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="f_cwcom" value="[f_cwcom]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />[seconds]
         </td>
       </tr>
     </table>
@@ -828,121 +810,121 @@
       <tr>
         <td class="contentMainTop" style="width:180px"><span class="fontBold">[c_l_topdl]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="l_topdl" value="[l_topdl]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="l_topdl" value="[l_topdl]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_l_lnews]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="l_lnews" value="[l_lnews]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="l_lnews" value="[l_lnews]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_l_lartikel]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="l_lartikel" value="[l_lartikel]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="l_lartikel" value="[l_lartikel]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_l_ftopics]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="l_ftopics" value="[l_ftopics]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="l_ftopics" value="[l_ftopics]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_l_lwars]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="l_lwars" value="[l_lwars]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="l_lwars" value="[l_lwars]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_l_nwars]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="l_nwars" value="[l_nwars]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="l_nwars" value="[l_nwars]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_l_servernavi]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="l_servernavi" value="[l_servernavi]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="l_servernavi" value="[l_servernavi]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_l_shoutnick]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="l_shoutnick" value="[l_shoutnick]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="l_shoutnick" value="[l_shoutnick]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_l_reguser]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="l_lreg" value="[l_lreg]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="l_lreg" value="[l_lreg]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_l_newsadmin]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="l_newsadmin" value="[l_newsadmin]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="l_newsadmin" value="[l_newsadmin]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_l_shouttext]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="l_shouttext" value="[l_shouttext]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="l_shouttext" value="[l_shouttext]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_l_newsarchiv]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="l_newsarchiv" value="[l_newsarchiv]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="l_newsarchiv" value="[l_newsarchiv]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_l_clanwars]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="l_clanwars" value="[l_clanwars]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="l_clanwars" value="[l_clanwars]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_l_forumtopic]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="l_forumtopic" value="[l_forumtopic]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="l_forumtopic" value="[l_forumtopic]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[c_l_forumsubtopic]:</span></td>
         <td class="contentMainFirst" align="center">
-          <input type="text" name="l_forumsubtopic" value="[l_forumsubtopic]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';"
-          onblur="this.className='inputField_dis_small';" />
+          <input type="number" min="0" name="l_forumsubtopic" value="[l_forumsubtopic]" class="inputField_dis_mid"
+          onfocus="this.className='inputField_en_mid';"
+          onblur="this.className='inputField_dis_mid';" />
         </td>
       </tr>
     </table>
