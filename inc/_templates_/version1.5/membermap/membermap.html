@@ -20,14 +20,18 @@
         var map = new google.maps.Map(document.getElementById("memberMap"), myOptions);
         var locationArray = [ [mm_coords] ];
         var userInfo = [ [mm_infos] ];
+        var iconInfo = [ [mm_infos] ];
+        var markerIcon = { [mm_markerIcon] };
 
         var coord;
         for (coord in locationArray) {
             var marker = new google.maps.Marker({
                             position: locationArray[coord],
-                            map: map/*,
-                            title: locationNameArray[coord]*/
-                          });     
+                            map: map
+                          });
+            if(markerIcon[coord]) {
+                marker.setIcon('../inc/images/mappin.png');
+            }
             google.maps.event.addListener(marker, "mouseover", function(userInfo) { return function() {DZCP.showInfo(userInfo);}}(userInfo[coord]));
             google.maps.event.addListener(marker, "mouseout", function() { DZCP.hideInfo(); });
             google.maps.event.addListener(marker, "click", function() { DZCP.hideInfo();map.showMapBlowup(marker.getPoint(),5); });
