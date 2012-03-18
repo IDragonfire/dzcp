@@ -96,6 +96,8 @@ a:hover {
 
 a:focus { outline: 0 none }
 
+	
+
 /*####################################
   DZCP STYLES
 ####################################*/
@@ -199,6 +201,7 @@ table.hperc {
   margin: 0px;
   text-align: left;
 }
+
 
 /*---------------------------------------------
 Attributes of the navigations loginbox
@@ -1512,4 +1515,28 @@ input.searchSubmit:hover {
 
 img.border {
   border: 1px solid #777;
+}
+
+/*---------------------------------------------
+Set general input / textarena focus style
+---------------------------------------------*/
+
+input:focus, textarea:focus {
+  -webkit-transition: all 0.3s ease-in-out;
+  -moz-transition: all 0.3s ease-in-out;
+  -transition: all 0.3s ease-in-out;
+			
+  -webkit-box-shadow:0 0 25px #ccc;
+  -moz-box-shadow:0 0 25px #ccc;
+  box-shadow:0 0 25px #ccc;
+			
+  -webkit-transform: scale(1.05);
+  -moz-transform: scale(1.05);
+  transform: scale(1.05);
+}
+		
+	/* The interesting bit */
+		
+input:not(:focus), textarea:not(:focus) {
+   opacity:1.0;
 }
