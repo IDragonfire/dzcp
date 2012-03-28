@@ -2,6 +2,10 @@
 $charset = 'iso-8859-1';
 header("Content-type: text/html; charset=".$charset);
 
+
+## ADDED / REDEFINED FOR 1.5 Final
+define('_id_dont_exist', 'The requested ID does not exist!');
+
 ## ADDED / REDEFINED FOR 1.5.2
 define('_button_title_del_account' , 'User-Account delete');
 define('_confirm_del_account' , 'You really want to delete your Account on dzcp.de');
