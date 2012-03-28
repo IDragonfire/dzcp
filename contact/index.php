@@ -110,9 +110,10 @@ case 'do';
                  LEFT JOIN ".$db['permissions']." AS s2
                  ON s1.id = s2.user
                  WHERE s2.contact = '1' AND s1.`user` != '0 GROUP BY s1.`id`'");
+      $sqlAnd = '';
       while($get = _fetch($qry))
       {
-        $sqlAnd = " AND s2.`user` != '".intval($get['id'])."'";
+        $sqlAnd .= " AND s2.`user` != '".intval($get['id'])."'";
         $qrys = db("INSERT INTO ".$db['msg']."
                     SET `datum`     = '".((int)time())."',
                         `von`       = '0',

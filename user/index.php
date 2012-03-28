@@ -1908,48 +1908,7 @@ case 'editprofile';
           $deletepic = "| "._profil_delete_pic;
         if(!preg_match("#noavatar#",$avatar))
           $deleteava = "| "._profil_delete_ava;
-
-
-				$gmaps_key = settings('gmaps_key');
-				if(!empty($gmaps_key))
-				{
-					$gmaps = "
-						<script language=\"javascript\" src=\"http://maps.google.com/maps?file=api&amp;v=2&amp;key=".$gmaps_key."\" type=\"text/javascript\"></script>
-						<script language=\"javascript\" type=\"text/javascript\">
-						<!--
-							function getCord()
-							{
-								var address = $('#city').attr('value') + ', ' + $('#land').attr('value');
-								var geocoder = new GClientGeocoder();
-										geocoder.setCache(null);
-										geocoder.getLatLng(address,
-											function(point)
-											{
-												if(point)
-												{
-													$('#gmaps_koord').attr('value', point);
-												}
-												
-												$('form#editprofil').submit();
-											}
-									);
-									
-								DZCP.submitButton();
-								return false;
-							}
-						//-->
-						</script>";
-				} else {
-					$gmaps = "
-						<script language=\"javascript\" type=\"text/javascript\">
-						<!--
-							function getCord()
-							{
-								return true;
-							}
-						//-->
-						</script>";
-				}
+		  $gmaps = show('membermap/geocoder', array());
 
         
 	      if($userid == $rootAdmin) $delete = _profil_del_admin;

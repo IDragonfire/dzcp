@@ -10,64 +10,47 @@ lang($language);
 $where = 'Mitgliederkarte';
 $dir = "membermap";
 ## SECTIONS ##
-  $icon = getimagesize('../inc/images/mappin.png');
+ 
+$mm_qry = db('SELECT u.`id`, u.`nick`, u.`city`, u.`gmaps_koord` FROM ' .  $db['users'] . 
+             ' u WHERE u.`gmaps_koord` != "" ORDER BY u.gmaps_koord, u.id');
+$mm_coords = '';
+$mm_infos = "'<tr>";
+$mm_markerIcon = '';
+$mm_lastCoord = '';
+$i = 0;
+$realCount = 0;
+$markerCount = 0;
 
-  if(settings('gmaps_who') == 1) $w = 'WHERE level > 1 AND level != 0';
-  else                           $w = 'WHERE level != 0';
-
-  $qry = db("SELECT id,city,gmaps_koord,country FROM ".$db['users']."
-             ".$w."
-             AND city != ''
-             AND gmaps_koord != ''
-             GROUP BY gmaps_koord");
-  while($get = _fetch($qry))
-  {
-    $userInfos="";
-    $chk = db("SELECT id,city,gmaps_koord,country FROM ".$db['users']."
-              ".$w." AND gmaps_koord = '".$get['gmaps_koord']."'");
-    if(_rows($chk) > 1)
-    {
-      $qryn = db("SELECT id,city,gmaps_koord,country FROM ".$db['users']."
-                  ".$w." AND gmaps_koord = '".$get['gmaps_koord']."'
-                  ORDER BY level DESC");
-      $i=0;
-      while($getn = _fetch($qryn))
-      {
-        $tr="";
-        $koord = re($getn['gmaps_koord']);
-        $koord = str_replace('&#40;','',str_replace('&#41;','',$koord));
-        $koord = str_replace('(','',str_replace(')','',$koord));
-        $koord = explode(",",$koord);
-        $ort = re($getn['city']);
-        if($i == 3){
-          $i = 0;
-          $tr = '</tr><tr>';
+while($mm_get = _fetch($mm_qry)) {
+    if($mm_lastCoord != $mm_get['gmaps_koord']) { 
+        if($i > 0) {
+            $mm_coords .= ',';
+            $mm_infos .= "</tr>','<tr>";
         }
-        $userInfos .= $tr.'<td><div id="memberMapInner"><b>'.rawautor($getn['id']).'</b><br /><b>'._position.':</b> '.getrank($getn['id']).'<br />'.userpic($getn['id']).'</div></td>';
-        $i++;
-      }
-
-      $members .= 'initMember(new GLatLng('.$koord[0].','.$koord[1].'), \'<tr><td><b style="font-size:13px">&nbsp;'.$ort.'</b></td></tr><tr>'.$userInfos.'</tr>\', 0);';
-    } else {                
-      if($get['level'] != 1) $team = 1;
-      else                   $team = 0;
-
-      $koord = re($get['gmaps_koord']);
-      $koord = str_replace('&#40;','',str_replace('&#41;','',$koord));
-      $koord = str_replace('(','',str_replace(')','',$koord));
-      $koord = explode(",",$koord);
-      $ort = re($get['city']);
-
-      $members .= 'initMember(new GLatLng('.$koord[0].','.$koord[1].'), \'<tr><td><b style="font-size:13px">&nbsp;'.$ort.'</b></td></tr><tr><td><div id="memberMapInner"><b>'.rawautor($get['id']).'</b><br /><b>'._position.':</b> '.getrank($get['id']).'<br />'.userpic($get['id']).'</div></td></tr>\', '.$team.');';
+        $mm_infos .= '<td><b style="font-size:13px">&nbsp;' . re($mm_get['city']) . 
+                     '</td></tr><tr>';
+        $mm_coords .= 'new google.maps.LatLng' . $mm_get['gmaps_koord'];
+        $realCount++;
+    } else {
+        if($markerCount > 0) {
+            $mm_markerIcon .= ',';
+        }
+        $mm_markerIcon .= ($realCount - 1) . ':true';
+        $markerCount++;
     }
-  }
+    $userInfos = '<b>' . rawautor($mm_get['id']).'</b><br /><b>' . _position . 
+                   ':</b> ' . getrank($mm_get['id']) . '<br />' . userpic($mm_get['id']);
+    $mm_infos .= '<td><div id="memberMapInner">' . $userInfos . '</div></td>';
+    $mm_lastCoord = $mm_get['gmaps_koord'];
+    $i++;
+}
+$mm_infos .= "</tr>'";
 
-  $index = show($dir."/membermap", array("key" => settings('gmaps_key'),
-                                         "iconsizex" => $icon[0],
-                                         "iconsizey" => $icon[1],
-                                         "members" => addslashes($members),
-                                         "head" => _membermap
-                                        ));
+$index = show($dir."/membermap", array('head' => _membermap,
+                                     'mm_coords' => $mm_coords,
+                                     'mm_infos' => $mm_infos,
+                                     'mm_markerIcon' => $mm_markerIcon
+                                    ));
 ## SETTINGS ##
 $title = $pagetitle." - ".$where."";
 $time_end = generatetime();

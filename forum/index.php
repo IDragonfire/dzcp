@@ -2093,6 +2093,11 @@ case 'post';
 																								 "ltext" => $getdp['text'],
 																								 "ntext" => up($_POST['eintrag'],1)));
 		
+                        $qry = db("UPDATE ".$db['f_threads']."
+                                           SET `lp`   = '".time()."'
+                                           WHERE kid = '".intval($_GET['kid'])."'
+                                           AND id = '".intval($_GET['id'])."'");
+        
 						$qry = db("UPDATE ".$db['f_posts']."
 											 SET `date`   = '".time()."',
 													 `text`   = '".$text."'
@@ -2106,8 +2111,8 @@ case 'post';
 																								 "ntext" => up($_POST['eintrag'],1)));
 		
 						$qry = db("UPDATE ".$db['f_threads']."
-											 SET `t_date`   = '".time()."',
-													 `t_text`   = '".$text."'
+											 SET `lp`   = '".time()."',
+											 `t_text`   = '".$text."'
 											 WHERE id = '".$gettdp['id']."'");	 	  
 			} else {
 				$qry = db("INSERT INTO ".$db['f_posts']."
@@ -2243,7 +2248,7 @@ case 'admin';
  	    $qryv = db("SELECT * FROM ".$db['f_threads']."
                     WHERE id = '".intval($_GET['id'])."'");
         $getv = _fetch($qryv);
-
+        
         if(!empty($getv['vote']))
 		{
 		$delvote = db("DELETE FROM ".$db['votes']."
@@ -2254,11 +2259,28 @@ case 'admin';
         $voteid = "vid_".$getv['vote'];
         $delip = db("DELETE FROM ".$db['ipcheck']."
                      WHERE what = '".$voteid."'");
-		}			 
+		}	 
         $del = db("DELETE FROM ".$db['f_threads']."
                    WHERE id = '".intval($_GET['id'])."'");
+                
+        // grab user to reduce post count
+        $tmpSid = intval($_GET['id']);
+        $userPosts = db('SELECT p.`reg` FROM ' . $db['f_posts'] . ' p WHERE sid = ' . $tmpSid . ' AND p.`reg` != 0');
+        $userPostReduction = array();
+        while($get = _fetch($userPosts)) {
+            if(!isset($userPostReduction[$get['reg']])) {
+                $userPostReduction[$get['reg']] = 1;
+            } else {
+                $userPostReduction[$get['reg']] = $userPostReduction[$get['reg']] + 1;
+            }
+        }
+        foreach($userPostReduction as $key_id => $value_postDecrement) {
+            db('UPDATE ' . $db['userstats'] .
+                 ' SET `forumposts` = `forumposts` - '. $value_postDecrement .
+                 ' WHERE user = ' . $key_id);
+        }
         $delp = db("DELETE FROM ".$db['f_posts']."
-                    WHERE sid = '".intval($_GET['id'])."'");
+                    WHERE sid = '" . $tmpSid . "'");
 		$delabo = db("DELETE FROM ".$db['f_abo']."
                       WHERE fid = '".intval($_GET['id'])."'"); 
         $index = info(_forum_admin_thread_deleted, "../forum/");
