@@ -437,77 +437,82 @@ case 'show';
 
     if($_GET['do'] == "add")
     {
-      if(!ipcheck("ncid(".$_GET['id'].")", $flood_newscom))
-      {
-        if(isset($userid)) $toCheck = empty($_POST['comment']);
-        else
-          $toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['comment']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
-
-        if($toCheck)
-		    {
-          if(isset($userid))
-          {
-            if(empty($_POST['eintrag'])) $error = _empty_eintrag;
-            $form = show("page/editor_regged", array("nick" => autor($userid),
-                                                     "von" => _autor));
-          } else {
-            if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir])) $error = _error_invalid_regcode; 
-            elseif(empty($_POST['nick'])) $error = _empty_nick;
-		        elseif(empty($_POST['email'])) $error = _empty_email;
-		        elseif(!check_email($_POST['email'])) $error = _error_invalid_email;
-		        elseif(empty($_POST['eintrag'])) $error = _empty_eintrag;
-            $form = show("page/editor_notregged", array("nickhead" => _nick,
-                                                        "emailhead" => _email,
-                                                        "hphead" => _hp));
-          }
-
-    	  	$error = show("errors/errortable", array("error" => $error));
-		      $index = show("page/comments_add", array("titel" => _news_comments_write_head,
-				      																		 "nickhead" => _nick,
-						      																 "bbcodehead" => _bbcode,
-							  	    														 "emailhead" => _email,
-                                                   "security" => _register_confirm,
-								  		    												 "hphead" => _hp,
-                                                   "b1" => $u_b1,
-                                                   "b2" => $u_b2,
-                                                   "sec" => $dir,
-                                                   "form" => $form,
-                                                   "preview" => _preview,
-                                                   "prevurl" => '../news/?action=compreview&id='.$_GET['id'],
-                                                   "action" => '?action=show&amp;do=add&amp;id='.$_GET['id'],
-                                                   "ip" => _iplog_info,
-                                                   "lang" => $language,
-										  				    								 "id" => $_GET['id'],
-                                                   "what" => _button_value_add,
-                                                   "show" => "",
-												  						    				 "postemail" => $_POST['email'],
-													  							    		 "posthp" => links($_POST['hp']),
-														  								     "postnick" => re($_POST['nick']),
-										    			  									 "posteintrag" => re_bbcode($_POST['comment']),
-												    		  								 "error" => $error,
-																		      				 "eintraghead" => _eintrag));
-	      } else {
-	 	      $qry = db("INSERT INTO ".$db['newscomments']."
-                     SET `news`     = '".((int)$_GET['id'])."',
-                         `datum`    = '".((int)time())."',
-                         `nick`     = '".up($_POST['nick'])."',
-                         `email`    = '".up($_POST['email'])."',
-                         `hp`       = '".links($_POST['hp'])."',
-                         `reg`      = '".((int)$userid)."',
-                         `comment`  = '".up($_POST['comment'],1)."',
-                         `ip`       = '".$userip."'");
-
-          $ncid = "ncid(".$_GET['id'].")";
-          $qry = db("INSERT INTO ".$db['ipcheck']."
-                     SET `ip`   = '".$userip."',
-                         `what` = '".$ncid."',
-                         `time` = '".((int)time())."'");
-
-	        $index = info(_comment_added, "?action=show&amp;id=".$_GET['id']."");
-	      }
-      } else {
-        $index = error(show(_error_flood_post, array("sek" => $flood_newscom)), 1);
-      }
+			if(_rows(db("SELECT `id` FROM ".$db['news']." WHERE `id` = '".(int)$_GET['id']."'")) != 0)
+			{
+				if(!ipcheck("ncid(".$_GET['id'].")", $flood_newscom))
+				{
+					if(isset($userid)) $toCheck = empty($_POST['comment']);
+					else
+						$toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['comment']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
+						
+					if($toCheck)
+					{
+						if(isset($userid))
+						{
+							if(empty($_POST['eintrag'])) $error = _empty_eintrag;
+							$form = show("page/editor_regged", array("nick" => autor($userid),
+																											 "von" => _autor));
+						} else {
+							if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir])) $error = _error_invalid_regcode; 
+							elseif(empty($_POST['nick'])) $error = _empty_nick;
+							elseif(empty($_POST['email'])) $error = _empty_email;
+							elseif(!check_email($_POST['email'])) $error = _error_invalid_email;
+							elseif(empty($_POST['eintrag'])) $error = _empty_eintrag;
+							$form = show("page/editor_notregged", array("nickhead" => _nick,
+																													"emailhead" => _email,
+																													"hphead" => _hp));
+						}
+							
+						$error = show("errors/errortable", array("error" => $error));
+						$index = show("page/comments_add", array("titel" => _news_comments_write_head,
+																										 "nickhead" => _nick,
+																										 "bbcodehead" => _bbcode,
+																										 "emailhead" => _email,
+																										 "security" => _register_confirm,
+																										 "hphead" => _hp,
+																										 "b1" => $u_b1,
+																										 "b2" => $u_b2,
+																										 "sec" => $dir,
+																										 "form" => $form,
+																										 "preview" => _preview,
+																										 "prevurl" => '../news/?action=compreview&id='.$_GET['id'],
+																										 "action" => '?action=show&amp;do=add&amp;id='.$_GET['id'],
+																										 "ip" => _iplog_info,
+																										 "lang" => $language,
+																										 "id" => $_GET['id'],
+																										 "what" => _button_value_add,
+																										 "show" => "",
+																										 "postemail" => $_POST['email'],
+																										 "posthp" => links($_POST['hp']),
+																										 "postnick" => re($_POST['nick']),
+																										 "posteintrag" => re_bbcode($_POST['comment']),
+																										 "error" => $error,
+																										 "eintraghead" => _eintrag));
+					} else {
+						$qry = db("INSERT INTO ".$db['newscomments']."
+											 SET `news`     = '".((int)$_GET['id'])."',
+													 `datum`    = '".((int)time())."',
+													 `nick`     = '".up($_POST['nick'])."',
+													 `email`    = '".up($_POST['email'])."',
+													 `hp`       = '".links($_POST['hp'])."',
+													 `reg`      = '".((int)$userid)."',
+													 `comment`  = '".up($_POST['comment'],1)."',
+													 `ip`       = '".$userip."'");
+							
+						$ncid = "ncid(".$_GET['id'].")";
+						$qry = db("INSERT INTO ".$db['ipcheck']."
+											 SET `ip`   = '".$userip."',
+													 `what` = '".$ncid."',
+													 `time` = '".((int)time())."'");
+						
+						$index = info(_comment_added, "?action=show&amp;id=".$_GET['id']."");
+					}
+				} else {
+					$index = error(show(_error_flood_post, array("sek" => $flood_newscom)), 1);
+				}
+			} else{
+					$index = error(_id_dont_exist,1);
+			}
     } 
   
     if($_GET['do'] == "delete") 
