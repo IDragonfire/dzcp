@@ -2,6 +2,7 @@
 /**
  * $Id: editor_plugin_src.js 201 2007-02-12 15:56:56Z spocke $
  *
+ * @package MCManager.includes
  * @author Moxiecode
  * @copyright Copyright © 2004-2007, Moxiecode Systems AB, All rights reserved.
  */
@@ -57,7 +58,7 @@ class GoogleSpell extends SpellChecker {
 		$url = "https://" . $server;
 
 		// Setup XML request
-		$xml = '<?phpxml version="1.0" encoding="utf-8" ?><spellrequest textalreadyclipped="0" ignoredups="0" ignoredigits="1" ignoreallcaps="1"><text>' . $str . '</text></spellrequest>';
+		$xml = '<?xml version="1.0" encoding="utf-8" ?><spellrequest textalreadyclipped="0" ignoredups="0" ignoredigits="1" ignoreallcaps="1"><text>' . $str . '</text></spellrequest>';
 
 		$header  = "POST ".$path." HTTP/1.0 \r\n";
 		$header .= "MIME-Version: 1.0 \r\n";
