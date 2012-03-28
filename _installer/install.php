@@ -1,6 +1,7 @@
 <?php
 ob_start();
 session_start();
+
 define('basePath', dirname(dirname(__FILE__).'../'));
 
 require_once(basePath.'/inc/_version.php');
@@ -96,6 +97,8 @@ if($_GET['agb'])
         _c('inc/images/uploads/usergallery',$pfad,$host,$user,$pwd);
         _c('inc/images/uploads/userpics',$pfad,$host,$user,$pwd);
         _c('inc/tinymce_files',$pfad,$host,$user,$pwd);
+        _c('inc/tinymce/plugins/ajaxfilemanager/session',$pfad,$host,$user,$pwd);
+        _c('inc/tinymce/plugins/ajaxfilemanager/session/gc_counter.ajax.php',$pfad,$host,$user,$pwd);
         _c('inc/mysql.php',$pfad,$host,$user,$pwd);
         _c('inc/config.php',$pfad,$host,$user,$pwd);
       }
@@ -142,6 +145,8 @@ if($_GET['agb'])
   $c .= _i('../inc/images/uploads/usergallery',1);
   $c .= _i('../inc/images/uploads/userpics',1);
   $c .= _i('../inc/tinymce_files',1);
+  $c .= _i('../inc/tinymce/plugins/ajaxfilemanager/session',1);
+  $c .= _i('../inc/tinymce/plugins/ajaxfilemanager/session/gc_counter.ajax.php',1);
   $c .= _i('../inc/mysql.php',1);
   $c .= _i('../inc/config.php',1);
   
