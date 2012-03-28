@@ -1,5 +1,5 @@
 ########################################
-# deV!L`z Clanportal - kurz 'DZCP'
+# deV!L`z Clanportal - kurz 'DZCP' 2012
 # ====================================
 # www.dzcp.de
 ########################################
@@ -8,10 +8,10 @@
 Installation
 =============================
 Die Installation gestaltet sich recht einfach.
-Lade alle Dateien aus dem Archiv per FTP auf deinen Webserver und öffne anschließend in deinem Web-Browser das Installationsprogramm unter z.B. www.url.de/_installer/.
+Lade alle Dateien aus dem Archiv per FTP auf deinen Webserver und Ã¶ffne anschlieÃŸend in deinem Web-Browser das Installationsprogramm unter z.B. www.url.de/_installer/.
 Folge hier den Anweisungen, die dich durch die Installationsroutine begleiten. 
 
-Anschließend bitte unbedingt den Ordner _installer/ vom webspace löschen.
+AnschlieÃŸend bitte unbedingt den Ordner _installer/ vom webspace lÃ¶schen.
 
 
 Update von 1.5.5.1 zu 1.5.5.2
@@ -19,13 +19,13 @@ Update von 1.5.5.1 zu 1.5.5.2
 
 	1. Info's
 	================================================================
-	Security Fix: 		Gäste konnten alle Gästebucheintragungen löschen
-	Security Fix: 		Gäste & Normale User konnten die Public Einstellungen der Gästebucheintragungen ändern
+	Security Fix: 		GÃ¤ste konnten alle GÃ¤stebucheintragungen lÃ¶schen
+	Security Fix: 		GÃ¤ste & Normale User konnten die Public Einstellungen der GÃ¤stebucheintragungen Ã¤ndern
 	Bugfix:				Globale Variable $c fehlte im Teamspeak Server Viewer
-	Bugfix:				Bei dem bearbeiten von Posts, etc. wurden die Youtube Videos aus dem Editor entfernt, so das man diese nicht mehr bearbeiten oder löschen konnte.
+	Bugfix:				Bei dem bearbeiten von Posts, etc. wurden die Youtube Videos aus dem Editor entfernt, so das man diese nicht mehr bearbeiten oder lÃ¶schen konnte.
 	Bugfix:				In den TOP5 Forum Posts wurde die Datensatz ID ausgelesen, statt der User ID *Danke geht an Aviator & LG Hellbz
 	
-	Kompatibilitäts Fix:	Probleme bei der Ausführung von DZCP auf Zend Servern oder änlichen die wegen der basePath definition eine Notice oder Error ausgegeben haben
+	KompatibilitÃ¤ts Fix:	Probleme bei der AusfÃ¼hrung von DZCP auf Zend Servern oder Ã¤nlichen die wegen der basePath definition eine Notice oder Error ausgegeben haben
 	
 
 2. Update manuell
@@ -38,7 +38,7 @@ Folgende Dateien komplett ersetzen
 - inc/_version.php
 
 ################################################
-Öffne folgende Datei
+Ã–ffne folgende Datei
 ################################################
 
 - gb/index.php
@@ -103,7 +103,7 @@ elseif($_GET['what'] == "edit")
 ## V1.5.5.2 FIX END ##
 
 ################################################
- öffne folgende Datei 
+ Ã¶ffne folgende Datei 
 ################################################
 
 - inc/menu-functions/teamspeak.php
@@ -115,13 +115,13 @@ suche nach...
 global $db, $settings, $language;
 
 ################################################
-Ändere es in
+Ã„ndere es in
 ################################################
 
 global $db, $settings, $language, $c;
 
 ################################################
-Öffne folgende Datei...
+Ã–ffne folgende Datei...
 ################################################
 
  index.php
@@ -133,13 +133,13 @@ global $db, $settings, $language, $c;
  define(basePath, dirname(__FILE__));
 
 ################################################
- Ändere es in
+ Ã„ndere es in
 ################################################
 
  define('basePath', dirname(__FILE__));
  
 ################################################
- Öffne folgende Datei...
+ Ã–ffne folgende Datei...
 ################################################
 
  forum/index.php 
@@ -151,7 +151,7 @@ global $db, $settings, $language, $c;
  "posteintrag" => bbcode($get['t_text'])));
  
 ################################################
- Ändere es in
+ Ã„ndere es in
 ################################################
  
  "posteintrag" => bbcode($get['t_text'],0,1)));
@@ -169,7 +169,7 @@ $qrytp = db("SELECT id,forumposts FROM ".$db['userstats']."
                LIMIT 5");
 
 ################################################
- Ändere es in
+ Ã„ndere es in
 ################################################
 
  $qrytp = db("SELECT id,user,forumposts FROM ".$db['userstats']."
@@ -183,7 +183,7 @@ $qrytp = db("SELECT id,forumposts FROM ".$db['userstats']."
 $show_top .= show($dir."/top_posts_show", array("nick" => autor($gettp['id']),
 
 ################################################
- Ändere es in
+ Ã„ndere es in
 ################################################
 
 $show_top .= show($dir."/top_posts_show", array("nick" => autor($gettp['user']),
@@ -193,7 +193,7 @@ Forum Posts TOP 5 FIX END
 ################################################
  
 ################################################
- öffne folgende Datei...
+ Ã¶ffne folgende Datei...
 ################################################
 
 inc/bbcode.php
@@ -205,7 +205,7 @@ Suche nach
 function replace($txt,$type=0)
 
 ################################################
- Ändere es in
+ Ã„ndere es in
 ################################################
 
 function replace($txt,$type=0,$no_vid_tag=0)
@@ -224,7 +224,7 @@ Suche nach
 								   ), $txt);
 
 ################################################
- Ändere es in
+ Ã„ndere es in
 ################################################
 
   if($no_vid_tag == 0)
@@ -246,7 +246,7 @@ Suche nach
 function bbcode($txt, $tinymce=0)
 
 ################################################
- Ändere es in
+ Ã„ndere es in
 ################################################
 
 function bbcode($txt, $tinymce=0, $no_vid=0)
@@ -258,7 +258,7 @@ Suche nach "In der Function bbcode($txt, $tinymce=0, $no_vid=0)"
 $txt = replace($txt,$tinymce);
 
 ################################################
- Ändere es in
+ Ã„ndere es in
 ################################################
 
 $txt = replace($txt,$tinymce,$no_vid); 
@@ -270,7 +270,7 @@ Suche nach "In der Function bbcode($txt, $tinymce=0, $no_vid=0)"
 $txt = glossar($txt);
 
 ################################################
- Ändere es in
+ Ã„ndere es in
 ################################################
 
 if($no_vid == 0)
@@ -299,7 +299,7 @@ Update von 1.5.5 zu 1.5.5.1
 - inc/teamspeak_query.php
 
 ################################################
- öffne folgende Datei
+ Ã¶ffne folgende Datei
 ################################################
 
 - forum/index.php
@@ -311,7 +311,7 @@ suche nach...
 } elseif($_GET['do'] == "addpost") {
 
 ################################################
-Direkt darunter mit einer neuen Zeile folgendes einfügen...
+Direkt darunter mit einer neuen Zeile folgendes einfÃ¼gen...
 ################################################
 
   if(settings("reg_forum") == "1" && $chkMe == "unlogged")
@@ -326,14 +326,14 @@ suche weiter nach folgenden Code...
 $index = info(_forum_newpost_successful, $lpost);
 
 ################################################
-Direkt darunter mit einer neuen Zeile folgendes einfügen...
+Direkt darunter mit einer neuen Zeile folgendes einfÃ¼gen...
 ################################################
 
 }
 
 
 ################################################
- öffne folgende Datei
+ Ã¶ffne folgende Datei
 ################################################
 
 - user/index.php
@@ -382,16 +382,16 @@ Update von 1.5.4 zu 1.5.5
 	Bugfix:		Profil editieren: Nach Wohnorteingabe wurde das Formular automatisch abgesendet
 	Bugfix: 	Clanwar Scrennshots konnten im IE nicht hochgeladen werden
 	Edit: 		Neuer HL2 Serverquery
-	Bugfix:		Beim User hinzufügen wurden die Coordinaten nicht übernommen, 
+	Bugfix:		Beim User hinzufÃ¼gen wurden die Coordinaten nicht Ã¼bernommen, 
 			sofern ein Wohnort eingetragen wurde
 	Bugfix:		Kalenderevents im Menu wurden falsch sortiert
 	Edit:		Useronlinezeit 
 	Edit:		diverse Fehler in den Sprachdateien behoben	
 	Bugfix:		PHP-Fehler beim Bilderupload entfernt
-	Bugfix:		Bilder beim User löschen ebenfalls entfernen (Userpic, Avatar)
-	Edit: 		Beim User editieren zurück zur Userliste weiterleiten anstatt ins Profil
+	Bugfix:		Bilder beim User lÃ¶schen ebenfalls entfernen (Userpic, Avatar)
+	Edit: 		Beim User editieren zurÃ¼ck zur Userliste weiterleiten anstatt ins Profil
 	Edit:		Galerie: Bildnamen werden mit vorangestellten Nullen abgespeichert, 
-			um eine korrekte Sortierung zu ermöglichen
+			um eine korrekte Sortierung zu ermÃ¶glichen
 
 	
 2. Update manuell
@@ -465,7 +465,7 @@ $('form#adduser').submit();
 - upload/index.php
 ################################################
 
-nach allen Einträge wie folgt suchen und entfernen:
+nach allen EintrÃ¤ge wie folgt suchen und entfernen:
 
 $imageinfo = getimagesize($tmpname);
 
@@ -496,7 +496,7 @@ suchen weiter nach...
  $del = db("DELETE FROM ".$db['userstats']."
  WHERE user = '".intval($getdel['id'])."'");
 
-direkt darunter mit einer neuen Zeile folgendes einfügen...
+direkt darunter mit einer neuen Zeile folgendes einfÃ¼gen...
 
 				foreach($picformat as $tmpendung)
 				{
@@ -642,16 +642,16 @@ Update von 1.5.3 zu 1.5.4
 	================================================================
 	Bugfix: getimagesize() Funktionen falsch gesetzt
 	Bugfix: Falsche Funktion im Forum
-	Bugfix: FightUs wurde nicht den zuständigen Rechten verteilt
+	Bugfix: FightUs wurde nicht den zustÃ¤ndigen Rechten verteilt
   	Bugfix: Vorbereitung auf PHP 6: ereg austauschen mit preg / preg_match ausgetauscht
   	Bugfix: Automatisch verkleinerte Bilder wurden nach klick nicht in der Lightbox angezeigt
   	Bugfix: automatisch erkannter URL Pfad hatte nicht gestimmt
-  	Bugfix: Menu Serverviewer: Umbruch beim Mapnamen wurde nicht getätigt
-  	Bugfix: Login mit Sonderzeichen im Loginnamen oder Passwortes war nicht möglich
+  	Bugfix: Menu Serverviewer: Umbruch beim Mapnamen wurde nicht getÃ¤tigt
+  	Bugfix: Login mit Sonderzeichen im Loginnamen oder Passwortes war nicht mÃ¶glich
   	Bugfix: Badword Filter hatte nicht funktioniert
-  	Bugfix: Forum: Klick auf Postnummer brachte SQL Fehler, sofern &page= nicht übergeben wurde
-  	Bugfix: Membermap: Koordinaten wurden nicht immer übernommen bei Profil editieren bzw. User anlegen
-  	Bugfix: Vote über die Navigation / Ajaxfunktion brachte Fehler in Zusammenhang mit der direkten Weiterleitung
+  	Bugfix: Forum: Klick auf Postnummer brachte SQL Fehler, sofern &page= nicht Ã¼bergeben wurde
+  	Bugfix: Membermap: Koordinaten wurden nicht immer Ã¼bernommen bei Profil editieren bzw. User anlegen
+  	Bugfix: Vote Ã¼ber die Navigation / Ajaxfunktion brachte Fehler in Zusammenhang mit der direkten Weiterleitung
   	New: Letzten 3 DZCP News im Adminmenu
   	New: Hintergrundfarbe des Copyrightlinks durch angabe des Farbcodes selber bestimmen (in der Datei /inc/_version.php)
   	New: BFBC2 Serverviewer: Spielernamen werden ab R9 angezeigt
@@ -697,7 +697,7 @@ Update von 1.5.3 zu 1.5.4
 	/inc/_templates_/[TEMPLATE]/admin/register.html
   
 	================================================================
-	öffne folgende Datei...
+	Ã¶ffne folgende Datei...
 	================================
 
 	/inc/bbcode.php
@@ -787,7 +787,7 @@ Update von 1.5.3 zu 1.5.4
   $subfolder = basename(dirname(dirname($_SERVER['PHP_SELF']).'../'));
 
 	================================================================
-	öffne folgende Datei...
+	Ã¶ffne folgende Datei...
 	================================
 
 	/admin/menu/cw.php
@@ -798,7 +798,7 @@ Update von 1.5.3 zu 1.5.4
 
 	$img = @getimagesize($tmp);
 
-	Diese und ähnliche Zeilen bitte 3 Zeilen nach unten setzten
+	Diese und Ã¤hnliche Zeilen bitte 3 Zeilen nach unten setzten
 	Beispiel
 
 	Aus...
@@ -819,10 +819,10 @@ Update von 1.5.3 zu 1.5.4
 	    if($type == "image/gif" || $type == "image/png" || $type == "image/jpeg" || !$img[0])
 
 	
-	Dies dann bitten bei den 10 weiteren änlichen Einträgen machen.
+	Dies dann bitten bei den 10 weiteren Ã¤nlichen EintrÃ¤gen machen.
 
 	================================================================
-	öffne folgende Datei...
+	Ã¶ffne folgende Datei...
 	================================
 
 	/admin/menu/adduser.php
@@ -912,12 +912,12 @@ Update von 1.5.3 zu 1.5.4
 
 	$imageinfo = getimagesize($tmpname);
 
-	Diesen Code bitte markieren, löschen und direkt über... mit einer neuen Zeile einfügen...
+	Diesen Code bitte markieren, lÃ¶schen und direkt Ã¼ber... mit einer neuen Zeile einfÃ¼gen...
 
 	foreach($picformat as $tmpendung)
 
 	================================================================
-	öffne folgende Datei...
+	Ã¶ffne folgende Datei...
 	================================
 
 	/inc/_templates_/[TEMPLATE]/news/news.html
@@ -929,13 +929,13 @@ Update von 1.5.3 zu 1.5.4
 	[show]
 
 	================================
-	direkt darunter mit einer neuen Zeile folgenden Code einfügen...
+	direkt darunter mit einer neuen Zeile folgenden Code einfÃ¼gen...
 	================================
 
 	<center>[nav]</center>
 
 	================================================================
-	öffne folgende Datei...
+	Ã¶ffne folgende Datei...
 	================================
 
 	/forum/index.php
@@ -991,7 +991,7 @@ Update von 1.5.3 zu 1.5.4
 	"avatar" => useravatar($pUId),
 
 	================================================================
-	öffne folgende Datei...
+	Ã¶ffne folgende Datei...
 	================================
 
 	/user/index.php
@@ -1083,7 +1083,7 @@ Update von 1.5.3 zu 1.5.4
     }
   
 	================================================================
-	öffne folgende Datei...
+	Ã¶ffne folgende Datei...
 	================================
 
 	/contact/index.php
@@ -1120,7 +1120,7 @@ Update von 1.5.3 zu 1.5.4
 		 WHERE s1.`receivecws` = '1' AND s2.`posi` != '0'".$sqlAnd.$add." GROUP BY s2.`user`");
 
 	================================================================
-	öffne folgende Datei...
+	Ã¶ffne folgende Datei...
 	================================
   
   /inc/_templates_/[TEMPLATE]/menu/server.html
@@ -1138,7 +1138,7 @@ Update von 1.5.3 zu 1.5.4
   <td class="navServerStatsContent"><span class="fontBold">Map:</span> [map]</td>
 
 	================================================================
-	öffne folgende Datei...
+	Ã¶ffne folgende Datei...
 	================================
   
   /inc/_templates_/[TEMPLATE]/user/edit_profil.html
@@ -1168,7 +1168,7 @@ Update von 1.5.3 zu 1.5.4
   <input id="contentSubmit" class="submit" onclick="return(getCord())" type="submit" value="[value]" />
   
 	================================================================
-	öffne folgende Datei...
+	Ã¶ffne folgende Datei...
 	================================
   
   /inc/_templates_/[TEMPLATE]/admin/register.html
@@ -1203,7 +1203,7 @@ Update von 1.5.2 zu 1.5.3
 
 	1. Info's
 	================================
-	BugFix: Sicherheitslücke entfernt, welche auftritt, wenn die PHP Funktionen register_globals und allow_url_fopen aktiv sind
+	BugFix: SicherheitslÃ¼cke entfernt, welche auftritt, wenn die PHP Funktionen register_globals und allow_url_fopen aktiv sind
 
 
 	2. Update automatisch
@@ -1226,48 +1226,48 @@ Update von 1.5.1 zu 1.5.2
 	================================
 	BugFix: Fehler im RSS - Feed 
 	BugFix: Refreshintervalle bei Shoutbox und Teamspeak korrigiert
-	Bugfix: Tippfehler im Quellcode für Gästebucheinträge in der Userlobby
-	New: Im Adminmenü kann man nun einstellen, ob ein Admin erst die Gästebucheinträge freischalten muss. 
+	Bugfix: Tippfehler im Quellcode fÃ¼r GÃ¤stebucheintrÃ¤ge in der Userlobby
+	New: Im AdminmenÃ¼ kann man nun einstellen, ob ein Admin erst die GÃ¤stebucheintrÃ¤ge freischalten muss. 
 	Bugfix: Tippfehler in der english.php
-	Bugfix: mehrere Youtube Videos im Forum jetzt möglich
+	Bugfix: mehrere Youtube Videos im Forum jetzt mÃ¶glich
 	Bugfix: Forenabbo, Linkausgabe bei Email korregiert
-	New: Languagesordner für Mods hinzugefügt
-	New: zeitversetzte News veröffentlichen
-	New: User können nun Ihren Account selbst unter "Profil editieren" löschen
-	New: Menüboxen wie Lastwars, Nextwars usw. wurden nun in den Ordner inc/menu-functions/ zu besseren 
+	New: Languagesordner fÃ¼r Mods hinzugefÃ¼gt
+	New: zeitversetzte News verÃ¶ffentlichen
+	New: User kÃ¶nnen nun Ihren Account selbst unter "Profil editieren" lÃ¶schen
+	New: MenÃ¼boxen wie Lastwars, Nextwars usw. wurden nun in den Ordner inc/menu-functions/ zu besseren 
 	     modifikation ausgelagert. Es werden von nun an auch nur die Funktionen in die bbcode geladen, 
-	     welche auch als Platzhalter in der index.html vorhanden sind. Dies beschleunigt das CMS nochmals zusätzlich.
+	     welche auch als Platzhalter in der index.html vorhanden sind. Dies beschleunigt das CMS nochmals zusÃ¤tzlich.
 	New: Teamspeak3 viewer
 	Bugfix: falsche Javascriptdefinitionen in der Forensuche
-	ReNew: prototype.js / lightbox.js ersetzt durch jQuery + plugins (dadurch halbiert sich die Dateigröße der JS-Dateien)
+	ReNew: prototype.js / lightbox.js ersetzt durch jQuery + plugins (dadurch halbiert sich die DateigrÃ¶ÃŸe der JS-Dateien)
 	Bugfix: Interne Links konnten von unregistrierten und normalen Usern im Menu gesehen werden
 	Bugfix: PNG-Dateien auch bei Clanwarscreenshots
 	Bugfix: User konnten sich mit leeren Anmeldedaten anmelden (Leerzeichen im Login- / Usernamen)
 	Bugfix: Bei manchen Webservern wurde der eingegebene Antispam-Code nicht erkannt
-	Bugfix: Membermap wurde nicht angezeigt, wenn mind. 1 Member Anführungszeichen im Nicknamen hatte (" bzw. ')
+	Bugfix: Membermap wurde nicht angezeigt, wenn mind. 1 Member AnfÃ¼hrungszeichen im Nicknamen hatte (" bzw. ')
 	Bugfix: Teams anlegen / editieren: Editorbox sprengt Content
 	Bugfix: Undefiniertes Javascript bei der Registrierung
-	Bugfix: Beiträge im Forum von unregistrierten Usern / Gästen konnten nicht editiert werden
-	Bugfix: fehlendes onsubmit event bei den Löschbuttons für Posteingang / -ausgang 
+	Bugfix: BeitrÃ¤ge im Forum von unregistrierten Usern / GÃ¤sten konnten nicht editiert werden
+	Bugfix: fehlendes onsubmit event bei den LÃ¶schbuttons fÃ¼r Posteingang / -ausgang 
 	New: Download von Gameserver Map-Screenshots im Adminmenu zum jeweiligen Server
-	Bugfix: Rechtevergabe über Userränge funktionierte bei Formularen (Kontakt, JoinUs, FightUs) nicht
+	Bugfix: Rechtevergabe Ã¼ber UserrÃ¤nge funktionierte bei Formularen (Kontakt, JoinUs, FightUs) nicht
 	Bugfix: Formular (Kontakt, JoinUs, FightUs) wurde ggf. mehrmals an einen User geschickt
 	New: Menukategorien im Adminmenu verwaltbar
-	New: Gameserverstatus (Definitionen) für Left4Dead 1 & 2 und Tactical Operations Crossfire
-	New: Im Auswahlfeld für die Gameserver Live-Status werden nun auch die Mods angezeigt,
+	New: Gameserverstatus (Definitionen) fÃ¼r Left4Dead 1 & 2 und Tactical Operations Crossfire
+	New: Im Auswahlfeld fÃ¼r die Gameserver Live-Status werden nun auch die Mods angezeigt,
 	     sofern diese zusammengefasst sind (z.B. Halflife 1 (CS 1.6, CS:CZ, etc))
-	New: "Zurück" - Button in der Teamansicht
+	New: "ZurÃ¼ck" - Button in der Teamansicht
 	Bugfix: Bei Andwendung des Forum-Doppelpost beim Thread erstellen wurden die Informationen "Letzter Beitrag von"
-		in der Forenansicht zurückgesetzt
+		in der Forenansicht zurÃ¼ckgesetzt
 	Bugfix: Im TinyMCE wurden Smileys & Flaggen im IE immer am Anfang des Posts platziert
 	Bugfix: Im TinyMCE wurden bei den Smileys im IE keine Scrollbalken angezeigt (bei meheren Smileys)
-	New: Stautsmeldungen können ausgeblendet werden für eine direkte Weiterleitung
-	New: Cachefunktion für Teamspeak- und Gameserverabfragen
-	New: Reset Button für Clanwar Spielerstatus (kann spielen / vielleicht / etc)
-	Bugfix: Wenn man in der Clanwarübersicht auf einen Gegner geklickt hat, öffnete sich der Inhalt in einer neuen Seite
-	New: Forenthreads können einzeln angezeigt bzw. darauf verlinkt werden
-	Bugfix: unveröffentlichte News hatte in der Newsansicht Fehlermeldungen bei dem Datum
-	Bugfix: unveröffentlichte News wurden in den RSS-Feed eingetragen
+	New: Stautsmeldungen kÃ¶nnen ausgeblendet werden fÃ¼r eine direkte Weiterleitung
+	New: Cachefunktion fÃ¼r Teamspeak- und Gameserverabfragen
+	New: Reset Button fÃ¼r Clanwar Spielerstatus (kann spielen / vielleicht / etc)
+	Bugfix: Wenn man in der ClanwarÃ¼bersicht auf einen Gegner geklickt hat, Ã¶ffnete sich der Inhalt in einer neuen Seite
+	New: Forenthreads kÃ¶nnen einzeln angezeigt bzw. darauf verlinkt werden
+	Bugfix: unverÃ¶ffentlichte News hatte in der Newsansicht Fehlermeldungen bei dem Datum
+	Bugfix: unverÃ¶ffentlichte News wurden in den RSS-Feed eingetragen
 	Bugfix: Auf Unix-Servern konnte der Dateimanager nicht mit Umlauten im Dateinamen umgehen
 	New: Gameserver, die nicht erreichbar sind, werden als Offline angezeigt, mit einem separatem Offline-Bild
 
@@ -1279,7 +1279,7 @@ Update von 1.5.1 zu 1.5.2
 	und gegebenfals ersetzten:
 
 
-	Geänderte bzw. neu hinzugefügte Zeilen in folgenden PHP Dateien: 
+	GeÃ¤nderte bzw. neu hinzugefÃ¼gte Zeilen in folgenden PHP Dateien: 
 	
 	- antispam.php
 	- admin/menu.js
@@ -1314,7 +1314,7 @@ Update von 1.5.1 zu 1.5.2
 	- votes/index.php
 	
 
-	Geänderte Template Dateien: 
+	GeÃ¤nderte Template Dateien: 
 	
 	- _css/stylesheet.css
 	- _js/dzcp.js
@@ -1345,7 +1345,7 @@ Update von 1.5.1 zu 1.5.2
 	- user/register.html
 	
 
-	Hinzugefügte Ordner und Dateien:
+	HinzugefÃ¼gte Ordner und Dateien:
 	
 	- __cache/
 	- inc/additional-languages/deutsch/
@@ -1354,7 +1354,7 @@ Update von 1.5.1 zu 1.5.2
 	- inc/menu-functions/*.php (alle)
 	- inc/images/tsicons (alle)
 
-	Hinzugefügte Templatedateien:
+	HinzugefÃ¼gte Templatedateien:
 
 	- menu/nav_link.html
 	- page/button_delete_account.html
@@ -1370,7 +1370,7 @@ Update von 1.5.1 zu 1.5.2
 
 	CSS-Datei aktualisieren (~/_css/stylesheet.css):
 	
-	Aus der CSS-Datei sind die Zeilen 1360 - 1450 zu übernehmen, sonst funktioniert die neue Lightbox nicht.
+	Aus der CSS-Datei sind die Zeilen 1360 - 1450 zu Ã¼bernehmen, sonst funktioniert die neue Lightbox nicht.
 	
 
 	Datenbank updaten:
@@ -1379,13 +1379,13 @@ Update von 1.5.1 zu 1.5.2
 	
 	http://www.Deine-Domain.de/_installer/update.php
 
-	Nach erfolgreichem Update bitte unbedingt den Ordner _installer/ vom Webspace löschen
+	Nach erfolgreichem Update bitte unbedingt den Ordner _installer/ vom Webspace lÃ¶schen
 
 
 	2. Update manuell
 	================================
 
-	Wenn bereits Modifikationen gemacht wurden emfpiehlt es sich das Update manuell durchzuführen.
+	Wenn bereits Modifikationen gemacht wurden emfpiehlt es sich das Update manuell durchzufÃ¼hren.
 	Hierzu mit einem Editor die unten stehenden Dateien aufrufen und von oben an die angegebenen Zeile austauschen.
 	Bitte immer die kompletten Zeilen austauschen.
 	
@@ -1393,7 +1393,7 @@ Update von 1.5.1 zu 1.5.2
 	Den Link zum Updateservice findest du auf www.dzcp.de in der rechten Navigation.
 
 		
-	Geänderte bzw. neu hinzugefügte Zeilen in folgenden PHP Dateien: 
+	GeÃ¤nderte bzw. neu hinzugefÃ¼gte Zeilen in folgenden PHP Dateien: 
 	
 	- antispam.php				Zeile: 14
 	- admin/menu.js				Zeilen: 88, 113, 212 - 213, 222 - 231, 235 - 266
@@ -1428,7 +1428,7 @@ Update von 1.5.1 zu 1.5.2
 	- votes/index.php			Zeilen: 283, 291 - 297
 
 
-	Geänderte bzw. neu hinzugefügte Zeilen in folgenden Template Dateien: 
+	GeÃ¤nderte bzw. neu hinzugefÃ¼gte Zeilen in folgenden Template Dateien: 
 
 	- _css/stylesheet.css			Zeilen: 1363 - 1450, 1029
 	- _js/dzcp.js				komplett tauschen
@@ -1457,7 +1457,7 @@ Update von 1.5.1 zu 1.5.2
 	- user/msg.html				Zeilen: 25, 28, 43, 46
 	- user/register.html		 	Zeilen: 128 - 134 entfernen
 
-	Hinzugefügte Ordner und Dateien:
+	HinzugefÃ¼gte Ordner und Dateien:
 
 	- inc/additional-languages/deutsch/
 	- inc/additional-languages/english/
@@ -1465,7 +1465,7 @@ Update von 1.5.1 zu 1.5.2
 	- inc/menu-functions/*.php (alle)
 	- inc/images/tsicons (alle)
 
-	Hinzugefügte Templatedateien:
+	HinzugefÃ¼gte Templatedateien:
 
 	- menu/nav_link.html
 	- page/button_delete_account.html
@@ -1487,7 +1487,7 @@ Update von 1.5.1 zu 1.5.2
   		  height: 100px;
 		}
 
-	Ändern in...
+	Ã„ndern in...
 	----------------------
 
 		textarea.editorStyleMini {
@@ -1495,14 +1495,14 @@ Update von 1.5.1 zu 1.5.2
 		}
 
 	
-	Ebenso sind aus der CSS-Datei sind die Zeilen 1360 - 1450 zu übernehmen, sonst funktioniert die neue Lightbox nicht.
+	Ebenso sind aus der CSS-Datei sind die Zeilen 1360 - 1450 zu Ã¼bernehmen, sonst funktioniert die neue Lightbox nicht.
 
 
 	Datenbank updaten:
 	
-	Bitte rufe nachdem du alle Dateien ausgetauscht und verändert hast einmal das Updatescript mittels 
+	Bitte rufe nachdem du alle Dateien ausgetauscht und verÃ¤ndert hast einmal das Updatescript mittels 
 	folgender URL auf und folge den Anweisungen.
 	
 	http://www.Deine-Domain.de/_installer/update.php
 	
-	Nach erfolgreichem Update bitte unbedingt den Ordner _installer/ vom Webspace löschen
+	Nach erfolgreichem Update bitte unbedingt den Ordner _installer/ vom Webspace lÃ¶schen
