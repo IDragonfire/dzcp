@@ -1185,232 +1185,237 @@ case 'thread';
       }
     }
   } elseif($_GET['do'] == "addthread") {
-    if(isset($userid))
-      $toCheck = empty($_POST['eintrag']) || empty($_POST['topic']);
-    else
-      $toCheck = empty($_POST['topic']) || empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['eintrag']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
-    if($toCheck)
-	  {
-      if(isset($userid))
-      {
-        if(empty($_POST['eintrag'])) $error = _empty_eintrag;
-        elseif(empty($_POST['topic'])) $error = _empty_topic;
-      } else {
-        if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir])) $error = _error_invalid_regcode; 
-        elseif(empty($_POST['topic'])) $error = _empty_topic;
-	      elseif(empty($_POST['nick'])) $error = _empty_nick;
-	      elseif(empty($_POST['email'])) $error = _empty_email;
-	      elseif(!check_email($_POST['email'])) $error = _error_invalid_email;
-	      elseif(empty($_POST['eintrag'])) $error = _empty_eintrag;
-      }
-
-	    $error = show("errors/errortable", array("error" => $error));
-
-      if(permission("forum"))
-      {
-        if(isset($_POST['sticky'])) $sticky = "checked";
-        if(isset($_POST['global'])) $global = "checked";
-
-        $admin = show($dir."/form_admin", array("adminhead" => _forum_admin_head,
-                                                "addsticky" => _forum_admin_addsticky,
-                                                "sticky" => $sticky,
-                                                "addglobal" => _forum_admin_addglobal,
-                                                "global" => $global));
-      } else {
-        $admin = "";
-      }
-
-      if(isset($userid))
-	    {
-		    $form = show("page/editor_regged", array("nick" => autor($userid),
-                                                 "von" => _autor));
-	    } else {
-        $form = show("page/editor_notregged", array("nickhead" => _nick,
-                                                    "emailhead" => _email,
-                                                    "hphead" => _hp));
-      }
-
-    $fget = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1
-                       LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id
-                       WHERE s2.`id` = '".intval($_GET['kid'])."'"));
-				
-		if($_POST['intern']) $intern = 'checked="checked"';
-		if($fget['intern'] == 1) $intern = 'checked="checked" disabled="disabled"';
-		if($_POST['closed']) $closed = "checked=\"checked\"";
-
-		if(!empty($_POST['question'])) $display = "";
-		$display = "none";
-
-	  $vote = show($dir."/form_vote", array("head" => _votes_admin_head,
-						"value" => _button_value_add,
-						"what" => "&amp;do=add",
-						"question1" => re($_POST['question']),
-						"a1" => $_POST['a1'],
-						"closed" => $closed,
-						"br1" => "<!--",
-						"br2" => "-->",
-            "tgl" => "expand",
-						"display" => $display,
-						"a2" => $_POST['a2'],
-						"a3" => $_POST['a3'],
-						"a4" => $_POST['a4'],
-						"a5" => $_POST['a5'],
-						"a6" => $_POST['a6'],
-						"a7" => $_POST['a7'],
-						"error" => $error,
-						"a8" => $_POST['a8'],
-						"a9" => $_POST['a9'],
-						"a10" => $_POST['a10'],
-						"vote_del" => _forum_vote_del,
-						"intern" => $intern,
-						"interna" => _votes_admin_intern,
-						"question" => _votes_admin_question,
-						"answer" => _votes_admin_answer));
-
-        $dowhat = show(_forum_dowhat_add_thread, array("kid" => $_GET['kid']));
-	    $index = show($dir."/thread", array("titel" => _forum_new_thread_head,
-			  								"nickhead" => _nick,
-                                          	"reg" => "",
-                                          	"subtopichead" => _forum_subtopic,
-                                          	"topichead" => _forum_topic,
-                                          	"form" => $form,
-						  					"bbcodehead" => _bbcode,
-							  				"emailhead" => _email,
-								  			"id" => $_GET['kid'],
-                                          	"b1" => $u_b1,
-                                          	"b2" => $u_b2,
-                                          	"security" => _register_confirm,
-                                          	"what" => _button_value_add,
-                                          	"preview" => _preview,
-                                          	"lang" => $language,
-                                          	"dowhat" => $dowhat,
-                                          	"posthp" => $_POST['hp'],
-											"postemail" => $_POST['email'],
-											"postnick" => re($_POST['nick']),
-                                          	"ip" => _iplog_info,
-											"posteintrag" => re_bbcode($_POST['eintrag']),
-                                          	"posttopic" => re($_POST['topic']),
-                                          	"postsubtopic" => re($_POST['subtopic']),
-											"error" => $error,
-                                          	"admin" => $admin,
-											"vote" => $vote,
-						  					"eintraghead" => _eintrag));
-    } else {
-	    if(!empty($_POST['question']))
-	    {
-					$fgetvote = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1
-															   LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id
-														 		 WHERE s2.`id` = '".intval($_GET['kid'])."'"));
+		if(settings("reg_forum") == "1" && $chkMe == "unlogged")
+		{
+			$index = error(_error_have_to_be_logged, 1);
+		} else {
+			if(isset($userid))
+				$toCheck = empty($_POST['eintrag']) || empty($_POST['topic']);
+			else
+				$toCheck = empty($_POST['topic']) || empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['eintrag']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
+			if($toCheck)
+			{
+				if(isset($userid))
+				{
+					if(empty($_POST['eintrag'])) $error = _empty_eintrag;
+					elseif(empty($_POST['topic'])) $error = _empty_topic;
+				} else {
+					if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir])) $error = _error_invalid_regcode; 
+					elseif(empty($_POST['topic'])) $error = _empty_topic;
+					elseif(empty($_POST['nick'])) $error = _empty_nick;
+					elseif(empty($_POST['email'])) $error = _empty_email;
+					elseif(!check_email($_POST['email'])) $error = _error_invalid_email;
+					elseif(empty($_POST['eintrag'])) $error = _empty_eintrag;
+				}
+	
+				$error = show("errors/errortable", array("error" => $error));
+	
+				if(permission("forum"))
+				{
+					if(isset($_POST['sticky'])) $sticky = "checked";
+					if(isset($_POST['global'])) $global = "checked";
+	
+					$admin = show($dir."/form_admin", array("adminhead" => _forum_admin_head,
+																									"addsticky" => _forum_admin_addsticky,
+																									"sticky" => $sticky,
+																									"addglobal" => _forum_admin_addglobal,
+																									"global" => $global));
+				} else {
+					$admin = "";
+				}
+	
+				if(isset($userid))
+				{
+					$form = show("page/editor_regged", array("nick" => autor($userid),
+																									 "von" => _autor));
+				} else {
+					$form = show("page/editor_notregged", array("nickhead" => _nick,
+																											"emailhead" => _email,
+																											"hphead" => _hp));
+				}
+	
+			$fget = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1
+												 LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id
+												 WHERE s2.`id` = '".intval($_GET['kid'])."'"));
 					
-					if($fgetvote['intern'] == 1) $ivote = "`intern` = '1',";
-					else $ivote = "`intern` = '".((int)$_POST['intern'])."',";
-					
-					$qry = db("INSERT INTO ".$db['votes']."
-                     SET `datum`  = '".((int)time())."',
-                         `titel`  = '".up($_POST['question'])."',
-                         ".$ivote."
-						 						 `forum`  = 1,
-                         `von`    = '".((int)$userid)."'");
-
-          $vid = mysql_insert_id();
-
-          $qry = db("INSERT INTO ".$db['vote_results']."
-                    SET `vid`   = '".((int)$vid)."',
-                        `what`  = 'a1',
-                        `sel`   = '".up($_POST['a1'])."'");
-
-          $qry = db("INSERT INTO ".$db['vote_results']."
-                     SET `vid`  = '".((int)$vid)."',
-                         `what` = 'a2',
-                         `sel`  = '".up($_POST['a2'])."'");
-
-          if(!empty($_POST['a3']))
-          {
-            $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
-                           `what` = 'a3',
-                           `sel`  = '".up($_POST['a3'])."'");
-          }
-          if(!empty($_POST['a4']))
-          {
-            $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
-                           `what` = 'a4',
-                           `sel`  = '".up($_POST['a4'])."'");
-          }
-          if(!empty($_POST['a5']))
-          {
-            $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
-                           `what` = 'a5',
-                           `sel`  = '".up($_POST['a5'])."'");
-          }
-          if(!empty($_POST['a6']))
-          {
-            $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
-                           `what` = 'a6',
-                           `sel`  = '".up($_POST['a6'])."'");
-          }
-          if(!empty($_POST['a7']))
-          {
-            $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
-                           `what` = 'a7',
-                           `sel`  = '".up($_POST['a7'])."'");
-          }
-          if(!empty($_POST['a8']))
-          {
-            $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
-                           `what` = 'a8',
-                           `sel`  = '".up($_POST['a8'])."'");
-          }
-          if(!empty($_POST['a9']))
-          {
-            $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
-                           `what` = 'a9',
-                           `sel`  = '".up($_POST['a9'])."'");
-          }
-          if(!empty($_POST['a10']))
-          {
-            $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
-                           `what` = 'a10',
-                           `sel`  = '".up($_POST['a10'])."'");
-          }
-		} else { $vid = ""; }
-			    
-		$qry = db("INSERT INTO ".$db['f_threads']."
-	      		   SET 	`kid`      = '".((int)$_GET['kid'])."',
-                     	`t_date`   = '".((int)time())."',
-                     	`topic`    = '".up($_POST['topic'])."',
-											`subtopic` = '".up($_POST['subtopic'])."',
-											`t_nick`   = '".up($_POST['nick'])."',
-											`t_email`  = '".up($_POST['email'])."',
-											`t_hp`     = '".links($_POST['hp'])."',
-											`t_reg`    = '".((int)$userid)."',
-											`t_text`   = '".up($_POST['eintrag'],1)."',
-											`sticky`   = '".((int)$_POST['sticky'])."',
-											`global`   = '".((int)$_POST['global'])."',
-											`ip`       = '".$userip."',
-											`lp`       = '".((int)time())."',
-											`vote`     = '".$vid."',
-											`first`	= '1'");
-      $thisFID = mysql_insert_id();
-      $fid = "fid(".$_GET['kid'].")";
-      $qry = db("INSERT INTO ".$db['ipcheck']."
-                 SET `ip`   = '".$userip."',
-                     `what` = '".$fid."',
-                     `time` = '".((int)time())."'");
-
-      $update = db("UPDATE ".$db['userstats']."
-                    SET `forumposts` = forumposts+1
-                    WHERE `user`       = '".$userid."'");
-
-	    $index = info(_forum_newthread_successful, "?action=showthread&amp;id=".$thisFID."#p1");
-	  }
+			if($_POST['intern']) $intern = 'checked="checked"';
+			if($fget['intern'] == 1) $intern = 'checked="checked" disabled="disabled"';
+			if($_POST['closed']) $closed = "checked=\"checked\"";
+	
+			if(!empty($_POST['question'])) $display = "";
+			$display = "none";
+	
+			$vote = show($dir."/form_vote", array("head" => _votes_admin_head,
+							"value" => _button_value_add,
+							"what" => "&amp;do=add",
+							"question1" => re($_POST['question']),
+							"a1" => $_POST['a1'],
+							"closed" => $closed,
+							"br1" => "<!--",
+							"br2" => "-->",
+							"tgl" => "expand",
+							"display" => $display,
+							"a2" => $_POST['a2'],
+							"a3" => $_POST['a3'],
+							"a4" => $_POST['a4'],
+							"a5" => $_POST['a5'],
+							"a6" => $_POST['a6'],
+							"a7" => $_POST['a7'],
+							"error" => $error,
+							"a8" => $_POST['a8'],
+							"a9" => $_POST['a9'],
+							"a10" => $_POST['a10'],
+							"vote_del" => _forum_vote_del,
+							"intern" => $intern,
+							"interna" => _votes_admin_intern,
+							"question" => _votes_admin_question,
+							"answer" => _votes_admin_answer));
+	
+					$dowhat = show(_forum_dowhat_add_thread, array("kid" => $_GET['kid']));
+				$index = show($dir."/thread", array("titel" => _forum_new_thread_head,
+													"nickhead" => _nick,
+																							"reg" => "",
+																							"subtopichead" => _forum_subtopic,
+																							"topichead" => _forum_topic,
+																							"form" => $form,
+													"bbcodehead" => _bbcode,
+													"emailhead" => _email,
+													"id" => $_GET['kid'],
+																							"b1" => $u_b1,
+																							"b2" => $u_b2,
+																							"security" => _register_confirm,
+																							"what" => _button_value_add,
+																							"preview" => _preview,
+																							"lang" => $language,
+																							"dowhat" => $dowhat,
+																							"posthp" => $_POST['hp'],
+												"postemail" => $_POST['email'],
+												"postnick" => re($_POST['nick']),
+																							"ip" => _iplog_info,
+												"posteintrag" => re_bbcode($_POST['eintrag']),
+																							"posttopic" => re($_POST['topic']),
+																							"postsubtopic" => re($_POST['subtopic']),
+												"error" => $error,
+																							"admin" => $admin,
+												"vote" => $vote,
+													"eintraghead" => _eintrag));
+			} else {
+				if(!empty($_POST['question']))
+				{
+						$fgetvote = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1
+																	 LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id
+																	 WHERE s2.`id` = '".intval($_GET['kid'])."'"));
+						
+						if($fgetvote['intern'] == 1) $ivote = "`intern` = '1',";
+						else $ivote = "`intern` = '".((int)$_POST['intern'])."',";
+						
+						$qry = db("INSERT INTO ".$db['votes']."
+											 SET `datum`  = '".((int)time())."',
+													 `titel`  = '".up($_POST['question'])."',
+													 ".$ivote."
+													 `forum`  = 1,
+													 `von`    = '".((int)$userid)."'");
+	
+						$vid = mysql_insert_id();
+	
+						$qry = db("INSERT INTO ".$db['vote_results']."
+											SET `vid`   = '".((int)$vid)."',
+													`what`  = 'a1',
+													`sel`   = '".up($_POST['a1'])."'");
+	
+						$qry = db("INSERT INTO ".$db['vote_results']."
+											 SET `vid`  = '".((int)$vid)."',
+													 `what` = 'a2',
+													 `sel`  = '".up($_POST['a2'])."'");
+	
+						if(!empty($_POST['a3']))
+						{
+							$qry = db("INSERT INTO ".$db['vote_results']."
+												 SET `vid`  = '".((int)$vid)."',
+														 `what` = 'a3',
+														 `sel`  = '".up($_POST['a3'])."'");
+						}
+						if(!empty($_POST['a4']))
+						{
+							$qry = db("INSERT INTO ".$db['vote_results']."
+												 SET `vid`  = '".((int)$vid)."',
+														 `what` = 'a4',
+														 `sel`  = '".up($_POST['a4'])."'");
+						}
+						if(!empty($_POST['a5']))
+						{
+							$qry = db("INSERT INTO ".$db['vote_results']."
+												 SET `vid`  = '".((int)$vid)."',
+														 `what` = 'a5',
+														 `sel`  = '".up($_POST['a5'])."'");
+						}
+						if(!empty($_POST['a6']))
+						{
+							$qry = db("INSERT INTO ".$db['vote_results']."
+												 SET `vid`  = '".((int)$vid)."',
+														 `what` = 'a6',
+														 `sel`  = '".up($_POST['a6'])."'");
+						}
+						if(!empty($_POST['a7']))
+						{
+							$qry = db("INSERT INTO ".$db['vote_results']."
+												 SET `vid`  = '".((int)$vid)."',
+														 `what` = 'a7',
+														 `sel`  = '".up($_POST['a7'])."'");
+						}
+						if(!empty($_POST['a8']))
+						{
+							$qry = db("INSERT INTO ".$db['vote_results']."
+												 SET `vid`  = '".((int)$vid)."',
+														 `what` = 'a8',
+														 `sel`  = '".up($_POST['a8'])."'");
+						}
+						if(!empty($_POST['a9']))
+						{
+							$qry = db("INSERT INTO ".$db['vote_results']."
+												 SET `vid`  = '".((int)$vid)."',
+														 `what` = 'a9',
+														 `sel`  = '".up($_POST['a9'])."'");
+						}
+						if(!empty($_POST['a10']))
+						{
+							$qry = db("INSERT INTO ".$db['vote_results']."
+												 SET `vid`  = '".((int)$vid)."',
+														 `what` = 'a10',
+														 `sel`  = '".up($_POST['a10'])."'");
+						}
+			} else { $vid = ""; }
+						
+			$qry = db("INSERT INTO ".$db['f_threads']."
+								 SET 	`kid`      = '".((int)$_GET['kid'])."',
+												`t_date`   = '".((int)time())."',
+												`topic`    = '".up($_POST['topic'])."',
+												`subtopic` = '".up($_POST['subtopic'])."',
+												`t_nick`   = '".up($_POST['nick'])."',
+												`t_email`  = '".up($_POST['email'])."',
+												`t_hp`     = '".links($_POST['hp'])."',
+												`t_reg`    = '".((int)$userid)."',
+												`t_text`   = '".up($_POST['eintrag'],1)."',
+												`sticky`   = '".((int)$_POST['sticky'])."',
+												`global`   = '".((int)$_POST['global'])."',
+												`ip`       = '".$userip."',
+												`lp`       = '".((int)time())."',
+												`vote`     = '".$vid."',
+												`first`	= '1'");
+				$thisFID = mysql_insert_id();
+				$fid = "fid(".$_GET['kid'].")";
+				$qry = db("INSERT INTO ".$db['ipcheck']."
+									 SET `ip`   = '".$userip."',
+											 `what` = '".$fid."',
+											 `time` = '".((int)time())."'");
+	
+				$update = db("UPDATE ".$db['userstats']."
+											SET `forumposts` = forumposts+1
+											WHERE `user`       = '".$userid."'");
+	
+				$index = info(_forum_newthread_successful, "?action=showthread&amp;id=".$thisFID."#p1");
+			}
+		}
   }
 break;
 case 'post';
