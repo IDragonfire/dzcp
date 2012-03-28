@@ -11,7 +11,7 @@ html,body,table,td,div,form,button,select,input,textarea,h1,h2,h3,h4,h5,h6,a,p,c
   padding: 0px;
   font-family: Verdana,Tahoma,Geneva,Arial,Helvetica,Sans-serif;
   font-size: 10px;
-  line-height: 120%;
+  line-height: 1.2;
 }
 
 /*---------------------------------------------
