@@ -191,16 +191,24 @@
 					<br />[fotum_vote_info]
         </td>
       </tr>
-			<tr>
-        <td class="contentMainTop"><span class="fontBold">[gbactiv]:</span></td>
+      </tr>		
+        <td class="contentMainTop"><span class="fontBold">[gmaps_who]:</span></td>
         <td class="contentMainFirst" align="center">
-          <select name="gb_activ" class="dropdown">
-            <option value="0">[off]</option>
-            <option value="1" [sel_gba]>[on]</option>
+          <select name="gmaps_who" class="dropdown">
+            <option value="0">[gmaps_who_all]</option>
+            <option value="1" [sel_gm]>[gmaps_who_mem]</option>
           </select>
-					<br />[gb_activ_info]
         </td>
-      </tr>			
+      </tr>
+      <tr>
+        <td class="contentMainTop"><span class="fontBold">[gmaps_key]:</span></td>
+        <td class="contentMainFirst" align="center">
+          <input type="text" name="gmaps_key" value="[c_gmaps_key]" class="inputField_dis"
+          onfocus="this.className='inputField_en';"
+          onblur="this.className='inputField_dis';" />
+          <br />[gmaps_key_info]          
+        </td>
+      </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[direct_refresh]:</span></td>
         <td class="contentMainFirst" align="center">
