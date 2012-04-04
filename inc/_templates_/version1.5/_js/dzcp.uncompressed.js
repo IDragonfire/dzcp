@@ -38,7 +38,9 @@
          	imageBtnNext:         '../inc/images/lightbox/nextlabel.gif',
         	containerResizeSpeed: 350,
         	txtImage:             (lng == 'de' ? 'Bild' : 'Image'),
-         	txtOf:                (lng == 'de' ? 'von' : 'of')
+         	txtOf:                (lng == 'de' ? 'von' : 'of'),
+			maxHeight: screen.height * 0.9,
+        	maxWidth: screen.width * 0.9
       });
     },
 
