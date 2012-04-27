@@ -2307,11 +2307,14 @@ function page($index,$title,$where,$time,$wysiwyg='')
     $lcolor = ($cp_color==1)?'lcolor=true;':'';
 
     $java_vars = '<script language="javascript" type="text/javascript">
-    <!--
-      var maxW = '.$maxwidth.',lng = \''.$lng.'\',dzcp_editor = \''.$edr.'\';'.$lcolor.'
-    //-->
-    </script>
-    <script language="javascript" type="text/javascript" src="'.$designpath.'/_js/wysiwyg'.$wysiwyg.'.js"></script>';
+<!--
+ var maxW = '.$maxwidth.',lng = \''.$lng.'\',dzcp_editor = \''.$edr.'\';'.$lcolor.'
+//-->
+</script>';
+				
+if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USER_AGENT'],'webOS') AND !strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') AND !strstr($_SERVER['HTTP_USER_AGENT'],'iPod')) {
+  $java_vars .= '<script language="javascript" type="text/javascript" src="'.$designpath.'/_js/wysiwyg'.$wysiwyg.'.js"></script>';
+}
 
     if(settings("wmodus") && $chkMe != 4)
     {
