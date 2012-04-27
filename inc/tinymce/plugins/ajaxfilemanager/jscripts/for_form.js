@@ -6,8 +6,8 @@ function selectFile(url)
       fileName =  ''; 
      }else
      {
-        url = url.substring(0, (url.indexOf("?") == -1) ? url.length : url.indexOf("?"));
-        var pos = url.lastIndexOf("");
+       
+        var pos = url.lastIndexOf("../");
         if(pos != -1)
         {
              fileName = url.substr(pos,url.length);
@@ -21,4 +21,3 @@ function selectFile(url)
 
 
 }
-
