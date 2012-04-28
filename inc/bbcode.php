@@ -2312,7 +2312,7 @@ function page($index,$title,$where,$time,$wysiwyg='')
 //-->
 </script>';
 				
-if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USER_AGENT'],'webOS') AND !strstr($_SERVER['HTTP_USER_AGENT'],'iPhone') AND !strstr($_SERVER['HTTP_USER_AGENT'],'iPod')) {
+if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USER_AGENT'],'webOS')) {
   $java_vars .= '<script language="javascript" type="text/javascript" src="'.$designpath.'/_js/wysiwyg'.$wysiwyg.'.js"></script>';
 }
 
