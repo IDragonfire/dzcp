@@ -159,91 +159,10 @@ if(_adminMenu != 'true') exit;
                                                 "game" => _game,
                                                 "sgame" => $game));
       } elseif($_GET['do'] == 'mapdl') {
-        if($get = _fetch(db("SELECT * FROM ".$db['server']." WHERE `id` = '".intval($_GET['id'])."'")))
-        {
-          if(!function_exists('server_query_'.$get['status']))
-          {
-            include(basePath.'/inc/server_query/'.strtolower($get['status']).'.php');
-          }
-          $server = call_user_func('server_query_'.$get['status'], $get['ip'], $get['port'], $get['qport'], 'info');
-          if($server) {
-            $mapdownload = trim(file_get_contents('http://maps.dzcp.de/download.php?map='.re($get['status']).'/'.$server['gamemod']));
-            
-            if(!empty($mapdownload)) {
-            
-              foreach(explode("\n", $mapdownload) AS $m) {
-                if(!empty($m)) $mapvar .= $m.'|';
-              }
-              
-              $show = '
-                <div id="mapDownlod">
-                  '._mapdl_loading.'...
-                </div>
-                
-                <script language="javascript" type="text/javascript">
-                  $(document).ready(function() {
-                    var maps = \''.$mapvar.'\';
-                        maps = maps.split(\'|\');
-                        
-                    for(var i=0;i<maps.length;i++) {
-                      $.ajaxq ("testqueue", {
-                        url: \'?admin=server&do=downloadmap&status='.re($get['status']).'&gamemod='.$server['gamemod'].'&map=\' + maps[i] + \'&num=\' + (i + 1),
-                        cache: false,
-                        success: function(r)
-                        {
-                          var c = r.split(\'|\');
-                          if(c[1]) $(\'#mapDownlod\').append(\'<div>\' + c[1] + \'</div>\');
-                          if(c[0] == maps.length) DZCP.goTo(\'?admin=server\');
-                        }
-                      });
-                    }
-                  });
-                </script>
-              ';
-            } else $show = error(_error_mapdl_nomap, 1);            
-          } else $show = error(_error_mapdl_connection, 1);
-        } else $show = error(_error_mapdl_server, 1);
+        echo 'not supported since 2012';
+        exit;
       } elseif($_GET['do'] == 'downloadmap') {
-        ob_clean();
-        ob_start();
-
-        function unhtmlentities($txt)
-        {
-          $txt = preg_replace('~&#x([0-9a-f]+);~ei', 'chr(hexdec("\\1"))', $txt);
-          $txt = preg_replace('~&#([0-9]+);~e', 'chr(\\1)', $txt);
-          $trans_tbl = get_html_translation_table(HTML_ENTITIES);
-          $trans_tbl = array_flip($trans_tbl);
-      
-          return strtr($txt, $trans_tbl);
-        }
-
-        $_GET['map'] = unhtmlentities($_GET['map']);
-        if(!empty($_GET['map'])) {
-          if(!file_exists(basePath.'/inc/images/maps/'.$_GET['status'].'/'.$_GET['gamemod'].'/'.$_GET['map'])) {
-          
-            if(!is_dir(basePath.'/inc/images/maps/'.$_GET['status'])) {
-              $oldumask = @umask(0);
-              mkdir(basePath.'/inc/images/maps/'.$_GET['status'], 0777);
-              @umask($oldumask);
-            }
-                    
-            if(!empty($_GET['gamemod'])) {
-              if(!is_dir(basePath.'/inc/images/maps/'.$_GET['status'].'/'.$_GET['gamemod'])) {
-                $oldumask = @umask(0);
-                mkdir(basePath.'/inc/images/maps/'.$_GET['status'].'/'.$_GET['gamemod'], 0777);
-                @umask($oldumask);
-              }
-            }
-          
-            $fp = fopen(basePath.'/inc/images/maps/'.$_GET['status'].'/'.$_GET['gamemod'].'/'.$_GET['map'], 'w');
-                  fwrite($fp, file_get_contents('http://maps.dzcp.de/maps/'.$_GET['status'].'/'.$_GET['gamemod'].'/'.$_GET['map']));
-            fclose($fp);
-          }
-        }
-        
-        echo $_GET['num'].'|'.'... '.$_GET['map'];
-        
-        ob_end_flush();
+        echo 'not supported since 2012';
         exit;
       } elseif($_GET['do'] == "editserver") {
         if(empty($_POST['ip']) || empty($_POST['port']))
