@@ -4,12 +4,12 @@
     editor_selector                   : 'editorStyleWord',
   	theme                             : 'advanced',
 	elements                          : "ajaxfilemanager",
-    plugins                           : 'contextmenu,dzcp,advimage,paste,table,fullscreen,inlinepopups,spellchecker',
+    plugins                           : 'contextmenu,dzcp,advimage,paste,table,fullscreen,inlinepopups,spellchecker,searchreplace,insertdatetime,',
     language                          : (lng == 'de' ? lng : 'en'),
   	theme_advanced_buttons1           : 'bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,undo,redo,|,bullist,numlist,|,link,unlink,|,pastephp,|,forecolor,'
                                       + 'backcolor,|,smileys,flags,',
-  	theme_advanced_buttons2           : 'paste,pastetext,pasteword,|,image,|,tablecontrols,|,dzcpuser',
-   	theme_advanced_buttons3           : 'formatselect,fontselect,fontsizeselect,|,sub,sup,|,outdent,indent,|,fullscreen,clip,spellchecker,code,youtube',
+  	theme_advanced_buttons2           : 'paste,pastetext,pasteword,|,search,replace,|,image,|,tablecontrols,|,dzcpuser',
+   	theme_advanced_buttons3           : 'fontselect,fontsizeselect,|,insertdate,inserttime,|,sub,sup,|,outdent,indent,|,fullscreen,clip,spellchecker,code,youtube',
     extended_valid_elements           : 'img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name|style],'
                                       + 'hr[class|width|size|noshade],font[face|size|color|style],span[class|align|style]',
    	theme_advanced_toolbar_location   : 'top',

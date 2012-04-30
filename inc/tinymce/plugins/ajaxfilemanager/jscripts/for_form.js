@@ -1,17 +1,15 @@
-function selectFile(url)
-{
-      window.opener.document.getElementById(elementId).value = url;
-      window.close() ;
- 
-
+function selectFile(url) {
+    var fileName = '';
+    if (url.length == 0) {
+        fileName =  ''; 
+    } else {
+        var pos = url.lastIndexOf("/inc/tinymce_files");
+        if (pos >= 0) {
+            fileName = ".." + url.substr(pos);
+        } else {
+            fileName = url;
+        }
+    }
+    window.opener.document.getElementById(elementId).value = fileName;
+    window.close();
 }
-
-
-
-function cancelSelectFile()
-{
-  // close popup window
-  window.close() ;
-  return false;
-}
-
