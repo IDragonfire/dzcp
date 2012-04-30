@@ -1,12 +1,12 @@
 <?
     ## OUTPUT BUFFER START ##
-	include("../../../buffer.php");
+	include_once("../../../buffer.php");
 	## INCLUDES ##
-	include(basePath."/inc/config.php");
-	include(basePath."/inc/bbcode.php");
+	include_once(basePath."/inc/config.php");
+	include_once(basePath."/inc/bbcode.php");
 	## SETTINGS ##
 	if(!(permission("downloads") || permission("news") || permission('artikel'))) {
-		exit;
+		die('Permission denied');
 	}
 
 		include_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . "inc" . DIRECTORY_SEPARATOR . "config.php");		
