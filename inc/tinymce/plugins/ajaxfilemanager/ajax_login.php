@@ -6,6 +6,17 @@
 	 * @since 22/April/2007
 	 *
 	 */
+     
+## OUTPUT BUFFER START ##
+include("../../../buffer.php");
+## INCLUDES ##
+include(basePath."/inc/config.php");
+include(basePath."/inc/bbcode.php");
+## SETTINGS ##
+if(!(permission("downloads") || permission("news") || permission('artikel'))) {
+    exit;
+}  
+     
 require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . "inc" . DIRECTORY_SEPARATOR . "config.php");
 if(isset($_POST['username']))
 {

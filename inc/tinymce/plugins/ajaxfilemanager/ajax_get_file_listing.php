@@ -8,6 +8,16 @@
 	 *
 	 */
 
+    ## OUTPUT BUFFER START ##
+	include("../../../buffer.php");
+	## INCLUDES ##
+	include(basePath."/inc/config.php");
+	include(basePath."/inc/bbcode.php");
+	## SETTINGS ##
+	if(!(permission("downloads") || permission("news") || permission('artikel'))) {
+		exit;
+	}
+     
 	if(!isset($manager))
 	{
 		/**
