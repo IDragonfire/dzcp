@@ -325,55 +325,6 @@
     	}
     },
 
-  // Google Maps API
-    googleAPI: function(overlay) {
-    // init
-      map = new GMap2($("#memberMap")[0]);
-      map.addControl(new GLargeMapControl());
-      map.addControl(new GMapTypeControl());
-
-    // functions needed
-      function initMember(point, userInfo, team)
-      {
-        var icon = new GIcon();
-
-        if(team == 1) icon.image = '../inc/images/mappin_team.png';
-        else icon.image = '../inc/images/mappin.png';
-
-        icon.iconSize = new GSize(20, 34);
-        icon.iconAnchor = new GPoint(10, 32);
-        icon.infoWindowAnchor = new GPoint(10, 2);
-
-        var marker = new GMarker(point,icon);
-        GEvent.addListener(marker, "mouseover", function() { DZCP.showInfo(userInfo); });
-        GEvent.addListener(marker, "mouseout", function() { DZCP.hideInfo(); });
-        GEvent.addListener(marker, "click", function() { DZCP.hideInfo();map.showMapBlowup(marker.getPoint(),5); });
-        map.addOverlay(marker);
-      }
-
-      function handle(delta)
-      {
-       	var s = '';
-       	if (delta < 0) s += "down";
-       	else           s += "up";
-       	if(s == "down") map.zoomOut();
-       	if(s == "up")   map.zoomIn();
-      }
-
-      var mt = map.getMapTypes();
-      for (var i=0; i<mt.length; i++) {
-        mt[i].getMinimumResolution = function() {return 4;};
-        mt[i].getMaximumResolution = function() {return 17;};
-      }
-
-      map.setCenter(new GLatLng(51.200000, 12.50000), 6);
-      /*map.setMapType(G_HYBRID_MAP);*/
-      new GKeyboardHandler(map);
-      map.addControl(new GMapTypeControl());
-    // initialize overlays
-      eval(overlay);
-    },
-
   // disable submit button
     submitButton: function(id) {
       submitID = (id) ? id : 'contentSubmit';
