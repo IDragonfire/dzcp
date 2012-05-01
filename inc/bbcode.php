@@ -685,7 +685,7 @@ function get_files($dir)
 
   return($files);
 }
-//-> Funktion um eine Datei im Web auf Existenz zu prüfen
+//-> Funktion um eine Datei im Web auf Existenz zu prfen
 function fileExists($url)
 {
   $url_p = @parse_url($url);
@@ -733,14 +733,14 @@ function dbinfo()
 //-> Funktion um Sonderzeichen zu konvertieren
 function spChars($txt)
 {
-  $txt = str_replace("Ä","&Auml;",$txt);
-  $txt = str_replace("ä","&auml;",$txt);
-  $txt = str_replace("Ü","&Uuml;",$txt);
-  $txt = str_replace("ü","&uuml;",$txt);
-  $txt = str_replace("Ö","&Ouml;",$txt);
-  $txt = str_replace("ö","&ouml;",$txt);
-  $txt = str_replace("ß","&szlig;",$txt);
-  $txt = str_replace("€","&euro;",$txt);
+  $txt = str_replace("","&Auml;",$txt);
+  $txt = str_replace("","&auml;",$txt);
+  $txt = str_replace("","&Uuml;",$txt);
+  $txt = str_replace("","&uuml;",$txt);
+  $txt = str_replace("","&Ouml;",$txt);
+  $txt = str_replace("","&ouml;",$txt);
+  $txt = str_replace("","&szlig;",$txt);
+  $txt = str_replace("","&euro;",$txt);
 
   return $txt;
 }
@@ -971,7 +971,7 @@ function forumcheck($tid, $what)
     if(_rows($qry)) return TRUE;
     else return FALSE;
 }
-//-> Prüft, ob User ein Member des Squads ist
+//-> Prft, ob User ein Member des Squads ist
 function squadmember($squad_id)
 {
   global $db;
@@ -1338,7 +1338,7 @@ function rawautor($uid)
 
   return $nick;
 }
-//-> Nickausgabe ohne Profillink oder Emaillink für das ForenAbo
+//-> Nickausgabe ohne Profillink oder Emaillink fr das ForenAbo
 function fabo_autor($uid)
 {
   global $db;
@@ -1511,7 +1511,7 @@ function check_new($datum,$new = "",$datum2 = "")
       }
     }
 }
-//-> DropDown Menüs Date/Time
+//-> DropDown Mens Date/Time
 function dropdown($what, $wert, $age = 0)
 {
   if($what == "day")
@@ -1633,13 +1633,13 @@ function voteanswer($what, $vid)
 //Profilfelder konvertieren
 function conv($txt)
 {
-  $txt = str_replace("Ä","ae",$txt);
-  $txt = str_replace("ä","ae",$txt);
-  $txt = str_replace("Ü","ue",$txt);
-  $txt = str_replace("ü","ue",$txt);
-  $txt = str_replace("Ö","oe",$txt);
-  $txt = str_replace("ö","oe",$txt);
-  $txt = str_replace("ß","ss",$txt);
+  $txt = str_replace("","ae",$txt);
+  $txt = str_replace("","ae",$txt);
+  $txt = str_replace("","ue",$txt);
+  $txt = str_replace("","ue",$txt);
+  $txt = str_replace("","oe",$txt);
+  $txt = str_replace("","oe",$txt);
+  $txt = str_replace("","ss",$txt);
 
   return $txt;
 }
@@ -1899,7 +1899,7 @@ function txtArea($txt)
 */
   return $txt;
 }
-//-> Konvertiert Platzhalter in die jeweiligen Übersetzungen
+//-> Konvertiert Platzhalter in die jeweiligen bersetzungen
 function navi_name($name)
 {
   $name = trim($name);
@@ -1917,12 +1917,12 @@ function convert_feed($txt)
   global $charset;
   
   $txt = stripslashes($txt);
-  $txt = str_replace("Ä","Ae",$txt);
-  $txt = str_replace("ä","ae",$txt);
-  $txt = str_replace("Ü","Ue",$txt);
-  $txt = str_replace("ü","ue",$txt);
-  $txt = str_replace("Ö","Oe",$txt);
-  $txt = str_replace("ö","oe",$txt);
+  $txt = str_replace("","Ae",$txt);
+  $txt = str_replace("","ae",$txt);
+  $txt = str_replace("","Ue",$txt);
+  $txt = str_replace("","ue",$txt);
+  $txt = str_replace("","Oe",$txt);
+  $txt = str_replace("","oe",$txt);
   $txt = str_replace("&Auml;","Ae",$txt);
   $txt = str_replace("&auml;","ae",$txt);
   $txt = str_replace("&Uuml;","Ue",$txt);
@@ -1940,8 +1940,8 @@ function convert_feed($txt)
   $txt = str_replace("&szlig;","ss",$txt);
   $txt = preg_replace("#&(.*?);#is","",$txt);
   $txt = str_replace("&","&amp;",$txt);
-  $txt = str_replace("“", "\"",$txt);
-  $txt = str_replace("„", "\"",$txt);
+  $txt = str_replace("", "\"",$txt);
+  $txt = str_replace("", "\"",$txt);
 
   $txt = strip_tags($txt);
 
@@ -2267,6 +2267,18 @@ function getBoardPermissions($checkID = 0, $pos = 0)
 
   return $i_forum;
 }
+//-> Neue Languages einbinden, sofern vorhanden
+if($l = get_files(basePath.'/inc/additional-languages/'.$language.'/'))
+{
+	foreach($l AS $languages)
+	{
+		$extl = explode('.', strtolower($languages));
+		$extl = $extl[count($extl) - 1];
+		if($extl == 'php') {
+			include(basePath.'/inc/additional-languages/'.$language.'/'.$languages);
+		}
+	}
+}
 //-> Neue Funktionen einbinden, sofern vorhanden
 if($f = get_files(basePath.'/inc/additional-functions/'))
 {
@@ -2279,18 +2291,6 @@ if($f = get_files(basePath.'/inc/additional-functions/'))
       include(basePath.'/inc/additional-functions/'.$func);
     }
   }
-}
-//-> Neue Languages einbinden, sofern vorhanden
-if($l = get_files(basePath.'/inc/additional-languages/'.$language.'/'))
-{
-	foreach($l AS $languages)
-	{
-		$extl = explode('.', strtolower($languages));
-		$extl = $extl[count($extl) - 1];
-		if($extl == 'php') {
-			include(basePath.'/inc/additional-languages/'.$language.'/'.$languages);
-		}
-	}
 }
 //-> Navigation einbinden
 include_once(basePath.'/inc/menu-functions/navi.php');
