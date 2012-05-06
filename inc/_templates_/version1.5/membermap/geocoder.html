@@ -6,9 +6,10 @@
         $('#gmaps_koord').attr('value', '');
         if($('#city').attr('value') != '') {
             DZCP.submitButton();
-            var address = $('#city').attr('value') + ', ' + $('#land').attr('value');
+            var city = $('#city').attr('value');
+            var country = $('#land').attr('value');
             var geocoder = new google.maps.Geocoder();
-            geocoder.geocode( { 'address': address}, function(results, status)
+            geocoder.geocode( { 'address': city, 'region': country}, function(results, status)
                     { 
                         if (status == google.maps.GeocoderStatus.OK) {
                             $('#gmaps_koord').attr('value', results[0].geometry.location);
@@ -16,6 +17,7 @@
                         $('form#editprofil').submit();
                     }
             );
+            return false;
         } else {
             $('form#editprofil').submit();
         }
