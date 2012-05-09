@@ -1385,7 +1385,7 @@ define('_user_deleted', 'Der User wurde erfolgreich gel&ouml;scht!');
 define('_admin_user_shoutbox', 'Admin: Shoutbox');
 define('_admin_user_awards', 'Admin: Awards');
 define('_userlobby_kal_today', 'N&auml;chster Event ist <a href="../kalender/?action=show&time=[time]"><span class="fontWichtig">heute</span></a>');
-define('_userlobby_kal_not_today', 'N&auml;chster Event ist am <a href="../kalender/?action=show&time=[time]"><span class="fontUnder">[date]</span></a>');
+define('_userlobby_kal_not_today', 'N&auml;chstes Event ist am <a href="../kalender/?action=show&time=[time]"><span class="fontUnder">[date]</span></a>');
 define('_profil_country', 'Land');
 define('_lobby_awards', 'Awards');
 define('_new_awards_1', 'neuer Award');
