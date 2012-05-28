@@ -19,9 +19,24 @@ if(isset($_GET['page'])) $page = $_GET['page'];
 else $page = 1;
 switch ($action):
 default:
+
+
+  $kat = intval($_GET['kat']);
+  if($kat == "lazy" || empty($kat) || $kat == NULL) 
+  {
+    $navKat = 'lazy';
+    $n_kat = '';
+    $navWhere = '';
+  } else {
+    $n_kat = "AND kat = '".$kat."'";
+    $navKat = $kat;
+    $navWhere = "WHERE kat = '".$kat."'";
+  }
+
   if(!permission("intnews")) $sqlint = "AND `intern` = '0'";
   $qry = db("SELECT * FROM ".$db['news']."
              WHERE sticky >= ".time()." AND datum <= ".time()." AND public = 1 ".$sqlint."
+						 ".$n_kat."
              ORDER BY datum DESC
     			   LIMIT ".($page - 1)*$maxnews.",".$maxnews."");
   while($get = _fetch($qry))
@@ -111,22 +126,12 @@ default:
                                                   "autor" => autor($get['autor'])));
   }
 
-  $kat = intval($_GET['kat']);
-  if($kat == "lazy" || empty($kat) || $kat == NULL) 
-  {
-    $navKat = 'lazy';
-    $n_kat = '';
-    $navWhere = '';
-  } else {
-    $n_kat = "AND kat = '".$kat."'";
-    $navKat = $kat;
-    $navWhere = "WHERE kat = '".$kat."'";
-  }
   
   if(!permission("intnews")) $sqlint = "AND `intern` = '0'";
   $qry = db("SELECT * FROM ".$db['news']."
              WHERE sticky < ".time()." AND datum <= ".time()." AND public = 1 ".$sqlint."
-             ORDER BY datum DESC
+             ".$n_kat."
+						 ORDER BY datum DESC
     			   LIMIT ".($page - 1)*$maxnews.",".$maxnews."");
   while($get = _fetch($qry))
   {

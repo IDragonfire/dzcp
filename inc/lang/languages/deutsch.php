@@ -798,7 +798,7 @@ define('_news_comments', '<a href="?action=show&amp;id=[id]">[comments] Kommenta
 define('_news_comments_write_head', 'Neuen Newskommentar schreiben');
 define('_news_archiv_sort', 'Sortieren nach');
 define('_news_archiv_head', 'Newsarchiv');
-define('"_news_kat_choose"', "Kategorie w&auml;hlen");
+define('_news_kat_choose', 'Kategorie w&auml;hlen');
 ## Artikel ##
 define('_artikel_comments_write_head', 'Neuen Artikelkommentar schreiben');
 ## Forum ##
