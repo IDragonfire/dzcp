@@ -326,7 +326,7 @@ function glossar($txt)
   for($s=0;$s<=count($gl_words)-1;$s++)
   {
     $w = addslashes(regexChars(html_entity_decode($gl_words[$s])));
-		$txt = str_ireplace(' '.$w, ' <tmp|'.$w.'|tmp> ', $txt);
+		$txt = str_ireplace(' '.$w.' ', ' <tmp|'.$w.'|tmp> ', $txt);
   }
 
 // replace words
