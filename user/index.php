@@ -200,6 +200,7 @@ case 'register';
 										  "r_name" => "",
 										  "r_nick" => "",
 										  "r_email" => "",
+										  "pflicht" => _contact_pflichtfeld,
 										  "value" => _button_value_reg,
                 	                      "regcode" => $regcode));
 	} else {
