@@ -1596,6 +1596,7 @@ function sgames($game = '')
         case 'bf1942'; case 'bf2142'; case 'bf2'; case 'bfvietnam'; case 'bfbc2';
           $protocol = strtr($protocol, array('bfbc2' => 'Battlefield Bad Company 2', 'bfv' => 'Battlefield V', 'bf' => 'Battlefield '));
         break;
+        case 'bf3'; $protocol = 'Battlefield 3'; break;
         case 'swat4'; $protocol = strtoupper($protocol); break;
         case 'aarmy'; $protocol = 'Americas Army'; break;
         case 'arma'; $protocol = 'Armed Assault'; break;
@@ -1612,6 +1613,7 @@ function sgames($game = '')
       endswitch;
       $games .= $protocol.$gamemods;
       $games .= '</option>';
+      var_dump($protocol);
     }
   }
 
