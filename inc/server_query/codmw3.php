@@ -1,22 +1,17 @@
 <?php
 ######## CONFIG ##############################################################################################################
 
-  $server_name       = 'Halflife 2';
-  $server_name_short = 'HL 2';
+  $server_name       = 'Call of Duty - Modern Warfare 3';
+  $server_name_short = 'MW 3';
   $server_link       = 'steam://connect/{IP}:{S_PORT}';
-  $server_name_config = array('cstrike'    => array('Counter-Strike Source',             'CS:S'),
-                              'dod'        => array('Day of Defeat Source',              'DoD:S'),
-                              'cspromod'   => array('Counter-Strike Source Pro Mod',     'CS:S Pro'),
-                              'tf'         => array('Team Fortress 2',                   'TF 2'),
-                              'left4dead'  => array('Left 4 Dead',                       'LFD'),
-                              'left4dead2' => array('Left 4 Dead 2',                     'LFD2'),
-							  'insurgency' => array('Insurgency',                        'INS'),
-							  'csgo'       => array('Counter-Strike: Global Offensive',  'CS:GO'),
+  $server_name_config = array('iw5mp_server_ex' => array('Modern Warfare 3',             'CoD Mw3'),
+                              'iw5mp_server' => array('Modern Warfare 3',                'CoD Mw3'),
+                              'modernwarfare3' => array('Modern Warfare 3',              'CoD Mw3'),
   );
 
 ##############################################################################################################################
 
-  function server_query_halflife2($ip, $port, $q_port, $request)
+  function server_query_codmw3($ip, $port, $q_port, $request)
   {
     global $server_timeout;
     $q_port = empty($q_port) ? $port : $q_port;
