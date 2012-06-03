@@ -1613,7 +1613,6 @@ function sgames($game = '')
       endswitch;
       $games .= $protocol.$gamemods;
       $games .= '</option>';
-      var_dump($protocol);
     }
   }
 
