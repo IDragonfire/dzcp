@@ -16,49 +16,45 @@ else $action = $_GET['action'];
 
 switch ($action):
 default:
-  if(permission("votes"))
-  {
-    if($forum_vote == 0) $fvote = 'WHERE forum = 0';
-		$qry = db("SELECT * FROM ".$db['votes']."
-							 ".$fvote."
-							 ORDER BY intern DESC, datum DESC");
-  } else {
-    if($forum_vote == 0) $fvote = 'AND forum = 0';
-		$qry = db("SELECT * FROM ".$db['votes']."
-               WHERE intern = 0
-							 ".$fvote."
-               ORDER BY datum DESC");
+  $fvote = '';
+  if($forum_vote == 0) {
+    $fvote = ' AND forum = 0 ';
   }
-  while($get = _fetch($qry))
-  {
-    $qryv = db("SELECT * FROM ".$db['vote_results']."
-                WHERE vid = '".$get['id']."'
-                ORDER BY id");
-    $results = "";
-    $check = "";
-    while($getv = _fetch($qryv))
-    {
-      $stimmen = sum($db['vote_results'], " WHERE vid = '".$get['id']."'", "stimmen");
-      $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+  if(!permission('votes')) {
+    $whereIntern = ' WHERE intern = 0 ';
+    $orderIntern = '';
+  } else {
+    $whereIntern = '';
+    $orderIntern = ' intern DESC,';
+  }
+  $qry = db('SELECT * FROM ' . $db['votes'] . 
+            $whereIntern . $fvote . ' ORDER BY ' . $orderIntern .
+            ' datum DESC');
+  while($get = _fetch($qry)) {
+    $qryv = db('SELECT * FROM ' . $db['vote_results'] .
+                ' WHERE vid = ' . (int) $get['id'] .
+                ' ORDER BY id');
+    $results = '';
+    $check = '';
+    $stimmen = 0;
+    $vid = 'vid_' . (int) $get['id'];
+    if($get['intern'] == 1) {
       $showVoted = '';
+        $check = db('SELECT * FROM ' . $db['ipcheck'] .
+                     ' WHERE what = "' . $vid .
+                     '" AND ip = ' . (int) $userid . '');
 
-      if($get['intern'] == 1)
-      {
-        $vid = "vid_".$get['id'];
-        $check = db("SELECT * FROM ".$db['ipcheck']."
-                     WHERE what = '".$vid."'
-                     AND ip = '".$userid."'");
-        $ipcheck = _rows($check);
-        if($stimmen != 0 && ($get['von'] == $userid || permission('votes'))) 
-          $showVoted = ' <a href="?action=showvote&amp;id='.$get['id'].'"><img src="../inc/images/lupe.gif" alt="" title="'._show_who_voted.'" class="icon" /></a>';
+        $ipcheck = _rows($check) == 1;
         $intern = _votes_intern;
       } else {
         $ipcheck = false;
-        $intern = "";
+        $intern = '';
       }
-      
-      if(ipcheck("vid_".$get['id']) || $ipcheck || isset($_COOKIE[$prev."vid_".$get['id']]) || $get['closed'] == 1)
-      {
+    $hostIpcheck = ipcheck($vid);
+    while($getv = _fetch($qryv)) {
+      $stimmen += $getv['stimmen'];
+      $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++; 
+      if($hostIpcheck || $ipcheck || isset($_COOKIE[$prev."vid_".$get['id']]) || $get['closed'] == 1) {
         $percent = @round($getv['stimmen']/$stimmen*100,2);
         $rawpercent = @round($getv['stimmen']/$stimmen*100,0);
         
@@ -79,6 +75,12 @@ default:
                                                    "answer" => re($getv['sel']),
                                                    "class" => $class));
       }
+    }
+
+    if($get['intern'] == 1 && $stimmen != 0 && ($get['von'] == $userid || permission('votes'))) {
+        $showVoted = ' <a href="?action=showvote&amp;id=' . (int) $get['id'] . 
+                     '"><img src="../inc/images/lupe.gif" alt="" title="' . 
+                     _show_who_voted . '" class="icon" /></a>';
     }
 
     if(($_GET['action'] == "show" && $get['id'] == $_GET['id']) || isset($_GET['show']) && $get['id'] == $_GET['show'])
