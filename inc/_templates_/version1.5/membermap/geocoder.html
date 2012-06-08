@@ -10,12 +10,15 @@
             var country = $('#land').attr('value');
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode( { 'address': city, 'region': country}, function(results, status)
-                    { 
-                        if (status == google.maps.GeocoderStatus.OK) {
-                            $('#gmaps_koord').attr('value', results[0].geometry.location);
+                { 
+                    if (status == google.maps.GeocoderStatus.OK) {
+                        if(jQuery.isNumeric(city)) {
+                            $('#city').attr('value', results[0].formatted_address);
                         }
-                        $('form#editprofil').submit();
+                        $('#gmaps_koord').attr('value', results[0].geometry.location);
                     }
+                    $('form#editprofil').submit();
+                }
             );
             return false;
         } else {
