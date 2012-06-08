@@ -86,7 +86,6 @@ function server($serverID = 0)
                                             "icon" => $game_icon,
                                             "pwd" => $pwd,
                                             "game" => $game,
-                                            "players" => $players,
                                             "launch" => strtr($server_link, array('{IP}' => $get['ip'], '{S_PORT}' => $get['port'])),
                                             "port" => $get['port'],
                                             "aktplayers" => $server['players'],
