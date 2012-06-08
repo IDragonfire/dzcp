@@ -19,7 +19,7 @@ function shout($ajax = 0)
 
       $is_num = preg_match("#\d#", $get['email']);
 
-      if($is_num && !check_email($get['email'])) $nick = autor($get['email'], "navShout");
+      if($is_num && !check_email($get['email'])) $nick = autor_cutted($lshoutnick, $get['email'], "navShout");
       else $nick = '<a class="navShout" href="mailto:'.eMailAddr($get['email']).'" title="'.$get['nick'].'">'.cut($get['nick'], $lshoutnick).'</a>';
 
       $show .= show("menu/shout_part", array("nick" => $nick,

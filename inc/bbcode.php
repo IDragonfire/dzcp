@@ -1283,6 +1283,27 @@ function artikelSites($sites, $id)
     }
   return $seiten;
 }
+//-> Nickausgabe mit Profillink oder Emaillink (reg/nicht reg) gekürzt
+function autor_cutted($cut_length, $uid, $class="", $nick="", $email="", $cut="",$add="")
+{
+  global $db;
+    $qry = db('SELECT nick,country FROM ' . $db['users'] .
+              ' WHERE id = ' . (int) $uid);
+    $get = _fetch($qry);
+    if(_rows($qry)) {
+      $result = show(_user_link, array('id' => $uid,
+				                       'country' => flag($get['country']),
+                                       'class' => $class,
+                                       'get' => $add,
+                                       'nick' => cut(re($get['nick']), $cut_length)));
+    } else {
+      $result = show(_user_link_noreg, array('nick' => re($nick),
+                                             'class' => $class,
+                                             'email' => cut(eMailAddr($email),$cut_length)));
+    }
+
+  return $result;
+}
 //-> Nickausgabe mit Profillink oder Emaillink (reg/nicht reg)
 function autor($uid, $class="", $nick="", $email="", $cut="",$add="")
 {
