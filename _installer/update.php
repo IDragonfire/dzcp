@@ -376,7 +376,7 @@ case'install';
 break;
 case 'database';
 
-  if($_GET['do'] == "update")
+  if(isset($_GET['do']) && $_GET['do'] == "update")
   {
     $con = @mysql_connect($sql_host, $sql_user, $sql_pass);
     $sel = @mysql_select_db($sql_db,$con);
@@ -420,7 +420,6 @@ case 'database';
       @rmdir('../inc/images/uploads/usergallery/'.$files[$i]);
     }
   }
-  
       if($_POST['version'] == "1.1")
       {
         update_mysql();
@@ -430,6 +429,7 @@ case 'database';
 				update_mysql_1_5_1();
 				update_mysql_1_5_2();
 				update_mysql_1_5_4();
+				update_mysql_5_6();
       } elseif($_POST['version'] == "1.2.x") {
         update_mysql_1_3();
         update_mysql_1_4();
@@ -437,26 +437,32 @@ case 'database';
 				update_mysql_1_5_1();
 				update_mysql_1_5_2();
 				update_mysql_1_5_4();
+				update_mysql_5_6();
       } elseif($_POST['version'] == "1.3.x") {
         update_mysql_1_4();
         update_mysql_1_5();
 				update_mysql_1_5_1();
 				update_mysql_1_5_2();
 				update_mysql_1_5_4();
+				update_mysql_5_6();
       } elseif($_POST['version'] == "1.4.x") {
         update_mysql_1_5();
 				update_mysql_1_5_1();
 				update_mysql_1_5_2();
 				update_mysql_1_5_4();
+				update_mysql_5_6();
       } elseif($_POST['version'] == "1.5") {
         update_mysql_1_5_1();
 				update_mysql_1_5_2();
 				update_mysql_1_5_4();
+				update_mysql_5_6();
       } elseif($_POST['version'] == "1.5.1") {
         update_mysql_1_5_2();
 				update_mysql_1_5_4();
-      } elseif($_POST['version'] == "1.5.2 oder 1.5.3") {
+				update_mysql_5_6();
+      } elseif($_POST['version'] == "ab 1.5.2 bis 1.5.5.4") {
         update_mysql_1_5_4();
+			update_mysql_5_6();
       }
       
       header("Location: update.php?action=done");

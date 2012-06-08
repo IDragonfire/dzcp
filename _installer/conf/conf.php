@@ -46,7 +46,7 @@ function _i ($file, $var="0")
   else $what = "File:";
     
   $_file = preg_replace("#\.\.#Uis", "", $file);
-  
+  $c = '';
   if(_is($file))
     $c .= _true."<font color='green'><b>".$what."</b>&nbsp;&nbsp;&nbsp; ".$_file."</font>".$b;
   else

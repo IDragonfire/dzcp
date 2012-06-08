@@ -12,12 +12,12 @@
 <form action="update.php?action=prepare&amp;do=set_chmods" method="POST">
   <input type="hidden" name="check" value="<?php echo $formcheck; ?>">
   <tr>
-    <td><b>FTP-Host:</b></td><td><input type="text" name="host" value="<?php echo $_POST['host']; ?>"></td>
-    <td><b>FTP-Pfad:</b></td><td><input type="text" name="pfad" value="<?php echo $_POST['pfad']; ?>"></td>
+    <td><b>FTP-Host:</b></td><td><input type="text" name="host" value="<?php if (isset($_POST['host'])) echo $_POST['host']; ?>"></td>
+    <td><b>FTP-Pfad:</b></td><td><input type="text" name="pfad" value="<?php if (isset($_POST['pfad'])) echo $_POST['pfad']; ?>"></td>
   </tr>
   <tr>
-    <td><b>FTP-Benutzername:</b></td><td><input type="text" name="user" value="<?php echo $_POST['user']; ?>"></td>
-    <td><b>FTP-Passwort:</b></td><td><input type="password" name="pwd" value="<?php echo $_POST['pwd']; ?>"></td>
+    <td><b>FTP-Benutzername:</b></td><td><input type="text" name="user" value="<?php if (isset($_POST['user'])) echo $_POST['user']; ?>"></td>
+    <td><b>FTP-Passwort:</b></td><td><input type="password" name="pwd" value="<?php if (isset($_POST['pwd'])) echo $_POST['pwd']; ?>"></td>
   </tr>
   <tr>
     <td height="10"></td>

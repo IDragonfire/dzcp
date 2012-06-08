@@ -14,7 +14,7 @@ if(!isset($_GET['action'])) $action = "";
 else $action = $_GET['action'];
 switch ($action):
 default:
-  if($_GET['agb'])
+  if(!isset($_GET['agb']) || $_GET['agb'])
   {
     echo '<table width="100%" cellpadding="1" cellspacing="1" class="error">
             <tr>
@@ -30,11 +30,11 @@ default:
   include(basePath.'/_installer/html/welcome.php');
 break;
 case 'prepare';
-if($_GET['agb'])
+if(isset($_GET['agb']) && $_GET['agb'])
 {
   header("Location: install.php?agb=false");
 } else {
-  if($_GET['do'] == "set_chmods" && $_POST['check'] != "dont")
+  if(isset($_GET['do']) && $_GET['do'] == "set_chmods" && $_POST['check'] != "dont")
   {
     if(_ex('ftp_connect') && _ex('ftp_login') && _ex('ftp_site'))
     {
@@ -194,7 +194,7 @@ if($_GET['agb'])
 }
 break;
 case'install';
-  if($_GET['do'] == "test_mysql")
+  if(isset($_GET['do']) && $_GET['do'] == "test_mysql")
   {
 	$sql=false;
 	
@@ -213,7 +213,7 @@ case'install';
                 <td class="error_text"><b>Fehler:</b></td>
               </tr>
               <tr>
-                <td class="error_text">MySQL Angaben unvollständig!<br />
+                <td class="error_text">MySQL Angaben unvollstndig!<br />
                 &Uuml;berpr&uuml;fen Sie die eingegebenen Verbindungsdaten! 
                 </td>
               </tr>
@@ -288,7 +288,7 @@ case'install';
             </table>';
     }
   } 
-  elseif($_GET['do'] == "write_mysql")
+  elseif(isset($_GET['do']) && $_GET['do'] == "write_mysql")
   {
 //-> MySQL-Daten in mysql.php schreiben
     if(_ex("fopen")) 

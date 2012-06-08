@@ -33,7 +33,7 @@
                           <td width="38"></td>
                           <td>
                           <?php   
-                            if($_GET['action'] == "")
+                            if(isset($_GET['action']) && $_GET['action'] == "")
                               echo _link_start;
                             else
                               echo _link_start_1; 
@@ -44,7 +44,7 @@
                           <td></td>
                           <td>
                           <?php   
-                            if($_GET['action'] == "prepare")
+                            if(isset($_GET['action']) && $_GET['action'] == "prepare")
                               echo _link_prepare;
                             else
                               echo _link_prepare_1; 
@@ -55,7 +55,7 @@
                           <td></td>
                           <td>
                           <?php   
-                            if($_GET['action'] == "install")
+                            if(isset($_GET['action']) && $_GET['action'] == "install")
                               echo _link_install;
                             else
                               echo _link_install_1; 
@@ -66,8 +66,8 @@
                           <td></td>
                           <td>
                           <?php   
-                            if($_GET['action'] == "database")
-                              echo _link_dbu;
+                            if(isset($_GET['action']) && $_GET['action'] == "database")
+                              echo _link_db;
                             else
                               echo _link_dbu_1; 
                           ?>
@@ -77,7 +77,7 @@
                           <td></td>
                           <td>
                           <?php   
-                            if($_GET['action'] == "done")
+                            if(isset($_GET['action']) && $_GET['action'] == "done")
                               echo _link_done;
                             else
                               echo _link_done_1; 
