@@ -14,7 +14,7 @@ if(!isset($_GET['action'])) $action = "";
 else $action = $_GET['action'];
 switch ($action):
 default:
-  if($_GET['agb'])
+  if(isset($_GET['agb']) && $_GET['agb'])
   {
     echo '<table width="100%" cellpadding="1" cellspacing="1" class="error">
             <tr>
@@ -30,11 +30,11 @@ default:
   include(basePath.'/_installer/html/welcome_u.php');
 break;
 case 'prepare';
-if($_GET['agb'])
+if(isset($_GET['agb']) && $_GET['agb'])
 {
   header("Location: update.php?agb=false");
 } else {
-  if($_GET['do'] == "set_chmods" && $_POST['check'] != "dont")
+  if(isset($_GET['do']) && $_GET['do'] == "set_chmods" && $_POST['check'] != "dont")
   {
     if(_ex('ftp_connect') && _ex('ftp_login') && _ex('ftp_site'))
     {
@@ -200,7 +200,7 @@ case'install';
   $con = @mysql_connect($_POST['host'], $_POST['user'], $_POST['pwd']);
   $sel = @mysql_select_db($_POST['database'],$con);
     
-  if($_GET['do'] == "test_mysql")
+  if(isset($_GET['do']) && $_GET['do'] == "test_mysql")
   {
 //-> MySQL-Daten testen
     if(!$con)
@@ -268,7 +268,7 @@ case'install';
             </form>
             </table>';
     }
-  } elseif($_GET['do'] == "write_mysql")
+  } elseif(isset($_GET['do']) && $_GET['do'] == "write_mysql")
   {
 //-> MySQL-Daten in mysql.php schreiben
     if(_ex("fopen")) 
