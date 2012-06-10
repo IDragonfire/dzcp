@@ -248,6 +248,7 @@ case 'register';
 											  "r_name" => $_POST['user'],
 											  "r_nick" => $_POST['nick'],
 											  "r_email" => $_POST['email'],
+"pflicht" => _contact_pflichtfeld,
 											  "value" => _button_value_reg,
                 	                          "regcode" => $regcode));
 	} else {
