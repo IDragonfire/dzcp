@@ -353,13 +353,12 @@ function replace($txt,$type=0,$no_vid_tag=0)
 
   if($type == 1)
     $txt = preg_replace("#<img src=\"(.*?)\" mce_src=\"(.*?)\"(.*?)\>#i","<img src=\"$2\" alt=\"\">",$txt);
-
+  $txt = preg_replace_callback("/\[(.*?)\](.*?)\[\/(.*?)\]/",create_function('$treffer','return "[".strtolower($treffer[1])."]".strtolower($treffer[2])."[/".strtolower($treffer[3])."]";'),$txt);
+  $txt = preg_replace_callback("/\[img\](.*?)\[\/img\]/",create_function('$treffer','$size = getimagesize($treffer[1]); return "<img src=\"".$treffer[1]."\" class=\"content\" height=\"".$size[1]."\" width=\"".$size[0]."\" alt=\"\" />";'),$txt);
   $var = array("/\[url\](.*?)\[\/url\]/",
-               "/\[img\](.*?)\[\/img\]/",
                "/\[url\=(http\:\/\/)?(.*?)\](.*?)\[\/url\]/");
 
 	$repl = array("<a href=\"$1\" target=\"_blank\">$1</a>",
-                "<img src=\"$1\" class=\"content\" alt=\"\" />",
                 "<a href=\"http://$2\" target=\"_blank\">$3</a>");
 
 	$txt = preg_replace($var,$repl,$txt);
