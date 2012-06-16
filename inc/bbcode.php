@@ -359,7 +359,7 @@ function replace($txt,$type=0,$no_vid_tag=0)
                "/\[url\=(http\:\/\/)?(.*?)\](.*?)\[\/url\]/");
 
 	$repl = array("<a href=\"$1\" target=\"_blank\">$1</a>",
-                "<img src=\"$1\" class=\"resizeImage\" alt=\"\" />",
+                "<img src=\"$1\" class=\"Content\" alt=\"\" />",
                 "<a href=\"http://$2\" target=\"_blank\">$3</a>");
 
 	$txt = preg_replace($var,$repl,$txt);
