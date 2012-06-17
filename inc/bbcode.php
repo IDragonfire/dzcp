@@ -270,7 +270,7 @@ function highlight_text($txt)
     for($i=1;$i<=count($l)+1;$i++)
       $lines .= $i.".<br />";
 // Ausgabe
-    $code = '<div class="codeHead">&nbsp;&nbsp;&nbsp;Code:</div><div class="code"><table style="width:100%;padding:0px" cellspacing="0"><tr><td class="codeLines">'.$lines.'</td><td class="code">'.$src.'</td></table></div>';
+    $code = '<div class="codeHead">&nbsp;&nbsp;&nbsp;Code:</div><div class="code"><table style="width:100%;padding:0px" cellspacing="0"><tr><td class="codeLines">'.$lines.'</td><td class="codeContent">'.$src.'</td></table></div>';
 
     $txt = preg_replace("=\[php\](.*)\[/php\]=Uis",$code,$txt,1);
   }
