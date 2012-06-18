@@ -56,7 +56,7 @@ function server($serverID = 0)
       if(!file_exists($image_map)) $image_map = "../inc/images/maps/no_map.gif";
     }
 
-    if(!empty($get['pwd']) && $chkMe > 1) {
+    if(!empty($get['pwd']) && permission("gs_showpw")) {
     	$pwd =  show(_server_pwd, array("pwd" => $get['pwd']));
 	$pwd_info = "<tr><td><b>Passwort:</b></td><td>".$get['pwd']."</td></tr>";
     }
