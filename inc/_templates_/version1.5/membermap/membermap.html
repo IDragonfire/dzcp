@@ -34,7 +34,6 @@
             }
             google.maps.event.addListener(marker, "mouseover", function(userInfo) { return function() {DZCP.showInfo(userInfo);}}(userInfo[coord]));
             google.maps.event.addListener(marker, "mouseout", function() { DZCP.hideInfo(); });
-            google.maps.event.addListener(marker, "click", function() { DZCP.hideInfo();map.showMapBlowup(marker.getPoint(),5); });
         }
         
       //-->
