@@ -2103,9 +2103,9 @@ case 'post';
 																									 "ntext" => up($_POST['eintrag'],1)));
 			
 													$qry = db("UPDATE ".$db['f_threads']."
-																						 SET `lp`   = '".time()."'
-									                           WHERE kid = '".intval($_GET['kid'])."'
-									                           AND id = '".intval($_GET['id'])."'");
+																						 SET `lp`ï¿½ï¿½ = '".time()."'
+									ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½WHERE kid = '".intval($_GET['kid'])."'
+									ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½AND id = '".intval($_GET['id'])."'");
 					
 							$qry = db("UPDATE ".$db['f_posts']."
 												 SET `date`   = '".time()."',
