@@ -200,6 +200,7 @@ if(_adminMenu != 'true') exit;
             $positions .= show(_select_field, array("value" => $get['order']+1,
                                                     "what" => _nach.' '.re($get['kattopic']),
                                                     "sel" => ""));
+		  }
           $show = show($dir."/skatform", array("head" => _config_forum_add_skat,
                                                "fkat" => _config_forum_skatname,
                                                "fstopic" => _config_forum_stopic,
