@@ -104,6 +104,7 @@ define('_perm_joinus' , 'receive joinus form');
 define('_perm_news' , 'manage news');
 define('_perm_shoutbox' , 'Shoutbox admin');
 define('_perm_votes' , 'can see internal votes');
+define('_perm_gs_showpw' , 'can see gameserver password');
 define('_config_positions_rights' , 'Permissions');
 define('_config_positions' , 'User Ranks');
 define('_admin_pos' , 'User Ranks');
