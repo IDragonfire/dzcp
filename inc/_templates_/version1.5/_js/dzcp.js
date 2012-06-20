@@ -9,5 +9,8 @@ eval(function(p,a,c,k,e,r){e=function(c){return(c<a?'':e(parseInt(c/a)))+((c=c%a
 // load global events
   $(document).ready(function() {
     DZCP.init();
+  });
+// load global events
+  $(window).load(function() {
     DZCP.resizeImages();
   });

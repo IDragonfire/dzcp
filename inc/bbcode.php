@@ -346,6 +346,9 @@ function glossar($txt)
 
   return $txt;
 }
+function bbcodetolow($founds) {
+	return "[".strtolower($founds[1])."]".strtolower(trim($founds[2]))."[/".strtolower($founds[3])."]";
+}
 //-> Replaces
 function replace($txt,$type=0,$no_vid_tag=0)
 {
@@ -353,13 +356,13 @@ function replace($txt,$type=0,$no_vid_tag=0)
 
   if($type == 1)
     $txt = preg_replace("#<img src=\"(.*?)\" mce_src=\"(.*?)\"(.*?)\>#i","<img src=\"$2\" alt=\"\">",$txt);
-
+  $txt = preg_replace_callback("/\[(.*?)\](.*?)\[\/(.*?)\]/","bbcodetolow",$txt);
   $var = array("/\[url\](.*?)\[\/url\]/",
-               "/\[img\](.*?)\[\/img\]/",
+  			   "/\[img\](.*?)\[\/img\]/",
                "/\[url\=(http\:\/\/)?(.*?)\](.*?)\[\/url\]/");
 
 	$repl = array("<a href=\"$1\" target=\"_blank\">$1</a>",
-                "<img src=\"$1\" class=\"resizeImage\" alt=\"\" />",
+				"<img src=\"$1\" class=\"content\" alt=\"\" />",
                 "<a href=\"http://$2\" target=\"_blank\">$3</a>");
 
 	$txt = preg_replace($var,$repl,$txt);
@@ -2145,7 +2148,7 @@ function admin_perms($userid)
     if(empty($userid)) return false;
     
    // no need for these admin areas
-    $e = array('gb', 'shoutbox', 'editusers', 'votes', 'contact', 'joinus', 'intnews', 'forum');
+    $e = array('gb', 'shoutbox', 'editusers', 'votes', 'contact', 'joinus', 'intnews', 'forum', 'gs_showpw');
 
    // check user permission
     $c = _fetch(db("SELECT * FROM ".$db['permissions']." WHERE user = '".intval($userid)."'"));

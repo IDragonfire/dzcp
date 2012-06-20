@@ -152,7 +152,7 @@ default:
           if(!empty($server_link_config[$server['gamemod']]))
             $server_link = $server_link_config[$server['gamemod']];
   
-          if(!empty($get['pwd'])) $pwds = show(_server_pwd, array("pwd" => re($get['pwd'])));
+          if(!empty($get['pwd']) && permission("gs_showpw")) $pwds = show(_server_pwd, array("pwd" => re($get['pwd'])));
           else $pwds = "";
   
           if($_GET['show'] == $get['id'])
