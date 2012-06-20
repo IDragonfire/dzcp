@@ -22,7 +22,7 @@ default:
     $showt = "";
     $qrys = db("SELECT * FROM ".$db['f_skats']."
                 WHERE sid = '".$get['id']."'
-                ORDER BY order");
+                ORDER BY `order`");
     while($gets = _fetch($qrys))
     {
       if($get['intern'] == 0 || ($get['intern'] == 1 && fintern($gets['id'])))
@@ -2103,9 +2103,9 @@ case 'post';
 																									 "ntext" => up($_POST['eintrag'],1)));
 			
 													$qry = db("UPDATE ".$db['f_threads']."
-																						 SET `lp`   = '".time()."'
-									                           WHERE kid = '".intval($_GET['kid'])."'
-									                           AND id = '".intval($_GET['id'])."'");
+																						 SET `lp` = '".time()."'
+									WHERE kid = '".intval($_GET['kid'])."'
+									AND id = '".intval($_GET['id'])."'");
 					
 							$qry = db("UPDATE ".$db['f_posts']."
 												 SET `date`   = '".time()."',

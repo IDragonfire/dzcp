@@ -15,7 +15,7 @@ if(_adminMenu != 'true') exit;
                       LEFT JOIN ".$db['f_skats']." AS s2
                       ON s1.id = s2.sid
                       WHERE s1.id = '".intval($_GET['id'])."'
-                      ORDER BY s2.kattopic");
+                      ORDER BY `order`");
           while($getk = _fetch($qryk))
           {
             if(!empty($getk['kattopic']))
@@ -193,8 +193,8 @@ if(_adminMenu != 'true') exit;
             $show = info(_config_forum_kat_edited, "?admin=forum");
           }
         } elseif($_GET['do'] == "newskat") {
-          $qry = db("SELECT * FROM ".$db['f_skats']."
-                     ORDER BY order");
+          $qry = db("SELECT * FROM ".$db['f_skats']." WHERE sid = " . (int) $_GET['id'] .
+                     " ORDER BY `order`");
           while($get = _fetch($qry))
           {
             $positions .= show(_select_field, array("value" => $get['order']+1,
@@ -221,7 +221,7 @@ if(_adminMenu != 'true') exit;
 
             $posi = db("UPDATE ".$db['f_skats']."
                         SET `order` = order+1
-                        WHERE order ".$sign." '".intval($_POST['order'])."'");
+                        WHERE `order` ".$sign." '".intval($_POST['order'])."'");
           	
             $qry = db("INSERT INTO ".$db['f_skats']."
                        SET `sid`      = '".((int)$_GET['id'])."',
@@ -236,8 +236,8 @@ if(_adminMenu != 'true') exit;
                      WHERE id = '".intval($_GET['id'])."'");
           $get = _fetch($qry);
           
-          $pos = db("SELECT * FROM ".$db['f_skats']."
-                       ORDER BY order");
+          $pos = db("SELECT * FROM ".$db['f_skats']." WHERE sid = " . (int) $get['sid'] .
+                       " ORDER BY `order`" );
             while($getpos = _fetch($pos))
             {
               if($get['kattopic'] != $getpos['kattopic'])
