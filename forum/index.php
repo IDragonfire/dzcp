@@ -22,7 +22,7 @@ default:
     $showt = "";
     $qrys = db("SELECT * FROM ".$db['f_skats']."
                 WHERE sid = '".$get['id']."'
-                ORDER BY kattopic");
+                ORDER BY order");
     while($gets = _fetch($qrys))
     {
       if($get['intern'] == 0 || ($get['intern'] == 1 && fintern($gets['id'])))
