@@ -390,16 +390,17 @@ case'install';
   }
 break;
 case 'database';
-  if($_GET['do'] == "install")
+  if(isset($_GET['do']) && $_GET['do'] == "install")
   {
     if($_POST['login'] && $_POST['nick'] && $_POST['pwd'] && $_POST['email'])
     {
-      install_mysql($_POST['login'], $_POST['nick'], $_POST['pwd'], $_POST['email']);
-      update_mysql_1_4();
-      update_mysql_1_5();
-			update_mysql_1_5_1();
-			update_mysql_1_5_2();
-			update_mysql_1_5_4();
+        install_mysql($_POST['login'], $_POST['nick'], $_POST['pwd'], $_POST['email']);
+        update_mysql_1_4();
+        update_mysql_1_5();
+        update_mysql_1_5_1();
+        update_mysql_1_5_2();
+        update_mysql_1_5_4();
+        update_mysql_6();
       
       header("Location: install.php?action=done");
     } else {

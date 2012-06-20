@@ -20,7 +20,6 @@ default:
   else $page = 1;
 
   $qry = db("SELECT * FROM ".$db['squads']."
-             WHERE status = '1'
              ORDER BY pos");
   while($get = _fetch($qry))
   {
@@ -100,7 +99,6 @@ default:
   }
 
   $qry = db("SELECT game,icon FROM ".$db['squads']."
-             WHERE status = '1'
              GROUP BY game
              ORDER BY game ASC");
   while($get = _fetch($qry))
@@ -258,7 +256,6 @@ case 'showall';
   }
 
 	$qry = db("SELECT game,icon FROM ".$db['squads']."
-             WHERE status = '1'
              GROUP BY game
              ORDER BY game ASC");
   while($get = _fetch($qry))

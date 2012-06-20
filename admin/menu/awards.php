@@ -13,7 +13,6 @@ if(_adminMenu != 'true') exit;
   	  if($_GET['do'] == "new")
       {
   	    $qry = db("SELECT * FROM ".$db['squads']."
-                   WHERE status = '1'
                    ORDER BY game ASC");
     	  while($get = _fetch($qry))
         {
@@ -48,7 +47,6 @@ if(_adminMenu != 'true') exit;
         $get = _fetch($qry);
 
   	    $qrym = db("SELECT * FROM ".$db['squads']."
-                    WHERE status = '1'
                     ORDER BY game");
     	  while($gets = _fetch($qrym))
   	    {

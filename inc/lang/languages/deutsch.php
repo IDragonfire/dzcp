@@ -105,6 +105,7 @@ define('_perm_receivecws', 'FightUs Formular empfangen');
 define('_perm_news', 'Newsverwaltung');
 define('_perm_shoutbox', 'Shoutbox Admin');
 define('_perm_votes', 'interne Umfragen einsehen');
+define('_perm_gs_showpw', 'Gameserver Passwort einsehen');
 define('_config_positions_rights', 'Rechte');
 define('_config_positions', 'User R&auml;nge');
 define('_admin_pos', 'User R&auml;nge');
