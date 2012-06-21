@@ -411,5 +411,8 @@
 // load global events
   $(document).ready(function() {
     DZCP.init();
+  });
+// load global events
+  $(window).load(function() {
     DZCP.resizeImages();
   });
