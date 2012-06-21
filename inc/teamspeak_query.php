@@ -531,12 +531,14 @@ function time_convert($time, $ms = false)
 { 
   if($ms) $time = $time / 1000;
 
-	$hours = floor($time/3600);
+	$day = floor($time/86400);
+	$hours = floor(($time%86400)/3600);
 	$minutes = floor(($time%3600)/60);
-	$seconds = floor(($time%3600)%60);
+	$seconds = floor($time%60);
 	
-	if($hours>0) $time = $hours."h ".$minutes."m ".$seconds."s";
-	else if($minutes>0) $time = $minutes."m ".$seconds."s";
+	if($day>0) $time = $day."d ".$hours."h ".$minutes."m ".$seconds."s";
+	elseif($hours>0) $time = $hours."h ".$minutes."m ".$seconds."s";
+	elseif($minutes>0) $time = $minutes."m ".$seconds."s";
 	else $time = $seconds."s";
 	 
   return $time;
@@ -1140,7 +1142,7 @@ class TSStatus
 				$response .= $this->sendCommand($fp, "serverinfo");
 				
 				$response .= $this->sendCommand($fp, "channellist -topic -flags -voice -limits");
-				$response .= $this->sendCommand($fp, "clientlist -uid -away -voice -groups");
+				$response .= $this->sendCommand($fp, "clientlist -uid -away -voice -groups -times");
 			}
 	
 			if($this->decodeUTF8) $response = utf8_decode($response);
