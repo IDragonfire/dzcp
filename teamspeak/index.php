@@ -257,19 +257,19 @@ $dir = "teamspeak";
                                                       "misc1" => '',
                                                       "class" => $class,
                                                       "misc2" => '',
-                                                      "misc3" => '-',
-                                                      "misc4" => '-'));
+                                                      "misc3" => time_convert(time()-$user['client_lastconnected']),
+                                                      "misc4" => time_convert($user['client_idle_time'],true)));
   	    }
       }
   
       $index = show($dir."/teamspeak", array("name" => $tsstatus->_serverDatas['virtualserver_name'],
                                              "os" => $tsstatus->_serverDatas['virtualserver_platform'],
-                                             "uptime" => time_convert($tsstatus->_serverDatas['virtualserver_uptime'], true),
+                                             "uptime" => time_convert($tsstatus->_serverDatas['virtualserver_uptime']),
                                              "user" => $users,
                                              "t_name" => _ts_name,
                                              "t_os" => _ts_os,
                                              "uchannels" => $tstree,
-                                             "info" => $tsstatus->welcome($settings, intval($_GET['cID'])),
+                                             "info" => bbcode($tsstatus->welcome($settings, intval($_GET['cID']))),
                                              "t_uptime" => _ts_uptime,
                                              "t_channels" => _ts_channels,
                                              "t_user" => _ts_user,
@@ -296,7 +296,7 @@ $dir = "teamspeak";
   } else {
     $index = error(_fopen,1);
   }
-  
+
 ## SETTINGS ##
 $time_end = generatetime();
 $time = round($time_end - $time_start,4);
