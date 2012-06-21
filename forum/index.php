@@ -687,7 +687,8 @@ case 'thread';
                          WHERE s2.`id` = '".intval($get['kid'])."'"));
 				
 			if($getv['intern'] == "1") $intern = 'checked="checked"';
-		  if($fget['intern'] == "1") $intern = 'checked="checked" disabled="disabled"';
+          $intern = ''; $intern_kat = '';  
+		  if($fget['intern'] == "1") { $intern = 'checked="checked"'; $internVisible = 'style="display:none"'; };
       if($getv['closed'] == "1") 
 		  {
   		  $isclosed = "checked=\"checked\"";
@@ -743,6 +744,7 @@ case 'thread';
                                               "a8" => voteanswer("a8", $getv['id']),
                                               "a9" => voteanswer("a9", $getv['id']),
                                               "a10" => voteanswer("a10", $getv['id']),
+                                              'intern_kat' => $internVisible,
                                               "intern" => $intern,
                                               "isclosed" => $isclosed,
                       											  "vote_del" => _forum_vote_del,
@@ -840,7 +842,8 @@ case 'thread';
                          WHERE s2.`id` = '".intval($_GET['kid'])."'"));
 				
 			if($_POST['intern']) $intern = 'checked="checked"';
-		  if($fget['intern'] == "1") $intern = 'checked="checked" disabled="disabled"';
+          $intern = ''; $intern_kat = '';
+		  if($fget['intern'] == "1") { $intern = 'checked="checked"'; $internVisible = 'style="display:none"'; };
 			if($_POST['closed']) $closed = "checked=\"checked\"";
 	
 			if(empty($_POST['question'])) $display = "none";
@@ -866,6 +869,7 @@ case 'thread';
 											  "a8" => $_POST['a8'],
 											  "a9" => $_POST['a9'],
 											  "a10" => $_POST['a10'],
+                                              'intern_kat' => $internVisible,
 											  "intern" => $intern,
 											  "vote_del" => _forum_vote_del,
 											  "interna" => _votes_admin_intern,
@@ -1112,8 +1116,8 @@ case 'thread';
         $fget = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1
                        LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id
                        WHERE s2.`id` = '".intval($_GET['kid'])."'"));
-				
-				if($fget['intern'] == "1") $intern = 'checked="checked" disabled="disabled"';
+				$intern = ''; $intern_kat = '';
+				if($fget['intern'] == "1") { $intern = 'checked="checked"'; $internVisible = 'style="display:none"'; };
 				
 				if(isset($userid))
 	      {
@@ -1145,6 +1149,7 @@ case 'thread';
                                               "a8" => "",
                                               "a9" => "",
                                               "a10" => "",
+                                              'intern_kat' => $internVisible,
                                               "intern" => $intern,
 					      					  "vote_del" => _forum_vote_del,
                                               "interna" => _votes_admin_intern,
@@ -1239,7 +1244,8 @@ case 'thread';
 												 WHERE s2.`id` = '".intval($_GET['kid'])."'"));
 					
 			if($_POST['intern']) $intern = 'checked="checked"';
-			if($fget['intern'] == 1) $intern = 'checked="checked" disabled="disabled"';
+            $intern = ''; $intern_kat = '';
+			if($fget['intern'] == 1) { $intern = 'checked="checked"'; $internVisible = 'style="display:none"'; };
 			if($_POST['closed']) $closed = "checked=\"checked\"";
 	
 			if(!empty($_POST['question'])) $display = "";
@@ -1266,6 +1272,7 @@ case 'thread';
 							"a9" => $_POST['a9'],
 							"a10" => $_POST['a10'],
 							"vote_del" => _forum_vote_del,
+                            'intern_kat' => $internVisible,
 							"intern" => $intern,
 							"interna" => _votes_admin_intern,
 							"question" => _votes_admin_question,
