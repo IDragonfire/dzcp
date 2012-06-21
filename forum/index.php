@@ -22,7 +22,7 @@ default:
     $showt = "";
     $qrys = db("SELECT * FROM ".$db['f_skats']."
                 WHERE sid = '".$get['id']."'
-                ORDER BY `order`");
+                ORDER BY pos");
     while($gets = _fetch($qrys))
     {
       if($get['intern'] == 0 || ($get['intern'] == 1 && fintern($gets['id'])))
@@ -33,7 +33,7 @@ default:
                      WHERE kid = '".$gets['id']."'
                      ORDER BY lp DESC");
         $getlt = _fetch($qrylt);
-  
+
         $qrylp = db("SELECT s1.date,s1.nick,s1.reg,s1.email,s2.t_date,s2.lp,s2.first
                      FROM ".$db['f_posts']." AS s1
                      LEFT JOIN ".$db['f_threads']." AS s2
@@ -41,7 +41,7 @@ default:
                      WHERE s2.kid = '".$gets['id']."'
                      ORDER BY s1.date DESC");
         $getlp = _fetch($qrylp);
-  
+
         if(cnt($db['f_threads'], " WHERE kid = '".$gets['id']."'") == "0")
         {
           $lpost = "-";
@@ -49,18 +49,18 @@ default:
         } elseif($getlt['first'] == "1") {
           $lpost .= show(_forum_thread_lpost, array("nick" => autor($getlt['t_reg'], '', $getlt['t_nick'], $getlt['t_email']),
                                                     "date" => date("d.m.y H:i", $getlt['t_date'])._uhr));
-  
+
           $lpdate = $getlt['t_date'];
         } elseif($getlt['first'] == "0") {
           $lpost .= show(_forum_thread_lpost, array("nick" => autor($getlp['reg'], '', $getlp['nick'], $getlp['email']),
                                                     "date" => date("d.m.y H:i", $getlp['date'])._uhr));
           $lpdate = $getlp['date'];
         }
-  
+
         $threads = cnt($db['f_threads'], " WHERE kid = '".$gets['id']."'");
         $posts = cnt($db['f_posts'], " WHERE kid = '".$gets['id']."'");
         $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-  
+
         $showt .= show($dir."/kats_show", array("topic" => re($gets['kattopic']),
                                                 "subtopic" => re($gets['subtopic']),
                                                 "lpost" => $lpost,
@@ -92,7 +92,7 @@ default:
   $qrytp = db("SELECT id,user,forumposts FROM ".$db['userstats']."
                ORDER BY forumposts DESC, id
                LIMIT 5");
-			   
+
   while($gettp = _fetch($qrytp))
   {
     $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
@@ -334,10 +334,10 @@ case 'showthread';
 
       if($entrys == 0) $pagenr = "1";
       else $pagenr = ceil($entrys/$maxfposts);
-      
+
       if(!empty($_GET['hl'])) $hL = '&amp;hl='.$_GET['hl'];
       else                    $hL = '';
-      
+
       $lpost = show(_forum_lastpost, array("id" => $entrys+1,
                                            "tid" => $_GET['id'],
                                            "page" => $pagenr.$hL));
@@ -371,11 +371,11 @@ case 'showthread';
           $delete = "";
           $edit = "";
         }
-        
+
         $ftxt = hl($getp['text'], $_GET['hl']);
         if($_GET['hl']) $text = bbcode($ftxt['text']);
         else $text = bbcode($getp['text']);
-        
+
         if($chkMe == 4) $posted_ip = $getp['ip'];
         else $posted_ip = _logged;
 
@@ -411,13 +411,13 @@ case 'showthread';
           if(empty($getp['hp'])) $hp = "";
           else $hp = show(_hpicon_forum, array("hp" => $getp['hp']));
         }
-      
+
         $nick = autor($getp['reg'], '', $getp['nick'], $getp['email']);
         if(!empty($_GET['hl']) && $_SESSION['search_type'] == 'autor')
         {
           if(preg_match("#".$_GET['hl']."#i",$nick)) $ftxt['class'] = 'class="highlightSearchTarget"';
         }
-      
+
         $show .= show($dir."/forum_posts_show", array("nick" => $nick,
                                                       "postnr" => "#".($i+($page-1)*$maxfposts),
                                                       "p" => ($i+($page-1)*$maxfposts),
@@ -578,7 +578,7 @@ case 'showthread';
         if(empty($get['t_hp'])) $hp = "";
         else $hp = show(_hpicon_forum, array("hp" => $get['t_hp']));
       }
-      
+
       $nick = autor($get['t_reg'], '', $get['t_nick'], $get['t_email']);
       if(!empty($_GET['hl']) && $_SESSION['search_type'] == 'autor')
       {
@@ -594,21 +594,21 @@ case 'showthread';
 	  if($chkMe == "unlogged")
 	  {
 		  $f_abo = '';
-	  } else { 
+	  } else {
 	  	$f_abo = show($dir."/forum_abo", array("id" => intval($_GET['id']),
                                              "abo" => $abo,
                                              "abo_info" => _foum_fabo_checkbox,
                                              "abo_title" => _forum_abo_title,
                                              "submit" => _button_value_save
-                                            )); 
-		} 
- 
+                                            ));
+		}
+
   	  if(empty($get['vote'])) $vote = "";
   	  else {
         include_once(basePath.'/inc/menu-functions/fvote.php');
         $vote = '<tr><td>'.fvote($get['vote']).'</td></tr>';
 	  	}
-      
+
       $title = re($getw['topic']).' - '.$title;
       $index = show($dir."/forum_posts", array("head" => _forum_head,
                                                "where" => $wheres,
@@ -638,7 +638,7 @@ case 'showthread';
                                                "add" => $add,
                                                "nav" => $nav,
                       											   "vote" => $vote,
-                      											   "f_abo" => $f_abo, 
+                      											   "f_abo" => $f_abo,
                                                "show" => $show));
     }
   } else {
@@ -657,25 +657,25 @@ case 'thread';
       {
         if($get['sticky'] == 1) $sticky = "checked=\"checked\"";
         if($get['global'] == 1) $global = "checked=\"checked\"";
-  
+
         $admin = show($dir."/form_admin", array("adminhead" => _forum_admin_head,
                                                 "addsticky" => _forum_admin_addsticky,
                                                 "sticky" => $sticky,
                                                 "addglobal" => _forum_admin_addglobal,
                                                 "global" => $global));
       }
-  
+
       if($get['t_reg'] != 0)
       {
         $form = show("page/editor_regged", array("nick" => autor($get['t_reg']),
                                                  "von" => _autor));
-  
+
       } else {
         $form = show("page/editor_notregged", array("nickhead" => _nick,
                                                     "emailhead" => _email,
                                                     "hphead" => _hp));
       }
-      
+
       $qryv = db("SELECT * FROM ".$db['votes']." WHERE id = '".$get['vote']."'");
       $getv = _fetch($qryv);
 
@@ -685,16 +685,16 @@ case 'thread';
 			$fget = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1
                          LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id
                          WHERE s2.`id` = '".intval($get['kid'])."'"));
-				
+
 			if($getv['intern'] == "1") $intern = 'checked="checked"';
 		  if($fget['intern'] == "1") $intern = 'checked="checked" disabled="disabled"';
-      if($getv['closed'] == "1") 
+      if($getv['closed'] == "1")
 		  {
   		  $isclosed = "checked=\"checked\"";
   		  $display = 'none';
         $toggle = 'expand';
 		  }
-		
+
 		if(empty($get['vote'])) {
 		$vote = show($dir."/form_vote", array("head" => _votes_admin_head,
                                               "value" => _button_value_add,
@@ -796,7 +796,7 @@ case 'thread';
       } else {
         $toCheck = empty($_POST['topic']) || empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['eintrag']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
       }
-  
+
       if($toCheck)
   	  {
         if($get['t_reg'] != 0)
@@ -804,27 +804,27 @@ case 'thread';
           if(empty($_POST['eintrag'])) $error = _empty_eintrag;
           $form = show("page/editor_regged", array("nick" => autor($get['t_reg']),
                                                    "von" => _autor));
-  
+
         } else {
-          if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir])) $error = _error_invalid_regcode; 
+          if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir])) $error = _error_invalid_regcode;
           elseif(empty($_POST['topic'])) $error = _empty_topic;
     	    elseif(empty($_POST['nick'])) $error = _empty_nick;
     	    elseif(empty($_POST['email'])) $error = _empty_email;
     	    elseif(!check_email($_POST['email'])) $error = _error_invalid_email;
     	    elseif(empty($_POST['eintrag'])) $error = _empty_eintrag;
-  
+
           $form = show("page/editor_notregged", array("nickhead" => _nick,
                                                       "emailhead" => _email,
                                                       "hphead" => _hp));
         }
-  
+
     	  $error = show("errors/errortable", array("error" => $error));
-  
+
         if(permission("forum"))
         {
           if(isset($_POST['sticky'])) $sticky = "checked";
           if(isset($_POST['global'])) $global = "checked";
-  
+
           $admin = show($dir."/form_admin", array("adminhead" => _forum_admin_head,
                                                   "addsticky" => _forum_admin_addsticky,
                                                   "sticky" => $sticky,
@@ -838,14 +838,14 @@ case 'thread';
 			$fget = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1
                          LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id
                          WHERE s2.`id` = '".intval($_GET['kid'])."'"));
-				
+
 			if($_POST['intern']) $intern = 'checked="checked"';
 		  if($fget['intern'] == "1") $intern = 'checked="checked" disabled="disabled"';
 			if($_POST['closed']) $closed = "checked=\"checked\"";
-	
+
 			if(empty($_POST['question'])) $display = "none";
 			$display = "";
-		
+
 	  	$vote = show($dir."/form_vote", array("head" => _votes_admin_head,
 											  "value" => _button_value_add,
 											  "what" => "&amp;do=add",
@@ -909,8 +909,8 @@ case 'thread';
 	   $qryv = db("SELECT * FROM ".$db['vote_results']."
                    WHERE vid = '".$gett['vote']."'");
      $getv = _fetch($qryv);
-		
-	   $vid = $gett['vote'];  
+
+	   $vid = $gett['vote'];
 
         $upd = db("UPDATE ".$db['votes']."
                    SET `titel`  = '".up($_POST['question'])."',
@@ -952,7 +952,7 @@ case 'thread';
                        WHERE vid = '".$gett['vote']."'
                        AND what = 'a".$i."'");
           }
-        }  
+        }
 		} elseif(empty($gett['vote']) && !empty($_POST['question'])) {
           $qry = db("INSERT INTO ".$db['votes']."
                      SET `datum`  = '".((int)time())."',
@@ -1030,7 +1030,7 @@ case 'thread';
                            `sel`  = '".up($_POST['a10'])."'");
           }
 		} else { $vid = ""; }
-		
+
 		if($_POST['vote_del'] == 1) {
         $qry = db("DELETE FROM ".$db['votes']."
                    WHERE id = '".$gett['vote']."'");
@@ -1043,10 +1043,10 @@ case 'thread';
                    WHERE what = '".$voteid."'");
 		$vid = "";
 		}
-		
+
         $editedby = show(_edited_by, array("autor" => autor($userid),
                                            "time" => date("d.m.Y H:i", time())._uhr));
-  
+
     	  $qry = db("UPDATE ".$db['f_threads']."
   	      				 SET `topic`    = '".up($_POST['topic'])."',
                        `subtopic` = '".up($_POST['subtopic'])."',
@@ -1065,7 +1065,7 @@ case 'thread';
                       WHERE s1.fid = '".((int)$_GET['id'])."'");
   	  while($getabo = _fetch($checkabo))
   	  {
-		if($userid != $getabo['user']) 
+		if($userid != $getabo['user'])
 		{
 		  $topic = db("SELECT topic FROM ".$db['f_threads']." WHERE id = '".intval($_GET['id'])."'");
 		  $gettopic = _fetch($topic);
@@ -1082,13 +1082,13 @@ case 'thread';
 															"page" => "1",
 															"text" => bbcode($_POST['eintrag']),
 															"clan" => $clanname));
-		
+
 		  sendMail(re($getabo['email']),$subj,$message);
 		}
 	  }
-  
+
         $index = info(_forum_editthread_successful, "?action=showthread&amp;id=".$gett['id']."");
-  
+
       }
     } else $index = error(_error_wrong_permissions, 1);
   } elseif($_GET['do'] == "add") {
@@ -1112,9 +1112,9 @@ case 'thread';
         $fget = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1
                        LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id
                        WHERE s2.`id` = '".intval($_GET['kid'])."'"));
-				
+
 				if($fget['intern'] == "1") $intern = 'checked="checked" disabled="disabled"';
-				
+
 				if(isset($userid))
 	      {
 		      $form = show("page/editor_regged", array("nick" => autor($userid),
@@ -1150,7 +1150,7 @@ case 'thread';
                                               "interna" => _votes_admin_intern,
                                               "question" => _votes_admin_question,
                                               "answer" => _votes_admin_answer));
-											  
+
         $dowhat = show(_forum_dowhat_add_thread, array("kid" => $_GET['kid']));
 
         $index = show($dir."/thread", array("titel" => _forum_new_thread_head,
@@ -1200,21 +1200,21 @@ case 'thread';
 					if(empty($_POST['eintrag'])) $error = _empty_eintrag;
 					elseif(empty($_POST['topic'])) $error = _empty_topic;
 				} else {
-					if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir])) $error = _error_invalid_regcode; 
+					if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir])) $error = _error_invalid_regcode;
 					elseif(empty($_POST['topic'])) $error = _empty_topic;
 					elseif(empty($_POST['nick'])) $error = _empty_nick;
 					elseif(empty($_POST['email'])) $error = _empty_email;
 					elseif(!check_email($_POST['email'])) $error = _error_invalid_email;
 					elseif(empty($_POST['eintrag'])) $error = _empty_eintrag;
 				}
-	
+
 				$error = show("errors/errortable", array("error" => $error));
-	
+
 				if(permission("forum"))
 				{
 					if(isset($_POST['sticky'])) $sticky = "checked";
 					if(isset($_POST['global'])) $global = "checked";
-	
+
 					$admin = show($dir."/form_admin", array("adminhead" => _forum_admin_head,
 																									"addsticky" => _forum_admin_addsticky,
 																									"sticky" => $sticky,
@@ -1223,7 +1223,7 @@ case 'thread';
 				} else {
 					$admin = "";
 				}
-	
+
 				if(isset($userid))
 				{
 					$form = show("page/editor_regged", array("nick" => autor($userid),
@@ -1233,18 +1233,18 @@ case 'thread';
 																											"emailhead" => _email,
 																											"hphead" => _hp));
 				}
-	
+
 			$fget = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1
 												 LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id
 												 WHERE s2.`id` = '".intval($_GET['kid'])."'"));
-					
+
 			if($_POST['intern']) $intern = 'checked="checked"';
 			if($fget['intern'] == 1) $intern = 'checked="checked" disabled="disabled"';
 			if($_POST['closed']) $closed = "checked=\"checked\"";
-	
+
 			if(!empty($_POST['question'])) $display = "";
 			$display = "none";
-	
+
 			$vote = show($dir."/form_vote", array("head" => _votes_admin_head,
 							"value" => _button_value_add,
 							"what" => "&amp;do=add",
@@ -1270,7 +1270,7 @@ case 'thread';
 							"interna" => _votes_admin_intern,
 							"question" => _votes_admin_question,
 							"answer" => _votes_admin_answer));
-	
+
 					$dowhat = show(_forum_dowhat_add_thread, array("kid" => $_GET['kid']));
 				$index = show($dir."/thread", array("titel" => _forum_new_thread_head,
 													"nickhead" => _nick,
@@ -1305,29 +1305,29 @@ case 'thread';
 						$fgetvote = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1
 																	 LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id
 																	 WHERE s2.`id` = '".intval($_GET['kid'])."'"));
-						
+
 						if($fgetvote['intern'] == 1) $ivote = "`intern` = '1',";
 						else $ivote = "`intern` = '".((int)$_POST['intern'])."',";
-						
+
 						$qry = db("INSERT INTO ".$db['votes']."
 											 SET `datum`  = '".((int)time())."',
 													 `titel`  = '".up($_POST['question'])."',
 													 ".$ivote."
 													 `forum`  = 1,
 													 `von`    = '".((int)$userid)."'");
-	
+
 						$vid = mysql_insert_id();
-	
+
 						$qry = db("INSERT INTO ".$db['vote_results']."
 											SET `vid`   = '".((int)$vid)."',
 													`what`  = 'a1',
 													`sel`   = '".up($_POST['a1'])."'");
-	
+
 						$qry = db("INSERT INTO ".$db['vote_results']."
 											 SET `vid`  = '".((int)$vid)."',
 													 `what` = 'a2',
 													 `sel`  = '".up($_POST['a2'])."'");
-	
+
 						if(!empty($_POST['a3']))
 						{
 							$qry = db("INSERT INTO ".$db['vote_results']."
@@ -1385,7 +1385,7 @@ case 'thread';
 														 `sel`  = '".up($_POST['a10'])."'");
 						}
 			} else { $vid = ""; }
-						
+
 			$qry = db("INSERT INTO ".$db['f_threads']."
 								 SET 	`kid`      = '".((int)$_GET['kid'])."',
 												`t_date`   = '".((int)time())."',
@@ -1408,11 +1408,11 @@ case 'thread';
 									 SET `ip`   = '".$userip."',
 											 `what` = '".$fid."',
 											 `time` = '".((int)time())."'");
-	
+
 				$update = db("UPDATE ".$db['userstats']."
 											SET `forumposts` = forumposts+1
 											WHERE `user`       = '".$userid."'");
-	
+
 				$index = info(_forum_newthread_successful, "?action=showthread&amp;id=".$thisFID."#p1");
 			}
 		}
@@ -1538,13 +1538,13 @@ case 'post';
                        `hp`     = '".links($_POST['hp'])."',
                        `edited` = '".addslashes($editedby)."'
                    WHERE id = '".intval($_GET['id'])."'");
-	  
+
 	  $checkabo = db("SELECT s1.user,s1.fid,s2.nick,s2.id,s2.email FROM ".$db['f_abo']." AS s1
 	  				  LEFT JOIN ".$db['users']." AS s2 ON s2.id = s1.user
                       WHERE s1.fid = '".$getp['sid']."'");
   	  while($getabo = _fetch($checkabo))
   	  {
-		if($userid != $getabo['user']) 
+		if($userid != $getabo['user'])
 		{
 		  $topic = db("SELECT topic FROM ".$db['f_threads']." WHERE id = '".$getp['sid']."'");
 		  $gettopic = _fetch($topic);
@@ -1566,7 +1566,7 @@ case 'post';
 															"page" => $pagenr,
 															"text" => bbcode($_POST['eintrag']),
 															"clan" => $clanname));
-		
+
 		  sendMail(re($getabo['email']),$subj,$message);
 		}
 	  }
@@ -1584,7 +1584,7 @@ case 'post';
     } else {
       $index = error(_error_wrong_permissions, 1);
     }
-  } elseif($_GET['do'] == "add") { 
+  } elseif($_GET['do'] == "add") {
     if(settings("reg_forum") == "1" && $chkMe == "unlogged")
     {
       $index = error(_error_unregistered,1);
@@ -1838,19 +1838,19 @@ case 'post';
 			if(settings("reg_forum") == "1" && $chkMe == "unlogged")
 			{
 				$index = error(_error_unregistered,1);
-			} else {	
+			} else {
 				$check = db("SELECT s2.id,s1.intern FROM ".$db['f_kats']." AS s1
 										 LEFT JOIN ".$db['f_skats']." AS s2
 										 ON s2.sid = s1.id
 										 WHERE s2.id = '".intval($_GET['kid'])."'");
 				$checks = _fetch($check);
-			
+
 				if($checks['intern'] == 1 && !permission("intforum") && !fintern($checks['id']))
 				exit;
-					
+
 				if(isset($userid)) $toCheck = empty($_POST['eintrag']);
 				else $toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['eintrag']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
-		
+
 				if($toCheck)
 				{
 					if(isset($userid))
@@ -1859,7 +1859,7 @@ case 'post';
 						$form = show("page/editor_regged", array("nick" => autor($userid),
 																										 "von" => _autor));
 					} else {
-						if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir])) $error = _error_invalid_regcode; 
+						if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir])) $error = _error_invalid_regcode;
 						elseif(empty($_POST['nick'])) $error = _empty_nick;
 						elseif(empty($_POST['email'])) $error = _empty_email;
 						elseif(!check_email($_POST['email'])) $error = _error_invalid_email;
@@ -1868,7 +1868,7 @@ case 'post';
 																												"emailhead" => _email,
 																												"hphead" => _hp));
 					}
-		
+
 					$error = show("errors/errortable", array("error" => $error));
 					$dowhat = show(_forum_dowhat_add_post, array("id" => $_GET['id'],
 																											 "kid" => $_GET['kid']));
@@ -1879,36 +1879,36 @@ case 'post';
 					if(_rows($qryl))
 					{
 						$getl = _fetch($qryl);
-		
+
 						if(data($getl['reg'], "signatur")) $sig = _sig.bbcode(data($getl['reg'], "signatur"));
 						else $sig = "";
-		
+
 						if($getl['reg'] != "0") $userposts = show(_forum_user_posts, array("posts" => userstats($getl['reg'], "forumposts")));
 						else $userposts = "";
-		
+
 						if($getl['reg'] == "0") $onoff = "";
 						else $onoff = onlinecheck($getl['reg']);
-		
+
 						$ftxt = hl($getl['text'], $_GET['hl']);
 						if($_GET['hl']) $text = bbcode($ftxt['text']);
 						else $text = bbcode($getl['text']);
-		
+
 						if($chkMe == "4") $posted_ip = $getl['ip'];
 						else $posted_ip = _logged;
-		
+
 						$titel = show(_eintrag_titel_forum, array("postid" => (cnt($db['f_posts'], " WHERE sid = ".intval($_GET['id']))+1),
 																								"datum" => date("d.m.Y", $getl['date']),
 																								"zeit" => date("H:i", $getl['date'])._uhr,
 																								"url" => '#',
 																								"edit" => "",
 																								"delete" => ""));
-		
+
 						if($getl['reg'] != 0)
 						{
 							$qryu = db("SELECT nick,icq,hp,email FROM ".$db['users']."
 													WHERE id = '".$getl['reg']."'");
 							$getu = _fetch($qryu);
-		
+
 							$email = show(_emailicon_forum, array("email" => eMailAddr($getu['email'])));
 							$pn = show(_pn_write_forum, array("id" => $getl['reg'],
 																								"nick" => $getu['nick']));
@@ -1917,7 +1917,7 @@ case 'post';
 								$uin = show(_icqstatus_forum, array("uin" => $getu['icq']));
 								$icq = '<a href="http://www.icq.com/whitepages/about_me.php?uin='.$getu['icq'].'" target="_blank">'.$uin.'</a>';
 							}
-		
+
 							if(empty($getu['hp'])) $hp = "";
 							else $hp = show(_hpicon_forum, array("hp" => $getu['hp']));
 						} else {
@@ -1927,13 +1927,13 @@ case 'post';
 							if(empty($getl['hp'])) $hp = "";
 							else $hp = show(_hpicon_forum, array("hp" => $getl['hp']));
 						}
-						
+
 						$nick = autor($getl['reg'], '', $getl['nick'], $getl['email']);
 						if(!empty($_GET['hl']) && $_SESSION['search_type'] == 'autor')
 						{
 							if(preg_match("#".$_GET['hl']."#i",$nick)) $ftxt['class'] = 'class="highlightSearchTarget"';
 						}
-					
+
 						$lastpost = show($dir."/forum_posts_show", array("nick" => $nick,
 																														 "postnr" => "",
 																														 "text" => $text,
@@ -1959,29 +1959,29 @@ case 'post';
 												WHERE kid = '".intval($_GET['kid'])."'
 												AND id = '".intval($_GET['id'])."'");
 						$gett = _fetch($qryt);
-		
+
 						if(data($gett['t_reg'], "signatur")) $sig = _sig.bbcode(data($gett['t_reg'], "signatur"));
 						else $sig = "";
-		
+
 						if($gett['t_reg'] != "0") $userposts = show(_forum_user_posts, array("posts" => userstats($gett['t_reg'], "forumposts")));
 						else $userposts = "";
-		
+
 						if($gett['t_reg'] == "0") $onoff = "";
 						else $onoff = onlinecheck($gett['t_reg']);
-		
+
 						$ftxt = hl($gett['t_text'], $_GET['hl']);
 						if($_GET['hl']) $text = bbcode($ftxt['text']);
 						else $text = bbcode($gett['t_text']);
-		
+
 						if($chkMe == "4") $posted_ip = $gett['ip'];
 						else $posted_ip = _logged;
-		
+
 						if($gett['t_reg'] != 0)
 						{
 							$qryu = db("SELECT nick,icq,hp,email FROM ".$db['users']."
 													WHERE id = '".$gett['t_reg']."'");
 							$getu = _fetch($qryu);
-		
+
 							$email = show(_emailicon_forum, array("email" => eMailAddr($getu['email'])));
 							$pn = show(_pn_write_forum, array("id" => $gett['t_reg'],
 																								"nick" => $getu['nick']));
@@ -1990,7 +1990,7 @@ case 'post';
 								$uin = show(_icqstatus_forum, array("uin" => $getu['icq']));
 								$icq = '<a href="http://www.icq.com/whitepages/about_me.php?uin='.$getu['icq'].'" target="_blank">'.$uin.'</a>';
 							}
-		
+
 							if(empty($getu['hp'])) $hp = "";
 							else $hp = show(_hpicon_forum, array("hp" => $getu['hp']));
 						} else {
@@ -2000,13 +2000,13 @@ case 'post';
 							if(empty($gett['t_hp'])) $hp = "";
 							else $hp = show(_hpicon_forum, array("hp" => $gett['t_hp']));
 						}
-						
+
 						$nick = autor($gett['t_reg'], '', $gett['t_nick'], $gett['t_email']);
 						if(!empty($_GET['hl']) && $_SESSION['search_type'] == 'autor')
 						{
 							if(preg_match("#".$_GET['hl']."#i",$nick)) $ftxt['class'] = 'class="highlightSearchTarget"';
 						}
-						
+
 						$lastpost = show($dir."/forum_posts_show", array("nick" => $nick,
 																														 "postnr" => "",
 																														 "text" => $text,
@@ -2030,7 +2030,7 @@ case 'post';
 																														 "top" => "",
 																														 "lp" => cnt($db['f_posts'], " WHERE sid = '".intval($_GET['id'])."'")+1));
 					}
-		
+
 					$index = show($dir."/post", array("titel" => _forum_new_post_head,
 																						"nickhead" => _nick,
 																						"bbcodehead" => _bbcode,
@@ -2067,7 +2067,7 @@ case 'post';
 					if(_rows($qrydp))
 					{
 						$getdp = _fetch($qrydp);
-					
+
 						if(isset($userid))
 						{
 							if($userid == $getdp['reg'] && $double_post == 1) $spam = 1;
@@ -2077,52 +2077,52 @@ case 'post';
 							else $spam = 0;
 						}
 					} else {
-						
+
 						$qrytdp = db("SELECT * FROM ".$db['f_threads']."
 									WHERE kid = '".intval($_GET['kid'])."'
 									AND id = '".intval($_GET['id'])."'");
 						$gettdp = _fetch($qrytdp);
-				
+
 						if(isset($userid))
 						{
 							if($userid == $gettdp['t_reg'] && $double_post == 1) $spam = 2;
 							else $spam = 0;
 						} else {
 							if($_POST['nick'] == $gettdp['t_nick'] && $double_post == 1) $spam = 2;
-							else $spam = 0;		
-						}				
+							else $spam = 0;
+						}
 					}
-					
-					if($spam == 1) 
+
+					if($spam == 1)
 					{
 						if(isset($userid)) $fautor = autor($userid);
 						else $fautor = autor('', '', $_POST['nick'], $_POST['email']);
-							
+
 							$text = show(_forum_spam_text, array("autor" => $fautor,
 																									 "ltext" => $getdp['text'],
 																									 "ntext" => up($_POST['eintrag'],1)));
-			
+
 													$qry = db("UPDATE ".$db['f_threads']."
 																						 SET `lp` = '".time()."'
 									WHERE kid = '".intval($_GET['kid'])."'
 									AND id = '".intval($_GET['id'])."'");
-					
+
 							$qry = db("UPDATE ".$db['f_posts']."
 												 SET `date`   = '".time()."',
 														 `text`   = '".$text."'
-												 WHERE id = '".$getdp['id']."'");	  
+												 WHERE id = '".$getdp['id']."'");
 					} elseif($spam == 2) {
 						if(isset($userid)) $fautor = autor($userid);
 						else $fautor = autor('', '', $_POST['nick'], $_POST['email']);
-				
+
 							$text = show(_forum_spam_text, array("autor" => $fautor,
 																									 "ltext" => $gettdp['t_text'],
 																									 "ntext" => up($_POST['eintrag'],1)));
-			
+
 							$qry = db("UPDATE ".$db['f_threads']."
 												 SET `lp`   = '".time()."',
 												 `t_text`   = '".$text."'
-												 WHERE id = '".$gettdp['id']."'");	 	  
+												 WHERE id = '".$gettdp['id']."'");
 				} else {
 					$qry = db("INSERT INTO ".$db['f_posts']."
 										 SET `kid`   = '".((int)$_GET['kid'])."',
@@ -2133,41 +2133,41 @@ case 'post';
 												 `hp`    = '".links($_POST['hp'])."',
 												 `reg`   = '".up($userid)."',
 												 `text`  = '".up($_POST['eintrag'],1)."',
-												 `ip`    = '".$userip."'");	  
-		
+												 `ip`    = '".$userip."'");
+
 					$update = db("UPDATE ".$db['f_threads']."
 												SET `lp`    = '".((int)time())."',
 														`first` = '0'
 												WHERE id    = '".intval($_GET['id'])."'");
 				}
-				
+
 					$fid = "fid(".$_GET['kid'].")";
 					$qry = db("INSERT INTO ".$db['ipcheck']."
 										 SET `ip`   = '".$userip."',
 												 `what` = '".$fid."',
 												 `time` = '".((int)time())."'");
-		
+
 					$update = db("UPDATE ".$db['userstats']."
 												SET `forumposts` = forumposts+1
 												WHERE `user`       = '".$userid."'");
-		
+
 					$checkabo = db("SELECT s1.user,s1.fid,s2.nick,s2.id,s2.email FROM ".$db['f_abo']." AS s1
 									LEFT JOIN ".$db['users']." AS s2 ON s2.id = s1.user
 													WHERE s1.fid = '".((int)$_GET['id'])."'");
 					while($getabo = _fetch($checkabo))
 					{
-						if($userid != $getabo['user']) 
+						if($userid != $getabo['user'])
 						{
 							$topic = db("SELECT topic FROM ".$db['f_threads']." WHERE id = '".intval($_GET['id'])."'");
 							$gettopic = _fetch($topic);
-				
+
 							$entrys = cnt($db['f_posts'], " WHERE `sid` = ".intval($_GET['id']));
-				
+
 							if($entrys == "0") $pagenr = "1";
 							else $pagenr = ceil($entrys/$maxfposts);
-				
+
 							$subj = show(settings('eml_fabo_npost_subj'), array("titel" => $title));
-				
+
 							$message = show(settings('eml_fabo_npost'), array("nick" => re($getabo['nick']),
 																			"postuser" => fabo_autor($userid),
 																			"topic" => $gettopic['topic'],
@@ -2178,20 +2178,20 @@ case 'post';
 																			"page" => $pagenr,
 																			"text" => bbcode($_POST['eintrag']),
 																			"clan" => $clanname));
-						
+
 							sendMail(re($getabo['email']),$subj,$message);
 						}
 					}
-		
+
 					$entrys = cnt($db['f_posts'], " WHERE `sid` = ".intval($_GET['id']));
-		
+
 					if($entrys == "0") $pagenr = "1";
 					else $pagenr = ceil($entrys/$maxfposts);
-		
+
 					$lpost = show(_forum_add_lastpost, array("id" => $entrys+1,
 																									 "tid" => $_GET['id'],
 																									 "page" => $pagenr));
-		
+
 					$index = info(_forum_newpost_successful, $lpost);
 				}
 			}
@@ -2246,7 +2246,7 @@ case 'foption';
 				   AND fid = '".intval($_GET['id'])."'");
 	}
 	$index = info(_forum_fabo_do, "?action=showthread&amp;id=".$_GET['id']."");
-  } 
+  }
 break;
 case 'admin';
   if(permission("forum"))
@@ -2258,7 +2258,7 @@ case 'admin';
  	    $qryv = db("SELECT * FROM ".$db['f_threads']."
                     WHERE id = '".intval($_GET['id'])."'");
         $getv = _fetch($qryv);
-        
+
         if(!empty($getv['vote']))
 		{
 		$delvote = db("DELETE FROM ".$db['votes']."
@@ -2269,10 +2269,10 @@ case 'admin';
         $voteid = "vid_".$getv['vote'];
         $delip = db("DELETE FROM ".$db['ipcheck']."
                      WHERE what = '".$voteid."'");
-		}	 
+		}
         $del = db("DELETE FROM ".$db['f_threads']."
                    WHERE id = '".intval($_GET['id'])."'");
-                
+
         // grab user to reduce post count
         $tmpSid = intval($_GET['id']);
         $userPosts = db('SELECT p.`reg` FROM ' . $db['f_posts'] . ' p WHERE sid = ' . $tmpSid . ' AND p.`reg` != 0');
@@ -2292,7 +2292,7 @@ case 'admin';
         $delp = db("DELETE FROM ".$db['f_posts']."
                     WHERE sid = '" . $tmpSid . "'");
 		$delabo = db("DELETE FROM ".$db['f_abo']."
-                      WHERE fid = '".intval($_GET['id'])."'"); 
+                      WHERE fid = '".intval($_GET['id'])."'");
         $index = info(_forum_admin_thread_deleted, "../forum/");
       } else {
         if($_POST['closed'] == "0")
@@ -2335,7 +2335,7 @@ case 'admin';
           $move = db("UPDATE ".$db['f_threads']."
                       SET `kid` = '".$_POST['move']."'
                       WHERE id = '".intval($_GET['id'])."'");
-											
+
 					$move = db("UPDATE ".$db['f_posts']."
                       SET `kid` = '".$_POST['move']."'
                       WHERE sid = '".intval($_GET['id'])."'");
