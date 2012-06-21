@@ -161,9 +161,10 @@ case 'do';
       $qry = db("SELECT s1.id FROM ".$db['users']." AS s1
                  LEFT JOIN ".$db['permissions']." AS s2  ON s1.id = s2.user
                  WHERE s2.joinus = '1' AND s1.`user` != '0' GROUP BY s1.`id`");
+      $sqlAnd = '';
       while($get = _fetch($qry))
       {
-        $sqlAnd = " AND s2.`user` != '".intval($get['id'])."'";
+        $sqlAnd .= " AND s2.`user` != '".intval($get['id'])."'";
 
         $qrys = db("INSERT INTO ".$db['msg']."
                     SET `datum`     = '".((int)time())."',
@@ -234,9 +235,11 @@ case 'do';
                  ON s1.user = s2.user
                  WHERE s1.receivecws = '1' AND s1.`user` != '0'
                  ".$add." GROUP BY s1.`user`");
+      $sqlAnd = '';
+      var_dump($who);
       while($get = _fetch($who))
       {
-        $sqlAnd = " AND s2.`user` != '".intval($get['user'])."'";
+        $sqlAnd .= " AND s2.`user` != '".intval($get['user'])."'";
         $qry = db("INSERT INTO ".$db['msg']."
                    SET `datum`      = '".((int)time())."',
                        `von`        = '0',
@@ -250,7 +253,8 @@ case 'do';
                  LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
                  LEFT JOIN ".$db['squaduser']." AS s3 ON s2.user = s3.user
 								 WHERE s1.`receivecws` = '1' AND s2.`posi` != '0'".$sqlAnd.$add." GROUP BY s2.`user`");
-      while($get = _fetch($qry))
+      var_dump($qry);
+      while($get === _fetch($qry))
       {
         $qry = db("INSERT INTO ".$db['msg']."
                    SET `datum`      = '".((int)time())."',
@@ -259,7 +263,6 @@ case 'do';
                        `titel`      = '"._contact_title_fightus."',
                        `nachricht`  = '".up($msg, 1)."'");
       }
-      
       $index = info(_contact_fightus_sended, "../news/");
     }
   }
