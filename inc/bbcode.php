@@ -347,7 +347,7 @@ function glossar($txt)
   return $txt;
 }
 function bbcodetolow($founds) {
-	return "[".strtolower($founds[1])."]".strtolower(trim($founds[2]))."[/".strtolower($founds[3])."]";
+	return "[".strtolower($founds[1])."]".trim($founds[2])."[/".strtolower($founds[3])."]";
 }
 //-> Replaces
 function replace($txt,$type=0,$no_vid_tag=0)
@@ -359,11 +359,19 @@ function replace($txt,$type=0,$no_vid_tag=0)
   $txt = preg_replace_callback("/\[(.*?)\](.*?)\[\/(.*?)\]/","bbcodetolow",$txt);
   $var = array("/\[url\](.*?)\[\/url\]/",
   			   "/\[img\](.*?)\[\/img\]/",
-               "/\[url\=(http\:\/\/)?(.*?)\](.*?)\[\/url\]/");
+               "/\[url\=(http\:\/\/)?(.*?)\](.*?)\[\/url\]/",
+			   "/\[b\](.*?)\[\/b\]/",
+			   "/\[i\](.*?)\[\/i\]/",
+			   "/\[u\](.*?)\[\/u\]/",
+			   "/\[color=(.*?)\](.*?)\[\/color\]/");
 
 	$repl = array("<a href=\"$1\" target=\"_blank\">$1</a>",
 				"<img src=\"$1\" class=\"content\" alt=\"\" />",
-                "<a href=\"http://$2\" target=\"_blank\">$3</a>");
+                "<a href=\"http://$2\" target=\"_blank\">$3</a>",
+				"<b>$1</b>",
+				"<i>$1</i>",
+				"<u>$1</u>",
+				"<span style=\"color:$1\">$2</span>");
 
 	$txt = preg_replace($var,$repl,$txt);
 
@@ -463,6 +471,7 @@ function re_bbcode($txt)
 //Diverse BB-Codefunktionen
 function bbcode($txt, $tinymce=0, $no_vid=0)
 {
+  $txt = str_replace("\\n","<br />",$txt);
   $txt = BadwordFilter($txt);
   $txt = replace($txt,$tinymce,$no_vid); 
   $txt = highlight_text($txt);
