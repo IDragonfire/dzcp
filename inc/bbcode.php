@@ -174,7 +174,7 @@ function lang($lng,$pfad='')
     $files = get_files(basePath.'/inc/lang/languages/');
     $lng = str_replace('.php','',$files[0]);
   }
-	
+
   include(basePath."/inc/lang/global.php");
   include(basePath."/inc/lang/languages/".$lng.".php");
 }
@@ -396,7 +396,7 @@ function replace($txt,$type=0,$no_vid_tag=0)
 									'
 								   ), $txt);
   }
-                               
+
   $txt = str_replace("\"","&#34;",$txt);
   $txt = preg_replace("#(\w){1,1}(&nbsp;)#Uis","$1 ",$txt);
 
@@ -411,7 +411,7 @@ function BadwordFilter($txt)
     {
       $txt = preg_replace("#".$word."#i", str_repeat("*", strlen($word)), $txt);
     }
-    
+
   return $txt;
 }
 //-> Funktion um Bestimmte Textstellen zu markieren
@@ -473,15 +473,15 @@ function bbcode($txt, $tinymce=0, $no_vid=0)
 {
   $txt = str_replace("\\n","<br />",$txt);
   $txt = BadwordFilter($txt);
-  $txt = replace($txt,$tinymce,$no_vid); 
+  $txt = replace($txt,$tinymce,$no_vid);
   $txt = highlight_text($txt);
   $txt = re_bbcode($txt);
   $txt = strip_tags($txt,"<br><object><em><param><embed><strong><iframe><hr><table><tr><td><div><span><a><b><font><i><u><p><ul><ol><li><br /><img>");
   $txt = smileys($txt);
-  
+
   if($no_vid == 0)
   $txt = glossar($txt);
-  
+
   $txt = str_replace("&#34;","\"",$txt);
   $txt = str_replace('<p></p>', '<p>&nbsp;</p>', $txt);
 
@@ -1165,10 +1165,10 @@ function checkpwd($user, $pwd)
 function info($msg, $url, $timeout = 2)
 {
   global $c;
-  
+
   if($c['direct_refresh'] == 1) {
     return header('Location: '.str_replace('&amp;', '&', $url));
-  } 
+  }
 
   $u = parse_url($url);
   $u['query'] = str_replace('&amp;', '&', $u['query']);
@@ -1177,7 +1177,7 @@ function info($msg, $url, $timeout = 2)
     $p = explode('=', $p);
     if(count($p) == 2) $parts .= '<input type="hidden" name="'.$p[0].'" value="'.$p[1].'" />'."\r\n";
   }
-  
+
   return show("errors/info", array("msg" => $msg,
                                    "url" => $u['path'],
                                    "rawurl" => html_entity_decode($url),
@@ -1295,48 +1295,30 @@ function artikelSites($sites, $id)
     }
   return $seiten;
 }
-//-> Nickausgabe mit Profillink oder Emaillink (reg/nicht reg) gekürzt
-function autor_cutted($cut_length, $uid, $class="", $nick="", $email="", $cut="",$add="")
-{
-  global $db;
-    $qry = db('SELECT nick,country FROM ' . $db['users'] .
-              ' WHERE id = ' . (int) $uid);
-    $get = _fetch($qry);
-    if(_rows($qry)) {
-      $result = show(_user_link, array('id' => $uid,
-				                       'country' => flag($get['country']),
-                                       'class' => $class,
-                                       'get' => $add,
-                                       'nick' => cut(re($get['nick']), $cut_length)));
-    } else {
-      $result = show(_user_link_noreg, array('nick' => re($nick),
-                                             'class' => $class,
-                                             'email' => cut(eMailAddr($email),$cut_length)));
-    }
 
-  return $result;
-}
 //-> Nickausgabe mit Profillink oder Emaillink (reg/nicht reg)
 function autor($uid, $class="", $nick="", $email="", $cut="",$add="")
 {
-  global $db;
-    $qry = db("SELECT nick,country FROM ".$db['users']."
-               WHERE id = '".intval($uid)."'");
-    $get = _fetch($qry);
-    if(_rows($qry))
-    {
-      $result = show(_user_link, array("id" => $uid,
-				                               "country" => flag($get['country']),
-                                       "class" => $class,
-                                       "get" => $add,
-                                       "nick" => re($get['nick'])));
-    } else {
-      $result = show(_user_link_noreg, array("nick" => re($nick),
-                                             "class" => $class,
-                                             "email" => eMailAddr($email)));
-    }
+	global $db;
+	$qry = db("SELECT nick,country FROM ".$db['users']."
+			   WHERE id = '".intval($uid)."'");
+	$get = _fetch($qry);
+	if(_rows($qry))
+	{
+		$nickname = (!empty($cut)) ? cut(re($get['nick']), $cut) : re($get['nick']);
+		$result = show(_user_link, array("id" => $uid,
+										 "country" => flag($get['country']),
+										 "class" => $class,
+										 "get" => $add,
+										 "nick" => $nickname));
+	} else {
+		$nickname = (!empty($cut)) ? cut(re($nick), $cut) : re($nick);
+		$result = show(_user_link_noreg, array("nick" => $nickname,
+										       "class" => $class,
+										 	   "email" => eMailAddr($email)));
+	}
 
-  return $result;
+	return $result;
 }
 function cleanautor($uid, $class="", $nick="", $email="", $cut="")
 {
@@ -1623,7 +1605,7 @@ function sgames($game = '')
         }
       }
       $gamemods = empty($gamemods) ? '' : ' ('.substr($gamemods, 0, strlen($gamemods) - 2).')';
-      
+
       $games .= '<option value="'.$protocol.'">';
       switch($protocol):
         case 'bf1942'; case 'bf2142'; case 'bf2'; case 'bfvietnam'; case 'bfbc2';
@@ -1949,7 +1931,7 @@ function navi_name($name)
 function convert_feed($txt)
 {
   global $charset;
-  
+
   $txt = stripslashes($txt);
   $txt = str_replace("","Ae",$txt);
   $txt = str_replace("","ae",$txt);
@@ -2155,9 +2137,9 @@ function useravatar($userid, $width=100,$height=100)
 function admin_perms($userid)
 {
   global $db,$chkMe;
-  
+
     if(empty($userid)) return false;
-    
+
    // no need for these admin areas
     $e = array('gb', 'shoutbox', 'editusers', 'votes', 'contact', 'joinus', 'intnews', 'forum', 'gs_showpw');
 
@@ -2347,7 +2329,7 @@ function page($index,$title,$where,$time,$wysiwyg='')
  var maxW = '.$maxwidth.',lng = \''.$lng.'\',dzcp_editor = \''.$edr.'\';'.$lcolor.'
 //-->
 </script>';
-				
+
 if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USER_AGENT'],'webOS')) {
   $java_vars .= '<script language="javascript" type="text/javascript" src="'.$designpath.'/_js/wysiwyg'.$wysiwyg.'.js"></script>';
 }
@@ -2374,19 +2356,19 @@ if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USE
    } else {
     updateCounter();
     update_maxonline();
-    
+
 //check permissions
     if($chkMe == "unlogged") include_once(basePath.'/inc/menu-functions/login.php');
     else {
       $check_msg = check_msg();
       set_lastvisit();
-      
+
       db("UPDATE ".$db['users']."
           SET `time`     = '".((int)time())."',
               `whereami` = '".up($where)."'
           WHERE id = '".intval($userid)."'");
     }
-    
+
 //init templateswitch
     $tmps = get_files('../inc/_templates_/');
     for($i=0; $i<count($tmps); $i++)
@@ -2408,7 +2390,7 @@ if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USE
     $title = re(strip_tags($title));
 
     $index = empty($index) ? '' : (empty($check_msg) ? '' : $check_msg).'<table class="mainContent" cellspacing="1" style="margin-top:0">'.$index.'</table>';
-    
+
 //-> Sort & filter placeholders
 //default placeholders
     $arr = array("idir" => '../inc/images/admin',
@@ -2431,8 +2413,8 @@ if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USE
 //put placeholders in array
     $pholder = explode("^",$pholder);
     for($i=0;$i<=count($pholder)-1;$i++) {
-    
-    
+
+
       if(strstr($pholder[$i], 'nav_')) eval("\$arr[".$pholder[$i]."] = navi('".$pholder[$i]."');");
       else {
         if(@file_exists(basePath.'/inc/menu-functions/'.$pholder[$i].'.php'))  include_once(basePath.'/inc/menu-functions/'.$pholder[$i].'.php');
