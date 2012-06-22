@@ -62,5 +62,6 @@
     accessibility_warnings              : false,
     entity_encoding                     : 'raw',
     verify_html                         : false,
-    button_tile_map                     : true
+    button_tile_map                     : true,
+    convert_urls                        : false
   });
