@@ -43,7 +43,7 @@ function shout($ajax = 0)
       $sec = show("menu/shout_antispam", array("help" => _login_secure_help,
                                                "dis" => $dis
                                                ));
-    } else $form = autor($userid, "navShout");
+    } else $form = autor($userid, "navShout",'','',$lshoutnick);
     }
 
     $add = show("menu/shout_add", array("form" => $form,
