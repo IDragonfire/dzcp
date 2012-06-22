@@ -5,6 +5,8 @@ header("Content-type: text/html; charset=".$charset);
 
 ## ADDED / REDEFINED FOR 1.5 Final
 define('_id_dont_exist', 'The requested ID does not exist!');
+define('_perm_editts', 'manage teamspeak server');
+define('_perm_receivecws', 'receive fight us form');
 
 ## ADDED / REDEFINED FOR 1.5.2
 define('_button_title_del_account' , 'User-Account delete');
