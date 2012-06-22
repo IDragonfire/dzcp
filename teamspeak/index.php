@@ -13,7 +13,7 @@ $dir = "teamspeak";
 ## SECTIONS ##
   if(function_exists(fopen))
   {
-    if(time() - @filemtime(basePath.'/__cache/teamspeak_'.$language.'.html') > $c['cache_teamspeak'])
+    if(time() - @filemtime(basePath.'/__cache/teamspeak_'.$language.'.html') > $c['cache_teamspeak'] || isset($_GET['cid']))
     {    
     switch($settings['ts_version']):
     default; case '2';
