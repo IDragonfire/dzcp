@@ -203,7 +203,7 @@ if(_adminMenu != 'true') exit;
             $show = info(_config_forum_kat_edited, "?admin=forum");
           }
         } elseif($_GET['do'] == "newskat") {
-          $qry = db("SELECT * FROM ".$db['f_skats']." WHERE id = " . (int) $_GET['id'] .
+          $qry = db("SELECT * FROM ".$db['f_skats']." WHERE sid = " . (int) $_GET['id'] .
                      " ORDER BY pos");
           while($get = _fetch($qry))
           {
@@ -244,7 +244,7 @@ if(_adminMenu != 'true') exit;
           }
         } elseif($_GET['do'] == "editsubkat") {
           $qry = db("SELECT * FROM ".$db['f_skats']."
-                     WHERE id = '".intval($_GET['id'])."'");
+                     WHERE sid = '".intval($_GET['id'])."'");
           while($get = _fetch($qry)) //--> Start while subkat sort
           {
             $pos = db("SELECT * FROM ".$db['f_skats']." WHERE sid = ".$get['sid']."
