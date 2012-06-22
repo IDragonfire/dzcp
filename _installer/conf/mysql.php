@@ -115,7 +115,7 @@ function install_mysql($login, $nick, $pwd, $email)
             `bericht` text NOT NULL,
             PRIMARY KEY  (`id`)
             ) ");
-            
+
   $qry = db("INSERT INTO ".$db['cw']." (`id`, `squad_id`, `gametype`, `gcountry`, `matchadmins`, `lineup`, `glineup`, `datum`, `clantag`, `gegner`, `url`, `xonx`, `liga`, `punkte`, `gpunkte`, `maps`, `serverip`, `servername`, `serverpwd`, `bericht`) VALUES
 (1, 1, '', 'de', '', '', '', ".(time()-90000).", 'DZCP', 'deV!L`z Clanportal', 'http://www.dzcp.de', '5on5', 'DZCP', 0, 21, 'de_dzcp', '', '', '', '');");
 //-> Clanwarkommentare
@@ -1371,11 +1371,11 @@ function update_mysql_1_5()
 		  PRIMARY KEY  (`id`)
 		) ;");
 
-		db("INSERT INTO ".$db['sponsoren']." (`id`, `name`, `link`, `beschreibung`, `site`, `send`, `slink`, `banner`, `bend`, `blink`, `box`, `xend`, `xlink`, `pos`, `hits`) 
-VALUES 
-(1, 'DZCP', 'http://www.dzcp.de', '<p>deV!L\'z Clanportal, das CMS for Online-Clans!</p>', 0, '', '', 0, '', '', 1, 'gif', '', 7, 0), 
-(2, 'DZCP Rotationsbanner', 'http://www.dzcp.de', '<p>deV!L`z Clanportal</p>', 0, '', '', 1, '', 'http://www.dzcp.de/banner/dzcp.gif', 0, '', '', 5, 0), 
-(3, 'TEMPLATEbar', 'http://www.templatebar.de', '<p>Auf TEMPLATEbar.de kannst du dir kosteng&uuml;nstige Clandesigns und/oder Templates von Top Designer erwerben.</p>', 1, '', 'http://www.templatebar.de/___FILES/TBbanner/tb_468x60_2.gif', 1, '', 'http://www.templatebar.de/___FILES/TBbanner/tb_468x60_2.gif', 1, '', 'http://www.templatebar.de/___FILES/TBbanner/tb_88x32.gif', 1, 0), 
+		db("INSERT INTO ".$db['sponsoren']." (`id`, `name`, `link`, `beschreibung`, `site`, `send`, `slink`, `banner`, `bend`, `blink`, `box`, `xend`, `xlink`, `pos`, `hits`)
+VALUES
+(1, 'DZCP', 'http://www.dzcp.de', '<p>deV!L\'z Clanportal, das CMS for Online-Clans!</p>', 0, '', '', 0, '', '', 1, 'gif', '', 7, 0),
+(2, 'DZCP Rotationsbanner', 'http://www.dzcp.de', '<p>deV!L`z Clanportal</p>', 0, '', '', 1, '', 'http://www.dzcp.de/banner/dzcp.gif', 0, '', '', 5, 0),
+(3, 'TEMPLATEbar', 'http://www.templatebar.de', '<p>Auf TEMPLATEbar.de kannst du dir kosteng&uuml;nstige Clandesigns und/oder Templates von Top Designer erwerben.</p>', 1, '', 'http://www.templatebar.de/___FILES/TBbanner/tb_468x60_2.gif', 1, '', 'http://www.templatebar.de/___FILES/TBbanner/tb_468x60_2.gif', 1, '', 'http://www.templatebar.de/___FILES/TBbanner/tb_88x32.gif', 1, 0),
 (4, 'MODSbar.de', 'http://www.modsbar.de', '<p>Auf MODSbar.de kannst du dir kosteng&uuml;nstige Modifikationen und/oder Dienstleistungen von Top Codern erwerben.</p>', 1, '', 'http://www.templatebar.de/___FILES/MBbanner/mb_468x60.gif', 1, '', 'http://www.templatebar.de/___FILES/MBbanner/mb_468x60.gif', 1, '', 'http://www.templatebar.de/___FILES/MBbanner/mb_88x32.gif', 2, 0);");
 
 
@@ -1398,15 +1398,15 @@ function update_mysql_1_5_1()
 	  db("ALTER TABLE ".$db['serverliste']." CHANGE `clanurl` `clanurl` VARCHAR( 255 ) NOT NULL");
 		db("ALTER TABLE ".$db['settings']." ADD `double_post` INT(1) NOT NULL default '1'");
 		db("ALTER TABLE ".$db['settings']." ADD `forum_vote` INT(1) NOT NULL default '1'");
-}	
+}
 function update_mysql_1_5_2()
 {
   global $db;
 		db("ALTER TABLE ".$db['settings']." ADD `gb_activ` INT(1) NOT NULL default '1'");
-		db("ALTER TABLE ".$db['settings']." ADD `ts_version` INT(1) NOT NULL AFTER `ts_sport`"); 
+		db("ALTER TABLE ".$db['settings']." ADD `ts_version` INT(1) NOT NULL AFTER `ts_sport`");
 		db("ALTER TABLE ".$db['news']." ADD `timeshift` INT(14) NOT NULL default '0'");
-		db("ALTER TABLE ".$db['squads']." ADD `team_show` INT(1) NOT NULL default '1'"); 
-		   
+		db("ALTER TABLE ".$db['squads']." ADD `team_show` INT(1) NOT NULL default '1'");
+
     db("DROP TABLE IF EXISTS ".$db['navi_kats']);
     db("CREATE TABLE ".$db['navi_kats']." (
       `id` int(10) NOT NULL AUTO_INCREMENT,
@@ -1426,10 +1426,10 @@ function update_mysql_1_5_2()
         (7, 'User Navigation', 'nav_user', 1),
         (8, 'Member Navigation', 'nav_member', 3);
         ");
-  
+
     db("ALTER TABLE ".$db['config']." ADD `cache_teamspeak` INT( 10 ) NOT NULL DEFAULT '30',
                                       ADD `cache_server` INT( 10 ) NOT NULL DEFAULT '30',
-                                      ADD `direct_refresh` INT( 1 ) NOT NULL DEFAULT '0'"); 
+                                      ADD `direct_refresh` INT( 1 ) NOT NULL DEFAULT '0'");
 }
 function update_mysql_1_5_4()
 {
@@ -1446,6 +1446,15 @@ function update_mysql_6()
     db("ALTER TABLE `".$db['settings']."` CHANGE `i_autor` `i_autor` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
     db("ALTER TABLE `".$db['gb']."` CHANGE `hp` `hp` VARCHAR(130) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
     db("ALTER TABLE `".$db['permissions']."` ADD `gs_showpw` INT(1) NOT NULL DEFAULT '0'");
-    db("ALTER TABLE `".$db['f_skats']."` ADD `order` INT(5)");
+
+    //-> Forum Sortieren
+    db("ALTER TABLE ".$db['f_skats']." ADD `pos` int(5) NOT NULL");
+
+    //-> Forum Sortieren funktion: schreibe id von spalte in pos feld um konflikte zu vermeiden!
+    $qry = db("SELECT id FROM ".$db['f_skats']."");
+     while($get = _fetch($qry)){
+	   $qrx .= db("UPDATE ".$db['f_skats']." SET `pos` = '".$get['id']."' WHERE `id` = '".$get['id']."'");
+     }
+    $qry = $qrx;
 }
 ?>

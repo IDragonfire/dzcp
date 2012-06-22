@@ -10,12 +10,12 @@ if(_adminMenu != 'true') exit;
       {
         if($_GET['show'] == "subkats")
         {
-          $qryk = db("SELECT s1.name,s2.id,s2.kattopic,s2.subtopic
+          $qryk = db("SELECT s1.name,s2.id,s2.kattopic,s2.subtopic,s2.pos
                       FROM ".$db['f_kats']." AS s1
                       LEFT JOIN ".$db['f_skats']." AS s2
                       ON s1.id = s2.sid
                       WHERE s1.id = '".intval($_GET['id'])."'
-                      ORDER BY `order`");
+                      ORDER BY s2.pos");
           while($getk = _fetch($qryk))
           {
             if(!empty($getk['kattopic']))
@@ -23,7 +23,7 @@ if(_adminMenu != 'true') exit;
               $subkat = show(_config_forum_subkats, array("topic" => re($getk['kattopic']),
                                                           "subtopic" => re($getk['subtopic']),
                                                           "id" => $getk['id']));
-  
+
               $edit = show("page/button_edit_single", array("id" => $getk['id'],
                                                             "action" => "admin=forum&amp;do=editsubkat",
                                                             "title" => _button_title_edit));
@@ -31,7 +31,7 @@ if(_adminMenu != 'true') exit;
                                                                 "action" => "admin=forum&amp;do=deletesubkat",
                                                                 "title" => _button_title_del,
                                                                 "del" => convSpace(_confirm_del_entry)));
-              
+
               $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
               $subkats .= show($dir."/forum_show_subkats_show", array("subkat" => $subkat,
                                                                       "delete" => $delete,
@@ -181,8 +181,18 @@ if(_adminMenu != 'true') exit;
           {
             $show = error(_config_empty_katname, 1);
           } else {
-		        if($_POST['kid'] == "lazy") $kid = "";
-		        else $kid = "`kid` = '".((int)$_POST['kid'])."',";
+            if($_POST['kid'] == "lazy"){
+			  $kid = "";
+            }else{
+			  $kid = "`kid` = '".((int)$_POST['kid'])."',";
+
+			  if($_POST['kid'] == "1" || "2") $sign = ">= ";
+              else  $sign = "> ";
+			  $posi = db("UPDATE ".$db['f_kats']."
+                        SET `kid` = kid+1
+                        WHERE `kid` ".$sign." '".intval($_POST['kid'])."'");
+            }
+
 
             $qry = db("UPDATE ".$db['f_kats']."
                        SET `name`    = '".up($_POST['kat'])."',
@@ -193,11 +203,11 @@ if(_adminMenu != 'true') exit;
             $show = info(_config_forum_kat_edited, "?admin=forum");
           }
         } elseif($_GET['do'] == "newskat") {
-          $qry = db("SELECT * FROM ".$db['f_skats']." WHERE sid = " . (int) $_GET['id'] .
-                     " ORDER BY `order`");
+          $qry = db("SELECT * FROM ".$db['f_skats']." WHERE id = " . (int) $_GET['id'] .
+                     " ORDER BY pos");
           while($get = _fetch($qry))
           {
-            $positions .= show(_select_field, array("value" => $get['order']+1,
+            $positions .= show(_select_field, array("value" => $get['pos']+1,
                                                     "what" => _nach.' '.re($get['kattopic']),
                                                     "sel" => ""));
 		  }
@@ -208,6 +218,7 @@ if(_adminMenu != 'true') exit;
                                                "what" => "addskat",
                                                "stopic" => "",
                                                "id" => $_GET['id'],
+                                               "nothing" => "",
                                                "tposition" => _position,
                                                "position" => $positions,
                                                "value" => _button_value_add));
@@ -220,12 +231,12 @@ if(_adminMenu != 'true') exit;
             else  $sign = "> ";
 
             $posi = db("UPDATE ".$db['f_skats']."
-                        SET `order` = order+1
-                        WHERE `order` ".$sign." '".intval($_POST['order'])."'");
-          	
+                        SET `pos` = pos+1
+                        WHERE `pos` ".$sign." '".intval($_POST['order'])."'");
+
             $qry = db("INSERT INTO ".$db['f_skats']."
                        SET `sid`      = '".((int)$_GET['id'])."',
-                           `order`    = '".((int)$_POST['order'])."',
+                           `pos`    = '".((int)$_POST['order'])."',
                            `kattopic` = '".up($_POST['skat'])."',
                            `subtopic` = '".up($_POST['stopic'])."'");
 
@@ -234,15 +245,15 @@ if(_adminMenu != 'true') exit;
         } elseif($_GET['do'] == "editsubkat") {
           $qry = db("SELECT * FROM ".$db['f_skats']."
                      WHERE id = '".intval($_GET['id'])."'");
-          $get = _fetch($qry);
-          
-          $pos = db("SELECT * FROM ".$db['f_skats']." WHERE sid = " . (int) $get['sid'] .
-                       " ORDER BY `order`" );
+          while($get = _fetch($qry)) //--> Start while subkat sort
+          {
+            $pos = db("SELECT * FROM ".$db['f_skats']." WHERE sid = ".$get['sid']."
+                       ORDER BY pos");
             while($getpos = _fetch($pos))
             {
               if($get['kattopic'] != $getpos['kattopic'])
               {
-                $positions .= show(_select_field, array("value" => $getpos['order']+1,
+                $positions .= show(_select_field, array("value" => $getpos['pos']+1,
                                                         "what" => _nach.' '.re($getpos['kattopic'])));
               }
             }
@@ -255,17 +266,29 @@ if(_adminMenu != 'true') exit;
                                                "stopic" => re($get['subtopic']),
                                                "id" => $_GET['id'],
                                                "sid" => $get['sid'],
+                                               "nothing" => _nothing,
                                                "tposition" => _position,
                                                "position" => $positions,
                                                "value" => _button_value_edit));
+        	} //--> End while subkat sort
         } elseif($_GET['do'] == "editskat") {
           if(empty($_POST['skat']))
           {
             $show = error(_config_forum_empty_skat,1);
           } else {
-            if($_POST['order'] == "lazy") $order = "";
-            else $order = "`order` = '".((int)$_POST['order'])."',";
-            
+
+            if($_POST['order'] == "lazy"){
+			  $order = "";
+            }else{
+			  $order = "`pos` = '".((int)$_POST['order'])."',";
+
+			  if($_POST['order'] == "1" || "2") $sign = ">= ";
+              else  $sign = "> ";
+			  $posi = db("UPDATE ".$db['f_skats']."
+                        SET `pos` = pos+1
+                        WHERE `pos` ".$sign." '".intval($_POST['order'])."'");
+            }
+
             $qry = db("UPDATE ".$db['f_skats']."
                        SET `kattopic` = '".up($_POST['skat'])."',
                            ".$order."
