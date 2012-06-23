@@ -18,7 +18,7 @@ function ftopics()
           else $page = $pagenr;
 
           if($allowHover == 1)
-          $info = 'onmouseover="DZCP.showInfo(\'<tr><td colspan=2 align=center padding=3 class=infoTop>'.jsconvert(re($get['topic'])).'</td></tr><tr><td><b>'._forum_posts.':</b></td><td>'.$lp.'</td></tr><tr><td><b>'._forum_lpost.':</b></td><td>'.date("d.m.Y H:i", $get['lp'])._uhr.'</td></tr>\')" onmouseout="DZCP.hideInfo()"';
+          $info = 'onmouseover="DZCP.showInfo(\''.jsconvert(re($get['topic'])).'\', \''._forum_posts.';'._forum_lpost.'\', \''.$lp.';'.date("d.m.Y H:i", $get['lp'])._uhr.'\')" onmouseout="DZCP.hideInfo()"';
 
           $ftopics .= show("menu/forum_topics", array("id" => $get['id'],
                                                       "pagenr" => $page,

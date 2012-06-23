@@ -17,7 +17,7 @@ function l_artikel()
         $text = strip_tags($get['text']);
 
         if($allowHover == 1)
-        $info = 'onmouseover="DZCP.showInfo(\'<tr><td colspan=2 align=center padding=3 class=infoTop>'.jsconvert(re($get['titel'])).'</td></tr><tr><td><b>'._datum.':</b></td><td>'.date("d.m.Y H:i", $get['datum'])._uhr.'</td></tr><tr><td><b>'._autor.':</b></td><td>'.rawautor($get['autor']).'</td></tr><tr><td><b>'._news_admin_kat.':</b></td><td>'.jsconvert(re($getkat['kategorie'])).'</td></tr><tr><td><b>'._comments_head.':</b></td><td>'.cnt($db['acomments'],"WHERE artikel = '".$get['id']."'").'</td></tr>\')" onmouseout="DZCP.hideInfo()"';
+        $info = 'onmouseover="DZCP.showInfo(\''.jsconvert(re($get['titel'])).'\', \''._datum.';'._autor.';'._news_admin_kat.';'._comments_head.'\', \''.date("d.m.Y H:i", $get['datum'])._uhr.';'.fabo_autor($get['autor']).';'.jsconvert(re($getkat['kategorie'])).';'.cnt($db['acomments'],"WHERE artikel = '".$get['id']."'").'\')" onmouseout="DZCP.hideInfo()"';
 
         $l_articles .= show("menu/last_artikel", array("id" => $get['id'],
                                                        "titel" => re(cut($get['titel'],$lartikel)),

@@ -16,7 +16,7 @@ function top_match()
     }
 
     if($allowHover == 1 || $allowHover == 2)
-      $hover = 'onmouseover="DZCP.showInfo(\'<tr><td colspan=2 align=center padding=3 class=infoTop>'.jsconvert(re($get['name'])).'<br/>vs.<br/> '.jsconvert(re($get['gegner'])).'</td></tr><tr><td><b>'._played_at.':</b></td><td>'.date("d.m.Y H:i", $get['datum'])._uhr.'</td></tr><tr><td><b>'._cw_xonx.':</b></td><td>'.jsconvert(re($get['xonx'])).'</td></tr><tr><td><b>'._result.':</b></td><td>'.cw_result_nopic_raw($get['punkte'],$get['gpunkte']).'</td></tr><tr><td><b>'._comments_head.':</b></td><td>'.cnt($db['cw_comments'], "WHERE cw = '".$get['id']."'").'</td></tr>\')" onmouseout="DZCP.hideInfo()"';
+      $hover = 'onmouseover="DZCP.showInfo(\''.jsconvert(re($get['name'])).' vs. '.jsconvert(re($get['gegner'])).'\', \''._played_at.';'._cw_xonx.';'._result.';'._comments_head.'\', \''.date("d.m.Y H:i", $get['datum'])._uhr.';'.jsconvert(re($get['xonx'])).';'.cw_result_nopic_nocolor($get['punkte'],$get['gpunkte']).';'.cnt($db['cw_comments'], "WHERE cw = '".$get['id']."'").'\')" onmouseout="DZCP.hideInfo()"';
 
     $topmatch .= show("menu/top_match", array("id" => $get['id'],
                                               "clantag" => re(cut($get['clantag'],$llwars)),

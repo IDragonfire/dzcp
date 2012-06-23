@@ -49,10 +49,11 @@ function counter()
                   ORDER BY nick");
       while($geto = _fetch($qryo))
       {
-        $ousers .= '<tr><td>'.rawautor($geto['id']).'</td><td align=right valign=middle><small>'.jsconvert(getrank($geto['id'])).'</small></td></tr>';
+        $kats .= fabo_autor($geto['id']).';';
+		$text .= jsconvert(getrank($geto['id'])).';';
       }
 
-      $info = 'onmouseover="DZCP.showInfo(\'<tr><td colspan=2 align=center padding=3 class=infoTop>'._online_head.'</td></tr><tr><td><table width=100% cellpadding=0 cellspacing=0>'.$ousers.'</table></td></tr>\')" onmouseout="DZCP.hideInfo()"';
+      $info = 'onmouseover="DZCP.showInfo(\''._online_head.'\', \''.$kats.'\', \''.$text.'\')" onmouseout="DZCP.hideInfo()"';
     }
 
     $counter = show("menu/counter", array("v_today" => $v_today,

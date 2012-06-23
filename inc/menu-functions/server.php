@@ -58,7 +58,8 @@ function server($serverID = 0)
 
     if(!empty($get['pwd']) && permission("gs_showpw")) {
     	$pwd =  show(_server_pwd, array("pwd" => $get['pwd']));
-	$pwd_info = "<tr><td><b>Passwort:</b></td><td>".$get['pwd']."</td></tr>";
+	$pwd_info = "Passwort";
+	$pws_txt = $get['pwd'];
     }
     $players = '<a class="navServerStats" href="../server/?show='.$get['id'].'">Players</a>';
 
@@ -70,15 +71,17 @@ function server($serverID = 0)
 	{
 		foreach($player_list as $key=>$player)
 		{
-			$players .= '<tr><td>'.htmlentities($player['name'], ENT_QUOTES).'</td></tr>';
+			$players .= htmlentities($player['name'], ENT_QUOTES);
 			$count++;
 		}
 	}
     
 	if($count == 0)
-		$players = '<tr><td>Keine Spieler</td></tr>';
+		$players = 'Keine Spieler';
+		$servername = jsconvert(re(cut($server['hostname'],$servermenu)));
+		$servernameout = (!empty($servername)) ? $servername : "no name available";
 		
-      $info = 'onmouseover="DZCP.showInfo(\'<tr><td colspan=2 align=center padding=3 class=infoTop>'.jsconvert(re(cut($server['hostname'],$servermenu))).'</td></tr><tr><td><b>IP/Port:</b></td><td>'.$get['ip'].':'.$get['port'].'</td></tr>'.$pwd_info.'<tr><td><b>Game:</b></td><td>'.jsconvert(re($game_icon)).' '.$server_name_short.'</td></tr><tr><td><b>Map:</b></td><td>'.(empty($server['mapname']) ? '-' : re($server['mapname'])).'</td></tr><tr><td><b>Players Online:</b></td><td>'.$server['players'].' / '.$server['maxplayers'].'</td></tr><tr><td><b>On the Game:</b></td><td><table width=100% border=0 cellpadding=0 cellspacing=0>'.$players.'</table></td></tr>\')" onmouseout="DZCP.hideInfo()"';
+      $info = 'onmouseover="DZCP.showInfo(\''.$servernameout.'\', \'IP/Port;'.$pwd_info.';Game;Map;Players Online;On the Game\', \''.$get['ip'].':'.$get['port'].';'.$pwd_txt.';'.jsconvert(re($game_icon)).''.$server_name_short.';'.(empty($server['mapname']) ? '-' : re($server['mapname'])).';'.$server['players'].' / '.$server['maxplayers'].';'.$players.'\')" onmouseout="DZCP.hideInfo()"';
     
 
     $servernavi .= show("menu/server", array("host" => re(cut($server['hostname'],$servermenu)),
