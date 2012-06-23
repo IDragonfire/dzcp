@@ -109,7 +109,7 @@ default:
                                                   "kat" => re($getkat['katimg']),
                                                   "id" => $get['id'],
                                                   "comments" => $comments,
-                                                  "showmore" => "<tr><td></td></tr>",
+                                                  "showmore" => "",
                                                   "dp" => "none",
                                                   "dir" => $designpath,
                                                   "nautor" => _autor,
@@ -203,7 +203,7 @@ default:
                                            "kat" => re($getkat['katimg']),
                                            "id" => $get['id'],
                                            "comments" => $comments,
-                                           "showmore" => "<tr><td></td></tr>",
+                                           "showmore" => "",
                                            "dp" => "none",
                                            "nautor" => _autor,
                                            "dir" => $designpath,
@@ -419,7 +419,7 @@ case 'show';
     else $intern = "";
 
     $title = re($get['titel']).' - '.$title;
-    $index = show($dir."/news_show", array("titel" => re($get['titel']),
+    $index = show($dir."/news_show_full", array("titel" => re($get['titel']),
                                            "kat" => re($getkat['katimg']),
                                            "id" => $get['id'],
                                            "comments" => "",
@@ -668,7 +668,7 @@ case 'preview';
                                            "kat" => re($getkat['katimg']),
                                            "id" => '_prev',
                                            "comments" => _news_comments_prev,
-                                           "showmore" => "<tr><td></td></tr>",
+                                           "showmore" => "",
                                            "dp" => "",
                                            "dir" => $designpath,
                                            "nautor" => _autor,
