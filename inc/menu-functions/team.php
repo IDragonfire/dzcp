@@ -34,7 +34,7 @@ function team($tID = '')
         $i = 0;
       }
 
-      $status = ($getm['status'] == 1 || $getm['level'] == 1) ? _aktiv : _inaktiv;
+      $status = ($getm['status'] == 1 || $getm['level'] == 1) ? "aktiv" : "inaktiv";
 
       $info = 'onmouseover="DZCP.showInfo(\''.fabo_autor($getm['id']).'\', \''._posi.';'._status.';'._age.'\', \''.getrank($getm['id'],$get['id']).';'.$status.';'.getAge($getm['bday']).'\', \''.hoveruserpic($getm['id']).'\')" onmouseout="DZCP.hideInfo()"';
 
