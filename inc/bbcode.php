@@ -468,9 +468,20 @@ function re_bbcode($txt)
 
 	return $txt;
 }
+//URLs automatisch verlinken
+function autolink($text) {
+  	$pattern = '#(^|[^\"=]{1})(http://|ftp://|www.)([^\s<>]+)([\s\n<>]|$)#sm';
+ 	$text = preg_replace($pattern,"\\1<a target=\"_blank\" href=\"\\2\\3\">\\2\\3</a>\\4",$text);
+	$text = str_replace("href=\"www.", "href=\"http://www.",$text);
+	return $text;
+}
 //Diverse BB-Codefunktionen
 function bbcode($txt, $tinymce=0, $no_vid=0)
 {
+  global $settings;
+  if($no_vid == 0 && $settings['urls_linked'] == 1) {
+	  $txt = autolink($txt);
+  }
   $txt = str_replace("\\n","<br />",$txt);
   $txt = BadwordFilter($txt);
   $txt = replace($txt,$tinymce,$no_vid);
