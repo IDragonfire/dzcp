@@ -764,7 +764,7 @@ case 'details';
                                              "ip" => _iplog_info,
                                              "preview" => _preview,
                                              "action" => '?action=details&amp;do=add&amp;id='.$_GET['id'],
-                                             "prevurl" => '../clanwars/?action=compreview&id='.$_GET['id'],
+                                             "prevurl" => '../clanwars/?action=compreview&amp;id='.$_GET['id'],
 															    					 "id" => $_GET['id'],
                                              "what" => _button_value_add,
                                              "form" => $form,
