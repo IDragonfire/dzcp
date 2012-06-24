@@ -174,7 +174,7 @@ define('_gametiger_map_results', '<tr><td class="[class]"><a href="hlsw://[ip]">
 ## Kontaktformulare ##
 define('_contact_hp', '<a href="[hp]" target="_blank">[hp]</a>');
 ## Linkus ##
-define('_linkus_bannerlink', '<a href="[url]" target="_blank"><img src="[banner]" alt="[besch]" title="[besch]"></a><p><textarea class="inputField_dis" onfocus="this.className=\'inputField_en\';this.select();" onblur="this.className=\'inputField_dis\';" readonly="yes" name="textarea" style="height: 40px; width: 80%;"><a href="[url]" target="blank"><img src="[banner]" alt="[besch]" title="[besch]"></a></textarea>');
+define('_linkus_bannerlink', '<a href="[url]" target="_blank"><img src="[banner]" alt="[besch]" title="[besch]" /></a><p><textarea class="inputField_dis" onfocus="this.className=\'inputField_en\';this.select();" onblur="this.className=\'inputField_dis\';" readonly="readonly" name="textarea" rows="auto" cols="auto" style="height: 40px; width: 80%;">&lt;a href="[url]" target="blank"&gt;&lt;img src="[banner]" alt="[besch]" title="[besch]" /&gt;&lt;/a&gt;</textarea></p>');
 define('_linkus_admin', '<a href="?action=admin&amp;do=new">[new]</a>');
 ## Admin ##
 define('_news_edit_link', "editnews&amp;id=[id]");

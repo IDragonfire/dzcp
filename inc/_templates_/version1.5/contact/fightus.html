@@ -4,21 +4,23 @@
 <tr>
   <td class="contentMainTop" colspan="2" align="center"><span class="fontBold">[partner]</span></td>
 </tr>
+</table>
 <form action="?action=do&amp;what=fightus" method="post" name="contact" onsubmit="return(DZCP.submitButton())">
+<table class="mainContent" cellspacing="1">
 <tr>
   <td class="contentMainTop" width="25%"><span class="fontBold">[nick]: <span class="fontWichtig">*</span></span></td>
   <td class="contentMainFirst" width="75%" align="center">
     <input type="text" name="nick" class="inputField_dis"
     onfocus="this.className='inputField_en';" 
-    onblur="this.className='inputField_dis';"required autofocus>
+    onblur="this.className='inputField_dis';" />
   </td>
 </tr>
 <tr>
   <td class="contentMainTop" width="25%"><span class="fontBold">[email]: <span class="fontWichtig">*</span></span></td>
   <td class="contentMainFirst" width="75%" align="center">
-    <input type="email" name="email" class="inputField_dis"
+    <input type="text" name="email" class="inputField_dis"
     onfocus="this.className='inputField_en';" 
-    onblur="this.className='inputField_dis';"required>
+    onblur="this.className='inputField_dis';" />
   </td>
 </tr>
 <tr>
@@ -26,7 +28,7 @@
   <td class="contentMainFirst" width="75%" align="center">
     <input type="text" name="icq" class="inputField_dis"
     onfocus="this.className='inputField_en';" 
-    onblur="this.className='inputField_dis';">
+    onblur="this.className='inputField_dis';" />
   </td>
 </tr>
 <tr>
@@ -48,7 +50,7 @@
   <td class="contentMainFirst" width="75%" align="center">
     <input type="text" name="clan" class="inputField_dis"
     onfocus="this.className='inputField_en';" 
-    onblur="this.className='inputField_dis';"required>
+    onblur="this.className='inputField_dis';" />
   </td>
 </tr>
 <tr>
@@ -56,18 +58,18 @@
   <td class="contentMainFirst" width="75%" align="center">
     <input type="text" name="hp" class="inputField_dis"
     onfocus="this.className='inputField_en';" 
-    onblur="this.className='inputField_dis';">
+    onblur="this.className='inputField_dis';" />
   </td>
 </tr>
 <tr>
   <td class="contentMainTop" width="25%"><span class="fontBold">[vs]:</span></td>
   <td class="contentMainFirst" width="75%" align="center">
-    <input type="text" name="us" size="3"class="inputField_dis_small"
+    <input type="text" name="us" size="3" class="inputField_dis_small"
     onfocus="this.className='inputField_en_small';" 
-    onblur="this.className='inputField_dis_small';"> : 
-    <input type="text" name="to" size="3"class="inputField_dis_small"
+    onblur="this.className='inputField_dis_small';" /> : 
+    <input type="text" name="to" size="3" class="inputField_dis_small"
     onfocus="this.className='inputField_en_small';" 
-    onblur="this.className='inputField_dis_small';">
+    onblur="this.className='inputField_dis_small';" />
   </td>
 </tr>
 <tr>
@@ -75,7 +77,7 @@
   <td class="contentMainFirst" width="75%" align="center">
     <input type="text" name="maps" class="inputField_dis"
     onfocus="this.className='inputField_en';" 
-    onblur="this.className='inputField_dis';"required>
+    onblur="this.className='inputField_dis';" />
   </td>
 </tr>
 <tr>
@@ -89,7 +91,7 @@
   <td class="contentMainFirst" align="center" width="75%">
     <textarea name="text" class="inputField_dis"
     onfocus="this.className='inputField_en';" 
-    onblur="this.className='inputField_dis';"></textarea>
+    onblur="this.className='inputField_dis';" cols="8" rows="auto"></textarea>
   </td>
 </tr>
 <tr> 
@@ -114,4 +116,9 @@
 <tr>
   <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[value]" class="submit" name="send" /></td>
 </tr>
+</table>
 </form>
+<table class="mainContent" cellspacing="1">
+  <tr>
+    <td class="contentBottom" colspan="2">&nbsp;</td>
+  </tr>
