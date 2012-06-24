@@ -12,9 +12,13 @@
     init: function() {
       doc.body.id = 'dzcp-engine-1.5';
       $('body').append('<div id="infoDiv"></div>');
+      
 
     	layer = $('#infoDiv')[0];
     	doc.body.onmousemove = DZCP.trackMouse;
+
+  // Form autofocus
+		document.getElementById('autofocus').focus();
 
    // refresh shoutbox
       if($('#navShout')[0]) window.setInterval("$('#navShout').load('../inc/ajax.php?i=shoutbox');", shoutInterval);
@@ -334,6 +338,8 @@
       return confirm(txt + '?');
     },
 
+
+
   // forum search
     hideForumFirst: function() {
       $('#allkat').attr('checked', false);
@@ -430,6 +436,7 @@
 
       doc.write(c);
     }
+	
   }
 
 // load global events
@@ -440,3 +447,4 @@
   $(window).load(function() {
     DZCP.resizeImages();
   });
+
