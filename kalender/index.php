@@ -79,9 +79,9 @@ default:
                    WHERE bday LIKE '".cal($i).".".$monat.".____"."'");
         if(_rows($qry))
         {
-          while($get = _fetch($qry)) $infoBday .= '<img src=../inc/images/bday.gif class=icon alt= /> '.jsconvert(_kal_birthday.rawautor($get['id'])).'<br />';
+          while($get = _fetch($qry)) $infoBday .= jsconvert(_kal_birthday.rawautor($get['id']));
           
-          $info = ' onmouseover="DZCP.showInfo(\'<tr><td>'.$infoBday.'</td></tr>\')" onmouseout="DZCP.hideInfo()"';
+          $info = ' onmouseover="DZCP.showInfo(\''.$infoBday.'\')" onmouseout="DZCP.hideInfo()"';
           $bdays = '<a href="../user/?action=userlist&amp;show=bday&amp;time='.$datum.'"'.$info.'><img src="../inc/images/bday.gif" alt="" /></a>';
         } else {
           $bdays = "";
@@ -91,9 +91,9 @@ default:
                      WHERE DATE_FORMAT(FROM_UNIXTIME(datum), '%d.%m.%Y') = '".cal($i).".".$monat.".".$jahr."'");
         if(_rows($qry))
         {
-          while($get = _fetch($qry)) $infoCW .= '<img src=../inc/images/cw.gif class=icon alt= /> '.jsconvert(_kal_cw.re($get['gegner']));
+          while($get = _fetch($qry)) $infoCW .= jsconvert(_kal_cw.re($get['gegner']));
 
-          $info = ' onmouseover="DZCP.showInfo(\'<tr><td>'.$infoCW.'</td></tr>\')" onmouseout="DZCP.hideInfo()"';
+          $info = ' onmouseover="DZCP.showInfo(\''.$infoCW.'\')" onmouseout="DZCP.hideInfo()"';
           $cws = '<a href="../clanwars/?action=kalender&amp;time='.$datum.'"'.$info.'><img src="../inc/images/cw.gif" alt="" /></a>';
         } else {
           $cws = "";
@@ -103,9 +103,9 @@ default:
                    WHERE DATE_FORMAT(FROM_UNIXTIME(datum), '%d.%m.%Y') = '".cal($i).".".$monat.".".$jahr."'");
         if(_rows($qry))
         {
-          while($get = _fetch($qry)) $infoEvent .= '<img src=../inc/images/event.gif class=icon alt= /> '.jsconvert(_kal_event.re($get['title']));
+          while($get = _fetch($qry)) $infoEvent .= jsconvert(_kal_event.re($get['title']));
           
-          $info = ' onmouseover="DZCP.showInfo(\'<tr><td>'.$infoEvent.'</td></tr>\')" onmouseout="DZCP.hideInfo()"';
+          $info = ' onmouseover="DZCP.showInfo(\''.$infoEvent.'\')" onmouseout="DZCP.hideInfo()"';
           $event = '<a href="?action=show&amp;time='.$datum.'"'.$info.'><img src="../inc/images/event.gif" alt="" /></a>';
         } else {
           $event = "";
