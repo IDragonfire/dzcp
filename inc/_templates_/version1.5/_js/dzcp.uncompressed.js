@@ -17,9 +17,6 @@
     	layer = $('#infoDiv')[0];
     	doc.body.onmousemove = DZCP.trackMouse;
 
-  // Form autofocus
-		document.getElementById('autofocus').focus();
-
    // refresh shoutbox
       if($('#navShout')[0]) window.setInterval("$('#navShout').load('../inc/ajax.php?i=shoutbox');", shoutInterval);
 
@@ -435,8 +432,7 @@
       for(var i in ret.embedAttrs) c += i + '="' + ret.embedAttrs[i] + '" '; c += ' ></embed></object>';
 
       doc.write(c);
-    }
-	
+    }	
   }
 
 // load global events
