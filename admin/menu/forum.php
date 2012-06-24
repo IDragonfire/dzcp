@@ -244,7 +244,7 @@ if(_adminMenu != 'true') exit;
           }
         } elseif($_GET['do'] == "editsubkat") {
           $qry = db("SELECT * FROM ".$db['f_skats']."
-                     WHERE sid = '".intval($_GET['id'])."'");
+                     WHERE id = '".intval($_GET['id'])."'");
           while($get = _fetch($qry)) //--> Start while subkat sort
           {
             $pos = db("SELECT * FROM ".$db['f_skats']." WHERE sid = ".$get['sid']."
