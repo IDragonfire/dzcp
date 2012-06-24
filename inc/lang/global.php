@@ -380,8 +380,8 @@ define('_profil_head_cont', '
 ## User ##
 define('_msg_in_title', '<a href="?action=msg&amp;do=show&amp;id=[id]">[titel]</a>');
 define('_msg_out_title', '<a href="?action=msg&amp;do=showsended&amp;id=[id]">[titel]</a>');
-define('_to_buddys', '<option value=[id] [selected="selected"]>[nick]</option>');
-define('_to_users', '<option value=[id] [selected="selected"]>[nick]</option>');
+define('_to_buddys', '<option value="[id]" [selected="selected"]>[nick]</option>');
+define('_to_users', '<option value="[id]" [selected="selected"]>[nick]</option>');
 define('_to_squads', '<option value="[id]" [sel]>-> [name]</option>');
 define('_gallery_pic_link', '<img src="../inc/images/uploads/usergallery/[user]_[img]" alt="" />');
 define('_gallery_edit_unlink', '../inc/images/uploads/usergallery/[user]_[img]');
