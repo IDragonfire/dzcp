@@ -1254,9 +1254,10 @@ class TSStatus
 	{
 		if(!$this->_updated) $this->update();
 		if($this->error == '')
-    {
+    {	
+	  $out = '<table class="hperc">';
       if(!$tpl) {
-  		  $out = '
+  		  $out .= '
           <tr>
             <td nowrap="nowrap"><img src="../inc/images/tsicons/16x16_server_green.png" alt="" class="tsicon" /> <span class="fontBold">'.$this->_serverDatas["virtualserver_name"].'</span></td>
           </tr>
@@ -1265,6 +1266,7 @@ class TSStatus
           </tr>';
         }
 			if(count($this->_channelDatas) > 0) $out .= '<tr><td>'.$this->renderChannels(0, 0, $tpl).'</td></tr>';
+			$out .= "</table>";
 		  return $out;
 		}	else return $this->error;
 	}	
