@@ -7,7 +7,7 @@
   <td class="contentMainFirst" align="center">
     <input type="text" name="link" value="[llink]" class="inputField_dis"
     onfocus="this.className='inputField_en'"
-    onblur="this.className='inputField_dis'" autofocus required/>
+    onblur="this.className='inputField_dis'" />
   </td>
 </tr>
 <tr>
@@ -21,30 +21,21 @@
   <td class="contentMainFirst" align="center">
     <table class="hperc" cellspacing="0">
       <tr>
-        <td style="width:20px"><input id="banner" class="checkbox" type="checkbox" name="banner" value="1" [bchecked] onchange="hideBanner(this.value)" /></td>
+        <td style="width:20px"><input id="banner" class="checkbox" type="checkbox" name="banner" value="1" [bchecked] onChange="DZCP.toggle('hideBanner')" /></td>
         <td>[banner]</td>
       </tr>
     </table>   
-</td></tr>
-<tr id="hideBanner">
+  </td>
+</tr>
+<tr id="morehideBanner" style="[bnone]">
   <td class="contentMainTop"><span class="fontBold">[btext]:</span></td>
   <td class="contentMainFirst" align="center">
     <input type="text" name="text" value="[ltext]" class="inputField_dis"
     onfocus="this.className='inputField_en'"
-    onblur="this.className='inputField_dis'" required/>
+    onblur="this.className='inputField_dis'" />
   </td>
 </tr>
 <tr>
   <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[what]" class="submit" /></td>
 </tr>
 </form>
-<script language="javascript" type="text/javascript">  
-  function hideBanner()
-  {
-    var c = $('#banner').attr('checked');
-      
-    if(c == true) $('#hideBanner').css('display', '');
-    else          $('#hideBanner').css('display', 'none');
-  }
-  hideBanner();
-</script>
