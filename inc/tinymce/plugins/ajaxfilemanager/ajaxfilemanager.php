@@ -281,7 +281,7 @@ $(document).ready(
 					
 		
 
-					<li><a href="#" id="actionClose" onclick="return cancelSelectFile();"><?php echo IMG_BTN_CLOSE; ?></a></li>
+					<li><a href="javascript:window.close()" id="actionClose" onclick="return cancelSelectFile();"><?php echo IMG_BTN_CLOSE; ?></a></li>
 					<li><a href="#" class="thickbox" id="actionInfo" onclick="return infoWin(this);"><span>Info</span></a></li>
 					<!-- thest functions will be added in the near future
  					<li ><a href="#" id="actionZip"><span>Zip</span></a><li>
