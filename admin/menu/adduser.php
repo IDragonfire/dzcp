@@ -15,7 +15,7 @@ if(_adminMenu != 'true') exit;
           			 	        	                     "month" => dropdown("month",$bdaymonth,1),
                                       	         "year" => dropdown("year",$bdayyear,1)));
 
-		$gmaps = show('membermap/geocoder', array());
+		$gmaps = show('membermap/geocoder', array('form' => 'adduser'));
 
 
         $qrysq = db("SELECT id,name FROM ".$db['squads']."

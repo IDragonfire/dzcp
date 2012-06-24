@@ -1916,7 +1916,7 @@ case 'editprofile';
           $deletepic = "| "._profil_delete_pic;
         if(!preg_match("#noavatar#",$avatar))
           $deleteava = "| "._profil_delete_ava;
-		  $gmaps = show('membermap/geocoder', array());
+		  $gmaps = show('membermap/geocoder', array('form' => 'editprofil'));
 
         
 	      if($userid == $rootAdmin) $delete = _profil_del_admin;
