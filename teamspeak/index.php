@@ -228,7 +228,7 @@ $dir = "teamspeak";
     break;
     case '3';
       $tsstatus = new TSStatus($settings['ts_ip'], $settings['ts_port'], $settings['ts_sport']);
-      $tstree = $tsstatus->render($dir."/subchannels");
+      $tstree = $tsstatus->render(true);
       
       $users = 0;
       foreach($tsstatus->_userDatas AS $user)
