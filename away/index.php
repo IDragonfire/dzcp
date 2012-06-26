@@ -96,7 +96,7 @@ $where = $where.' - '._away_new;
                                           "jahr" => dropdown("year",date("Y",time()))));
 
 	$index = show($dir."/form_away", array("head" => _away_new_head,
-	 									   "action" => "new&do=set",
+	 									   "action" => "new&amp;do=set",
 										   "error" => "",
 										   "reason" => _away_reason,
 										   "from" => _from,
@@ -129,7 +129,7 @@ $where = $where.' - '._away_new;
 										   	 "jahr" => dropdown("year",$_POST['jahr'])));     
 	 
 		$index = show($dir."/form_away", array("head" => _away_new_head,
-	 										   "action" => "new&do=set",
+	 										   "action" => "new&amp;do=set",
 											   "error" => $error,
 											   "reason" => _away_reason,
 											   "from" => _from,
@@ -220,7 +220,7 @@ case 'edit';
 									   	 "jahr" => dropdown("year",date("Y",$get['end'])))); 
 
     $index = show($dir."/form_away", array("head" => _away_edit_head,
-	 									   "action" => "edit&do=set&id=".$get['id'],
+	 									   "action" => "edit&amp;do=set&amp;id=".$get['id'],
 										   "error" => "",
 										   "reason" => _away_reason,
 										   "from" => _from,
@@ -252,7 +252,7 @@ case 'edit';
 										   	 "jahr" => dropdown("year",$_POST['jahr'])));     
 	 
 		$index = show($dir."/form_away", array("head" => _away_new_head,
-	 										   "action" => "edit&do=set&id=".$get['id'],
+	 										   "action" => "edit&amp;do=set&amp;id=".$get['id'],
 											   "error" => $error,
 											   "reason" => _away_reason,
 											   "from" => _from,

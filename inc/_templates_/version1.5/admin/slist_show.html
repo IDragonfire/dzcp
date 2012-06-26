@@ -1,7 +1,10 @@
-<form name="serverliste" action="?admin=serverlist&amp;do=accept" method="post" onsubmit="return(DZCP.submitButton())">
-<input type="hidden" name="id" value="[id]">
 <tr>
-  <td class="[class]">[clanname]</td>
+<td colspan="5">
+<form name="serverliste" action="?admin=serverlist&amp;do=accept" method="post" onsubmit="return(DZCP.submitButton())">
+<input type="hidden" name="id" value="[id]" />
+<table class="hperc" cellspacing="1">
+<tr>
+  <td class="[class]" style="width:30%">[clanname]</td>
   <td class="[class]"><a href="hlsw://[serverip]:[serverport]">[serverip]:[serverport]</a></td>
   <td class="[class]">
     <select name="checked" class="dropdown">
@@ -12,4 +15,7 @@
   <td class="[class]" style="width:1%"><input id="contentSubmit" type="submit" value="Edit" class="submit" /></td>
   <td class="[class]" style="width:1%">[delete]</td>
 </tr>
+</table>
 </form>
+</td>
+</tr>

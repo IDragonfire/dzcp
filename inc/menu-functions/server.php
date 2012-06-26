@@ -71,7 +71,7 @@ function server($serverID = 0)
 	{
 		foreach($player_list as $key=>$player)
 		{
-			$players .= htmlentities($player['name'], ENT_QUOTES);
+			$players .= str_replace("'", '', htmlentities($player['name'])) . ', ';
 			$count++;
 		}
 	}

@@ -1,4 +1,7 @@
+<tr>
+<td>
 <form name="clankasse" action="?action=admin&amp;do=editck&amp;id=[id]" method="post" onsubmit="return(DZCP.submitButton())">
+<table class="hperc" cellspacing="1">
 <tr>
   <td class="contentHead" align="center" colspan="2"><span class="fontBold">[newhead]</span></td>
 </tr>
@@ -14,7 +17,7 @@
     </select> [vonan]
     <input type="text" name="member" value="[evonan]" class="inputField_dis_mid"
     onfocus="this.className='inputField_en_mid';"
-    onblur="this.className='inputField_dis_mid';"required autofocus>
+    onblur="this.className='inputField_dis_mid';" />
   </td>
 </tr>
 <tr>
@@ -26,9 +29,12 @@
     </select>
     <input type="text" name="betrag" size="4" value=[sum] class="inputField_dis_mid"
     onfocus="this.className='inputField_en_mid';"
-    onblur="this.className='inputField_dis_mid';"required><span class="fontBold"> €</span></td>
+    onblur="this.className='inputField_dis_mid';" /><span class="fontBold"> €</span></td>
 </tr>
 <tr>
-  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[value]" class="submit"></td>
+  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[value]" class="submit" /></td>
 </tr>
+</table>
 </form>
+</td>
+</tr>
