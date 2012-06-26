@@ -1452,7 +1452,7 @@ function update_mysql_6()
 
     //-> Forum Sortieren funktion: schreibe id von spalte in pos feld um konflikte zu vermeiden!
     $qry = db("SELECT id FROM ".$db['f_skats']."");
-     while($get = _fetch($qry)){
+     while($get = mysql_fetch_array($qry)){
 	   $qrx .= db("UPDATE ".$db['f_skats']." SET `pos` = '".$get['id']."' WHERE `id` = '".$get['id']."'");
      }
     $qry = $qrx;
