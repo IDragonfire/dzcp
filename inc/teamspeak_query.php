@@ -1190,34 +1190,27 @@ class TSStatus
 		foreach ($flags as $flag) $out .= '<img src="../inc/images/tsicons/' . $flag . '" alt="" class="icon" />';
 		return $out;
 	}
-	
-	function renderUsers($parentId, $sub = 0)
-	{
+	function renderUsers($parentId,$i) {
 		$out = "";
-		foreach($this->_userDatas as $user)
-		{
-			if($user["client_type"] == 0 && $user["cid"] == $parentId)
-			{
-				                                              $icon = "16x16_player_off.png";
+		foreach($this->_userDatas as $user) {
+			if($user["client_type"] == 0 && $user["cid"] == $parentId) {
+															  $icon = "16x16_player_off.png";
 				if($user["client_away"] == 1)                 $icon = "16x16_away.png";
 				else if($user["client_flag_talking"] == 1)    $icon = "16x16_player_on.png";
 				else if($user["client_output_hardware"] == 0) $icon = "16x16_hardware_output_muted.png";
 				else if($user["client_output_muted"] == 1)    $icon = "16x16_output_muted.png";
 				else if($user["client_input_hardware"] == 0)  $icon = "16x16_hardware_input_muted.png";
 				else if($user["client_input_muted"] == 1)     $icon = "16x16_input_muted.png";
-				
 				$flags = array();
 				if(isset($this->_channelGroupFlags[$user["client_channel_group_id"]])) $flags[] = $this->_channelGroupFlags[$user["client_channel_group_id"]];
 				$serverGroups = explode(",", $user["client_servergroups"]);
 				foreach ($serverGroups as $serverGroup) if(isset($this->_serverGroupFlags[$serverGroup])) $flags[] = $this->_serverGroupFlags[$serverGroup];
-        
-        $out .= ($sub ? '&nbsp;&nbsp;&nbsp;&nbsp;' : '').'<img src="../inc/images/tsicons/trenner.gif" alt="" class="tsicon" /><img src="../inc/images/tsicons/'.$icon.'" alt="" class="tsicon" />'.rep2($user["client_nickname"]).'&nbsp;'.$this->renderFlags($flags).'&nbsp; <br />';
-
+				$left = $i*20;
+				$out .= '<div style="text-indent:'.$left.'px"><img src="../inc/images/tsicons/trenner.gif" alt="" class="tsicon" /><img src="../inc/images/tsicons/'.$icon.'" alt="" class="tsicon" />'.rep2($user["client_nickname"]).'&nbsp;'.$this->renderFlags($flags).'</div>';
 			}
 		}
 		return $out;
 	}
-	
 	function getChannelInfos($cid, $full = false) {
 		foreach($this->_channelDatas as $channel) {
 			if($channel['cid'] == $cid) return ($full) ? $channel : $channel['channel_name'];
@@ -1242,8 +1235,9 @@ class TSStatus
 		foreach($channels as $sub_channel) {
 			if($channel == $sub_channel['pid']) {
 				$left = $i*20;
-				$out .= "<div style=\"text-indent:".$left."px\"><img src=\"../inc/images/tsicons/trenner.gif\" alt=\"\" class=\"tsicon\" />
+				$out .= "<div style=\"text-indent:".$left."px;\"><img src=\"../inc/images/tsicons/trenner.gif\" alt=\"\" class=\"tsicon\" />
 				<img src=\"".$this->channel_icon($sub_channel)."\" alt=\"\" class=\"tsicon\" />".$this->channel_name($sub_channel,$tpl)."</div>\n";
+				$out .= $this->renderUsers($sub_channel['cid'],$i+1);
 				$out .= $this->sub_channel($channels,$sub_channel['cid'],$i+1,$tpl);
 			}
 		}
@@ -1258,12 +1252,13 @@ class TSStatus
 			foreach($channels as $channel) {
 				if($channel['pid'] == 0) {
 					$out .= "<div><img src=\"".$this->channel_icon($channel)."\" alt=\"\" class=\"tsicon\" />".$this->channel_name($channel,$tpl)."</div>\n";
+					$out .= $this->renderUsers($channel['cid'],0);
 					$out .= $this->sub_channel($channels,$channel['cid'],0,$tpl);
 				}
 			}
 			return $out;
-		} else return $this->error;
-	}	
+		} else return $this->error;	
+	}
 	
   function welcome($s, $cid)
 	{
