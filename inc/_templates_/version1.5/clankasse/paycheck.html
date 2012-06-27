@@ -1,4 +1,7 @@
+<tr>
+<td>
 <form name="paycheck" action="?action=admin&amp;do=editpaycheck&amp;id=[id]" method="post" onsubmit="return(DZCP.submitButton())">
+<table class="hperc" cellspacing="1">
 <tr>
   <td class="contentHead" align="center" colspan="2"><span class="fontBold">[head]</span></td>
 </tr>
@@ -11,14 +14,18 @@
   <td class="contentMainFirst" align="center">
     <input type="text" name="t" value="[t]" class="inputField_dis_small"
     onfocus="this.className='inputField_en_small';"
-    onblur="this.className='inputField_dis_small';"required autofocus>.
+    onblur="this.className='inputField_dis_small';" />.
     <input type="text" name="m" value="[m]" class="inputField_dis_small"
     onfocus="this.className='inputField_en_small';"
-    onblur="this.className='inputField_dis_small';"required>.
+    onblur="this.className='inputField_dis_small';" />.
     <input type="text" name="j" value="[j]" class="inputField_dis_mid"
     onfocus="this.className='inputField_en_mid';"
-    onblur="this.className='inputField_dis_mid';"required></td>
+    onblur="this.className='inputField_dis_mid';" /></td>
 </tr>
 <tr>
-  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[value]" class="submit"></td>
+  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[value]" class="submit" /></td>
+</tr>
+</table>
+</form>
+</td>
 </tr>

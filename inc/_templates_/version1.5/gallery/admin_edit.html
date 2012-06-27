@@ -1,13 +1,16 @@
 <tr>
   <td class="contentHead" colspan="2" align="center"><span class="fontBold">[head]</span></td>
 </tr>
+<tr>
+<td>
 <form name="gallery" action="?action=admin&amp;do=editgallery&amp;id=[id]" method="post" onsubmit="DZCP.submitButton()">
+<table class="hperc" cellspacing="1">
 <tr>
   <td class="contentMainTop" width="25%"><span class="fontBold">[gallery]:</span></td>
   <td class="contentMainFirst" width="75%" align="center">
     <input type="text" name="gallery" value="[e_gal]" class="inputField_dis"
     onfocus="this.className='inputField_en';" 
-    onblur="this.className='inputField_dis';"required autofocus>
+    onblur="this.className='inputField_dis';" />
   </td>
 </tr>
 <tr>
@@ -17,6 +20,9 @@
   </td>
 </tr>
 <tr>
-  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[value]" class="submit"></td>
+  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[value]" class="submit" /></td>
 </tr>
+</table
 </form>
+</td>
+</tr>
