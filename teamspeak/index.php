@@ -253,7 +253,7 @@ $dir = "teamspeak";
                
           $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
           $userstats .= show($dir."/userstats", array("player" => $p,
-                                                      "channel" => $tsstatus->getChannelInfos($user['cid']),
+                                                      "channel" => rep2($tsstatus->getChannelInfos($user['cid'])),
                                                       "misc1" => '',
                                                       "class" => $class,
                                                       "misc2" => '',
