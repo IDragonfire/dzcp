@@ -476,10 +476,10 @@ function autolink($text) {
 	return $text;
 }
 //Diverse BB-Codefunktionen
-function bbcode($txt, $tinymce=0, $no_vid=0,$ts=0)
+function bbcode($txt, $tinymce=0, $no_vid=0,$ts=0,$nolink=0)
 {
   global $settings;
-  if($no_vid == 0 && $settings['urls_linked'] == 1) {
+  if($no_vid == 0 && $settings['urls_linked'] == 1 && $nolink == 0) {
 	  $txt = autolink($txt);
   }
   $txt = str_replace("\\n","<br />",$txt);
