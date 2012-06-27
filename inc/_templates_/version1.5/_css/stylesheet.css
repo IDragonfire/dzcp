@@ -1521,3 +1521,16 @@ input.searchSubmit:hover {
 img.border {
   border: 1px solid #777;
 }
+/*TeamSpeak Channeltree*/
+.tstree_left {
+	float:left;
+	width:80%;
+}
+.tstree_right {
+	float:right;
+	text-align:right;
+	width:20%;
+}
+.tstree_clear {
+	clear:both;
+}
