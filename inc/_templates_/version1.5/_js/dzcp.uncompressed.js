@@ -12,6 +12,7 @@
     init: function() {
       doc.body.id = 'dzcp-engine-1.5';
       $('body').append('<div id="infoDiv"></div>');
+      
 
     	layer = $('#infoDiv')[0];
     	doc.body.onmousemove = DZCP.trackMouse;
@@ -148,16 +149,40 @@
     },
 
   // handle info layer
-    showInfo: function(info) {
+    showInfo: function(info, kats, text, img, width, height) {
       if(typeof(layer) == 'object')
       {
+		var output = '';
+		if(kats && text){
+			var kat=kats.split(";");
+			var texts=text.split(";");
+			var katout = "";
+        	for(var i=0; i<kat.length; ++i) {
+		  		katout = katout + '<tr><td>'+kat[i]+'</td><td>'+texts[i]+'</td></tr>';
+			}
+			output = '<tr><td class="infoTop" colspan="2">'+info+'</td></tr>'+katout+'';
+		}else if(kats && typeof(text)=="undefined"){
+			output = '<tr><td class="infoTop" colspan="2">'+info+'</td></tr><tr><td>'+kats+'</td></tr>';
+		}else{
+			output = '<tr><td>'+info+'</td></tr>';
+		}
+
+		var userimg = "";
+		if(img){
+			userimg = '<tr><td colspan=2 align=center><img src="'+img+'" width="'+width+'" height="'+height+'" alt="" /></td></tr>';
+		}else{
+			userimg = '';
+		}
         layer.innerHTML =
           '<div id="hDiv">' +
           '  <table class="hperc" cellspacing="0" style="height:100%">' +
           '    <tr>' +
           '      <td style="vertical-align:middle">' +
           '        <div id="infoInnerLayer">' +
-          '          <table class="hperc" cellspacing="0">'+info+'</table>' +
+          '          <table class="hperc" cellspacing="0">' +
+          '              '+output+'' +
+          '              '+userimg+'' +
+          '          </table>' +
           '        </div>' +
           '      </td>' +
           '    </tr>' +
@@ -310,6 +335,8 @@
       return confirm(txt + '?');
     },
 
+
+
   // forum search
     hideForumFirst: function() {
       $('#allkat').attr('checked', false);
@@ -405,7 +432,7 @@
       for(var i in ret.embedAttrs) c += i + '="' + ret.embedAttrs[i] + '" '; c += ' ></embed></object>';
 
       doc.write(c);
-    }
+    }	
   }
 
 // load global events
@@ -416,3 +443,4 @@
   $(window).load(function() {
     DZCP.resizeImages();
   });
+

@@ -56,7 +56,7 @@ function kalender($month="",$year="")
             while($get = _fetch($qry))
             {
               $bdays = "set";
-              $titlebd .= '<tr><td><img src=../inc/images/bday.gif class=icon alt= /> '.jsconvert(_kal_birthday.rawautor($get['id'])).'</td></tr>';
+              $titlebd .= jsconvert(_kal_birthday.rawautor($get['id']));
             }
           } else {
             $bdays = "";
@@ -69,7 +69,7 @@ function kalender($month="",$year="")
             while($get = _fetch($qry))
             {
               $cws = "set";
-              $titlecw .= '<tr><td><img src=../inc/images/cw.gif class=icon alt= /> '.jsconvert(_kal_cw.re($get['gegner'])).'</td></tr>';
+              $titlecw .= jsconvert(_kal_cw.re($get['gegner']));
             }
           } else {
             $cws = "";
@@ -82,14 +82,14 @@ function kalender($month="",$year="")
             while($get = _fetch($qry))
             {
               $event = "set";
-              $titleev .= '<tr><td><img src=../inc/images/event.gif class=icon alt= /> '.jsconvert(_kal_event.re($get['title'])).'</td></tr>';
+              $titleev .= jsconvert(_kal_event.re($get['title']));
             }
           } else {
             $event = "";
             $titleev = "";
           }
 
-          $info = 'onmouseover="DZCP.showInfo(\'<tr><td colspan=2 align=center padding=3 class=infoTop>'.cal($i).'.'.$monat.'.'.$jahr.'</td></tr>'.$titlebd.$titlecw.$titleev.'\')" onmouseout="DZCP.hideInfo()"';
+          $info = 'onmouseover="DZCP.showInfo(\''.cal($i).'.'.$monat.'.'.$jahr.'\', \''.$titlebd.$titlecw.$titleev.'\')" onmouseout="DZCP.hideInfo()"';
 
           if($event == "set" || $cws == "set" || $bdays == "set")
             $day = '<a class="navKal" href="../kalender/?m='.$monat.'&amp;y='.$jahr.'&amp;hl='.$i.'" '.$info.'>'.cal($i).'</a>';

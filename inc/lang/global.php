@@ -174,7 +174,7 @@ define('_gametiger_map_results', '<tr><td class="[class]"><a href="hlsw://[ip]">
 ## Kontaktformulare ##
 define('_contact_hp', '<a href="[hp]" target="_blank">[hp]</a>');
 ## Linkus ##
-define('_linkus_bannerlink', '<a href="[url]" target="_blank"><img src="[banner]" alt="[besch]" title="[besch]"></a><p><textarea class="inputField_dis" onfocus="this.className=\'inputField_en\';this.select();" onblur="this.className=\'inputField_dis\';" readonly="yes" name="textarea" style="height: 40px; width: 80%;"><a href="[url]" target="blank"><img src="[banner]" alt="[besch]" title="[besch]"></a></textarea>');
+define('_linkus_bannerlink', '<a href="[url]" target="_blank"><img src="[banner]" alt="[besch]" title="[besch]" /></a><p><textarea class="inputField_dis" onfocus="this.className=\'inputField_en\';this.select();" onblur="this.className=\'inputField_dis\';" readonly="readonly" name="textarea" rows="auto" cols="auto" style="height: 40px; width: 80%;">&lt;a href="[url]" target="blank"&gt;&lt;img src="[banner]" alt="[besch]" title="[besch]" /&gt;&lt;/a&gt;</textarea></p>');
 define('_linkus_admin', '<a href="?action=admin&amp;do=new">[new]</a>');
 ## Admin ##
 define('_news_edit_link', "editnews&amp;id=[id]");
@@ -380,8 +380,8 @@ define('_profil_head_cont', '
 ## User ##
 define('_msg_in_title', '<a href="?action=msg&amp;do=show&amp;id=[id]">[titel]</a>');
 define('_msg_out_title', '<a href="?action=msg&amp;do=showsended&amp;id=[id]">[titel]</a>');
-define('_to_buddys', '<option value=[id] [selected="selected"]>[nick]</option>');
-define('_to_users', '<option value=[id] [selected="selected"]>[nick]</option>');
+define('_to_buddys', '<option value="[id]" [selected="selected"]>[nick]</option>');
+define('_to_users', '<option value="[id]" [selected="selected"]>[nick]</option>');
 define('_to_squads', '<option value="[id]" [sel]>-> [name]</option>');
 define('_gallery_pic_link', '<img src="../inc/images/uploads/usergallery/[user]_[img]" alt="" />');
 define('_gallery_edit_unlink', '../inc/images/uploads/usergallery/[user]_[img]');

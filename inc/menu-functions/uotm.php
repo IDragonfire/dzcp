@@ -16,7 +16,7 @@ function uotm()
       if(!empty($get))
       {
         if($allowHover == 1)
-          $info = 'onmouseover="DZCP.showInfo(\'<tr><td colspan=2 align=center padding=3 class=infoTop>'.rawautor($get['id']).'</td></tr><tr><td width=50%><b>'._age.':</b></td><td>'.getAge($get['bday']).'</td></tr><tr><td colspan=2 align=center>'.jsconvert(userpic($get['id'])).'</td></tr>\')" onmouseout="DZCP.hideInfo()"';
+          $info = 'onmouseover="DZCP.showInfo(\''.fabo_autor($get['id']).'\', \''._age.'\', \''.getAge($get['bday']).'\', \''.hoveruserpic($get['id']).'\')" onmouseout="DZCP.hideInfo()"';
   
   
         $uotm = show("menu/uotm", array("uid" => $userid,

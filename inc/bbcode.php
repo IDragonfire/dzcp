@@ -333,7 +333,7 @@ function glossar($txt)
   for($g=0;$g<=count($gl_words)-1;$g++)
   {
     $desc = regexChars(html_entity_decode($gl_desc[$g]));
-    $info = 'onmouseover="DZCP.showInfo(\'<tr><td colspan=2 padding=3>'.jsconvert($desc).'</td></tr>\')" onmouseout="DZCP.hideInfo()"';
+    $info = 'onmouseover="DZCP.showInfo(\''.jsconvert($desc).'\')" onmouseout="DZCP.hideInfo()"';
 
     $w = regexChars(html_entity_decode($gl_words[$g]));
     $r = "<a class=\"glossar\" href=\"../glossar/?word=".$gl_words[$g]."\" ".$info.">".$gl_words[$g]."</a>";
@@ -1060,6 +1060,15 @@ function cw_result_nopic_raw($punkte, $gpunkte)
 
   return $result;
 }
+//-> Funktion um bei Clanwars Endergebnisse auszuwerten ohne bild und ohne farbe
+function cw_result_nopic_nocolor($punkte, $gpunkte)
+{
+  if($punkte > $gpunkte) $result = $punkte.':'.$gpunkte;
+  elseif($punkte < $gpunkte) $result = $punkte.':'.$gpunkte;
+  else $result = $punkte.':'.$gpunkte;
+
+  return $result;
+}
 //-> Funktion um bei Clanwars Details Endergebnisse auszuwerten ohne bild
 function cw_result_details($punkte, $gpunkte)
 {
@@ -1162,7 +1171,7 @@ function checkpwd($user, $pwd)
 }
 
 //-> Infomeldung ausgeben
-function info($msg, $url, $timeout = 2)
+function info($msg, $url, $timeout = 5)
 {
   global $c;
 
@@ -2128,6 +2137,24 @@ function useravatar($userid, $width=100,$height=100)
 			}	else {
 				$pic = show(_no_userava, array("width" => $width,
                                        "height" => $height));
+			}
+		}
+
+  return $pic;
+}
+// Userpic für Hoverinformationen ausgeben
+function hoveruserpic($userid, $width=170,$height=210)
+{
+  global $picformat;
+
+    foreach($picformat as $endung)
+		{
+			if(file_exists(basePath."/inc/images/uploads/userpics/".$userid.".".$endung))
+			{
+				$pic = "../inc/images/uploads/userpics/".$userid.".".$endung."', '".$width."', '".$height."";
+				break;
+			}	else {
+				$pic = "../inc/images/nopic.gif".$userid.".".$endung."', '".$width."', '".$height."";
 			}
 		}
 

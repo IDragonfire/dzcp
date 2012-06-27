@@ -10,8 +10,8 @@
       <tr>
         <td style="text-align:center">
           <form name="formChange" action="">
-            <select name="changeme" onChange="DZCP.switchuser()" class="dropdown">
-              <option selected="selected"value="" class="dropdownKat">[sort]</option>
+            <select name="changeme" onchange="DZCP.switchuser()"  class="dropdown">
+              <option selected="selected" value="" class="dropdownKat">[sort]</option>
               <option value="?action=userlist">-> [normal] </option>
               <option value="?action=userlist&amp;show=online">-> [online]</option>
               <option value="?action=userlist&amp;show=lastreg">-> [lastreg]</option>
@@ -24,13 +24,13 @@
         </td>
         <td style="text-align:center;width:50%">
           <form id="userlist" action="" method="get" onsubmit="return(DZCP.submitButton())">
-            <input type="hidden" name="action" value="userlist" autofocus>
-            <input type="hidden" name="show" value="search">
+            <input type="hidden" name="action" value="userlist" />
+            <input type="hidden" name="show" value="search" />
             <input class="inputField_dis_mid" type="text" name="search" value="[search]" 
               onfocus="this.className='inputField_en_mid';if(this.value=='[search]')this.value=''" 
-              onblur="this.className='inputField_dis_mid';if(this.value=='')this.value='[search]'">
+              onblur="this.className='inputField_dis_mid';if(this.value=='')this.value='[search]'" />
             &nbsp;&nbsp;
-            <input id="contentSubmit" type="submit" class="submit" value="[value]">
+            <input id="contentSubmit" type="submit" class="submit" value="[value]" />
           </form>
         </td>
       </tr>

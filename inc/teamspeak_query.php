@@ -924,16 +924,16 @@ function defaultInfo($ip,$tPort,$port)
 		if($tsType[0]==1) $tsTypeText = "Freeware Clan Server";
 		else $tsTypeText = "Freeware Public Server";		
 
-		$html = "<tr><td id=\"contentMainFirst\"><span class=\"fontBold\">Server:</span></td></tr>\n";
-		$html .= "<tr><td id=\"contentMainFirst\">".$name."<br /><br /></td></tr>\n";
-		$html .= "<tr><td id=\"contentMainFirst\"><span class=\"fontBold\">Server IP:</span></td></tr>\n";
-		$html .= "<tr><td id=\"contentMainFirst\">".$ip.":".$port."<br /><br /></td></tr>\n";
-		$html .= "<tr><td id=\"contentMainFirst\"><span class=\"fontBold\">Version:</span></td></tr>\n";
-		$html .= "<tr><td id=\"contentMainFirst\">".getTSVersion($ip,$tPort,$port)."<br /><br /></td></tr>\n";
-		$html .= "<tr><td id=\"contentMainFirst\"><span class=\"fontBold\">Type:</span></td></tr>\n";
-		$html .= "<tr><td id=\"contentMainFirst\">".$tsTypeText."<br /><br /></td></tr>\n";
-		$html .= "<tr><td id=\"contentMainFirst\"><span class=\"fontBold\">Welcome Message:</span></td></tr>\n";
-		$html .= "<tr><td id=\"contentMainFirst\">".$welcomeMsg."<br /><br /></td></tr>";
+		$html = "<tr><td class=\"contentMainFirst\"><span class=\"fontBold\">Server:</span></td></tr>\n";
+		$html .= "<tr><td class=\"contentMainFirst\">".$name."<br /><br /></td></tr>\n";
+		$html .= "<tr><td class=\"contentMainFirst\"><span class=\"fontBold\">Server IP:</span></td></tr>\n";
+		$html .= "<tr><td class=\"contentMainFirst\">".$ip.":".$port."<br /><br /></td></tr>\n";
+		$html .= "<tr><td class=\"contentMainFirst\"><span class=\"fontBold\">Version:</span></td></tr>\n";
+		$html .= "<tr><td class=\"contentMainFirst\">".getTSVersion($ip,$tPort,$port)."<br /><br /></td></tr>\n";
+		$html .= "<tr><td class=\"contentMainFirst\"><span class=\"fontBold\">Type:</span></td></tr>\n";
+		$html .= "<tr><td class=\"contentMainFirst\">".$tsTypeText."<br /><br /></td></tr>\n";
+		$html .= "<tr><td class=\"contentMainFirst\"><span class=\"fontBold\">Welcome Message:</span></td></tr>\n";
+		$html .= "<tr><td class=\"contentMainFirst\">".$welcomeMsg."<br /><br /></td></tr>";
 		
 		fclose($fp);
 	}
@@ -1276,14 +1276,14 @@ class TSStatus
 		if($this->error == "")
 		{
       if(empty($cid)) {
-    		$out = "<tr><td id=\"contentMainFirst\"><span class=\"fontBold\">Server:</span></td></tr>\n";
-    		$out .= "<tr><td id=\"contentMainFirst\">".$this->_serverDatas['virtualserver_name']."<br /><br /></td></tr>\n";
-    		$out .= "<tr><td id=\"contentMainFirst\"><span class=\"fontBold\">Server IP:</span></td></tr>\n";
-    		$out .= "<tr><td id=\"contentMainFirst\">".$s['ts_ip'].":".$s['ts_port']."<br /><br /></td></tr>\n";
-    		$out .= "<tr><td id=\"contentMainFirst\"><span class=\"fontBold\">Version:</span></td></tr>\n";
-    		$out .= "<tr><td id=\"contentMainFirst\">".$this->_serverDatas['virtualserver_version']."<br /><br /></td></tr>\n";
-    		$out .= "<tr><td id=\"contentMainFirst\"><span class=\"fontBold\">Welcome Message:</span></td></tr>\n";
-    		$out .= "<tr><td id=\"contentMainFirst\">".rep2($this->_serverDatas['virtualserver_welcomemessage'])."<br /><br /></td></tr>";
+    		$out = "<tr><td class=\"contentMainFirst\"><span class=\"fontBold\">Server:</span></td></tr>\n";
+    		$out .= "<tr><td class=\"contentMainFirst\">".$this->_serverDatas['virtualserver_name']."<br /><br /></td></tr>\n";
+    		$out .= "<tr><td class=\"contentMainFirst\"><span class=\"fontBold\">Server IP:</span></td></tr>\n";
+    		$out .= "<tr><td class=\"contentMainFirst\">".$s['ts_ip'].":".$s['ts_port']."<br /><br /></td></tr>\n";
+    		$out .= "<tr><td class=\"contentMainFirst\"><span class=\"fontBold\">Version:</span></td></tr>\n";
+    		$out .= "<tr><td class=\"contentMainFirst\">".$this->_serverDatas['virtualserver_version']."<br /><br /></td></tr>\n";
+    		$out .= "<tr><td class=\"contentMainFirst\"><span class=\"fontBold\">Welcome Message:</span></td></tr>\n";
+    		$out .= "<tr><td class=\"contentMainFirst\">".rep2($this->_serverDatas['virtualserver_welcomemessage'])."<br /><br /></td></tr>";
       } else {
         $channel = $this->getChannelInfos($cid, true);
     		$out = "<tr><td><span class=\"fontBold\">Channel:</span></td></tr>\n";

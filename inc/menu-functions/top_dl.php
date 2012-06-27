@@ -10,7 +10,7 @@ function top_dl()
     if($allowHover == 1)
     {
       $getkat = _fetch(db("SELECT name FROM ".$db['dl_kat']." WHERE id = '".$get['kat']."'"));
-      $info = 'onmouseover="DZCP.showInfo(\'<tr><td colspan=2 align=center padding=3 class=infoTop>'.jsconvert(re($get['download'])).'</td></tr><tr><td><b>'._datum.':</b></td><td>'.date("d.m.Y H:i", $get['date'])._uhr.'</td></tr><tr><td><b>'._dl_dlkat.':</b></td><td>'.jsconvert(re($getkat['name'])).'</td></tr><tr><td><b>'._hits.':</b></td><td>'.$get['hits'].'</td></tr>\')" onmouseout="DZCP.hideInfo()"';
+      $info = 'onmouseover="DZCP.showInfo(\''.jsconvert(re($get['download'])).'\', \''._datum.';'._dl_dlkat.';'._hits.'\', \''.date("d.m.Y H:i", $get['date'])._uhr.';'.jsconvert(re($getkat['name'])).';'.$get['hits'].'\')" onmouseout="DZCP.hideInfo()"';
     }
 
     $top_dl .= show("menu/top_dl", array("id" => $get['id'],

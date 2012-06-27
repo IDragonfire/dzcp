@@ -34,9 +34,9 @@ function team($tID = '')
         $i = 0;
       }
 
-      $status = ($getm['status'] == 1 || $getm['level'] == 1) ? _aktiv : _inaktiv;
+      $status = ($getm['status'] == 1 || $getm['level'] == 1) ? "aktiv" : "inaktiv";
 
-      $info = 'onmouseover="DZCP.showInfo(\'<tr><td colspan=2 align=center padding=3 class=infoTop>'.rawautor($getm['id']).'</td></tr><tr><td width=80px><b>'._posi.':</b></td><td>'.getrank($getm['id'],$get['id']).'</td></tr><tr><td><b>'._status.':</b></td><td>'.$status.'</td></tr><tr><td><b>'._age.':</b></td><td>'.getAge($getm['bday']).'</td></tr><tr><td colspan=2 align=center>'.jsconvert(userpic($getm['id'])).'</td></tr>\')" onmouseout="DZCP.hideInfo()"';
+      $info = 'onmouseover="DZCP.showInfo(\''.fabo_autor($getm['id']).'\', \''._posi.';'._status.';'._age.'\', \''.getrank($getm['id'],$get['id']).';'.$status.';'.getAge($getm['bday']).'\', \''.hoveruserpic($getm['id']).'\')" onmouseout="DZCP.hideInfo()"';
 
 
       $member .= show("menu/team_show", array("pic" => userpic($getm['id'],40,50),

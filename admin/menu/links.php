@@ -36,6 +36,7 @@ if(_adminMenu != 'true') exit;
                                                "text" => _links_admin_textlink,
                                                "banner" => _links_admin_bannerlink,
                                                "bchecked" => "checked=\"checked\"",
+											   "bnone" => "",
                                                "tchecked" => "",
                                                "llink" => "",
                                                "lbeschreibung" => "",
@@ -64,8 +65,13 @@ if(_adminMenu != 'true') exit;
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
 
-        if($get['banner'] == 1) $bchecked = "checked=\"checked\"";
-        else $tchecked = "checked=\"checked\"";
+        if($get['banner'] == 1){
+			 $bchecked = "checked=\"checked\"";
+			 $bnone = "";
+        }else{ 
+			$tchecked = "checked=\"checked\"";
+			$bnone = "display:none";
+		}
 
         $linktyp = '<input type="hidden" name="type" value="'.$_GET['type'].'" />';
 
@@ -78,6 +84,7 @@ if(_adminMenu != 'true') exit;
                                                "banner" => _links_admin_bannerlink,
                                                "bchecked" => $bchecked,
                                                "tchecked" => $tchecked,
+											   "bnone" => $bnone,
                                                "llink" => $get['url'],
                                                "lbeschreibung" => re($get['beschreibung']),
                                                "btext" => _links_text,

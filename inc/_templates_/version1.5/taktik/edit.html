@@ -1,9 +1,12 @@
+<tr>
+<td>
 <form name="taktik" action="?action=do&amp;what=update" method="post" onsubmit="return(DZCP.submitButton())">
-<input type="hidden" name="id" value="[id]">
+<input type="hidden" name="id" value="[id]" />
+<input type="hidden" name="datum" value="[datum]" />
+<table class="hperc" cellspacing="1">
 <tr>
   <td class="contentHead" align="center" colspan="2"><span class="fontBold">[edit_head]</span></td>
 </tr>
-<input type="hidden" name="datum" value="[datum]">
 <tr>
   <td class="contentMainTop"><span class="fontBold">[tautor]:</span></td>
   <td class="contentMainFirst" align="center"><span class="fontBold">[autor]</span></td>
@@ -13,7 +16,7 @@
   <td class="contentMainFirst" align="center">
     <input type="text" name="map" class="inputField_dis"
     onfocus="this.className='inputField_en';"
-    onblur="this.className='inputField_dis';" value="[map]">
+    onblur="this.className='inputField_dis';" value="[map]" />
   </td>
 </tr>
 <tr>
@@ -49,6 +52,9 @@
   </td>
 </tr>
 <tr>
-  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[value]" class="submit"></td>
+  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[value]" class="submit" /></td>
 </tr>
+</table>
 </form>
+</td>
+</tr>

@@ -1,17 +1,18 @@
-</table>
-<table class="mainContent" cellspacing="1">
 <tr>
   <td class="contentHead" colspan="3" align="center"><span class="fontBold">[headtitel]</span></td> 
 </tr>
-  <form name="msganswer" action="?action=msg&amp;do=sendanswer" method="post" onsubmit="return(DZCP.submitButton())">
-  <input type="hidden" name="von" value="[von]">
-  <input type="hidden" name="an" value="[an]">
+<tr>
+<td>
+<form name="msganswer" action="?action=msg&amp;do=sendanswer" method="post" onsubmit="return(DZCP.submitButton())">
+  <input type="hidden" name="von" value="[von]" />
+  <input type="hidden" name="an" value="[an]" />
+<table class="mainContent" cellspacing="1">
 <tr> 
   <td class="contentMainTop"><span class="fontBold">[titelhead]:</span></td>
   <td class="contentMainFirst" align="center" colspan="2">
     <input type="text" name="titel" value="[titel]" class="inputField_dis"
     onfocus="this.className='inputField_en';"
-    onblur="this.className='inputField_dis';"autofocus>
+    onblur="this.className='inputField_dis';" />
   </td>
 </tr>
 <tr> 
@@ -24,6 +25,9 @@
   </td>
 </tr>
 <tr>
-  <td class="contentBottom" colspan="3"><input id="contentSubmit" type="submit" value="[value]" class="submit"></td>
+  <td class="contentBottom" colspan="3"><input id="contentSubmit" type="submit" value="[value]" class="submit" /></td>
 </tr>
+</table>
 </form>
+</td>
+</tr>

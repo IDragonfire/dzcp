@@ -395,7 +395,7 @@ case 'show';
                                                 "b2" => $u_b2,
                                                 "security" => _register_confirm,
                                                 "action" => '?action=show&amp;do=add&amp;id='.$_GET['id'],
-                                                "prevurl" => '../news/?action=compreview&id='.$_GET['id'],
+                                                "prevurl" => '../news/?action=compreview&amp;id='.$_GET['id'],
                                                 "lang" => $language,
 										  					    						"id" => $_GET['id'],
 											  						    				"postemail" => "",
@@ -419,7 +419,7 @@ case 'show';
     else $intern = "";
 
     $title = re($get['titel']).' - '.$title;
-    $index = show($dir."/news_show", array("titel" => re($get['titel']),
+    $index = show($dir."/news_show_full", array("titel" => re($get['titel']),
                                            "kat" => re($getkat['katimg']),
                                            "id" => $get['id'],
                                            "comments" => "",
@@ -484,7 +484,7 @@ case 'show';
 																											 "sec" => $dir,
 																											 "form" => $form,
 																											 "preview" => _preview,
-																											 "prevurl" => '../news/?action=compreview&id='.$_GET['id'],
+																											 "prevurl" => '../news/?action=compreview&amp;id='.$_GET['id'],
 																											 "action" => '?action=show&amp;do=add&amp;id='.$_GET['id'],
 																											 "ip" => _iplog_info,
 																											 "lang" => $language,
@@ -593,7 +593,7 @@ case 'show';
                                                  "form" => $form,
                                                  "sec" => $dir,
                                                  "preview" => _preview,
-                                                 "prevurl" => '../news/?action=compreview&do=edit&id='.$_GET['id'].'&cid='.$_GET['cid'],
+                                                 "prevurl" => '../news/?action=compreview&amp;do=edit&amp;id='.$_GET['id'].'&amp;cid='.$_GET['cid'],
                                                  "action" => '?action=show&amp;do=editcom&amp;id='.$_GET['id'].'&amp;cid='.$_GET['cid'],
                                                  "ip" => _iplog_info,
                                                  "lang" => $language,

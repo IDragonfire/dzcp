@@ -269,8 +269,8 @@ define('_clankasse_new', '<form action="" method="get" onsubmit="return(DZCP.sub
       <input type="hidden" name="do" value="new" />
       <input id="contentSubmit" type="submit" class="submit" value="Neuen Beitrag hinzuf&uuml;gen" />
     </form>');
-define('_admin_reg_info', 'Hier kannst du einstellen, ob sich jemand f&uuml;r einen der Bereiche registrieren muss<br />um dort etwas tun zu k&ouml;nnen (Beitr&auml;ge schreiben, einen Download herunterladen, etc)');
-define('_config_c_floods_what', 'Hier kannst du die Zeit in Sekunden einstellen die ein User warten muss,<br />bis er im jeweiligen Bereich was neues posten darf');
+define('_admin_reg_info', 'Hier kannst du einstellen, ob sich jemand f&uuml;r einen der Bereiche registrieren muss um dort etwas tun zu k&ouml;nnen (Beitr&auml;ge schreiben, einen Download herunterladen, etc)');
+define('_config_c_floods_what', 'Hier kannst du die Zeit in Sekunden einstellen die ein User warten muss, bis er im jeweiligen Bereich was neues posten darf');
 define('_confirm_del_shout', 'Soll dieser Shoutboxeintrag wirklich geloescht werden');
 ## ADDED FOR 1.4.9.3
 define('_ergebnisticker_more', 'Weitere Ergebnisse');
@@ -427,7 +427,7 @@ define('_config_fileeditor_head', 'Dateieditor');
 //-----------------------------------------------
 define('_main_info', 'Hier kannst du allgemein Dinge einstellen wie den Seitentitel, das Standardtemplate, die Standardsprache, etc...');
 define('_admin_eml_head', 'Emailvorlagen');
-define('_admin_eml_info', 'Hier kannst du die Emailtemplates aus verschiedenen Bereichen editieren.<br /> Achte darauf, das du die Platzhalter in den Klammern [...] nicht l&ouml;schst!');
+define('_admin_eml_info', 'Hier kannst du die Emailtemplates aus verschiedenen Bereichen editieren. Achte darauf, das du die Platzhalter in den Klammern nicht l&ouml;schst!');
 define('_admin_reg_subj', 'Betreff: Registrierung');
 define('_admin_pwd_subj', 'Betreff: Passwort vergessen');
 define('_admin_nletter_subj', 'Betreff: Newsletter');
@@ -1474,7 +1474,7 @@ define('_forum_admin_addglobal', '<span class="fontWichtig">Globaler</span> Eint
 define('_forum_admin_global', '<span class="fontWichtig">Globaler</span> Eintrag?');
 define('_forum_global', '<span class="fontWichtig">Global:</span>');
 define('_admin_config_badword', 'Badword-Filter');
-define('_admin_config_badword_info', 'Hier kannst du W&ouml;rter angeben, die bei Eingabe mit **** versehen werden.<br /> Die W&ouml;rter m&uuml;ssen mit Komma getrennt werden!');
+define('_admin_config_badword_info', 'Hier kannst du W&ouml;rter angeben, die bei Eingabe mit **** versehen werden. Die W&ouml;rter m&uuml;ssen mit Komma getrennt werden!');
 define('_iplog_info', '<span class="fontBold">Hinweis:</span> Aus Sicherheitsgr&uuml;nden wird deine IP geloggt!');
 define('_logged', 'IP gespeichert');
 define('_info_ip', 'IP-Adresse');
@@ -1706,9 +1706,9 @@ define('_config_c_pfad', 'Script-Pfad');
 define('_config_c_language', 'Default-Sprache');
 define('_config_c_gametiger', 'Gametiger Suchoption');
 define('_config_c_pfadlink', '<a href="../pfad.php" target="_blank">aktueller Pfad</a>');
-define('_config_c_upicsize', 'User: Profilbild');
+define('_config_c_upicsize', 'Global: Uploadgr&ouml;sse Bilder');
 define('_config_c_gallerypics', 'User: Usergalerie');
-define('_config_c_upicsize_what', 'erlaubte Gr&ouml;&szlig;e der Profilbilder in KB');
+define('_config_c_upicsize_what', 'erlaubte Gr&ouml;&szlig;e der Bilder in KB (Newsbilder, Userprofilbilder usw.)');
 define('_config_c_regcode', 'Reg: Sicherheitscode');
 define('_config_c_regcode_what', 'Fragt bei der Registrierung einen Sicherheitscode ab');
 define('_admin_pos', 'Rangbezeichnungen');

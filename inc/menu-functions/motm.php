@@ -25,10 +25,10 @@ function motm()
   $get = _fetch(db("SELECT * FROM ".$db['users']." WHERE id = '".$uid."'"));
   if(!empty($get) && !empty($temparr))
   {
-	  $status = ($get['status'] == 1 || $get['level'] == 1) ? _aktiv : _inaktiv;
+	  $status = ($get['status'] == 1 || $get['level'] == 1) ? "aktiv" : "inaktiv";
 
     if($allowHover == 1)
-      $info = 'onmouseover="DZCP.showInfo(\'<tr><td colspan=2 align=center padding=3 class=infoTop>'.rawautor($get['id']).'</td></tr><tr><td width=80px><b>'._posi.':</b></td><td>'.getrank($get['id']).'</td></tr><tr><td><b>'._status.':</b></td><td>'.$status.'</td></tr><tr><td><b>'._age.':</b></td><td>'.getAge($get['bday']).'</td></tr><tr><td colspan=2 align=center>'.jsconvert(userpic($get['id'])).'</td></tr>\')" onmouseout="DZCP.hideInfo()"';
+      $info = 'onmouseover="DZCP.showInfo(\''.fabo_autor($get['id']).'\', \''._posi.';'._status.';'._age.'\', \''.getrank($get['id']).';'.$status.';'.getAge($get['bday']).'\', \''.hoveruserpic($get['id']).'\')" onmouseout="DZCP.hideInfo()"';
 
 	  $member = show("menu/motm", array("uid" => $get['id'],
                                       "upic" => userpic($get['id'], 130, 161),

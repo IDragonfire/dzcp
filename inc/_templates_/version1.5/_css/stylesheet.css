@@ -1459,10 +1459,18 @@ div#ticker {
   overflow: hidden;
   padding: 0; text-align: center;
 }
+div#dzcpticker {
+  width: 664px;
+  overflow: hidden;
+  padding: 0; text-align: center;
+}
 
 div#ticker,
+div#dzcpticker,
 div#ticker div.scrollDiv,
-div#ticker div.scrollDiv td {
+div#dzcpticker div.scrollDiv,
+div#ticker div.scrollDiv td,
+div#dzcpticker div.scrollDiv td {
   white-space: nowrap;
 }
 

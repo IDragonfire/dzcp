@@ -1,15 +1,18 @@
-[gmaps]
 <tr>
   <td class="contentHead" colspan="2" align="center"><span class="fontBold">[registerhead]</span></td>
 </tr>
+<tr>
+<td>
+[gmaps]
 <form id="adduser" name="adduser" enctype="multipart/form-data" action="?admin=adduser&amp;do=add" method="post" onsubmit="return(DZCP.submitButton())">
 <input id="gmaps_koord" name="gmaps_koord" type="hidden" value="" />
+<table class="hperc" cellspacing="1">
 <tr>
   <td class="contentMainTop" width="25%"><span class="fontBold">[pname]:</span></td>
   <td class="contentMainFirst" align="center">
     <input type="text" name="user" class="inputField_dis"
     onfocus="this.className='inputField_en';"
-    onblur="this.className='inputField_dis';" autofocus/>
+    onblur="this.className='inputField_dis';" />
   </td>
 </tr>
 <tr>
@@ -23,7 +26,7 @@
 <tr>
   <td class="contentMainTop" width="25%"><span class="fontBold">[pemail]:</span></td>
   <td class="contentMainFirst" align="center">
-    <input type="email" name="email" class="inputField_dis"
+    <input type="text" name="email" class="inputField_dis"
     onfocus="this.className='inputField_en';"
     onblur="this.className='inputField_dis';" />
   </td>
@@ -125,4 +128,8 @@
 <table class="mainContent" cellspacing="1" style="margin:0;margin-top:-1px">
 <tr>
   <td class="contentBottom" colspan="3"><input id="contentSubmit" type="submit" value="[value]" onclick="return(getCord())" class="submit" /></td>
+</tr>
+</table>
+</form>
+</td>
 </tr>
