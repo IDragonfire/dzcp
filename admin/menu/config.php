@@ -105,13 +105,13 @@ if(_adminMenu != 'true') exit;
 												 `eml_fabo_npost_subj`   = '".up($_POST['eml_fabo_npost_subj'])."',
 												 `eml_fabo_tedit_subj`   = '".up($_POST['eml_fabo_tedit_subj'])."',
 												 `eml_fabo_pedit_subj`   = '".up($_POST['eml_fabo_pedit_subj'])."',
-                         `eml_reg`            = '".$_POST['eml_reg']."',
-                         `eml_pwd`            = '".$_POST['eml_pwd']."',
-                         `eml_nletter`        = '".$_POST['eml_nletter']."',
-												 `eml_pn`        	  = '".$_POST['eml_pn']."',
-												 `eml_fabo_npost`     = '".$_POST['eml_fabo_npost']."',
-												 `eml_fabo_tedit`     = '".$_POST['eml_fabo_tedit']."',
-												 `eml_fabo_pedit`     = '".$_POST['eml_fabo_pedit']."',
+                         `eml_reg`            = '".up($_POST['eml_reg'])."',
+                         `eml_pwd`            = '".up($_POST['eml_pwd'])."',
+                         `eml_nletter`        = '".up($_POST['eml_nletter'])."',
+												 `eml_pn`        	  = '".up($_POST['eml_pn'])."',
+												 `eml_fabo_npost`     = '".up($_POST['eml_fabo_npost'])."',
+												 `eml_fabo_tedit`     = '".up($_POST['eml_fabo_tedit'])."',
+												 `eml_fabo_pedit`     = '".up($_POST['eml_fabo_pedit'])."',
                          `mailfrom`           = '".up($_POST['mailfrom'])."',
                          `tmpdir`             = '".up($_POST['tmpdir'])."',
                          `persinfo`           = '".((int)$_POST['persinfo'])."',
@@ -211,6 +211,7 @@ if(_adminMenu != 'true') exit;
 				if($gets['double_post'] == 1)      $sel_dp = "selected=\"selected\"";
 				if($gets['forum_vote'] == 1)       $sel_fv = "selected=\"selected\"";
 				if($gets['gb_activ'] == 1)         $sel_gba = "selected=\"selected\"";
+        $wysiwyg = '_word';
         
         $show_ = show($dir."/form_config", array("limits" => _config_c_limits,
                                                  "limits_what" => _config_c_limits_what,
