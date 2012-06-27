@@ -1273,7 +1273,7 @@ class TSStatus
 		else if($channel["channel_flag_password"] == 1) $icon = "16x16_channel_yellow.png";
 		return "../inc/images/tsicons/".$icon;
 	}
-	function channel_name($channel,$tpl=false) {
+	function channel_name($channel,$tpl=false,$spacer=0) {
 		return '<a href="'.($tpl ? '?cID='.$channel['cid'].'' : 'javascript:DZCP.popup(\'../teamspeak/login.php?ts3&amp;cName='.rep2($channel['channel_name']).'\', \'420\', \'100\')').'" 
 		class="navTeamspeak" style="font-weight:bold;white-space:nowrap" title="'.rep2($channel['channel_name']).'">'.rep2($channel['channel_name']).'</a>'."\n";
 	}
@@ -1301,7 +1301,11 @@ class TSStatus
 			$out .= "<div class=\"tstree_clear\"></div>\n";
 			foreach($channels as $channel) {
 				if($channel['pid'] == 0) {
-					$out .= "<div class=\"tstree_left\"><img src=\"".$this->channel_icon($channel)."\" alt=\"\" class=\"tsicon\" />".$this->channel_name($channel,$tpl)."</div>\n";
+					if(preg_match("/[(.*?)spacer(.*?)]/",$channel['channel_name'])) {
+						$out .= "<div class=\"tstree_left\">".$this->channel_name($channel,$tpl,1)."</div>\n";
+					} else {
+						$out .= "<div class=\"tstree_left\"><img src=\"".$this->channel_icon($channel)."\" alt=\"\" class=\"tsicon\" />".$this->channel_name($channel,$tpl)."</div>\n";
+					}
 					$out .= "<div class=\"tstree_right\">".$this->renderFlags($channel).$this->icon($channel['channel_icon_id'])."</div>\n";
 					$out .= "<div class=\"tstree_clear\"></div>\n";
 					$out .= $this->renderUsers($channel['cid'],0);
@@ -1342,6 +1346,7 @@ class TSStatus
 }
 
  function rep2($var) {
+	$var = preg_replace("/\[(.*?)spacer(.*?)\]/","",$var);
     return strtr($var, array(
       chr(194) => '',
       '\/' => '/',
