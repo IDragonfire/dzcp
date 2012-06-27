@@ -1223,7 +1223,13 @@ class TSStatus
 	function icon($id) {
 		if($id != 0) {
 			if($id < 0) $id = $id+4294967296;
+			if($id == "100" || $id == "200") {
+				$pfad = "../inc/images/tsicons/changroup_".$id.".png";
+			} elseif($id == "300") {
+				$pfad = "../inc/images/tsicons/servergroup_".$id.".png";
+			} else {
 			$pfad = "../inc/images/tsicons/server/".$id.".png";
+			}
 			if(!file_exists($pfad))  {
 				$dl = $this->parseLine($this->sendCommand($this->_socket, "ftinitdownload clientftfid=".rand(1,99)." name=\/icon_".$id." cid=0 cpw= seekpos=0"));
 				$ft = @fsockopen($this->_host, $dl[0]['port'], $errnum, $errstr, 2);
