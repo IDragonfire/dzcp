@@ -349,6 +349,21 @@ function glossar($txt)
 function bbcodetolow($founds) {
 	return "[".strtolower($founds[1])."]".trim($founds[2])."[/".strtolower($founds[3])."]";
 }
+function urladdhttp($founds) {
+	$protocols = array("http://","https://","ftp://","ftps://","mailto:");
+	$add = true;
+	foreach ($protocols as $protocol) {
+        if((strpos(substr($founds[1],0,mb_strlen($protocol)),$protocol) !== false)) {
+			$add = false;
+			break;
+		}
+    }
+	if($add) {
+		return "href=\"http://".$founds[1]."\"";
+	} else {
+		return "href=\"".$founds[1]."\"";
+	}
+}
 //-> Replaces
 function replace($txt,$type=0,$no_vid_tag=0)
 {
@@ -396,6 +411,7 @@ function replace($txt,$type=0,$no_vid_tag=0)
 									'
 								   ), $txt);
   }
+  $txt = preg_replace_callback("/href=\"(.*?)\"/","urladdhttp",$txt);
 
   $txt = str_replace("\"","&#34;",$txt);
   $txt = preg_replace("#(\w){1,1}(&nbsp;)#Uis","$1 ",$txt);
@@ -468,9 +484,20 @@ function re_bbcode($txt)
 
 	return $txt;
 }
+//URLs automatisch verlinken
+function autolink($text) {
+  	$pattern = '#(^|[^\"=]{1})(http://|ftp://|www.)([^\s<>]+)([\s\n<>]|$)#sm';
+ 	$text = preg_replace($pattern,"\\1<a target=\"_blank\" href=\"\\2\\3\">\\2\\3</a>\\4",$text);
+	$text = str_replace("href=\"www.", "href=\"http://www.",$text);
+	return $text;
+}
 //Diverse BB-Codefunktionen
 function bbcode($txt, $tinymce=0, $no_vid=0)
 {
+  global $settings;
+  if($no_vid == 0 && $settings['urls_linked'] == 1) {
+	  $txt = autolink($txt);
+  }
   $txt = str_replace("\\n","<br />",$txt);
   $txt = BadwordFilter($txt);
   $txt = replace($txt,$tinymce,$no_vid);

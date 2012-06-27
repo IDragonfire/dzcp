@@ -1446,13 +1446,13 @@ function update_mysql_6()
     db("ALTER TABLE `".$db['settings']."` CHANGE `i_autor` `i_autor` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
     db("ALTER TABLE `".$db['gb']."` CHANGE `hp` `hp` VARCHAR(130) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
     db("ALTER TABLE `".$db['permissions']."` ADD `gs_showpw` INT(1) NOT NULL DEFAULT '0'");
-
+    db("ALTER TABLE `".$db['settings']."` ADD `urls_linked` INT(1) NOT NULL DEFAULT '0'");
     //-> Forum Sortieren
     db("ALTER TABLE ".$db['f_skats']." ADD `pos` int(5) NOT NULL");
 
     //-> Forum Sortieren funktion: schreibe id von spalte in pos feld um konflikte zu vermeiden!
     $qry = db("SELECT id FROM ".$db['f_skats']."");
-     while($get = _fetch($qry)){
+     while($get = mysql_fetch_array($qry)){
 	   $qrx .= db("UPDATE ".$db['f_skats']." SET `pos` = '".$get['id']."' WHERE `id` = '".$get['id']."'");
      }
     $qry = $qrx;

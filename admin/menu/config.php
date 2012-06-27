@@ -118,7 +118,8 @@ if(_adminMenu != 'true') exit;
                          `wmodus`             = '".((int)$_POST['wmodus'])."',
                          `balken_cw`          = '".up($_POST['balken_cw'])."',
                          `balken_vote`        = '".up($_POST['balken_vote'])."',
-                         `balken_vote_menu`   = '".up($_POST['balken_vote_menu'])."'
+                         `balken_vote_menu`   = '".up($_POST['balken_vote_menu'])."',
+                         `urls_linked`   = '".up($_POST['urls_linked'])."'
                      WHERE id = 1");
   
           if(!empty($_POST['gmaps_key']))
@@ -211,6 +212,7 @@ if(_adminMenu != 'true') exit;
 				if($gets['double_post'] == 1)      $sel_dp = "selected=\"selected\"";
 				if($gets['forum_vote'] == 1)       $sel_fv = "selected=\"selected\"";
 				if($gets['gb_activ'] == 1)         $sel_gba = "selected=\"selected\"";
+                                if($gets['urls_linked'] == 1)      $sel_url = "selected=\"selected\"";
         $wysiwyg = '_word';
         
         $show_ = show($dir."/form_config", array("limits" => _config_c_limits,
@@ -459,7 +461,9 @@ if(_adminMenu != 'true') exit;
                                                  "balken_vote_menu_head" => _config_balken_vote_menu_head,
                                                  "balken_cw" => $gets['balken_cw'],
                                                  "balken_vote" => $gets['balken_vote'],
-                                                 "balken_vote_menu" => $gets['balken_vote_menu']));
+                                                 "balken_vote_menu" => $gets['balken_vote_menu'],
+                                                 "urls_linked" => _config_url_linked_head,
+                                                 "sel_url" => $sel_url));
   
         $show = show($dir."/form", array("head" => _config_global_head,
                                          "what" => "config",
