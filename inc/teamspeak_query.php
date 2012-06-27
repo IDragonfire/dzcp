@@ -1048,6 +1048,8 @@ class TSStatus
 		$this->_serverDatas = array();
 		$this->_channelDatas = array();
 		$this->_userDatas = array();
+		$this->_serverGroup = array();
+		$this->_channelGroup = array();
 		$this->_serverGroupFlags = array();
 		$this->_channelGroupFlags = array();
 		
@@ -1087,13 +1089,14 @@ class TSStatus
 		if($response !== false && empty($this->error))
 		{
 			$lines = explode("\n\rerror id=0 msg=ok\n\r", $response);
-			if(count($lines) == 4)
+			if(count($lines) == 6)
 			{
 				$this->_serverDatas = $this->parseLine($lines[0]);
 				$this->_serverDatas = $this->_serverDatas[0];
-				 
 				$this->_channelDatas = $this->parseLine($lines[1]);
 				$this->_userDatas = $this->parseLine($lines[2]);
+				$this->_serverGroup = $this->parseLine($lines[3]);
+				$this->_channelGroup = $this->parseLine($lines[4]);
 				usort($this->_userDatas, array($this, "sortUsers"));
 				
 				$this->_updated = true;
@@ -1125,12 +1128,11 @@ class TSStatus
 	    return $vars;
 	    }
 
-	function queryServer()
-	{
+	function queryServer() {
 		@set_time_limit(10);
 		$fp = @fsockopen($this->_host, $this->_qport, $errno, $errstr, 2);
+		$this->_socket = $fp;
 		@stream_set_timeout($fp, 2, 0); @stream_set_blocking($fp, true);
-		
 		if($fp)
 		{
 	
@@ -1140,9 +1142,10 @@ class TSStatus
 			{
 				$response="error id=0 msg=ok" ;
 				$response .= $this->sendCommand($fp, "serverinfo");
-				
-				$response .= $this->sendCommand($fp, "channellist -topic -flags -voice -limits");
-				$response .= $this->sendCommand($fp, "clientlist -uid -away -voice -groups -times");
+				$response .= $this->sendCommand($fp, "channellist -topic -flags -voice -limits -icon");
+				$response .= $this->sendCommand($fp, "clientlist -uid -times -away -voice -groups -info -icon -country");
+				$response .= $this->sendCommand($fp, "servergrouplist");
+				$response .= $this->sendCommand($fp, "channelgrouplist");
 			}
 	
 			if($this->decodeUTF8) $response = utf8_decode($response);
@@ -1184,11 +1187,59 @@ class TSStatus
 		return strcasecmp($a["client_nickname"], $b["client_nickname"]);
 	}
 	
-	function renderFlags($flags)
+	function renderFlags($channel)
 	{
+		$flags = array();
+		if($channel["channel_flag_default"] == 1) $flags[] = '16x16_default.png';
+		if($channel["channel_needed_talk_power"] > 0) $flags[] = '16x16_moderated.png';
+		if($channel["channel_flag_password"] == 1) $flags[] = '16x16_register.png';
 		$out = "";
 		foreach ($flags as $flag) $out .= '<img src="../inc/images/tsicons/' . $flag . '" alt="" class="icon" />';
 		return $out;
+	}
+	function user_groups($user) {
+		$server = array();
+		$server = explode(",",$user['client_servergroups']);
+		$channel = array();
+		$channel = explode(",",$user['client_channel_group_id']);
+		$out = "";
+		foreach($this->_channelGroup as $cgroup) {
+			if(in_array($cgroup['cgid'],$channel)) {
+				$out .= $this->icon($cgroup['iconid']);
+			}
+		}
+		foreach($this->_serverGroup as $sgroup) {
+			if(in_array($sgroup['sgid'],$server)) {
+				$out .= $this->icon($sgroup['iconid']);
+			}
+		}
+		$out .= $this->icon($user['client_icon_id']);
+		if(!file_exists($country = "../inc/images/flaggen/".strtolower($user['client_country']).".gif")) {
+			$country = "../inc/images/flaggen/nocountry.gif";
+		}
+		$out .= "<img src=\"".$country."\" alt=\"\" class=\"tsicon\" />";
+		return $out;
+	}
+	function icon($id) {
+		if($id != 0) {
+			if($id < 0) $id = $id+4294967296;
+			$pfad = "../inc/images/tsicons/server/".$id.".png";
+			if(!file_exists($pfad))  {
+				$dl = $this->parseLine($this->sendCommand($this->_socket, "ftinitdownload clientftfid=".rand(1,99)." name=\/icon_".$id." cid=0 cpw= seekpos=0"));
+				$ft = @fsockopen($this->_host, $dl[0]['port'], $errnum, $errstr, 2);
+				if($ft) {
+					fputs($ft, $dl[0]['ftkey']);
+					$img = '';
+					while(!feof($ft)) {
+						$img .= fgets($ft, 4096);
+					}
+					$file = fopen($pfad,"w");
+					fwrite($file, $img);
+					fclose($file);
+				}
+			}
+			return "<img src=\"".$pfad."\" alt=\"\" class=\"tsicon\" />";
+		}
 	}
 	function renderUsers($parentId,$i) {
 		$out = "";
@@ -1201,12 +1252,11 @@ class TSStatus
 				else if($user["client_output_muted"] == 1)    $icon = "16x16_output_muted.png";
 				else if($user["client_input_hardware"] == 0)  $icon = "16x16_hardware_input_muted.png";
 				else if($user["client_input_muted"] == 1)     $icon = "16x16_input_muted.png";
-				$flags = array();
-				if(isset($this->_channelGroupFlags[$user["client_channel_group_id"]])) $flags[] = $this->_channelGroupFlags[$user["client_channel_group_id"]];
-				$serverGroups = explode(",", $user["client_servergroups"]);
-				foreach ($serverGroups as $serverGroup) if(isset($this->_serverGroupFlags[$serverGroup])) $flags[] = $this->_serverGroupFlags[$serverGroup];
+				
 				$left = $i*20;
-				$out .= '<div style="text-indent:'.$left.'px"><img src="../inc/images/tsicons/trenner.gif" alt="" class="tsicon" /><img src="../inc/images/tsicons/'.$icon.'" alt="" class="tsicon" />'.rep2($user["client_nickname"]).'&nbsp;'.$this->renderFlags($flags).'</div>';
+				$out .= "<div style=\"text-indent:".$left."px;float:left; width:80%;\"><img src=\"../inc/images/tsicons/trenner.gif\" alt=\"\" class=\"tsicon\" /><img src=\"../inc/images/tsicons/".$icon."\" alt=\"\" class=\"tsicon\" />".rep2($user["client_nickname"])."</div>\n";
+				$out .= "<div style=\"float:right; width:20%; text-align:right;\">".$this->user_groups($user)."</div>\n";
+				$out .= "<div style=\"clear:both;\"></div>\n";
 			}
 		}
 		return $out;
@@ -1224,19 +1274,17 @@ class TSStatus
 		return "../inc/images/tsicons/".$icon;
 	}
 	function channel_name($channel,$tpl=false) {
-		$flags = array();
-		if($channel["channel_flag_default"] == 1) $flags[] = '16x16_default.png';
-		if($channel["channel_needed_talk_power"] > 0) $flags[] = '16x16_moderated.png';
-		if($channel["channel_flag_password"] == 1) $flags[] = '16x16_register.png';
 		return '<a href="'.($tpl ? '?cID='.$channel['cid'].'' : 'javascript:DZCP.popup(\'../teamspeak/login.php?ts3&amp;cName='.rep2($channel['channel_name']).'\', \'420\', \'100\')').'" 
-		class="navTeamspeak" style="font-weight:bold;white-space:nowrap" title="'.rep2($channel['channel_name']).'">'.rep2($channel['channel_name']).' '.$this->renderFlags($flags).'</a>'."\n";
+		class="navTeamspeak" style="font-weight:bold;white-space:nowrap" title="'.rep2($channel['channel_name']).'">'.rep2($channel['channel_name']).'</a>'."\n";
 	}
 	function sub_channel($channels,$channel,$i,$tpl) {
 		foreach($channels as $sub_channel) {
 			if($channel == $sub_channel['pid']) {
 				$left = $i*20;
-				$out .= "<div style=\"text-indent:".$left."px;\"><img src=\"../inc/images/tsicons/trenner.gif\" alt=\"\" class=\"tsicon\" />
+				$out .= "<div class=\"tstree_left\" style=\"text-indent:".$left."px;\"><img src=\"../inc/images/tsicons/trenner.gif\" alt=\"\" class=\"tsicon\" />
 				<img src=\"".$this->channel_icon($sub_channel)."\" alt=\"\" class=\"tsicon\" />".$this->channel_name($sub_channel,$tpl)."</div>\n";
+				$out .= "<div class=\"tstree_right\">".$this->renderFlags($sub_channel).$this->icon($sub_channel['channel_icon_id'])."</div>\n";
+				$out .= "<div class=\"tstree_clear\"></div>\n";
 				$out .= $this->renderUsers($sub_channel['cid'],$i+1);
 				$out .= $this->sub_channel($channels,$sub_channel['cid'],$i+1,$tpl);
 			}
@@ -1248,10 +1296,14 @@ class TSStatus
 		if(!$this->_updated) $this->update();
 		if($this->error == '') {	
 			$channels = $this->_channelDatas;
-			$out = '<div><img src="../inc/images/tsicons/16x16_server_green.png" alt="" class="tsicon" /> <span class="fontBold">'.$this->_serverDatas["virtualserver_name"].'</span></div>';
+			$out = "<div class=\"tstree_left\"><img src=\"../inc/images/tsicons/16x16_server_green.png\" alt=\"\" class=\"tsicon\" /> <span class=\"fontBold\">".$this->_serverDatas["virtualserver_name"]."</span></div>\n";
+			$out .= "<div class=\"tstree_right\">".$this->icon($this->_serverDatas["virtualserver_icon_id"])."</div>\n";
+			$out .= "<div class=\"tstree_clear\"></div>\n";
 			foreach($channels as $channel) {
 				if($channel['pid'] == 0) {
-					$out .= "<div><img src=\"".$this->channel_icon($channel)."\" alt=\"\" class=\"tsicon\" />".$this->channel_name($channel,$tpl)."</div>\n";
+					$out .= "<div class=\"tstree_left\"><img src=\"".$this->channel_icon($channel)."\" alt=\"\" class=\"tsicon\" />".$this->channel_name($channel,$tpl)."</div>\n";
+					$out .= "<div class=\"tstree_right\">".$this->renderFlags($channel).$this->icon($channel['channel_icon_id'])."</div>\n";
+					$out .= "<div class=\"tstree_clear\"></div>\n";
 					$out .= $this->renderUsers($channel['cid'],0);
 					$out .= $this->sub_channel($channels,$channel['cid'],0,$tpl);
 				}
@@ -1259,9 +1311,7 @@ class TSStatus
 			return $out;
 		} else return $this->error;	
 	}
-	
-  function welcome($s, $cid)
-	{
+	function welcome($s, $cid) {
 		if(!$this->_updated) $this->update();
     
 		if($this->error == "")
@@ -1276,14 +1326,14 @@ class TSStatus
     		$out .= "<tr><td id=\"contentMainFirst\"><span class=\"fontBold\">Welcome Message:</span></td></tr>\n";
     		$out .= "<tr><td id=\"contentMainFirst\">".rep2($this->_serverDatas['virtualserver_welcomemessage'])."<br /><br /></td></tr>";
       } else {
-        $channel = $this->getChannelInfos($cid, true);
+        	$channel = $this->getChannelInfos($cid, true);
     		$out = "<tr><td><span class=\"fontBold\">Channel:</span></td></tr>\n";
     		$out .= "<tr><td>".rep2($channel['channel_name'])."<br /><br /></td></tr>\n";
     		$out .= "<tr><td><span class=\"fontBold\">Topic:</span></td></tr>\n";
     		$out .= "<tr><td>".(empty($channel['channel_topic']) ? '-' : rep2($channel['channel_topic']))."<br /><br /></td></tr>\n";
     		$out .= "<tr><td><span class=\"fontBold\">User in channel:</span></td></tr>\n";
-    		$out .= "<tr><td>".$channel['total_clients'].($channel['channel_maxclients'] == -1 ? '' : '/'.$channel['channel_maxclients'])."<br /><br /></td></tr>\n";
-    		$out .= "<tr><td><br /><input type=\"button\" id=\"submit\" onclick=\"DZCP.popup('login.php?ts3&amp;cName=".rep2($channel['channel_name'])."', '420', '150');\" value=\"Join Channel\" class=\"submit\" /></td></tr>\n";
+    		$out .= "<tr><td>".($channel['channel_flag_default'] == 1 ? $channel['total_clients']-1 : $channel['total_clients']).($channel['channel_maxclients'] == -1 ? '' : '/'.$channel['channel_maxclients'])."<br /><br /></td></tr>\n";
+    		$out .= "<tr><td><input type=\"button\" id=\"submit\" onclick=\"DZCP.popup('login.php?ts3&amp;cName=".rawurlencode($channel['channel_name'])."', '420', '150');\" value=\"Join Channel\" class=\"submit\" /></td></tr>\n";
       }
 		} else return $this->error;
 		

@@ -492,7 +492,7 @@ function autolink($text) {
 	return $text;
 }
 //Diverse BB-Codefunktionen
-function bbcode($txt, $tinymce=0, $no_vid=0)
+function bbcode($txt, $tinymce=0, $no_vid=0,$ts=0)
 {
   global $settings;
   if($no_vid == 0 && $settings['urls_linked'] == 1) {
@@ -503,7 +503,9 @@ function bbcode($txt, $tinymce=0, $no_vid=0)
   $txt = replace($txt,$tinymce,$no_vid);
   $txt = highlight_text($txt);
   $txt = re_bbcode($txt);
-  $txt = strip_tags($txt,"<br><object><em><param><embed><strong><iframe><hr><table><tr><td><div><span><a><b><font><i><u><p><ul><ol><li><br /><img>");
+  if($ts == 0) {
+  	$txt = strip_tags($txt,"<br><object><em><param><embed><strong><iframe><hr><table><tr><td><div><span><a><b><font><i><u><p><ul><ol><li><br /><img>");
+  }
   $txt = smileys($txt);
 
   if($no_vid == 0)
