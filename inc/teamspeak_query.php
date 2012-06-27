@@ -1,7 +1,7 @@
 <?php
 /*
-  TS2 Class © by iklas Håkansson <niklas.hk@telia.com>
-  TS3 Class © by Sebastien Gerard <sebeuu@gmail.com>
+  TS2 Class  by iklas Hkansson <niklas.hk@telia.com>
+  TS3 Class  by Sebastien Gerard <sebeuu@gmail.com>
   
   modified by CodeKing for DZCP 08-01-2010 (mm-dd-yyyy)
 */
@@ -976,7 +976,7 @@ function channelInfo($ip,$tPort,$port,$cID)
 		$html .= "<tr><td>".$cUser."/".removeChar($max)."<br /><br /></td></tr>\n";
 		$html .= "<tr><td><span class=\"fontBold\">Codec:</span></td></tr>\n";
 		$html .= "<tr><td>".getCodec($codec)."<br /><br /></td></tr>\n";
-		$name = str_replace("'","¶",$name);
+		$name = str_replace("'","",$name);
 		$html .= "<tr><td><br /><input type=\"button\" id=\"submit\" onclick=\"DZCP.popup('login.php?cName=".removeChar($name)."', '420', '150');\" value=\"Join Channel\" class=\"submit\" /></td></tr>\n";
 	} else {
 		$html = "<tr><td>Channel is deleted!</td></tr>\n";
@@ -1055,7 +1055,7 @@ class TSStatus
 		
 		$this->error = '';
     $this->serverError = '';
-		$this->decodeUTF8 = true;
+		$this->decodeUTF8 = false;
 		
 		$this->setServerGroupFlag(6, 'servergroup_300.png');
 		$this->setServerGroupFlag(10, 'wappen.png');
@@ -1223,7 +1223,13 @@ class TSStatus
 	function icon($id) {
 		if($id != 0) {
 			if($id < 0) $id = $id+4294967296;
+			if($id == "100" || $id == "200") {
+				$pfad = "../inc/images/tsicons/changroup_".$id.".png";
+			} elseif($id == "300") {
+				$pfad = "../inc/images/tsicons/servergroup_".$id.".png";
+			} else {
 			$pfad = "../inc/images/tsicons/server/".$id.".png";
+			}
 			if(!file_exists($pfad))  {
 				$dl = $this->parseLine($this->sendCommand($this->_socket, "ftinitdownload clientftfid=".rand(1,99)." name=\/icon_".$id." cid=0 cpw= seekpos=0"));
 				$ft = @fsockopen($this->_host, $dl[0]['port'], $errnum, $errstr, 2);
@@ -1346,17 +1352,31 @@ class TSStatus
 }
 
  function rep2($var) {
+    $var = secure_dzcp($var);
 	$var = preg_replace("/\[(.*?)spacer(.*?)\]/","",$var);
     return strtr($var, array(
       chr(194) => '',
       '\/' => '/',
       '\s' => ' ',
       '\p' => '|',
-      'Ã¶' => 'ö',
+      'Ã¶' => '',
       '<' => '&lt;',
       '>' => '&gt;',
       '[URL]' => '',
       '[/URL]' => ''
     ));
 }
+function secure_dzcp($replace) {
+    $replace=str_replace("\"", "&quot;", $replace);
+    /* Only do the slow convert if there are 8-bit characters */
+    /* avoid using 0xA0 (\240) in ereg ranges. RH73 does not like that */
+    if (! ereg("[\200-\237]", $replace) and ! ereg("[\241-\377]", $replace))
+    return $replace;
+    // decode three byte unicode characters
+    $replace = preg_replace("/([\340-\357])([\200-\277])([\200-\277])/e","'&#'.((ord('\\1')-224)*4096 + (ord('\\2')-128)*64 + (ord('\\3')-128)).';'",$replace);
+    // decode two byte unicode characters
+    $replace = preg_replace("/([\300-\337])([\200-\277])/e","'&#'.((ord('\\1')-192)*64+(ord('\\2')-128)).';'",$replace);
+    return $replace;
+}
+
 ?>
