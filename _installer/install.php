@@ -85,6 +85,8 @@ if(isset($_GET['agb']) && $_GET['agb'])
         _c('upload/index.php',$pfad,$host,$user,$pwd);
         _c('inc',$pfad,$host,$user,$pwd);
         _c('inc/images',$pfad,$host,$user,$pwd);
+        _c('inc/images/tsicons/',$pfad,$host,$user,$pwd);
+        _c('inc/images/tsicons/server/',$pfad,$host,$user,$pwd);
         _c('inc/images/clanwars',$pfad,$host,$user,$pwd);
         _c('inc/images/gameicons',$pfad,$host,$user,$pwd);
         _c('inc/images/maps',$pfad,$host,$user,$pwd);
