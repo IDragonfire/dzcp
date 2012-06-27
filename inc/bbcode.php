@@ -486,7 +486,7 @@ function re_bbcode($txt)
 }
 //URLs automatisch verlinken
 function autolink($text) {
-  	$pattern = '#(^|[^\"=]{1})(http://|ftp://|www.)([^\s<>]+)([\s\n<>]|$)#sm';
+  	$pattern = '#(^|[^\"=]{1})(http://|https://|ftp://|www.)([^\s<>]+)([\s\n<>]|$)#sm';
  	$text = preg_replace($pattern,"\\1<a target=\"_blank\" href=\"\\2\\3\">\\2\\3</a>\\4",$text);
 	$text = str_replace("href=\"www.", "href=\"http://www.",$text);
 	return $text;
