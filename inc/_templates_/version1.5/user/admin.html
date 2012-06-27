@@ -1,4 +1,7 @@
+<tr>
+<td>
 <form name="edituser" action="?action=admin&amp;do=update&amp;user=[user]" method="post" onsubmit="return(DZCP.submitButton())" autocomplete="off">
+<table class="hperc" cellspacing="1">
 <tr>
   <td class="contentHead" align="center" colspan="3"><span class="fontBold">[edithead]</span></td>
 </tr>
@@ -10,13 +13,13 @@
   <td class="contentMainFirst" colspan="2" align="center">
     <input type="text" name="nick" value="[enick]" class="inputField_dis"
     onfocus="this.className='inputField_en';"
-    onblur="this.className='inputField_dis';" autofocus/>
+    onblur="this.className='inputField_dis';" />
   </td>
 </tr>
 <tr>
   <td class="contentMainTop" width="150"><span class="fontBold">[email]:</span></td>
   <td class="contentMainFirst" colspan="2" align="center">
-    <input type="email" name="email" value="[eemail]" class="inputField_dis"
+    <input type="text" name="email" value="[eemail]" class="inputField_dis"
     onfocus="this.className='inputField_en';"
     onblur="this.className='inputField_dis';" />
   </td>
@@ -87,6 +90,7 @@
 <tr>
   <td class="contentBottom" colspan="3"><input id="contentSubmit" type="submit" value="[value]" class="submit" /></td>
 </tr>
+</table>
 <script language="javascript" type="text/javascript">
   function hidelevels(lvl)
   {
@@ -96,3 +100,5 @@
   hidelevels([alvl]);
 </script>
 </form>
+</td>
+</tr>
