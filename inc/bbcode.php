@@ -1162,7 +1162,7 @@ function checkpwd($user, $pwd)
 }
 
 //-> Infomeldung ausgeben
-function info($msg, $url, $timeout = 2)
+function info($msg, $url, $timeout = 5)
 {
   global $c;
 
