@@ -2215,7 +2215,7 @@ function admin_perms($userid)
     }
 
    // check rank permission
-    $r = db("SELECT s1.* FROM ".$db['permissions']." AS s1 LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
+    $qry = db("SELECT s1.* FROM ".$db['permissions']." AS s1 LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
                     WHERE s2.`user` = '".intval($userid)."' AND s2.`posi` != '0'");
     while($r = _fetch($qry))
     {
