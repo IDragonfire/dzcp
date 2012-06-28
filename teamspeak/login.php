@@ -5,50 +5,46 @@ include("../inc/buffer.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
 ## SECTIONS ##
-  $s = _fetch(db("SELECT ts_port,ts_sport,ts_ip FROM ".$db['settings'].""));
+    
+	$uip 		= $settings['ts_ip'];	
+	$tPort 	= $settings['ts_sport'];
+	$port 	= $settings['ts_port'];	
+	$version 	= $settings['ts_version'];	
   
-  $uip 	= $s['ts_ip'];	
-  $tPort 	= $s['ts_sport'];
-  $port 	= $s['ts_port'];	
-  
-  if($_POST)
-  {
-    $ok = false; 
-	  $nickname	= $_POST['nickname'];
-	  $reg = $_POST['reg'];
+	if($_POST) {
+		$ok = false; 
+	  	$nickname	= $_POST['nickname'];
+	  	$reg = $_POST['reg'];
 	
-    if($reg=="re") $loginname	= $_POST['loginname'];
-	  else $loginname	= "";
+    	if($reg=="re") $loginname	= $_POST['loginname'];
+	  	else $loginname	= "";
    	
-    $password	= $_POST['password'];
-	  $channel  = $_POST['channel'];
-	  $channel  = str_replace("¶","'",$channel);
-   	$channelpassword = $_POST['channelpassword'];
-   	$time = time(); 
+    	$password	= $_POST['password'];
+	  	$channel  = $_POST['channel'];
+	 	$channel  = str_replace("¶","'",$channel);
+   		$channelpassword = $_POST['channelpassword'];
+   		$time = time(); 
    
-   	$cookie_data =  $nickname.'¶'.$reg.'¶'.$loginname.'¶'.$password;
-    set_cookie($prev."Teamspeakdata",$cookie_data);
-  } elseif($_GET) {
-	  $ok = true; 
-	  $channel = $_GET['cName'];
-	  $nickname	= "";
-	  $reg = "";
-   	$loginname = ""; 
-   	$password = "";
-	
-    if(isset($_COOKIE[$prev."Teamspeakdata"]))
-	  {
-		  $cookie_info = explode("¶", $_COOKIE[$prev.'Teamspeakdata']);
-		  $nickname = $cookie_info[0]; 
-		  $reg = $cookie_info[1]; 
-   		$loginname = $cookie_info[2]; 
-   		$password = $cookie_info[3];
-	  }
-  } else {
-	  $ok = false;
-  }
+   		$cookie_data =  $nickname.'¶'.$reg.'¶'.$loginname.'¶'.$password;
+    	set_cookie($prev."Teamspeakdata",$cookie_data);
+  	} elseif($_GET) {
+	  	$ok = true; 
+	  	$channel = $_GET['cName'];
+	  	$nickname	= "";
+	  	$reg = "";
+   		$loginname = ""; 
+   		$password = "";
+		if(isset($_COOKIE[$prev."Teamspeakdata"])) {
+			$cookie_info = explode("¶", $_COOKIE[$prev.'Teamspeakdata']);
+			$nickname = $cookie_info[0]; 
+			$reg = $cookie_info[1]; 
+			$loginname = $cookie_info[2]; 
+			$password = $cookie_info[3];
+		}
+	} else {
+		$ok = false;
+  	}
 ?>
-
 <html>
 <head>
 	<title>Teamspeak Login</title>	
@@ -89,7 +85,7 @@ if($_POST) {
       window.resizeTo(winB + 20,winH + 70);
     }
 </script>
-<body onload="resizeMe()">
+<body onLoad="resizeMe()">
 <table id="tslogin" class="hperc" cellspacing="1">
 <tr>
 	<td>
@@ -99,7 +95,7 @@ if($_POST) {
 	<table class="hperc" cellspacing="1">
 	<?php if($ok) { ?>
   <tr>
-    <td class="contentHead" colspan="2"><span class="fontBold">Channel: <?php echo utf8_decode($_GET['cName'])?></span></td>
+    <td class="contentHead" colspan="2"><span class="fontBold">Channel: <?php echo rawurldecode($_GET['cName'])?></span></td>
   </tr>
 	<tr>
 		<td class="contentMainTop"><span class="fontBold">Nickname:</span></td>	
@@ -110,6 +106,7 @@ if($_POST) {
        style="width:180px;" value="<?php echo $nickname?>" />
     </td>
 	</tr>
+    <?php if($version == 2) { ?>
 	<tr>
 		<td colspan="2" class="contentMainTop">
 		<table class="hperc" cellspacing="0">
@@ -152,6 +149,7 @@ if($_POST) {
        style="width:180px;" value="<?php echo $password?>" />
     </td>
 	</tr>
+    <?php } if($version == 2 || ($_GET['pw'] == 1 && $version == 3)) { ?>
 	<tr>
 		<td class="contentMainTop"><span class="fontBold">Channel password:</span></td>	
 		<td class="contentMainFirst" style="text-align:center">
@@ -161,9 +159,10 @@ if($_POST) {
        style="width:180px;" />
     </td>
 	</tr>
+    <?php } ?>
 	<tr>
 		<td colspan="2" class="contentBottom">
-      <input id="tsSubmit" type="button" onclick="javascript:doSubmit();" value="Connect" class="submit" />
+      <input id="tsSubmit" type="button" onClick="javascript:doSubmit();" value="Connect" class="submit" />
     </td>
   </tr>
 	</form>
