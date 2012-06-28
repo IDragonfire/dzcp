@@ -1404,6 +1404,7 @@ function update_mysql_1_5_2()
   global $db;
 		db("ALTER TABLE ".$db['settings']." ADD `gb_activ` INT(1) NOT NULL default '1'");
 		db("ALTER TABLE ".$db['settings']." ADD `ts_version` INT(1) NOT NULL AFTER `ts_sport`");
+		db("UPDATE ".$db['settings']." SET `ts_version` = '3' WHERE `id` = '1'");
 		db("ALTER TABLE ".$db['news']." ADD `timeshift` INT(14) NOT NULL default '0'");
 		db("ALTER TABLE ".$db['squads']." ADD `team_show` INT(1) NOT NULL default '1'");
 
