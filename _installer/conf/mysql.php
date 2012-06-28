@@ -1404,6 +1404,7 @@ function update_mysql_1_5_2()
   global $db;
 		db("ALTER TABLE ".$db['settings']." ADD `gb_activ` INT(1) NOT NULL default '1'");
 		db("ALTER TABLE ".$db['settings']." ADD `ts_version` INT(1) NOT NULL AFTER `ts_sport`");
+		db("UPDATE ".$db['settings']." SET `ts_version` = '3' WHERE `id` = '1'");
 		db("ALTER TABLE ".$db['news']." ADD `timeshift` INT(14) NOT NULL default '0'");
 		db("ALTER TABLE ".$db['squads']." ADD `team_show` INT(1) NOT NULL default '1'");
 
@@ -1437,7 +1438,7 @@ function update_mysql_1_5_4()
 		db("INSERT INTO ".$db['partners']." (`link`, `banner`) VALUES ('http://www.modsbar.de', 'mb_88x32.gif');");
   	db("INSERT INTO ".$db['partners']." (`link`, `banner`) VALUES ('http://www.templatebar.de', 'tb_88x32.gif');");
 }
-function update_mysql_6()
+function update_mysql_1_6()
 {
   	global $db;
     db("ALTER TABLE `".$db['f_threads']."` CHANGE `edited` `edited` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
@@ -1446,7 +1447,7 @@ function update_mysql_6()
     db("ALTER TABLE `".$db['settings']."` CHANGE `i_autor` `i_autor` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
     db("ALTER TABLE `".$db['gb']."` CHANGE `hp` `hp` VARCHAR(130) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
     db("ALTER TABLE `".$db['permissions']."` ADD `gs_showpw` INT(1) NOT NULL DEFAULT '0'");
-    db("ALTER TABLE `".$db['settings']."` ADD `urls_linked` INT(1) NOT NULL DEFAULT '0'");
+    db("ALTER TABLE `".$db['settings']."` ADD `urls_linked` INT(1) NOT NULL DEFAULT '1'");
     //-> Forum Sortieren
     db("ALTER TABLE ".$db['f_skats']." ADD `pos` int(5) NOT NULL");
 

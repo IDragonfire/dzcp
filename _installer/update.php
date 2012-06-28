@@ -85,6 +85,8 @@ if(isset($_GET['agb']) && $_GET['agb'])
         _c('upload/',$pfad,$host,$user,$pwd);
         _c('inc',$pfad,$host,$user,$pwd);
         _c('inc/images',$pfad,$host,$user,$pwd);
+        _c('inc/images/tsicons/',$pfad,$host,$user,$pwd);
+        _c('inc/images/tsicons/server/',$pfad,$host,$user,$pwd);
         _c('inc/images/clanwars',$pfad,$host,$user,$pwd);
         _c('inc/images/gameicons',$pfad,$host,$user,$pwd);
         _c('inc/images/maps',$pfad,$host,$user,$pwd);
@@ -134,6 +136,8 @@ if(isset($_GET['agb']) && $_GET['agb'])
   $c .= _i('../upload/index.php');
   $c .= _i('../inc',1);
   $c .= _i('../inc/images',1);
+  $c .= _i('../inc/images/tsicons',1);
+  $c .= _i('../inc/images/tsicons/sever',1);
   $c .= _i('../inc/images/clanwars',1);
   $c .= _i('../inc/images/gameicons',1);
   $c .= _i('../inc/images/maps',1);
@@ -437,33 +441,35 @@ case 'database';
         update_mysql_1_5_1();
         update_mysql_1_5_2();
         update_mysql_1_5_4();
-        update_mysql_6();
+        update_mysql_1_6();
       } elseif($_POST['version'] == "1.3.x") {
         update_mysql_1_4();
         update_mysql_1_5();
         update_mysql_1_5_1();
         update_mysql_1_5_2();
         update_mysql_1_5_4();
-        update_mysql_6();
+        update_mysql_1_6();
       } elseif($_POST['version'] == "1.4.x") {
         update_mysql_1_5();
         update_mysql_1_5_1();
         update_mysql_1_5_2();
         update_mysql_1_5_4();
-        update_mysql_6();
+        update_mysql_1_6();
       } elseif($_POST['version'] == "1.5") {
         update_mysql_1_5_1();
         update_mysql_1_5_2();
         update_mysql_1_5_4();
-        update_mysql_6();
+        update_mysql_1_6();
       } elseif($_POST['version'] == "1.5.1") {
         update_mysql_1_5_2();
         update_mysql_1_5_4();
-        update_mysql_6();
-      } elseif($_POST['version'] == "ab 1.5.2 bis 1.5.5.4") {
+        update_mysql_1_6();
+      } elseif($_POST['version'] == "1.5.2") {
         update_mysql_1_5_4();
-        update_mysql_6();
-      }
+        update_mysql_1_6();
+      } elseif($_POST['version'] == "ab 1.5.4 bis 1.5.5.4") {
+        update_mysql_1_6();
+	  }
       
       header("Location: update.php?action=done");
     } else {

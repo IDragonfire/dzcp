@@ -135,6 +135,8 @@ if(isset($_GET['agb']) && $_GET['agb'])
   $c .= _i('../upload/index.php');
   $c .= _i('../inc',1);
   $c .= _i('../inc/images',1);
+  $c .= _i('../inc/images/tsicons',1);
+  $c .= _i('../inc/images/tsicons/sever',1);
   $c .= _i('../inc/images/clanwars',1);
   $c .= _i('../inc/images/gameicons',1);
   $c .= _i('../inc/images/maps',1);
@@ -402,7 +404,7 @@ case 'database';
         update_mysql_1_5_1();
         update_mysql_1_5_2();
         update_mysql_1_5_4();
-        update_mysql_6();
+        update_mysql_1_6();
       
       header("Location: install.php?action=done");
     } else {
