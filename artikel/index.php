@@ -61,8 +61,15 @@ default:
                                        "archiv" => _news_archiv));
 break;
 case 'show';
+  if(!permission("artikel")) {
+	$shownews = " AND public = 1";
+  }
   $qry = db("SELECT * FROM ".$db['artikel']."
-             WHERE id = '".intval($_GET['id'])."'");
+             WHERE id = '".intval($_GET['id'])."'".$shownews);
+			 
+  if(_rows($qry) == 0) {
+	$index = error(_id_dont_exist,1);
+  } else {
   while($get = _fetch($qry))
   {
     $qrykat = db("SELECT katimg FROM ".$db['newskat']."
@@ -404,6 +411,7 @@ case 'show';
         $index = error(_error_edit_post,1);
       }
     }
+  }
 break;
 case 'preview';
     header("Content-type: text/html; charset=utf-8");
