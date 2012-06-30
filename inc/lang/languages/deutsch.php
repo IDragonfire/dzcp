@@ -298,6 +298,7 @@ define('_glossar_specialchar', 'Es d&uuml;rfen keine Sonderzeichen in der Bezeic
 define('_admin_gmaps_who', 'Memberkarte');
 define('_gmaps_who_all', 'Alle User anzeigen');
 define('_gmaps_who_mem', 'Nur Mitglieder anzeigen');
+define('_urls_linked_info', 'Textlinks werden automatisch in anklickbare Links konvertiert');
 define('_config_gmaps_key', 'Google Maps Key');
 define('_gmaps_key_info', 'Wird f&uuml;r die Membermap ben&ouml;tigt.<br />Der Key kann <a href="http://www.google.com/apis/maps/signup.html" target="_blank">hier</a> kostenlos erstellt werden!');
 define('_gmaps_no_key', 'Die Membermap wurde noch nicht aktiviert!');

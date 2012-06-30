@@ -462,7 +462,8 @@ if(_adminMenu != 'true') exit;
                                                  "balken_cw" => $gets['balken_cw'],
                                                  "balken_vote" => $gets['balken_vote'],
                                                  "balken_vote_menu" => $gets['balken_vote_menu'],
-                                                 "urls_linked" => _config_url_linked_head,
+                                                 'urls_linked' => _config_url_linked_head,
+                                                 'urls_linked_info' => _urls_linked_info,
                                                  "sel_url" => $sel_url));
   
         $show = show($dir."/form", array("head" => _config_global_head,

@@ -299,6 +299,7 @@ define('_glossar_specialchar' , 'No special characters may be present in the des
 define('_admin_gmaps_who' , 'Membermap');
 define('_gmaps_who_all' , 'Show all user');
 define('_gmaps_who_mem' , 'Show members only');
+define('_urls_linked_info', 'Convert text links into clickable hyperlinks');
 define('_config_gmaps_key' , 'Google Maps Key');
 define('_gmaps_key_info' , 'Needed for the membermap.<br />The key can be registered for free <a href="http://www.google.com/apis/maps/signup.html" target="_blank">here</a>!');
 define('_gmaps_no_key' , 'The membermap isn`t activated yet!');
