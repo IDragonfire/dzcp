@@ -8,6 +8,9 @@ define('_id_dont_exist', 'The requested ID does not exist!');
 define('_perm_editts', 'manage teamspeak server');
 define('_perm_receivecws', 'receive fight us form');
 define('_config_url_linked_head', "URLs linking");
+define('_ts_settings_customicon', 'custom icons downloading');
+define('_ts_settings_showchannels', 'Only show channels with user');
+define('_ts_settings_showchannels_desc', 'If this is on, they will only show channels there are users.');
 
 ## ADDED / REDEFINED FOR 1.5.2
 define('_button_title_del_account' , 'User-Account delete');

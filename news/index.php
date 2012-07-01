@@ -249,8 +249,14 @@ case 'show';
   {
     $index = error(_error_wrong_permissions, 1);
   } else {
+	if(!permission("news")) {
+		$shownews = " AND public = 1";
+	}
     $qry = db("SELECT * FROM ".$db['news']."
-               WHERE id = '".intval($_GET['id'])."'");
+               WHERE id = '".intval($_GET['id'])."'".$shownews);
+	if(_rows($qry) == 0) {
+		$index = error(_id_dont_exist,1);
+	} else {
     $get = _fetch($qry);
 
     $qrykat = db("SELECT katimg FROM ".$db['newskat']."
@@ -607,6 +613,7 @@ case 'show';
         $index = error(_error_edit_post,1);
       }
     }
+  }
   }
 break;
 case 'preview';

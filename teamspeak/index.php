@@ -227,7 +227,7 @@ $dir = "teamspeak";
                                            "userstats" => $userstats));
     break;
     case '3';
-      $tsstatus = new TSStatus($settings['ts_ip'], $settings['ts_port'], $settings['ts_sport']);
+      $tsstatus = new TSStatus($settings['ts_ip'], $settings['ts_port'], $settings['ts_sport'], $settings['ts_customicon'], $settings['ts_showchannel']);
       $tstree = $tsstatus->render(true);
       
       $users = 0;

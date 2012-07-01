@@ -137,7 +137,7 @@ if(isset($_GET['agb']) && $_GET['agb'])
   $c .= _i('../inc',1);
   $c .= _i('../inc/images',1);
   $c .= _i('../inc/images/tsicons',1);
-  $c .= _i('../inc/images/tsicons/sever',1);
+  $c .= _i('../inc/images/tsicons/server',1);
   $c .= _i('../inc/images/clanwars',1);
   $c .= _i('../inc/images/gameicons',1);
   $c .= _i('../inc/images/maps',1);

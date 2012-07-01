@@ -59,6 +59,14 @@ if(_adminMenu != 'true') exit;
                                          "ts_sport" => (empty($settings['ts_sport']) ? '' : $settings['ts_sport']),
                                          "ts_width" => $settings['ts_width'],
                                          "ts_version" => ($settings['ts_version'] == 3 ? ' selected="selected"' : ''),
+                                         "ts_showsettings" => ($settings['ts_version'] == 3 ? '' : ' style="display:none;"'),
+                                         "ts_checkcustomicon" => ($settings['ts_customicon'] == 1 ? ' selected="selected"' : ''),
+                                         "ts_checkshowchannel" => ($settings['ts_showchannel'] == 1 ? ' selected="selected"' : ''),
+                                         "ts_showchannel" => _ts_settings_showchannels,
+                                         "ts_customicon" => _ts_settings_customicon,
+                                         "ts_showchannel_desc" => _ts_settings_showchannels_desc,
+                                         "on" => _on,
+                                         "off" => _off,
                                          "name" => _server_name,
                                          "mapdl" => '<img src="../inc/images/download.gif" alt="" />',
                                          "mapdownload" => _legend_map_download,
@@ -77,11 +85,13 @@ if(_adminMenu != 'true') exit;
       if($_GET['do'] == "ts")
       {
         $qry = db("UPDATE ".$db['settings']."
-                   SET `ts_port`    = '".((int)$_POST['ts_port'])."',
-                       `ts_sport`   = '".((int)$_POST['ts_sport'])."',
-                       `ts_width`   = '".((int)$_POST['ts_width'])."',
-                       `ts_version` = '".((int)$_POST['ts_version'])."',
-                       `ts_ip`      = '".up($_POST['ts_ip'])."'
+                   SET `ts_port`    	= '".((int)$_POST['ts_port'])."',
+                       `ts_sport`  		= '".((int)$_POST['ts_sport'])."',
+                       `ts_width`   	= '".((int)$_POST['ts_width'])."',
+                       `ts_version` 	= '".((int)$_POST['ts_version'])."',
+                       `ts_ip`      	= '".up($_POST['ts_ip'])."',
+                       `ts_customicon`  = '".((int)$_POST['ts_customicon'])."',
+                       `ts_showchannel` = '".((int)$_POST['ts_showchannel'])."'
                    WHERE id = 1");
 
         $show = info(_config_server_ts_updated,"?admin=server");
