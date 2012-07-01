@@ -59,6 +59,7 @@ if(_adminMenu != 'true') exit;
                                          "ts_sport" => (empty($settings['ts_sport']) ? '' : $settings['ts_sport']),
                                          "ts_width" => $settings['ts_width'],
                                          "ts_version" => ($settings['ts_version'] == 3 ? ' selected="selected"' : ''),
+                                         "ts_showsettings" => ($settings['ts_version'] == 3 ? '' : ' style="display:none;"'),
                                          "ts_checkcustomicon" => ($settings['ts_customicon'] == 1 ? ' selected="selected"' : ''),
                                          "ts_checkshowchannel" => ($settings['ts_showchannel'] == 1 ? ' selected="selected"' : ''),
                                          "ts_showchannel" => _ts_settings_showchannels,
