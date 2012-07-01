@@ -1012,7 +1012,7 @@ function getTSVersion($ip,$tPort,$port)
 ######################################
 
 function teamspeak3($settings) {
-  $tsstatus = new TSStatus($settings['ts_ip'], $settings['ts_port'], $settings['ts_sport']);
+  $tsstatus = new TSStatus($settings['ts_ip'], $settings['ts_port'], $settings['ts_sport'],$settings['ts_customicon'],$settings['ts_showchannel']);
 
   return  show("menu/teamspeak", array("hostname" => '',
                                        "channels" => $tsstatus->render()
@@ -1039,7 +1039,7 @@ class TSStatus
 	var $_showIcons;
 	var $_showOnly;
 	
-	function TSStatus($host, $port, $queryPort)
+	function TSStatus($host, $port, $queryPort, $customicon, $showchannel)
 	{
 		$this->_host = $host;
 		$this->_port = $port;
@@ -1060,14 +1060,8 @@ class TSStatus
 		$this->error = '';
    		$this->serverError = '';
 		$this->decodeUTF8 = false;
-		//EN: You can change this to show/unshow the custom Icons from your Server
-		//DE: Du kannst es hier bearbeiten ob die benutzerdefinierte Icons von deinem Server angezeigt werden
-		$this->_showIcons = true; //true = show/anzeigen || false = unshow/nicht anzeigen
-		//EN: Change this to show only Channels with Users
-		//DE: Bearbeite dies um nur Channels mit Usern anzugzeigen
-		$this->_showOnly = false; //true = only show channels with user/zeigt nur channels mit usern an || false = show all channels/zeigt alle channels an
-		//EN: From here no changes more!
-		//DE: Ab hier nichts mehr bearbeiten!
+		$this->_showIcons = $customicon;
+		$this->_showOnly = $showchannel;
 	}
 	function update()
 	{
@@ -1210,7 +1204,7 @@ class TSStatus
 			if($id < 0) $id = $id+4294967296;
 			if($id == "100" || $id == "200") {
 				$pfad = "../inc/images/tsicons/changroup_".$id.".png";
-			} elseif($id == "300" || $id == "500" || $id = "600") {
+			} elseif($id == "300" || $id == "500" || $id == "600") {
 				$pfad = "../inc/images/tsicons/servergroup_".$id.".png";
 			} elseif($this->_showIcons) {
 				$pfad = "../inc/images/tsicons/server/".$id.".png";
@@ -1244,10 +1238,7 @@ class TSStatus
 				else if($user["client_output_muted"] == 1)    $icon = "16x16_output_muted.png";
 				else if($user["client_input_hardware"] == 0)  $icon = "16x16_hardware_input_muted.png";
 				else if($user["client_input_muted"] == 1)     $icon = "16x16_input_muted.png";
-				$left = $i*20;
-				if($tpl) {
-					$left += 12;	
-				}
+				$left = $i*20+12;
 				$out .= "<div style=\"text-indent:".$left."px;float:left; width:80%;\"><img src=\"../inc/images/tsicons/trenner.gif\" alt=\"\" class=\"tsicon\" /><img src=\"../inc/images/tsicons/".$icon."\" alt=\"\" class=\"tsicon\" />".rep2($user["client_nickname"])."</div>\n";
 				$out .= "<div style=\"float:right; width:20%; text-align:right;\">".$this->user_groups($user)."</div>\n";
 				$out .= "<div style=\"clear:both;\"></div>\n";

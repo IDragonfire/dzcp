@@ -442,7 +442,15 @@
       for(var i in ret.embedAttrs) c += i + '="' + ret.embedAttrs[i] + '" '; c += ' ></embed></object>';
 
       doc.write(c);
-    }	
+    },
+	//TS3 Settings
+	TS3Settings: function(id) {
+		if(id == 3) {
+			$('#ts3settings').css('display', '');
+		} else {
+			$('#ts3settings').css('display', 'none');
+		}
+	}
   }
 
 // load global events
