@@ -220,7 +220,17 @@
         }
       }
     },
-
+  // toggle with effect
+  	fadetoggle: function(id) {
+		$("#more_"+id).fadeToggle("slow", "swing");
+		if($('#img_'+id).attr('alt') == "hidden") {
+			$('#img_'+id).attr({alt: 'normal',
+								src: '../inc/images/toggle_normal.png'});
+		} else {
+			$('#img_'+id).attr({alt: 'hidden',
+								src: '../inc/images/toggle_hidden.png'});
+		}
+	},
   // resize images
     resizeImages: function() {
     	for(var i=0;i<doc.images.length;i++)

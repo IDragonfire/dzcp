@@ -1037,6 +1037,7 @@ class TSStatus
 	var $error;
 	var $decodeUTF8;
 	var $_showIcons;
+	var $_showOnly;
 	
 	function TSStatus($host, $port, $queryPort)
 	{
@@ -1062,6 +1063,9 @@ class TSStatus
 		//EN: You can change this to show/unshow the custom Icons from your Server
 		//DE: Du kannst es hier bearbeiten ob die benutzerdefinierte Icons von deinem Server angezeigt werden
 		$this->_showIcons = true; //true = show/anzeigen || false = unshow/nicht anzeigen
+		//EN: Change this to show only Channels with Users
+		//DE: Bearbeite dies um nur Channels mit Usern anzugzeigen
+		$this->_showOnly = false; //true = only show channels with user/zeigt nur channels mit usern an || false = show all channels/zeigt alle channels an
 		//EN: From here no changes more!
 		//DE: Ab hier nichts mehr bearbeiten!
 	}
@@ -1206,7 +1210,7 @@ class TSStatus
 			if($id < 0) $id = $id+4294967296;
 			if($id == "100" || $id == "200") {
 				$pfad = "../inc/images/tsicons/changroup_".$id.".png";
-			} elseif($id == "300") {
+			} elseif($id == "300" || $id == "500" || $id = "600") {
 				$pfad = "../inc/images/tsicons/servergroup_".$id.".png";
 			} elseif($this->_showIcons) {
 				$pfad = "../inc/images/tsicons/server/".$id.".png";
@@ -1229,7 +1233,7 @@ class TSStatus
 			return empty($pfad) ? "" : "<img src=\"".$pfad."\" alt=\"\" class=\"tsicon\"".$title." />";
 		}
 	}
-	function renderUsers($parentId,$i) {
+	function renderUsers($parentId,$i,$tpl) {
 		$out = "";
 		foreach($this->_userDatas as $user) {
 			if($user["client_type"] == 0 && $user["cid"] == $parentId) {
@@ -1240,8 +1244,10 @@ class TSStatus
 				else if($user["client_output_muted"] == 1)    $icon = "16x16_output_muted.png";
 				else if($user["client_input_hardware"] == 0)  $icon = "16x16_hardware_input_muted.png";
 				else if($user["client_input_muted"] == 1)     $icon = "16x16_input_muted.png";
-				
 				$left = $i*20;
+				if($tpl) {
+					$left += 12;	
+				}
 				$out .= "<div style=\"text-indent:".$left."px;float:left; width:80%;\"><img src=\"../inc/images/tsicons/trenner.gif\" alt=\"\" class=\"tsicon\" /><img src=\"../inc/images/tsicons/".$icon."\" alt=\"\" class=\"tsicon\" />".rep2($user["client_nickname"])."</div>\n";
 				$out .= "<div style=\"float:right; width:20%; text-align:right;\">".$this->user_groups($user)."</div>\n";
 				$out .= "<div style=\"clear:both;\"></div>\n";
@@ -1268,14 +1274,36 @@ class TSStatus
 	function sub_channel($channels,$channel,$i,$tpl,$joints) {
 		foreach($channels as $sub_channel) {
 			if($channel == $sub_channel['pid']) {
-				$left = $i*20;
+				if(($this->_showOnly && (($sub_channel['total_clients_family'] > 0 && $sub_channel['channel_flag_default'] == 0) || ($sub_channel['total_clients_family'] > 1 && $sub_channel['channel_flag_default']))) || !$this->_showOnly) {
+				$users = $this->renderUsers($sub_channel['cid'],$i+1,$tpl);
+				$subs = $this->sub_channel($channels,$sub_channel['cid'],$i+1,$tpl,$join_ts);
+				if($tpl) {
+					$box = "";
+				} else {
+					$box = "box_";
+				}
+				if(!empty($users) || !empty($subs)) {
+					$moreshow = "<img id=\"img_".$box."cid".$sub_channel['cid']."\" src=\"../inc/images/toggle_normal.png\" alt=\"\" class=\"tsicons\" onclick=\"DZCP.fadetoggle('".$box."cid".$sub_channel['cid']."')\" />";
+					$style = "0";
+					$div_first = "<div id=\"more_".$box."cid".$sub_channel['cid']."\">\n";
+					$div_sec = "</div>";
+				} else {
+					$moreshow = "";
+					$style = "12";
+					$div_first = "";
+					$div_sec = "";
+				}
+				$left = $i*20+$style;
 				$join_ts = $joints."/".$sub_channel['channel_name'];
-				$out .= "<div class=\"tstree_left\" style=\"text-indent:".$left."px;\"><img src=\"../inc/images/tsicons/trenner.gif\" alt=\"\" class=\"tsicon\" />
+				$out .= "<div class=\"tstree_left\" style=\"text-indent:".$left."px;\">".$moreshow."<img src=\"../inc/images/tsicons/trenner.gif\" alt=\"\" class=\"tsicon\" />
 				<img src=\"".$this->channel_icon($sub_channel)."\" alt=\"\" class=\"tsicon\" />".$this->channel_name($sub_channel,$tpl,$join_ts)."</div>\n";
 				$out .= "<div class=\"tstree_right\">".$this->renderFlags($sub_channel).$this->icon($sub_channel['channel_icon_id'])."</div>\n";
 				$out .= "<div class=\"tstree_clear\"></div>\n";
-				$out .= $this->renderUsers($sub_channel['cid'],$i+1);
-				$out .= $this->sub_channel($channels,$sub_channel['cid'],$i+1,$tpl,$join_ts);
+				$out .= $div_first;
+				$out .= $users;
+				$out .= $subs;
+				$out .= $div_sec;
+				}
 			}
 		}
 		return $out;
@@ -1285,20 +1313,43 @@ class TSStatus
 		if(!$this->_updated) $this->update();
 		if($this->error == '') {	
 			$channels = $this->_channelDatas;
-			$out = "<div class=\"tstree_left\"><img src=\"../inc/images/tsicons/16x16_server_green.png\" alt=\"\" class=\"tsicon\" /> <span class=\"fontBold\">".$this->_serverDatas["virtualserver_name"]."</span></div>\n";
+			$style = " style=\"text-indent:12px;\"";
+			$out = "<div class=\"tstree_left\"".$style."><img src=\"../inc/images/tsicons/16x16_server_green.png\" alt=\"\" class=\"tsicon\" /> <span class=\"fontBold\">".$this->_serverDatas["virtualserver_name"]."</span></div>\n";
 			$out .= "<div class=\"tstree_right\">".$this->icon($this->_serverDatas["virtualserver_icon_id"])."</div>\n";
 			$out .= "<div class=\"tstree_clear\"></div>\n";
 			foreach($channels as $channel) {
 				if($channel['pid'] == 0) {
-					if(preg_match("/\[(.*?)spacer(.*?)\]/",$channel['channel_name'])) {
-						$out .= "<div class=\"tstree_left\">".$this->channel_name($channel,$tpl,rep2($channel['channel_name']))."</div>\n";
-					} else {
-						$out .= "<div class=\"tstree_left\"><img src=\"".$this->channel_icon($channel)."\" alt=\"\" class=\"tsicon\" />".$this->channel_name($channel,$tpl,$channel['channel_name'])."</div>\n";
+					if(($this->_showOnly && (($channel['total_clients_family'] > 0 && $channel['channel_flag_default'] == 0) || ($channel['total_clients_family'] > 1 && $channel['channel_flag_default']))) || !$this->_showOnly) {
+						$users = $this->renderUsers($channel['cid'],0,$tpl);
+						$subs = $this->sub_channel($channels,$channel['cid'],0,$tpl,$channel['channel_name']);
+						if($tpl) {
+							$box = "";
+						} else {
+							$box = "box_";
+						}
+						if(!empty($users) || !empty($subs)) {
+							$moreshow = "<img id=\"img_".$box."cid".$channel['cid']."\" src=\"../inc/images/toggle_normal.png\" alt=\"\" class=\"tsicons\" onclick=\"DZCP.fadetoggle('".$box."cid".$channel['cid']."')\" />";
+							$style = "";
+							$div_first = "<div id=\"more_".$box."cid".$channel['cid']."\">\n";
+							$div_sec = "</div>";
+						} else {
+							$moreshow = "";
+							$style = " style=\"text-indent:12px;\"";
+							$div_first = "";
+							$div_sec = "";
+						}
+						if(preg_match("/\[(.*?)spacer(.*?)\]/",$channel['channel_name'])) {
+							$out .= "<div class=\"tstree_left\"".$style.">".$moreshow."".$this->channel_name($channel,$tpl,rep2($channel['channel_name']))."</div>\n";
+						} else {
+							$out .= "<div class=\"tstree_left\"".$style.">".$moreshow."<img src=\"".$this->channel_icon($channel)."\" alt=\"\" class=\"tsicon\" />".$this->channel_name($channel,$tpl,$channel['channel_name'])."</div>\n";
+						}
+						$out .= "<div class=\"tstree_right\">".$this->renderFlags($channel).$this->icon($channel['channel_icon_id'])."</div>\n";
+						$out .= "<div class=\"tstree_clear\"></div>\n";
+						$out .= $div_first;					
+						$out .= $users;
+						$out .= $subs;
+						$out .= $div_sec;
 					}
-					$out .= "<div class=\"tstree_right\">".$this->renderFlags($channel).$this->icon($channel['channel_icon_id'])."</div>\n";
-					$out .= "<div class=\"tstree_clear\"></div>\n";
-					$out .= $this->renderUsers($channel['cid'],0);
-					$out .= $this->sub_channel($channels,$channel['cid'],0,$tpl,$channel['channel_name']);
 				}
 			}
 			return $out;
