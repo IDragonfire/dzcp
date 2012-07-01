@@ -1190,6 +1190,9 @@ case 'thread';
       }
     }
   } elseif($_GET['do'] == "addthread") {
+	  if(_rows(db("SELECT id FROM ".$db['f_skats']." WHERE id = '".intval($_GET['kid'])."'")) == 0) {
+		  $index = error(_id_dont_exist, 1);
+	  } else {
 		if(settings("reg_forum") == "1" && $chkMe == "unlogged")
 		{
 			$index = error(_error_have_to_be_logged, 1);
@@ -1423,6 +1426,7 @@ case 'thread';
 				$index = info(_forum_newthread_successful, "?action=showthread&amp;id=".$thisFID."#p1");
 			}
 		}
+  }
   }
 break;
 case 'post';
