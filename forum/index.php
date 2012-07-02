@@ -1190,6 +1190,9 @@ case 'thread';
       }
     }
   } elseif($_GET['do'] == "addthread") {
+	  if(_rows(db("SELECT id FROM ".$db['f_skats']." WHERE id = '".intval($_GET['kid'])."'")) == 0) {
+		  $index = error(_id_dont_exist, 1);
+	  } else {
 		if(settings("reg_forum") == "1" && $chkMe == "unlogged")
 		{
 			$index = error(_error_have_to_be_logged, 1);
@@ -1423,6 +1426,7 @@ case 'thread';
 				$index = info(_forum_newthread_successful, "?action=showthread&amp;id=".$thisFID."#p1");
 			}
 		}
+  }
   }
 break;
 case 'post';
@@ -1838,14 +1842,16 @@ case 'post';
       }
     }
   } elseif($_GET['do'] == "addpost") {
-		if(_rows(db("SELECT `id` FROM ".$db['f_threads']." WHERE `id` = '".(int)$_GET['id']."'")) == 0)
+	    $qry_thread = db("SELECT `id`,`kid` FROM ".$db['f_threads']." WHERE `id` = '".(int)$_GET['id']."'");
+		if(_rows($qry_thread) == 0)
 		{
 			$index = error(_id_dont_exist,1);
 		} else {
 			if(settings("reg_forum") == "1" && $chkMe == "unlogged")
 			{
 				$index = error(_error_unregistered,1);
-			} else {	
+			} else {
+				$get_threadkid = _fetch($qry_thread);	
 				$check = db("SELECT s2.id,s1.intern FROM ".$db['f_kats']." AS s1
 										 LEFT JOIN ".$db['f_skats']." AS s2
 										 ON s2.sid = s1.id
@@ -1878,9 +1884,9 @@ case 'post';
 		
 					$error = show("errors/errortable", array("error" => $error));
 					$dowhat = show(_forum_dowhat_add_post, array("id" => $_GET['id'],
-																											 "kid" => $_GET['kid']));
+																											 "kid" => $get_threadkid['kid']));
 					$qryl = db("SELECT * FROM ".$db['f_posts']."
-											WHERE kid = '".intval($_GET['kid'])."'
+											WHERE kid = '".intval($get_threadkid['kid'])."'
 											AND sid = '".intval($_GET['id'])."'
 											ORDER BY date DESC");
 					if(_rows($qryl))
@@ -1963,7 +1969,7 @@ case 'post';
 																														 "lp" => cnt($db['f_posts'], " WHERE sid = '".intval($_GET['id'])."'")+1));
 					} else {
 						$qryt = db("SELECT * FROM ".$db['f_threads']."
-												WHERE kid = '".intval($_GET['kid'])."'
+												WHERE kid = '".intval($get_threadkid['kid'])."'
 												AND id = '".intval($_GET['id'])."'");
 						$gett = _fetch($qryt);
 		
@@ -2067,7 +2073,7 @@ case 'post';
 				} else {
 					$spam = 0;
 					$qrydp = db("SELECT * FROM ".$db['f_posts']."
-											 WHERE kid = '".intval($_GET['kid'])."'
+											 WHERE kid = '".intval($get_threadkid['kid'])."'
 											 AND sid = '".intval($_GET['id'])."'
 											 ORDER BY date DESC
 											 LIMIT 1");
@@ -2086,7 +2092,7 @@ case 'post';
 					} else {
 						
 						$qrytdp = db("SELECT * FROM ".$db['f_threads']."
-									WHERE kid = '".intval($_GET['kid'])."'
+									WHERE kid = '".intval($get_threadkid['kid'])."'
 									AND id = '".intval($_GET['id'])."'");
 						$gettdp = _fetch($qrytdp);
 				
@@ -2132,7 +2138,7 @@ case 'post';
 												 WHERE id = '".$gettdp['id']."'");	 	  
 				} else {
 					$qry = db("INSERT INTO ".$db['f_posts']."
-										 SET `kid`   = '".((int)$_GET['kid'])."',
+										 SET `kid`   = '".((int)$get_threadkid['kid'])."',
 												 `sid`   = '".((int)$_GET['id'])."',
 												 `date`  = '".((int)time())."',
 												 `nick`  = '".up($_POST['nick'])."',
@@ -2148,7 +2154,7 @@ case 'post';
 												WHERE id    = '".intval($_GET['id'])."'");
 				}
 				
-					$fid = "fid(".$_GET['kid'].")";
+					$fid = "fid(".$get_threadkid['kid'].")";
 					$qry = db("INSERT INTO ".$db['ipcheck']."
 										 SET `ip`   = '".$userip."',
 												 `what` = '".$fid."',
