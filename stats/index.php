@@ -40,7 +40,7 @@ $dir = "stats";
   } elseif($_GET['action'] == "forum") {
     $allthreads = cnt($db['f_threads']);
     $allposts = cnt($db['f_posts']);
-    if($allthreads && $allposts)
+    if($allthreads > 0 && $allposts >= 0)
     {
       $ppert = round($allposts/$allthreads,2);
 
