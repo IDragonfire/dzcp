@@ -27,7 +27,7 @@ $dir = "squads";
                   LEFT JOIN ".$db['pos']." AS s4
                   ON s4.id=s3.posi
                   WHERE s1.squad='".intval($_GET['id'])."'
-                  ORDER BY s4.pid");
+                  ORDER BY s4.pid, s2.nick");
   
       $member = "";
       $t = 1;
