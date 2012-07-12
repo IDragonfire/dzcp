@@ -1,7 +1,7 @@
 <?php
 /////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('clanwars')
+// Typ: contentmenu
+// Rechte: permission('clanwars')
 ///////////////////////////////
 if(_adminMenu != 'true') exit;
 
@@ -13,22 +13,22 @@ if(_adminMenu != 'true') exit;
       if($_GET['do'] == "new")
       {
         $qry = db("SELECT * FROM ".$db['squads']."
-                   WHERE status = '1'
-                   ORDER BY game ASC");
+WHERE status = '1'
+ORDER BY game ASC");
         while($get = _fetch($qry))
         {
           $squads .= show(_cw_add_select_field_squads, array("name" => re($get['name']),
-                                                           	 "game" => re($get['game']),
-  		              				                                 "id" => $get['id'],
-  							                                             "icon" => $get['icon']));
+                                                            "game" => re($get['game']),
+   "id" => $get['id'],
+   "icon" => $get['icon']));
         }
 
         $dropdown_date = show(_dropdown_date, array("day" => dropdown("day",date("d",time())),
-  			      	    	                              "month" => dropdown("month",date("m",time())),
-                                            	      "year" => dropdown("year",date("Y",time()))));
+   "month" => dropdown("month",date("m",time())),
+                                             "year" => dropdown("year",date("Y",time()))));
 
         $dropdown_time = show(_dropdown_time, array("hour" => dropdown("hour",date("H",time())),
-                                              	    "minute" => dropdown("minute",date("i",time())),
+                                               "minute" => dropdown("minute",date("i",time())),
                                                     "uhr" => _uhr));
 
         $show = show($dir."/form_cw", array("head" => _cw_admin_head,
@@ -44,7 +44,7 @@ if(_adminMenu != 'true') exit;
                                            "screenshot3" => _cw_screenshot." 3",
                                            "screenshot4" => _cw_screenshot." 4",
                                            "screens" => _cw_screens,
-  									                       "gametype" => _cw_head_gametype,
+   "gametype" => _cw_head_gametype,
                                            "url" => _url,
                                            "clantag" => _cw_admin_clantag,
                                            "lineup_info" => _cw_admin_lineup_info,
@@ -57,9 +57,9 @@ if(_adminMenu != 'true') exit;
                                            "serverip" => _cw_admin_serverip,
                                            "servername" => _server_name,
                                            "serverpwd" => _server_password,
-  							  		                     "match_admins" => _cw_head_admin,
-  								  	                     "lineup" => _cw_head_lineup,
-  									                       "glineup" => _cw_head_glineup,
+   "match_admins" => _cw_head_admin,
+   "lineup" => _cw_head_lineup,
+   "glineup" => _cw_head_glineup,
                                            "do" => "add",
                                            "what" => _button_value_add,
                                            "cw_clantag" => "",
@@ -74,50 +74,50 @@ if(_adminMenu != 'true') exit;
                                            "cw_serverpwd" => "",
                                            "cw_punkte" => "",
                                            "cw_gpunkte" => "",
-  			  						                     "cw_matchadmins" => "",
-  				  					                     "cw_lineup" => "",
-  					  				                     "cw_glineup" => "",
+   "cw_matchadmins" => "",
+   "cw_lineup" => "",
+   "cw_glineup" => "",
                                            "cw_bericht" => "",
-  				                                 "dropdown_date" => $dropdown_date,
-  				                                 "dropdown_time" => $dropdown_time,
+   "dropdown_date" => $dropdown_date,
+   "dropdown_time" => $dropdown_time,
                                            "hour" => "",
                                            "minute" => "",
                                            "name" => _member_admin_squad,
-  		    						                     "squad_info" => _cw_admin_head_squads,
+   "squad_info" => _cw_admin_head_squads,
                                            "game" => _member_admin_game,
                                            "squads" => $squads,
                                            "cw_liga" => "",
-  									                       "country" => _cw_admin_head_country,
-  									                       "countrys" => show_countrys(),
-  									                       "cw_gametype" => ""));
+   "country" => _cw_admin_head_country,
+   "countrys" => show_countrys(),
+   "cw_gametype" => ""));
       } elseif($_GET['do'] == "edit") {
 
         $qry = db("SELECT * FROM ".$db['cw']."
-                   WHERE id = '".intval($_GET['id'])."'");
+WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
 
         list($xonx1,$xonx2) = explode('on', $get['xonx']);
-  	    $qrym = db("SELECT * FROM ".$db['squads']."
-                    WHERE status = '1'
-                    ORDER BY game");
+   $qrym = db("SELECT * FROM ".$db['squads']."
+WHERE status = '1'
+ORDER BY game");
         while($gets = _fetch($qrym))
         {
-  	      if($get['squad_id'] == $gets['id']) $sel = "selected=\"selected\"";
+   if($get['squad_id'] == $gets['id']) $sel = "selected=\"selected\"";
           else $sel = "";
 
           $squads .= show(_cw_edit_select_field_squads, array("id" => $gets['id'],
-  				    		                                      	    "name" => re($gets['name']),
-                                                         	    "game" => re($gets['game']),
-  		                  				                              "sel" => $sel,
-  							                                              "icon" => $gets['icon']));
-  	    }
+   "name" => re($gets['name']),
+                                                          "game" => re($gets['game']),
+   "sel" => $sel,
+   "icon" => $gets['icon']));
+   }
 
         $dropdown_date = show(_dropdown_date, array("day" => dropdown("day",date("d",$get['datum'])),
-  			      	    	                              "month" => dropdown("month",date("m",$get['datum'])),
-                                            	      "year" => dropdown("year",date("Y",$get['datum']))));
+   "month" => dropdown("month",date("m",$get['datum'])),
+                                             "year" => dropdown("year",date("Y",$get['datum']))));
 
         $dropdown_time = show(_dropdown_time, array("hour" => dropdown("hour",date("H",$get['datum'])),
-                                            	      "minute" => dropdown("minute",date("i",$get['datum'])),
+                                             "minute" => dropdown("minute",date("i",$get['datum'])),
                                                     "uhr" => _uhr));
 
         $show = show($dir."/form_cw", array("head" => _cw_admin_head_edit,
@@ -133,7 +133,7 @@ if(_adminMenu != 'true') exit;
                                            "screens" => _cw_screens,
                                            "liga" => _cw_head_liga,
                                            "screen_info" => _cw_screens_info,
-  									                       "gametype" => _cw_head_gametype,
+   "gametype" => _cw_head_gametype,
                                            "url" => _url,
                                            "clantag" => _cw_admin_clantag,
                                            "bericht" => _cw_bericht,
@@ -142,9 +142,9 @@ if(_adminMenu != 'true') exit;
                                            "gegnerstuff" => _cw_admin_gegnerstuff,
                                            "warstuff" => _cw_admin_warstuff,
                                            "maps" => _cw_admin_maps,
-  		  							                     "match_admins" => _cw_head_admin,
-  			  						                     "lineup" => _cw_head_lineup,
-  				  					                     "glineup" => _cw_head_glineup,
+   "match_admins" => _cw_head_admin,
+   "lineup" => _cw_head_lineup,
+   "glineup" => _cw_head_glineup,
                                            "serverip" => _cw_admin_serverip,
                                            "lineup_info" => _cw_admin_lineup_info,
                                            "servername" => _server_name,
@@ -158,9 +158,9 @@ if(_adminMenu != 'true') exit;
                                            "logo" => _cw_logo,
                                            "cw_xonx2" => $xonx2,
                                            "cw_maps" => re($get['maps']),
-  									                       "cw_matchadmins" => re($get['matchadmins']),
-    									                     "cw_lineup" => re($get['lineup']),
-  	  								                     "cw_glineup" => re($get['glineup']),
+   "cw_matchadmins" => re($get['matchadmins']),
+     "cw_lineup" => re($get['lineup']),
+   "cw_glineup" => re($get['glineup']),
                                            "cw_servername" => re($get['servername']),
                                            "cw_serverip" => $get['serverip'],
                                            "cw_serverpwd" => re($get['serverpwd']),
@@ -168,20 +168,20 @@ if(_adminMenu != 'true') exit;
                                            "cw_gpunkte" => $get['gpunkte'],
                                            "cw_bericht" => re_bbcode($get['bericht']),
                                            "day" => date("d", $get['datum']),
-  				                                 "dropdown_date" => $dropdown_date,
-  				                                 "dropdown_time" => $dropdown_time,
+   "dropdown_date" => $dropdown_date,
+   "dropdown_time" => $dropdown_time,
                                            "month" => date("m", $get['datum']),
                                            "year" => date("Y", $get['datum']),
                                            "hour" => date("H", $get['datum']),
                                            "minute" => date("i", $get['datum']),
                                            "name" => _member_admin_squad,
-  									                       "countrys" => show_countrys($get['gcountry']),
-  		    						                     "squad_info" => _cw_admin_head_squads,
+   "countrys" => show_countrys($get['gcountry']),
+   "squad_info" => _cw_admin_head_squads,
                                            "game" => _member_admin_game,
                                            "squads" => $squads,
                                            "cw_liga" => re($get['liga']),
-  									                       "country" => _cw_admin_head_country,
-  									                       "cw_gametype" => re($get['gametype'])));
+   "country" => _cw_admin_head_country,
+   "cw_gametype" => re($get['gametype'])));
       } elseif($_GET['do'] == "add") {
         if(empty($_POST['gegner']) || empty($_POST['clantag']) || empty($_POST['t']))
         {
@@ -195,28 +195,28 @@ if(_adminMenu != 'true') exit;
           $datum = mktime($_POST['h'],$_POST['min'],0,$_POST['m'],$_POST['t'],$_POST['j']);
 
           if($_POST['land'] == "lazy") $kid = "";
-  		    else $kid = "`gcountry` = '".$_POST['land']."',";
+   else $kid = "`gcountry` = '".$_POST['land']."',";
 
           $qry = db("INSERT INTO ".$db['cw']."
-                     SET ".$kid."
-                         ".$xonx."
-                         `datum`        = '".((int)$datum)."',
-  	 				             `squad_id`     = '".((int)$_POST['squad'])."',
-                         `clantag`      = '".up($_POST['clantag'])."',
-                         `gegner`       = '".up($_POST['gegner'])."',
-                         `url`          = '".links($_POST['url'])."',
-                         `liga`         = '".up($_POST['liga'])."',
-  				 	             `gametype`     = '".up($_POST['gametype'])."',
-                         `punkte`       = '".((int)$_POST['punkte'])."',
-                         `gpunkte`      = '".((int)$_POST['gpunkte'])."',
-                         `maps`         = '".up($_POST['maps'])."',
-                         `serverip`     = '".up($_POST['serverip'])."',
-                         `servername`   = '".up($_POST['servername'])."',
-                         `serverpwd`    = '".up($_POST['serverpwd'])."',
-  					             `lineup`       = '".up($_POST['lineup'])."',
-  					             `glineup`      = '".up($_POST['glineup'])."',
-  					             `matchadmins`  = '".up($_POST['match_admins'])."',
-                         `bericht`      = '".up($_POST['bericht'],1)."'");
+SET ".$kid."
+".$xonx."
+`datum` = '".((int)$datum)."',
+`squad_id` = '".((int)$_POST['squad'])."',
+`clantag` = '".up($_POST['clantag'])."',
+`gegner` = '".up($_POST['gegner'])."',
+`url` = '".links($_POST['url'])."',
+`liga` = '".up($_POST['liga'])."',
+`gametype` = '".up($_POST['gametype'])."',
+`punkte` = '".((int)$_POST['punkte'])."',
+`gpunkte` = '".((int)$_POST['gpunkte'])."',
+`maps` = '".up($_POST['maps'])."',
+`serverip` = '".up($_POST['serverip'])."',
+`servername` = '".up($_POST['servername'])."',
+`serverpwd` = '".up($_POST['serverpwd'])."',
+`lineup` = '".up($_POST['lineup'])."',
+`glineup` = '".up($_POST['glineup'])."',
+`matchadmins` = '".up($_POST['match_admins'])."',
+`bericht` = '".up($_POST['bericht'],1)."'");
 
           $cwid = mysql_insert_id();
 
@@ -228,7 +228,7 @@ if(_adminMenu != 'true') exit;
           if(!empty($tmp))
           {
             $img = @getimagesize($tmp);
-						if($img1[0])
+if($img1[0])
             {
               @copy($tmp, basePath."/inc/images/clanwars/".mysql_insert_id()."_logo.".strtolower($end));
               @unlink($tmp);
@@ -243,12 +243,12 @@ if(_adminMenu != 'true') exit;
           if(!empty($tmp1))
           {
             $img1 = @getimagesize($tmp1);
-						if($img1[0])
+if($img1[0])
             {
               @copy($tmp1, basePath."/inc/images/clanwars/".mysql_insert_id()."_1.".strtolower($end1));
               @unlink($tmp1);
             }
-          }					
+          }	
 
           $tmp2 = $_FILES['screen2']['tmp_name'];
           $type2 = $_FILES['screen2']['type'];
@@ -258,7 +258,7 @@ if(_adminMenu != 'true') exit;
           if(!empty($tmp2))
           {
             $img2 = @getimagesize($tmp2);
-						if($img2[0])
+if($img2[0])
             {
               @copy($tmp2, basePath."/inc/images/clanwars/".mysql_insert_id()."_2.".strtolower($end2));
               @unlink($tmp2);
@@ -273,13 +273,13 @@ if(_adminMenu != 'true') exit;
           if(!empty($tmp3))
           {
             $img3 = @getimagesize($tmp3);
-						if($img3[0])
+if($img3[0])
             {
               @copy($tmp3, basePath."/inc/images/clanwars/".mysql_insert_id()."_3.".strtolower($end3));
               @unlink($tmp3);
             }
           }
-					
+
           $tmp4 = $_FILES['screen4']['tmp_name'];
           $type4 = $_FILES['screen4']['type'];
           $end4 = explode(".", $_FILES['screen4']['name']);
@@ -288,17 +288,17 @@ if(_adminMenu != 'true') exit;
           if(!empty($tmp4))
           {
             $img4 = @getimagesize($tmp4);
-						if($img4[0])
+if($img4[0])
             {
               @copy($tmp4, basePath."/inc/images/clanwars/".mysql_insert_id()."_4.".strtolower($end4));
               @unlink($tmp4);
             }
-          }					
+          }	
 
           $show = info(_cw_admin_added, "?admin=cw");
         }
       } elseif($_GET['do'] == "editcw") {
-			
+
         if(empty($_POST['gegner']) || empty($_POST['clantag']) || empty($_POST['t']))
         {
           if(empty($_POST['gegner'])) $show = error(_cw_admin_empty_gegner, 1);
@@ -311,29 +311,29 @@ if(_adminMenu != 'true') exit;
           $datum = mktime($_POST['h'],$_POST['min'],0,$_POST['m'],$_POST['t'],$_POST['j']);
 
           if($_POST['land'] == "lazy") $kid = "";
-  		    else $kid = "`gcountry` = '".$_POST['land']."',";
+   else $kid = "`gcountry` = '".$_POST['land']."',";
 
           $qry = db("UPDATE ".$db['cw']."
-                     SET ".$xonx."
-                         ".$kid."
-                         `datum`        = '".((int)$datum)."',
-  				 	             `squad_id`     = '".((int)$_POST['squad'])."',
-                         `clantag`      = '".up($_POST['clantag'])."',
-                         `gegner`       = '".up($_POST['gegner'])."',
-                         `url`          = '".links($_POST['url'])."',
-                         `liga`         = '".up($_POST['liga'])."',
-  	  				           `gametype`     = '".up($_POST['gametype'])."',
-                         `punkte`       = '".((int)$_POST['punkte'])."',
-                         `gpunkte`      = '".((int)$_POST['gpunkte'])."',
-                         `maps`         = '".up($_POST['maps'])."',
-                         `serverip`     = '".up($_POST['serverip'])."',
-                         `servername`   = '".up($_POST['servername'])."',
-                         `serverpwd`    = '".up($_POST['serverpwd'])."',
-  					             `lineup`       = '".up($_POST['lineup'])."',
-  					             `glineup`      = '".up($_POST['glineup'])."',
-  					             `matchadmins`  = '".up($_POST['match_admins'])."',
-                         `bericht`      = '".up($_POST['bericht'],1)."'
-                     WHERE id = '".intval($_GET['id'])."'");
+SET ".$xonx."
+".$kid."
+`datum` = '".((int)$datum)."',
+`squad_id` = '".((int)$_POST['squad'])."',
+`clantag` = '".up($_POST['clantag'])."',
+`gegner` = '".up($_POST['gegner'])."',
+`url` = '".links($_POST['url'])."',
+`liga` = '".up($_POST['liga'])."',
+`gametype` = '".up($_POST['gametype'])."',
+`punkte` = '".((int)$_POST['punkte'])."',
+`gpunkte` = '".((int)$_POST['gpunkte'])."',
+`maps` = '".up($_POST['maps'])."',
+`serverip` = '".up($_POST['serverip'])."',
+`servername` = '".up($_POST['servername'])."',
+`serverpwd` = '".up($_POST['serverpwd'])."',
+`lineup` = '".up($_POST['lineup'])."',
+`glineup` = '".up($_POST['glineup'])."',
+`matchadmins` = '".up($_POST['match_admins'])."',
+`bericht` = '".up($_POST['bericht'],1)."'
+WHERE id = '".intval($_GET['id'])."'");
 
           $cwid = $_GET['id'];
 
@@ -345,7 +345,7 @@ if(_adminMenu != 'true') exit;
           if(!empty($tmp))
           {
             $img = @getimagesize($tmp);
-						foreach($picformat AS $end1)
+foreach($picformat AS $end1)
             {
               if(file_exists(basePath.'/inc/images/clanwars/'.intval($_GET['id']).'_logo.'.$end1))
               {
@@ -368,7 +368,7 @@ if(_adminMenu != 'true') exit;
           if(!empty($tmp1))
           {
             $img1 = @getimagesize($tmp1);
-						foreach($picformat AS $endun1)
+foreach($picformat AS $endun1)
             {
               if(file_exists(basePath.'/inc/images/clanwars/'.intval($_GET['id']).'_1.'.$endun1))
               {
@@ -376,15 +376,15 @@ if(_adminMenu != 'true') exit;
                 break;
               }
             }
-						
+
             if($img1[0])
             {
               copy($tmp1, basePath."/inc/images/clanwars/".intval($_GET['id'])."_1.".strtolower($end1));
               @unlink($tmp1);
             }
           }
-					
-					$tmp2 = $_FILES['screen2']['tmp_name'];
+
+$tmp2 = $_FILES['screen2']['tmp_name'];
           $type2 = $_FILES['screen2']['type'];
           $end2 = explode(".", $_FILES['screen2']['name']);
           $end2 = strtolower($end2[count($end2)-1]);
@@ -392,7 +392,7 @@ if(_adminMenu != 'true') exit;
           if(!empty($tmp2))
           {
             $img2 = @getimagesize($tmp2);
-						foreach($picformat AS $endun2)
+foreach($picformat AS $endun2)
             {
               if(file_exists(basePath.'/inc/images/clanwars/'.intval($_GET['id']).'_2.'.$endun2))
               {
@@ -406,8 +406,8 @@ if(_adminMenu != 'true') exit;
               @unlink($tmp2);
             }
           }
-					
-					$tmp3 = $_FILES['screen3']['tmp_name'];
+
+$tmp3 = $_FILES['screen3']['tmp_name'];
           $type3 = $_FILES['screen3']['type'];
           $end3 = explode(".", $_FILES['screen3']['name']);
           $end3 = strtolower($end3[count($end3)-1]);
@@ -415,7 +415,7 @@ if(_adminMenu != 'true') exit;
           if(!empty($tmp3))
           {
             $img3 = @getimagesize($tmp3);
-						foreach($picformat AS $endun3)
+foreach($picformat AS $endun3)
             {
               if(file_exists(basePath.'/inc/images/clanwars/'.intval($_GET['id']).'_3.'.$endun3))
               {
@@ -429,8 +429,8 @@ if(_adminMenu != 'true') exit;
               @unlink($tmp3);
             }
           }
-					
-					$tmp4 = $_FILES['screen4']['tmp_name'];
+
+$tmp4 = $_FILES['screen4']['tmp_name'];
           $type4 = $_FILES['screen4']['type'];
           $end4 = explode(".", $_FILES['screen4']['name']);
           $end4 = strtolower($end4[count($end4)-1]);
@@ -438,7 +438,7 @@ if(_adminMenu != 'true') exit;
           if(!empty($tmp4))
           {
             $img4 = @getimagesize($tmp4);
-						foreach($picformat AS $endun4)
+foreach($picformat AS $endun4)
             {
               if(file_exists(basePath.'/inc/images/clanwars/'.intval($_GET['id']).'_4.'.$endun4))
               {
@@ -457,29 +457,49 @@ if(_adminMenu != 'true') exit;
         }
       } elseif($_GET['do'] == "delete") {
         $qry = db("DELETE FROM ".$db['cw']."
-                   WHERE id = '".intval($_GET['id'])."'");
+WHERE id = '".intval($_GET['id'])."'");
 
         $qry = db("DELETE FROM ".$db['cw_comments']."
-                   WHERE cw = '".intval($_GET['id'])."'");
+WHERE cw = '".intval($_GET['id'])."'");
 
         $show = info(_cw_admin_deleted, "?admin=cw");
       } elseif($_GET['do'] == "top") {
         $qry = db("UPDATE ".$db['cw']."
-                   SET `top` = '".intval($_GET['set'])."'
-                   WHERE id = '".intval($_GET['id'])."'");
+SET `top` = '".intval($_GET['set'])."'
+WHERE id = '".intval($_GET['id'])."'");
                    
         $show = info((empty($_GET['set']) ? _cw_admin_top_unsetted : _cw_admin_top_setted), "?admin=cw");
       } else {
         if(isset($_GET['page'])) $page = $_GET['page'];
         else $page = 1;
 
-        $qry = db("SELECT * FROM ".$db['cw']."
-                   ORDER BY datum DESC
-                   LIMIT ".($page - 1)*$maxadmincw.",".$maxadmincw."");
+if(is_numeric($_GET['squad']))	{
+$whereqry = ' WHERE squad_id = '.$_GET['squad'].' ';
+}
+
+        $qry = db("SELECT * FROM ".$db['cw']." ".$whereqry."
+ORDER BY datum DESC
+LIMIT ".($page - 1)*$maxadmincw.",".$maxadmincw."");
         $entrys = cnt($db['cw']);
+         $squads .= show(_cw_edit_select_field_squads, array("name" => _all,
+"sel" => "",
+"id" => "?admin=cw"));
+
+$qrys = db("SELECT * FROM ".$db['squads']."
+WHERE status = '1'
+ORDER BY game ASC");
+
+        while($gets = _fetch($qrys))
+        {
+if($gets['id'] == $_GET['squad']) { $sel = ' class="dropdownKat"'; } else { $sel = ""; }
+
+          $squads .= show(_cw_edit_select_field_squads, array("name" => re($gets['name']),
+"sel" => $sel,
+"id" => "?admin=cw&amp;squad=".$gets['id'].""));
+        }
         while($get = _fetch($qry))
         {
-          $top = empty($get['top']) 
+          $top = empty($get['top'])
                ? '<a href="?admin=cw&amp;do=top&amp;set=1&amp;id='.$get['id'].'"><img src="../inc/images/no.gif" alt="" title="'._cw_admin_top_set.'" /></a>'
                : '<a href="?admin=cw&amp;do=top&amp;set=0&amp;id='.$get['id'].'"><img src="../inc/images/yes.gif" alt="" title="'._cw_admin_top_unset.'" /></a>';
 
@@ -506,8 +526,11 @@ if(_adminMenu != 'true') exit;
                                              "add" => _cw_admin_head,
                                              "date" => _datum,
                                              "titel" => _opponent,
+                                              "squads" => $squads,
+"what" => _filter,
+"sort" => _ulist_sort,
                                              "show" => $show_,
-                                             "navi" => nav($entrys,$maxadmincw,"?admin=cw")
+                                             "navi" => nav($entrys,$maxadmincw,"?admin=cw&amp;squad=".$_GET['squad']."")
                                              ));
       }
     }
