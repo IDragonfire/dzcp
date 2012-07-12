@@ -473,10 +473,30 @@ if(_adminMenu != 'true') exit;
         if(isset($_GET['page'])) $page = $_GET['page'];
         else $page = 1;
 
+	if(is_numeric($_GET['squad']))	{
+		$whereqry = ' WHERE squad_id = '.$_GET['squad'].' ';
+	}
+
         $qry = db("SELECT * FROM ".$db['cw']."
                    ORDER BY datum DESC
                    LIMIT ".($page - 1)*$maxadmincw.",".$maxadmincw."");
         $entrys = cnt($db['cw']);
+        		$squads .= show(_cw_edit_select_field_squads, array("name" => _all,
+										"sel" => "",
+										"id" => "?admin=cw"));
+
+		$qrys = db("SELECT * FROM ".$db['squads']."
+		WHERE status = '1'
+		ORDER BY game ASC");
+		
+        while($gets = _fetch($qrys))
+        {
+		if($gets['id'] == $_GET['squad']) { $sel = ' class="dropdownKat"'; } else { $sel = ""; }
+		
+          $squads .= show(_cw_edit_select_field_squads, array("name" => re($gets['name']),
+																"sel" => $sel,
+																"id" => "?admin=cw&amp;squad=".$gets['id'].""));
+        }
         while($get = _fetch($qry))
         {
           $top = empty($get['top']) 
@@ -506,8 +526,11 @@ if(_adminMenu != 'true') exit;
                                              "add" => _cw_admin_head,
                                              "date" => _datum,
                                              "titel" => _opponent,
+                                              "squads" => $squads,
+						"what" => _filter,
+						"sort" => _ulist_sort,
                                              "show" => $show_,
-                                             "navi" => nav($entrys,$maxadmincw,"?admin=cw")
+                                             "navi" => nav($entrys,$maxadmincw,"?admin=cw&amp;squad=".$_GET['squad']."")
                                              ));
       }
     }
