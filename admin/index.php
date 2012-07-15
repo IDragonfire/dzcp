@@ -30,8 +30,6 @@ $dir = "admin";
                WHERE user = '".intval($userid)."'");
     $check = _fetch($qry);
 
-    define('_holder',"['[link]','?admin=[name]','background-image:url(menu/[name].gif);'],\n");
-
     unset($amenu);
     $files = get_files(basePath.'/admin/menu/');
     foreach($files AS $file)
@@ -45,10 +43,16 @@ $dir = "admin";
         $file = str_replace('.php', '', $file);
         @eval("\$link = _config_".$file.";");
         @eval("\$permission = ".$navPerm.";");
+        
+	foreach($picformat AS $end)
+	{
+		if(file_exists(basePath.'/admin/menu/'.$file.'.'.$end))
+			break;
+	}
 
         if(!empty($navType) && !empty($navPerm) && $permission)
         {
-          $amenu[$navType][$link] = show(_holder, array("link" => $link, 'name' => $file));
+        	$amenu[$navType][$link] = show("['[link]','?admin=[name]','background-image:url(menu/[name].".$end.");'],\n", array("link" => $link, 'name' => $file));
         }
       }
     }
