@@ -1458,7 +1458,7 @@ function update_mysql_1_6()
      }
     $qry = $qrx;
 	//-> Mod/AddOns verwalten
-	$qry = db("CREATE TABLE ".$sql_prefix."versions (
+	$qry = db("CREATE TABLE ".$db['versions']." (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`id_server` INT(11) NOT NULL,
 	`name` VARCHAR(100) NOT NULL,
