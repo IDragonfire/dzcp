@@ -85,6 +85,7 @@ $db = array("host" =>           $sql_host,
             "usergb" =>         $prefix."usergb",
             "userpos" =>        $prefix."userposis",    
             "userstats" =>      $prefix."userstats",
+            "versions" =>       $prefix."versions",
             "votes" =>          $prefix."votes",
             "vote_results" =>   $prefix."vote_results"
             );
