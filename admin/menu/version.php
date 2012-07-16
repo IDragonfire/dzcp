@@ -7,20 +7,20 @@
 //####################################################################################
 //############################ READ ME FOR DEVELOPER #################################
 //####################################################################################
-// Um dieses Feature für dein AddOn/Mod nutzen zu können, sollte zum einen, bei der
+// Um dieses Feature fï¿½r dein AddOn/Mod nutzen zu kï¿½nnen, sollte zum einen, bei der
 // Installation deines Mod/AddOns ein Eintrag in der Tabelle versions gemacht werden
-// damit dein Mod/AddOn in dieser Übersicht auftaucht, folgeden Felder sind vorhanden:
+// damit dein Mod/AddOn in dieser ï¿½bersicht auftaucht, folgeden Felder sind vorhanden:
 //
 // -id				= nicht relevant (wird automatisch vergeben)
-// -id_server 		= deine eigene ID für die Versionsprüfung
+// -id_server 		= deine eigene ID fï¿½r die Versionsprï¿½fung
 // -name 			= der Name deines Mod/AddOns
-// -server 			= der Server(txt Datei) für die Versionsprüfung (siehe weiter unten)
+// -server 			= der Server(txt Datei) fï¿½r die Versionsprï¿½fung (siehe weiter unten)
 // -download_link	= der Link zu deinem Mod/AddOn
 // -own_version 	= die Version die gerade installiert wird
 // -own_date		= von wann ist diese Version
 //
-// Versionsprüfung:
-// Damit die Version von diesem Mod/AddOn automatisch geprüft werden kann muss eine 
+// Versionsprï¿½fung:
+// Damit die Version von diesem Mod/AddOn automatisch geprï¿½ft werden kann muss eine 
 // Datei auf einem Webspace hinterlegt werden, der Link zu dieser Datei ist unter
 // "server" einzutragen. Die Datei muss folgenden Aufbau haben:
 // id;version;datum
@@ -32,7 +32,7 @@
 //   2;2,3;1341746824
 //   3;1;1451746824
 //  Ich habe also ein AddOn mit der ID 1, aktuelle Version 4 vom 8.Septemer 2015.
-//  Außerdem eins mit der ID 2 in der Version 2,3 (Punkt oder Komma ist hierbei egal) 
+//  Auï¿½erdem eins mit der ID 2 in der Version 2,3 (Punkt oder Komma ist hierbei egal) 
 //  von 8. Juli 2012. Und ein Mod/AddOn mit ID 3 ...
 //
 // Bei Fragen wendet euch an BlueTeck aus dem DZCP Forum.
@@ -107,7 +107,7 @@ if(_adminMenu != 'true') exit;
 			
 		  	$datum = mktime(0,0,0,$_POST['m'],$_POST['t'],$_POST['j']);
 			
-          	$qry = db("INSERT INTO ".$sql_prefix."versions
+          	$qry = db("INSERT INTO ".$db['versions']."
                      SET `id_server` = '".up($_POST['server_id'])."',
 					 	`name` = '".up($_POST['name'])."',
 						`download_link` = '".up($_POST['download_link'])."',
@@ -120,7 +120,7 @@ if(_adminMenu != 'true') exit;
 		}
 //####################################################################################	
 		elseif($_GET['do'] == 'delete'){
-			$qry = db("DELETE FROM ".$sql_prefix."versions 
+			$qry = db("DELETE FROM ".$db['versions']." 
                    WHERE id = '".intval($_GET['id'])."'");
 
         	$show = info(_v_deleted, "?admin=version");
@@ -129,7 +129,7 @@ if(_adminMenu != 'true') exit;
 //####################################################################################	
 		elseif($_GET['do'] == 'edit'){
 			
-			$qrys = db("SELECT * FROM ".$sql_prefix."versions 
+			$qrys = db("SELECT * FROM ".$db['versions']."
            		         WHERE id = '".intval($_GET['id'])."'");
         	$gets = _fetch($qrys);
 			
@@ -190,7 +190,7 @@ if(_adminMenu != 'true') exit;
 			else 
 			{
 				$datum = mktime(0,0,0,$_POST['m'],$_POST['t'],$_POST['j']);
-			    $qry = db("UPDATE ".$sql_prefix."versions
+			    $qry = db("UPDATE ".$db['versions']."
                     	 SET `id_server` = '".up($_POST['server_id'])."',
 					 	`name` = '".up($_POST['name'])."',
 						`download_link` = '".up($_POST['download_link'])."',
@@ -207,7 +207,7 @@ if(_adminMenu != 'true') exit;
 		else {
 		
 		
-			$qry = db("SELECT * FROM ".$sql_prefix."versions ORDER BY own_date ASC");
+			$qry = db("SELECT * FROM ".$db['versions']." ORDER BY own_date ASC");
 			while($get = _fetch($qry))
 			{	
 		
@@ -218,7 +218,7 @@ if(_adminMenu != 'true') exit;
 						if($get['server'] != '') {
 							$zeilen = file ($get['server']);
 							foreach ($zeilen as $zeile) {
-   								$server_part = explode(";", $zeile);	//Zeile in Blöcke teilen
+   								$server_part = explode(";", $zeile);	//Zeile in Blï¿½cke teilen
 								if($server_part[0] == $get['id_server'])		//ID-Block = DB-ID ??
 								{
 									break;								
