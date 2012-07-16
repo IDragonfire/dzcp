@@ -1440,7 +1440,7 @@ function update_mysql_1_5_4()
 }
 function update_mysql_1_6()
 {
-  	global $db;
+  	global $db,$sql_prefix;
     db("ALTER TABLE `".$db['f_threads']."` CHANGE `edited` `edited` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
 	db("ALTER TABLE `".$db['users']."` CHANGE `whereami` `whereami` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
 	db("ALTER TABLE `".$db['downloads']."` ADD `last_dl` INT( 20 ) NOT NULL DEFAULT '0' AFTER `date`");
@@ -1458,5 +1458,16 @@ function update_mysql_1_6()
 	   $qrx .= db("UPDATE ".$db['f_skats']." SET `pos` = '".$get['id']."' WHERE `id` = '".$get['id']."'");
      }
     $qry = $qrx;
+	//-> Mod/AddOns verwalten
+	$qry = db("CREATE TABLE ".$sql_prefix."versions (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`id_server` INT(11) NOT NULL,
+	`name` VARCHAR(100) NOT NULL,
+	`server` LONGTEXT NOT NULL,
+	`download_link` LONGTEXT NOT NULL,
+	`own_version` VARCHAR(11) NOT NULL,
+	`own_date` INT(12) NOT NULL,
+	PRIMARY KEY (`id`)");
+
 }
 ?>
