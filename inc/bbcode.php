@@ -15,7 +15,7 @@ $qry = db("SELECT * FROM ".$db['settings']."");
 $settings = _fetch($qry);
 $prev = $settings['prev'].'_';
 //-> Language auslesen
-$language = (file_exists(basePath.'/inc/lang/languages/'.$_COOKIE[$prev.'language'].'.php')) ? $_COOKIE[$prev.'language'] : $settings["language"];
+$language = (isset($_COOKIE[$prev.'language']) ? (file_exists(basePath.'/inc/lang/languages/'.$_COOKIE[$prev.'language'].'.php') ? $_COOKIE[$prev.'language'] : $settings["language"]) : $settings["language"]);
 //einzelne Definitionen
 $isSpider = isSpider();
 $subfolder = basename(dirname(dirname($_SERVER['PHP_SELF']).'../'));
