@@ -1,8 +1,9 @@
 <?php
 function navi($kat)
 {
-  global $db,$chkMe,$userid,$designpath;
-
+	global $db,$chkMe,$userid,$designpath;
+	
+	$navi="";
     if($k = _fetch(db("SELECT `level` FROM ".$db['navi_kats']." WHERE `placeholder` = '".up($kat)."'")))
     {
       $intern = ($chkMe >= 2) ? '' : " AND s1.`internal` = '0'";
