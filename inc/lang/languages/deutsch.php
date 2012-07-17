@@ -54,6 +54,7 @@ define('_config_double_post', 'Forum Doppelpost');
 define('_config_fotum_vote', 'Forum-Vote');
 define('_config_fotum_vote_info', '<center>Zeigt die Forum-Votes auch unter Umfragen an.</center>');
 ## ADDED / REDEFINED FOR 1.5
+define('_side_membermap', 'Mitgliederkarte');
 define('_installdir', "<tr><td colspan=\"15\" class=\"contentMainFirst\"><br /><center><b>Achtung! Sicherheitsrisiko!!</b><br><br>Bitte l&ouml;sche zuerst den Ordner <b>'/_installer'</b> von deinem Webspace. Erst dann steht das Adminmenü zur Verfügung!</center><br /></td></tr>");
 define('_no_ts', 'kein Teamspeak eingetragen');
 define('_search_sites', 'Unterseiten');
