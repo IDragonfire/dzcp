@@ -156,7 +156,7 @@ function userid()
 //-> Templateswitch
 $files = get_files('../inc/_templates_/');
 $folder = $files[0];
-if($_COOKIE[$prev.'tmpdir'] != NULL)
+if(isset($_COOKIE[$prev.'tmpdir']) && $_COOKIE[$prev.'tmpdir'] != NULL)
 {
   if(file_exists(basePath."/inc/_templates_/".$_COOKIE[$prev.'tmpdir'])) $tmpdir = $_COOKIE[$prev.'tmpdir'];
   else $tmpdir = $folder;
