@@ -2136,4 +2136,22 @@ define('_member_squad_wars' , '<a href="../clanwars/?action=showall&amp;id=[id]"
 define('_member_squad_awards' , '<a href="../awards/?action=showall&amp;id=[id]">Awards</a>');
 define('_user_list_ck' , 'List in clan cash?');
 define('_fightus_squad' , 'Wanted team');
+## ADDED FOR 1.6 Final
+define(_config_version, 'Mod/AddOns manager');
+define(_v_head, 'Mod/AddOn version manager');
+define(_v_name, 'Mod/AddOn name');
+define(_v_own, 'own version');
+define(_v_server, 'latest version');
+define(_config_v_add, 'add Mod/AddOn');
+define(_v_server_hover, 'Check version on');
+define(_v_unknown, 'unknown');
+define(_v_fsockopen_not_allowed, 'fsockopen not allowed');
+define(_v_no_data, 'no data requested');
+define(_v_get_data, 'request data');
+define(_v_server_id, 'Mod/AddOn ID on server');
+define(_v_download_link, 'Mod/AddOn download link');
+define(_v_added, 'Mod/AddOn added');
+define(_v_edited, 'Mod/AddOn successfully added');
+define(_confirm_del_version, 'It only removes the entry from this list, delete?');
+define(_v_no_server, 'no control server');
 ?>
