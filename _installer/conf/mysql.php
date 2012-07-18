@@ -1458,7 +1458,7 @@ function update_mysql_1_6()
      }
     $qry = $qrx;
 	//-> Mod/AddOns verwalten
-	$qry = db("CREATE TABLE ".$db['versions']." (
+	db("CREATE TABLE ".$db['versions']." (
 	`id` INT(11) NOT NULL AUTO_INCREMENT,
 	`id_server` INT(11) NOT NULL,
 	`name` VARCHAR(100) NOT NULL,
@@ -1466,7 +1466,6 @@ function update_mysql_1_6()
 	`download_link` LONGTEXT NOT NULL,
 	`own_version` VARCHAR(11) NOT NULL,
 	`own_date` INT(12) NOT NULL,
-	PRIMARY KEY (`id`)");
-
-}
+	PRIMARY KEY (`id`)) ;");
+	}
 ?>
