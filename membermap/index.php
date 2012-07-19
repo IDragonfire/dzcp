@@ -7,7 +7,7 @@ include(basePath."/inc/bbcode.php");
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
-$where = 'Mitgliederkarte';
+$where = _side_membermap;
 $dir = "membermap";
 ## SECTIONS ##
  
