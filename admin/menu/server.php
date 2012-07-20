@@ -84,9 +84,21 @@ if(_adminMenu != 'true') exit;
 
       if($_GET['do'] == "ts")
       {
+		switch (((int)$_POST['ts_version'])) {
+        case "3": //TS3
+        	$tsport = 9987;
+            $tsqport = 10011;
+        break;
+        default: //TS2
+        	$tsport = 8767;
+        	$tsqport = 51234;
+        break;
+        }
+		$tsport = empty($_POST['ts_port']) ? $tsport : $_POST['ts_port'];
+		$tsqport = empty($_POST['ts_sport']) ? $tsqport : $_POST['ts_sport'];
         $qry = db("UPDATE ".$db['settings']."
-                   SET `ts_port`    	= '".((int)$_POST['ts_port'])."',
-                       `ts_sport`  		= '".((int)$_POST['ts_sport'])."',
+                   SET `ts_port`    	= '".((int)$tsport)."',
+                       `ts_sport`  		= '".((int)$tsqport)."',
                        `ts_width`   	= '".((int)$_POST['ts_width'])."',
                        `ts_version` 	= '".((int)$_POST['ts_version'])."',
                        `ts_ip`      	= '".up($_POST['ts_ip'])."',
