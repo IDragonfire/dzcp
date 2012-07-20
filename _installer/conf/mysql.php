@@ -1382,7 +1382,7 @@ VALUES
 
     db("ALTER TABLE ".$db['partners']." ADD `textlink` INT(1) NOT NULL default '0'");
 
-    db("INSERT INTO ".$db['partners']." (`link`, `banner`, `textlink`) VALUES ('http://www.dzcp.de.de', 'dzcp.de', 1);");
+    db("INSERT INTO ".$db['partners']." (`link`, `banner`, `textlink`) VALUES ('http://www.dzcp.de', 'dzcp.de', 1);");
     db("INSERT INTO ".$db['partners']." (`link`, `banner`, `textlink`) VALUES ('http://www.hogibo.net', 'Webspace', 1);");
     db("INSERT INTO ".$db['partners']." (`link`, `banner`, `textlink`) VALUES ('http://www.freunde.org', 'Freunde finden', 1);");
 
