@@ -2844,7 +2844,7 @@ case 'admin';
                    SET ".$newpwd."
                        `nick`   = '".up($_POST['nick'])."',
                        `email`  = '".$_POST['email']."',
-                       `user`   = '".$_POST['loginname']."',
+                       `user`   = '".up($_POST['loginname'])."',
                        `listck` = '".((int)$_POST['listck'])."',
                        `level`  = '".((int)$_POST['level'])."'
                    WHERE id = '".intval($_GET['user'])."'");
