@@ -1678,7 +1678,7 @@ case 'editprofile';
 		  			 SET	".$newpwd."
 			            ".$customfields."
                   `country`      = '".$_POST['land']."',
-                  `user`         = '".$_POST['user']."',
+                  `user`         = '".up($_POST['user'])."',
 			  			 		`nick`         = '".up($_POST['nick'])."',
 									`rlname`       = '".up($_POST['rlname'])."',
 									`sex`          = '".((int)$_POST['sex'])."',
