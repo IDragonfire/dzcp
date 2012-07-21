@@ -274,7 +274,10 @@ if(_adminMenu != 'true') exit;
             $shown = _noicon;
             $set = 1;
           }
-
+		  if($get['katname'] != $kat) { 
+			  $kat = $get['katname']; 
+			  $show_ .= '<tr><td align="center" colspan="8" class="contentHead"><span class="fontBold">'.$get['katname'].'</span></td></tr>';
+		  }
           $show_ .= show($dir."/navi_show", array("class" => $class,
                                                   "name" => $type,
                                                   "id" => $get['id'],
