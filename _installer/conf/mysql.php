@@ -1458,5 +1458,15 @@ function update_mysql_1_6()
 	   $qrx .= db("UPDATE ".$db['f_skats']." SET `pos` = '".$get['id']."' WHERE `id` = '".$get['id']."'");
      }
     $qry = $qrx;
-}
+	//-> Mod/AddOns verwalten
+	db("CREATE TABLE ".$db['versions']." (
+	`id` INT(11) NOT NULL AUTO_INCREMENT,
+	`id_server` INT(11) NOT NULL,
+	`name` VARCHAR(100) NOT NULL,
+	`server` LONGTEXT NOT NULL,
+	`download_link` LONGTEXT NOT NULL,
+	`own_version` VARCHAR(11) NOT NULL,
+	`own_date` INT(12) NOT NULL,
+	PRIMARY KEY (`id`)) ;");
+	}
 ?>
