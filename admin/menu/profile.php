@@ -91,14 +91,27 @@ if(_adminMenu != 'true') exit;
 
 		      $show = info(_profile_edited,"?admin=profile");
         }
+	  } elseif($_GET['do'] == "shown") {
+		  if($_GET['what'] == 'set')
+        {
+          $upd = db("UPDATE ".$db['profile']."
+                     SET `shown` = '1'
+                     WHERE id = '".intval($_GET['id'])."'");
+        } elseif($_GET['what'] == 'unset') {
+          $upd = db("UPDATE ".$db['profile']."
+                     SET `shown` = '0'
+                     WHERE id = '".intval($_GET['id'])."'");
+        }
+		header("Location: ?admin=profile");
       } else {
         $qry = db("SELECT * FROM ".$db['profile']."
                    WHERE kid = '1'
 		    	         ORDER BY name");
         while($get = _fetch($qry))
-        {
-	        if($get['shown'] == "1") $shown = _yesicon;
-          else $shown = _noicon;
+        {		  
+		  $shown = ($get['shown'] == 1)
+               ? '<a href="?admin=profile&amp;do=shown&amp;id='.$get['id'].'&amp;what=unset"><img src="../inc/images/yes.gif" alt="" title="'._non_public.'" /></a>'
+               : '<a href="?admin=profile&amp;do=shown&amp;id='.$get['id'].'&amp;what=set"><img src="../inc/images/no.gif" alt="" title="'._public.'" /></a>';
 
           if($get['type'] == "1") $type = _profile_type_1;
 		      elseif($get['type'] == "2") $type = _profile_type_2;
@@ -125,8 +138,9 @@ if(_adminMenu != 'true') exit;
 			             ORDER BY name");
         while($get = _fetch($qry))
         {
-	        if($get['shown'] == "1") $shown = _yesicon;
-          else $shown = _noicon;
+	      $shown = ($get['shown'] == 1)
+               ? '<a href="?admin=profile&amp;do=shown&amp;id='.$get['id'].'&amp;what=unset"><img src="../inc/images/yes.gif" alt="" title="'._non_public.'" /></a>'
+               : '<a href="?admin=profile&amp;do=shown&amp;id='.$get['id'].'&amp;what=set"><img src="../inc/images/no.gif" alt="" title="'._public.'" /></a>';
 
           if($get['type'] == "1") $type = _profile_type_1;
 		      elseif($get['type'] == "2") $type = _profile_type_2;
@@ -152,8 +166,9 @@ if(_adminMenu != 'true') exit;
 			             ORDER BY name");
         while($get = _fetch($qry))
         {
-	        if($get['shown'] == "1") $shown = _yesicon;
-          else $shown = _noicon;
+	      $shown = ($get['shown'] == 1)
+               ? '<a href="?admin=profile&amp;do=shown&amp;id='.$get['id'].'&amp;what=unset"><img src="../inc/images/yes.gif" alt="" title="'._non_public.'" /></a>'
+               : '<a href="?admin=profile&amp;do=shown&amp;id='.$get['id'].'&amp;what=set"><img src="../inc/images/no.gif" alt="" title="'._public.'" /></a>';
 
           if($get['type'] == "1") $type = _profile_type_1;
 		      elseif($get['type'] == "2") $type = _profile_type_2;
@@ -179,8 +194,9 @@ if(_adminMenu != 'true') exit;
 			             ORDER BY name");
         while($get = _fetch($qry))
         {
-	        if($get['shown'] == "1") $shown = _yesicon;
-          else $shown = _noicon;
+	       $shown = ($get['shown'] == 1)
+               ? '<a href="?admin=profile&amp;do=shown&amp;id='.$get['id'].'&amp;what=unset"><img src="../inc/images/yes.gif" alt="" title="'._non_public.'" /></a>'
+               : '<a href="?admin=profile&amp;do=shown&amp;id='.$get['id'].'&amp;what=set"><img src="../inc/images/no.gif" alt="" title="'._public.'" /></a>';
 
           if($get['type'] == "1") $type = _profile_type_1;
 	      	elseif($get['type'] == "2") $type = _profile_type_2;
@@ -206,8 +222,9 @@ if(_adminMenu != 'true') exit;
 			             ORDER BY name");
         while($get = _fetch($qry))
         {
-	        if($get['shown'] == "1") $shown = _yesicon;
-          else $shown = _noicon;
+	      $shown = ($get['shown'] == 1)
+               ? '<a href="?admin=profile&amp;do=shown&amp;id='.$get['id'].'&amp;what=unset"><img src="../inc/images/yes.gif" alt="" title="'._non_public.'" /></a>'
+               : '<a href="?admin=profile&amp;do=shown&amp;id='.$get['id'].'&amp;what=set"><img src="../inc/images/no.gif" alt="" title="'._public.'" /></a>';
 
           if($get['type'] == "1") $type = _profile_type_1;
 		      elseif($get['type'] == "2") $type = _profile_type_2;
