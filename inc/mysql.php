@@ -1,7 +1,7 @@
 <?php
-$sql_prefix = '';
+$sql_prefix = 'dzcp_';
 $sql_host = 'localhost';
-$sql_user =  ''; 
-$sql_pass = ''; 
-$sql_db = '';
+$sql_user = 'root'; 
+$sql_pass = 'makke123'; 
+$sql_db = 'bugfix';
 ?>
