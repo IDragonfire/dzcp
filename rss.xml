@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="iso-8859-1" ?>
+<rss version="0.91">
+<channel>
+  <title>Dein Seitentitel hier!</title>
+  <link>http://localhost</link>
+  <description>Clannews von Dein Clanname hier!</description>
+  <language>de-de</language>
+  <copyright>2012 Dein Clanname hier!</copyright>
+  <item>
+    <pubDate>Wed, 25 Jul 2012 09:40:23 +0200</pubDate>
+    <author>Makke</author>
+    <title>Glossar Test</title>
+    <description>um das ganze dann nochmal zu testen und zu sehen wie das mit dem glossar aussieht
+
+hier das DZCP das schon im glossar drin ist
+
+interesse da ja das int damals probleme machte.    </description>
+    <link>http://localhost/root/dzcp/news/?action=show&amp;id=3</link>
+  </item>
+  <item>
+    <pubDate>Wed, 28 Mar 2012 17:49:03 +0200</pubDate>
+    <author>Makke</author>
+    <title>mal sehen</title>
+    <description>und jetzt schauen wir mal ob das ganze auch wirklich funktioniert.
+und wie das ganze danach auch wirklich aussieht    </description>
+    <link>http://localhost/root/dzcp/news/?action=show&amp;id=2</link>
+  </item>
+  <item>
+    <pubDate>Tue, 08 Nov 2011 00:08:23 +0100</pubDate>
+    <author>Makke</author>
+    <title>deV!L`z Clanportal</title>
+    <description>deV!L`z Clanportal wurde erfolgreich installiert!
+Bei Fragen oder Problemen kannst du gerne das Forum unter www.dzcp.de kontaktieren.
+Mehr Designtemplates und Modifikationen findest du unter www.templatebar.de.
+ 
+Viel Spass mit dem DZCP wuenscht dir das Team von www.dzcp.de.
+muss nochmal getestet werden    </description>
+    <link>http://localhost/root/dzcp/news/?action=show&amp;id=1</link>
+  </item>
+</channel>
+</rss>

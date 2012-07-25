@@ -210,12 +210,13 @@ if(_adminMenu != 'true') exit;
 			$qry = db("SELECT * FROM ".$db['versions']." ORDER BY own_date ASC");
 			while($get = _fetch($qry))
 			{	
-		
+				unset($server_part);
 			//Datei(n) einlesen
 				if($_GET['do'] == 'get') {
 					if(function_exists('fsockopen'))
 					{
 						if($get['server'] != '') {
+							if(@file($get['server'])){
 							$zeilen = file ($get['server']);
 							foreach ($zeilen as $zeile) {
    								$server_part = explode(";", $zeile);	//Zeile in Bl�cke teilen
@@ -224,6 +225,7 @@ if(_adminMenu != 'true') exit;
 									break;								
 								}
 							}
+						}
 						}
 					} //if
 				} //if
