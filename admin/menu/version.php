@@ -210,18 +210,21 @@ if(_adminMenu != 'true') exit;
 			$qry = db("SELECT * FROM ".$db['versions']." ORDER BY own_date ASC");
 			while($get = _fetch($qry))
 			{	
+				unset($server_part);
 		
-			//Datei(n) einlesen
+			//Dateie(n) einlesen
 				if($_GET['do'] == 'get') {
 					if(function_exists('fsockopen'))
 					{
 						if($get['server'] != '') {
-							$zeilen = file ($get['server']);
-							foreach ($zeilen as $zeile) {
-   								$server_part = explode(";", $zeile);	//Zeile in Bl�cke teilen
-								if($server_part[0] == $get['id_server'])		//ID-Block = DB-ID ??
-								{
-									break;								
+							if(@file($get['server'])){
+								$zeilen = file ($get['server']);
+								foreach ($zeilen as $zeile) {
+										$server_part = explode(";", $zeile);	//Zeile in Bl�cke teilen
+									if($server_part[0] == $get['id_server'])		//ID-Block = DB-ID ??
+									{
+										break;								
+									}
 								}
 							}
 						}
