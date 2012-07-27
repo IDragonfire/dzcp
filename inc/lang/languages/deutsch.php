@@ -3,7 +3,6 @@ $charset = 'iso-8859-1';
 header("Content-type: text/html; charset=".$charset);
 
 ## ADDED / REDEFINED FOR 1.5 Final
-define('_side_membermap', 'Mitgliederkarte');
 define('_id_dont_exist', 'Die von dir angegebene ID existiert nicht!');
 define('_perm_editts', 'Teamspeak Server verwalten');
 define('_config_url_linked_head', 'URLs verlinken');
@@ -55,6 +54,7 @@ define('_config_double_post', 'Forum Doppelpost');
 define('_config_fotum_vote', 'Forum-Vote');
 define('_config_fotum_vote_info', '<center>Zeigt die Forum-Votes auch unter Umfragen an.</center>');
 ## ADDED / REDEFINED FOR 1.5
+define('_side_membermap', 'Mitgliederkarte');
 define('_installdir', "<tr><td colspan=\"15\" class=\"contentMainFirst\"><br /><center><b>Achtung! Sicherheitsrisiko!!</b><br><br>Bitte l&ouml;sche zuerst den Ordner <b>'/_installer'</b> von deinem Webspace. Erst dann steht das Adminmenü zur Verfügung!</center><br /></td></tr>");
 define('_no_ts', 'kein Teamspeak eingetragen');
 define('_search_sites', 'Unterseiten');
@@ -81,7 +81,6 @@ define('_sq_banner', 'Teambanner');
 define('_forum_abo_title', 'Thread abbonieren');
 define('_forum_vote', 'Umfrage');
 define('_admin_user_clanhead_info', 'Die Rechte hier k&ouml;nnen <u>zus&auml;tzlich</u> zu den Rechten der User-R&auml;nge vergeben werden.');
-define('_user_noposi', '<option value="lazy" class="dropdownKat">kein Userrang</option>');
 define('_config_positions_boardrights', 'interne Forenrechte');
 define('_perm_awards', 'Awards verwalten');
 define('_perm_clankasse', 'Clankasse verwalten');
@@ -112,7 +111,6 @@ define('_perm_shoutbox', 'Shoutbox Admin');
 define('_perm_votes', 'interne Umfragen einsehen');
 define('_perm_gs_showpw', 'Gameserver Passwort einsehen');
 define('_config_positions_rights', 'Rechte');
-define('_config_positions', 'User R&auml;nge');
 define('_admin_pos', 'User R&auml;nge');
 define('_awaycal', 'Abwesenheitsliste');
 define('_clear_away', 'Abwesenheitsliste mit einbeziehen?');
@@ -357,8 +355,6 @@ define('_glossar_erkl', 'Erkl&auml;rung');
 define('_admin_support_head', 'Support Informationen');
 define('_admin_support_info', 'Nachfolgende Informationen bitte bei einer Supportanfrage z.B.im Forum von <a href="http://www.dzcp.de" target="_blank">www.dzcp.de</a> mit angeben, um schneller zu einer L&ouml;sung des Problemes zu kommen!');
 define('_config_support', 'Supportinfos');
-define('_search_con_or', 'ODER-Verkn&uuml;pfung');
-define('_search_con_and', 'UND-Verkn&uuml;pfung');
 define('_search_head', 'Suchfunktion');
 define('_search_word', 'Suchen nach...');
 define('_search_forum_all', 'In allen Foren suchen');
@@ -480,7 +476,6 @@ define('_config_allgemein', 'Konfiguration');
 define('_config_impressum', 'Impressum');
 define('_config_clankasse', 'Clankasse');
 define('_config_downloads', 'Downloadkategorien');
-define('_config_dl', 'Downloads');
 define('_config_newsadmin', 'News');
 define('_config_filebrowser', 'Dateieditor');
 define('_config_navi', 'Navigation');
@@ -505,7 +500,6 @@ define('_edited_by', '<br /><br /><i>zuletzt editiert von [autor] am [time]</i>'
 define('_linkus_empty_text', 'Du musst eine Banner-URL angeben!');
 define('_gb_titel', '<span class="fontBold">#[postid]</span> von [nick] [email] [hp] am [datum] um [zeit][uhr] [edit] [delete] [comment] [public]');
 define('_gb_titel_noreg', '<span class="fontBold">#[postid]</span> von <span class="fontBold">[nick]</span> [email] [hp] am [datum] um [zeit][uhr]  [edit] [delete] [comment] [public]');
-define('_gb_titel_noreg', '<span class="fontBold">#[postid]</span> von <span class="fontBold">[nick]</span> [email] [hp] am [datum] um [zeit][uhr]  [edit] [delete] [comment]');
 define('_empty_news_title', 'Du musst einen Newstitel angeben!');
 define('_member_admin_votes', 'Interne Umfragen sehen');
 define('_member_admin_votesadmin', 'Admin: Umfragen');
@@ -838,7 +832,6 @@ define('_forum_lpostlink', 'Letzter Post');
 define('_forum_user_posts', '<span class="fontBold">Posts:</span> [posts]');
 define('_sig', '<br /><br /><hr />');
 define('_error_forum_closed', 'Dieser Thread ist geschlossen!');
-define('_forum_search_head', 'Forensuche');
 define('_forum_edit_post_head', 'Forenpost editieren');
 define('_forum_edit_thread_head', 'Thread editieren');
 define('_forum_editthread_successful', 'Der Thread wurde erfolgreich editiert!');
@@ -1027,7 +1020,6 @@ define('_cw_nothing', '<option value="lazy" class="" class="dropdownKat">--- nic
 define('_cw_screens', 'Screenshots');
 define('_cw_new', 'Neuer');
 define('_clanwars_no_show', 'Noch keine Clanwars vorhanden!');
-define('_cw_screens', 'Screenshots');
 define('_cw_show_all', '
 <tr>
   <td class="contentMainFirst" colspan="8" align="center"><a href="../clanwars/?action=showall&amp;id=[id]">Alle Wars dieses Teams anzeigen</a></td>
@@ -1716,7 +1708,6 @@ define('_config_c_gallerypics', 'User: Usergalerie');
 define('_config_c_upicsize_what', 'erlaubte Gr&ouml;&szlig;e der Bilder in KB (Newsbilder, Userprofilbilder usw.)');
 define('_config_c_regcode', 'Reg: Sicherheitscode');
 define('_config_c_regcode_what', 'Fragt bei der Registrierung einen Sicherheitscode ab');
-define('_admin_pos', 'Rangbezeichnungen');
 define('_pos_add_new', '<a href="?admin=positions&amp;do=new">Neuen Rang hinzuf&uuml;gen</a>');
 define('_pos_new_head', 'Neuen Rang hinzuf&uuml;gen');
 define('_pos_edit_head', 'Rang editieren');
@@ -2174,4 +2165,10 @@ define(_v_added, 'Mod/AddOn hinzugefügt');
 define(_v_edited, 'Mod/AddOn erfolgreich bearbeitet');
 define(_confirm_del_version, 'Es wird nur der Eintrag aus dieser Liste gelöscht, wirklich löschen?');
 define(_v_no_server, 'Kein Kontrollserver');
+
+define('_search_con_or', 'mind. ein Wort muss vorhanden sein');
+define('_search_con_and', 'absolute Übereinstimmung');
+define('_search_con_andb', 'alle Wörter müssen vorhanden sein');
+define(_search_website,'restliche Internetseite');
+define(_search_for_area_forum,'Forum-Suchbereich');
 ?>
