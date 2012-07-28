@@ -1,11 +1,16 @@
 <?php
 error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+
 ## INCLUDES/REQUIRES ##
 require_once(basePath.'/inc/secure.php');
 require_once(basePath.'/inc/_version.php');
 require_once(basePath.'/inc/sendmail.php');
 require_once(basePath.'/inc/server_query/_functions.php');
 require_once(basePath."/inc/teamspeak_query.php");
+
+## Is AjaxJob ##
+$ajaxJob = (!isset($ajaxJob) ? false : $ajaxJob);
+
 ## FUNCTIONS ##
 //-> Legt die UserID desRootadmins fest
 //-> (dieser darf bestimmte Dinge, den normale Admins nicht duerfen, z.B. andere Admins editieren)
@@ -15,7 +20,7 @@ $qry = db("SELECT * FROM ".$db['settings']."");
 $settings = _fetch($qry);
 $prev = $settings['prev'].'_';
 //-> Language auslesen
-$language = (file_exists(basePath.'/inc/lang/languages/'.$_COOKIE[$prev.'language'].'.php')) ? $_COOKIE[$prev.'language'] : $settings["language"];
+$language = (isset($_COOKIE[$prev.'language']) ? (file_exists(basePath.'/inc/lang/languages/'.$_COOKIE[$prev.'language'].'.php') ? $_COOKIE[$prev.'language'] : $settings["language"]) : $settings["language"]);
 //einzelne Definitionen
 $isSpider = isSpider();
 $subfolder = basename(dirname(dirname($_SERVER['PHP_SELF']).'../'));
@@ -109,6 +114,7 @@ $lforumsubtopic = $c['l_forumsubtopic'];
 $maxawards = $c['m_awards'];
 $sdir = $settings['tmpdir'];
 $userip = $_SERVER['REMOTE_ADDR'];
+
 if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pwd']) && empty($_SESSION['id']))
 {
   $_SESSION['id']   = intval($_COOKIE[$prev.'id']);
@@ -156,7 +162,7 @@ function userid()
 //-> Templateswitch
 $files = get_files('../inc/_templates_/');
 $folder = $files[0];
-if($_COOKIE[$prev.'tmpdir'] != NULL)
+if(isset($_COOKIE[$prev.'tmpdir']) && $_COOKIE[$prev.'tmpdir'] != NULL)
 {
   if(file_exists(basePath."/inc/_templates_/".$_COOKIE[$prev.'tmpdir'])) $tmpdir = $_COOKIE[$prev.'tmpdir'];
   else $tmpdir = $folder;
@@ -165,6 +171,7 @@ if($_COOKIE[$prev.'tmpdir'] != NULL)
   else $tmpdir = $folder;
 }
 $designpath = '../inc/_templates_/'.$tmpdir;
+
 //-> Languagefiles einlesen
 function lang($lng,$pfad='')
 {
@@ -178,32 +185,35 @@ function lang($lng,$pfad='')
   include(basePath."/inc/lang/global.php");
   include(basePath."/inc/lang/languages/".$lng.".php");
 }
+
 //-> Sprachdateien auflisten
 function languages()
 {
-  $files = get_files('../inc/lang/languages/');
-  for($i=0;$i<=count($files)-1;$i++)
-  {
-    $file = str_replace('.php','',$files[$i]);
-    $upFile = strtoupper(substr($file,0,1)).substr($file,1);
+	$lang="";
+	$files = get_files('../inc/lang/languages/');
+	for($i=0;$i<=count($files)-1;$i++)
+	{
+		$file = str_replace('.php','',$files[$i]);
+		$upFile = strtoupper(substr($file,0,1)).substr($file,1);
 
-    if(file_exists('../inc/lang/flaggen/'.$file.'.gif'))
-      $lang .= '<a href="../user/?action=language&amp;set='.$file.'"><img src="../inc/lang/flaggen/'.$file.'.gif" alt="'.$upFile.'" title="'.$upFile.'" class="icon" /></a> ';
-  }
+		if(file_exists('../inc/lang/flaggen/'.$file.'.gif'))
+			$lang .= '<a href="../user/?action=language&amp;set='.$file.'"><img src="../inc/lang/flaggen/'.$file.'.gif" alt="'.$upFile.'" title="'.$upFile.'" class="icon" /></a> ';
+	}
 
-  return $lang;
+	return $lang;
 }
+
 //-> Userspezifiesche Dinge
 if(isset($userid) && $ajaxJob != true)
 {
-  $upd = db("UPDATE ".$db['userstats']."
-	  			   SET `hits`       = hits+1,
-                 `lastvisit`  = '".((int)$_SESSION['lastvisit'])."'
-						 WHERE user = ".$userid);
+	db("UPDATE ".$db['userstats']."
+	SET `hits` = hits+1, `lastvisit` = '".((int)$_SESSION['lastvisit'])."' 
+	WHERE user = ".$userid);
 
-  $u_b1 = "<!--";
-  $u_b2 = "-->";
+	$u_b1 = "<!--";
+	$u_b2 = "-->";
 }
+
 //-> Settings auslesen (=> Adminmenu)
 function settings($what)
 {
@@ -213,6 +223,7 @@ function settings($what)
 
   return $get[$what];
 }
+
 //-> PHP-Code farbig anzeigen
 function highlight_text($txt)
 {
@@ -327,6 +338,9 @@ function glossar($txt)
   {
     $w = addslashes(regexChars(html_entity_decode($gl_words[$s])));
 		$txt = str_ireplace(' '.$w.' ', ' <tmp|'.$w.'|tmp> ', $txt);
+    $txt = str_ireplace('>'.$w.'<', '> <tmp|'.$w.'|tmp> <', $txt);
+    $txt = str_ireplace('>'.$w.' ', '> <tmp|'.$w.'|tmp> ', $txt);
+  	$txt = str_ireplace(' '.$w.'<', ' <tmp|'.$w.'|tmp> <', $txt);
   }
 
 // replace words
@@ -442,18 +456,14 @@ function eMailAddr($email)
   $output = "";
 
   for($i=0;$i<strlen($email);$i++)
-  {
-    $r.=str_replace(substr($email,$i,1),"&#".ord(substr($email,$i,1)).";",substr($email,$i,1));
-  }
+  { $output.=str_replace(substr($email,$i,1),"&#".ord(substr($email,$i,1)).";",substr($email,$i,1)); }
 
-  return $r;
+  return $output;
 }
 //-> Leerzeichen mit + ersetzen (w3c)
 function convSpace($string)
 {
-    $string = str_replace(" ","+",$string);
-
-  return $string;
+	return str_replace(" ","+",$string);
 }
 //-> BBCode
 function re_bbcode($txt)
@@ -526,6 +536,7 @@ function bbcode($txt, $tinymce=0, $no_vid=0,$ts=0,$nolink=0)
   if($no_vid == 0 && $settings['urls_linked'] == 1 && $nolink == 0) {
 	  $txt = make_clickable($txt);
   }
+  $txt = str_replace("\\","\\\\",$txt);
   $txt = str_replace("\\n","<br />",$txt);
   $txt = BadwordFilter($txt);
   $txt = replace($txt,$tinymce,$no_vid);
@@ -712,7 +723,7 @@ function flagge($txt)
 //-> Funktion um Ausgaben zu kuerzen
 function cut($str, $length = null, $dots = true)
 {
-  if($length === 0) return '';
+  if($length === 0) return ''; $start = 0;
   $dots = ($dots == true && strlen(html_entity_decode($str)) > $length) ? '...' : '';
 
   if(strpos($str, '&') === false)
@@ -2400,14 +2411,15 @@ include_once(basePath.'/inc/menu-functions/navi.php');
 function page($index,$title,$where,$time,$wysiwyg='')
 {
   global $db,$userid,$userip,$tmpdir,$secureLogin,$chkMe,$charset;
-  global $u_b1,$u_b2,$designpath,$maxwidth,$language,$cp_color;
+  global $u_b1,$u_b2,$designpath,$maxwidth,$language,$cp_color,$copyright;
+  
 // user gebannt? Logge aus!
     if($chkMe == 'banned') header("Location: ../user/?action=logout");
 //  JS-Dateine einbinden
     $lng = ($language=='deutsch')?'de':'en';
     $edr = ($wysiwyg=='_word')?'advanced':'normal';
     $lcolor = ($cp_color==1)?'lcolor=true;':'';
-
+	
     $java_vars = '<script language="javascript" type="text/javascript">
 <!--
  var maxW = '.$maxwidth.',lng = \''.$lng.'\',dzcp_editor = \''.$edr.'\';'.$lcolor.'
@@ -2443,27 +2455,22 @@ if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USE
 
 //check permissions
     if($chkMe == "unlogged") include_once(basePath.'/inc/menu-functions/login.php');
-    else {
-      $check_msg = check_msg();
-      set_lastvisit();
-
-      db("UPDATE ".$db['users']."
-          SET `time`     = '".((int)time())."',
-              `whereami` = '".up($where)."'
-          WHERE id = '".intval($userid)."'");
+    else 
+	{
+		$check_msg = check_msg();
+		set_lastvisit();
+		$login = "";
+		db("UPDATE ".$db['users']." SET `time` = '".((int)time())."', `whereami` = '".up($where)."' WHERE id = '".intval($userid)."'");
     }
 
 //init templateswitch
-    $tmps = get_files('../inc/_templates_/');
+	$tmpldir=""; $tmps = get_files('../inc/_templates_/');
     for($i=0; $i<count($tmps); $i++)
     {
-      if($gets['tmpdir'] == $tmps[$i]) $selt = "selected=\"selected\"";
-      else $selt = "";
-
-      $tmpldir .= show(_select_field, array("value" => "../user/?action=switch&amp;set=".$tmps[$i],
-                                            "what" => $tmps[$i],
-                                            "sel" => $selt));
+		$selt = ($tmpdir == $tmps[$i] ? 'selected="selected"' : '');
+		$tmpldir .= show(_select_field, array("value" => "../user/?action=switch&amp;set=".$tmps[$i],  "what" => $tmps[$i],  "sel" => $selt));
     }
+	
 //misc vars
     $template_switch = show("menu/tmp_switch", array("templates" => $tmpldir));
     $clanname = re(settings("clanname"));
@@ -2477,8 +2484,7 @@ if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USE
 
 //-> Sort & filter placeholders
 //default placeholders
-    $arr = array("idir" => '../inc/images/admin',
-                 "dir" => $designpath);
+    $arr = array("idir" => '../inc/images/admin', "dir" => $designpath);
 //check if placeholders are given
     $pholder = file_get_contents($designpath."/index.html");
 //filter placeholders
@@ -2496,21 +2502,25 @@ if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USE
     $pholdervars = pholderreplace($pholdervars);
 //put placeholders in array
     $pholder = explode("^",$pholder);
-    for($i=0;$i<=count($pholder)-1;$i++) {
-
-
-      if(strstr($pholder[$i], 'nav_')) eval("\$arr[".$pholder[$i]."] = navi('".$pholder[$i]."');");
-      else {
-        if(@file_exists(basePath.'/inc/menu-functions/'.$pholder[$i].'.php'))  include_once(basePath.'/inc/menu-functions/'.$pholder[$i].'.php');
-  			@eval("if(function_exists('".$pholder[$i]."')){\$arr[".$pholder[$i]."] = ".$pholder[$i]."();}");
-      }
+    for($i=0;$i<=count($pholder)-1;$i++) 
+	{
+		if(strstr($pholder[$i], 'nav_')) 
+			$arr[$pholder[$i]] = navi($pholder[$i]);
+		else 
+		{
+			if(@file_exists(basePath.'/inc/menu-functions/'.$pholder[$i].'.php')) 
+				include_once(basePath.'/inc/menu-functions/'.$pholder[$i].'.php');
+			
+			if(function_exists($pholder[$i]))
+				$arr[$pholder[$i]] = $pholder[$i]();
 		}
+	}
+	
     $pholdervars = explode("^",$pholdervars);
-    for($i=0;$i<=count($pholdervars)-1;$i++) {
-      eval("\$arr[".$pholdervars[$i]."] = \$".$pholdervars[$i].";");
-    }
+    for($i=0;$i<=count($pholdervars)-1;$i++) 
+	{ $arr[$pholdervars[$i]] = $$pholdervars[$i]; }
 
-//index output
+	//index output
     echo show("index", $arr);
   }
 }
