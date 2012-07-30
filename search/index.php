@@ -68,7 +68,7 @@ while($get = _fetch($qry))
 			if(preg_match("#k_".$gets['id']."\|#",$strkat)) $kcheck = "checked=\"checked\"";
 			else  $kcheck = '';
         
-			$fkats .= '<li><label class="search" for="k_'.$gets['id'].'"><input type="checkbox" class="chksearch" name="k_'.$gets['id'].'" id="k_'.$gets['id'].'" '.$kcheck.' onclick="DZCP.hideForumFirst();document.search.where[1].checked = true;disablefield();" value="true" />&nbsp;&nbsp;'.re($gets['kattopic']).'</label></li>';
+			$fkats .= '<li><label class="search" for="k_'.$gets['id'].'"><input type="checkbox" class="chksearch" name="k_'.$gets['id'].'" id="k_'.$gets['id'].'" '.$kcheck.' onclick="DZCP.hideForumFirst()" value="true" />&nbsp;&nbsp;'.re($gets['kattopic']).'</label></li>';
 		}
     }
 }
@@ -263,13 +263,6 @@ if($_GET['where'] == 'forum') {
 } elseif($_GET['where'] = 'site'){
 //###############################################################################################################
 //Auswertung für Websitesuche
-	$acheck2 = "disabled=\"disabled\"";
-	$acheck1 = "disabled=\"disabled\"";
-	$tcheck2 = "disabled=\"disabled\"";
-	$tcheck1 = "disabled=\"disabled\"";
-	
-
-	
 //DOSEARCH FÜR NEWS,ARTIKEL,SITES
 	if($_GET['con'] == 'or' OR $_GET['con'] == 'andb')
 	{

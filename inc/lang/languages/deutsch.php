@@ -2148,27 +2148,27 @@ define('_member_squad_awards', '<a href="../awards/?action=showall&amp;id=[id]">
 define('_user_list_ck', 'In der Clankasse auflisten?');
 define('_fightus_squad', 'gew&uuml;nschtes Team');
 ## ADDED FOR 1.6 Final
-define(_config_version, 'Mod/AddOns verwalten');
-define(_v_head, 'Mod/AddOn Versionen verwalten');
-define(_v_name, 'Mod/AddOn Name');
-define(_v_own, 'eigene Version');
-define(_v_server, 'aktuelle Version');
-define(_config_v_add, 'Mod/AddOn hinzufügen');
-define(_v_server_hover, 'Versionsprüfung auf');
-define(_v_unknown, 'unbekannt');
-define(_v_fsockopen_not_allowed, 'fsockopen nicht erlaubt');
-define(_v_no_data, 'Daten nicht abgerufen');
-define(_v_get_data, 'Daten abrufen');
-define(_v_server_id, 'Mod/AddOn ID auf Server');
-define(_v_download_link, 'Mod/AddOn Download Link');
-define(_v_added, 'Mod/AddOn hinzugefügt');
-define(_v_edited, 'Mod/AddOn erfolgreich bearbeitet');
-define(_confirm_del_version, 'Es wird nur der Eintrag aus dieser Liste gelöscht, wirklich löschen?');
-define(_v_no_server, 'Kein Kontrollserver');
+define('_config_version', 'Mod/AddOns verwalten');
+define('_v_head', 'Mod/AddOn Versionen verwalten');
+define('_v_name', 'Mod/AddOn Name');
+define('_v_own', 'eigene Version');
+define('_v_server', 'aktuelle Version');
+define('_config_v_add', 'Mod/AddOn hinzufügen');
+define('_v_server_hover', 'Versionsprüfung auf');
+define('_v_unknown', 'unbekannt');
+define('_v_fsockopen_not_allowed', 'fsockopen nicht erlaubt');
+define('_v_no_data', 'Daten nicht abgerufen');
+define('_v_get_data', 'Daten abrufen');
+define('_v_server_id', 'Mod/AddOn ID auf Server');
+define('_v_download_link', 'Mod/AddOn Download Link');
+define('_v_added', 'Mod/AddOn hinzugefügt');
+define('_v_edited', 'Mod/AddOn erfolgreich bearbeitet');
+define('_confirm_del_version', 'Es wird nur der Eintrag aus dieser Liste gelöscht, wirklich löschen?');
+define('_v_no_server', 'Kein Kontrollserver');
 
 define('_search_con_or', 'mind. ein Wort muss vorhanden sein');
 define('_search_con_and', 'absolute Übereinstimmung');
 define('_search_con_andb', 'alle Wörter müssen vorhanden sein');
-define(_search_website,'restliche Internetseite');
-define(_search_for_area_forum,'Forum-Suchbereich');
+define('_search_website','restliche Internetseite');
+define('_search_for_area_forum','Forum-Suchbereich');
 ?>
