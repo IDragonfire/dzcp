@@ -616,6 +616,7 @@ function re($txt)
   $txt = str_replace(">","&#62;",$txt);
   $txt = str_replace("(", "&#40;", $txt);
   $txt = str_replace(")", "&#41;", $txt);
+  $txt = htmlspecialchars_decode($txt);
 
   return $txt;
 }
