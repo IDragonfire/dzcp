@@ -387,12 +387,12 @@ case 'database';
     if($con && $sel)
     {
 //Clanwar Screenshots verschieben
-  $files = get_files('../inc/images/clanwars');
+  $files = get_files('../inc/images/clanwars',false,true);
   for($i=0; $i<count($files); $i++)
   {
     if(is_dir('../inc/images/clanwars/'.$files[$i]))
     {
-      $sc = get_files('../inc/images/clanwars/'.$files[$i]);
+      $sc = get_files('../inc/images/clanwars/'.$files[$i],false,true);
       for($e=0; $e<count($sc); $e++)
       {
         @copy(
@@ -406,10 +406,10 @@ case 'database';
     }
   }
 //Bilder aus der Usergalerie verschieben
-  $files = get_files('../inc/images/uploads/usergallery/');
+  $files = get_files('../inc/images/uploads/usergallery/',false,true);
   for($i=0; $i<count($files); $i++)
   {
-    if(is_dir('../inc/images/uploads/usergallery/'.$files[$i]))
+    if(is_dir('../inc/images/uploads/usergallery/'.$files[$i],false,true))
     {
       $sc = get_files('../inc/images/uploads/usergallery/'.$files[$i]);
       for($e=0; $e<count($sc); $e++)

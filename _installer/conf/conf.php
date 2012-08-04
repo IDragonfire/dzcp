@@ -79,20 +79,4 @@ function _m ($prefix, $host, $user, $pwd, $db)
                ?>");
   @fclose($fp);
 }
-function get_files($dir)
-{
-  $dp = @opendir($dir);
-  $files = array();
-  while($file = @readdir($dp))
-  {
-    if($file != '.' && $file != '..')
-    {
-      array_push($files, $file);
-    }
-  }
-  @closedir($dp);
-  sort($files);
-
-  return($files);
-}
 ?>

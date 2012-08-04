@@ -65,7 +65,7 @@ if(_adminMenu != 'true') exit;
           }
         }
       } else {
-        $files = get_files('../inc/images/smileys');
+        $files = get_files('../inc/images/smileys',false,true,array('gif'));
         for($i=0; $i<count($files); $i++)
         {
           if($files[$i] != '^^.gif')

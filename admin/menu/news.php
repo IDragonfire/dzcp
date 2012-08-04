@@ -51,7 +51,7 @@ if(_adminMenu != 'true') exit;
 
         $show = info(_config_newskat_deleted, "?admin=news");
       } elseif($_GET['do'] == "add") {
-        $files = get_files('../inc/images/newskat/');
+        $files = get_files('../inc/images/newskat/',false,true);
         for($i=0; $i<count($files); $i++)
         {
           $img .= show(_select_field, array("value" => $files[$i],
@@ -84,7 +84,7 @@ if(_adminMenu != 'true') exit;
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
 
-        $files = get_files('../inc/images/newskat/');
+        $files = get_files('../inc/images/newskat/',false,true);
         for($i=0; $i<count($files); $i++)
         {
           if($get['katimg'] == $files[$i]) $sel = "selected=\"selected\"";

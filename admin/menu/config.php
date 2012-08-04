@@ -169,7 +169,7 @@ if(_adminMenu != 'true') exit;
         $qrys = db("SELECT * FROM ".$db['settings']."");
         $gets = _fetch($qrys);
   
-        $files = get_files('../inc/lang/languages/');
+        $files = get_files('../inc/lang/languages/',false,true,array('php'));
         for($i=0; $i<count($files); $i++)
         {
           if($gets['language'] == $files[$i]) $sel = "selected=\"selected\"";
@@ -181,8 +181,8 @@ if(_adminMenu != 'true') exit;
                                              "what" => $lng,
                                              "sel" => $sel));
         }
-  
-        $tmps = get_files('../inc/_templates_/');
+
+        $tmps = get_files('../inc/_templates_/',true);
         for($i=0; $i<count($tmps); $i++)
         {
           if($gets['tmpdir'] == $tmps[$i]) $selt = "selected=\"selected\"";
@@ -209,9 +209,9 @@ if(_adminMenu != 'true') exit;
         if($get['allowhover'] == 1)        $selh_all = "selected=\"selected\"";
         if($get['allowhover'] == 2)        $selh_cw = "selected=\"selected\"";
         if($gets['gmaps_who'] == 1)        $sel_gm = "selected=\"selected\"";
-				if($gets['double_post'] == 1)      $sel_dp = "selected=\"selected\"";
-				if($gets['forum_vote'] == 1)       $sel_fv = "selected=\"selected\"";
-				if($gets['gb_activ'] == 1)         $sel_gba = "selected=\"selected\"";
+		if($gets['double_post'] == 1)      $sel_dp = "selected=\"selected\"";
+		if($gets['forum_vote'] == 1)       $sel_fv = "selected=\"selected\"";
+		if($gets['gb_activ'] == 1)         $sel_gba = "selected=\"selected\"";
                                 if($gets['urls_linked'] == 1)      $sel_url = "selected=\"selected\"";
         $wysiwyg = '_word';
         

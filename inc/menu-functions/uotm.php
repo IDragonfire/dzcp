@@ -5,7 +5,7 @@ function uotm()
   global $db, $allowHover;
 
     $imgFiles = array();
-    $folder = get_files('../inc/images/uploads/userpics');
+    $folder = get_files('../inc/images/uploads/userpics',false,true);
     foreach($folder AS $file) array_push($imgFiles, $file);
 
     if(count($imgFiles) != 0)
