@@ -5,6 +5,7 @@ define('basePath', dirname(dirname(__FILE__).'../'));
 
 require_once(basePath.'/inc/mysql.php');
 require_once(basePath.'/inc/_version.php');
+require_once(basePath.'/inc/kernel.php');
 require_once(basePath.'/_installer/conf/conf.php');
 require_once(basePath.'/_installer/conf/mysql.php');
 
@@ -409,7 +410,7 @@ case 'database';
   $files = get_files('../inc/images/uploads/usergallery/',false,true);
   for($i=0; $i<count($files); $i++)
   {
-    if(is_dir('../inc/images/uploads/usergallery/'.$files[$i],false,true))
+    if(is_dir('../inc/images/uploads/usergallery/'.$files[$i]))
     {
       $sc = get_files('../inc/images/uploads/usergallery/'.$files[$i]);
       for($e=0; $e<count($sc); $e++)
