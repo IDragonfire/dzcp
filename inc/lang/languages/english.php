@@ -21,6 +21,15 @@ define('_v_edited', 'Mod/AddOn successfully added');
 define('_confirm_del_version', 'It only removes the entry from this list, delete?');
 define('_v_no_server', 'no control server');
 
+## Navigation / Server ##
+define('_navi_gsv_players_online', 'Online');
+define('_navi_gsv_on_the_game', 'Players');
+define('_navi_gsv_view_players', 'View Players');
+define('_navi_gsv_game', 'Game');
+define('_navi_gsv_no_name_available', 'no Name available');      
+define('_navi_gsv_no_players_available', 'no Players online');
+define('_navi_gsv_password', 'Password');
+
 ## ADDED / REDEFINED FOR 1.5 Final
 define('_side_membermap', 'Membermap');
 define('_id_dont_exist', 'The requested ID does not exist!');
