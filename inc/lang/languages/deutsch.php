@@ -21,6 +21,15 @@ define('_v_edited', 'Mod/AddOn erfolgreich bearbeitet');
 define('_confirm_del_version', 'Es wird nur der Eintrag aus dieser Liste gel&ouml;scht, wirklich l&ouml;schen?');
 define('_v_no_server', 'Kein Kontrollserver');
 
+## Navigation / Server ##
+define('_navi_gsv_players_online', 'Online');
+define('_navi_gsv_on_the_game', 'Spieler');
+define('_navi_gsv_view_players', 'Spieler anzeigen');
+define('_navi_gsv_game', 'Spiel');
+define('_navi_gsv_no_name_available', 'Server name nicht vorhanden');        
+define('_navi_gsv_no_players_available', 'Keine Spieler online');
+define('_navi_gsv_password', 'Passwort');
+
 ## ADDED / REDEFINED FOR 1.5 Final
 define('_id_dont_exist', 'Die von dir angegebene ID existiert nicht!');
 define('_perm_editts', 'Teamspeak Server verwalten');
