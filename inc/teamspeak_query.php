@@ -1263,6 +1263,7 @@ class TSStatus
 		class="navTeamspeak" style="font-weight:bold;white-space:nowrap" title="'.rep2($channel['channel_name']).'">'.rep2($channel['channel_name']).'</a>'."\n";
 	}
 	function sub_channel($channels,$channel,$i,$tpl,$joints) {
+		$out = "";
 		foreach($channels as $sub_channel) {
 			if($channel == $sub_channel['pid']) {
 				if(($this->_showOnly && (($sub_channel['total_clients_family'] > 0 && $sub_channel['channel_flag_default'] == 0) || ($sub_channel['total_clients_family'] > 1 && $sub_channel['channel_flag_default']))) || !$this->_showOnly) {
@@ -1347,6 +1348,7 @@ class TSStatus
 		} else return $this->error;	
 	}
 	function welcome($s, $cid, $cname="") {
+		$out="";
 		if(!$this->_updated) $this->update();
     
 		if($this->error == "")
