@@ -1,21 +1,7 @@
 <?php
 ob_start();
-function get_files($dir)
-{
-  $dp = @opendir($dir);
-  $files = array();
-  while($file = @readdir($dp))
-  {
-    if($file != '.' && $file != '..' && $file != 'usen.gif')
-    {
-      array_push($files, $file);
-    }
-  }
-  @closedir($dp);
-  sort($files);
-
-  return($files);
-}
+define('basePath', dirname(__FILE__));
+require_once(basePath.'/inc/kernel.php');
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -69,7 +55,7 @@ function get_files($dir)
         <td style="height:6px"></td>
       </tr>
 <?php
-    $files = get_files('../../../images/flaggen');
+    $files = get_files(basePath.'/inc/images/flaggen',false,true,array('gif'));
 
     $t=1;
     for($i=0; $i<count($files); $i++) 

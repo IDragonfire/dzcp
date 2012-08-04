@@ -5,6 +5,7 @@ error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
 require_once(basePath.'/inc/secure.php');
 require_once(basePath.'/inc/_version.php');
 require_once(basePath.'/inc/sendmail.php');
+require_once(basePath.'/inc/kernel.php');
 require_once(basePath.'/inc/server_query/_functions.php');
 require_once(basePath."/inc/teamspeak_query.php");
 
@@ -160,7 +161,7 @@ function userid()
   return $get['id'];
 }
 //-> Templateswitch
-$files = get_files('../inc/_templates_/');
+$files = get_files('../inc/_templates_/',true,false);
 $folder = $files[0];
 if(isset($_COOKIE[$prev.'tmpdir']) && $_COOKIE[$prev.'tmpdir'] != NULL)
 {
@@ -178,7 +179,7 @@ function lang($lng,$pfad='')
   global $charset;
   if(!file_exists(basePath."/inc/lang/languages/".$lng.".php"))
   {
-    $files = get_files(basePath.'/inc/lang/languages/');
+    $files = get_files(basePath.'/inc/lang/languages/',false,true,array('php'));
     $lng = str_replace('.php','',$files[0]);
   }
 
@@ -190,7 +191,7 @@ function lang($lng,$pfad='')
 function languages()
 {
 	$lang="";
-	$files = get_files('../inc/lang/languages/');
+	$files = get_files('../inc/lang/languages/',false,true,array('php'));
 	for($i=0;$i<=count($files)-1;$i++)
 	{
 		$file = str_replace('.php','',$files[$i]);
@@ -628,7 +629,7 @@ function re_entry($txt)
 //-> Smileys ausgeben
 function smileys($txt)
 {
-  $files = get_files('../inc/images/smileys');
+  $files = get_files('../inc/images/smileys',false,true,array('gif'));
   for($i=0; $i<count($files); $i++)
   {
     $smileys = $files[$i];
@@ -751,21 +752,7 @@ function wrap($str, $width = 75, $break = "\n", $cut = true)
 {
   return strtr(str_replace(htmlentities($break), $break, htmlentities(wordwrap(html_entity_decode($str), $width, $break, $cut), ENT_QUOTES)), array_flip(get_html_translation_table(HTML_SPECIALCHARS, ENT_COMPAT)));
 }
-//-> Funktion um Dateien aus einem Verzeichnis auszulesen
-function get_files($dir)
-{
-  $dp = @opendir($dir);
-  $files = array();
-  while($file = @readdir($dp))
-  {
-    if($file != '.' && $file != '..')
-      array_push($files, $file);
-  }
-  @closedir($dp);
-  sort($files);
 
-  return($files);
-}
 //-> Funktion um eine Datei im Web auf Existenz zu prfen
 function fileExists($url)
 {
@@ -1301,9 +1288,8 @@ function img_cw($folder="", $img="")
 }
 function gallery_size($img="")
 {
-  $s = getimagesize("../gallery/images/".$img);
-  $pic = "<a href=\"../gallery/images/".$img."\" rel=\"lightbox[gallery_".intval($img)."]\"><img src=\"../thumbgen.php?img=gallery/images/".$img."\" alt=\"\" /></a>";
-  return $pic;
+  $s = getimagesize(basePath."/gallery/images/".$img);
+  return "<a href=\"../gallery/images/".$img."\" rel=\"lightbox[gallery_".intval($img)."]\"><img src=\"../thumbgen.php?img=gallery/images/".$img."\" alt=\"\" /></a>";
 }
 //-> URL wird auf Richtigkeit ueberprueft
 function check_url($url)
@@ -1666,7 +1652,7 @@ function dropdown($what, $wert, $age = 0)
 //Games fuer den Livestatus
 function sgames($game = '')
 {
-  $protocols = get_files(basePath.'/inc/server_query/');
+  $protocols = get_files(basePath.'/inc/server_query/',false,true,array('php'));
   foreach($protocols AS $protocol)
   {
     unset($gamemods, $server_name_config);
@@ -2382,29 +2368,16 @@ function getBoardPermissions($checkID = 0, $pos = 0)
   return $i_forum;
 }
 //-> Neue Languages einbinden, sofern vorhanden
-if($l = get_files(basePath.'/inc/additional-languages/'.$language.'/'))
+if($l = get_files(basePath.'/inc/additional-languages/'.$language.'/',false,true,array('php')))
 {
 	foreach($l AS $languages)
-	{
-		$extl = explode('.', strtolower($languages));
-		$extl = $extl[count($extl) - 1];
-		if($extl == 'php') {
-			include(basePath.'/inc/additional-languages/'.$language.'/'.$languages);
-		}
-	}
+	{ include(basePath.'/inc/additional-languages/'.$language.'/'.$languages); }
 }
 //-> Neue Funktionen einbinden, sofern vorhanden
-if($f = get_files(basePath.'/inc/additional-functions/'))
+if($f = get_files(basePath.'/inc/additional-functions/',false,true,array('php')))
 {
   foreach($f AS $func)
-  {
-    $ext = explode('.', strtolower($func));
-    $ext = $ext[count($ext) - 1];
-    if($ext == 'php')
-    {
-      include(basePath.'/inc/additional-functions/'.$func);
-    }
-  }
+  { include(basePath.'/inc/additional-functions/'.$func); }
 }
 //-> Navigation einbinden
 include_once(basePath.'/inc/menu-functions/navi.php');
@@ -2465,7 +2438,7 @@ if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USE
     }
 
 //init templateswitch
-	$tmpldir=""; $tmps = get_files('../inc/_templates_/');
+	$tmpldir=""; $tmps = get_files('../inc/_templates_/',true,false);
     for($i=0; $i<count($tmps); $i++)
     {
 		$selt = ($tmpdir == $tmps[$i] ? 'selected="selected"' : '');

@@ -31,11 +31,9 @@ $dir = "admin";
     $check = _fetch($qry);
 
     unset($amenu);
-    $files = get_files(basePath.'/admin/menu/');
+    $files = get_files(basePath.'/admin/menu/',false,true,array('php'));
     foreach($files AS $file)
     {
-      if(strstr(strtolower($file), '.php'))
-      {
         $nav = file(basePath.'/admin/menu/'.$file);
         $navType = trim(str_replace('// Typ:', '', $nav[2]));
         $navPerm = trim(str_replace('// Rechte:', '', $nav[3]));
@@ -44,17 +42,16 @@ $dir = "admin";
         @eval("\$link = _config_".$file.";");
         @eval("\$permission = ".$navPerm.";");
         
-	foreach($picformat AS $end)
-	{
-		if(file_exists(basePath.'/admin/menu/'.$file.'.'.$end))
-			break;
-	}
+		foreach($picformat AS $end)
+		{
+			if(file_exists(basePath.'/admin/menu/'.$file.'.'.$end))
+				break;
+		}
 
         if(!empty($navType) && !empty($navPerm) && $permission)
         {
         	$amenu[$navType][$link] = show("['[link]','?admin=[name]','background-image:url(menu/[name].".$end.");'],\n", array("link" => $link, 'name' => $file));
         }
-      }
     }
 
     foreach($amenu AS $m => $k)

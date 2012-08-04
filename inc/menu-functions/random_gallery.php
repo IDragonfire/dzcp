@@ -4,7 +4,7 @@ function random_gallery()
   global $db;
 
   $imgArr = array();
-  $files = get_files('../gallery/images/');
+  $files = get_files('../gallery/images/',false,true);
   $get = _fetch(db("SELECT * FROM ".$db['gallery']." ORDER BY RAND()"));
   foreach($files AS $file)
   {

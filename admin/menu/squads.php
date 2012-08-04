@@ -63,10 +63,9 @@ if(_adminMenu != 'true') exit;
                                                   "what" => _nach.' '.re($get['name'])));
         }
 
-        $files = get_files('../inc/images/gameicons/');
+        $files = get_files('../inc/images/gameicons/',false,true,array('gif','jpg','png'));
         for($i=0; $i<count($files); $i++)
         {
-          if(preg_match("=\.gif|.jpg|.png=Uis",$files[$i]))
             $gameicons .= show(_select_field, array("value" => $files[$i],
                                                     "what" => strtoupper(preg_replace("#\.(.*?)$#","",$files[$i])),
                                                     "sel" => ""));
@@ -225,7 +224,7 @@ if(_adminMenu != 'true') exit;
         if($get['status'] == 1) 		$status = "selected=\"selected\"";
 				if($get['team_show'] == 1) 	$team_show = "selected=\"selected\"";
 
-        $files = get_files('../inc/images/gameicons/');
+        $files = get_files('../inc/images/gameicons/',false,true);
         for($i=0; $i<count($files); $i++)
         {
           if($files[$i] == $get['icon']) $sel = "selected=\"selected\"";

@@ -137,7 +137,7 @@ if(_adminMenu != 'true') exit;
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
 
-        $files = get_files('../inc/images/gameicons/');
+        $files = get_files('../inc/images/gameicons/',false,true);
         for($i=0; $i<count($files); $i++)
         {
           if($files[$i] == $get['game']) $sel = "selected=\"selected\"";
@@ -219,10 +219,9 @@ if(_adminMenu != 'true') exit;
         $show = info(_server_admin_deleted, "?admin=server");
 
       } elseif($_GET['do'] == "new") {
-        $files = get_files('../inc/images/gameicons/');
+        $files = get_files('../inc/images/gameicons/',false,true,array('gif','jpg','png'));
         for($i=0; $i<count($files); $i++)
         {
-          if(preg_match("=\.gif|.jpg|.png=Uis",$files[$i])!=FALSE)
             $game .= show(_select_field, array("value" => $files[$i],
                                                "what" => strtoupper(preg_replace("#\.(.*?)$#","",$files[$i])),
                                                "sel" => ""));
