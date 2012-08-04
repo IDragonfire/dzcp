@@ -1,5 +1,62 @@
 <?php
 /**
+* Fügt eine Mod zur Ueberischt ins Adminmenu hinzu.
+* @return true wenn Mod erfolgreich installiert, false wenn nicht erfolgreich, z.B. Mod bereits eingetragen
+*/
+function addMod($author, $modid, $installedversion, $serverurl, $downloadurl) {
+    global $db;
+    if(existsMod($author, $modid)) {
+        return false;
+    }
+    db('INSERT INTO ' . $db['mods'] . ' (`author`, `modid`, `version`, `serverurl`, `downloadurl`, `installed`) ' .
+              'VALUES ("' . mysql_real_escape_string ($author) . '", "' .
+                          mysql_real_escape_string ($modid) . '", "' .
+                          mysql_real_escape_string ($installedversion) . '", "' .
+                          mysql_real_escape_string ($serverurl) . '", "' . 
+                          mysql_real_escape_string ($downloadurl) . '",NOW())' );                   
+    return true;
+}
+
+/**
+* Aktualisiert eine Mod Version. Um server, bzw. download url zu aktulaisieren muss der Mod erst
+* entfernt werden (@see deleteMod)
+* @return true | false (z.B. Mod nicht installiert)
+*/
+function updateMod($author, $modid, $newversion) {
+    global $db;
+    if(!existsMod($author, $modid)) {
+        return false;
+    }
+    db('UPDATE ' . $db['mods'] . ' SET  version = "' . mysql_real_escape_string ($newversion) . '", installed = NOW() ' .
+       ' WHERE author = "' . mysql_real_escape_string ($author) . '" AND modid = "' . mysql_real_escape_string ($modid) . '"');
+    return true;
+}
+
+/**
+* Entfernt einen Mod aus der Uebersicht
+* @return true | false
+*/
+function deleteMod($author, $modid) {
+    global $db;
+    if(!existsMod($author, $modid)) {
+        return false;
+    }
+    db('DELETE FROM ' . $db['mods'] .
+       ' WHERE author = "' . mysql_real_escape_string ($author) . '" AND modid = "' . mysql_real_escape_string ($modid) . '"');
+    return true;
+}
+
+function existsMod($author, $modid) {
+    global $db;
+    $result = _fetch(db('SELECT 1 FROM ' . $db['mods'] . ' WHERE author = "' . 
+                       mysql_real_escape_string ($author) . '" AND modid = "' .
+                       mysql_real_escape_string ($modid) . '" LIMIT 1'));
+    return ($result) ? true : false;
+}
+
+
+
+/**
 * Eine Liste der Dateien oder Verzeichnisse zusammenstellen, die sich im angegebenen Ordner befinden.
 *
 * @return array
