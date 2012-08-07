@@ -2382,7 +2382,7 @@ if($f = get_files(basePath.'/inc/additional-functions/',false,true,array('php'))
 //-> Navigation einbinden
 include_once(basePath.'/inc/menu-functions/navi.php');
 //-> Ausgabe des Indextemplates
-function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
+function page($index,$title,$where,$time,$wysiwyg='',$index_templ=false)
 {
   global $db,$userid,$userip,$tmpdir,$secureLogin,$chkMe,$charset;
   global $u_b1,$u_b2,$designpath,$maxwidth,$language,$cp_color,$copyright;
@@ -2495,11 +2495,7 @@ if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USE
 	{ $arr[$pholdervars[$i]] = $$pholdervars[$i]; }
 
 	//index output
-    if(file_exists("../inc/_templates_/".$tmpdir."/".$index_templ.".html")) {
-    	echo show($index_templ, $arr);
-	} else {
-    	echo show("index", $arr);
-	}
+    	echo show((($index_templ != false ? file_exists(basePath."/inc/_templates_/".$tmpdir."/".$index_templ.".html") ? false); ? $index_templ : 'index'), $arr);
   }
 }
 ?>
