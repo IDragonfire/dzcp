@@ -2345,6 +2345,7 @@ function getBoardPermissions($checkID = 0, $pos = 0)
   global $db, $dir;
 
   $qry = db("SELECT id,name FROM ".$db['f_kats']." WHERE intern = '1' ORDER BY `kid` ASC");
+  $i_forum = "";
   while($get = _fetch($qry))
   {
     unset($kats, $fkats, $break);
@@ -2362,6 +2363,7 @@ function getBoardPermissions($checkID = 0, $pos = 0)
 
       $fkats .= '<input type="checkbox" class="checkbox" id="board_'.$get2['id'].'" name="board['.$get2['get2'].']" value="'.$get2['id'].'"'.$chk.' /><label for="board_'.$get2['id'].'"> '.re($get2['kattopic']).'</label> '.$br;
     }
+    
     $i_forum .= $kats.$fkats;
   }
 
