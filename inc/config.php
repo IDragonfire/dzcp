@@ -89,20 +89,4 @@ $db = array("host" =>           $sql_host,
             "votes" =>          $prefix."votes",
             "vote_results" =>   $prefix."vote_results"
             );
-
-if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '')
-{
-	if(!$msql = mysql_connect($db['host'],$db['user'],$db['pass'])) die("<b>Fehler beim Zugriff auf die Datenbank!");
-	if(!mysql_select_db($db['db'],$msql)) die("<b>Die angegebene Datenbank <i>".$db['db']."</i> existiert nicht!");
-}
-
-function db($db)
-{
-  global $prefix;
-  if(!$qry = mysql_query($db)) die('<b>MySQL-Query failed:</b><br /><br /><ul>'.
-                                   '<li><b>ErrorNo</b> = '.str_replace($prefix,'',mysql_errno()).
-                                   '<li><b>Error</b>   = '.str_replace($prefix,'',mysql_error()).
-                                   '<li><b>Query</b>   = '.str_replace($prefix,'',$db).'</ul>');
-  return $qry;
-}
 ?>

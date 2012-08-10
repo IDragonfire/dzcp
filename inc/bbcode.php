@@ -139,8 +139,10 @@ if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pwd']) && empty($_SESSIO
   if(empty($_SESSION['lastvisit']))
     $_SESSION['lastvisit'] = data(intval($_COOKIE[$prev.'id']), "time");
 }
+
 $userid = userid();
 $chkMe = checkme();
+
 if($chkMe == "unlogged")
 {
   $_SESSION['id']        = '';
@@ -753,51 +755,6 @@ function wrap($str, $width = 75, $break = "\n", $cut = true)
   return strtr(str_replace(htmlentities($break), $break, htmlentities(wordwrap(html_entity_decode($str), $width, $break, $cut), ENT_QUOTES)), array_flip(get_html_translation_table(HTML_SPECIALCHARS, ENT_COMPAT)));
 }
 
-//-> Funktion um eine Datei im Web auf Existenz zu prfen
-function fileExists($url)
-{
-  $url_p = @parse_url($url);
-  $host = $url_p['host'];
-  $port = isset($url_p['port']) ? $url_p['port'] : 80;
-
-  $fp = @fsockopen($url_p['host'], $port, $errno, $errstr, 5);
-  if(!$fp) return false;
-
-  @fputs($fp, 'GET '.$url_p['path'].' HTTP/1.1'.chr(10));
-  @fputs($fp, 'HOST: '.$url_p['host'].chr(10));
-  @fputs($fp, 'Connection: close'.chr(10).chr(10));
-
-  $response = @fgets($fp, 1024);
-  $content = @fread($fp,1024);
-  $ex = explode("\n",$content);
-  $content = $ex[count($ex)-1];
-  @fclose ($fp);
-
-  if(preg_match("#404#",$response)) return false;
-  else return trim($content);
-}
-//-> Informationen ueber die mySQL-Datenbank
-function dbinfo()
-{
-  $qry = db("Show table status");
-  while($data = _fetch($qry))
-  {
-    $allRows = $data["Rows"];
-    $dataLength  = $data["Data_length"];
-    $indexLength = $data["Index_length"];
-
-    $tableSum    = $dataLength + $indexLength;
-
-    $sum += $tableSum;
-    $rows += $allRows;
-    $entrys ++;
-  }
-  $info["entrys"] = $entrys;
-  $info["rows"] = $rows;
-  $info["size"] = @round($sum/1048576,2);
-
-  return $info;
-}
 //-> Funktion um Sonderzeichen zu konvertieren
 function spChars($txt)
 {
@@ -828,32 +785,7 @@ function up($txt, $bbcode=0, $charset='')
 
   return trim($txt);
 }
-//MySQL-Funktionen
-function _rows($rows)
-{
-  return mysql_num_rows($rows);
-}
-function _fetch($fetch)
-{
-  return mysql_fetch_array($fetch, MYSQL_ASSOC);
-}
-//-> Funktion um diverse Dinge aus Tabellen auszaehlen zu lassen
-function cnt($count, $where = "", $what = "id")
-{
-    $cnt = db("SELECT COUNT(".$what.") AS num
-               FROM ".$count." ".$where);
-    $cnt = _fetch($cnt);
-    return $cnt['num'];
-}
-//-> Funktion um diverse Dinge aus Tabellen zusammenzaehlen zu lassen
-function sum($db, $where = "", $what)
-{
-  $cnt = db("SELECT SUM(".$what.") AS num
-             FROM ".$db.$where);
-  $cnt = _fetch($cnt);
 
-  return $cnt['num'];
-}
 //-> Funktion um einer id einen Nick zuzuweisen
 function nick_id($tid)
 {
@@ -1723,39 +1655,7 @@ function conv($txt)
 
   return $txt;
 }
-//PHPInfo in array lesen
-function parsePHPInfo()
-{
-   ob_start();
-     phpinfo();
-     $s = ob_get_contents();
-   ob_end_clean();
 
-   $s = strip_tags($s,'<h2><th><td>');
-   $s = preg_replace('/<th[^>]*>([^<]+)<\/th>/',"<info>\\1</info>",$s);
-   $s = preg_replace('/<td[^>]*>([^<]+)<\/td>/',"<info>\\1</info>",$s);
-   $vTmp = preg_split('/(<h2[^>]*>[^<]+<\/h2>)/',$s,-1,PREG_SPLIT_DELIM_CAPTURE);
-   $vModules = array();
-   for ($i=1;$i<count($vTmp);$i++)
-   {
-     if(preg_match('/<h2[^>]*>([^<]+)<\/h2>/',$vTmp[$i],$vMat))
-     {
-       $vName = trim($vMat[1]);
-       $vTmp2 = explode("\n",$vTmp[$i+1]);
-       foreach ($vTmp2 AS $vOne)
-       {
-        $vPat = '<info>([^<]+)<\/info>';
-        $vPat3 = "/$vPat\s*$vPat\s*$vPat/";
-        $vPat2 = "/$vPat\s*$vPat/";
-        if(preg_match($vPat3,$vOne,$vMat))
-          $vModules[$vName][trim($vMat[1])] = array(trim($vMat[2]),trim($vMat[3]));
-        elseif (preg_match($vPat2,$vOne,$vMat))
-          $vModules[$vName][trim($vMat[1])] = trim($vMat[2]);
-      }
-    }
-  }
-  return $vModules;
-}
 //-> Prueft, ob eine Userid existiert
 function exist($tid)
 {
