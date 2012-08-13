@@ -2388,7 +2388,7 @@ if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USE
 				include_once(basePath.'/inc/menu-functions/'.$pholder[$i].'.php');
 			
 			if(function_exists($pholder[$i]))
-				$arr[$pholder[$i]] = $pholder[$i]();
+				$arr[$pholder[$i]] = call_user_func($pholder[$i]);
 		}
 	}
 	
