@@ -2394,7 +2394,7 @@ if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USE
 	
     $pholdervars = explode("^",$pholdervars);
     for($i=0;$i<=count($pholdervars)-1;$i++) 
-	{ $arr[$pholdervars[$i]] = $$pholdervars[$i]; }
+	{ eval("if(isset(\$".$pholdervars[$i].")) \$arr[".$pholdervars[$i]."] = \$".$pholdervars[$i].";"); 
 
 	//index output
     echo show((($index_templ != false ? file_exists(basePath."/inc/_templates_/".$tmpdir."/".$index_templ.".html") : false) ? $index_templ : 'index') , $arr);
