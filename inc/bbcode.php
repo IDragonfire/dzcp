@@ -2284,121 +2284,126 @@ if($f = get_files(basePath.'/inc/additional-functions/',false,true,array('php'))
 }
 //-> Navigation einbinden
 include_once(basePath.'/inc/menu-functions/navi.php');
+
 //-> Ausgabe des Indextemplates
 function page($index,$title,$where,$time,$wysiwyg='',$index_templ=false)
 {
-  global $db,$userid,$userip,$tmpdir,$secureLogin,$chkMe,$charset;
-  global $u_b1,$u_b2,$designpath,$maxwidth,$language,$cp_color,$copyright;
-  
-// user gebannt? Logge aus!
-    if($chkMe == 'banned') header("Location: ../user/?action=logout");
-//  JS-Dateine einbinden
-    $lng = ($language=='deutsch')?'de':'en';
-    $edr = ($wysiwyg=='_word')?'advanced':'normal';
-    $lcolor = ($cp_color==1)?'lcolor=true;':'';
+	  global $db,$userid,$userip,$tmpdir,$secureLogin,$chkMe,$charset;
+	  global $u_b1,$u_b2,$designpath,$maxwidth,$language,$cp_color,$copyright;
+	  
+	// user gebannt? Logge aus!
+	    if($chkMe == 'banned') header("Location: ../user/?action=logout");
+	//  JS-Dateine einbinden
+	    $lng = ($language=='deutsch')?'de':'en';
+	    $edr = ($wysiwyg=='_word')?'advanced':'normal';
+	    $lcolor = ($cp_color==1)?'lcolor=true;':'';
+		
+	    $java_vars = '<script language="javascript" type="text/javascript">
+	<!--
+	 var maxW = '.$maxwidth.',lng = \''.$lng.'\',dzcp_editor = \''.$edr.'\';'.$lcolor.'
+	//-->
+	</script>';
 	
-    $java_vars = '<script language="javascript" type="text/javascript">
-<!--
- var maxW = '.$maxwidth.',lng = \''.$lng.'\',dzcp_editor = \''.$edr.'\';'.$lcolor.'
-//-->
-</script>';
-
-if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USER_AGENT'],'webOS')) {
-  $java_vars .= '<script language="javascript" type="text/javascript" src="'.$designpath.'/_js/wysiwyg'.$wysiwyg.'.js"></script>';
-}
-
-    if(settings("wmodus") && $chkMe != 4)
-    {
-      if($secureLogin == 1)
-        $secure = show("menu/secure", array("help" => _login_secure_help,
-                                            "security" => _register_confirm));
-
-      $login = show("errors/wmodus_login", array("what" => _login_login,
-                                                 "secure" => $secure,
-                                                 "signup" => _login_signup,
-                                                 "permanent" => _login_permanent,
-                                                 "lostpwd" => _login_lostpwd));
-
-      echo show("errors/wmodus", array("wmodus" => _wartungsmodus,
-                                       "head" => _wartungsmodus_head,
-                                       "tmpdir" => $tmpdir,
-                                       "java_vars" => $java_vars,
-                                       "dir" => $designpath,
-                                       "title" => re(strip_tags($title)),
-                                       "login" => $login));
-   } else {
-    updateCounter();
-    update_maxonline();
-
-//check permissions
-    if($chkMe == "unlogged") include_once(basePath.'/inc/menu-functions/login.php');
-    else 
-	{
-		$check_msg = check_msg();
-		set_lastvisit();
-		$login = "";
-		db("UPDATE ".$db['users']." SET `time` = '".((int)time())."', `whereami` = '".up($where)."' WHERE id = '".intval($userid)."'");
-    }
-
-//init templateswitch
-	$tmpldir=""; $tmps = get_files('../inc/_templates_/',true,false);
-    for($i=0; $i<count($tmps); $i++)
-    {
-		$selt = ($tmpdir == $tmps[$i] ? 'selected="selected"' : '');
-		$tmpldir .= show(_select_field, array("value" => "../user/?action=switch&amp;set=".$tmps[$i],  "what" => $tmps[$i],  "sel" => $selt));
-    }
+	if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USER_AGENT'],'webOS')) 
+	  $java_vars .= '<script language="javascript" type="text/javascript" src="'.$designpath.'/_js/wysiwyg'.$wysiwyg.'.js"></script>';
 	
-//misc vars
-    $template_switch = show("menu/tmp_switch", array("templates" => $tmpldir));
-    $clanname = re(settings("clanname"));
-    $time = show(_generated_time, array("time" => $time));
-    $headtitle = show(_index_headtitle, array("clanname" => $clanname));
-    $rss = $clanname;
-    $dir = $designpath;
-    $title = re(strip_tags($title));
-
-    $index = empty($index) ? '' : (empty($check_msg) ? '' : $check_msg).'<table class="mainContent" cellspacing="1" style="margin-top:0">'.$index.'</table>';
-
-//-> Sort & filter placeholders
-//default placeholders
-    $arr = array("idir" => '../inc/images/admin', "dir" => $designpath);
-//check if placeholders are given
-    $pholder = file_get_contents($designpath."/index.html");
-//filter placeholders
-
-    $blArr = array("[title]","[copyright]","[java_vars]","[login]", "[template_switch]","[headtitle]","[index]", "[time]","[rss]","[dir]","[charset]");
-    for($i=0;$i<=count($blArr)-1;$i++)
-    {
-      if(preg_match("#".$blArr[$i]."#",$pholder))
-        $pholdervars .= $blArr[$i];
-    }
-    for($i=0;$i<=count($blArr)-1;$i++)
-      $pholder = str_replace($blArr[$i],"",$pholder);
-
-    $pholder = pholderreplace($pholder);
-    $pholdervars = pholderreplace($pholdervars);
-//put placeholders in array
-    $pholder = explode("^",$pholder);
-    for($i=0;$i<=count($pholder)-1;$i++) 
-	{
-		if(strstr($pholder[$i], 'nav_')) 
-			$arr[$pholder[$i]] = navi($pholder[$i]);
-		else 
+	    if(settings("wmodus") && $chkMe != 4)
+	    {
+	      if($secureLogin == 1)
+	        $secure = show("menu/secure", array("help" => _login_secure_help,
+	                                            "security" => _register_confirm));
+	
+	      $login = show("errors/wmodus_login", array("what" => _login_login,
+	                                                 "secure" => $secure,
+	                                                 "signup" => _login_signup,
+	                                                 "permanent" => _login_permanent,
+	                                                 "lostpwd" => _login_lostpwd));
+	
+	      echo show("errors/wmodus", array("wmodus" => _wartungsmodus,
+	                                       "head" => _wartungsmodus_head,
+	                                       "tmpdir" => $tmpdir,
+	                                       "java_vars" => $java_vars,
+	                                       "dir" => $designpath,
+	                                       "title" => re(strip_tags($title)),
+	                                       "login" => $login));
+	   } 
+	   else 
+	   {
+	    updateCounter();
+	    update_maxonline();
+	
+	//check permissions
+	    if($chkMe == "unlogged") 
+	    	include_once(basePath.'/inc/menu-functions/login.php');
+	    else 
 		{
-			if(@file_exists(basePath.'/inc/menu-functions/'.$pholder[$i].'.php')) 
-				include_once(basePath.'/inc/menu-functions/'.$pholder[$i].'.php');
-			
-			if(function_exists($pholder[$i]))
-				$arr[$pholder[$i]] = call_user_func($pholder[$i]);
-		}
-	}
+			$check_msg = check_msg();
+			set_lastvisit();
+			$login = "";
+			db("UPDATE ".$db['users']." SET `time` = '".((int)time())."', `whereami` = '".up($where)."' WHERE id = '".intval($userid)."'");
+	    }
 	
-    $pholdervars = explode("^",$pholdervars);
-    for($i=0;$i<=count($pholdervars)-1;$i++) 
-	{ eval("if(isset(\$".$pholdervars[$i].")) \$arr[".$pholdervars[$i]."] = \$".$pholdervars[$i].";"); 
-
-	//index output
-    echo show((($index_templ != false ? file_exists(basePath."/inc/_templates_/".$tmpdir."/".$index_templ.".html") : false) ? $index_templ : 'index') , $arr);
-  }
+	//init templateswitch
+		$tmpldir=""; $tmps = get_files('../inc/_templates_/',true,false);
+	    for($i=0; $i<count($tmps); $i++)
+	    {
+			$selt = ($tmpdir == $tmps[$i] ? 'selected="selected"' : '');
+			$tmpldir .= show(_select_field, array("value" => "../user/?action=switch&amp;set=".$tmps[$i],  "what" => $tmps[$i],  "sel" => $selt));
+	    }
+		
+	//misc vars
+	    $template_switch = show("menu/tmp_switch", array("templates" => $tmpldir));
+	    $clanname = re(settings("clanname"));
+	    $time = show(_generated_time, array("time" => $time));
+	    $headtitle = show(_index_headtitle, array("clanname" => $clanname));
+	    $rss = $clanname;
+	    $dir = $designpath;
+	    $title = re(strip_tags($title));
+	
+	    $index = empty($index) ? '' : (empty($check_msg) ? '' : $check_msg).'<table class="mainContent" cellspacing="1" style="margin-top:0">'.$index.'</table>';
+	
+	//-> Sort & filter placeholders
+	//default placeholders
+	    $arr = array("idir" => '../inc/images/admin', "dir" => $designpath);
+	//check if placeholders are given
+	    $pholder = file_get_contents($designpath."/index.html");
+	//filter placeholders
+	
+	    $blArr = array("[title]","[copyright]","[java_vars]","[login]", "[template_switch]","[headtitle]","[index]", "[time]","[rss]","[dir]","[charset]");
+	    for($i=0;$i<=count($blArr)-1;$i++)
+	    {
+	      if(preg_match("#".$blArr[$i]."#",$pholder))
+	        $pholdervars .= $blArr[$i];
+	    }
+	    
+	    for($i=0;$i<=count($blArr)-1;$i++)
+	      $pholder = str_replace($blArr[$i],"",$pholder);
+	
+	    $pholder = pholderreplace($pholder);
+	    $pholdervars = pholderreplace($pholdervars);
+	    
+	//put placeholders in array
+	    $pholder = explode("^",$pholder);
+	    for($i=0;$i<=count($pholder)-1;$i++) 
+		{
+			if(strstr($pholder[$i], 'nav_')) 
+				$arr[$pholder[$i]] = navi($pholder[$i]);
+			else 
+			{
+				if(@file_exists(basePath.'/inc/menu-functions/'.$pholder[$i].'.php')) 
+					include_once(basePath.'/inc/menu-functions/'.$pholder[$i].'.php');
+				
+				if(function_exists($pholder[$i]))
+					$arr[$pholder[$i]] = call_user_func($pholder[$i]);
+			}
+		}
+		
+	    $pholdervars = explode("^",$pholdervars);
+	    for($i=0;$i<=count($pholdervars)-1;$i++) 
+		{ eval("if(isset(\$".$pholdervars[$i].")) \$arr[".$pholdervars[$i]."] = \$".$pholdervars[$i].";"); }
+	
+		//index output
+	    echo show((($index_templ != false ? file_exists(basePath."/inc/_templates_/".$tmpdir."/".$index_templ.".html") : false) ? $index_templ : 'index') , $arr);
+	  }
 }
 ?>
