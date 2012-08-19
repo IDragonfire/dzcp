@@ -1,8 +1,8 @@
 <?php
 //Userspezifische Informationen
-function infos($checkBrowser = "")
+function infos()
 {
-  global $userip;
+	global $userip;
     if(settings("persinfo") == 1)
     {
       $data = $_SERVER['HTTP_USER_AGENT'];
@@ -46,7 +46,7 @@ function infos($checkBrowser = "")
                   doc.write(screen.width + ' x ' + screen.height)
               </script>";
 
-      $infos = show("menu/pers.infos", array("ip" => $userip,
+      return show("menu/pers.infos", array("ip" => $userip,
                                              "info_ip" => _info_ip,
                                              "host" => gethostbyaddr($userip),
                                              "info_browser" => _info_browser,
@@ -55,11 +55,8 @@ function infos($checkBrowser = "")
                                              "res" => $res,
                                              "info_sys" => _info_sys,
                                              "sys" => $system));
-    } else {
-      $infos = "";
     }
 
-  if($checkBrowser == "true") return $browser;
-  else                        return $infos;
+	return "";
 }
 ?>
