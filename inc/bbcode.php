@@ -2011,6 +2011,7 @@ function infos($checkBrowser = "")
       elseif(preg_match("/NT 4.0/i",$data))       			$system = "Windows NT 4";
       elseif(preg_match("/NT 6.0/i",$data))       			$system = "Windows Vista";
       elseif(preg_match("/NT 6.1/i",$data))       			$system = "Windows 7";
+	  elseif(preg_match("/NT 6.2/i",$data))       			$system = "Windows 8";
       elseif(preg_match("/Windows ME/i",$data))   			$system = "Windows 9x + ME";
       elseif(preg_match("/Windows 98/i",$data))   			$system = "Windows 9x + ME";
       elseif(preg_match("/Windows 95/i",$data))   			$system = "Windows 9x + ME";
