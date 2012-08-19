@@ -322,4 +322,19 @@ function sum($db, $where = "", $what)
   $cnt = _fetch($cnt);
   return ((int)$cnt['num']);
 }
+
+/**
+ * Gibt die IP des Besuchers / Users zurück.
+ * Proxy Server Fix.
+ *
+ * @return String
+ */
+function VisitorIP()
+{
+	if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
+		$TheIp=$_SERVER['HTTP_X_FORWARDED_FOR'];
+	else $TheIp=$_SERVER['REMOTE_ADDR'];
+
+	return trim($TheIp);
+}
 ?>

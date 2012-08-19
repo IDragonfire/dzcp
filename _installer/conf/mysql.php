@@ -868,7 +868,7 @@ function install_mysql($login, $nick, $pwd, $email)
 											                    ADD `url2` varchar(249) NOT NULL default '',
 											                    ADD `url3` varchar(249) NOT NULL default '',
 											                    ADD `beschreibung` text NULL");
-  $qry = db("INSERT INTO ".$db['users']." (`id`, `user`, `nick`, `pwd`, `regdatum`, `email`, `level`, `position`, `status`, `online`, `ip`, `sessid`) VALUES (1, '".$login."', '".$nick."', '".md5($pwd)."', '".time()."', '".$email."', '4', 1, 1, 1, '".$_SERVER['REMOTE_ADDR']."', '".session_id()."')");
+  $qry = db("INSERT INTO ".$db['users']." (`id`, `user`, `nick`, `pwd`, `regdatum`, `email`, `level`, `position`, `status`, `online`, `ip`, `sessid`) VALUES (1, '".$login."', '".$nick."', '".md5($pwd)."', '".time()."', '".$email."', '4', 1, 1, 1, '".VisitorIP()."', '".session_id()."')");
 //-> Userposis
   $qry = db("DROP TABLE IF EXISTS ".$db['userpos']."");
   $qry = db("CREATE TABLE ".$db['userpos']." (
@@ -959,13 +959,13 @@ function install_mysql($login, $nick, $pwd, $email)
 //-> Sessionvariabeln setzen
   $_SESSION['id'] = "1";
   $_SESSION['pwd'] = md5($pwd);
-  $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
+  $_SESSION['ip'] = VisitorIP();
 
   if($login || $nick || $pwd || $email)
   {
     $_SESSION['id'] = "1";
     $_SESSION['pwd'] = md5($pwd);
-    $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
+    $_SESSION['ip'] = VisitorIP();
   }
 }
 

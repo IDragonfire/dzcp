@@ -2,7 +2,6 @@
 //Userspezifische Informationen
 function infos()
 {
-	global $userip;
     if(settings("persinfo") == 1)
     {
       $data = $_SERVER['HTTP_USER_AGENT'];
@@ -46,7 +45,7 @@ function infos()
                   doc.write(screen.width + ' x ' + screen.height)
               </script>";
 
-      return show("menu/pers.infos", array("ip" => $userip,
+      return show("menu/pers.infos", array("ip" => ($userip=VisitorIP()),
                                              "info_ip" => _info_ip,
                                              "host" => gethostbyaddr($userip),
                                              "info_browser" => _info_browser,

@@ -114,13 +114,13 @@ $lforumtopic = $c['l_forumtopic'];
 $lforumsubtopic = $c['l_forumsubtopic'];
 $maxawards = $c['m_awards'];
 $sdir = $settings['tmpdir'];
-$userip = $_SERVER['REMOTE_ADDR'];
+$userip = VisitorIP();
 
 if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pwd']) && empty($_SESSION['id']))
 {
   $_SESSION['id']   = intval($_COOKIE[$prev.'id']);
   $_SESSION['pwd']  = $_COOKIE[$prev.'pwd'];
-  $_SESSION['ip']   = $_SERVER['REMOTE_ADDR'];
+  $_SESSION['ip']   = VisitorIP();
 
   if(data(intval($_COOKIE[$prev.'id']), "ip") != $_SESSION['ip'])
   {
