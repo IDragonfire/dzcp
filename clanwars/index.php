@@ -898,11 +898,11 @@ case 'details';
 													 `hp`       = '".links($_POST['hp'])."',
 													 `reg`      = '".((int)$userid)."',
 													 `comment`  = '".up($_POST['comment'],1)."',
-													 `ip`       = '".$userip."'");
+													 `ip`       = '".mysql_real_escape_string($userip)."'");
 		
 						$cwid = "cwid(".$_GET['id'].")";
 						$qry = db("INSERT INTO ".$db['ipcheck']."
-											 SET `ip`   = '".$userip."',
+											 SET `ip`   = '".mysql_real_escape_string($userip)."',
 													 `what` = '".$cwid."',
 													 `time` = '".((int)time())."'");
 		

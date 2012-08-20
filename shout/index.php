@@ -33,10 +33,10 @@ default:
                      `nick`   = '".up($_POST['name'],'','UTF-8')."',
                      `email`  = '".up($reg,'','UTF-8')."',
                      `text`   = '".up(substr(str_replace("\n", ' ', $_POST['eintrag']),0,$shout_max_zeichen),'','UTF-8')."',
-                     `ip`     = '".$userip."'");
+                     `ip`     = '".mysql_real_escape_string($userip)."'");
 
       $qry = db("INSERT INTO ".$db['ipcheck']."
-                 SET `ip`   = '".$userip."',
+                 SET `ip`   = '".mysql_real_escape_string($userip)."',
                      `what` = 'shout',
                      `time` = '".((int)time())."'");
 

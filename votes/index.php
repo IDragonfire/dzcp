@@ -194,7 +194,7 @@ case 'do';
           
           $vid2 = "vid(".$_GET['id'].")";
           $ins2 = db("INSERT INTO ".$db['ipcheck']."
-                      SET `ip`   = '".$userip."',
+                      SET `ip`   = '".mysql_real_escape_string($userip)."',
                           `what` = '".$vid2."',
                           `time` = '".time()."'");
                           
@@ -218,13 +218,13 @@ case 'do';
 
           $vid = "vid_".$_GET['id']."";
           $ins = db("INSERT INTO ".$db['ipcheck']."
-                     SET `ip`   = '".$userip."',
+                     SET `ip`   = '".mysql_real_escape_string($userip)."',
                          `what` = '".$vid."',
                          `time` = '".time()."'");
                          
           $vid2 = "vid(".$_GET['id'].")";
           $ins2 = db("INSERT INTO ".$db['ipcheck']."
-                      SET `ip`   = '".$userip."',
+                      SET `ip`   = '".mysql_real_escape_string($userip)."',
                           `what` = '".$vid2."',
                           `time` = '".time()."'");
 
@@ -272,13 +272,13 @@ case 'do';
 
         $vid = "vid_".$_GET['id']."";
         $ins = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".$userip."',
+                   SET `ip`   = '".mysql_real_escape_string($userip)."',
                        `what` = '".$vid."',
                        `time` = '".time()."'");
                        
         $vid2 = "vid(".$_GET['id'].")";
         $ins2 = db("INSERT INTO ".$db['ipcheck']."
-                    SET `ip`   = '".$userip."',
+                    SET `ip`   = '".mysql_real_escape_string($userip)."',
                         `what` = '".$vid2."',
                         `time` = '".time()."'");
 
@@ -297,7 +297,6 @@ case 'do';
     echo fvote($_GET['id'], 1);
     exit;
   }  
-
 
 break;
 endswitch;
