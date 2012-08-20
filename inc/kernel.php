@@ -331,9 +331,15 @@ function sum($db, $where = "", $what)
  */
 function VisitorIP()
 {
+	$TheIp=$_SERVER['REMOTE_ADDR'];
 	if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
-		$TheIp=$_SERVER['HTTP_X_FORWARDED_FOR'];
-	else $TheIp=$_SERVER['REMOTE_ADDR'];
+	{
+		## IP auf Gültigkeit prüfen ##
+		$TheIp_XF=$_SERVER['HTTP_X_FORWARDED_FOR'];
+		$TheIp_X = explode('.',$TheIp_XF);
+		if(count($TheIp_X) == 4 && $TheIp_X[0]<=255 && $TheIp_X[1]<=255 && $TheIp_X[2]<=255 && $TheIp_X[3]<=255 && preg_match("!^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$!",$TheIp_XF))
+			$TheIp = $TheIp_XF;
+	}
 
 	return trim($TheIp);
 }
