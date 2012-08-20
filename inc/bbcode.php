@@ -131,7 +131,7 @@ if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pwd']) && empty($_SESSIO
     $qry = db("UPDATE ".$db['users']."
       				 SET `online` = 1,
                    `sessid` = '".session_id()."',
-                   `ip`     = '".$userip."'
+                   `ip`     = '".mysql_real_escape_string($userip)."'
 		    		   WHERE id = ".intval($_COOKIE[$prev.'id']));
     $_SESSION['lastvisit'] = data(intval($_COOKIE[$prev.'id']), "time");
   }
@@ -162,6 +162,7 @@ function userid()
 
   return $get['id'];
 }
+
 //-> Templateswitch
 $files = get_files('../inc/_templates_/',true,false);
 $folder = $files[0];
@@ -809,7 +810,7 @@ function updateCounter()
 {
   global $db,$reload,$today,$datum,$userip;
     $ipcheck = db("SELECT id,ip,datum FROM ".$db['c_ips']."
-                   WHERE ip = '".$userip."'
+                   WHERE ip = '".mysql_real_escape_string($userip)."'
                    AND FROM_UNIXTIME(datum,'%d.%m.%Y') = '".date("d.m.Y")."'");
     $get = _fetch($ipcheck);
 
@@ -825,7 +826,7 @@ function updateCounter()
       if($sperrzeit <= time())
       {
         $qry = db("DELETE FROM ".$db['c_ips']."
-                   WHERE ip = '".$userip."'");
+                   WHERE ip = '".mysql_real_escape_string($userip)."'");
         if(_rows($count))
         {
           $qry = db("UPDATE ".$db['counter']."
@@ -837,7 +838,7 @@ function updateCounter()
                          `today`    = '".$today."'");
         }
         $qry = db("INSERT INTO ".$db['c_ips']."
-                   SET `ip`     = '".$userip."',
+                   SET `ip`     = '".mysql_real_escape_string($userip)."',
                        `datum`  = '".((int)$datum)."'");
       }
     } else {
@@ -852,7 +853,7 @@ function updateCounter()
                        `today`    = '".$today."'");
       }
       $qry = db("INSERT INTO ".$db['c_ips']."
-                 SET `ip`     = '".$userip."',
+                 SET `ip`     = '".mysql_real_escape_string($userip)."',
                      `datum`  = '".((int)$datum)."'");
     }
 }
@@ -915,7 +916,7 @@ function checkme()
     $qry = db("SELECT level FROM ".$db['users']."
                WHERE id = '".intval($userid)."'
                AND pwd = '".$_SESSION['pwd']."'
-               AND ip = '".$_SESSION['ip']."'");
+               AND ip = '".mysql_real_escape_string($_SESSION['ip'])."'");
     if(_rows($qry))
     {
       $get = _fetch($qry);

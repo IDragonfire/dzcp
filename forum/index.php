@@ -1408,14 +1408,14 @@ case 'thread';
 												`t_text`   = '".up($_POST['eintrag'],1)."',
 												`sticky`   = '".((int)$_POST['sticky'])."',
 												`global`   = '".((int)$_POST['global'])."',
-												`ip`       = '".$userip."',
+												`ip`       = '".mysql_real_escape_string($userip)."',
 												`lp`       = '".((int)time())."',
 												`vote`     = '".$vid."',
 												`first`	= '1'");
 				$thisFID = mysql_insert_id();
 				$fid = "fid(".$_GET['kid'].")";
 				$qry = db("INSERT INTO ".$db['ipcheck']."
-									 SET `ip`   = '".$userip."',
+									 SET `ip`   = '".mysql_real_escape_string($userip)."',
 											 `what` = '".$fid."',
 											 `time` = '".((int)time())."'");
 	
@@ -2146,7 +2146,7 @@ case 'post';
 												 `hp`    = '".links($_POST['hp'])."',
 												 `reg`   = '".up($userid)."',
 												 `text`  = '".up($_POST['eintrag'],1)."',
-												 `ip`    = '".$userip."'");	  
+												 `ip`    = '".mysql_real_escape_string($userip)."'");	  
 		
 					$update = db("UPDATE ".$db['f_threads']."
 												SET `lp`    = '".((int)time())."',
