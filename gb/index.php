@@ -222,10 +222,10 @@ case 'do';
                      `hp`         = '".links($_POST['hp'])."',
                      `reg`        = '".((int)$userid)."',
                      `nachricht`  = '".up($_POST['eintrag'], 1)."',
-                     `ip`         = '".$userip."'");
+                     `ip`         = '".mysql_real_escape_string($userip)."'");
 
       $qry = db("INSERT INTO ".$db['ipcheck']."
-                 SET `ip`   = '".$userip."',
+                 SET `ip`   = '".mysql_real_escape_string($userip)."',
                      `what` = 'gb',
                      `time` = '".((int)time())."'");
 

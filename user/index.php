@@ -39,7 +39,7 @@ case 'login';
         $_SESSION['id']         = $get['id'];
         $_SESSION['pwd']        = $get['pwd'];
         $_SESSION['lastvisit']  = $get['time'];
-        $_SESSION['ip']         = $userip;
+		$_SESSION['ip']         = $userip;
 
     		$upd = db("UPDATE ".$db['userstats']."
 		      				 SET `logins` = logins+1
@@ -48,12 +48,12 @@ case 'login';
         $upd = db("UPDATE ".$db['users']."
 		    	 				 SET `online` = '1',
                        `sessid` = '".session_id()."',
-                       `ip`     = '".$userip."'
+                       `ip`     = '".mysql_real_escape_string($userip)."'
 						       WHERE id = ".$get['id']);
 
         $protocol = "login(".$get['id'].")";
         $upd = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".$userip."',
+                   SET `ip`   = '".mysql_real_escape_string($userip)."',
                        `what` = '".$protocol."',
                        `time` = '".((int)time())."'");
 
@@ -67,7 +67,7 @@ case 'login';
 
           $protocol = "trylogin(".$get['id'].")";
           $upd = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".$userip."',
+                   SET `ip`   = '".mysql_real_escape_string($userip)."',
                        `what` = '".$protocol."',
                        `time` = '".((int)time())."'");
         }
@@ -127,7 +127,7 @@ case 'lostpwd';
 
         $protocol = "pwd(".$get['id'].")";
         $upd = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".$userip."',
+                   SET `ip`   = '".mysql_real_escape_string($userip)."',
                        `what` = '".$protocol."',
                        `time` = '".((int)time())."'");
 
@@ -141,7 +141,7 @@ case 'lostpwd';
 			} else {
         $protocol = "trypwd(".$get['id'].")";
         $upd = db("INSERT INTO ".$db['ipcheck']."
-                 SET `ip`   = '".$userip."',
+                 SET `ip`   = '".mysql_real_escape_string($userip)."',
                      `what` = '".$protocol."',
                      `time` = '".((int)time())."'");
 
@@ -163,7 +163,7 @@ case 'logout';
 
   $protocol = "logout(".$userid.")";
   $upd = db("INSERT INTO ".$db['ipcheck']."
-             SET `ip`   = '".$userip."',
+             SET `ip`   = '".mysql_real_escape_string($userip)."',
                  `what` = '".$protocol."',
                  `time` = '".((int)time())."'");
 
@@ -285,7 +285,7 @@ case 'register';
 
       $protocol = "reg(".$insert_id.")";
       $qry = db("INSERT INTO ".$db['ipcheck']."
-                 SET `ip`   = '".$userip."',
+                 SET `ip`   = '".mysql_real_escape_string($userip)."',
                      `what` = '".$protocol."',
                      `time` = '".((int)time())."'");
 
@@ -1493,11 +1493,11 @@ case 'usergb';
 											 `hp`         = '".links($_POST['hp'])."',
 											 `reg`        = '".((int)$userid)."',
 											 `nachricht`  = '".up($_POST['eintrag'],1)."',
-											 `ip`         = '".$userip."'");
+											 `ip`         = '".mysql_real_escape_string($userip)."'");
 	
 				$mgbid = "mgbid(".$_GET['id'].")";
 				$qry = db("INSERT INTO ".$db['ipcheck']."
-									 SET `ip`   = '".$userip."',
+									 SET `ip`   = '".mysql_real_escape_string($userip)."',
 											 `what` = '".$mgbid."',
 											 `time` = '".((int)time())."'");
 	
@@ -2777,17 +2777,17 @@ case 'admin';
 
         $_SESSION['id'] = $_GET['id'];
         $_SESSION['pwd'] = data($_GET['id'], "pwd");
-        $_SESSION['ip'] = $userip;
+		$_SESSION['ip'] = $userip;
 
         $qry = db("UPDATE ".$db['users']."
 		    					 SET `online` = '1',
                        `sessid` = '".session_id()."',
-                       `ip`     = '".$userip."'
+                       `ip`     = '".mysql_real_escape_string($userip)."'
 							    WHERE id = ".intval($_GET['id']));
 
         $protocol = "ident(".$userid."_".intval($_GET['id']).")";
         $upd = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".$userip."',
+                   SET `ip`   = '".mysql_real_escape_string($userip)."',
                        `what` = '".$protocol."',
                        `time` = '".((int)time())."'");
       }
@@ -2851,7 +2851,7 @@ case 'admin';
 
         $protocol = "upduser(".$userid."_".intval($_GET['user']).")";
         $upd = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".$userip."',
+                   SET `ip`   = '".mysql_real_escape_string($userip)."',
                        `what` = '".$protocol."',
                        `time` = '".((int)time())."'");
       }
@@ -2894,7 +2894,7 @@ case 'admin';
         } else {
           $protocol = "deluser(".$userid."_".intval($_GET['id']).")";
           $upd = db("INSERT INTO ".$db['ipcheck']."
-                     SET `ip`   = '".$userip."',
+                     SET `ip`   = '".mysql_real_escape_string($userip)."',
                          `what` = '".$protocol."',
                          `time` = '".((int)time())."'");
 

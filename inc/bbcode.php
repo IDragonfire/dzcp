@@ -114,13 +114,13 @@ $lforumtopic = $c['l_forumtopic'];
 $lforumsubtopic = $c['l_forumsubtopic'];
 $maxawards = $c['m_awards'];
 $sdir = $settings['tmpdir'];
-$userip = $_SERVER['REMOTE_ADDR'];
+$userip = VisitorIP();
 
 if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pwd']) && empty($_SESSION['id']))
 {
   $_SESSION['id']   = intval($_COOKIE[$prev.'id']);
   $_SESSION['pwd']  = $_COOKIE[$prev.'pwd'];
-  $_SESSION['ip']   = $_SERVER['REMOTE_ADDR'];
+  $_SESSION['ip']   = VisitorIP();
 
   if(data(intval($_COOKIE[$prev.'id']), "ip") != $_SESSION['ip'])
   {
@@ -131,7 +131,7 @@ if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pwd']) && empty($_SESSIO
     $qry = db("UPDATE ".$db['users']."
       				 SET `online` = 1,
                    `sessid` = '".session_id()."',
-                   `ip`     = '".$userip."'
+                   `ip`     = '".mysql_real_escape_string($userip)."'
 		    		   WHERE id = ".intval($_COOKIE[$prev.'id']));
     $_SESSION['lastvisit'] = data(intval($_COOKIE[$prev.'id']), "time");
   }
@@ -139,8 +139,10 @@ if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pwd']) && empty($_SESSIO
   if(empty($_SESSION['lastvisit']))
     $_SESSION['lastvisit'] = data(intval($_COOKIE[$prev.'id']), "time");
 }
+
 $userid = userid();
 $chkMe = checkme();
+
 if($chkMe == "unlogged")
 {
   $_SESSION['id']        = '';
@@ -160,6 +162,7 @@ function userid()
 
   return $get['id'];
 }
+
 //-> Templateswitch
 $files = get_files('../inc/_templates_/',true,false);
 $folder = $files[0];
@@ -753,51 +756,6 @@ function wrap($str, $width = 75, $break = "\n", $cut = true)
   return strtr(str_replace(htmlentities($break), $break, htmlentities(wordwrap(html_entity_decode($str), $width, $break, $cut), ENT_QUOTES)), array_flip(get_html_translation_table(HTML_SPECIALCHARS, ENT_COMPAT)));
 }
 
-//-> Funktion um eine Datei im Web auf Existenz zu prfen
-function fileExists($url)
-{
-  $url_p = @parse_url($url);
-  $host = $url_p['host'];
-  $port = isset($url_p['port']) ? $url_p['port'] : 80;
-
-  $fp = @fsockopen($url_p['host'], $port, $errno, $errstr, 5);
-  if(!$fp) return false;
-
-  @fputs($fp, 'GET '.$url_p['path'].' HTTP/1.1'.chr(10));
-  @fputs($fp, 'HOST: '.$url_p['host'].chr(10));
-  @fputs($fp, 'Connection: close'.chr(10).chr(10));
-
-  $response = @fgets($fp, 1024);
-  $content = @fread($fp,1024);
-  $ex = explode("\n",$content);
-  $content = $ex[count($ex)-1];
-  @fclose ($fp);
-
-  if(preg_match("#404#",$response)) return false;
-  else return trim($content);
-}
-//-> Informationen ueber die mySQL-Datenbank
-function dbinfo()
-{
-  $qry = db("Show table status");
-  while($data = _fetch($qry))
-  {
-    $allRows = $data["Rows"];
-    $dataLength  = $data["Data_length"];
-    $indexLength = $data["Index_length"];
-
-    $tableSum    = $dataLength + $indexLength;
-
-    $sum += $tableSum;
-    $rows += $allRows;
-    $entrys ++;
-  }
-  $info["entrys"] = $entrys;
-  $info["rows"] = $rows;
-  $info["size"] = @round($sum/1048576,2);
-
-  return $info;
-}
 //-> Funktion um Sonderzeichen zu konvertieren
 function spChars($txt)
 {
@@ -828,32 +786,7 @@ function up($txt, $bbcode=0, $charset='')
 
   return trim($txt);
 }
-//MySQL-Funktionen
-function _rows($rows)
-{
-  return mysql_num_rows($rows);
-}
-function _fetch($fetch)
-{
-  return mysql_fetch_array($fetch, MYSQL_ASSOC);
-}
-//-> Funktion um diverse Dinge aus Tabellen auszaehlen zu lassen
-function cnt($count, $where = "", $what = "id")
-{
-    $cnt = db("SELECT COUNT(".$what.") AS num
-               FROM ".$count." ".$where);
-    $cnt = _fetch($cnt);
-    return $cnt['num'];
-}
-//-> Funktion um diverse Dinge aus Tabellen zusammenzaehlen zu lassen
-function sum($db, $where = "", $what)
-{
-  $cnt = db("SELECT SUM(".$what.") AS num
-             FROM ".$db.$where);
-  $cnt = _fetch($cnt);
 
-  return $cnt['num'];
-}
 //-> Funktion um einer id einen Nick zuzuweisen
 function nick_id($tid)
 {
@@ -877,7 +810,7 @@ function updateCounter()
 {
   global $db,$reload,$today,$datum,$userip;
     $ipcheck = db("SELECT id,ip,datum FROM ".$db['c_ips']."
-                   WHERE ip = '".$userip."'
+                   WHERE ip = '".mysql_real_escape_string($userip)."'
                    AND FROM_UNIXTIME(datum,'%d.%m.%Y') = '".date("d.m.Y")."'");
     $get = _fetch($ipcheck);
 
@@ -893,7 +826,7 @@ function updateCounter()
       if($sperrzeit <= time())
       {
         $qry = db("DELETE FROM ".$db['c_ips']."
-                   WHERE ip = '".$userip."'");
+                   WHERE ip = '".mysql_real_escape_string($userip)."'");
         if(_rows($count))
         {
           $qry = db("UPDATE ".$db['counter']."
@@ -905,7 +838,7 @@ function updateCounter()
                          `today`    = '".$today."'");
         }
         $qry = db("INSERT INTO ".$db['c_ips']."
-                   SET `ip`     = '".$userip."',
+                   SET `ip`     = '".mysql_real_escape_string($userip)."',
                        `datum`  = '".((int)$datum)."'");
       }
     } else {
@@ -920,7 +853,7 @@ function updateCounter()
                        `today`    = '".$today."'");
       }
       $qry = db("INSERT INTO ".$db['c_ips']."
-                 SET `ip`     = '".$userip."',
+                 SET `ip`     = '".mysql_real_escape_string($userip)."',
                      `datum`  = '".((int)$datum)."'");
     }
 }
@@ -983,7 +916,7 @@ function checkme()
     $qry = db("SELECT level FROM ".$db['users']."
                WHERE id = '".intval($userid)."'
                AND pwd = '".$_SESSION['pwd']."'
-               AND ip = '".$_SESSION['ip']."'");
+               AND ip = '".mysql_real_escape_string($_SESSION['ip'])."'");
     if(_rows($qry))
     {
       $get = _fetch($qry);
@@ -1723,39 +1656,7 @@ function conv($txt)
 
   return $txt;
 }
-//PHPInfo in array lesen
-function parsePHPInfo()
-{
-   ob_start();
-     phpinfo();
-     $s = ob_get_contents();
-   ob_end_clean();
 
-   $s = strip_tags($s,'<h2><th><td>');
-   $s = preg_replace('/<th[^>]*>([^<]+)<\/th>/',"<info>\\1</info>",$s);
-   $s = preg_replace('/<td[^>]*>([^<]+)<\/td>/',"<info>\\1</info>",$s);
-   $vTmp = preg_split('/(<h2[^>]*>[^<]+<\/h2>)/',$s,-1,PREG_SPLIT_DELIM_CAPTURE);
-   $vModules = array();
-   for ($i=1;$i<count($vTmp);$i++)
-   {
-     if(preg_match('/<h2[^>]*>([^<]+)<\/h2>/',$vTmp[$i],$vMat))
-     {
-       $vName = trim($vMat[1]);
-       $vTmp2 = explode("\n",$vTmp[$i+1]);
-       foreach ($vTmp2 AS $vOne)
-       {
-        $vPat = '<info>([^<]+)<\/info>';
-        $vPat3 = "/$vPat\s*$vPat\s*$vPat/";
-        $vPat2 = "/$vPat\s*$vPat/";
-        if(preg_match($vPat3,$vOne,$vMat))
-          $vModules[$vName][trim($vMat[1])] = array(trim($vMat[2]),trim($vMat[3]));
-        elseif (preg_match($vPat2,$vOne,$vMat))
-          $vModules[$vName][trim($vMat[1])] = trim($vMat[2]);
-      }
-    }
-  }
-  return $vModules;
-}
 //-> Prueft, ob eine Userid existiert
 function exist($tid)
 {
@@ -2091,68 +1992,7 @@ function feed()
     $data = @fopen("../rss.xml","w+");
     @fwrite($data, $feed);
 }
-//Userspezifische Informationen
-function infos($checkBrowser = "")
-{
-  global $userip;
-    if(settings("persinfo") == 1)
-    {
-      $data = $_SERVER['HTTP_USER_AGENT'];
-      if(preg_match("/Android/i",$data)) 					$system = "Android";
-      elseif(preg_match ("/Linux/i",$data))           		$system = "Linux";
-      elseif(preg_match("/SunOS/i",$data))        			$system = "Sun OS";
-      elseif(preg_match("/Macintosh/i",$data))    			$system = "Macintosh";
-      elseif(preg_match("/Mac_PowerPC/i",$data))  			$system = "Macintosh";
-      elseif(preg_match("/Windows 2000/i",$data)) 			$system = "Windows 2000";
-      elseif(preg_match("/Windows XP/i",$data))   			$system = "Windows XP";
-      elseif(preg_match("/NT 5.2/i",$data))       			$system = "Windows XP x64";
-      elseif(preg_match("/NT 5.1/i",$data))       			$system = "Windows XP";
-      elseif(preg_match("/NT 5.0/i",$data))      			$system = "Windows 2000";
-      elseif(preg_match("/NT 4.0/i",$data))       			$system = "Windows NT 4";
-      elseif(preg_match("/NT 6.0/i",$data))       			$system = "Windows Vista";
-      elseif(preg_match("/NT 6.1/i",$data))       			$system = "Windows 7";
-      elseif(preg_match("/Windows ME/i",$data))   			$system = "Windows 9x + ME";
-      elseif(preg_match("/Windows 98/i",$data))   			$system = "Windows 9x + ME";
-      elseif(preg_match("/Windows 95/i",$data))   			$system = "Windows 9x + ME";
-      elseif(preg_match("/Win 9x/i",$data))       			$system = "Windows 9x + ME";
-      elseif(preg_match("/Win95/i",$data))        			$system = "Windows 9x + ME";
-      elseif(preg_match("/Win98/i",$data))        			$system = "Windows 9x + ME";
-      elseif(preg_match("/OS (.*?) like Mac OS X/i",$data)) $system = "iOS";
-      else                                        $system = _unknown_system;
 
-      if(preg_match("/Opera/i",$data))          $browser = "Opera";
-      elseif(preg_match("/Konqueror/i",$data))  $browser = "Konqueror";
-      elseif(preg_match("/Firefox/i",$data))    $browser = "Mozilla Firefox";
-	  elseif(preg_match("/chrome/i",$data))     $browser = "Google Chrome";
-	  elseif(preg_match("/Safari/i",$data))     $browser = "Safari";
-      elseif(preg_match("/MSIE 5/i",$data))     $browser = "Internet Explorer 5";
-      elseif(preg_match("/MSIE 6/i",$data))     $browser = "Internet Explorer 6";
-      elseif(preg_match("/MSIE 7/i",$data))     $browser = "Internet Explorer 7";
-      elseif(preg_match("/MSIE 8/i",$data))     $browser = "Internet Explorer 8";
-	  elseif(preg_match("/MSIE 9/i",$data))     $browser = "Internet Explorer 9";
-	  elseif(preg_match("/MSIE 10/i",$data))     $browser = "Internet Explorer 10";
-      else                                      $browser = _unknown_browser;
-
-      $res = "<script language=\"javascript\" type=\"text/javascript\">
-                  doc.write(screen.width + ' x ' + screen.height)
-              </script>";
-
-      $infos = show("menu/pers.infos", array("ip" => $userip,
-                                             "info_ip" => _info_ip,
-                                             "host" => gethostbyaddr($userip),
-                                             "info_browser" => _info_browser,
-                                             "browser" => $browser,
-                                             "info_res" => _info_res,
-                                             "res" => $res,
-                                             "info_sys" => _info_sys,
-                                             "sys" => $system));
-    } else {
-      $infos = "";
-    }
-
-  if($checkBrowser == "true") return $browser;
-  else                        return $infos;
-}
 // Userpic ausgeben
 function userpic($userid, $width=170,$height=210)
 {
@@ -2345,6 +2185,7 @@ function getBoardPermissions($checkID = 0, $pos = 0)
   global $db, $dir;
 
   $qry = db("SELECT id,name FROM ".$db['f_kats']." WHERE intern = '1' ORDER BY `kid` ASC");
+  $i_forum = "";
   while($get = _fetch($qry))
   {
     unset($kats, $fkats, $break);
@@ -2362,6 +2203,7 @@ function getBoardPermissions($checkID = 0, $pos = 0)
 
       $fkats .= '<input type="checkbox" class="checkbox" id="board_'.$get2['id'].'" name="board['.$get2['get2'].']" value="'.$get2['id'].'"'.$chk.' /><label for="board_'.$get2['id'].'"> '.re($get2['kattopic']).'</label> '.$br;
     }
+    
     $i_forum .= $kats.$fkats;
   }
 
@@ -2381,121 +2223,126 @@ if($f = get_files(basePath.'/inc/additional-functions/',false,true,array('php'))
 }
 //-> Navigation einbinden
 include_once(basePath.'/inc/menu-functions/navi.php');
+
 //-> Ausgabe des Indextemplates
 function page($index,$title,$where,$time,$wysiwyg='',$index_templ=false)
 {
-  global $db,$userid,$userip,$tmpdir,$secureLogin,$chkMe,$charset;
-  global $u_b1,$u_b2,$designpath,$maxwidth,$language,$cp_color,$copyright;
-  
-// user gebannt? Logge aus!
-    if($chkMe == 'banned') header("Location: ../user/?action=logout");
-//  JS-Dateine einbinden
-    $lng = ($language=='deutsch')?'de':'en';
-    $edr = ($wysiwyg=='_word')?'advanced':'normal';
-    $lcolor = ($cp_color==1)?'lcolor=true;':'';
+	  global $db,$userid,$userip,$tmpdir,$secureLogin,$chkMe,$charset;
+	  global $u_b1,$u_b2,$designpath,$maxwidth,$language,$cp_color,$copyright;
+	  
+	// user gebannt? Logge aus!
+	    if($chkMe == 'banned') header("Location: ../user/?action=logout");
+	//  JS-Dateine einbinden
+	    $lng = ($language=='deutsch')?'de':'en';
+	    $edr = ($wysiwyg=='_word')?'advanced':'normal';
+	    $lcolor = ($cp_color==1)?'lcolor=true;':'';
+		
+	    $java_vars = '<script language="javascript" type="text/javascript">
+	<!--
+	 var maxW = '.$maxwidth.',lng = \''.$lng.'\',dzcp_editor = \''.$edr.'\';'.$lcolor.'
+	//-->
+	</script>';
 	
-    $java_vars = '<script language="javascript" type="text/javascript">
-<!--
- var maxW = '.$maxwidth.',lng = \''.$lng.'\',dzcp_editor = \''.$edr.'\';'.$lcolor.'
-//-->
-</script>';
-
-if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USER_AGENT'],'webOS')) {
-  $java_vars .= '<script language="javascript" type="text/javascript" src="'.$designpath.'/_js/wysiwyg'.$wysiwyg.'.js"></script>';
-}
-
-    if(settings("wmodus") && $chkMe != 4)
-    {
-      if($secureLogin == 1)
-        $secure = show("menu/secure", array("help" => _login_secure_help,
-                                            "security" => _register_confirm));
-
-      $login = show("errors/wmodus_login", array("what" => _login_login,
-                                                 "secure" => $secure,
-                                                 "signup" => _login_signup,
-                                                 "permanent" => _login_permanent,
-                                                 "lostpwd" => _login_lostpwd));
-
-      echo show("errors/wmodus", array("wmodus" => _wartungsmodus,
-                                       "head" => _wartungsmodus_head,
-                                       "tmpdir" => $tmpdir,
-                                       "java_vars" => $java_vars,
-                                       "dir" => $designpath,
-                                       "title" => re(strip_tags($title)),
-                                       "login" => $login));
-   } else {
-    updateCounter();
-    update_maxonline();
-
-//check permissions
-    if($chkMe == "unlogged") include_once(basePath.'/inc/menu-functions/login.php');
-    else 
-	{
-		$check_msg = check_msg();
-		set_lastvisit();
-		$login = "";
-		db("UPDATE ".$db['users']." SET `time` = '".((int)time())."', `whereami` = '".up($where)."' WHERE id = '".intval($userid)."'");
-    }
-
-//init templateswitch
-	$tmpldir=""; $tmps = get_files('../inc/_templates_/',true,false);
-    for($i=0; $i<count($tmps); $i++)
-    {
-		$selt = ($tmpdir == $tmps[$i] ? 'selected="selected"' : '');
-		$tmpldir .= show(_select_field, array("value" => "../user/?action=switch&amp;set=".$tmps[$i],  "what" => $tmps[$i],  "sel" => $selt));
-    }
+	if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USER_AGENT'],'webOS')) 
+	  $java_vars .= '<script language="javascript" type="text/javascript" src="'.$designpath.'/_js/wysiwyg'.$wysiwyg.'.js"></script>';
 	
-//misc vars
-    $template_switch = show("menu/tmp_switch", array("templates" => $tmpldir));
-    $clanname = re(settings("clanname"));
-    $time = show(_generated_time, array("time" => $time));
-    $headtitle = show(_index_headtitle, array("clanname" => $clanname));
-    $rss = $clanname;
-    $dir = $designpath;
-    $title = re(strip_tags($title));
-
-    $index = empty($index) ? '' : (empty($check_msg) ? '' : $check_msg).'<table class="mainContent" cellspacing="1" style="margin-top:0">'.$index.'</table>';
-
-//-> Sort & filter placeholders
-//default placeholders
-    $arr = array("idir" => '../inc/images/admin', "dir" => $designpath);
-//check if placeholders are given
-    $pholder = file_get_contents($designpath."/index.html");
-//filter placeholders
-
-    $blArr = array("[title]","[copyright]","[java_vars]","[login]", "[template_switch]","[headtitle]","[index]", "[time]","[rss]","[dir]","[charset]");
-    for($i=0;$i<=count($blArr)-1;$i++)
-    {
-      if(preg_match("#".$blArr[$i]."#",$pholder))
-        $pholdervars .= $blArr[$i];
-    }
-    for($i=0;$i<=count($blArr)-1;$i++)
-      $pholder = str_replace($blArr[$i],"",$pholder);
-
-    $pholder = pholderreplace($pholder);
-    $pholdervars = pholderreplace($pholdervars);
-//put placeholders in array
-    $pholder = explode("^",$pholder);
-    for($i=0;$i<=count($pholder)-1;$i++) 
-	{
-		if(strstr($pholder[$i], 'nav_')) 
-			$arr[$pholder[$i]] = navi($pholder[$i]);
-		else 
+	    if(settings("wmodus") && $chkMe != 4)
+	    {
+	      if($secureLogin == 1)
+	        $secure = show("menu/secure", array("help" => _login_secure_help,
+	                                            "security" => _register_confirm));
+	
+	      $login = show("errors/wmodus_login", array("what" => _login_login,
+	                                                 "secure" => $secure,
+	                                                 "signup" => _login_signup,
+	                                                 "permanent" => _login_permanent,
+	                                                 "lostpwd" => _login_lostpwd));
+	
+	      echo show("errors/wmodus", array("wmodus" => _wartungsmodus,
+	                                       "head" => _wartungsmodus_head,
+	                                       "tmpdir" => $tmpdir,
+	                                       "java_vars" => $java_vars,
+	                                       "dir" => $designpath,
+	                                       "title" => re(strip_tags($title)),
+	                                       "login" => $login));
+	   } 
+	   else 
+	   {
+	    updateCounter();
+	    update_maxonline();
+	
+	//check permissions
+	    if($chkMe == "unlogged") 
+	    	include_once(basePath.'/inc/menu-functions/login.php');
+	    else 
 		{
-			if(@file_exists(basePath.'/inc/menu-functions/'.$pholder[$i].'.php')) 
-				include_once(basePath.'/inc/menu-functions/'.$pholder[$i].'.php');
-			
-			if(function_exists($pholder[$i]))
-				$arr[$pholder[$i]] = $pholder[$i]();
-		}
-	}
+			$check_msg = check_msg();
+			set_lastvisit();
+			$login = "";
+			db("UPDATE ".$db['users']." SET `time` = '".((int)time())."', `whereami` = '".up($where)."' WHERE id = '".intval($userid)."'");
+	    }
 	
-    $pholdervars = explode("^",$pholdervars);
-    for($i=0;$i<=count($pholdervars)-1;$i++) 
-	{ $arr[$pholdervars[$i]] = $$pholdervars[$i]; }
-
-	//index output
-    	echo show((($index_templ != false ? file_exists(basePath."/inc/_templates_/".$tmpdir."/".$index_templ.".html") ? false); ? $index_templ : 'index'), $arr);
-  }
+	//init templateswitch
+		$tmpldir=""; $tmps = get_files('../inc/_templates_/',true,false);
+	    for($i=0; $i<count($tmps); $i++)
+	    {
+			$selt = ($tmpdir == $tmps[$i] ? 'selected="selected"' : '');
+			$tmpldir .= show(_select_field, array("value" => "../user/?action=switch&amp;set=".$tmps[$i],  "what" => $tmps[$i],  "sel" => $selt));
+	    }
+		
+	//misc vars
+	    $template_switch = show("menu/tmp_switch", array("templates" => $tmpldir));
+	    $clanname = re(settings("clanname"));
+	    $time = show(_generated_time, array("time" => $time));
+	    $headtitle = show(_index_headtitle, array("clanname" => $clanname));
+	    $rss = $clanname;
+	    $dir = $designpath;
+	    $title = re(strip_tags($title));
+	
+	    $index = empty($index) ? '' : (empty($check_msg) ? '' : $check_msg).'<table class="mainContent" cellspacing="1" style="margin-top:0">'.$index.'</table>';
+	
+	//-> Sort & filter placeholders
+	//default placeholders
+	    $arr = array("idir" => '../inc/images/admin', "dir" => $designpath);
+	//check if placeholders are given
+	    $pholder = file_get_contents($designpath."/index.html");
+	//filter placeholders
+	
+	    $blArr = array("[title]","[copyright]","[java_vars]","[login]", "[template_switch]","[headtitle]","[index]", "[time]","[rss]","[dir]","[charset]");
+	    for($i=0;$i<=count($blArr)-1;$i++)
+	    {
+	      if(preg_match("#".$blArr[$i]."#",$pholder))
+	        $pholdervars .= $blArr[$i];
+	    }
+	    
+	    for($i=0;$i<=count($blArr)-1;$i++)
+	      $pholder = str_replace($blArr[$i],"",$pholder);
+	
+	    $pholder = pholderreplace($pholder);
+	    $pholdervars = pholderreplace($pholdervars);
+	    
+	//put placeholders in array
+	    $pholder = explode("^",$pholder);
+	    for($i=0;$i<=count($pholder)-1;$i++) 
+		{
+			if(strstr($pholder[$i], 'nav_')) 
+				$arr[$pholder[$i]] = navi($pholder[$i]);
+			else 
+			{
+				if(@file_exists(basePath.'/inc/menu-functions/'.$pholder[$i].'.php')) 
+					include_once(basePath.'/inc/menu-functions/'.$pholder[$i].'.php');
+				
+				if(function_exists($pholder[$i]))
+					$arr[$pholder[$i]] = call_user_func($pholder[$i]);
+			}
+		}
+		
+	    $pholdervars = explode("^",$pholdervars);
+	    for($i=0;$i<=count($pholdervars)-1;$i++) 
+		{ eval("if(isset(\$".$pholdervars[$i].")) \$arr[".$pholdervars[$i]."] = \$".$pholdervars[$i].";"); }
+	
+		//index output
+	    echo show((($index_templ != false ? file_exists(basePath."/inc/_templates_/".$tmpdir."/".$index_templ.".html") : false) ? $index_templ : 'index') , $arr);
+	  }
 }
 ?>
