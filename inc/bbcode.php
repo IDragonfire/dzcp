@@ -1,5 +1,12 @@
 <?php
-error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+## Error Reporting ##
+if(is_debug)
+{
+	ini_set('display_errors', 1);
+	error_reporting(E_ALL);
+}
+else
+	error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
 
 ## INCLUDES/REQUIRES ##
 require_once(basePath.'/inc/secure.php');
@@ -114,13 +121,13 @@ $lforumtopic = $c['l_forumtopic'];
 $lforumsubtopic = $c['l_forumsubtopic'];
 $maxawards = $c['m_awards'];
 $sdir = $settings['tmpdir'];
-$userip = VisitorIP();
+$userip = visitorIp();
 
 if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pwd']) && empty($_SESSION['id']))
 {
   $_SESSION['id']   = intval($_COOKIE[$prev.'id']);
   $_SESSION['pwd']  = $_COOKIE[$prev.'pwd'];
-  $_SESSION['ip']   = VisitorIP();
+  $_SESSION['ip']   = visitorIp();
 
   if(data(intval($_COOKIE[$prev.'id']), "ip") != $_SESSION['ip'])
   {
@@ -1873,11 +1880,6 @@ function nonum($i)
 //-> maskiert Zeilenumbrueche fuer <textarea>
 function txtArea($txt)
 {
-  global $ENCODE;
-/*
-    if($ENCODE)
-      $txt = str_replace("\n","<back>",$txt);
-*/
   return $txt;
 }
 //-> Konvertiert Platzhalter in die jeweiligen bersetzungen

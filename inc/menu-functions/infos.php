@@ -45,7 +45,7 @@ function infos()
                   doc.write(screen.width + ' x ' + screen.height)
               </script>";
 
-      return show("menu/pers.infos", array("ip" => ($userip=VisitorIP()),
+      return show("menu/pers.infos", array("ip" => ($userip=visitorIp()),
                                              "info_ip" => _info_ip,
                                              "host" => gethostbyaddr($userip),
                                              "info_browser" => _info_browser,

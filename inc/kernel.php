@@ -329,7 +329,7 @@ function sum($db, $where = "", $what)
  *
  * @return String
  */
-function VisitorIP()
+function visitorIp()
 {
 	$TheIp=$_SERVER['REMOTE_ADDR'];
 	if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
@@ -342,5 +342,34 @@ function VisitorIP()
 	}
 
 	return trim($TheIp);
+}
+
+/**
+* Sucht nach Platzhaltern und ersetzt diese.
+*
+* @return string
+*/
+function show($tpl="", $array=array())
+{
+	global $tmpdir;
+	
+	if(!empty($tpl) && $tpl != null)
+	{
+	    $template = basePath."/inc/_templates_/".$tmpdir."/".$tpl;
+	    $array['dir'] = '../inc/_templates_/'.$tmpdir;
+	  
+	    if(file_exists($template.".html"))
+			$tpl = file_get_contents($template.".html");
+	    
+	    if(count($array) >= 1)
+	    {
+		    foreach($array as $value => $code)
+		    {
+				$tpl = str_replace('['.$value.']', $code, $tpl);
+		    }
+	    }
+	}
+	
+	return $tpl;
 }
 ?>
