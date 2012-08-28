@@ -329,7 +329,7 @@ function sum($db, $where = "", $what)
  *
  * @return String
  */
-function VisitorIP()
+function visitorIp()
 {
 	$TheIp=$_SERVER['REMOTE_ADDR'];
 	if(isset($_SERVER['HTTP_X_FORWARDED_FOR']))

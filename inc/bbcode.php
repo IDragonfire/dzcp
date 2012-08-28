@@ -121,13 +121,13 @@ $lforumtopic = $c['l_forumtopic'];
 $lforumsubtopic = $c['l_forumsubtopic'];
 $maxawards = $c['m_awards'];
 $sdir = $settings['tmpdir'];
-$userip = VisitorIP();
+$userip = visitorIp();
 
 if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pwd']) && empty($_SESSION['id']))
 {
   $_SESSION['id']   = intval($_COOKIE[$prev.'id']);
   $_SESSION['pwd']  = $_COOKIE[$prev.'pwd'];
-  $_SESSION['ip']   = VisitorIP();
+  $_SESSION['ip']   = visitorIp();
 
   if(data(intval($_COOKIE[$prev.'id']), "ip") != $_SESSION['ip'])
   {
