@@ -1240,7 +1240,7 @@ function check_url($url)
 function nav($entrys, $perpage, $urlpart, $icon=true)
 {
     global $page, $_SERVER;
-
+	  if($perpage == 0)  return "&#xAB; <span class=\"fontSites\">0</span> &#xBB;";
       if($icon == true) $icon = '<img src="../inc/images/multipage.gif" alt="" class="icon" /> '._seiten;
 
       if($entrys <= $perpage) return $icon.' &#xAB; <span class="fontSites">1</span> &#xBB;';

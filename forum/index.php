@@ -2112,7 +2112,7 @@ case 'post';
 						else $fautor = autor('', '', $_POST['nick'], $_POST['email']);
 							
 							$text = show(_forum_spam_text, array("autor" => $fautor,
-																									 "ltext" => $getdp['text'],
+																									 "ltext" => addslashes($getdp['text']),
 																									 "ntext" => up($_POST['eintrag'],1)));
 			
 													$qry = db("UPDATE ".$db['f_threads']."
@@ -2129,7 +2129,7 @@ case 'post';
 						else $fautor = autor('', '', $_POST['nick'], $_POST['email']);
 				
 							$text = show(_forum_spam_text, array("autor" => $fautor,
-																									 "ltext" => $gettdp['t_text'],
+																									 "ltext" => addslashes($gettdp['t_text']),
 																									 "ntext" => up($_POST['eintrag'],1)));
 			
 							$qry = db("UPDATE ".$db['f_threads']."

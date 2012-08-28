@@ -1036,6 +1036,7 @@ class TSStatus
 	
 	var $error;
 	var $decodeUTF8;
+	var $_showCountry;
 	var $_showIcons;
 	var $_showOnly;
 	
@@ -1060,6 +1061,7 @@ class TSStatus
 		$this->error = '';
    		$this->serverError = '';
 		$this->decodeUTF8 = false;
+		$this->_showCountry = true; //true = Country show || false = Country dont show
 		$this->_showIcons = $customicon;
 		$this->_showOnly = $showchannel;
 	}
@@ -1193,10 +1195,12 @@ class TSStatus
 			}
 		}
 		$out .= $this->icon($user['client_icon_id']);
-		if(!file_exists($country = "../inc/images/flaggen/".strtolower($user['client_country']).".gif")) {
-			$country = "../inc/images/flaggen/nocountry.gif";
+		if($this->_showCountry)  {
+			if(!file_exists($country = "../inc/images/flaggen/".strtolower($user['client_country']).".gif")) {
+				$country = "../inc/images/flaggen/nocountry.gif";
+			}
+			$out .= "<img src=\"".$country."\" alt=\"\" class=\"tsicon\" />";
 		}
-		$out .= "<img src=\"".$country."\" alt=\"\" class=\"tsicon\" />";
 		return $out;
 	}
 	function icon($id,$title="") {
@@ -1397,10 +1401,15 @@ function secure_dzcp($replace) {
     $replace=str_replace("\"", "&quot;", $replace);
     /* Only do the slow convert if there are 8-bit characters */
     /* avoid using 0xA0 (\240) in ereg ranges. RH73 does not like that */
-	
-	if( is_php_5() ? (! preg_match("[\200-\237]", $replace) and ! preg_match("[\241-\377]", $replace)) : (! ereg("[\200-\237]", $replace) and ! ereg("[\241-\377]", $replace)) );
-		return $replace;
-		
+	if(is_php_5()) {
+		if(!ereg("[\200-\237]", $replace) and !ereg("[\241-\377]", $replace)) {
+			return $replace;
+		}
+	}else {
+		if(!preg_match("[\200-\237]", $replace) and !preg_match("[\241-\377]", $replace)) {
+			return $replace;
+		}
+	}
     // decode three byte unicode characters
     $replace = preg_replace("/([\340-\357])([\200-\277])([\200-\277])/e","'&#'.((ord('\\1')-224)*4096 + (ord('\\2')-128)*64 + (ord('\\3')-128)).';'",$replace);
     // decode two byte unicode characters
