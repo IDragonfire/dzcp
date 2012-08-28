@@ -1,5 +1,12 @@
 <?php
-error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+## Error Reporting ##
+if(is_debug)
+{
+	ini_set('display_errors', 1);
+	error_reporting(E_ALL);
+}
+else
+	error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
 
 ## INCLUDES/REQUIRES ##
 require_once(basePath.'/inc/secure.php');
@@ -1873,11 +1880,6 @@ function nonum($i)
 //-> maskiert Zeilenumbrueche fuer <textarea>
 function txtArea($txt)
 {
-  global $ENCODE;
-/*
-    if($ENCODE)
-      $txt = str_replace("\n","<back>",$txt);
-*/
   return $txt;
 }
 //-> Konvertiert Platzhalter in die jeweiligen bersetzungen

@@ -6,6 +6,11 @@ require_once(basePath."/inc/mysql.php");
 if(!isset($installation))
 $installation = false;
 
+//DZCP Settings
+define('is_debug', false);
+define('buffer_gzip_compress', true);
+define('buffer_gzip_compress_level', 4);
+
 //-> MySQL-Datenbankangaben
 $prefix = $sql_prefix;                      
 $db = array("host" =>           $sql_host,
