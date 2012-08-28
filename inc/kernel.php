@@ -349,19 +349,26 @@ function VisitorIP()
 *
 * @return string
 */
-function show($tpl, $array)
+function show($tpl="", $array=array())
 {
 	global $tmpdir;
-    $template = "../inc/_templates_/".$tmpdir."/".$tpl;
-  
-    if($fp = @fopen($template.".".html, "r"))
-      $tpl = @fread($fp, filesize($template.".".html));
-    
-    $array['dir'] = '../inc/_templates_/'.$tmpdir; //[dir]
-    foreach($array as $value => $code)
-    {
-      $tpl = str_replace('['.$value.']', $code, $tpl);
-    }
+	
+	if(!empty($tpl) && $tpl != null)
+	{
+	    $template = "../inc/_templates_/".$tmpdir."/".$tpl;
+	    $array['dir'] = '../inc/_templates_/'.$tmpdir;
+	  
+	    if(file_exists($template.".html"))
+			$tpl = file_get_contents($template.".html");
+	    
+	    if(count($array) >= 1)
+	    {
+		    foreach($array as $value => $code)
+		    {
+				$tpl = str_replace('['.$value.']', $code, $tpl);
+		    }
+	    }
+	}
 	
 	return $tpl;
 }
