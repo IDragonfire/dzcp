@@ -1036,6 +1036,7 @@ class TSStatus
 	
 	var $error;
 	var $decodeUTF8;
+	var $_showCountry;
 	var $_showIcons;
 	var $_showOnly;
 	
@@ -1060,6 +1061,7 @@ class TSStatus
 		$this->error = '';
    		$this->serverError = '';
 		$this->decodeUTF8 = false;
+		$this->_showCountry = false; //true = Country show || false = Country dont show
 		$this->_showIcons = $customicon;
 		$this->_showOnly = $showchannel;
 	}
@@ -1193,10 +1195,12 @@ class TSStatus
 			}
 		}
 		$out .= $this->icon($user['client_icon_id']);
-		if(!file_exists($country = "../inc/images/flaggen/".strtolower($user['client_country']).".gif")) {
-			$country = "../inc/images/flaggen/nocountry.gif";
+		if($this->_showCountry)  {
+			if(!file_exists($country = "../inc/images/flaggen/".strtolower($user['client_country']).".gif")) {
+				$country = "../inc/images/flaggen/nocountry.gif";
+			}
+			$out .= "<img src=\"".$country."\" alt=\"\" class=\"tsicon\" />";
 		}
-		$out .= "<img src=\"".$country."\" alt=\"\" class=\"tsicon\" />";
 		return $out;
 	}
 	function icon($id,$title="") {
