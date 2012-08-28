@@ -6,22 +6,6 @@ require_once(basePath."/inc/mysql.php");
 if(!isset($installation))
 $installation = false;
 
-function show($tpl, $array)
-{
-  global $tmpdir;
-    $template = "../inc/_templates_/".$tmpdir."/".$tpl;
-  
-    if($fp = @fopen($template.".".html, "r"))
-      $tpl = @fread($fp, filesize($template.".".html));
-    
-    $array['dir'] = '../inc/_templates_/'.$tmpdir;
-    foreach($array as $value => $code)
-    {
-      $tpl = str_replace('['.$value.']', $code, $tpl);
-    }
-  return $tpl;
-}
-
 //-> MySQL-Datenbankangaben
 $prefix = $sql_prefix;                      
 $db = array("host" =>           $sql_host,
