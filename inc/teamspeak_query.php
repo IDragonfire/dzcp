@@ -1061,7 +1061,7 @@ class TSStatus
 		$this->error = '';
    		$this->serverError = '';
 		$this->decodeUTF8 = false;
-		$this->_showCountry = false; //true = Country show || false = Country dont show
+		$this->_showCountry = true; //true = Country show || false = Country dont show
 		$this->_showIcons = $customicon;
 		$this->_showOnly = $showchannel;
 	}
