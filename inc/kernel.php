@@ -355,7 +355,7 @@ function show($tpl="", $array=array())
 	
 	if(!empty($tpl) && $tpl != null)
 	{
-	    $template = "../inc/_templates_/".$tmpdir."/".$tpl;
+	    $template = basePath."/inc/_templates_/".$tmpdir."/".$tpl;
 	    $array['dir'] = '../inc/_templates_/'.$tmpdir;
 	  
 	    if(file_exists($template.".html"))
