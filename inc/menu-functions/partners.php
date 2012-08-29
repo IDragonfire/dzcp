@@ -4,6 +4,7 @@ function partners()
 {
   global $db;
     $qry = db("SELECT * FROM ".$db['partners']." ORDER BY `textlink` ASC, `id` DESC");
+	$partners = "";
     while($get = _fetch($qry))
     {
       if($get['textlink'] == 1)

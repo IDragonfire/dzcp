@@ -5,7 +5,7 @@ function shout($ajax = 0)
   global $db,$maxshout,$lshouttext,$lshoutnick,$shout_max_zeichen,$userid,$chkMe;
     $qry = db("SELECT * FROM ".$db['shout']."
                ORDER BY id DESC LIMIT ".$maxshout."");
-    $i = 1;
+    $i = 1; $color = 1; $show = "";
     while ($get = _fetch($qry))
     {
       $class = ($color % 2) ? "navShoutContentFirst" : "navShoutContentSecond"; $color++;
@@ -30,22 +30,31 @@ function shout($ajax = 0)
       $i++;
     }
 
+	$sec = ''; $only4reg = ''; $dis = ''; $dis1 = '';
     if(settings('reg_shout') == 1 && $chkMe == 'unlogged')
     {
-      $dis = ' style="text-align:center;cursor:wait" disabled="disabled"';
-      $dis1 = ' style="cursor:wait;color:#888" disabled="disabled"';
-      $only4reg = _shout_must_reg;
-    } else {
-
-    if($chkMe == "unlogged")
-    {
-      $form = show("menu/shout_form", array("dis" => $dis));
-      $sec = show("menu/shout_antispam", array("help" => _login_secure_help,
-                                               "dis" => $dis
-                                               ));
-    } else $form = autor($userid, "navShout",'','',$lshoutnick);
+		$dis = ' style="text-align:center;cursor:wait" disabled="disabled"';
+		$dis1 = ' style="cursor:wait;color:#888" disabled="disabled"';
+		$only4reg = _shout_must_reg;
+    } 
+	else 
+	{
+		if($chkMe == "unlogged")
+		{
+		  $form = show("menu/shout_form", array("dis" => $dis));
+		  $sec = show("menu/shout_antispam", array("help" => _login_secure_help, "dis" => $dis));
+		} 
+		else 
+			$form = autor($userid, "navShout",'','',$lshoutnick);
     }
-
+	
+	// 0 Zeichen, disable
+	if(!$shout_max_zeichen)
+	{
+		$dis = ' style="text-align:center;cursor:wait" disabled="disabled"';
+		$dis1 = ' style="cursor:wait;color:#888" disabled="disabled"';
+	}
+	
     $add = show("menu/shout_add", array("form" => $form,
                                         "t_zeichen" => _zeichen,
                                         "noch" => _noch,

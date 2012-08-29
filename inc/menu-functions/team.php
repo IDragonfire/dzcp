@@ -23,9 +23,11 @@ function team($tID = '')
                 ORDER BY s4.pid");
     $i=1;
     $cnt=0;
+	$member = "";
     while($getm = _fetch($qrym))
     {
-      unset($tr1, $tr2);
+	  $tr1 = "";
+	  $tr2 = "";
 
       if($i == 0 || $i == 1) $tr1 = "<tr>";
       if($i == $teamRow)
@@ -35,9 +37,7 @@ function team($tID = '')
       }
 
       $status = ($getm['status'] == 1 || $getm['level'] == 1) ? "aktiv" : "inaktiv";
-
       $info = 'onmouseover="DZCP.showInfo(\''.fabo_autor($getm['id']).'\', \''._posi.';'._status.';'._age.'\', \''.getrank($getm['id'],$get['id']).';'.$status.';'.getAge($getm['bday']).'\', \''.hoveruserpic($getm['id']).'\')" onmouseout="DZCP.hideInfo()"';
-
 
       $member .= show("menu/team_show", array("pic" => userpic($getm['id'],40,50),
                                               "tr1" => $tr1,
@@ -52,11 +52,12 @@ function team($tID = '')
 
     if(is_float($cnt/$teamRow))
     {
-      for($e=$i;$e<=$teamRow;$e++)
-      {
-        $end .= '<td></td>';
-      }
-      $end = $end."</tr>";
+		$end = "";
+		for($e=$i;$e<=$teamRow;$e++)
+		{
+			$end .= '<td></td>';
+		}
+		$end = $end."</tr>";
     }
 
 // Next / last ID
