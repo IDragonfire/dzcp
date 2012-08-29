@@ -139,7 +139,7 @@ if(_adminMenu != 'true') exit;
 
       $protocol = "createuser(".$_SESSION['id']."_".$insert_id.")";
       $upd = db("INSERT INTO ".$db['ipcheck']."
-                 SET `ip`   = '".$userip."',
+                 SET `ip`   = '".mysql_real_escape_string($userip)."',
                      `what` = '".$protocol."',
                      `time` = '".((int)time())."'");
                        

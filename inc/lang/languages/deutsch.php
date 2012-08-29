@@ -2,6 +2,34 @@
 $charset = 'iso-8859-1';
 header("Content-type: text/html; charset=".$charset);
 
+## ADDED FOR 1.6 Final
+define('_config_version', 'Mod/AddOns verwalten');
+define('_v_head', 'Mod/AddOn Versionen verwalten');
+define('_v_name', 'Mod/AddOn Name');
+define('_v_own', 'eigene Version');
+define('_v_server', 'aktuelle Version');
+define('_config_v_add', 'Mod/AddOn hinzuf&uuml;gen');
+define('_v_server_hover', 'Versionspr&uuml;fung auf');
+define('_v_unknown', 'unbekannt');
+define('_v_fsockopen_not_allowed', 'fsockopen nicht erlaubt');
+define('_v_no_data', 'Daten nicht abgerufen');
+define('_v_get_data', 'Daten abrufen');
+define('_v_server_id', 'Mod/AddOn ID auf Server');
+define('_v_download_link', 'Mod/AddOn Download Link');
+define('_v_added', 'Mod/AddOn hinzugef&uuml;gt');
+define('_v_edited', 'Mod/AddOn erfolgreich bearbeitet');
+define('_confirm_del_version', 'Es wird nur der Eintrag aus dieser Liste gel&ouml;scht, wirklich l&ouml;schen?');
+define('_v_no_server', 'Kein Kontrollserver');
+
+## Navigation / Server ##
+define('_navi_gsv_players_online', 'Online');
+define('_navi_gsv_on_the_game', 'Spieler');
+define('_navi_gsv_view_players', 'Spieler anzeigen');
+define('_navi_gsv_game', 'Spiel');
+define('_navi_gsv_no_name_available', 'Server name nicht vorhanden');        
+define('_navi_gsv_no_players_available', 'Keine Spieler online');
+define('_navi_gsv_password', 'Passwort');
+
 ## ADDED / REDEFINED FOR 1.5 Final
 define('_id_dont_exist', 'Die von dir angegebene ID existiert nicht!');
 define('_perm_editts', 'Teamspeak Server verwalten');
@@ -38,7 +66,7 @@ define('_menukat_deleted', 'Die Menu Kategorie wurde erfolgreich gel&ouml;scht!'
 define('_menu_visible', 'sichtbar f&uuml;r Status');
 define('_menu_kat_info', 'Die CSS-Klassen f&uuml;r die Links werden automatisch vom Template Platzhalter abgeleitet.<br />z.B. f&uuml;r den Platzhalter <i>[nav_main]</i> lautet die CSS-Klasse <i>a.navMain</i>');
 define('_admin_sqauds_roster', 'Team-Roster');
-define('_admin_squads_nav_info', 'Hiermit wird ein Direktlink in die Navigation gesetzt, welcher zur Vollansicht des Teams führt.');
+define('_admin_squads_nav_info', 'Hiermit wird ein Direktlink in die Navigation gesetzt, welcher zur Vollansicht des Teams f&uuml;hrt.');
 define('_admin_squads_teams', 'Team-Show');
 define('_admin_squads_no_navi', 'Nicht einf&uuml;gen');
 define('_seconds', 'Sekunden');
@@ -55,7 +83,7 @@ define('_config_fotum_vote', 'Forum-Vote');
 define('_config_fotum_vote_info', '<center>Zeigt die Forum-Votes auch unter Umfragen an.</center>');
 ## ADDED / REDEFINED FOR 1.5
 define('_side_membermap', 'Mitgliederkarte');
-define('_installdir', "<tr><td colspan=\"15\" class=\"contentMainFirst\"><br /><center><b>Achtung! Sicherheitsrisiko!!</b><br><br>Bitte l&ouml;sche zuerst den Ordner <b>'/_installer'</b> von deinem Webspace. Erst dann steht das Adminmenü zur Verfügung!</center><br /></td></tr>");
+define('_installdir', "<tr><td colspan=\"15\" class=\"contentMainFirst\"><br /><center><b>Achtung! Sicherheitsrisiko!!</b><br><br>Bitte l&ouml;sche zuerst den Ordner <b>'/_installer'</b> von deinem Webspace. Erst dann steht das Adminmen&uuml; zur Verf&uuml;gung!</center><br /></td></tr>");
 define('_no_ts', 'kein Teamspeak eingetragen');
 define('_search_sites', 'Unterseiten');
 define('_search_results', 'Suchergebnisse');
@@ -119,7 +147,7 @@ define('_sponsors_admin_head', 'Sponsoren');
 define('_sponsors_admin_add', 'Sponsor hinzuf&uuml;gen');
 define('_sponsor_added', 'Sponsor erfolgreich hinzugef&uuml;gt!');
 define('_sponsor_edited', 'Sponsor erfolgreich editiert!');
-define('_sponsor_deleted', 'Sponsor erfolgreich gelöscht!');
+define('_sponsor_deleted', 'Sponsor erfolgreich gel&ouml;scht!');
 define('_sponsor_name', 'Sponsor');
 define('_sponsors_admin_name', 'Name');
 define('_sponsors_admin_site', 'Sponsorenseite');
@@ -146,7 +174,7 @@ define('_away_new', 'Melden');
 define('_away_empty_titel', 'Bitte einen Grund angeben');
 define('_away_empty_reason', 'Bitte ein Kommentar angeben');
 define('_away_error_1', 'Das Enddatum darf nicht gleich sein wie das Startdatum!');
-define('_away_error_2', 'Das Startdatum ist größer als das Enddatum!');
+define('_away_error_2', 'Das Startdatum ist gr&ouml;ßer als das Enddatum!');
 define('_away_to', 'bis');
 define('_away_to2', 'zum');
 define('_away_head', 'Abwesenheitsliste');
@@ -179,9 +207,9 @@ define('_config_c_events', 'Men&uuml;: Events');
 define('_news_send', 'News einsenden');
 define('_news_send_source', 'Quelle');
 define('_news_send_titel', 'Newsvorschlag von [nick]');
-define('_news_send_note', 'Mitteilung o. Hinweis für die Redaktion');
+define('_news_send_note', 'Mitteilung o. Hinweis f&uuml;r die Redaktion');
 define('_news_send_done', 'Vielen Dank! Die News wurde erfolgreich an die Redaktion weitergeleitet');
-define('_news_send_description', 'Liebe Besucher,<br /><br />mit dem folgenden Formular ist es möglich im Netz gefundene, oder selbst erstellte News an uns zu senden. Der von Dir ausgefüllte Formularinhalt wird dann mittels eines Verteilers an unsere Redakteure weitergeleitet. Bitte bedenke, dass wir jede Einsendung aufbereiten und evtl. genauere Details recherchieren müssen, um die gewohnte Qualität unserer News beizubehalten. Dies fällt uns natürlich leichter, wenn Deine Einsendung bereits viele Einzelheiten aufweist und selbst formulierte Texte beinhaltet. Meldungen die lediglich 1:1 von anderen Seiten kopiert wurden, erschweren unsere Arbeit und verhindern nicht selten eine Veröffentlichung der Einsendung auf unserer Hauptseite.<br /><br />Natürlich sind wir über jede von Dir eingesendete News dankbar und freuen uns über das Engagement unserer Besucher.<br /><br />Vielen Dank im Voraus.<br /><br />Dein Redaktions-Team');
+define('_news_send_description', 'Liebe Besucher,<br /><br />mit dem folgenden Formular ist es m&ouml;glich im Netz gefundene, oder selbst erstellte News an uns zu senden. Der von Dir ausgef&uuml;llte Formularinhalt wird dann mittels eines Verteilers an unsere Redakteure weitergeleitet. Bitte bedenke, dass wir jede Einsendung aufbereiten und evtl. genauere Details recherchieren m&uuml;ssen, um die gewohnte Qualit&Auml;t unserer News beizubehalten. Dies f&Auml;llt uns nat&uuml;rlich leichter, wenn Deine Einsendung bereits viele Einzelheiten aufweist und selbst formulierte Texte beinhaltet. Meldungen die lediglich 1:1 von anderen Seiten kopiert wurden, erschweren unsere Arbeit und verhindern nicht selten eine Ver&ouml;ffentlichung der Einsendung auf unserer Hauptseite.<br /><br />Nat&uuml;rlich sind wir &uuml;ber jede von Dir eingesendete News dankbar und freuen uns &uuml;ber das Engagement unserer Besucher.<br /><br />Vielen Dank im Voraus.<br /><br />Dein Redaktions-Team');
 define('_contact_text_sendnews', '
 [nick] hat uns ein Newsvorschlag eingesendet!<p>&nbsp;</p><p>&nbsp;</p>
 <span class="fontBold">Nick:</span> [nick]<p>&nbsp;</p>
@@ -193,7 +221,7 @@ define('_contact_text_sendnews', '
 
 define('_msg_sendnews_user', '
 <tr>
-  <td align="center" class="contentMainTop"><span class="fontBold">Damit die anderen Redakteure wissen, dass du diese News veröffentlichen wirst,<br />klicke bitte auf den nachfolgenden Button. Danke</span></td>
+  <td align="center" class="contentMainTop"><span class="fontBold">Damit die anderen Redakteure wissen, dass du diese News ver&ouml;ffentlichen wirst,<br />klicke bitte auf den nachfolgenden Button. Danke</span></td>
 </tr>
 <tr>
   <td align="center" class="contentMainTop">
@@ -210,7 +238,7 @@ define('_msg_sendnews_done', '
 <tr>
   <td align="center" class="contentMainTop"><span class="fontRed">Diese News wird/wurde bereits von [user] bearbeitet!!!</span></td>
 </tr>');
-define('_send_news_done', 'Vielen Dank für das Best&auml;tigen und das einstellen des Newsvoschlags!');
+define('_send_news_done', 'Vielen Dank f&uuml;r das Best&auml;tigen und das einstellen des Newsvoschlags!');
 define('_msg_all_leader', "alle Leader & Co-Leader");
 define('_msg_leader', "Squad-Leader");
 define('_pos_nletter', 'Diese Position in Newsletter an Squadleader und Co-Leader mit einbeziehen');
@@ -227,7 +255,7 @@ define('_admin_fabo_tedit_subj', 'Betreff: ForenAbo Thread editiert');
 define('_admin_fabo_npost', 'ForenAbo Neuer Post Template');
 define('_admin_fabo_pedit', 'ForenAbo Post editiert Template');
 define('_admin_fabo_tedit', 'ForenAbo Thread editiert Template');
-define('_foum_fabo_checkbox', 'Diesen Thread abonnieren und per E-Mail über neue Posts benachrichtigt werden?');
+define('_foum_fabo_checkbox', 'Diesen Thread abonnieren und per E-Mail &uuml;ber neue Posts benachrichtigt werden?');
 define('_forum_fabo_do', 'E-Mail Benachrichtigung erfolgreich ge&auml;ndert!');
 define('_user_link_fabo', '[nick]');
 define('_forum_vote_del', 'Umfrage l&ouml;schen');
@@ -355,6 +383,8 @@ define('_glossar_erkl', 'Erkl&auml;rung');
 define('_admin_support_head', 'Support Informationen');
 define('_admin_support_info', 'Nachfolgende Informationen bitte bei einer Supportanfrage z.B.im Forum von <a href="http://www.dzcp.de" target="_blank">www.dzcp.de</a> mit angeben, um schneller zu einer L&ouml;sung des Problemes zu kommen!');
 define('_config_support', 'Supportinfos');
+define('_search_con_or', 'ODER-Verkn&uuml;pfung');
+define('_search_con_and', 'UND-Verkn&uuml;pfung');
 define('_search_head', 'Suchfunktion');
 define('_search_word', 'Suchen nach...');
 define('_search_forum_all', 'In allen Foren suchen');
@@ -408,7 +438,7 @@ define('_confirm_del_galpic', 'Soll dieses Bild wirklich geloescht werden');
 define('_confirm_del_gallery', 'Soll diese Galerie wirklich geloescht werden');
 define('_confirm_del_entry', 'Soll dieser Eintrag wirklich geloescht werden');
 define('_confirm_del_navi', 'Soll dieser Link wirklich geloescht werden');
-define('_confirm_del_profil', 'Soll dieses Profilfeld wirklich geloescht werden? \n Alle Usereingaben für dieses Feld gehen dabei verloren!');
+define('_confirm_del_profil', 'Soll dieses Profilfeld wirklich geloescht werden? \n Alle Usereingaben f&uuml;r dieses Feld gehen dabei verloren!');
 define('_confirm_del_smiley', 'Soll dieser Smiley wirklich geloescht werden');
 define('_confirm_del_kat', 'Soll diese Kategorie wirklich geloescht werden');
 define('_confirm_del_news', 'Soll diese News wirklich geloescht werden');
@@ -567,7 +597,7 @@ define('_editor_from', 'Von');
 define('intern', '<span class="fontWichtig">Intern</span>');
 define('_comments_head', 'Kommentare');
 define('_click_close', 'schlie&szlig;en');
-## Begrüßungen ##
+## Begr&uuml;ßungen ##
 define('_welcome_18', 'Guten Abend,');
 define('_welcome_13', 'Guten Tag,');
 define('_welcome_11', 'Mahlzeit,');
@@ -756,7 +786,7 @@ define('_country_list', '
 <option value="zm"> Zambia</option>
 <option value="cf"> Zentralafrikan. Republik</option>
 <option value="cy"> Zypern</option>');
-## Globale Userränge ##
+## Globale Userr&Auml;nge ##
 define('_status_banned', 'gesperrt');
 define('_status_unregged', 'unregistriert');
 define('_status_user', 'User');
@@ -832,6 +862,7 @@ define('_forum_lpostlink', 'Letzter Post');
 define('_forum_user_posts', '<span class="fontBold">Posts:</span> [posts]');
 define('_sig', '<br /><br /><hr />');
 define('_error_forum_closed', 'Dieser Thread ist geschlossen!');
+define('_forum_search_head', 'Forensuche');
 define('_forum_edit_post_head', 'Forenpost editieren');
 define('_forum_edit_thread_head', 'Thread editieren');
 define('_forum_editthread_successful', 'Der Thread wurde erfolgreich editiert!');
@@ -853,7 +884,7 @@ define('_forum_search_results', 'Suchergebnisse');
 define('_forum_online_head', 'Im Forum online:');
 define('_forum_nobody_is_online', 'Zur Zeit ist kein User im Forum online!');
 define('_forum_nobody_is_online2', 'Zur Zeit ist kein User außer dir im Forum online!');
-## Gästebuch ##
+## G&Auml;stebuch ##
 define('_gb_delete_successful', 'Der Eintrag wurde erfolgreich gel&ouml;scht!');
 define('_gb_head', 'G&auml;stebuch');
 define('_gb_add_head', 'Neuer G&auml;stebucheintrag');
@@ -2147,28 +2178,4 @@ define('_member_squad_wars', '<a href="../clanwars/?action=showall&amp;id=[id]">
 define('_member_squad_awards', '<a href="../awards/?action=showall&amp;id=[id]">Awards</a>');
 define('_user_list_ck', 'In der Clankasse auflisten?');
 define('_fightus_squad', 'gew&uuml;nschtes Team');
-## ADDED FOR 1.6 Final
-define('_config_version', 'Mod/AddOns verwalten');
-define('_v_head', 'Mod/AddOn Versionen verwalten');
-define('_v_name', 'Mod/AddOn Name');
-define('_v_own', 'eigene Version');
-define('_v_server', 'aktuelle Version');
-define('_config_v_add', 'Mod/AddOn hinzufügen');
-define('_v_server_hover', 'Versionsprüfung auf');
-define('_v_unknown', 'unbekannt');
-define('_v_fsockopen_not_allowed', 'fsockopen nicht erlaubt');
-define('_v_no_data', 'Daten nicht abgerufen');
-define('_v_get_data', 'Daten abrufen');
-define('_v_server_id', 'Mod/AddOn ID auf Server');
-define('_v_download_link', 'Mod/AddOn Download Link');
-define('_v_added', 'Mod/AddOn hinzugefügt');
-define('_v_edited', 'Mod/AddOn erfolgreich bearbeitet');
-define('_confirm_del_version', 'Es wird nur der Eintrag aus dieser Liste gelöscht, wirklich löschen?');
-define('_v_no_server', 'Kein Kontrollserver');
-
-define('_search_con_or', 'mind. ein Wort muss vorhanden sein');
-define('_search_con_and', 'absolute Übereinstimmung');
-define('_search_con_andb', 'alle Wörter müssen vorhanden sein');
-define('_search_website','restliche Internetseite');
-define('_search_for_area_forum','Forum-Suchbereich');
 ?>

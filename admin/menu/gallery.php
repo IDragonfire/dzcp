@@ -61,7 +61,7 @@ if(_adminMenu != 'true') exit;
       $qry = db("DELETE FROM ".$db['gallery']."
                  WHERE id = '".intval($_GET['id'])."'");
 
-      $files = get_files("../gallery/images/");
+      $files = get_files("../gallery/images/",false,true);
       for($i=0; $i<count($files); $i++)
       {
         if(preg_match("#".$_GET['id']."_(.*?).(gif|jpg|jpeg|png)#",strtolower($files[$i]))!= FALSE)
@@ -140,7 +140,7 @@ if(_adminMenu != 'true') exit;
       $galid = $_GET['id'];
       $anzahl = $_POST['anzahl'];
 
-      $files = get_files("../gallery/images/");
+      $files = get_files("../gallery/images/",false,true);
 
       $cnt = 0;
       for($c=0; $c<count($files); $c++)
@@ -188,7 +188,7 @@ if(_adminMenu != 'true') exit;
                    ORDER BY id DESC");
         while($get = _fetch($qry))
         {
-          $files = get_files("../gallery/images/");
+          $files = get_files("../gallery/images/",false,true);
       
           $cnt = 0;
           for($i=0; $i<count($files); $i++)

@@ -6,21 +6,10 @@ require_once(basePath."/inc/mysql.php");
 if(!isset($installation))
 $installation = false;
 
-function show($tpl, $array)
-{
-  global $tmpdir;
-    $template = "../inc/_templates_/".$tmpdir."/".$tpl;
-  
-    if($fp = @fopen($template.".".html, "r"))
-      $tpl = @fread($fp, filesize($template.".".html));
-    
-    $array['dir'] = '../inc/_templates_/'.$tmpdir;
-    foreach($array as $value => $code)
-    {
-      $tpl = str_replace('['.$value.']', $code, $tpl);
-    }
-  return $tpl;
-}
+//DZCP Settings
+define('is_debug', false);
+define('buffer_gzip_compress', true);
+define('buffer_gzip_compress_level', 4);
 
 //-> MySQL-Datenbankangaben
 $prefix = $sql_prefix;                      
@@ -89,20 +78,4 @@ $db = array("host" =>           $sql_host,
             "votes" =>          $prefix."votes",
             "vote_results" =>   $prefix."vote_results"
             );
-
-if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '')
-{
-	if(!$msql = mysql_connect($db['host'],$db['user'],$db['pass'])) die("<b>Fehler beim Zugriff auf die Datenbank!");
-	if(!mysql_select_db($db['db'],$msql)) die("<b>Die angegebene Datenbank <i>".$db['db']."</i> existiert nicht!");
-}
-
-function db($db)
-{
-  global $prefix;
-  if(!$qry = mysql_query($db)) die('<b>MySQL-Query failed:</b><br /><br /><ul>'.
-                                   '<li><b>ErrorNo</b> = '.str_replace($prefix,'',mysql_errno()).
-                                   '<li><b>Error</b>   = '.str_replace($prefix,'',mysql_error()).
-                                   '<li><b>Query</b>   = '.str_replace($prefix,'',$db).'</ul>');
-  return $qry;
-}
 ?>
