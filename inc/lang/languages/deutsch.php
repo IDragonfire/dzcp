@@ -22,8 +22,8 @@ define('_confirm_del_version', 'Es wird nur der Eintrag aus dieser Liste gel&oum
 define('_v_no_server', 'Kein Kontrollserver');
 
 define('_search_con_or', 'mind. ein Wort muss vorhanden sein');
-define('_search_con_and', 'absolute Übereinstimmung');
-define('_search_con_andb', 'alle Wörter müssen vorhanden sein');
+define('_search_con_and', 'absolute &Uuml;bereinstimmung');
+define('_search_con_andb', 'alle W&ouml;rter m&uuml;ssen vorhanden sein');
 define('_search_website','restliche Internetseite');
 define('_search_for_area_forum','Forum-Suchbereich');
 
