@@ -21,6 +21,12 @@ define('_v_edited', 'Mod/AddOn successfully added');
 define('_confirm_del_version', 'It only removes the entry from this list, delete?');
 define('_v_no_server', 'no control server');
 
+define('_search_con_or', 'at least one word');
+define('_search_con_and', 'character by character');
+define('_search_con_andb', 'every word');
+define('_search_website','remaining website');
+define('_search_for_area_forum','board-searcharea');
+
 ## Navigation / Server ##
 define('_navi_gsv_players_online', 'Online');
 define('_navi_gsv_on_the_game', 'Players');
@@ -386,8 +392,6 @@ define('_glossar_erkl' , 'Explanation');
 define('_admin_support_head' , 'Support informations');
 define('_admin_support_info' , 'The following informations are very helpful if you ask a support-question in the board of <a href="http://www.dzcp.de" target="_blank">www.dzcp.de</a>.');
 define('_config_support' , 'Supportinformations');
-define('_search_con_or' , 'OR-Operation');
-define('_search_con_and' , 'AND-Operation');
 define('_search_head' , 'Search');
 define('_search_word' , 'Search in...');
 define('_search_forum_all' , 'Search in all boards');
