@@ -73,35 +73,19 @@ else
     {
         $adminc1 = '/*'; $adminc2 = '*/';
     }
-    	
-    if(function_exists('fsockopen'))
-    {
-        $dzcp_v = fileExists("http://www.dzcp.de/version.txt");
-        if($dzcp_v <= _version)
-        {
-            $version = '<b>'._akt_version.': <span class="fontGreen">'._version.'</span></b>';
-            $old = "";
-        } 
-        else 
-        {
-            $version = "<a href=\"http://www.dzcp.de\" target=\"_blank\" title=\"external Link: www.dzcp.de\"><b>"._akt_version.":</b> <span class=\"fontRed\">"._version."</span></a>";
-            $old = "_old";
-        }
-    	  
-        $dzcp_news = @file_get_contents('http://www.dzcp.de/dzcp_news.php');
-    }
-        
-    if(@file_exists(basePath."/_installer1") && $chkMe == 4)
+    
+    if(@file_exists(basePath."/_installer") && $chkMe == 4)
         $index = _installdir;
     else 
     {
+        $dzcp_version = show_dzcp_version();
         $index = show($dir."/admin", array( "head" => _config_head,
-                                            "version" => $version,
-                                            "old" => $old,
+                                            "version" => $dzcp_version['version'],
+                                            "old" => $dzcp_version['old'],
                                             "dbase" => _stats_mysql,
                                             "einst" => _config_einst,
                                             "content" => _content,
-                                            "newsticker" => '<div style="padding:3px">'.(empty($dzcp_news) ? '' : '<b>DZCP News:</b><br />').'<div id="dzcpticker">'.$dzcp_news.'</div></div>',
+                                            "newsticker" => show_dzcp_news(),
                                             "rootadmin" => _rootadmin,
                                             "rootmenu" => $rootmenu,
                                             "settingsmenu" => $settingsmenu,

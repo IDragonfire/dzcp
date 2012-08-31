@@ -196,26 +196,40 @@ function parsePHPInfo()
  **/
 function fileExists($url)
 {
-  $url_p = @parse_url($url);
-  $host = $url_p['host'];
-  $port = isset($url_p['port']) ? $url_p['port'] : 80;
+    $url_p = @parse_url($url);
+    $host = $url_p['host'];
+    $port = isset($url_p['port']) ? $url_p['port'] : 80;
+    unset($url_p);
 
-  $fp = @fsockopen($url_p['host'], $port, $errno, $errstr, 5);
-  if(!$fp) return false;
+    if(!ping_port($host,$port,2))
+        return false;
 
-  @fputs($fp, 'GET '.$url_p['path'].' HTTP/1.1'.chr(10));
-  @fputs($fp, 'HOST: '.$url_p['host'].chr(10));
-  @fputs($fp, 'Connection: close'.chr(10).chr(10));
+    if(!$content = @file_get_contents($url))
+		return false;
 
-  $response = @fgets($fp, 1024);
-  $content = @fread($fp,1024);
-  $ex = explode("\n",$content);
-  $content = $ex[count($ex)-1];
-  @fclose ($fp);
-
-  if(preg_match("#404#",$response)) return false;
-  else return trim($content);
+    return trim($content);
 }
+
+/**
+ * Pingt einen Server Port
+ * 
+ * @return boolean
+ **/
+	## Ports eines Server anpingen ##
+	function ping_port($ip='0.0.0.0',$port=0000,$timeout=2)
+	{
+		if(function_exists('fsockopen'))
+		{
+			$fp = fsockopen($ip, $port, $errno, $errstr, $timeout);
+			if($fp)
+			{
+				@fclose($fp);
+				return true;
+			}
+		}
+		
+		return false;
+	}
 
 /**
  * Datenbank Connect
@@ -371,5 +385,71 @@ function show($tpl="", $array=array())
 	}
 	
 	return $tpl;
+}
+
+/**
+* Prüft online ob DZCP aktuell ist.
+*
+* @return array
+*/
+function show_dzcp_version()
+{
+	$dzcp_version_info = 'onmouseover="DZCP.showInfo(\'<tr><td colspan=2 align=center padding=3 class=infoTop>DZCP Versions Checker</td></tr><tr><td>'._dzcp_vcheck.'</td></tr>\')" onmouseout="DZCP.hideInfo()"';
+    $return = array();
+	if(dzcp_version_checker)
+	{
+		if(!$dzcp_online_v = fileExists("http://www.dzcp.de/version.txt"))
+		{
+			if($dzcp_online_v <= _version)
+			{
+				$return['version'] = '<b>'._akt_version.': <a href="" [info]><span class="fontGreen">'._version.'</span></a></b>';
+				$return['version'] = show($return['version'],array('info' => $dzcp_version_info));
+				$return['old'] = "";
+			}
+			else
+			{
+				$return['version'] = '<a href="http://www.dzcp.de/" target="_blank" title="external Link: www.dzcp.de"><b>'._akt_version.':</b> <span class="fontRed">'._version.'</span> / <span class="fontGreen">'.$dzcp_online_v.'</span></a>';
+				$return['old'] = "_old";
+			}
+		}
+		else
+		{
+			$return['version'] = '<b>'._akt_version.': <a href="" [info]><font color="#FFFF00">'._version.'</font></a></b>';
+			$return['version'] = show($return['version'],array('info' => $dzcp_version_info));
+			$return['old'] = "";
+		}
+	}
+	else
+	{
+		//check disabled
+		$return['version'] = '<b><font color="#999999">'._akt_version.': '._version.'</font></b>';
+		$return['old'] = "";
+	}
+
+    return $return;
+}
+
+/**
+* Funktion für den DZCP.de Newsticker
+*
+* @return string
+*/
+function show_dzcp_news()
+{
+	if(dzcp_newsticker)
+	{
+		if($dzcp_news = fileExists("http://www.dzcp.de/dzcp_news.php"))
+		{
+			if(!empty($dzcp_news))
+			{
+				$javascript = '<script language="javascript" type="text/javascript">DZCP.addEvent(window, \'load\', function() { DZCP.initTicker(\'dzcpticker\', \'h\', 30); });</script>';
+				$news = '<tr><td><div style="padding:3px"><b>DZCP News:</b><br/><div id="dzcpticker">'.$dzcp_news.'</div></div></td></tr>'; unset($dzcp_news);
+				return $news.$javascript;
+			}
+		}
+	}
+  
+   //disabled or empty
+    return '';
 }
 ?>
