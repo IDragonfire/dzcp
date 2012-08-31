@@ -90,7 +90,4 @@
       }
     }
   }
-  
-// won't needed any more, will get back empty return in case of incompatibility
-  function safe(){ return; }
 ?>

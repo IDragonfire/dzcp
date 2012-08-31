@@ -18,10 +18,10 @@ function top_match()
     if($allowHover == 1 || $allowHover == 2)
       $hover = 'onmouseover="DZCP.showInfo(\''.jsconvert(re($get['name'])).' vs. '.jsconvert(re($get['gegner'])).'\', \''._played_at.';'._cw_xonx.';'._result.';'._comments_head.'\', \''.date("d.m.Y H:i", $get['datum'])._uhr.';'.jsconvert(re($get['xonx'])).';'.cw_result_nopic_nocolor($get['punkte'],$get['gpunkte']).';'.cnt($db['cw_comments'], "WHERE cw = '".$get['id']."'").'\')" onmouseout="DZCP.hideInfo()"';
 
-    $topmatch .= show("menu/top_match", array("id" => $get['id'],
+    $topmatch = show("menu/top_match", array("id" => $get['id'],
                                               "clantag" => re(cut($get['clantag'],$llwars)),
                                               "team" => re(cut($get['name'],$llwars)),
-                                              "game" => substr(strtoupper(str_replace('.'.$icon, '', re($get['icon']))), 0, 5),
+                                              //"game" => substr(strtoupper(str_replace('.'.re($get['icon']), '', re($get['icon']))), 0, 5), // unused 
                                               "id" => $get['id'],
                                               "gegner" => $gegner,
                                               "squad" => $squad,
