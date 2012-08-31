@@ -27,6 +27,8 @@ define('_search_con_andb', 'alle W&ouml;rter m&uuml;ssen vorhanden sein');
 define('_search_website','restliche Internetseite');
 define('_search_for_area_forum','Forum-Suchbereich');
 
+define("_dzcp_vcheck", 'Der DZCP Versions Checker informiert dich &uuml;ber neue DZCP Updates und zeigt dir, ob DZCP.de erreichbar ist um deine Version mit der aktuellen zu vergleichen.<br><br><span class=fontBold>Beschreibung:</span><br><font color=#17D427>Gr&uuml;n:</font> Verbindung zu DZCP.de erfolgreich, Up to Date!<br><font color=#FFFF00>Gelb:</font> Keine Verbindung zu DZCP.de m&ouml;glich<br><font color=#FF0000>Rot:</font> Es ist ein neues Update verf&uuml;gbar!');
+
 ## Navigation / Server ##
 define('_navi_gsv_players_online', 'Online');
 define('_navi_gsv_on_the_game', 'Spieler');
@@ -89,7 +91,7 @@ define('_config_fotum_vote', 'Forum-Vote');
 define('_config_fotum_vote_info', '<center>Zeigt die Forum-Votes auch unter Umfragen an.</center>');
 ## ADDED / REDEFINED FOR 1.5
 define('_side_membermap', 'Mitgliederkarte');
-define('_installdir', "<tr><td colspan=\"15\" class=\"contentMainFirst\"><br /><center><b>Achtung! Sicherheitsrisiko!!</b><br><br>Bitte l&ouml;sche zuerst den Ordner <b>'/_installer'</b> von deinem Webspace. Erst dann steht das Adminmen&uuml; zur Verf&uuml;gung!</center><br /></td></tr>");
+define('_installdir', "<tr><td colspan=\"15\" class=\"contentMainFirst\"><br /><center><b>Achtung! Sicherheitsrisiko!!</b><br><br>Bitte l&ouml;sche zuerst den Ordner <b>'/_installer'</b> von deinem Webspace.</center><br /></td></tr>");
 define('_no_ts', 'kein Teamspeak eingetragen');
 define('_search_sites', 'Unterseiten');
 define('_search_results', 'Suchergebnisse');

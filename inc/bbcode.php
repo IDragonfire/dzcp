@@ -2232,6 +2232,10 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ=false)
 	  global $db,$userid,$userip,$tmpdir,$secureLogin,$chkMe,$charset;
 	  global $u_b1,$u_b2,$designpath,$maxwidth,$language,$cp_color,$copyright;
 	  
+	// installer vorhanden?
+	if(file_exists(basePath."/_installer") && $chkMe == 4)
+        $index = _installdir;
+	  
 	// user gebannt? Logge aus!
 	    if($chkMe == 'banned') header("Location: ../user/?action=logout");
 	//  JS-Dateine einbinden

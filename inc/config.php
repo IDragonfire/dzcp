@@ -10,6 +10,8 @@ $installation = false;
 define('is_debug', false);
 define('buffer_gzip_compress', true);
 define('buffer_gzip_compress_level', 4);
+define('dzcp_newsticker', true);
+define('dzcp_version_checker', true);
 
 //-> MySQL-Datenbankangaben
 $prefix = $sql_prefix;                      
