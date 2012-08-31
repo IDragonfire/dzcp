@@ -11,6 +11,7 @@ feed();
 $where = _site_news;
 $title = $pagetitle." - ".$where."";
 $dir = "news";
+$index = "";
 ## SECTIONS ##
 if(!isset($_GET['action'])) $action = "";
 else $action = $_GET['action'];
@@ -19,10 +20,8 @@ if(isset($_GET['page'])) $page = $_GET['page'];
 else $page = 1;
 switch ($action):
 default:
-
-
-  $kat = intval($_GET['kat']);
-  if($kat == "lazy" || empty($kat) || $kat == NULL) 
+  $kat = (isset($_GET['kat']) ? intval($_GET['kat']) : 0);
+  if(!$kat) 
   {
     $navKat = 'lazy';
     $n_kat = '';
@@ -33,20 +32,19 @@ default:
     $navWhere = "WHERE kat = '".$kat."'";
   }
 
-  if(!permission("intnews")) $sqlint = "AND `intern` = '0'";
   $qry = db("SELECT * FROM ".$db['news']."
-             WHERE sticky >= ".time()." AND datum <= ".time()." AND public = 1 ".$sqlint."
+             WHERE sticky >= ".time()." AND datum <= ".time()." AND public = 1 ".(!permission("intnews") ? "AND `intern` = '0'" : '')."
 						 ".$n_kat."
              ORDER BY datum DESC
     			   LIMIT ".($page - 1)*$maxnews.",".$maxnews."");
+				   
+  $show_sticky = "";
   while($get = _fetch($qry))
   {
-    $qrykat = db("SELECT katimg FROM ".$db['newskat']."
-                  WHERE id = '".$get['kat']."'");
-    $getkat = _fetch($qrykat);
-
+    $getkat = _fetch(db("SELECT katimg FROM ".$db['newskat']." WHERE id = '".$get['kat']."'"));
     $c = cnt($db['newscomments'], " WHERE news = '".$get['id']."'");
-
+	$klapp = ""; $links = ""; $links1 = ""; $links2 = ""; $links3 = "";
+	
     if($c == "1")
     {
       $comments = show(_news_comment, array("comments" => "1",
@@ -61,8 +59,6 @@ default:
       $klapp = show(_news_klapplink, array("klapplink" => re($get['klapplink']),
                                            "which" => "expand",
                                            "id" => $get['id']));
-    } else {
-      $klapp = "";
     }
 
     $viewed = show(_news_viewed, array("viewed" => $get['viewed']));
@@ -72,24 +68,20 @@ default:
       $rel = _related_links;
       $links1 = show(_news_link, array("link" => re($get['link1']),
                                        "url" => $get['url1']));
-    } else {
-      $links1 = "";
     }
+	
     if(!empty($get['url2']))
     {
       $rel = _related_links;
       $links2 = show(_news_link, array("link" => re($get['link2']),
                                        "url" => $get['url2']));
-    } else {
-      $links2 = "";
     }
+	
     if(!empty($get['url3']))
     {
       $rel = _related_links;
       $links3 = show(_news_link, array("link" => re($get['link3']),
                                        "url" => $get['url3']));
-    } else {
-      $links3 = "";
     }
 
     if(!empty($links1) || !empty($links2) || !empty($links3))
@@ -98,13 +90,9 @@ default:
                                        "link2" => $links2,
                                        "link3" => $links3,
                                        "rel" => $rel));
-    } else {
-      $links = "";
     }
 
-    if($get['intern'] == "1") $intern = _votes_intern;
-    else $intern = "";
-
+	$intern = ($get['intern'] == 1 ? _votes_intern : '');
     $show_sticky .= show($dir."/news_show", array("titel" => re($get['titel']),
                                                   "kat" => re($getkat['katimg']),
                                                   "id" => $get['id'],
@@ -126,13 +114,13 @@ default:
                                                   "autor" => autor($get['autor'])));
   }
 
-  
-  if(!permission("intnews")) $sqlint = "AND `intern` = '0'";
   $qry = db("SELECT * FROM ".$db['news']."
-             WHERE sticky < ".time()." AND datum <= ".time()." AND public = 1 ".$sqlint."
+             WHERE sticky < ".time()." AND datum <= ".time()." AND public = 1 ".(!permission("intnews") ? "AND `intern` = '0'" : '')."
              ".$n_kat."
 						 ORDER BY datum DESC
     			   LIMIT ".($page - 1)*$maxnews.",".$maxnews."");
+  
+  $show = "";
   while($get = _fetch($qry))
   {
     $qrykat = db("SELECT katimg FROM ".$db['newskat']."
@@ -221,17 +209,15 @@ default:
   }
 
   $qrykat = db("SELECT * FROM ".$db['newskat']."");
+  $kategorien = "";
   while($getkat = _fetch($qrykat))
   {
-    if($_GET['kat'] == $getkat['id']) $sel = 'selected';
-    else $sel = "";
-    
+	$sel = (isset($_GET['kat']) && $_GET['kat'] == $getkat['id'] ? 'selected' : '');
     $kategorien .= "<option value='".$getkat['id']."' ".$sel.">".$getkat['kategorie']."</option>";
   }
   
   $index = show($dir."/news", array("show" => $show,
                                     "show_sticky" => $show_sticky,
-                                    "stats" => $stats,
                                     "nav" => nav(cnt($db['news'],$navWhere),$maxnews,"?kat=".$navKat,false),
                                     "kategorien" => $kategorien,
                                     "choose" => _news_kat_choose,

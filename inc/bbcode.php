@@ -2310,6 +2310,7 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ=false)
 	    $pholder = file_get_contents($designpath."/index.html");
 	//filter placeholders
 	
+		$pholdervars = "";
 	    $blArr = array("[title]","[copyright]","[java_vars]","[login]", "[template_switch]","[headtitle]","[index]", "[time]","[rss]","[dir]","[charset]");
 	    for($i=0;$i<=count($blArr)-1;$i++)
 	    {
@@ -2341,7 +2342,7 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ=false)
 		
 	    $pholdervars = explode("^",$pholdervars);
 	    for($i=0;$i<=count($pholdervars)-1;$i++) 
-		{ eval("if(isset(\$".$pholdervars[$i].")) \$arr[".$pholdervars[$i]."] = \$".$pholdervars[$i].";"); }
+		{ @eval("if(isset(\$".$pholdervars[$i].")) \$arr[".$pholdervars[$i]."] = \$".$pholdervars[$i].";"); }
 	
 		//index output
 	    echo show((($index_templ != false ? file_exists(basePath."/inc/_templates_/".$tmpdir."/".$index_templ.".html") : false) ? $index_templ : 'index') , $arr);

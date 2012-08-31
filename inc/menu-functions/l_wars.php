@@ -8,6 +8,7 @@ function l_wars()
              WHERE datum < ".time()."
              ORDER BY datum DESC
              LIMIT ".$maxlwars."");
+	$lwars = "";
     while($get = _fetch($qry))
     {
       if($allowHover == 1 || $allowHover == 2)

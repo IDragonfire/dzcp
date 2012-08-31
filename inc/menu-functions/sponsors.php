@@ -4,6 +4,7 @@ function sponsors()
 {
   global $db;
     $qry = db("SELECT * FROM ".$db['sponsoren']." WHERE box = 1 ORDER BY pos");
+	$sponsors = "";
     while($get = _fetch($qry))
     {
       $banner = show(_sponsors_bannerlink, array("id" => $get['id'],

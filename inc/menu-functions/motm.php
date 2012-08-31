@@ -4,7 +4,7 @@ function motm()
   global $db, $allowHover;
 
   $userpics = get_files(basePath.'/inc/images/uploads/userpics/',false,true);
-  $qry = db("SELECT * FROM ".$db['users']." WHERE level >= 2");
+  $qry = db("SELECT * FROM ".$db['users']." WHERE level >= 2"); 
 	while($rs = _fetch($qry))
 	{
 		foreach($userpics AS $userpic)
@@ -13,7 +13,6 @@ function motm()
 			if($tmpId == $rs['id'])
 			{
 				$temparr[] = $rs['id'];
-				$a++;
 				break;
 			}
 		}

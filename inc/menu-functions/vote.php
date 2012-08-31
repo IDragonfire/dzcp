@@ -9,6 +9,7 @@ function vote($ajax = false)
     if(_rows($qry))
     {
       $qryv = db("SELECT * FROM ".$db['vote_results']." WHERE vid = '".$get['id']."' ORDER BY what");
+	  $results = "";
       while ($getv = _fetch($qryv))
       {
         $stimmen = sum($db['vote_results'], " WHERE vid = '".$get['id']."'", "stimmen");
