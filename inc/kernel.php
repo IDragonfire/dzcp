@@ -398,7 +398,7 @@ function show_dzcp_version()
     $return = array();
 	if(dzcp_version_checker)
 	{
-		if(!$dzcp_online_v = fileExists("http://www.dzcp.de/version.txt"))
+		if($dzcp_online_v = fileExists("http://www.dzcp.de/version.txt"))
 		{
 			if($dzcp_online_v <= _version)
 			{
