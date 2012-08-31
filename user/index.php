@@ -9,6 +9,7 @@ $time_start = generatetime();
 lang($language);
 $dir = "user";
 $where = _site_user;
+$index = "";
 ## SECTIONS ##
 if(!isset($_GET['action'])) $action = "";
 else $action = $_GET['action'];
@@ -305,6 +306,9 @@ case 'userlobby';
   {
 	  $index = error(_error_have_to_be_logged, 1);
   } else {
+	$erase = ""; $nextkal = ""; $artikel = ""; $artc = ""; $rankings = ""; $awards = ""; $ftopics = ""; $forumposts = ""; $away_new = "";
+	$cwcom  = ""; $gal = ""; $newv = ""; $cws  = ""; $newsc = ""; $gb = ""; $user = ""; $membergb = "";  $msg = ""; $news = ""; $away_now = ""; 
+	
     $qry = db("SELECT lastvisit FROM ".$db['userstats']." WHERE user = ".$userid."");
     $get = _fetch($qry);
 
@@ -317,10 +321,7 @@ case 'userlobby';
                   ORDER BY s1.kid,s2.kattopic");
     while($getkat = _fetch($qrykat))
     {
-      unset($nthread);
-      unset($post);
-      unset($forumposts_show);
-    
+      $nthread = ""; $post = ""; $forumposts_show = "";
       if(fintern($getkat['id']))
       {
         $qrytopic = db("SELECT lp,id,topic,first,sticky FROM ".$db['f_threads']."
@@ -328,6 +329,7 @@ case 'userlobby';
                         AND lp > ".$get['lastvisit']."
                         ORDER BY lp DESC
                         LIMIT 150");
+						
         while($gettopic = _fetch($qrytopic))
         {
           $lp = "";
@@ -849,7 +851,6 @@ case 'userlobby';
     elseif($lvl == 4) $mylevel = _status_admin;
 
     $index = show($dir."/userlobby", array("userlobbyhead" => _userlobby,
-	    								   "userstats" => _lobby_stats,
                                            "erase" => $erase,
                                            "pic" => useravatar($userid),
                                            "mynick" => autor($userid),
