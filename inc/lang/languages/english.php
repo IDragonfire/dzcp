@@ -92,7 +92,7 @@ define('_config_double_post' , 'Forum double post');
 define('_config_fotum_vote' , 'Forum-Vote');
 define('_config_fotum_vote_info' , '<center>Here you can specify whether a Forum-Vote also Vote to be displayed.</center>');
 ## ADDED / REDEFINED FOR 1.5
-define('_installdir' , "<tr><td colspan=\"15\" class=\"contentMainFirst\"><br /><center>In case of security reasons, please remove the folder \"<b>/_installer</b>\" from your webserver! Only then the admin menu available!</center><br /></td></tr>");
+define('_installdir' , "<tr><td colspan=\"15\" class=\"contentMainFirst\"><br /><center>In case of security reasons, please remove the folder \"<b>/_installer</b>\" from your webserver!</center><br /></td></tr>");
 define('_no_ts' , 'no Teamspeak');
 define('_search_sites' , 'Sites');
 define('_search_results' , 'Search Results');

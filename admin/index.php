@@ -74,28 +74,23 @@ else
         $adminc1 = '/*'; $adminc2 = '*/';
     }
     
-    if(@file_exists(basePath."/_installer") && $chkMe == 4)
-        $index = _installdir;
-    else 
-    {
-        $dzcp_version = show_dzcp_version();
-        $index = show($dir."/admin", array( "head" => _config_head,
-                                            "version" => $dzcp_version['version'],
-                                            "old" => $dzcp_version['old'],
-                                            "dbase" => _stats_mysql,
-                                            "einst" => _config_einst,
-                                            "content" => _content,
-                                            "newsticker" => show_dzcp_news(),
-                                            "rootadmin" => _rootadmin,
-                                            "rootmenu" => $rootmenu,
-                                            "settingsmenu" => $settingsmenu,
-                                            "contentmenu" => $contentmenu,
-                                            "radmin1" => $radmin1,
-                                            "radmin2" => $radmin2,
-                                            "adminc1" => $adminc1,
-                                            "adminc2" => $adminc2,
-                                            "show" => $show));
-    }
+    $dzcp_version = show_dzcp_version();
+    $index = show($dir."/admin", array( "head" => _config_head,
+                                        "version" => $dzcp_version['version'],
+                                        "old" => $dzcp_version['old'],
+                                        "dbase" => _stats_mysql,
+                                        "einst" => _config_einst,
+                                        "content" => _content,
+                                        "newsticker" => show_dzcp_news(),
+                                        "rootadmin" => _rootadmin,
+                                        "rootmenu" => $rootmenu,
+                                        "settingsmenu" => $settingsmenu,
+                                        "contentmenu" => $contentmenu,
+                                        "radmin1" => $radmin1,
+                                        "radmin2" => $radmin2,
+                                        "adminc1" => $adminc1,
+                                        "adminc2" => $adminc2,
+                                        "show" => $show));
 }
 
 ## SETTINGS ##
