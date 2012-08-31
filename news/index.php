@@ -761,37 +761,26 @@ case 'archiv':
     $intern2 = "WHERE intern = 0 AND datum <= ".time()." AND public = 1";
   }
 
-  if(isset($_GET['page']))
-  {
-    $psearch = $_GET['search'];
-    $pyear = $_GET['year'];
-    $pmonth = $_GET['month'];
-  } else {
-    $psearch = $_POST['search'];
-    $pyear = $_POST['year'];
-    $pmonth = $_POST['month'];
-  }
+  $psearch = (isset($_GET['page']) ? $_GET['search'] : (isset($_POST['search']) ? $_POST['search'] : ''));
+  $pyear = (isset($_GET['page']) ? $_GET['year'] : (isset($_POST['year']) ? $_POST['year'] : ''));
+  $pmonth = (isset($_GET['page']) ? $_GET['month'] : (isset($_POST['month']) ? $_POST['month'] : ''));
+  $page = (isset($_GET['page']) ? $_GET['page'] : 1);
+  $kat = (isset($_GET['kat']) ? intval($_GET['kat']) : ''); 
+  $n_kat = (empty($kat) ? '' : "AND kat = '".$kat."'");
 
-  if(isset($_GET['page'])) $page = $_GET['page'];
-  else $page = 1;
-
-  $kat = intval($_GET['kat']);
-  if($kat == "lazy" || $kat == "" || $kat == "NULL") $n_kat = "";
-  else $n_kat = "AND kat = '".$kat."'";
-
-  if($search)
+  if(!empty($psearch))
   {
     $qry = db("SELECT id,titel,autor,datum,kat,text
                   FROM ".$db['news']."
-                  WHERE text LIKE '%".$search."%'
+                  WHERE text LIKE '%".mysql_real_escape_string($psearch)."%'
                   ".$intern."
 									AND datum <= ".time()."
-                  OR klapptext LIKE '%".$search."%'
+                  OR klapptext LIKE '%".mysql_real_escape_string($psearch)."%'
                   ".$intern."
 									AND datum <= ".time()."
                   ORDER BY datum DESC
                   LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
-    $entrys = cnt($db['news'], " WHERE text LIKE '%".$search."%' OR klapptext LIKE '%".$search."%' ".$intern."");
+    $entrys = cnt($db['news'], " WHERE text LIKE '%".mysql_real_escape_string($psearch)."%' OR klapptext LIKE '%".mysql_real_escape_string($psearch)."%' ".$intern."");
 
   } elseif($pyear) {
     $from = mktime(0,0,0,$pmonth,1,$pyear);
@@ -814,17 +803,13 @@ case 'archiv':
     $entrys = cnt($db['news'], " ".$intern2." ".$n_kat);
   }
 
+  $color = 0; $show = '';
   while($get = _fetch($qry))
   {
-    $qryk = db("SELECT kategorie FROM ".$db['newskat']."
-                WHERE id = '".$get['kat']."'");
-    $getk = _fetch($qryk);
-
+    $getk = _fetch(db("SELECT kategorie FROM ".$db['newskat']." WHERE id = '".$get['kat']."'"));
     $comments = cnt($db['newscomments'], " WHERE news = ".$get['id']."");
-    $titel = show(_news_show_link, array("titel" => cut(re($get['titel']),$lnewsarchiv),
-                                         "id" => $get['id']));
+    $titel = show(_news_show_link, array("titel" => cut(re($get['titel']),$lnewsarchiv), "id" => $get['id']));
     $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-
     $show .= show($dir."/archiv_show", array("autor" => autor($get['autor']),
                                              "date" => date("d.m.y", $get['datum']),
                                              "titel" => $titel,
@@ -841,6 +826,7 @@ case 'archiv':
   $min = date("Y",$sy['datum']);
   $ty = date("Y", time());
 
+  $years = '';
   for($x=$min;$x<=$ty-1;$x++)
   {
     if($x == date("Y", time())) $sel = "selected=\"selected\"";
@@ -863,6 +849,7 @@ case 'archiv':
                                    "com" => $com));
 
   $qrykat = db("SELECT * FROM ".$db['newskat']."");
+  $kategorien = '';
   while($getkat = _fetch($qrykat))
   {
     $kategorien .= '<option value="'.$getkat['id'].'">-> '.$getkat['kategorie'].'</option>';
@@ -891,7 +878,7 @@ case 'archiv':
                                       "or" => _or,
                                       "kategorien" => $kategorien,
                                       "choose" => _news_kat_choose,
-                                      "search" => re($_POST['search']),
+                                      "search" => (isset($_POST['search']) ? re($_POST['search']) : ''),
                                       "btn_search" => _button_value_search,
                                       "thisyear" => $ty,
                                       "kat" => _news_admin_kat,
