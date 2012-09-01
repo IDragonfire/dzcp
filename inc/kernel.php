@@ -237,6 +237,9 @@ function fileExists($url)
  * 
  * @return resource
  **/
+if(!isset($db)) //tinymce fix
+    require_once(basePath."/inc/config.php");	
+	
 if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '')
 {
 	if(!$msql = mysql_connect($db['host'],$db['user'],$db['pass'])) die("<b>Fehler beim Zugriff auf die Datenbank!");

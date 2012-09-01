@@ -6,7 +6,7 @@
     plugins                             : 'contextmenu,dzcp,inlinepopups,spellchecker',
     language                            : (lng == 'de' ? lng : 'en'),
   	theme_advanced_buttons1             : 'bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,link,unlink,|,image,youtube,forecolor,'
-                                        + 'backcolor,|,smileys,spellchecker',
+                                        + 'backcolor,|,smileys,flags,dzcpuser,spellchecker',
   	theme_advanced_buttons2             : '',
    	theme_advanced_buttons3             : '',
    	theme_advanced_toolbar_location     : 'top',

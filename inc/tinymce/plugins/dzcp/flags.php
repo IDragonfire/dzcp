@@ -1,6 +1,6 @@
 <?php
 ob_start();
-define('basePath', dirname(__FILE__));
+define('basePath', '../../../../');
 require_once(basePath.'/inc/kernel.php');
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
