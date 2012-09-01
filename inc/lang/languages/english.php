@@ -27,6 +27,8 @@ define('_search_con_andb', 'every word');
 define('_search_website','remaining website');
 define('_search_for_area_forum','board-searcharea');
 
+define("_dzcp_vcheck", 'The DZCP Version Checker will inform about new DZCP updates and shows you whether DZCP.de is online to compare your version with the current.<br><br><span class=fontBold>Description:</span><br><font color=#17D427>Gr&uuml;n:</font> Successfully connected to DZCP.de, Up to Date!<br><font color=#FFFF00>Gelb:</font> Could not connect to DZCP.de</br><font color=#FF0000>Rot:</font>A new update available!');
+
 ## Navigation / Server ##
 define('_navi_gsv_players_online', 'Online');
 define('_navi_gsv_on_the_game', 'Players');
@@ -90,7 +92,7 @@ define('_config_double_post' , 'Forum double post');
 define('_config_fotum_vote' , 'Forum-Vote');
 define('_config_fotum_vote_info' , '<center>Here you can specify whether a Forum-Vote also Vote to be displayed.</center>');
 ## ADDED / REDEFINED FOR 1.5
-define('_installdir' , "<tr><td colspan=\"15\" class=\"contentMainFirst\"><br /><center>In case of security reasons, please remove the folder \"<b>/_installer</b>\" from your webserver! Only then the admin menu available!</center><br /></td></tr>");
+define('_installdir' , "<tr><td colspan=\"15\" class=\"contentMainFirst\"><br /><center>In case of security reasons, please remove the folder \"<b>/_installer</b>\" from your webserver!</center><br /></td></tr>");
 define('_no_ts' , 'no Teamspeak');
 define('_search_sites' , 'Sites');
 define('_search_results' , 'Search Results');
