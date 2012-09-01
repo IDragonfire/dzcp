@@ -54,7 +54,6 @@ $useronline = 1800;
 $reload = 3600 * 24;
 $datum = time();
 $today = date("j.n.Y");
-$picformat = array("jpg", "gif", "png");
 //-> Configtabelle auslesen
 $c = _fetch(db("SELECT * FROM ".$db['config']));
 //-> Config
@@ -201,21 +200,29 @@ function lang($lng,$pfad='')
 //-> Sprachdateien auflisten
 function languages()
 {
+	global $picformat;
+	
 	$lang="";
 	$files = get_files('../inc/lang/languages/',false,true,array('php'));
 	for($i=0;$i<=count($files)-1;$i++)
 	{
 		$file = str_replace('.php','',$files[$i]);
 		$upFile = strtoupper(substr($file,0,1)).substr($file,1);
-
-		if(file_exists('../inc/lang/flaggen/'.$file.'.gif'))
-			$lang .= '<a href="../user/?action=language&amp;set='.$file.'"><img src="../inc/lang/flaggen/'.$file.'.gif" alt="'.$upFile.'" title="'.$upFile.'" class="icon" /></a> ';
+		foreach($picformat AS $end)
+		{
+			if(file_exists(basePath.'/inc/lang/flaggen/'.$file.'.'.$end))
+			{
+				$lang .= '<a href="../user/?action=language&amp;set='.$file.'"><img src="../inc/lang/flaggen/'.$file.'.'.$end.'" alt="'.$upFile.'" title="'.$upFile.'" class="icon" /></a> ';
+				break;
+			}
+		}
 	}
 
 	return $lang;
 }
 
 //-> Userspezifiesche Dinge
+$u_b1 = ""; $u_b2 = "";
 if(isset($userid) && $ajaxJob != true)
 {
 	db("UPDATE ".$db['userstats']."
@@ -1076,16 +1083,28 @@ function cw_result_details($punkte, $gpunkte)
 //-> Flaggen ausgeben
 function flag($code)
 {
-  if(!file_exists(basePath."/inc/images/flaggen/".$code.".gif"))
-    return '<img src="../inc/images/flaggen/nocountry.gif" alt="" class="icon" />';
-  else return'<img src="../inc/images/flaggen/'.$code.'.gif" alt="" class="icon" />';
+    global $picformat;
+    foreach($picformat AS $end)
+    {
+        if(file_exists(basePath.'/inc/images/flaggen/'.$code.'.'.$end))
+            return'<img src="../inc/images/flaggen/'.$code.'.'.$end.'" alt="" style="vertical-align:middle" />';
+    }
+      
+    return '<img src="../inc/images/flaggen/nocountry.gif" alt="" style="vertical-align:middle" />';
 }
+
 function rawflag($code)
 {
-  if(!file_exists(basePath."/inc/images/flaggen/".$code.".gif"))
+    global $picformat;
+    foreach($picformat AS $end)
+    {
+        if(file_exists(basePath.'/inc/images/flaggen/'.$code.'.'.$end))
+            return '<img src=../inc/images/flaggen/'.$code.'.'.$end.' alt= class=icon />';
+    }
+      
     return '<img src=../inc/images/flaggen/nocountry.gif alt= class=icon />';
-  else return'<img src=../inc/images/flaggen/'.$code.'.gif alt= class=icon />';
 }
+
 //-> Liste der Laender ausgeben
 function show_countrys($i="")
 {
@@ -1225,7 +1244,7 @@ function gallery_size($img="")
 //-> Blaetterfunktion
 function nav($entrys, $perpage, $urlpart, $icon=true)
 {
-    global $page, $_SERVER;
+    global $page;
 	  if($perpage == 0)  return "&#xAB; <span class=\"fontSites\">0</span> &#xBB;";
       if($icon == true) $icon = '<img src="../inc/images/multipage.gif" alt="" class="icon" /> '._seiten;
 

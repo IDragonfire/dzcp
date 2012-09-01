@@ -1,6 +1,6 @@
 <?php
 ob_start();
-define('basePath', dirname(__FILE__));
+define('basePath', '../../../../');
 require_once(basePath.'/inc/kernel.php');
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -33,7 +33,7 @@ require_once(basePath.'/inc/kernel.php');
 	<div align="center">
 		<table id="smileys" border="0" cellspacing="0" cellpadding="1">
 <?php
-    $files = get_files(basePath.'/inc/images/smileys',false,true,array('gif'));
+    $files = get_files(basePath.'/inc/images/smileys',false,true,$picformat);
 
     $t=1;
     $b=0;
