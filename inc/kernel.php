@@ -332,9 +332,58 @@ function cnt($count, $where = "", $what = "id")
  **/
 function sum($db, $where = "", $what)
 {
-  $cnt = db("SELECT SUM(".$what.") AS num FROM ".$db.$where);
-  $cnt = _fetch($cnt);
-  return ((int)$cnt['num']);
+    $cnt = db("SELECT SUM(".$what.") AS num FROM ".$db.$where);
+    $cnt = _fetch($cnt);
+    return ((int)$cnt['num']);
+}
+
+/**
+ * Funktion um Settings aus der Datenbank auslesen
+ * Todo: Code überarbeiten, Update auf MySQLi
+ * 
+ * @return mixed/array
+ **/
+function settings($what)
+{
+	global $db;
+	if(is_array($what))
+	{
+	    $sql='';
+	    foreach($what as $qy)
+	    { $sql .= $qy.", "; }
+	    $sql = substr($sql, 0, -2);
+	    return _fetch(db("SELECT ".$sql." FROM `".$db['settings']."`"));
+	}
+	else
+	{
+    	$get = _fetch(db("SELECT ".$what." FROM `".$db['settings']."`"));
+    	return $get[$what];
+	}
+	
+}
+
+/**
+ * Funktion um Config aus der Datenbank auslesen
+ * Todo: Code überarbeiten, Update auf MySQLi
+ * 
+ * @return mixed/array
+ **/
+function config($what)
+{
+    global $db;
+    if(is_array($what))
+    {
+        $sql='';
+        foreach($what as $qy)
+        { $sql .= $qy.", "; }
+        $sql = substr($sql, 0, -2);
+        return _fetch(db("SELECT ".$sql." FROM `".$db['config']."`"));
+    }
+    else
+    {
+        $get = _fetch(db("SELECT ".$what." FROM `".$db['config']."`"));
+        return $get[$what];
+    }
 }
 
 /**

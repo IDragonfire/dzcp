@@ -56,8 +56,7 @@ $datum = time();
 $today = date("j.n.Y");
 $picformat = array("jpg", "gif", "png");
 //-> Configtabelle auslesen
-$qryc = db("SELECT * FROM ".$db['config']."");
-$c = _fetch($qryc);
+$c = _fetch(db("SELECT * FROM ".$db['config']));
 //-> Config
 $maxadmincw = 10;
 $maxfilesize = @ini_get('upload_max_filesize');
@@ -122,6 +121,8 @@ $lforumsubtopic = $c['l_forumsubtopic'];
 $maxawards = $c['m_awards'];
 $sdir = $settings['tmpdir'];
 $userip = visitorIp();
+
+unset($c);
 
 if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pwd']) && empty($_SESSION['id']))
 {
@@ -223,16 +224,6 @@ if(isset($userid) && $ajaxJob != true)
 
 	$u_b1 = "<!--";
 	$u_b2 = "-->";
-}
-
-//-> Settings auslesen (=> Adminmenu)
-function settings($what)
-{
-  global $db;
-    $qry = db("SELECT ".$what." FROM ".$db['settings']."");
-    $get = _fetch($qry);
-
-  return $get[$what];
 }
 
 //-> PHP-Code farbig anzeigen
@@ -1119,7 +1110,7 @@ function links($hp)
   if(!empty($hp))
   {
 	  $link = str_replace("http://","",$hp);
-    return 'http://'.$link;
+      return 'http://'.$link;
   }
 }
 //-> Funktion um Passwoerter generieren zu lassen
@@ -1169,28 +1160,27 @@ function checkpwd($user, $pwd)
 //-> Infomeldung ausgeben
 function info($msg, $url, $timeout = 5)
 {
-  global $c;
+	if(config('direct_refresh'))
+		return header('Location: '.str_replace('&amp;', '&', $url));
 
-  if($c['direct_refresh'] == 1) {
-    return header('Location: '.str_replace('&amp;', '&', $url));
-  }
+	$u = parse_url($url); $parts = '';
+	$u['query'] = str_replace('&amp;', '&', $u['query']);
+	
+	foreach(explode('&', $u['query']) as $p)
+	{
+		$p = explode('=', $p);
+		if(count($p) == 2) 
+			$parts .= '<input type="hidden" name="'.$p[0].'" value="'.$p[1].'" />'."\r\n";
+	}
 
-  $u = parse_url($url);
-  $u['query'] = str_replace('&amp;', '&', $u['query']);
-  foreach(explode('&', $u['query']) as $p)
-  {
-    $p = explode('=', $p);
-    if(count($p) == 2) $parts .= '<input type="hidden" name="'.$p[0].'" value="'.$p[1].'" />'."\r\n";
-  }
-
-  return show("errors/info", array("msg" => $msg,
-                                   "url" => $u['path'],
-                                   "rawurl" => html_entity_decode($url),
-                                   "parts" => $parts,
-                                   "timeout" => $timeout,
-                                   "info" => _info,
-                                   "weiter" => _weiter,
-                                   "backtopage" => _error_fwd));
+	return show("errors/info", array("msg" => $msg,
+									 "url" => (array_key_exists('path',$u) ? $u['path'] : ''),
+									 "rawurl" => html_entity_decode($url),
+									 "parts" => $parts,
+									 "timeout" => $timeout,
+									 "info" => _info,
+									 "weiter" => _weiter,
+									 "backtopage" => _error_fwd));
 }
 //-> Errormmeldung ausgeben
 function error($error, $back=1)
@@ -1231,18 +1221,7 @@ function gallery_size($img="")
   $s = getimagesize(basePath."/gallery/images/".$img);
   return "<a href=\"../gallery/images/".$img."\" rel=\"lightbox[gallery_".intval($img)."]\"><img src=\"../thumbgen.php?img=gallery/images/".$img."\" alt=\"\" /></a>";
 }
-//-> URL wird auf Richtigkeit ueberprueft
-function check_url($url)
-{
-  if($url) $fp = @fopen ($url, "r");
-  if($fp)
-  {
-    return true;
-    @fclose($fp);
-  } else {
-    return false;
-  }
-}
+
 //-> Blaetterfunktion
 function nav($entrys, $perpage, $urlpart, $icon=true)
 {
@@ -1254,7 +1233,7 @@ function nav($entrys, $perpage, $urlpart, $icon=true)
       if(!$page || $page < 1) $page = 2;
 
       $pages = ceil($entrys/$perpage);
-      $result = "";
+      $result = ""; $resultm = ''; $first = '';
 
       if(($page-5) <= 2 && $page != 1)
         $first = '<a class="sites" href="'.$urlpart.'&amp;page='.($page-1).'">&#xAB;</a><span class="fontSitesMisc">&#xA0;</span> <a  class="sites" href="'.$urlpart.'&amp;page=1">1</a> ';
@@ -1273,6 +1252,7 @@ function nav($entrys, $perpage, $urlpart, $icon=true)
         if($i == $page) $result .= '<span class="fontSites">'.$i.'</span><span class="fontSitesMisc">&#xA0;</span>';
         else $result .= '<a class="sites" href="'.$urlpart.'&amp;page='.$i.'">'.$i.'</a><span class="fontSitesMisc">&#xA0;</span>';
       }
+
       for($i=($page-5);$i<=($page-1);$i++)
       {
         if($i >= 2) $resultm .= '<a class="sites" href="'.$urlpart.'&amp;page='.$i.'">'.$i.'</a> ';
