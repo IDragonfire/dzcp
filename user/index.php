@@ -88,12 +88,11 @@ case 'login';
       }
 
 	    $index = show($dir."/login", array("loginhead" => _login_head,
-			  															 	 "loginname" => _loginname,
-                                         "dis" => $dis,
+			  							 "loginname" => _loginname,
                                          "secure" => $secure,
-				  															 "lostpwd" => _login_lostpwd,
+				  						 "lostpwd" => _login_lostpwd,
                                          "permanent" => _login_permanent,
-						  													 "pwd" => _pwd));
+						  				 "pwd" => _pwd));
 	  } else {
 		  $index = error(_error_user_already_in, 1);
       set_cookie($prev."id","");
