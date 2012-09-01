@@ -13,6 +13,8 @@ define('buffer_gzip_compress_level', 4);
 define('dzcp_newsticker', true);
 define('dzcp_version_checker', true);
 
+$picformat = array("jpg", "gif", "png");
+
 //-> MySQL-Datenbankangaben
 $prefix = $sql_prefix;                      
 $db = array("host" =>           $sql_host,
@@ -22,7 +24,7 @@ $db = array("host" =>           $sql_host,
             "artikel" =>        $prefix."artikel",
             "acomments" =>      $prefix."acomments",
             "awards" =>         $prefix."awards",
-      			"away" =>           $prefix."away",
+      		"away" =>           $prefix."away",
             "banned" =>         $prefix."banned",
             "buddys" =>         $prefix."userbuddys",
             "ipcheck" =>        $prefix."ipcheck",
@@ -40,7 +42,7 @@ $db = array("host" =>           $sql_host,
             "dl_kat" =>         $prefix."download_kat",
             "events" =>         $prefix."events",
             "f_access" =>       $prefix."f_access",
-      			"f_abo" =>          $prefix."f_abo",
+      		"f_abo" =>          $prefix."f_abo",
             "f_kats" =>         $prefix."forumkats",
             "f_posts" =>        $prefix."forumposts",
             "f_skats" =>        $prefix."forumsubkats",
