@@ -80,6 +80,7 @@ $db = array("host" =>           $sql_host,
             "userstats" =>      $prefix."userstats",
             "versions" =>       $prefix."versions",
             "votes" =>          $prefix."votes",
-            "vote_results" =>   $prefix."vote_results"
+            "vote_results" =>   $prefix."vote_results",
+            'mods' =>           $prefix.'mods'
             );
 ?>
