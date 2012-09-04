@@ -56,7 +56,7 @@ function deleteMod($author, $modid)
 function existsMod($author, $modid) 
 {
     global $db;
-    return (_rows(db('SELECT id FROM ' . $db['mods'] . ' WHERE author = "' . 
+    return (_rows(db('SELECT modid FROM ' . $db['mods'] . ' WHERE author = "' . 
                        mysql_real_escape_string ($author) . '" AND modid = "' .
                        mysql_real_escape_string ($modid) . '" LIMIT 1')) == 1);
 }

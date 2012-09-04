@@ -468,7 +468,7 @@ case 'database';
       } elseif($_POST['version'] == "1.5.2") {
         update_mysql_1_5_4();
         update_mysql_1_6();
-      } elseif($_POST['version'] == "ab 1.5.4 bis 1.5.5.4") {
+      } elseif($_POST['version'] == "ab 1.5.4 bis 1.6") {
         update_mysql_1_6();
 	  }
       
