@@ -1468,9 +1468,8 @@ function update_mysql_1_6()
 	`own_version` VARCHAR(11) NOT NULL,
 	`own_date` INT(12) NOT NULL,
 	PRIMARY KEY (`id`)) ;");
-	}
     
-    db("CREATE TABLE " . $db['mods'] . " (
+        db("CREATE TABLE " . $db['mods'] . " (
       `author` varchar(32) NOT NULL,
       `modid` varchar(32) NOT NULL,
       `version` text NOT NULL,
@@ -1479,4 +1478,5 @@ function update_mysql_1_6()
       `installed` datetime NOT NULL,
       `serverversion` text NOT NULL,
       PRIMARY KEY (`author`,`modid`) )");
+	}
 ?>
