@@ -276,13 +276,24 @@ if($_GET['where'] == 'forum') {
 							OR (lower(text) LIKE lower('%".trim($suche[$x])."%') AND `text` != '')";
 		}
 	} else { 
-		$dosearch .= "WHERE (lower(titel) LIKE lower('%".up($_GET['search'])."%') AND titel != '') OR (lower(text) LIKE lower('%".up($_GET['search'])."%') AND `text` != ''";
+		$dosearch .= "WHERE ((lower(titel) LIKE lower('%".up($_GET['search'])."%') AND titel != '') OR (lower(text) LIKE lower('%".up($_GET['search'])."%') AND `text` != '')";
 	}
 	$dosearch .= ')';
 //NEWS
-    $qry = db("SELECT * FROM ".$db['news']." 
-             ".$dosearch." 
-			 ORDER BY titel ASC");
+
+//intern:
+	if(permission("intnews")) {
+   	 $qry = db("SELECT * FROM ".$db['news']." 
+     	        ".$dosearch." AND public != 0 AND intern != 0
+				 ORDER BY titel ASC");
+//nicht intern	
+	} else {
+		$qry = db("SELECT * FROM ".$db['news']." 
+     	        ".$dosearch." AND public != 0 AND intern != 1
+				 ORDER BY titel ASC");
+	}
+		 
+			 
 	while($get = _fetch($qry))
 	{
 		$class = ($color % 2) ? "contentMainFirst" : "contentMainSecond"; $color++;
