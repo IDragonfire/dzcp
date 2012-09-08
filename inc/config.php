@@ -4,16 +4,28 @@ require_once(basePath."/inc/mysql.php");
 
 //DZCP-Install default variable
 if(!isset($installation))
-$installation = false;
+    $installation = false;
 
 //DZCP Settings
 define('is_debug', false);
 define('buffer_gzip_compress', true);
 define('buffer_gzip_compress_level', 4);
+
 define('dzcp_newsticker', true);
+define('dzcp_newsticker_refresh', (15*60));
+
 define('dzcp_version_checker', true);
+define('dzcp_version_checker_refresh', (30*60));
+
+define('cache_gzip_compress', true);
+define('cache_gzip_compress_level', 2);
+
+define('xfire_preloader', true);
+define('xfire_skin', 'shadow'); //shadow,kampf,scifi,fantasy,wow,default
+define('xfire_refresh', (10*60));
 
 $picformat = array("jpg", "gif", "png");
+$passwordComponents = array("ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz","0123456789","#$@!");
 
 //-> MySQL-Datenbankangaben
 $prefix = $sql_prefix;                      

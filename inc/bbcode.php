@@ -2,11 +2,11 @@
 ## Error Reporting ##
 if(is_debug)
 {
-	ini_set('display_errors', 1);
-	error_reporting(E_ALL);
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL);
 }
 else
-	error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+    error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
 
 ## INCLUDES/REQUIRES ##
 require_once(basePath.'/inc/secure.php');
@@ -23,12 +23,14 @@ $ajaxJob = (!isset($ajaxJob) ? false : $ajaxJob);
 //-> Legt die UserID desRootadmins fest
 //-> (dieser darf bestimmte Dinge, den normale Admins nicht duerfen, z.B. andere Admins editieren)
 $rootAdmin = 1;
+
 //-> Settingstabelle auslesen
-$qry = db("SELECT * FROM ".$db['settings']."");
-$settings = _fetch($qry);
+$settings = db("SELECT * FROM ".$db['settings'],false,true);
 $prev = $settings['prev'].'_';
+
 //-> Language auslesen
 $language = (isset($_COOKIE[$prev.'language']) ? (file_exists(basePath.'/inc/lang/languages/'.$_COOKIE[$prev.'language'].'.php') ? $_COOKIE[$prev.'language'] : $settings["language"]) : $settings["language"]);
+
 //einzelne Definitionen
 $isSpider = isSpider();
 $subfolder = basename(dirname(dirname($_SERVER['PHP_SELF']).'../'));
@@ -50,101 +52,95 @@ $balken_vote_menu = $settings["balken_vote_menu"];
 $i_domain = $settings["i_domain"];
 $i_autor = $settings["i_autor"];
 $counter_start = $settings["counter_start"];
+$sdir = $settings['tmpdir'];
 $useronline = 1800;
 $reload = 3600 * 24;
 $datum = time();
 $today = date("j.n.Y");
+$picformat = array("jpg", "gif", "png");
+
 //-> Configtabelle auslesen
-$c = _fetch(db("SELECT * FROM ".$db['config']));
+$config = db("SELECT * FROM ".$db['config'],false,true);
+
 //-> Config
 $maxadmincw = 10;
 $maxfilesize = @ini_get('upload_max_filesize');
-$teamRow = $c['teamrow'];
-$allowHover = $c['allowhover'];
-$secureLogin = $c['securelogin'];
-$maxwidth = $c['maxwidth'];
-$gallery = $c['gallery'];
-$upicsize = $c['upicsize'];
-$maxgallerypics = $c['m_gallerypics'];
-$maxusergb = $c['m_usergb'];
-$maxclankasse = $c['m_clankasse'];
-$maxuserlist = $c['m_userlist'];
-$maxbanned = $c['m_banned'];
-$maxadminnews = $c['m_adminnews'];
-$maxadminartikel = $c["m_adminartikel"];
-$martikel = $c["m_artikel"];
-$maxshout = $c['m_shout'];
-$maxcomments = $c['m_comments'];
-$maxcwcomments = $c['m_cwcomments'];
-$maxarchivnews = $c['m_archivnews'];
-$maxgb = $c['m_gb'];
-$maxfthreads = $c['m_fthreads'];
-$maxcw = $c['m_clanwars'];
-$maxfposts = $c['m_fposts'];
-$maxnews = $c['m_news'];
-$maxftopics = $c['m_ftopics'];
-$maxevent = $c['m_events'];
-$maxlnews = $c['m_lnews'];
-$maxlartikel = $c['m_lartikel'];
-$maxtopdl = $c['m_topdl'];
-$maxlwars = $c['m_lwars'];
-$maxnwars = $c['m_nwars'];
-$maxlreg = $c['m_lreg'];
-$maxaway = $c['m_away'];
-$maxshoutarchiv = $c['maxshoutarchiv'];
-$shout_max_zeichen = $c['shout_max_zeichen'];
+$teamRow = $config['teamrow'];
+$allowHover = $config['allowhover'];
+$secureLogin = $config['securelogin'];
+$maxwidth = $config['maxwidth'];
+$gallery = $config['gallery'];
+$upicsize = $config['upicsize'];
+$maxgallerypics = $config['m_gallerypics'];
+$maxusergb = $config['m_usergb'];
+$maxclankasse = $config['m_clankasse'];
+$maxuserlist = $config['m_userlist'];
+$maxbanned = $config['m_banned'];
+$maxadminnews = $config['m_adminnews'];
+$maxadminartikel = $config["m_adminartikel"];
+$martikel = $config["m_artikel"];
+$maxshout = $config['m_shout'];
+$maxcomments = $config['m_comments'];
+$maxcwcomments = $config['m_cwcomments'];
+$maxarchivnews = $config['m_archivnews'];
+$maxgb = $config['m_gb'];
+$maxfthreads = $config['m_fthreads'];
+$maxcw = $config['m_clanwars'];
+$maxfposts = $config['m_fposts'];
+$maxnews = $config['m_news'];
+$maxftopics = $config['m_ftopics'];
+$maxevent = $config['m_events'];
+$maxlnews = $config['m_lnews'];
+$maxlartikel = $config['m_lartikel'];
+$maxtopdl = $config['m_topdl'];
+$maxlwars = $config['m_lwars'];
+$maxnwars = $config['m_nwars'];
+$maxlreg = $config['m_lreg'];
+$maxaway = $config['m_away'];
+$maxshoutarchiv = $config['maxshoutarchiv'];
+$shout_max_zeichen = $config['shout_max_zeichen'];
 $maxpicwidth = 90;
-$flood_forum = $c['f_forum'];
-$flood_gb = $c['f_gb'];
-$flood_membergb = $c['f_membergb'];
-$flood_shout = $c['f_shout'];
-$flood_newscom = $c['f_newscom'];
-$flood_artikelcom = $c['f_artikelcom'];
-$flood_cwcom = $c['f_cwcom'];
-$lnewsadmin = $c['l_newsadmin'];
-$lshouttext = $c['l_shouttext'];
-$lshoutnick = $c['l_shoutnick'];
-$lnews = $c['l_lnews'];
-$lartikel = $c['l_lartikel'];
-$ltopdl = $c['l_topdl'];
-$lftopics = $c['l_ftopics'];
-$llwars = $c['l_lwars'];
-$llreg = $c['l_lreg'];
-$servermenu = $c['l_servernavi'];
-$lnwars = $c['l_nwars'];
-$lnewsarchiv = $c['l_newsarchiv'];
-$lcwgegner = $c['l_clanwars'];
-$l_team = $c['l_team'];
-$lforumtopic = $c['l_forumtopic'];
-$lforumsubtopic = $c['l_forumsubtopic'];
-$maxawards = $c['m_awards'];
-$sdir = $settings['tmpdir'];
-$userip = visitorIp();
-
-unset($c);
+$flood_forum = $config['f_forum'];
+$flood_gb = $config['f_gb'];
+$flood_membergb = $config['f_membergb'];
+$flood_shout = $config['f_shout'];
+$flood_newscom = $config['f_newscom'];
+$flood_artikelcom = $config['f_artikelcom'];
+$flood_cwcom = $config['f_cwcom'];
+$lnewsadmin = $config['l_newsadmin'];
+$lshouttext = $config['l_shouttext'];
+$lshoutnick = $config['l_shoutnick'];
+$lnews = $config['l_lnews'];
+$lartikel = $config['l_lartikel'];
+$ltopdl = $config['l_topdl'];
+$lftopics = $config['l_ftopics'];
+$llwars = $config['l_lwars'];
+$llreg = $config['l_lreg'];
+$servermenu = $config['l_servernavi'];
+$lnwars = $config['l_nwars'];
+$lnewsarchiv = $config['l_newsarchiv'];
+$lcwgegner = $config['l_clanwars'];
+$l_team = $config['l_team'];
+$lforumtopic = $config['l_forumtopic'];
+$lforumsubtopic = $config['l_forumsubtopic'];
+$maxawards = $config['m_awards'];
+unset($config);
 
 if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pwd']) && empty($_SESSION['id']))
 {
-  $_SESSION['id']   = intval($_COOKIE[$prev.'id']);
-  $_SESSION['pwd']  = $_COOKIE[$prev.'pwd'];
-  $_SESSION['ip']   = visitorIp();
-
-  if(data(intval($_COOKIE[$prev.'id']), "ip") != $_SESSION['ip'])
-  {
-    $qry = db("UPDATE ".$db['userstats']."
-               SET `logins` = logins+1
-               WHERE user = '".intval($_COOKIE[$prev.'id'])."'");
-
-    $qry = db("UPDATE ".$db['users']."
-      				 SET `online` = 1,
-                   `sessid` = '".session_id()."',
-                   `ip`     = '".mysql_real_escape_string($userip)."'
-		    		   WHERE id = ".intval($_COOKIE[$prev.'id']));
-    $_SESSION['lastvisit'] = data(intval($_COOKIE[$prev.'id']), "time");
-  }
-
-  if(empty($_SESSION['lastvisit']))
-    $_SESSION['lastvisit'] = data(intval($_COOKIE[$prev.'id']), "time");
+    $_SESSION['id']  = intval($_COOKIE[$prev.'id']);
+    $_SESSION['pwd'] = $_COOKIE[$prev.'pwd'];
+    $_SESSION['ip']  = VisitorIP();
+    
+    if(data(intval($_COOKIE[$prev.'id']), "ip") != $_SESSION['ip'])
+    {
+        db("UPDATE ".$db['userstats']." SET `logins` = logins+1 WHERE user = '".intval($_COOKIE[$prev.'id'])."'");
+        db("UPDATE ".$db['users']." SET `online` = 1, `sessid` = '".session_id()."', `ip` = '".VisitorIP()."' WHERE id = ".intval($_COOKIE[$prev.'id']));
+        $_SESSION['lastvisit'] = data(intval($_COOKIE[$prev.'id']), "time");
+    }
+    
+    if(empty($_SESSION['lastvisit']))
+        $_SESSION['lastvisit'] = data(intval($_COOKIE[$prev.'id']), "time");
 }
 
 $userid = userid();
@@ -152,70 +148,59 @@ $chkMe = checkme();
 
 if($chkMe == "unlogged")
 {
-  $_SESSION['id']        = '';
-  $_SESSION['pwd']       = '';
-  $_SESSION['ip']        = '';
-  $_SESSION['lastvisit'] = '';
+    $_SESSION['id']        = '';
+    $_SESSION['pwd']       = '';
+    $_SESSION['ip']        = '';
+    $_SESSION['lastvisit'] = '';
 }
 
 //-> Auslesen der UserID
 function userid()
 {
-  global $db;
-    $qry = db("SELECT id FROM ".$db['users']."
-               WHERE id = '".$_SESSION['id']."'
-               AND pwd = '".$_SESSION['pwd']."'");
-    $get = _fetch($qry);
-
-  return $get['id'];
+    global $db;
+  
+    if(empty($_SESSION['id']) || empty($_SESSION['pwd']))
+        return false;
+      
+    $get = db("SELECT id FROM ".$db['users']." WHERE id = '".$_SESSION['id']."' AND pwd = '".$_SESSION['pwd']."'",false,true);
+    return $get['id'];
 }
 
 //-> Templateswitch
 $files = get_files('../inc/_templates_/',true,false);
-$folder = $files[0];
 if(isset($_COOKIE[$prev.'tmpdir']) && $_COOKIE[$prev.'tmpdir'] != NULL)
-{
-  if(file_exists(basePath."/inc/_templates_/".$_COOKIE[$prev.'tmpdir'])) $tmpdir = $_COOKIE[$prev.'tmpdir'];
-  else $tmpdir = $folder;
-} else {
-  if(file_exists(basePath."/inc/_templates_/".$sdir)) $tmpdir = $sdir;
-  else $tmpdir = $folder;
-}
+    $tmpdir = (file_exists(basePath."/inc/_templates_/".$_COOKIE[$prev.'tmpdir']."/index.html") ? $_COOKIE[$prev.'tmpdir'] : $files[0]);
+else 
+    $tmpdir = (file_exists(basePath."/inc/_templates_/".$sdir."/index.html") ? $sdir : $folder);
+
 $designpath = '../inc/_templates_/'.$tmpdir;
 
 //-> Languagefiles einlesen
 function lang($lng,$pfad='')
 {
-  global $charset;
-  if(!file_exists(basePath."/inc/lang/languages/".$lng.".php"))
-  {
-    $files = get_files(basePath.'/inc/lang/languages/',false,true,array('php'));
-    $lng = str_replace('.php','',$files[0]);
-  }
+	if(!file_exists(basePath."/inc/lang/languages/".$lng.".php"))
+	{
+		$files = get_files(basePath.'/inc/lang/languages/',false,true,array('php'));
+		$lng = str_replace('.php','',$files[0]);
+	}
 
-  include(basePath."/inc/lang/global.php");
-  include(basePath."/inc/lang/languages/".$lng.".php");
+	include(basePath."/inc/lang/global.php");
+	include(basePath."/inc/lang/languages/".$lng.".php");
+	header("Content-type: text/html; charset="._charset);
 }
 
 //-> Sprachdateien auflisten
 function languages()
 {
-	global $picformat;
-	
 	$lang="";
 	$files = get_files('../inc/lang/languages/',false,true,array('php'));
 	for($i=0;$i<=count($files)-1;$i++)
 	{
 		$file = str_replace('.php','',$files[$i]);
 		$upFile = strtoupper(substr($file,0,1)).substr($file,1);
-		foreach($picformat AS $end)
-		{
-			if(file_exists(basePath.'/inc/lang/flaggen/'.$file.'.'.$end))
-			{
-				$lang .= '<a href="../user/?action=language&amp;set='.$file.'"><img src="../inc/lang/flaggen/'.$file.'.'.$end.'" alt="'.$upFile.'" title="'.$upFile.'" class="icon" /></a> ';
-				break;
-			}
-		}
+
+		if(file_exists('../inc/lang/flaggen/'.$file.'.gif'))
+			$lang .= '<a href="../user/?action=language&amp;set='.$file.'"><img src="../inc/lang/flaggen/'.$file.'.gif" alt="'.$upFile.'" title="'.$upFile.'" class="icon" /></a> ';
 	}
 
 	return $lang;
@@ -223,7 +208,7 @@ function languages()
 
 //-> Userspezifiesche Dinge
 $u_b1 = ""; $u_b2 = "";
-if(isset($userid) && $ajaxJob != true)
+if(isset($userid) && $ajaxJob != true && $userid != false)
 {
 	db("UPDATE ".$db['userstats']."
 	SET `hits` = hits+1, `lastvisit` = '".((int)$_SESSION['lastvisit'])."' 
@@ -777,7 +762,7 @@ function spChars($txt)
 }
 
 //-> Funktion um sauber in die DB einzutragen
-function up($txt, $bbcode=0, $charset='')
+function up($txt, $bbcode=0, $charset=_charset)
 {
   $txt = str_replace("& ","&amp; ",$txt);
   $txt = str_replace("\"","&#34;",$txt);
@@ -795,17 +780,14 @@ function up($txt, $bbcode=0, $charset='')
 //-> Funktion um einer id einen Nick zuzuweisen
 function nick_id($tid)
 {
-  global $db;
-    $qry = db("SELECT nick FROM ".$db['users']."
-               WHERE id = '".$tid."'");
-    $get = _fetch($qry);
-
-  return $get['nick'];
+    global $db;
+    $get = db("SELECT nick FROM ".$db['users']." WHERE id = '".$tid."'",false,true);
+    return $get['nick'];
 }
 //-> Funktion um ein Datenbankinhalt zu highlighten
 function highlight($word)
 {
-  if(substr(phpversion(),0,1) == 5) $word = str_ireplace($word,'<span class="fontRed">'.$word.'</span>',$word);
+  if(is_php('5.0.0')) $word = str_ireplace($word,'<span class="fontRed">'.$word.'</span>',$word);
   else $word = str_replace($word,'<span class="fontRed">'.$word.'</span>',$word);
 
   return $word;
@@ -813,9 +795,9 @@ function highlight($word)
 //-> Counter updaten
 function updateCounter()
 {
-  global $db,$reload,$today,$datum,$userip;
+  global $db,$reload,$today,$datum;
     $ipcheck = db("SELECT id,ip,datum FROM ".$db['c_ips']."
-                   WHERE ip = '".mysql_real_escape_string($userip)."'
+                   WHERE ip = '".VisitorIP()."'
                    AND FROM_UNIXTIME(datum,'%d.%m.%Y') = '".date("d.m.Y")."'");
     $get = _fetch($ipcheck);
 
@@ -831,7 +813,7 @@ function updateCounter()
       if($sperrzeit <= time())
       {
         $qry = db("DELETE FROM ".$db['c_ips']."
-                   WHERE ip = '".mysql_real_escape_string($userip)."'");
+                   WHERE ip = '".VisitorIP()."'");
         if(_rows($count))
         {
           $qry = db("UPDATE ".$db['counter']."
@@ -843,7 +825,7 @@ function updateCounter()
                          `today`    = '".$today."'");
         }
         $qry = db("INSERT INTO ".$db['c_ips']."
-                   SET `ip`     = '".mysql_real_escape_string($userip)."',
+                   SET `ip`     = '".VisitorIP()."',
                        `datum`  = '".((int)$datum)."'");
       }
     } else {
@@ -858,7 +840,7 @@ function updateCounter()
                        `today`    = '".$today."'");
       }
       $qry = db("INSERT INTO ".$db['c_ips']."
-                 SET `ip`     = '".mysql_real_escape_string($userip)."',
+                 SET `ip`     = '".VisitorIP()."',
                      `datum`  = '".((int)$datum)."'");
     }
 }
@@ -881,7 +863,7 @@ function update_maxonline()
 //-> Prueft, wieviele Besucher gerade online sind
 function online_guests($where='')
 {
-  global $db,$useronline,$userip,$chkMe,$isSpider;
+  global $db,$useronline,$chkMe,$isSpider;
   if(!$isSpider)
   {
     if($chkMe == 'unlogged') $logged = 0;
@@ -891,7 +873,7 @@ function online_guests($where='')
                WHERE online < ".time());
 
     $qry = db("REPLACE INTO ".$db['c_who']."
-               SET `ip`       = '".$userip."',
+               SET `ip`       = '".VisitorIP()."',
                    `online`   = '".((int)(time()+$useronline))."',
                    `whereami` = '".up($where)."',
                    `login`    = '".((int)$logged)."'");
@@ -901,6 +883,7 @@ function online_guests($where='')
     return $count;
   }
 }
+
 //-> Prueft, wieviele registrierte User gerade online sind
 function online_reg()
 {
@@ -908,28 +891,36 @@ function online_reg()
     $count = cnt($db['users'], " WHERE time+'".$useronline."'>'".time()."' AND online = '1'");
   return $count;
 }
+
 //-> Prueft den Zahlstatus eines Users (Clankasse)
 function paycheck($tocheck)
 {
   if($tocheck >= time()) return TRUE;
   else return FALSE;
 }
+
 //-> Prueft, ob User eingeloggt ist und wenn ja welches Level er besitzt
 function checkme()
 {
-  global $db,$userid;
+    global $db,$userid;
+    
+    if(!$userid)
+        return "unlogged";
+    
     $qry = db("SELECT level FROM ".$db['users']."
                WHERE id = '".intval($userid)."'
                AND pwd = '".$_SESSION['pwd']."'
                AND ip = '".mysql_real_escape_string($_SESSION['ip'])."'");
+    
     if(_rows($qry))
     {
-      $get = _fetch($qry);
-      return $get['level'];
-    } else {
-      return "unlogged";
-    }
+        $get = _fetch($qry);
+        return $get['level'];
+    } 
+    else 
+        return "unlogged";
 }
+
 //-> Prueft, ob ein User diverse Rechte besitzt
 function permission($check)
 {
@@ -966,17 +957,14 @@ function check_msg()
       return show("user/new_msg", array("new" => _site_msg_new));
     }
 }
+
 //-> Prueft sicherheitsrelevante Gegebenheiten im Forum
 function forumcheck($tid, $what)
 {
-  global $db;
-    $qry = db("SELECT ".$what." FROM ".$db['f_threads']."
-               WHERE id = '".intval($tid)."'
-               AND ".$what." = '1'");
-
-    if(_rows($qry)) return TRUE;
-    else return FALSE;
+    global $db;
+    return (db("SELECT ".$what." FROM ".$db['f_threads']." WHERE id = '".intval($tid)."' AND ".$what." = '1'",true) >= 1);
 }
+
 //-> Prft, ob User ein Member des Squads ist
 function squadmember($squad_id)
 {
@@ -1083,28 +1071,16 @@ function cw_result_details($punkte, $gpunkte)
 //-> Flaggen ausgeben
 function flag($code)
 {
-    global $picformat;
-    foreach($picformat AS $end)
-    {
-        if(file_exists(basePath.'/inc/images/flaggen/'.$code.'.'.$end))
-            return'<img src="../inc/images/flaggen/'.$code.'.'.$end.'" alt="" style="vertical-align:middle" />';
-    }
-      
-    return '<img src="../inc/images/flaggen/nocountry.gif" alt="" style="vertical-align:middle" />';
+  if(!file_exists(basePath."/inc/images/flaggen/".$code.".gif"))
+    return '<img src="../inc/images/flaggen/nocountry.gif" alt="" class="icon" />';
+  else return'<img src="../inc/images/flaggen/'.$code.'.gif" alt="" class="icon" />';
 }
-
 function rawflag($code)
 {
-    global $picformat;
-    foreach($picformat AS $end)
-    {
-        if(file_exists(basePath.'/inc/images/flaggen/'.$code.'.'.$end))
-            return '<img src=../inc/images/flaggen/'.$code.'.'.$end.' alt= class=icon />';
-    }
-      
+  if(!file_exists(basePath."/inc/images/flaggen/".$code.".gif"))
     return '<img src=../inc/images/flaggen/nocountry.gif alt= class=icon />';
+  else return'<img src=../inc/images/flaggen/'.$code.'.gif alt= class=icon />';
 }
-
 //-> Liste der Laender ausgeben
 function show_countrys($i="")
 {
@@ -1129,20 +1105,10 @@ function links($hp)
   if(!empty($hp))
   {
 	  $link = str_replace("http://","",$hp);
-      return 'http://'.$link;
+    return 'http://'.$link;
   }
 }
-//-> Funktion um Passwoerter generieren zu lassen
-function mkpwd()
-{
-    $chars = '1234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $pw = '';
-    $len = strlen($chars) - 1;
-    for($i = 0; $i < 10; $i++) {
-        $pw .= $chars{rand(0, $len)};
-    }
-    return $pw;
-}
+
 //-> set cookies
 function set_cookie($name, $value = '', $path = '/', $secure = false, $http_only = true)
 {
@@ -1179,28 +1145,33 @@ function checkpwd($user, $pwd)
 //-> Infomeldung ausgeben
 function info($msg, $url, $timeout = 5)
 {
-	if(config('direct_refresh'))
-		return header('Location: '.str_replace('&amp;', '&', $url));
+  global $c;
 
-	$u = parse_url($url); $parts = '';
-	$u['query'] = str_replace('&amp;', '&', $u['query']);
-	
-	foreach(explode('&', $u['query']) as $p)
-	{
-		$p = explode('=', $p);
-		if(count($p) == 2) 
-			$parts .= '<input type="hidden" name="'.$p[0].'" value="'.$p[1].'" />'."\r\n";
-	}
+  if($c['direct_refresh'] == 1) 
+      return header('Location: '.str_replace('&amp;', '&', $url));
 
-	return show("errors/info", array("msg" => $msg,
-									 "url" => (array_key_exists('path',$u) ? $u['path'] : ''),
-									 "rawurl" => html_entity_decode($url),
-									 "parts" => $parts,
-									 "timeout" => $timeout,
-									 "info" => _info,
-									 "weiter" => _weiter,
-									 "backtopage" => _error_fwd));
+  $u = parse_url($url); $parts = '';
+  if(array_key_exists('query',$u) && !empty($u['query']))
+  {
+      $u['query'] = str_replace('&amp;', '&', $u['query']);
+      foreach(explode('&', $u['query']) as $p)
+      {
+          $p = explode('=', $p);
+          if(count($p) == 2) 
+              $parts .= '<input type="hidden" name="'.$p[0].'" value="'.$p[1].'" />'."\r\n";
+      }
+  }
+
+  return show("errors/info", array("msg" => $msg,
+                                   "url" => $u['path'],
+                                   "rawurl" => html_entity_decode($url),
+                                   "parts" => $parts,
+                                   "timeout" => $timeout,
+                                   "info" => _info,
+                                   "weiter" => _weiter,
+                                   "backtopage" => _error_fwd));
 }
+
 //-> Errormmeldung ausgeben
 function error($error, $back=1)
 {
@@ -1240,19 +1211,30 @@ function gallery_size($img="")
   $s = getimagesize(basePath."/gallery/images/".$img);
   return "<a href=\"../gallery/images/".$img."\" rel=\"lightbox[gallery_".intval($img)."]\"><img src=\"../thumbgen.php?img=gallery/images/".$img."\" alt=\"\" /></a>";
 }
-
+//-> URL wird auf Richtigkeit ueberprueft
+function check_url($url)
+{
+  if($url) $fp = @fopen ($url, "r");
+  if($fp)
+  {
+    return true;
+    @fclose($fp);
+  } else {
+    return false;
+  }
+}
 //-> Blaetterfunktion
 function nav($entrys, $perpage, $urlpart, $icon=true)
 {
-    global $page;
-	  if($perpage == 0)  return "&#xAB; <span class=\"fontSites\">0</span> &#xBB;";
+    global $page, $_SERVER;
+
       if($icon == true) $icon = '<img src="../inc/images/multipage.gif" alt="" class="icon" /> '._seiten;
 
       if($entrys <= $perpage) return $icon.' &#xAB; <span class="fontSites">1</span> &#xBB;';
       if(!$page || $page < 1) $page = 2;
 
       $pages = ceil($entrys/$perpage);
-      $result = ""; $resultm = ''; $first = '';
+      $result = "";
 
       if(($page-5) <= 2 && $page != 1)
         $first = '<a class="sites" href="'.$urlpart.'&amp;page='.($page-1).'">&#xAB;</a><span class="fontSitesMisc">&#xA0;</span> <a  class="sites" href="'.$urlpart.'&amp;page=1">1</a> ';
@@ -1271,7 +1253,6 @@ function nav($entrys, $perpage, $urlpart, $icon=true)
         if($i == $page) $result .= '<span class="fontSites">'.$i.'</span><span class="fontSitesMisc">&#xA0;</span>';
         else $result .= '<a class="sites" href="'.$urlpart.'&amp;page='.$i.'">'.$i.'</a><span class="fontSitesMisc">&#xA0;</span>';
       }
-
       for($i=($page-5);$i<=($page-1);$i++)
       {
         if($i >= 2) $resultm .= '<a class="sites" href="'.$urlpart.'&amp;page='.$i.'">'.$i.'</a> ';
@@ -1491,27 +1472,7 @@ function perm_sendnews($uID)
 	 if(_rows($user) || _rows($team)) return true;
 	 else return false;
 }
-//-> selektiert die SteamID zum Abgleich mit anderen Daten
-function steamid($nick,$steamid)
-{
-  global $db;
-    $steamid = str_replace('STEAM_','',$steamid);
 
-    $qry = db("SELECT id,nick,steamid
-               FROM ".$db['users']."
-               WHERE steamid = '".$steamid."'");
-    if(_rows($qry))
-    {
-      $get = _fetch($qry);
-
-      $result = show(_user_link, array("id" => $get['id'],
-                                       "nick" => $get['nick'],
-                                       "country" => flag($get['id'])));
-    } else {
-      $result = re($nick);
-    }
-  return $result;
-}
 //-> Checkt ob ein Ereignis neu ist
 function check_new($datum,$new = "",$datum2 = "")
 {
@@ -1532,12 +1493,14 @@ function check_new($datum,$new = "",$datum2 = "")
 //-> DropDown Mens Date/Time
 function dropdown($what, $wert, $age = 0)
 {
+  $return='';
   if($what == "day")
   {
     if($age == 1)
     {
       $return .='<option value="" class="dropdownKat">'._day.'</option>'."\n";
     }
+    
     for($i=1; $i<32; $i++)
     {
       if($i==$wert) $return .= "<option value=\"".$i."\" selected=\"selected\">".$i."</option>\n";
@@ -1638,17 +1601,15 @@ function sgames($game = '')
 
   return $games;
 }
+
 //Umfrageantworten selektieren
 function voteanswer($what, $vid)
 {
-  global $db;
-  $qry = db("SELECT * FROM ".$db['vote_results']."
-             WHERE what = '".up($what)."'
-             AND vid = '".$vid."'");
-  $get = _fetch($qry);
-
-  return $get['sel'];
+    global $db;
+    $get = db("SELECT * FROM ".$db['vote_results']." WHERE what = '".up($what)."' AND vid = '".$vid."'",false,true);
+    return $get['sel'];
 }
+
 //Profilfelder konvertieren
 function conv($txt)
 {
@@ -1762,23 +1723,21 @@ function getrank($tid, $squad="", $profil=0)
       }
     }
 }
+
 //-> Session fuer den letzten Besuch setzen
 function set_lastvisit()
 {
-  global $db,$useronline,$userid;
+    global $db,$useronline,$userid;
     if($userid)
     {
-      $qry = db("SELECT id FROM ".$db['users']."
-                 WHERE id = ".intval($userid)."
-                 AND time+'".$useronline."'>'".time()."'");
-
-      if(!_rows($qry))
-      {
-        $time = data($userid, "time");
-        $_SESSION['lastvisit'] = $time;
-      }
+        if(!db("SELECT id FROM ".$db['users']." WHERE id = ".intval($userid)." AND time+'".$useronline."'>'".time()."'",true))
+        {
+            $time = data($userid, "time");
+            $_SESSION['lastvisit'] = $time;
+        }
     }
 }
+
 //-> Checkt welcher User gerade noch online ist
 function onlinecheck($tid)
 {
@@ -1831,30 +1790,7 @@ function pfields_name($name)
 
   return $name;
 }
-//-> Checkt versch. Dinge anhand der Hostmaske eines Users
-function ipcheck($what,$time = "")
-{
-  global $db,$userip;
-    $qry = db("SELECT time,what FROM ".$db['ipcheck']."
-               WHERE what = '".$what."'
-               AND ip = '".$userip."'
-               ORDER BY time DESC");
-    $get = _fetch($qry);
 
-    if(preg_match("#vid#", $get['what'])) return true;
-    else {
-      if($get['time']+$time<time())
-      {
-        $del = db("DELETE FROM ".$db['ipcheck']."
-                   WHERE what = '".$what."'
-                   AND ip = '".$userip."'
-                   AND time+'".$time."'<'".time()."'");
-      }
-
-      if($get['time']+$time>time()) return true;
-      else return false;
-    }
-}
 //-> Gibt die Tageszahl eines Monats aus
 function days_in_month($month, $year)
 {
@@ -1896,8 +1832,6 @@ function navi_name($name)
 //RSS News Feed erzeugen
 function convert_feed($txt)
 {
-  global $charset;
-
   $txt = stripslashes($txt);
   $txt = str_replace("","Ae",$txt);
   $txt = str_replace("","ae",$txt);
@@ -1911,7 +1845,7 @@ function convert_feed($txt)
   $txt = str_replace("&uuml;","ue",$txt);
   $txt = str_replace("&Ouml;","Oe",$txt);
   $txt = str_replace("&ouml;","oe",$txt);
-  $txt = htmlentities($txt, ENT_QUOTES, $charset);
+  $txt = htmlentities($txt, ENT_QUOTES, _charset);
   $txt = str_replace("&amp;","&",$txt);
   $txt = str_replace("&lt;","<",$txt);
   $txt = str_replace("&gt;",">",$txt);
@@ -1924,18 +1858,16 @@ function convert_feed($txt)
   $txt = str_replace("&","&amp;",$txt);
   $txt = str_replace("", "\"",$txt);
   $txt = str_replace("", "\"",$txt);
-
   $txt = strip_tags($txt);
-
   return $txt;
 }
 function feed()
 {
-  global $db,$pagetitle,$clanname,$charset;
+  global $db,$pagetitle,$clanname;
     $host = $_SERVER['HTTP_HOST'];
     $pfad = preg_replace("#^(.*?)\/(.*?)#Uis","$1",dirname($_SERVER['PHP_SELF']));
 
-    $feed = '<?xml version="1.0" encoding="'.$charset.'" ?>';
+    $feed = '<?xml version="1.0" encoding="'._charset.'" ?>';
     $feed .= "\r\n";
     $feed .= '<rss version="0.91">';
     $feed .= "\r\n";
@@ -2038,6 +1970,7 @@ function useravatar($userid, $width=100,$height=100)
 
   return $pic;
 }
+
 // Userpic für Hoverinformationen ausgeben
 function hoveruserpic($userid, $width=170,$height=210)
 {
@@ -2056,18 +1989,20 @@ function hoveruserpic($userid, $width=170,$height=210)
 
   return $pic;
 }
+
 // Adminberechtigungen ueberpruefen
 function admin_perms($userid)
 {
   global $db,$chkMe;
 
-    if(empty($userid)) return false;
+    if(empty($userid)) 
+        return false;
 
    // no need for these admin areas
     $e = array('gb', 'shoutbox', 'editusers', 'votes', 'contact', 'joinus', 'intnews', 'forum', 'gs_showpw');
 
    // check user permission
-    $c = _fetch(db("SELECT * FROM ".$db['permissions']." WHERE user = '".intval($userid)."'"));
+    $c = db("SELECT * FROM ".$db['permissions']." WHERE user = '".intval($userid)."'",false,true);
     if(!empty($c))
     {
       foreach($c AS $v => $k)
@@ -2103,19 +2038,7 @@ function admin_perms($userid)
 
   return ($chkMe == 4) ? true : false;
 }
-//-> blacklist um spider/crawler von der Besucherstatistik auszuschliessen
-function isSpider()
-{
-  $uagent = $_SERVER['HTTP_USER_AGENT'];
-  $ex = explode("\n", file_get_contents(basePath.'/inc/_spiders.txt'));
-  for($i=0;$i<=count($ex)-1;$i++)
-  {
-    if(stristr($uagent, trim($ex[$i])))
-      return true;
-  }
 
-  return false;
-}
 //-> filter placeholders
 function pholderreplace($pholder)
 {
@@ -2141,12 +2064,7 @@ function pholderreplace($pholder)
 
   return $pholder;
 }
-//-> Ladezeit
-function generatetime()
-{
-  list($usec, $sec) = explode(" ",microtime());
-  return ((float)$usec + (float)$sec);
-}
+
 //-> Rechte abfragen
 function getPermissions($checkID = 0, $pos = 0)
 {
@@ -2180,6 +2098,7 @@ function getPermissions($checkID = 0, $pos = 0)
 
   return $p;
 }
+
 //-> interne Foren-Rechte abfragen
 function getBoardPermissions($checkID = 0, $pos = 0)
 {
@@ -2210,25 +2129,61 @@ function getBoardPermissions($checkID = 0, $pos = 0)
 
   return $i_forum;
 }
+
+//-> Show Xfire Status
+function xfire($username='')
+{
+    if(empty($username))
+        return '-';
+    
+    switch(xfire_skin)
+    {
+        case 'shadow': $skin = 'sh'; break;
+        case 'kampf': $skin = 'co'; break;
+        case 'scifi': $skin = 'sf'; break;
+        case 'fantasy': $skin = 'os'; break;
+        case 'wow': $skin = 'wow'; break;
+        default: $skin = 'bg'; break;
+    }
+    
+    if(xfire_preloader)
+    {
+        if(cache('xfire_'.$username, xfire_refresh, 'c'))
+        {
+            if(!$img_stream = fileExists('http://de.miniprofile.xfire.com/bg/'.$skin.'/type/0/'.$username.'.png'))
+                return show(_xfireicon,array('username' => $username, 'img' => 'http://de.miniprofile.xfire.com/bg/'.$skin.'/type/0/'.$username.'.png'));
+            
+            cache('xfire_'.$username, $img_stream, 'w');
+            return show(_xfireicon,array('username' => $username, 'img' => 'data:image/png;base64,'.base64_encode($img_stream)));
+        }
+        else
+            return show(_xfireicon,array('username' => $username, 'img' => 'data:image/png;base64,'.base64_encode(cache('xfire_'.$username, null, 'r'))));
+    }
+       
+    return show(_xfireicon,array('username' => $username, 'img' => 'http://de.miniprofile.xfire.com/bg/'.$skin.'/type/0/'.$username.'.png'));
+}
+
 //-> Neue Languages einbinden, sofern vorhanden
 if($l = get_files(basePath.'/inc/additional-languages/'.$language.'/',false,true,array('php')))
 {
 	foreach($l AS $languages)
 	{ include(basePath.'/inc/additional-languages/'.$language.'/'.$languages); }
 }
+
 //-> Neue Funktionen einbinden, sofern vorhanden
 if($f = get_files(basePath.'/inc/additional-functions/',false,true,array('php')))
 {
-  foreach($f AS $func)
-  { include(basePath.'/inc/additional-functions/'.$func); }
+    foreach($f AS $func)
+    { include(basePath.'/inc/additional-functions/'.$func); }
 }
+
 //-> Navigation einbinden
 include_once(basePath.'/inc/menu-functions/navi.php');
 
 //-> Ausgabe des Indextemplates
 function page($index,$title,$where,$time,$wysiwyg='',$index_templ=false)
 {
-	  global $db,$userid,$userip,$tmpdir,$secureLogin,$chkMe,$charset;
+	  global $db,$userid,$userip,$tmpdir,$secureLogin,$chkMe;
 	  global $u_b1,$u_b2,$designpath,$maxwidth,$language,$cp_color,$copyright;
 	  
 	// installer vorhanden?
@@ -2303,6 +2258,7 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ=false)
 	    $rss = $clanname;
 	    $dir = $designpath;
 	    $title = re(strip_tags($title));
+		$charset = _charset;
 	
 	    $index = empty($index) ? '' : (empty($check_msg) ? '' : $check_msg).'<table class="mainContent" cellspacing="1" style="margin-top:0">'.$index.'</table>';
 	
