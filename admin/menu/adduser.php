@@ -137,11 +137,7 @@ if(_adminMenu != 'true') exit;
 
       $insert_id = mysql_insert_id();
 
-      $protocol = "createuser(".$_SESSION['id']."_".$insert_id.")";
-      $upd = db("INSERT INTO ".$db['ipcheck']."
-                 SET `ip`   = '".mysql_real_escape_string($userip)."',
-                     `what` = '".$protocol."',
-                     `time` = '".((int)time())."'");
+	  wire_ipcheck("createuser(".$_SESSION['id']."_".$insert_id.")");
                        
     // permissions
 	  if(!empty($_POST['perm']))

@@ -13,7 +13,7 @@ $dir = "teamspeak";
 ## SECTIONS ##
   if(function_exists(fopen))
   {
-    if(time() - @filemtime(basePath.'/__cache/teamspeak_'.$language.'.html') > $c['cache_teamspeak'] || isset($_GET['cID']))
+    if(cache('teamspeak_'.$language, config('cache_teamspeak'), 'c') || isset($_GET['cID']))
     {    
     switch($settings['ts_version']):
     default; case '2';
@@ -286,12 +286,10 @@ $dir = "teamspeak";
                                              "userstats" => $userstats));
     break;
     endswitch;
-    
-      $fp = @fopen(basePath.'/__cache/teamspeak_'.$language.'.html', 'w');
-            @fwrite($fp, $index);
-      @fclose($fp);
+	
+	cache('teamspeak_'.$language, $index, 'w');
     } else {
-      $index = @file_get_contents(basePath.'/__cache/teamspeak_'.$language.'.html');
+      $index = cache('teamspeak_'.$language, null, 'r');
     }
   } else {
     $index = error(_fopen,1);

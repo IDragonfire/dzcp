@@ -161,17 +161,12 @@ case 'do';
     {
       $index = error(_vote_no_answer);
     } else {
-      $qry = db("SELECT * FROM ".$db['votes']."
-                 WHERE id = '".intval($_GET['id'])."'");
-      $get = _fetch($qry);
+      $get = db("SELECT * FROM ".$db['votes']." WHERE id = '".intval($_GET['id'])."'",false,true);
   
       if($get['intern'] == 1)
       {
         $vid = "vid_".$_GET['id'];
-        $check = db("SELECT * FROM ".$db['ipcheck']."
-                     WHERE what = '".$vid."' ");
-        $ipcheck = _fetch($check);
-  
+        $ipcheck = db("SELECT * FROM ".$db['ipcheck']." WHERE what = '".$vid."'",false,true);
         if($ipcheck['ip'] == $userid)
         {
           $index = error(_error_voted_again,1);
@@ -187,16 +182,8 @@ case 'do';
                      SET `stimmen` = stimmen+1
                      WHERE id = '".intval($_POST['vote'])."'");
   
-          $qry = db("INSERT INTO ".$db['ipcheck']."
-                     SET `ip`   = '".$userid."',
-                         `what` = '".$vid."',
-                         `time` = '".time()."'");
-          
-          $vid2 = "vid(".$_GET['id'].")";
-          $ins2 = db("INSERT INTO ".$db['ipcheck']."
-                      SET `ip`   = '".mysql_real_escape_string($userip)."',
-                          `what` = '".$vid2."',
-                          `time` = '".time()."'");
+          wire_ipcheck($vid);
+          wire_ipcheck("vid(".$_GET['id'].")");
                           
           if(!isset($_GET['ajax'])) $index = info(_vote_successful, "?action=show&amp;id=".$_GET['id']."");
         }
@@ -212,23 +199,15 @@ case 'do';
                           WHERE user = '".$userid."'");
           } else $time = "0";
   
-          $qry = db("UPDATE ".$db['vote_results']."
+           db("UPDATE ".$db['vote_results']."
                      SET `stimmen` = stimmen+1
                      WHERE id = '".intval($_POST['vote'])."'");
 
-          $vid = "vid_".$_GET['id']."";
-          $ins = db("INSERT INTO ".$db['ipcheck']."
-                     SET `ip`   = '".mysql_real_escape_string($userip)."',
-                         `what` = '".$vid."',
-                         `time` = '".time()."'");
-                         
-          $vid2 = "vid(".$_GET['id'].")";
-          $ins2 = db("INSERT INTO ".$db['ipcheck']."
-                      SET `ip`   = '".mysql_real_escape_string($userip)."',
-                          `what` = '".$vid2."',
-                          `time` = '".time()."'");
+          wire_ipcheck("vid_".$_GET['id']);
+          wire_ipcheck("vid(".$_GET['id'].")");
 
-          if(!isset($_GET['ajax'])) $index = info(_vote_successful, "?action=show&amp;id=".$_GET['id']."");
+          if(!isset($_GET['ajax'])) 
+			$index = info(_vote_successful, "?action=show&amp;id=".$_GET['id']."");
         }
         if(isset($userid)) $cookie = $userid;
         else $cookie = "voted";
@@ -270,17 +249,8 @@ case 'do';
                    SET `stimmen` = stimmen+1
                    WHERE id = '".intval($_POST['vote'])."'");
 
-        $vid = "vid_".$_GET['id']."";
-        $ins = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".mysql_real_escape_string($userip)."',
-                       `what` = '".$vid."',
-                       `time` = '".time()."'");
-                       
-        $vid2 = "vid(".$_GET['id'].")";
-        $ins2 = db("INSERT INTO ".$db['ipcheck']."
-                    SET `ip`   = '".mysql_real_escape_string($userip)."',
-                        `what` = '".$vid2."',
-                        `time` = '".time()."'");
+		wire_ipcheck("vid_".$_GET['id']);
+        wire_ipcheck("vid(".$_GET['id'].")");
 
         if(!isset($_GET['fajax'])) $index = info(_vote_successful, "forum/?action=showthread&amp;kid=".$_POST['kid']."&amp;id=".$_POST['fid']."");
       }
