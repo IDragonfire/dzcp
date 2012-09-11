@@ -37,6 +37,7 @@ case 'login';
 		      set_cookie($prev."pwd",$get['pwd']);
         }
 
+		$userip = visitorIp();
         $_SESSION['id']         = $get['id'];
         $_SESSION['pwd']        = $get['pwd'];
         $_SESSION['lastvisit']  = $get['time'];
@@ -49,29 +50,20 @@ case 'login';
         $upd = db("UPDATE ".$db['users']."
 		    	 				 SET `online` = '1',
                        `sessid` = '".session_id()."',
-                       `ip`     = '".mysql_real_escape_string($userip)."'
+                       `ip`     = '".$userip."'
 						       WHERE id = ".$get['id']);
 
-        $protocol = "login(".$get['id'].")";
-        $upd = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".mysql_real_escape_string($userip)."',
-                       `what` = '".$protocol."',
-                       `time` = '".((int)time())."'");
+        wire_ipcheck("login(".$get['id'].")");
 
       	header("Location: ?action=userlobby");
       }	else {
-        $qry = db("SELECT id FROM ".$db['users']."
-  		    	    	 WHERE user = '".up($_POST['user'])."'");
+        $qry = db("SELECT id FROM ".$db['users']." WHERE user = '".up($_POST['user'])."'");
   	    if(_rows($qry))
         {
           $get = _fetch($qry);
-
-          $protocol = "trylogin(".$get['id'].")";
-          $upd = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".mysql_real_escape_string($userip)."',
-                       `what` = '".$protocol."',
-                       `time` = '".((int)time())."'");
+		  wire_ipcheck("trylogin(".$get['id'].")");
         }
+		
         set_cookie($prev."id","");
         set_cookie($prev."pwd","");
 
@@ -120,31 +112,20 @@ case 'lostpwd';
 			if(_rows($qry) && ($_POST['secure'] == $_SESSION['sec_lostpwd'] && $_SESSION['sec_lostpwd'] != NULL))
 		  {
         $pwd = mkpwd();
-        $upd = db("UPDATE ".$db['users']."
+        db("UPDATE ".$db['users']."
                    SET `pwd` = '".md5($pwd)."'
                    WHERE user = '".$_POST['user']."'
                    AND email = '".$_POST['email']."'");
 
-        $protocol = "pwd(".$get['id'].")";
-        $upd = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".mysql_real_escape_string($userip)."',
-                       `what` = '".$protocol."',
-                       `time` = '".((int)time())."'");
-
-				$message = show(settings('eml_pwd'), array("user" => $_POST['user'],
-																									 "pwd" => $pwd));
-				$subject = settings('eml_pwd_subj');
+        wire_ipcheck("pwd(".$get['id'].")");
+        $message = show(settings('eml_pwd'), array("user" => $_POST['user'], "pwd" => $pwd));
+        $subject = settings('eml_pwd_subj');
 
 	      sendMail($_POST['email'],$subject,$message);
 
   			$index = info(_lostpwd_valid, "../user/?action=login");
 			} else {
-        $protocol = "trypwd(".$get['id'].")";
-        $upd = db("INSERT INTO ".$db['ipcheck']."
-                 SET `ip`   = '".mysql_real_escape_string($userip)."',
-                     `what` = '".$protocol."',
-                     `time` = '".((int)time())."'");
-
+        wire_ipcheck("trypwd(".$get['id'].")");
         if($_POST['secure'] != $_SESSION['sec_lostpwd'] || empty($_SESSION['sec_lostpwd']))
           $index = error(_error_invalid_regcode,1);
 				else $index = error(_lostpwd_failed, 1);
@@ -156,16 +137,9 @@ case 'lostpwd';
 break;
 case 'logout';
   $where = _site_user_logout;
-	$qry = db("UPDATE ".$db['users']."
-	 				 SET online = '0',
-               sessid = ''
-					 WHERE id = '".$userid."'");
+  db("UPDATE ".$db['users']." SET online = '0', sessid = '' WHERE id = '".$userid."'");
 
-  $protocol = "logout(".$userid.")";
-  $upd = db("INSERT INTO ".$db['ipcheck']."
-             SET `ip`   = '".mysql_real_escape_string($userip)."',
-                 `what` = '".$protocol."',
-                 `time` = '".((int)time())."'");
+  wire_ipcheck("logout(".$userid.")");
 
   set_cookie($prev.'id', '');
   set_cookie($prev.'pwd', '');
@@ -283,11 +257,7 @@ case 'register';
 								 SET `user`       = '".((int)$insert_id)."',
                      `lastvisit`	= '".((int)time())."'");
 
-      $protocol = "reg(".$insert_id.")";
-      $qry = db("INSERT INTO ".$db['ipcheck']."
-                 SET `ip`   = '".mysql_real_escape_string($userip)."',
-                     `what` = '".$protocol."',
-                     `time` = '".((int)time())."'");
+		wire_ipcheck("reg(".$insert_id.")");
 
   		$message = show(settings('eml_reg'), array("user" => up($_POST['user']),
 											       "pwd" => $mkpwd));
@@ -410,10 +380,9 @@ case 'userlobby';
       }
     }
 
-    $qryu = db("SELECT id,regdatum FROM ".$db['users']."
-                ORDER BY id DESC");
-    $getu = _fetch($qryu);
-
+    $getu = db("SELECT id,regdatum FROM ".$db['users']."
+                ORDER BY id DESC",false,true);
+    
     if(check_new($getu['regdatum'],1))
     {
       $check = cnt($db['users'], " WHERE regdatum > ".$get['lastvisit']."");
@@ -461,10 +430,9 @@ case 'userlobby';
                                      "eintrag" => $eintrag));
     }
 
-    $qrymember = db("SELECT id,datum FROM ".$db['usergb']."
+    $getmember = db("SELECT id,datum FROM ".$db['usergb']."
                      WHERE user = '".$userid."'
-                     ORDER BY datum DESC");
-    $getmember = _fetch($qrymember);
+                     ORDER BY datum DESC",false,true);
 
     if(check_new($getmember['datum'],1))
     {
@@ -484,12 +452,11 @@ case 'userlobby';
                                                  "eintrag" => $eintrag));
     }
 // Nachrichten
-    $qrymsg = db("SELECT id,an,datum FROM ".$db['msg']."
+    $getmsg = db("SELECT id,an,datum FROM ".$db['msg']."
                   WHERE an = '".$userid."'
                   AND readed = 0
                   AND see_u = 0
-                  ORDER BY datum DESC");
-    $getmsg = _fetch($qrymsg);
+                  ORDER BY datum DESC",false,true);
 
     $check = cnt($db['msg'], " WHERE an = '".$userid."' AND readed = 0 AND see_u = 0");
 
@@ -618,11 +585,7 @@ case 'userlobby';
                                           "eintrag" => $eintrag));
     }
 
-    $qrykal = db("SELECT * FROM ".$db['events']."
-                  WHERE datum > '".time()."'
-                  ORDER BY datum");
-    $getkal = _fetch($qrykal);
-
+    $getkal = db("SELECT * FROM ".$db['events']." WHERE datum > '".time()."' ORDER BY datum",false,true);
     if(check_new($getkal['datum'],1))
     {
       if(date("d.m.Y",$getkal['datum']) == date("d.m.Y", time()))
@@ -908,11 +871,7 @@ case 'userlobby';
 break;
 case 'erase';
   $_SESSION['lastvisit'] = data($userid, "time");
-
-  $update = db("UPDATE ".$db['userstats']."
-                SET `lastvisit` = '".((int)$_SESSION['lastvisit'])."'
-                WHERE user = '".$userid."'");
-
+  db("UPDATE ".$db['userstats']." SET `lastvisit` = '".((int)$_SESSION['lastvisit'])."' WHERE user = '".$userid."'");
   header("Location: ?action=userlobby");
 break;
 case 'user';
@@ -939,14 +898,8 @@ case 'user';
 	  if(empty($get['email'])) $email = "-";
     else $email = "<img src=\"../inc/images/mailto.gif\" alt=\"\" align=\"texttop\"> <a href=\"mailto:".eMailAddr($get['email'])."\" target=\"_blank\">".eMailAddr($get['email'])."</a>";
 
-	  $pn = show(_pn_write, array("id" => $_GET['id'],
-		  													"nick" => $get['nick']));
-
-	  if(empty($get['hlswid'])) $hlsw = "-";
-		else $hlsw = show(_hlswicon, array("id" => re($get['hlswid']),
-					   													 "img" => "1",
-							  											 "css" => ""));
-
+	  $pn = show(_pn_write, array("id" => $_GET['id'], "nick" => $get['nick']));
+		
 	  if($get['bday'] == ".." || $get['bday'] == 0 || empty($get['bday'])) $bday = "-";
 	  else $bday = $get['bday'];
 
@@ -1303,56 +1256,53 @@ case 'user';
                                              "cws" => userstats($_GET['id'], "cws"),
                                              "regdatum" => date("d.m.Y H:i", $get['regdatum'])._uhr,
                                              "lastvisit" => date("d.m.Y H:i", userstats($_GET['id'], "lastvisit"))._uhr,
-		     						  	                     "contact" => _profil_contact,
-			      							                   "preal" => _profil_real,
+		     						  	     "contact" => _profil_contact,
+			      							 "preal" => _profil_real,
                                              "pemail" => _email,
                                              "picq" => _icq,
-                                             "phlsw" => _hlswstatus,
-                                             "psteam" => _steamid,
+                                             "pxfire" => _xfire,
                                              "php" => _hp,
                                              "hp" => $hp,
-										                         "pnick" => _nick,
-										                         "pbday" => _profil_bday,
-										                         "page" => _profil_age,
-										                         "psex" => _profil_sex,
-										                         "gamestuff" => _profil_gamestuff,
-                                             "xfire" => re($get['hlswid']),
-  										                       "buddyadd" => $buddyadd,
-	  									                       "userstats" => _profil_userstats,
-		    				  				                   "pos" => _profil_os,
-			    				  			                   "pcpu" => _profil_cpu,
-				    				  		                   "pram" => _profil_ram,
-  					    				  	                 "phdd" => _profil_hdd,
-	  					    				                   "pboard" => _profil_board,
-		  					    			                   "pmaus" => _profil_maus,
-			  					  		                     "nick" => autor($get['id']),
-				  					  	                     "rlname" => $rlname,
-    			  					  	                   "bday" => $bday,
-		    		  					                     "age" => getAge($get['bday']),
-			    		  				                     "sex" => $sex,
-							      		                     "email" => $email,
-								      	                     "icq" => $icq,
-									                           "icqnr" => $icqnr,
-										                         "pn" => $pn,
+										     "pnick" => _nick,
+										     "pbday" => _profil_bday,
+										     "page" => _profil_age,
+										     "psex" => _profil_sex,
+										     "gamestuff" => _profil_gamestuff,
+                                             "xfire_name" => re($get['xfire']),
+  										     "buddyadd" => $buddyadd,
+	  									     "userstats" => _profil_userstats,
+		    				  				 "pos" => _profil_os,
+			    				  			 "pcpu" => _profil_cpu,
+				    				  		 "pram" => _profil_ram,
+  					    				  	 "phdd" => _profil_hdd,
+	  					    				 "pboard" => _profil_board,
+		  					    			 "pmaus" => _profil_maus,
+			  					  		     "nick" => autor($get['id']),
+				  					  	     "rlname" => $rlname,
+    			  					  	     "bday" => $bday,
+		    		  					     "age" => getAge($get['bday']),
+			    		  				     "sex" => $sex,
+							      		     "email" => $email,
+								      	     "icq" => $icq,
+									         "icqnr" => $icqnr,
+										     "pn" => $pn,
                                              "edituser" => $edituser,
-										                         "hlswid" => $hlsw,
-				  	  					                     "steamid" => $steamid,
-					  	  				                     "steam" => $steam,
-						  	  			                     "onoff" => onlinecheck($get['id']),
-  							  	  		                   "clan" => $clan,
-	  							  	  	                   "picture" => userpic($get['id']),
+										     "xfire" => xfire(re($get['xfire'])),
+						  	  			     "onoff" => onlinecheck($get['id']),
+  							  	  		     "clan" => $clan,
+	  							  	  	     "picture" => userpic($get['id']),
                                              "favos_head" => $favos_head,
-			  							                       "sonst" =>	_profil_sonst,
-				  						                       "pich" => _profil_ich,
-  					  					                     "pposition" => _profil_position,
-	  					  				                     "pstatus" => _profil_status,
-		  					  			                     "position" => getrank($get['id']),
-			  					  		                     "status" => $status,
-				  					  	                     "ich" => bbcode($get['beschreibung']),
-					  					                       "custom_about" => $custom_about,
-						  				                       "custom_contact" => $custom_contact,
-							  			                       "custom_favos" => $custom_favos,
-								  		                       "custom_hardware" => $custom_hardware));
+			  							     "sonst" =>	_profil_sonst,
+				  						     "pich" => _profil_ich,
+  					  					     "pposition" => _profil_position,
+	  					  				     "pstatus" => _profil_status,
+		  					  			     "position" => getrank($get['id']),
+			  					  		     "status" => $status,
+				  					  	     "ich" => bbcode($get['beschreibung']),
+					  					     "custom_about" => $custom_about,
+						  				     "custom_contact" => $custom_contact,
+							  			     "custom_favos" => $custom_favos,
+								  		     "custom_hardware" => $custom_hardware));
     }
 
     $navi_profil = show(_profil_navi_profil, array("id" => $_GET['id']));
@@ -1362,7 +1312,7 @@ case 'user';
     $profil_head = show(_profil_head, array("profilhits" => userstats($_GET['id'],"profilhits")));
 
 	  $index = show($dir."/profil", array("profilhead" => $profil_head,
-						  													"show" => $show,
+						  				"show" => $show,
                                         "nick" => autor($_GET['id']),
                                         "profil" => $navi_profil,
                                         "gb" => $navi_gb,
@@ -1396,8 +1346,8 @@ case 'user';
                                                     "emailhead" => _email,
                                                     "hphead" => _hp,
                                                     "postemail" => re($get['email']),
-              							    									  "posthp" => re($get['hp']),
-              								    								  "postnick" => re($get['nick'])));
+              							    		"posthp" => re($get['hp']),
+              								    	"postnick" => re($get['nick'])));
       }
 
 		  $index = show($dir."/usergb_add", array("nickhead" => _nick,
@@ -1485,7 +1435,7 @@ case 'usergb';
 																								"ip" => _iplog_info,
 																								"eintraghead" => _eintrag));
 			} else {
-				$qry = db("INSERT INTO ".$db['usergb']."
+				db("INSERT INTO ".$db['usergb']."
 									 SET `user`       = '".((int)$_GET['id'])."',
 											 `datum`      = '".((int)time())."',
 											 `nick`       = '".up($_POST['nick'])."',
@@ -1493,14 +1443,9 @@ case 'usergb';
 											 `hp`         = '".links($_POST['hp'])."',
 											 `reg`        = '".((int)$userid)."',
 											 `nachricht`  = '".up($_POST['eintrag'],1)."',
-											 `ip`         = '".mysql_real_escape_string($userip)."'");
+											 `ip`         = '".visitorIp()."'");
 	
-				$mgbid = "mgbid(".$_GET['id'].")";
-				$qry = db("INSERT INTO ".$db['ipcheck']."
-									 SET `ip`   = '".mysql_real_escape_string($userip)."',
-											 `what` = '".$mgbid."',
-											 `time` = '".((int)time())."'");
-	
+                wire_ipcheck("mgbid(".$_GET['id'].")");
 				$index = info(_usergb_entry_successful, "?action=user&amp;id=".$_GET['id']."&show=gb");
 			}
 		} elseif($_GET['do'] == 'edit') {
@@ -1513,8 +1458,7 @@ case 'usergb';
 											 `hp`         = '".links($_POST['hp'])."',";
 					}
 	
-					$editedby = show(_edited_by, array("autor" => autor($userid),
-																						 "time" => date("d.m.Y H:i", time())._uhr));
+					$editedby = show(_edited_by, array("autor" => autor($userid), "time" => date("d.m.Y H:i", time())._uhr));
 	
 					$upd = db("UPDATE ".$db['usergb']."
 										 SET ".$addme."
@@ -1602,163 +1546,135 @@ case 'preview';
   exit;
 break;
 case 'editprofile';
-  $where = _site_user_editprofil;
-  if($chkMe == "unlogged")
-  {
-	  $index = error(_error_have_to_be_logged, 1);
-  } else {
-    if($_GET['gallery'] == "delete")
+$where = _site_user_editprofil;
+if($chkMe == "unlogged")
+    $index = error(_error_have_to_be_logged, 1);
+    else 
     {
-      $qrygl = db("SELECT * FROM ".$db['usergallery']."
-                   WHERE user = '".$userid."'
-                   AND id = '".intval($_GET['gid'])."'");
-	    while($getgl = _fetch($qrygl))
-	    {
-        $qry = db("DELETE FROM ".$db['usergallery']."
-                   WHERE id = '".intval($_GET['gid'])."'");
+        if(isset($_GET['gallery']) ? $_GET['gallery'] : '' == "delete")
+        {
+            $qrygl = db("SELECT * FROM ".$db['usergallery']." WHERE user = '".$userid."' AND id = '".intval($_GET['gid'])."'");
+    	    while($getgl = _fetch($qrygl))
+    	    {
+                db("DELETE FROM ".$db['usergallery']." WHERE id = '".intval($_GET['gid'])."'");
+                $unlinkgallery = show(_gallery_edit_unlink, array("img" => $getgl['pic'], "user" => $userid));
+                unlink($unlinkgallery);
+            }
 
-        $unlinkgallery = show(_gallery_edit_unlink, array("img" => $getgl['pic'],
-                                                          "user" => $userid));
-        unlink($unlinkgallery);
-      }
+            $index = info(_info_edit_gallery_done, "?action=editprofile&show=gallery");
 
-      $index = info(_info_edit_gallery_done, "?action=editprofile&show=gallery");
+        } 
+        else if(isset($_GET['do']) ? $_GET['do'] : '' == "edit")	
+        {
+            $check_user = db("SELECT id FROM ".$db['users']." WHERE user = '".intval($_POST['user'])."' AND id != '".$userid."'");
+            $check_nick = db("SELECT id FROM ".$db['users']." WHERE nick = '".$_POST['nick']."' AND id != '".$userid."'");
+            $check_email = db("SELECT id  FROM ".$db['users']." WHERE email = '".$_POST['email']."' AND id != '".$userid."'");
 
-    } elseif($_GET['do'] == "edit")	{
-			$check_user = db("SELECT id FROM ".$db['users']."
-											  WHERE user = '".intval($_POST['user'])."'
-											  AND id != '".$userid."'");
-		  $check_nick = db("SELECT id FROM ".$db['users']."
-											  WHERE nick = '".$_POST['nick']."'
-											  AND id != '".$userid."'");
-		  $check_email = db("SELECT id  FROM ".$db['users']."
-											   WHERE email = '".$_POST['email']."'
-											   AND id != '".$userid."'");
+            if(empty($_POST['user']))
+		        $index = error(_empty_user, 1);
+	        else if(empty($_POST['nick'])) 
+  	            $index = error(_empty_nick, 1);
+            else if(empty($_POST['email'])) 
+       		    $index = error(_empty_email, 1);
+            else if(!check_email($_POST['email'])) 
+		        $index = error(_error_invalid_email, 1);
+	        else if(_rows($check_user)) 
+		        $index = error(_error_user_exists, 1);
+	        else if(_rows($check_nick)) 
+		        $index = error(_error_nick_exists, 1);
+	        else if(_rows($check_email)) 
+		        $index = error(_error_email_exists, 1);
+	        else 
+	        {
+                if ($_POST['pwd'])
+                {
+                    $newpwd = "pwd = '".md5($_POST['pwd'])."',";
+                   $index = info(_info_edit_profile_done, "?action=user&amp;id=".$userid."");
+                   $_SESSION['pwd'] = md5($_POST['pwd']);
+		        } 
+		        else 
+		        {
+			        $newpwd = "";
+                    $index = info(_info_edit_profile_done, "?action=user&amp;id=".$userid."");
+		        }
 
-      if(empty($_POST['user']))
-      {
-		    $index = error(_empty_user, 1);
-	    } elseif(empty($_POST['nick'])) {
-  	    $index = error(_empty_nick, 1);
-      } elseif(empty($_POST['email'])) {
-		    $index = error(_empty_email, 1);
-	    } elseif(!check_email($_POST['email'])) {
-		    $index = error(_error_invalid_email, 1);
-	    } elseif(_rows($check_user)) {
-		    $index = error(_error_user_exists, 1);
-	    } elseif(_rows($check_nick)) {
-		    $index = error(_error_nick_exists, 1);
-	    } elseif(_rows($check_email)) {
-		    $index = error(_error_email_exists, 1);
-	    } else {
-  		  if ($_POST['pwd'])
-	  	  {
-		  	  $newpwd = "pwd = '".md5($_POST['pwd'])."',";
+		        $icq = preg_replace("=-=Uis","",$_POST['icq']);
 
-          $index = info(_info_edit_profile_done, "?action=user&amp;id=".$userid."");
-          $_SESSION['pwd'] = md5($_POST['pwd']);
-		    } else {
-			    $newpwd = "";
-          $index = info(_info_edit_profile_done, "?action=user&amp;id=".$userid."");
-		    }
+                if($_POST['t'] && $_POST['m'] && $_POST['j']) 
+                    $bday = cal($_POST['t']).".".cal($_POST['m']).".".$_POST['j'];
 
-		    $icq = preg_replace("=-=Uis","",$_POST['icq']);
-
-        if($_POST['t'] && $_POST['m'] && $_POST['j']) $bday = cal($_POST['t']).".".cal($_POST['m']).".".$_POST['j'];
-        if($_POST['steamid3']) $steamid = $_POST['steamid1'].":".$_POST['steamid2'].":".$_POST['steamid3'];
-
-		    $qrycustom = db("SELECT feldname,type FROM ".$db['profile']);
-	      while($getcustom = _fetch($qrycustom))
-	      {
-		      if($getcustom['type'] == 2) $customfields .= " ".$getcustom['feldname']." = '".links($_POST[$getcustom['feldname']])."', ";
-		      else $customfields .= " ".$getcustom['feldname']." = '".up($_POST[$getcustom['feldname']])."', ";
-		    }
+		        $qrycustom = db("SELECT feldname,type FROM ".$db['profile']);
+		        $customfields = '';
+	            while($getcustom = _fetch($qrycustom))
+	            {
+		            if($getcustom['type'] == 2) 
+		                $customfields .= " ".$getcustom['feldname']." = '".links($_POST[$getcustom['feldname']])."', ";
+		            else 
+		                $customfields .= " ".$getcustom['feldname']." = '".up($_POST[$getcustom['feldname']])."', ";
+		        }
         
-    	  $qry = db("UPDATE ".$db['users']."
-		  			 SET	".$newpwd."
-			            ".$customfields."
-                  `country`      = '".$_POST['land']."',
-                  `user`         = '".up($_POST['user'])."',
-			  			 		`nick`         = '".up($_POST['nick'])."',
-									`rlname`       = '".up($_POST['rlname'])."',
-									`sex`          = '".((int)$_POST['sex'])."',
-									`status`       = '".((int)$_POST['status'])."',
-									`bday`         = '".$bday."',
-									`email`        = '".up($_POST['email'])."',
-									`nletter`      = '".((int)$_POST['nletter'])."',
-									`pnmail`       = '".((int)$_POST['pnmail'])."',
-									`city`         = '".up($_POST['city'])."',
-									`gmaps_koord`  = '".up($_POST['gmaps_koord'])."',
-									`hp`           = '".links($_POST['hp'])."',
-									`icq`          = '".((int)$icq)."',
-									`hlswid`       = '".up($_POST['hlswid'])."',
-									`steamid`      = '".$steamid."',
-									`signatur`     = '".up($_POST['sig'],1)."',
-									`beschreibung` = '".up($_POST['ich'],1)."'
-					  WHERE id = ".$userid);
+                db("UPDATE ".$db['users']." SET	".$newpwd." ".$customfields."
+                   `country`      = '".$_POST['land']."',
+                   `user`         = '".up($_POST['user'])."',
+			  	   `nick`         = '".up($_POST['nick'])."',
+				   `rlname`       = '".up($_POST['rlname'])."',
+				   `sex`          = '".((int)$_POST['sex'])."',
+				   `status`       = '".((int)$_POST['status'])."',
+				   `bday`         = '".$bday."',
+				   `email`        = '".up($_POST['email'])."',
+				   `nletter`      = '".((int)$_POST['nletter'])."',
+				   `pnmail`       = '".((int)$_POST['pnmail'])."',
+				   `city`         = '".up($_POST['city'])."',
+				   `gmaps_koord`  = '".up($_POST['gmaps_koord'])."',
+				   `hp`           = '".links($_POST['hp'])."',
+				   `icq`          = '".((int)$icq)."',
+				   `xfire`       = '".up($_POST['xfire'])."',
+				   `signatur`     = '".up($_POST['sig'],1)."',
+				   `beschreibung` = '".up($_POST['ich'],1)."'
+				    WHERE id = ".$userid);
 		  }
-	  } elseif($_GET['do'] == "delete") {
-				$qrydel = db("SELECT id,nick,email,hp FROM ".$db['users']."
-											WHERE id = '".intval($userid)."'");
-				$getdel = _fetch($qrydel);
-		
-				$qry = db("UPDATE ".$db['f_threads']."
+	  } 
+	  elseif(isset($_GET['do']) ? $_GET['do'] : '' == "delete") 
+	  {
+				$getdel = db("SELECT id,nick,email,hp FROM ".$db['users']." WHERE id = '".intval($userid)."'",false,true);
+
+				db("UPDATE ".$db['f_threads']."
 									 SET `t_nick`   = '".up($getdel['nick'])."',
 											 `t_email`  = '".up($getdel['email'])."',
 											 `t_hp`			= '".links($getdel['hp'])."',
 											 `t_reg`		= '0'
 									 WHERE t_reg = '".intval($getdel['id'])."'");        
 	
-				$qry = db("UPDATE ".$db['f_posts']."
+				db("UPDATE ".$db['f_posts']."
 									 SET `nick`   = '".up($getdel['nick'])."',
 											 `email`  = '".up($getdel['email'])."',
 											 `hp`			= '".links($getdel['hp'])."',
 											 `reg`		= '0'
 									 WHERE reg = '".intval($getdel['id'])."'");				
 	
-				$qry = db("UPDATE ".$db['newscomments']."
+				db("UPDATE ".$db['newscomments']."
 									 SET `nick`     = '".up($getdel['nick'])."',
 											 `email`    = '".up($getdel['email'])."',
 											 `hp`       = '".links($getdel['hp'])."',
 											 `reg`			= '0'
 									 WHERE reg = '".intval($getdel['id'])."'");
 	
-				$qry = db("UPDATE ".$db['acomments']."
+				db("UPDATE ".$db['acomments']."
 									 SET `nick`     = '".up($getdel['nick'])."',
 											 `email`    = '".up($getdel['email'])."',
 											 `hp`       = '".links($getdel['hp'])."',
 											 `reg`			= '0'
 									 WHERE reg = '".intval($getdel['id'])."'");
 
-				$del = db("DELETE FROM ".$db['msg']."
-									 WHERE von = '".intval($getdel['id'])."'
-									 OR an = '".intval($getdel['id'])."'");
-	
-				$del = db("DELETE FROM ".$db['news']."
-									 WHERE autor = '".intval($getdel['id'])."'");
-	
-				$del = db("DELETE FROM ".$db['permissions']."
-									 WHERE user = '".intval($getdel['id'])."'");
-	
-				$del = db("DELETE FROM ".$db['squaduser']."
-									 WHERE user = '".intval($getdel['id'])."'");
-	
-				$del = db("DELETE FROM ".$db['buddys']."
-									 WHERE user = '".intval($getdel['id'])."'
-									 OR buddy = '".intval($getdel['id'])."'");
-	
-				$upd = db("UPDATE ".$db['usergb']."
-									 SET `reg` = 0
-									 WHERE reg = ".intval($getdel['id'])."");
-	
-				$del = db("DELETE FROM ".$db['userpos']."
-									 WHERE user = '".intval($getdel['id'])."'");
-	
-				$del = db("DELETE FROM ".$db['users']."
-									 WHERE id = '".intval($getdel['id'])."'");
-	
-				$del = db("DELETE FROM ".$db['userstats']."
-									 WHERE user = '".intval($getdel['id'])."'");
+				db("DELETE FROM ".$db['msg']." WHERE von = '".intval($getdel['id'])."' OR an = '".intval($getdel['id'])."'");
+				db("DELETE FROM ".$db['news']." WHERE autor = '".intval($getdel['id'])."'");
+				db("DELETE FROM ".$db['permissions']." WHERE user = '".intval($getdel['id'])."'");
+				db("DELETE FROM ".$db['squaduser']." WHERE user = '".intval($getdel['id'])."'");
+				db("DELETE FROM ".$db['buddys']." WHERE user = '".intval($getdel['id'])."' OR buddy = '".intval($getdel['id'])."'");
+				db("UPDATE ".$db['usergb']." SET `reg` = 0 WHERE reg = ".intval($getdel['id'])."");
+				db("DELETE FROM ".$db['userpos']." WHERE user = '".intval($getdel['id'])."'");
+				db("DELETE FROM ".$db['users']." WHERE id = '".intval($getdel['id'])."'");
+				db("DELETE FROM ".$db['userstats']." WHERE user = '".intval($getdel['id'])."'");
 	
 				foreach($picformat as $tmpendung)
 				{
@@ -1774,8 +1690,7 @@ case 'editprofile';
 	
 				$index = info(_info_account_deletet, '../news/');
     } else {
-      $qry = db("SELECT * FROM ".$db['users']."
-		  				   WHERE id = '".$userid."'");
+      $qry = db("SELECT * FROM ".$db['users']." WHERE id = '".$userid."'");
 	    $get = _fetch($qry);
 
 	    if($get['sex'] == "1") $sex = _pedit_male;
@@ -1789,39 +1704,34 @@ case 'editprofile';
 		    					WHERE id = '".$userid."'");
 	    $getl = _fetch($qryl);
 
-	    if($getl['level'] == "1")
-	    {
+	    if($getl['level'] == 1)
 		    $clan = '<input type="hidden" name="status" value="1" />';
-	    } else {
-	      $qrycustom = db("SELECT * FROM ".$db['profile']."
-		            				 WHERE kid = '2' AND shown = '1'
-				    		         ORDER BY id ASC");
-	      while($getcustom = _fetch($qrycustom))
-	      {
-		      $qrycontent = db("SELECT ".$getcustom['feldname']." FROM ".$db['users']."
-	  	        			       WHERE id = '".$userid."'" );
-          $getcontent = _fetch($qrycontent);
-		      $custom_clan .= show(_profil_edit_custom, array("name" => pfields_name($getcustom['name']).":",
-		  	                           											  "feldname" => $getcustom['feldname'],
-						  								                            "value" => re($getcontent[$getcustom['feldname']])));
-		    }
+	    else 
+	    {
+            $qrycustom = db("SELECT * FROM ".$db['profile']." WHERE kid = '2' AND shown = '1' ORDER BY id ASC");
+            $custom_clan = '';
+            while($getcustom = _fetch($qrycustom))
+            {
+                $getcontent = db("SELECT ".$getcustom['feldname']." FROM ".$db['users']." WHERE id = '".$userid."'",false,true);
+                $custom_clan .= show(_profil_edit_custom, array("name" => pfields_name($getcustom['name']).":", "feldname" => $getcustom['feldname'], "value" => re($getcontent[$getcustom['feldname']])));
+            }
 
-	      $clan = show($dir."/edit_clan", array("clan" => _profil_clan,
-			                        							  "pstatus" => _profil_status,
-					  					                        "pexclans" => _profil_exclans,
-						  				                        "status" => $status,
-							  			                        "exclans" => $get['ex'],
-								  		                        "custom_clan" => $custom_clan));
+            $clan = show($dir."/edit_clan", array("clan" => _profil_clan,
+			                                      "pstatus" => _profil_status,
+					  					          "pexclans" => _profil_exclans,
+						  				          "status" => $status,
+							  			          "exclans" => $get['ex'],
+								  		          "custom_clan" => $custom_clan));
       }
 
-      list($steamid1,$steamid2,$steamid3) = explode(':', $get['steamid']);
-	    list($bdayday, $bdaymonth, $bdayyear) = explode('.', $get['bday']);
-
+      $bdayday = 0; $bdaymonth = 0; $bdayyear = 0;
+	  if(!empty($get['bday']))
+		list($bdayday, $bdaymonth, $bdayyear) = explode('.', $get['bday']);
+		
       if($_GET['show'] == "gallery")
       {
-        $qrygl = db("SELECT * FROM ".$db['usergallery']."
-                     WHERE user = '".$userid."'
-                     ORDER BY id DESC");
+          $qrygl = db("SELECT * FROM ".$db['usergallery']." WHERE user = '".$userid."' ORDER BY id DESC");
+          $color = 1; $gal = '';
 	      while($getgl = _fetch($qrygl))
 	      {
           $pic = show(_gallery_pic_link, array("img" => $getgl['pic'],
@@ -1848,9 +1758,7 @@ case 'editprofile';
 			 	        	                                 "month" => dropdown("month",$bdaymonth,1),
                                       	           "year" => dropdown("year",$bdayyear,1)));
 
-        $qrycustom = db("SELECT * FROM ".$db['profile']."
-	  		  		           WHERE kid = '1' AND shown = '1'
-                         ORDER BY id ASC");
+        $qrycustom = db("SELECT * FROM ".$db['profile']." WHERE kid = '1' AND shown = '1' ORDER BY id ASC");
 	      while($getcustom = _fetch($qrycustom))
 	      {
 		      $qrycontent = db("SELECT ".$getcustom['feldname']." FROM ".$db['users']."
@@ -1863,9 +1771,7 @@ case 'editprofile';
 						  								                             "value" => re($getcontent[$getcustom['feldname']])));
 		    }
 
-        $qrycustom = db("SELECT * FROM ".$db['profile']."
-	  	           			   WHERE kid = '3' AND shown = '1'
-                         ORDER BY id ASC");
+        $qrycustom = db("SELECT * FROM ".$db['profile']." WHERE kid = '3' AND shown = '1' ORDER BY id ASC");
 	      while($getcustom = _fetch($qrycustom))
 	      {
 		      $qrycontent = db("SELECT ".$getcustom['feldname']." FROM ".$db['users']."
@@ -1919,81 +1825,74 @@ case 'editprofile';
 		  $gmaps = show('membermap/geocoder', array('form' => 'editprofil'));
 
         
-	      if($userid == $rootAdmin) $delete = _profil_del_admin;
-				else $delete = show("page/button_delete_account", array("id" => $get['id'],
-																															  "action" => "action=editprofile&amp;do=delete",
-																															  "value" => _button_title_del_account,
-																															  "del" => convSpace(_confirm_del_account)));
+	    if($userid == $rootAdmin) $delete = _profil_del_admin;
+		else $delete = show("page/button_delete_account", array("id" => $get['id'],"action" => "action=editprofile&amp;do=delete", "value" => _button_title_del_account, "del" => convSpace(_confirm_del_account)));
 
         $show = show($dir."/edit_profil", array("hardware" => _profil_hardware,
                                                 "hphead" => _profil_hp,
                                                 "country" => show_countrys($get['country']),
                                                 "pcountry" => _profil_country,
-																								"about" => _profil_about,
-																								"picturehead" => _profil_pic,
-																								"contact" => _profil_contact,
-																								"preal" => _profil_real,
-																								"pnick" => _nick,
-																								"pemail1" => _email,
+												"about" => _profil_about,
+												"picturehead" => _profil_pic,
+												"contact" => _profil_contact,
+												"preal" => _profil_real,
+												"pnick" => _nick,
+												"pemail1" => _email,
                                                 "php" => _hp,
-																								"pava" => _profil_avatar,
-																								"pbday" => _profil_bday,
-												          					    "psex" => _profil_sex,
-																								"pname" => _loginname,
-																								"ppwd" => _new_pwd,
-																								"picq" => _icq,
-																								"psig" => _profil_sig,
-																								"ppic" => _profil_ppic,
-																								"phlswid" => _hlswid,
+												"pava" => _profil_avatar,
+												"pbday" => _profil_bday,
+												"psex" => _profil_sex,
+												"pname" => _loginname,
+												"ppwd" => _new_pwd,
+												"picq" => _icq,
+												"psig" => _profil_sig,
+												"ppic" => _profil_ppic,
+												"pxfire" => _xfire,
                                                 "pcity" => _profil_city,
                                                 "city" => re($get['city']),
-											    											"psteamid" => _steamid,
                                                 "nletter" => _profil_nletter,
-																								"pnmail" => _profil_pnmail,
+												"pnmail" => _profil_pnmail,
                                                 "pnl" => $pnl,
-																								"pnm" => $pnm,
+												"pnm" => $pnm,
                                                 "pwd" => "",
                                                 "dropdown_age" => $dropdown_age,
                                                 "ava" => $avatar,
                                                 "hp" => re($get['hp']),
                                                 "gmaps" => $gmaps,
-																								"nick" => re($get['nick']),
-																								"name" => re($get['user']),
+												"nick" => re($get['nick']),
+												"name" => re($get['user']),
                                                 "gmaps_koord" => re($get['gmaps_koord']),
-																								"rlname" => re($get['rlname']),
-																								"bdayday" => $bdayday,
-																								"bdaymonth" => $bdaymonth,
-																								"bdayyear" =>$bdayyear,
-																								"sex" => $sex,
-																								"email" => re($get['email']),
-																								"icqnr" => $icq,
-																								"sig" => re_bbcode($get['signatur']),
-																								"hlswid" => $get['hlswid'],
-																								"steamid1" => $steamid1,
-                                                "steamid2" => $steamid2,
-                                                "steamid3" => $steamid3,
-																								"clan" => $clan,
-																								"pic" => $pic,
-																								"editpic" => _profil_edit_pic,
+												"rlname" => re($get['rlname']),
+												"bdayday" => $bdayday,
+												"bdaymonth" => $bdaymonth,
+												"bdayyear" =>$bdayyear,
+												"sex" => $sex,
+												"email" => re($get['email']),
+												"icqnr" => $icq,
+												"sig" => re_bbcode($get['signatur']),
+												"xfire" => $get['xfire'],
+												"clan" => $clan,
+												"pic" => $pic,
+												"editpic" => _profil_edit_pic,
                                                 "editava" => _profil_edit_ava,
                                                 "deleteava" => $deleteava,
-		  									    										"deletepic" => $deletepic,
+		  									    "deletepic" => $deletepic,
                                                 "favos" => _profil_favos,
-																								"pich" => _profil_ich,
-																								"pposition" => _profil_position,
-																								"pstatus" => _profil_status,
-																								"position" => getrank($get['id']),
+												"pich" => _profil_ich,
+												"pposition" => _profil_position,
+												"pstatus" => _profil_status,
+												"position" => getrank($get['id']),
                                                 "value" => _button_value_edit,
-								  			    										"status" => $status,
+								  			    "status" => $status,
                                                 "lang" => $language,
-																								"sonst" => _profil_sonst,
-																								"custom_about" => $custom_about,
-																								"custom_contact" => $custom_contact,
-																								"custom_favos" => $custom_favos,
-																								"custom_hardware" => $custom_hardware,
-																								"ich" => re_bbcode($get['beschreibung']),
-																								"del" => _profil_del_account,
-																								"delete" => $delete));
+												"sonst" => _profil_sonst,
+												"custom_about" => $custom_about,
+												"custom_contact" => $custom_contact,
+												"custom_favos" => $custom_favos,
+												"custom_hardware" => $custom_hardware,
+												"ich" => re_bbcode($get['beschreibung']),
+												"del" => _profil_del_account,
+												"delete" => $delete));
       }
 
 	    $index = show($dir."/edit", array("profilhead" => _profil_edit_head,
@@ -2010,7 +1909,7 @@ case 'msg';
 	{
 		$index = error(_error_have_to_be_logged, 1);
 	} else {
-	  if($_GET['do'] == "show")
+	  if(isset($_GET['do']) ? ($_GET['do']  == "show") : false)
 	  {
       $qry = db("SELECT * FROM ".$db['msg']."
   					     WHERE id = ".intval($_GET['id']));
@@ -2047,7 +1946,7 @@ case 'msg';
 												"sendnews" => $sendnews,
 												"delete" => $delete));
       }
-	  } elseif($_GET['do'] == "sendnewsdone") {
+	  } else if(isset($_GET['do']) ? ($_GET['do']  == "sendnewsdone") : false) {
 		  $qry = db("SELECT * FROM ".$db['msg']."
 					 WHERE id = '".intval($_GET['id'])."'");
 		  while($get = _fetch($qry))
@@ -2060,7 +1959,7 @@ case 'msg';
 			
 		    $index = info(_send_news_done, "?action=msg&do=show&id=".$get['id']."");
 	      }
-	  } elseif($_GET['do'] == "showsended") {
+	  } else if(isset($_GET['do']) ? ($_GET['do']  == "showsended") : false) {
 		  $qry = db("SELECT * FROM ".$db['msg']."
 					 WHERE id = ".intval($_GET['id']));
 		  $get = _fetch($qry);
@@ -2077,7 +1976,7 @@ case 'msg';
 												"sendnews" => "",
 												"delete" => ""));
       }
-	  } elseif($_GET['do'] == "answer") {
+	  } else if(isset($_GET['do']) ? ($_GET['do']  == "answer") : false) {
 		  $qry = db("SELECT * FROM ".$db['msg']."
 							   WHERE id = ".intval($_GET['id']));
 		  $get = _fetch($qry);
@@ -2100,7 +1999,7 @@ case 'msg';
 											  "nick" => autor($get['von']),
 											  "zitat" => zitat(autor($get['von']),$get['nachricht'])));
       }
-	  } elseif($_GET['do'] == "pn") {
+	  } else if(isset($_GET['do']) ? ($_GET['do']  == "pn") : false) {
 		  if($chkMe == "unlogged")       $index = error(_error_have_to_be_logged);
 		  elseif($_GET['id'] == $userid) $index = error(_error_msg_self, 1);
 		  else {
@@ -2120,7 +2019,7 @@ case 'msg';
 											  "nick" => autor($_GET['id']),
 											  "zitat" => ""));
 		  }
-	  } elseif($_GET['do'] == "sendanswer") {
+	  } else if(isset($_GET['do']) ? ($_GET['do']  == "sendanswer") : false) {
 	    if(empty($_POST['titel']))
 		  {
 			  $index = error(_empty_titel, 1);
@@ -2141,7 +2040,7 @@ case 'msg';
 
         $index = info(_msg_answer_done, "?action=msg");
 		  }
-	  } elseif($_GET['do'] == "delete") {
+	  } else if(isset($_GET['do']) ? ($_GET['do']  == "delete") : false) {
       $qry = db("SELECT * FROM ".$db['msg']."
                  WHERE an = '".$userid."'
                  AND see_u = 0");
@@ -2162,7 +2061,7 @@ case 'msg';
 		  }
 
     	header("Location: ?action=msg");
-	  } elseif($_GET['do'] == "deletethis") {
+	  } else if(isset($_GET['do']) ? ($_GET['do']  == "deletethis") : false) {
       $qry = db("SELECT * FROM ".$db['msg']."
                  WHERE id = '".intval($_GET['id'])."'");
       $get = _fetch($qry);
@@ -2178,7 +2077,7 @@ case 'msg';
       }
 
       $index = info(_msg_deleted, "?action=msg");
-    } elseif($_GET['do'] == "deletesended") {
+    } else if(isset($_GET['do']) ? ($_GET['do']  == "deletesended") : false) {
       $qry = db("SELECT * FROM ".$db['msg']."
                  WHERE von = '".$userid."'
                  AND see = 1");
@@ -2199,20 +2098,18 @@ case 'msg';
 		  }
 
 		  header("Location: ?action=msg");
-	  } elseif($_GET['do'] == "new") {
-  		$qry = db("SELECT id,nick FROM ".$db['users']."
-                 WHERE id != '".$userid."'
-		  					 ORDER BY nick");
+	  } 
+	  else if(isset($_GET['do']) ? ($_GET['do']  == "new") : false) 
+	  {
+  		  $qry = db("SELECT id,nick FROM ".$db['users']." WHERE id != '".$userid."' ORDER BY nick");
+  		  $users = '';
 		  while($get = _fetch($qry))
 		  {
-			  $users .= show(_to_users, array("id" => $get['id'],
-                                        "selected" => "",
-				  															"nick" => data($get['id'], "nick")));
+			  $users .= show(_to_users, array("id" => $get['id'],"selected" => "","nick" => data($get['id'], "nick")));
 		  }
 
-  		$qry = db("SELECT id,user,buddy FROM ".$db['buddys']."
-							   WHERE user = ".$userid."
-							   ORDER BY user");
+  		  $qry = db("SELECT id,user,buddy FROM ".$db['buddys']." WHERE user = ".$userid." ORDER BY user");
+  		  $buddys = '';
 		  while($get = _fetch($qry))
 		  {
 			  $buddys .= show(_to_buddys, array("id" => $get['buddy'],
@@ -2235,7 +2132,7 @@ case 'msg';
 												 		  				 "posttitel" => "",
 											 				  			 "error" => "",
 										 						  		 "posteintrag" => ""));
-	  } elseif($_GET['do'] == "send") {
+	  } else if(isset($_GET['do']) ? ($_GET['do']  == "send") : false) {
     	if(empty($_POST['titel']) || empty($_POST['eintrag']) || $_POST['buddys'] == "-" && $_POST['users'] == "-" || $_POST['buddys'] != "-"
       && $_POST['users'] != "-" || $_POST['users'] == $userid || $_POST['buddys'] == $userid)
 		  {
@@ -2247,9 +2144,8 @@ case 'msg';
 
 		    $error = show("errors/errortable", array("error" => $error));
 
-		    $qry = db("SELECT id FROM ".$db['users']."
-                   WHERE id != '".$userid."'
-                   ORDER BY nick");
+		    $qry = db("SELECT id FROM ".$db['users']." WHERE id != '".$userid."' ORDER BY nick");
+		    $users = '';
 		    while($get = _fetch($qry))
 		    {
 		      if($get['id'] == $_POST['users']) $selected = "selected=\"selected\"";
@@ -2260,8 +2156,8 @@ case 'msg';
 				    															"selected" => $selected));
 		    }
 
-    		$qry = db("SELECT id,user,buddy FROM ".$db['buddys']."
-							     WHERE user = ".$userid);
+    		$qry = db("SELECT id,user,buddy FROM ".$db['buddys']." WHERE user = ".$userid);
+    		$buddys = '';
 		    while($get = _fetch($qry))
 		    {
 			    if($get['buddy'] == $_POST['buddys']) $selected = "selected=\"selected\"";
@@ -2300,17 +2196,13 @@ case 'msg';
                        `nachricht`  = '".up($_POST['eintrag'], 1)."',
                        `see`        = '1'");
 
-		    $qry = db("UPDATE ".$db['userstats']."
-				    			 SET `writtenmsg` = writtenmsg+1
-						    	 WHERE user = ".$userid);
+		    db("UPDATE ".$db['userstats']." SET `writtenmsg` = writtenmsg+1 WHERE user = ".$userid);
 
     		$index = info(_msg_answer_done, "?action=msg");
 		  }
 	  } else {
-  		$qry = db("SELECT * FROM ".$db['msg']."
-	  						 WHERE an = ".$userid."
-                 AND see_u = '0'
-			  				 ORDER BY datum DESC");
+  		$qry = db("SELECT * FROM ".$db['msg']." WHERE an = ".$userid." AND see_u = '0' ORDER BY datum DESC");
+  		$posteingang = ''; $color = 1;
 	    while($get = _fetch($qry))
 		  {
     		if(_rows($qry))
@@ -2332,21 +2224,22 @@ case 'msg';
 				  $new = "";
 			  }
 
-        $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-	  	  $posteingang.= show($dir."/posteingang", array("titel" => $titel,
-		  	  																						 "absender" => $absender,
-			  	  																					 "datum" => $date,
-                                                       "class" => $class,
-					  	  																			 "delete" => $delete,
-						  	  																		 "new" => $new,
-							  	  																	 "id" => $get['id']));
+            $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+	  	    $posteingang.= show($dir."/posteingang", array("titel" => $titel,
+		  	  												"absender" => $absender,
+			  	  											"datum" => $date,
+                                                            "class" => $class,
+					  	  									"delete" => $delete,
+						  	  								"new" => $new,
+							  	  							"id" => $get['id']));
 			}
 
   		$qry = db("SELECT * FROM ".$db['msg']."
 	  						 WHERE von = ".$userid."
 		  					 AND see = 1
 			  				 ORDER BY datum DESC");
-
+  		
+  		$postausgang = ''; $color = 1;
 	    while($get = _fetch($qry))
 		  {
 			  $titel = show(_msg_out_title, array("titel" => re($get['titel'])));
@@ -2357,257 +2250,201 @@ case 'msg';
 	    	if($get['readed'] == "0") $readed = _noicon;
 			  else $readed = _yesicon;
 
-        $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+            $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
 		    $postausgang.= show($dir."/postausgang", array("titel" => $titel,
-				    																					 "empfaenger" => autor($get['an']),
-						    																			 "datum" => $date,
-                                                       "class" => $class,
-										    															 "readed" => $readed,
-												    													 "delete" => $delete,
-														    											 "id" => $get['id']));
+				    									"empfaenger" => autor($get['an']),
+						    							"datum" => $date,
+                                                        "class" => $class,
+										    			"readed" => $readed,
+												    	"delete" => $delete,
+														"id" => $get['id']));
 			}
 
 		  $msghead = show(_msghead, array("nick" => autor($userid)));
 
   		$index = show($dir."/msg", array("msghead" => $msghead,
-	  																		"posteingang" => _posteingang,
-		  																	"postausgang" => _postausgang,
-			  																"titel" => _msg_title,
-                                        "del" => _msg_del,
-					  														"absender" => _msg_absender,
-						  													"legende" => _legende,
-							  												"legendemsg" => _legende_msg,
-								  											"legendereaded" => _legende_readed,
-									  										"empfaenger" => _msg_empfaenger,
-										  									"datum" => _datum,
-											  								"new" => _msg_new,
-                                        "newglobal" => $newglobal,
-													  						"newicon" => _newicon,
-														  					"yesno" => _yesno,
-															  				"deleteicon" => _deleteicon_blank,
-																  			"showincoming" => $posteingang,
-																	  		"showsended" => $postausgang));
+	  									 "posteingang" => _posteingang,
+		  								 "postausgang" => _postausgang,
+			  							 "titel" => _msg_title,
+                                         "del" => _msg_del,
+					  					 "absender" => _msg_absender,
+						  				 "legende" => _legende,
+							  			 "legendemsg" => _legende_msg,
+								  		 "legendereaded" => _legende_readed,
+									  	 "empfaenger" => _msg_empfaenger,
+										 "datum" => _datum,
+										 "new" => _msg_new,
+										 "newicon" => _newicon,
+										 "yesno" => _yesno,
+										 "deleteicon" => _deleteicon_blank,
+										 "showincoming" => $posteingang,
+										 "showsended" => $postausgang));
 	  }
 	}
 break;
 case 'userlist';
-  $where = _site_ulist;
-  if(isset($_GET['page'])) $page = $_GET['page'];
-  else $page = 1;
-
-  $entrys = cnt($db['users']," WHERE level != 0");
-
-if($_GET['show'] == "search")
-{
-	$qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,bday,sex,icq,status,position,regdatum
-						 FROM ".$db['users']."
-             WHERE nick LIKE '%".$_GET['search']."%'
-             AND level != 0
-             ORDER BY nick
-             LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
-} elseif($_GET['show'] == "bday") {
-	$qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,bday,sex,icq,status,position,regdatum
-						 FROM ".$db['users']."
-             WHERE bday LIKE '".date("d", intval($_GET['time'])).".".date("m", intval($_GET['time'])).".____"."'
-             AND level != 0
-             ORDER BY nick
-             LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
-} elseif($_GET['show'] == "newreg") {
-	  $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,bday,
-                      sex,icq,status,position,regdatum FROM ".$db['users']."
-               WHERE regdatum > '".$_SESSION['lastvisit']."'
-               AND level != '0'
-				  		 ORDER BY regdatum DESC,nick
-               LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
-  } elseif($_GET['show'] == "lastlogin") {
-	  $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,bday,
-                      sex,icq,status,position,regdatum FROM ".$db['users']."
-               WHERE level != '0'
-				  		 ORDER BY time DESC,nick
-               LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
-  } elseif($_GET['show'] == "lastreg") {
-	  $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,bday,sex,
-                      icq,status,position,regdatum FROM ".$db['users']."
-               WHERE level != '0'
-			  			 ORDER BY regdatum DESC,nick
-               LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
-  } elseif($_GET['show'] == "online") {
-	  $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,bday,
-                      sex,icq,status,position,time FROM ".$db['users']."
-               WHERE level != '0'
-			  			 ORDER BY time DESC,nick
-               LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
-  } elseif($_GET['show'] == "country") {
-  	$qry = db("SELECT id,nick,level,email,hp,steamid,
-                      hlswid,bday,sex,icq,status,position,country FROM ".$db['users']."
-               WHERE level != '0'
-		  				 ORDER BY country,nick
-               LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
-  } elseif($_GET['show'] == "sex") {
-  	$qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,
-                      bday,sex,icq,status,position FROM ".$db['users']."
-               WHERE level != '0'
-		  				 ORDER BY sex DESC
-               LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
-  } elseif($_GET['show'] == "banned") {
-  	$qry = db("SELECT id,nick,level,email,hp,steamid,
-                      hlswid,bday,sex,icq,status,position FROM ".$db['users']."
-               WHERE level = '0'
-		  				 ORDER BY nick
-               LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
-  } else {
-  	$qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,bday,sex,
-               icq,status,position FROM ".$db['users']."
-               WHERE level != '0'
-		  				 ORDER BY level DESC,nick
-               LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
-
-  }
+    $where = _site_ulist;
+    $page = (isset($_GET['page']) ? $_GET['page'] : 1);
+    $entrys = cnt($db['users']," WHERE level != 0");
+    switch(isset($_GET['show']) ? $_GET['show'] : '') 
+    {
+        case 'search':
+            $qry = " WHERE nick LIKE '%".$_GET['search']."%' AND level != 0 ORDER BY nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+        break;
+        case 'bday':
+          $qry = " WHERE bday LIKE '".date("d", intval($_GET['time'])).".".date("m", intval($_GET['time'])).".____"."' AND level != 0 ORDER BY nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+        break;
+        case 'newreg':
+            $qry = " WHERE regdatum > '".$_SESSION['lastvisit']."' AND level != '0' ORDER BY regdatum DESC,nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+        break;
+        case 'lastlogin':
+            $qry = " WHERE level != '0' ORDER BY time DESC,nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+        break;
+        case 'lastreg':
+            $qry = " WHERE level != '0' ORDER BY regdatum DESC,nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+        break;
+        case 'online':
+           $qry = " WHERE level != '0' ORDER BY time DESC,nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+        break;
+        case 'country':
+            $qry = " WHERE level != '0' ORDER BY country,nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+        break;
+        case 'sex':
+            $qry = " WHERE level != '0' ORDER BY sex DESC LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+        break;
+        case 'banned':
+            $qry = " WHERE level = '0' ORDER BY nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+        break;
+        default:
+            $qry = " WHERE level != '0' ORDER BY level DESC,nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+        break;
+    }
+  
+    $qry = db("SELECT id,nick,level,email,hp,xfire,bday,sex,icq,status,position,regdatum FROM ".$db['users'].$qry);
+    $color = 1; $userliste = '';
 	while($get = _fetch($qry))
 	{
 		$email = show(_emailicon, array("email" => eMailAddr($get['email'])));
-
-		if(empty($get['hlswid'])) $hlsw = "-";
-		else $hlsw = show(_hlswicon, array("id" => re($get['hlswid']),
-					   													 "img" => "1",
-							  											 "css" => ""));
-
 		if(empty($get['icq']))
-		{
 			$icq = "-";
-		} else {
-      $uin = show(_icqstatus, array("uin" => $get['icq']));
-      $icq = '<a href="http://www.icq.com/whitepages/about_me.php?uin='.$get['icq'].'" target="_blank">'.$uin.'</a>';
+		else 
+		{
+            $uin = show(_icqstatus, array("uin" => $get['icq']));
+            $icq = '<a href="http://www.icq.com/whitepages/about_me.php?uin='.$get['icq'].'" target="_blank">'.$uin.'</a>';
 		}
 
-    if(empty($get['hp'])) $hp = "-";
-    else $hp = show(_hpicon, array("hp" => $get['hp']));
-
-		if($get['sex'] == "1")$sex = _maleicon;
-		elseif($get['sex'] == "2")$sex = _femaleicon;
-		else $sex = "-";
-
-		if($get['status'] == 1) $getstatus = _aktiv_icon;
-		else $getstatus = _inaktiv_icon;
-
-		if(data($get['id'], "level") > 1) $status = $getstatus;
-		else $status = "";
-
+		$hp = (empty($get['hp']) ? '-' : show(_hpicon, array("hp" => $get['hp'])));
+		$sex = ($get['sex'] == 1 ? _maleicon : ($get['sex'] == 2 ? _femaleicon : "-"));
+		$getstatus = ($get['status'] ? _aktiv_icon : _inaktiv_icon);
+        $status = (data($get['id'], "level") > 1 ? $getstatus : '');
 		$class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
 
-    if(permission("editusers"))
-    {
-      $edit = show("page/button_edit", array("id" => "",
-                                             "action" => "action=admin&amp;edit=".$get['id'],
-                                             "title" => _button_title_edit));
-      $edit = str_replace("&amp;id=","",$edit);
-      $delete = show("page/button_delete", array("id" => $get['id'],
-                                                 "action" => "action=admin&amp;do=delete",
-                                                 "title" => _button_title_del));
-
-    } else {
-      $edit = "";
-      $delete = "";
+        if(permission("editusers"))
+        {
+            $edit = show("page/button_edit", array("id" => "", "action" => "action=admin&amp;edit=".$get['id'], "title" => _button_title_edit));
+            $edit = str_replace("&amp;id=","",$edit);
+            $delete = show("page/button_delete", array("id" => $get['id'], "action" => "action=admin&amp;do=delete", "title" => _button_title_del));
+        } 
+        else 
+        {
+            $edit = "";
+            $delete = "";
+        }
+        
+        if(!empty($get['xfire']))
+        $xfire = '<div id="infoXfire_'.re($get['xfire']).'">
+        <div style="width:100%;text-align:center"><img src="../inc/images/ajax-loader-mini.gif" alt="" /></div>
+        <script language="javascript" type="text/javascript">DZCP.initXfire("'.re($get['xfire']).'");</script></div>';
+        else
+            $xfire = '-';
+        
+		$userliste .= show($dir."/userliste_show", array("nick" => autor($get['id'],'','',10),
+														 "level" => getrank($get['id']),
+														 "status" => $status,
+														 "email" => $email,
+														 "age" => getAge($get['bday']),
+														 "mf" => $sex,
+                                                         "edit" => $edit,
+                                                         "delete" => $delete,
+                                                         "class" => $class,
+														 "icq" => $icq,
+														 "icquin" => $get['icq'],
+														 "onoff" => onlinecheck($get['id']),
+														 "hp" => $hp,
+														 "xfire" => $xfire));
     }
 
-		$userliste .= show($dir."/userliste_show", array("nick" => autor($get['id'],'','',10),
-																										 "level" => getrank($get['id']),
-																										 "status" => $status,
-																										 "email" => $email,
-																										 "age" => getAge($get['bday']),
-																										 "mf" => $sex,
-                                                     "edit" => $edit,
-                                                     "delete" => $delete,
-                                                     "class" => $class,
-																										 "icq" => $icq,
-																										 "icquin" => $get['icq'],
-																										 "onoff" => onlinecheck($get['id']),
-																										 "hp" => $hp,
-																										 "hlsw" => $hlsw));
-	}
+    $seiten = nav($entrys,$maxuserlist,"?action=userlist&show=".(isset($_GET['show']) ? $_GET['show'] : 1)."");
 
-  $seiten = nav($entrys,$maxuserlist,"?action=userlist&show=".$_GET['show']."");
+    if(permission("editusers"))
+        $edel = '<td class="contentMainTop" colspan="2">&nbsp;</td>';
 
-  if(permission("editusers"))
-  {
-    $edel = '<td class="contentMainTop" colspan="2">&nbsp;</td>';
-  }
-
-  if(isset($_GET['search']) && !empty($_GET['search']))
-    $search = $_GET['search'];
-  else $search = _nick;
-
+    $search = (isset($_GET['search']) && !empty($_GET['search']) ? $_GET['search'] : _nick);
 	$index = show($dir."/userliste", array("userlistehead" => _userlist,
-																				 "nickhead" => _nick,
-                                         "normal" => _ulist_normal,
-                                         "country" => _ulist_country,
-                                         "sex" => _ulist_sex,
-                                         "cnt" => $entrys." "._user,
-                                         "lastreg" => _ulist_lastreg,
-                                         "online" => _ulist_online,
-                                         "age" => _ulist_age,
-                                         "login" => _ulist_last_login,
-                                         "bday" => _ulist_bday,
-                                         "sort" => _ulist_sort,
-                                         "banned" => _ulist_acc_banned,
-                                         "edel" => $edel,
-                                         "search" => $search,
-                                         "value" => _button_value_search,
-																				 "mficon" => _mficon_blank,
-                                         "nav" => $seiten,
-																				 "statushead" => _status,
-																				 "emailicon" => _emailicon_blank,
-																				 "addbuddyicon" => _addbuddyicon_blank,
-																				 "agehead" => _profil_age,
-																				 "icqicon" => _icqicon_blank,
-																				 "pnicon" => _pnicon_blank,
-																				 "hpicon" => _hpicon_blank,
-																				 "hlswicon" => _hlswicon_blank,
-																				 "show" => $userliste));
+										   "nickhead" => _nick,
+                                           "normal" => _ulist_normal,
+                                           "country" => _ulist_country,
+                                           "sex" => _ulist_sex,
+                                           "cnt" => $entrys." "._user,
+                                           "lastreg" => _ulist_lastreg,
+                                           "online" => _ulist_online,
+                                           "age" => _ulist_age,
+                                           "login" => _ulist_last_login,
+                                           "bday" => _ulist_bday,
+                                           "sort" => _ulist_sort,
+                                           "banned" => _ulist_acc_banned,
+                                           "edel" => $edel,
+                                           "search" => $search,
+                                           "value" => _button_value_search,
+										   "mficon" => _mficon_blank,
+                                           "nav" => $seiten,
+										   "statushead" => _status,
+									       "emailicon" => _emailicon_blank,
+										   "addbuddyicon" => _addbuddyicon_blank,
+										   "agehead" => _profil_age,
+										   "icqicon" => _icqicon_blank,
+										   "pnicon" => _pnicon_blank,
+										   "hpicon" => _hpicon_blank,
+										   "xfireicon" => _xfireicon_blank,
+										   "show" => $userliste));
 break;
 case 'buddys';
   $where = _site_user_buddys;
   if($chkMe == "unlogged")
-  {
 	  $index = error(_error_have_to_be_logged, 1);
-  } else {
-	  $qry = db("SELECT * FROM ".$db['buddys']."
-						   WHERE user = ".$userid);
-    $too = "";
-	  while($get = _fetch($qry))
-	  {
-  	  $pn = show(_pn_write, array("id" => $get['buddy'],
-                                  "nick" => data($get['buddy'], "nick")));
-		  $delete = show(_buddys_delete, array("id" => $get['buddy']));
+  else 
+  {
+	  $qry = db("SELECT * FROM ".$db['buddys']." WHERE user = ".$userid);
+      $buddys = '';
+      if(_rows($qry) >= 1)
+      {
+          $color = 1; $too = "";
+    	  while($get = _fetch($qry))
+    	  {
+      	      $pn = show(_pn_write, array("id" => $get['buddy'], "nick" => data($get['buddy'], "nick")));
+    		  $delete = show(_buddys_delete, array("id" => $get['buddy']));
+    
+      		    $yesnocheck = db("SELECT * FROM ".$db['buddys']." where user = '".$get['buddy']."' AND buddy = '".$userid."'");
+    
+      		    if(_rows($yesnocheck)) $too = _buddys_yesicon;
+    	  	    else $too = _buddys_noicon;
+    
+              $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+    		  $buddys .= show($dir."/buddys_show", array("nick" => autor($get['buddy']),
+    			  										 "onoff" => onlinecheck($get['buddy']),
+    				  									 "pn" => $pn,
+                                                         "class" => $class,
+    						  							 "too" => $too,
+    							  						 "delete" => $delete));
+         }
+     }
 
-  		$yesnocheck = db("SELECT * FROM ".$db['buddys']."
-	  										where user = '".$get['buddy']."'
-                        AND buddy = '".$userid."'");
+	 $qry = db("SELECT id,nick FROM ".$db['users']." WHERE level != 0 ORDER BY nick");
+	 $users = '';
+	 while($get = _fetch($qry))
+	 { $users .= show(_to_users, array("id" => $get['id'], "nick" => data($get['id'], "nick"))); }
 
-  		if(_rows($yesnocheck)) $too = _buddys_yesicon;
-	  	else $too = _buddys_noicon;
-
-      $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-		  $buddys .= show($dir."/buddys_show", array("nick" => autor($get['buddy']),
-			  																				 "onoff" => onlinecheck($get['buddy']),
-				  																			 "pn" => $pn,
-                                                 "class" => $class,
-						  																	 "too" => $too,
-							  																 "delete" => $delete));
-	  }
-
-		$qry = db("SELECT id,nick FROM ".$db['users']."
-               WHERE level != 0
-							 ORDER BY nick");
-		while($get = _fetch($qry))
-		{
-			$users .= show(_to_users, array("id" => $get['id'],
-																			"nick" => data($get['id'], "nick")));
-		}
-
-		$add = show("".$dir."/buddys_add", array("users" => $users,
-                                             "value" => _button_value_addto));
-
+        $add = show("".$dir."/buddys_add", array("users" => $users, "value" => _button_value_addto));
 		$index = show($dir."/buddys", array("buddyhead" => _buddyhead,
 																				"nick" => _nick,
 																				"pn" => _pnicon_blank,
@@ -2624,77 +2461,73 @@ case 'buddys';
 																				"legendeaddedtoo" => _buddys_legende_addedtoo,
                                         "legendedontaddedtoo" => _buddys_legende_dontaddedtoo));
 
-    if($_GET['do'] == "add")
-    {
-	    if($_POST['users'] == "-")
-		  {
-			  $index = error(_error_select_buddy, 1);
-		  } elseif($_POST['users'] == $userid) {
-		  	$index = error(_error_buddy_self, 1);
-		  } elseif(!check_buddy($_POST['users'])) {
-	  		$index = error(_error_buddy_already_in, 1);
-  		} else {
-			  $qry = db("INSERT INTO ".$db['buddys']."
-				  	       SET `user`   = '".((int)$userid)."',
-                       `buddy`  = '".((int)$_POST['users'])."'");
-
-        $msg = show(_buddy_added_msg, array("user" => autor($userid)));
-        $title = _buddy_title;
-
-        $send = db("INSERT INTO ".$db['msg']."
+        switch (isset($_GET['do']) ? $_GET['do'] : '') 
+        {
+            case 'add':
+                if($_POST['users'] == "-")
+                    $index = error(_error_select_buddy, 1);
+                else if($_POST['users'] == $userid) 
+                    $index = error(_error_buddy_self, 1);
+                else if(!check_buddy($_POST['users'])) 
+                    $index = error(_error_buddy_already_in, 1);
+                else 
+                {
+                    db("INSERT INTO ".$db['buddys']." SET `user` = '".((int)$userid)."', `buddy` = '".((int)$_POST['users'])."'");
+                            
+                    $msg = show(_buddy_added_msg, array("user" => autor($userid)));
+                    $title = _buddy_title;
+                    
+                    db("INSERT INTO ".$db['msg']."
+                        SET `datum`     = '".((int)time())."',
+                            `von`       = '0',
+                            `an`        = '".((int)$_POST['users'])."',
+                            `titel`     = '".up($title)."',
+                            `nachricht` = '".up($msg, 1)."'");
+                            
+                    $index = info(_add_buddy_successful, "?action=buddys");
+                }
+            break;
+            case 'addbuddy':
+                $user = (isset($_GET['id']) ? $_GET['id'] : $_POST['users']);
+                
+                if($user == "-")
+                    $index = error(_error_select_buddy, 1);
+                else if($user == $userid) 
+                    $index = error(_error_buddy_self, 1);
+                 else if(!check_buddy($user)) 
+                    $index = error(_error_buddy_already_in, 1);
+                else 
+                {
+                    db("INSERT INTO ".$db['buddys']." SET `user` = '".((int)$userid)."', `buddy` = '".((int)$user)."'");
+                    $msg = show(_buddy_added_msg, array("user" => addslashes(autor($userid))));
+                    $title = _buddy_title;
+                
+                    db("INSERT INTO ".$db['msg']."
+                        SET `datum`     = '".((int)time())."',
+                            `von`       = '0',
+                            `an`        = '".((int)$user)."',
+                            `titel`     = '".up($title)."',
+                            `nachricht` = '".up($msg, 1)."'");
+                
+                    $index = info(_add_buddy_successful, "?action=buddys");
+                }
+            break;
+            case 'delete':
+                db("DELETE FROM ".$db['buddys']." WHERE buddy = ".intval($_GET['id'])." AND user = '".$userid."'");
+                
+                $msg = show(_buddy_del_msg, array("user" => addslashes(autor($userid))));
+                $title = _buddy_title;
+                
+                db("INSERT INTO ".$db['msg']."
                     SET `datum`     = '".((int)time())."',
                         `von`       = '0',
-                        `an`        = '".((int)$_POST['users'])."',
+                        `an`        = '".((int)$_GET['id'])."',
                         `titel`     = '".up($title)."',
                         `nachricht` = '".up($msg, 1)."'");
-
-  			$index = info(_add_buddy_successful, "?action=buddys");
-	  	}
-    } elseif($_GET['do'] == "addbuddy") {
-      if(isset($_GET['id'])) $user = $_GET['id'];
-      else $user = $_POST['users'];
-
-    	if($user == "-")
-		  {
-			  $index = error(_error_select_buddy, 1);
-		  } elseif($user == $userid) {
-			  $index = error(_error_buddy_self, 1);
-		  } elseif(!check_buddy($user)) {
-			  $index = error(_error_buddy_already_in, 1);
-		  } else {
-			  $qry = db("INSERT INTO ".$db['buddys']."
-				           SET `user`   = '".((int)$userid)."',
-                       `buddy`  = '".((int)$user)."'");
-
-        $msg = show(_buddy_added_msg, array("user" => addslashes(autor($userid))));
-        $title = _buddy_title;
-
-        $send = db("INSERT INTO ".$db['msg']."
-                    SET `datum`     = '".((int)time())."',
-                        `von`       = '0',
-                        `an`        = '".((int)$user)."',
-                        `titel`     = '".up($title)."',
-                        `nachricht` = '".up($msg, 1)."'");
-
-  			$index = info(_add_buddy_successful, "?action=buddys");
-	  	}
-    } elseif($_GET['do'] == "delete") {
-		  $qry = db("DELETE FROM ".$db['buddys']."
-			  				 WHERE buddy = ".intval($_GET['id'])."
-                 AND user = '".$userid."'");
-
-      $msg = show(_buddy_del_msg, array("user" => addslashes(autor($userid))));
-      $title = _buddy_title;
-
-      $send = db("INSERT INTO ".$db['msg']."
-                  SET `datum`     = '".((int)time())."',
-                      `von`       = '0',
-                      `an`        = '".((int)$_GET['id'])."',
-                      `titel`     = '".up($title)."',
-                      `nachricht` = '".up($msg, 1)."'");
-
-		  $index = info(_buddys_delete_successful, "../user/?action=buddys");
-	  }
+                
+                $index = info(_buddys_delete_successful, "../user/?action=buddys");
+            break;
+        }
   }
 break;
 case 'language';
@@ -2758,6 +2591,7 @@ case 'admin';
                                             "squad" => _member_admin_squad,
                                             "posi" => _profil_position,
                                             "deletesq" => $deletesq));
+    
   } elseif(data($_GET['edit'], "level") == 4 && $userid != $rootAdmin) {
     $index = error(_error_edit_admin, 1);
   } else {
@@ -2782,14 +2616,10 @@ case 'admin';
         $qry = db("UPDATE ".$db['users']."
 		    					 SET `online` = '1',
                        `sessid` = '".session_id()."',
-                       `ip`     = '".mysql_real_escape_string($userip)."'
+                       `ip`     = '".visitorIp()."'
 							    WHERE id = ".intval($_GET['id']));
 
-        $protocol = "ident(".$userid."_".intval($_GET['id']).")";
-        $upd = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".mysql_real_escape_string($userip)."',
-                       `what` = '".$protocol."',
-                       `time` = '".((int)time())."'");
+        wire_ipcheck("ident(".$userid."_".intval($_GET['id']).")");
       }
     } elseif($_GET['do'] == "update") {
       if($_POST)
@@ -2849,11 +2679,7 @@ case 'admin';
                        `level`  = '".((int)$_POST['level'])."'
                    WHERE id = '".intval($_GET['user'])."'");
 
-        $protocol = "upduser(".$userid."_".intval($_GET['user']).")";
-        $upd = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".mysql_real_escape_string($userip)."',
-                       `what` = '".$protocol."',
-                       `time` = '".((int)time())."'");
+        wire_ipcheck("upduser(".$userid."_".intval($_GET['user']).")");
       }
       $index = info(_admin_user_edited, "?action=userlist");
     } elseif($_GET['do'] == "updateme") {
@@ -2892,11 +2718,8 @@ case 'admin';
         {
           $index = error(_user_cant_delete_admin, 2);
         } else {
-          $protocol = "deluser(".$userid."_".intval($_GET['id']).")";
-          $upd = db("INSERT INTO ".$db['ipcheck']."
-                     SET `ip`   = '".mysql_real_escape_string($userip)."',
-                         `what` = '".$protocol."',
-                         `time` = '".((int)time())."'");
+			
+          wire_ipcheck("deluser(".$userid."_".intval($_GET['id']).")");
 
           $upd = db("UPDATE ".$db['f_posts']."
                      SET `reg` = 0
@@ -2961,12 +2784,10 @@ case 'admin';
         elseif($get['level'] == 3) $selm = "selected=\"selected\"";
         elseif($get['level'] == 4) $sela = "selected=\"selected\"";
 
-        $qrysq = db("SELECT id,name FROM ".$db['squads']."
-                     ORDER BY pos");
+        $qrysq = db("SELECT id,name FROM ".$db['squads']." ORDER BY pos");
         while($getsq = _fetch($qrysq))
         {
-          $qrypos = db("SELECT id,position FROM ".$db['pos']."
-                        ORDER BY pid");
+          $qrypos = db("SELECT id,position FROM ".$db['pos']." ORDER BY pid");
           $posi = "";
           while($getpos = _fetch($qrypos))
           {

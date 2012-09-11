@@ -2,6 +2,9 @@
 //Userspezifische Informationen
 function infos()
 {
+    // Debug Mode is enabled, infobox
+    $dg = (is_debug ? '<tr><td><table width="100%" class="subPersInfos"><tr class="persInfosContent"><td width="100%"><span class="fontBoldPersInfos">'._debug_on.'</td></tr></table></td></tr>' : '');
+    
     if(settings("persinfo") == 1)
     {
       $data = $_SERVER['HTTP_USER_AGENT'];
@@ -45,17 +48,17 @@ function infos()
                   doc.write(screen.width + ' x ' + screen.height)
               </script>";
 
-      return show("menu/pers.infos", array("ip" => ($userip=visitorIp()),
-                                             "info_ip" => _info_ip,
-                                             "host" => gethostbyaddr($userip),
-                                             "info_browser" => _info_browser,
-                                             "browser" => $browser,
-                                             "info_res" => _info_res,
-                                             "res" => $res,
-                                             "info_sys" => _info_sys,
-                                             "sys" => $system));
+     return $dg.show("menu/pers.infos", array("ip" => ($userip=visitorIp()),
+                                              "info_ip" => _info_ip,
+                                              "host" => gethostbyaddr($userip),
+                                              "info_browser" => _info_browser,
+                                              "browser" => $browser,
+                                              "info_res" => _info_res,
+                                              "res" => $res,
+                                              "info_sys" => _info_sys,
+                                              "sys" => $system));
     }
 
-	return "";
+	return $dg;
 }
 ?>

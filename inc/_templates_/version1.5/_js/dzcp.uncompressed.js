@@ -112,6 +112,11 @@
     initTeamspeakServer: function() {
       $(function() { $('#navTeamspeakServer').load('../inc/ajax.php?i=teamspeak'); });
     },
+	
+  // init Xfire via Ajax
+    initXfire: function(username) {
+      $(function() { $('#infoXfire_' + username).load('../inc/ajax.php?i=xfire&username=' + username); });
+    },
 
   // submit shoutbox
     shoutSubmit: function() {
@@ -461,4 +466,3 @@
   $(window).load(function() {
     DZCP.resizeImages();
   });
-

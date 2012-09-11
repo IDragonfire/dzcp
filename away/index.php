@@ -27,6 +27,8 @@ $where = $where.' - '._away_list;
     $qry = db("SELECT * FROM ".$db['away']." 
 			   ORDER BY id DESC 
 			   LIMIT ".($page - 1)*$maxaway.",".$maxaway."");
+			   
+	$show = '';
     while($get = _fetch($qry)) 
 	{
       if($get['start'] > time()) $status = _away_status_new;

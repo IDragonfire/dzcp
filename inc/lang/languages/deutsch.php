@@ -1,6 +1,6 @@
 <?php
-$charset = 'iso-8859-1';
-header("Content-type: text/html; charset=".$charset);
+## Charset ##
+define('_charset', 'iso-8859-1');
 
 ## ADDED FOR 1.6 Final
 define('_config_version', 'Mod/AddOns verwalten');
@@ -28,6 +28,7 @@ define('_search_website','restliche Internetseite');
 define('_search_for_area_forum','Forum-Suchbereich');
 
 define("_dzcp_vcheck", 'Der DZCP Versions Checker informiert dich &uuml;ber neue DZCP Updates und zeigt dir, ob DZCP.de erreichbar ist um deine Version mit der aktuellen zu vergleichen.<br><br><span class=fontBold>Beschreibung:</span><br><font color=#17D427>Gr&uuml;n:</font> Verbindung zu DZCP.de erfolgreich, Up to Date!<br><font color=#FFFF00>Gelb:</font> Keine Verbindung zu DZCP.de m&ouml;glich<br><font color=#FF0000>Rot:</font> Es ist ein neues Update verf&uuml;gbar!');
+define("_debug_on", 'Debug Modus ist aktiviert!');
 
 ## Navigation / Server ##
 define('_navi_gsv_players_online', 'Online');
@@ -1963,7 +1964,7 @@ define('_error_user_exists', 'Der Loginname ist leider schon vergeben!');
 define('_error_email_exists', 'Die von dir angegebene EMailadresse wird schon von jemandem verwendet!');
 define('_info_edit_profile_done_pwd', 'Du hast dein Profil erfolgreich editiert!');
 define('_error_select_buddy', 'Du hast keinen User angegeben!');
-define('_error_buddy_self', 'Du kannst dich nicht selbst als Buddy adden!');
+define('_error_buddy_self', 'Du kannst dich nicht selbst als Buddy eintragen!');
 define('_error_buddy_already_in', 'Der User steht schon in deiner Buddyliste!');
 define('_error_msg_self', 'Du kannst dir nicht selber eine Nachricht schreiben!');
 define('_error_back', 'zur&uuml;ck');
@@ -2080,8 +2081,8 @@ define('_info', 'Info');
 define('_error', 'Fehler');
 define('_datum', 'Datum');
 define('_legende', 'Legende');
-define('_hlswid', 'XFire Name');
-define('_hlswstatus', 'XFire');
+define('_xfire_name', 'Xfire Name');
+define('_xfire', 'Xfire');
 define('_steamid', 'Steam-ID');
 define('_link', 'Link');
 define('_linkname', 'Linkname');
