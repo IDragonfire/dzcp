@@ -1408,16 +1408,12 @@ case 'thread';
 												`t_text`   = '".up($_POST['eintrag'],1)."',
 												`sticky`   = '".((int)$_POST['sticky'])."',
 												`global`   = '".((int)$_POST['global'])."',
-												`ip`       = '".mysql_real_escape_string($userip)."',
+												`ip`       = '".visitorIp()."',
 												`lp`       = '".((int)time())."',
 												`vote`     = '".$vid."',
 												`first`	= '1'");
 				$thisFID = mysql_insert_id();
-				$fid = "fid(".$_GET['kid'].")";
-				$qry = db("INSERT INTO ".$db['ipcheck']."
-									 SET `ip`   = '".mysql_real_escape_string($userip)."',
-											 `what` = '".$fid."',
-											 `time` = '".((int)time())."'");
+                wire_ipcheck("fid(".$_GET['kid'].")");
 	
 				$update = db("UPDATE ".$db['userstats']."
 											SET `forumposts` = forumposts+1
@@ -2146,7 +2142,7 @@ case 'post';
 												 `hp`    = '".links($_POST['hp'])."',
 												 `reg`   = '".up($userid)."',
 												 `text`  = '".up($_POST['eintrag'],1)."',
-												 `ip`    = '".mysql_real_escape_string($userip)."'");	  
+												 `ip`    = '".visitorIp()."'");	  
 		
 					$update = db("UPDATE ".$db['f_threads']."
 												SET `lp`    = '".((int)time())."',
@@ -2154,11 +2150,7 @@ case 'post';
 												WHERE id    = '".intval($_GET['id'])."'");
 				}
 				
-					$fid = "fid(".$get_threadkid['kid'].")";
-					$qry = db("INSERT INTO ".$db['ipcheck']."
-										 SET `ip`   = '".$userip."',
-												 `what` = '".$fid."',
-												 `time` = '".((int)time())."'");
+                wire_ipcheck("fid(".$get_threadkid['kid'].")");
 		
 					$update = db("UPDATE ".$db['userstats']."
 												SET `forumposts` = forumposts+1
@@ -2480,13 +2472,13 @@ case 'preview';
                                              "date" => _posted_by.date("d.m.y H:i", time())._uhr,
                                              "zitat" => _forum_zitat_preview,
                                              "onoff" => $onoff,
-                                             "ip" => $userip.'<br />'._only_for_admins,
+                                             "ip" => visitorIp().'<br />'._only_for_admins,
                                              "top" => _topicon,
                                              "lpost" => $lpost,
                                              "lp" => "",
                                              "add" => "",
                                              "nav" => nav("","",""),
-                      											 "vote" => $vote,
+                      						 "vote" => $vote,
                                              "f_abo" => "",
                                              "show" => $show));
     echo '<table class="mainContent" cellspacing="1" style="margin-top:17px">'.$index.'</table>';
@@ -2564,7 +2556,7 @@ case 'preview';
                                                   "email" => $email,
                                                   "status" => getrank($pUId),
                                                   "avatar" => useravatar($pUId),
-                                                  "ip" => $userip.'<br />'._only_for_admins,
+                                                  "ip" => visitorIp().'<br />'._only_for_admins,
                                                   "edited" => "",
                                                   "posts" => $userposts,
                                                   "titel" => $titel,

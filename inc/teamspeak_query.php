@@ -1401,15 +1401,9 @@ function secure_dzcp($replace) {
     $replace=str_replace("\"", "&quot;", $replace);
     /* Only do the slow convert if there are 8-bit characters */
     /* avoid using 0xA0 (\240) in ereg ranges. RH73 does not like that */
-	if(is_php_5()) {
 		if(!ereg("[\200-\237]", $replace) and !ereg("[\241-\377]", $replace)) {
 			return $replace;
 		}
-	}else {
-		if(!preg_match("[\200-\237]", $replace) and !preg_match("[\241-\377]", $replace)) {
-			return $replace;
-		}
-	}
     // decode three byte unicode characters
     $replace = preg_replace("/([\340-\357])([\200-\277])([\200-\277])/e","'&#'.((ord('\\1')-224)*4096 + (ord('\\2')-128)*64 + (ord('\\3')-128)).';'",$replace);
     // decode two byte unicode characters

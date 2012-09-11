@@ -12,119 +12,90 @@ $title = $pagetitle." - ".$where."";
 $dir = "clankasse";
 ## SECTIONS ##
 $w = settings("k_waehrung");
-
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
-switch ($action):
+switch(isset($_GET['action']) ? $_GET['action'] : ''):
 default:
-  if($chkMe == "unlogged" || $chkMe < "2")
-  {
-    $index = error(_error_wrong_permissions, 1);
-  } else {
-    if(isset($_GET['page'])) $page = $_GET['page'];
-    else $page = 1;
-
-    $entrys = cnt($db['clankasse']);
-
-    $qry = db("SELECT * FROM ".$db['clankasse']."
-               ORDER BY datum DESC
-               LIMIT ".($page - 1)*$maxclankasse.",".$maxclankasse."");
-    while ($get = _fetch($qry))
+    if($chkMe == "unlogged" || $chkMe < "2")
+        $index = error(_error_wrong_permissions, 1);
+    else 
     {
-      $betrag = $get['betrag'];
-      $betrag = str_replace(".",",",$betrag);
+        $has_permission = permission("clankasse");
+        $page = ((int)(isset($_GET['page']) ? $_GET['page'] : 1));
+        $entrys = cnt($db['clankasse']);
+        $qry = db("SELECT * FROM ".$db['clankasse']." ORDER BY datum DESC LIMIT ".($page - 1)*$maxclankasse.",".$maxclankasse."");
+    
+        $show = ''; $color = 1;
+        while ($get = _fetch($qry))
+        {
+            $betrag = $get['betrag'];
+            $betrag = str_replace(".",",",$betrag);
 
-      if($get['pm'] == "0")
-      {
-        $pm = show(_clankasse_plus, array("betrag" => $betrag,
-                                          "w" => $w));
-      } else {
-        $pm = show(_clankasse_minus, array("betrag" => $betrag,
-                                           "w" => $w));
-      }
+            if($get['pm'] == "0")
+                $pm = show(_clankasse_plus, array("betrag" => $betrag,"w" => $w));
+            else
+                $pm = show(_clankasse_minus, array("betrag" => $betrag,"w" => $w));
       
-      $edit = show("page/button_edit_single", array("id" => $get['id'],
-                                                   "title" => _button_title_edit,
-                                                   "action" => "action=admin&amp;do=edit"));
-      $delete = show("page/button_delete_single", array("id" => $get['id'],
-                                                       "title" => _button_title_delete,
-                                                       "action" => "action=admin&amp;do=delete",
-                                                       "del" => convSpace(_confirm_del_entry)));
-      
-      $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+            $edit = show("page/button_edit_single", array("id" => $get['id'], "title" => _button_title_edit, "action" => "action=admin&amp;do=edit"));
+            $delete = show("page/button_delete_single", array("id" => $get['id'], "title" => _button_title_delete, "action" => "action=admin&amp;do=delete", "del" => convSpace(_confirm_del_entry)));
+            $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+            $show .= show($dir."/clankasse_show", array("betrag" => $pm,
+                                                        "id" => $get['id'],
+                                                        "class" => $class,
+                                                        "for" => re($get['member']),
+                                                        "transaktion" => re($get['transaktion']),
+                                                        "delete" => $delete,
+                                                        "edit" => $edit,
+                                                        "datum" => date("d.m.Y",$get['datum'])));
+        }
 
-      $show .= show($dir."/clankasse_show", array("betrag" => $pm,
-                                                  "id" => $get['id'],
-                                                  "class" => $class,
-                                                  "for" => re($get['member']),
-                                                  "transaktion" => re($get['transaktion']),
-                                                  "delete" => $delete,
-                                                  "edit" => $edit,
-                                                  "datum" => date("d.m.Y",$get['datum'])));
-      $i--;
-    }
+        $getp = db("SELECT sum(betrag) AS gesamt FROM ".$db['clankasse']." WHERE pm = 0",false,true);
+        $getc = db("SELECT sum(betrag) AS gesamt FROM ".$db['clankasse']." WHERE pm = 1",false,true);
 
-    $qryp = db("SELECT sum(betrag) AS gesamt
-                FROM ".$db['clankasse']."
-                WHERE pm = 0");
-    $getp = _fetch($qryp);
+        $ges = $getp['gesamt'] - $getc['gesamt'];
+        $ges = @round($ges,2);
+        $ges = str_replace(".",",",$ges);
 
-    $qryc = db("SELECT sum(betrag) AS gesamt
-                FROM ".$db['clankasse']."
-                WHERE pm = 1");
-    $getc = _fetch($qryc);
+        if($getp['gesamt'] < $getc['gesamt'])
+            $gesamt = show(_clankasse_summe_minus, array("summe" => $ges, "w" => $w));
+        else
+            $gesamt = show(_clankasse_summe_plus, array("summe" => $ges, "w" => $w));
 
-    $ges = $getp['gesamt'] - $getc['gesamt'];
-    $ges = @round($ges,2);
-    $ges = str_replace(".",",",$ges);
-
-    if($getp['gesamt'] < $getc['gesamt'])
-    {
-      $gesamt = show(_clankasse_summe_minus, array("summe" => $ges,
-                                                   "w" => $w));
-    } else {
-      $gesamt = show(_clankasse_summe_plus, array("summe" => $ges,
-                                                  "w" => $w));
-    }
-
-   if(permission("clankasse")) $new = _clankasse_new;
-
-   $qrys = db("SELECT tbl1.id,tbl1.nick,tbl2.user,tbl2.payed
+        $new = ($has_permission ? _clankasse_new : '');
+        
+        $qrys = db("SELECT tbl1.id,tbl1.nick,tbl2.user,tbl2.payed
                FROM ".$db['users']." AS tbl1
                LEFT JOIN ".$db['c_payed']." AS tbl2 ON tbl2.user = tbl1.id
                WHERE tbl1.listck = '1'
                OR tbl1.level = '4'
                ORDER BY tbl1.nick");
-    while($gets = _fetch($qrys))
-    {
-      if($gets['user'])
-      {
-        if(paycheck($gets['payed']))
+        
+        $showstatus = ''; $color = 1;
+        while($gets = _fetch($qrys))
         {
-          $status = show(_clankasse_status_payed, array("payed" => date("d.m.Y", $gets['payed'])));
-        } elseif(date("d.m.Y", $gets['payed']) == date("d.m.Y", time())) {
-          $status = show(_clankasse_status_today, array());
-        } else {
-          $status = show(_clankasse_status_notpayed, array("payed" => date("d.m.Y", $gets['payed'])));
+            if($gets['user'])
+            {
+                if(paycheck($gets['payed']))
+                    $status = show(_clankasse_status_payed, array("payed" => date("d.m.Y", $gets['payed'])));
+                else if(date("d.m.Y", $gets['payed']) == date("d.m.Y", time()))
+                    $status = show(_clankasse_status_today, array());
+                else
+                    $status = show(_clankasse_status_notpayed, array("payed" => date("d.m.Y", $gets['payed'])));
+            } 
+            else 
+                $status = show(_clankasse_status_noentry, array());
+      
+            $edit = ($has_permission ? show(_admin_ck_edit, array("id" => $gets['id'])) : '');
+            $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+
+            $showstatus .= show($dir."/status", array("nick" => autor($gets['id']),
+                                                      "status" => $status,
+                                                      "class" => $class,
+                                                      "edit" => $edit));
         }
-      } else {
-        $status = show(_clankasse_status_noentry, array());
-      }
-
-      if(permission("clankasse")) $edit = show(_admin_ck_edit, array("id" => $gets['id']));
-      $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-
-      $showstatus .= show($dir."/status", array("nick" => autor($gets['id']),
-                                                "status" => $status,
-                                                "class" => $class,
-                                                "edit" => $edit));
-    }
-    $qry = db("SELECT k_inhaber,k_nr,k_blz,k_bank,iban,bic,k_waehrung,k_vwz FROM ".$db['settings']."");
-    $get = _fetch($qry);
-
-    $seiten = nav($entrys,$maxclankasse,"?action=nav");
-    $index = show($dir."/clankasse", array("show" => $show,
+        
+        unset($getp,$getc);
+        $get = db("SELECT k_inhaber,k_nr,k_blz,k_bank,iban,bic,k_waehrung,k_vwz FROM ".$db['settings'],false,true);
+        $seiten = nav($entrys,$maxclankasse,"?action=nav");
+        $index = show($dir."/clankasse", array("show" => $show,
                                            "showstatus" => $showstatus,
                                            "clankasse_head" => _clankasse_head,
                                            "server_head" => _clankasse_server_head,
@@ -132,7 +103,7 @@ default:
                                            "knr" => _clankasse_nr,
                                            "kblz" => _clankasse_blz,
                                            "kbank" => _clankasse_bank,
-										                       "kvwz" => _clankasse_vwz,
+										   "kvwz" => _clankasse_vwz,
                                            "cfor" => _clankasse_for,
                                            "cdatum" => _datum,
                                            "ctransaktion" => _clankasse_ctransaktion,
@@ -152,8 +123,7 @@ default:
                                            "bank" => $get['k_bank'],
 										   "vwz" => $get['k_vwz'],
                                            "summe" => $gesamt,
-                                           "seiten" => $seiten,
-                                           "beitrag" => $beitrag));
+                                           "seiten" => $seiten));
   }
 break;
 case 'admin':

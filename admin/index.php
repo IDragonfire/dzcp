@@ -34,7 +34,7 @@ else
     }
     
     //Site Permissions
-    $check = _fetch(db("SELECT * FROM ".$db['permissions']." WHERE user = '".intval($userid)."'"));
+    $check = db("SELECT * FROM ".$db['permissions']." WHERE user = '".intval($userid)."'",false,true);
     
     $amenu = array();
     $files = get_files(basePath.'/admin/menu/',false,true,array('php'));
@@ -56,6 +56,8 @@ else
     
         if(!empty($navType) && !empty($navPerm) && $permission)
             $amenu[$navType][$link] = show("['[link]','?admin=[name]','background-image:url(menu/[name].".$end.");'],\n", array("link" => $link, 'name' => $file));
+        
+        $file = null;
     }
     
     foreach($amenu AS $m => $k)

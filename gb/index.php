@@ -222,12 +222,9 @@ case 'do';
                      `hp`         = '".links($_POST['hp'])."',
                      `reg`        = '".((int)$userid)."',
                      `nachricht`  = '".up($_POST['eintrag'], 1)."',
-                     `ip`         = '".mysql_real_escape_string($userip)."'");
+                     `ip`         = '".visitorIp()."'");
 
-      $qry = db("INSERT INTO ".$db['ipcheck']."
-                 SET `ip`   = '".mysql_real_escape_string($userip)."',
-                     `what` = 'gb',
-                     `time` = '".((int)time())."'");
+        wire_ipcheck('gb');
 
 	    $index = info(_gb_entry_successful, "../gb/");
 	  }
@@ -478,7 +475,7 @@ case 'preview';
   $index = show($dir."/gb_show", array("gbtitel" => $gbtitel,
 	  														    	 "nachricht" => bbcode($_POST['eintrag'],1),
                                        "editby" => bbcode($editby,1),
-                                       "ip" => $userip._only_for_admins));
+                                       "ip" => visitorIp()._only_for_admins));
                                            
   echo '<table class="mainContent" cellspacing="1">'.$index.'</table>';
   exit;

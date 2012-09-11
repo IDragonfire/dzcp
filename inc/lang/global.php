@@ -50,7 +50,7 @@ define('_forum_zitat_preview', '<img src="../inc/images/zitat.gif" alt="" class=
 define('_user_link_preview', '[country] <a class="[class]" href="javascript:void(0)">[nick]</a>');
 define('_userpic_link_raw', '<img src=../inc/images/uploads/userpics/[id].[endung] width=[width] height=[height] alt= />');
 define('_no_userpic_raw', '<img src=../inc/images/nopic.gif width=[width] height=[height] alt= />');
-define('_hlswicon', '<img src="../inc/images/xfire.gif" alt="" class="icon" onmouseover="DZCP.showInfo(\'<tr><td><img src=http://de.miniprofile.xfire.com/bg/bg/type/0/[id].png /></td></tr>\')" onmouseout="DZCP.hideInfo()" />');
+define('_xfireicon', '<a target="_blank" href="http://profile.xfire.com/[username]"><img src="../inc/images/xfire.gif" alt="" class="icon" onmouseover="DZCP.showInfo(\'<tr><td><img src=[img] /></td></tr>\')" onmouseout="DZCP.hideInfo()" /></a>');
 //Edited for DZCP 1.4
 define('_gal_newicon', '<a href="?admin=gallery&amp;do=new&amp;id=[id]"><img src="../inc/images/new.gif" alt="" title="[titel]" class="icon" /></a>');
 define('_downloads_link', '<a href="?action=download&amp;id=[id]" style="display:block" title="[titel]"><img src="../inc/images/download.gif" alt="" class="icon" /> [download]</a>');
@@ -77,7 +77,7 @@ define('_email_mailto', '<a href="mailto:[email]">[email]</a>');
 define('_emailicon', '<a href="mailto:[email]"><img src="../inc/images/email.gif" alt="" title="[email]" class="icon" /></a>');
 define('_steamicon_blank', '<img src="../inc/images/steam.gif" alt="" class="icon" />');
 define('_emailicon_blank', '<img src="../inc/images/email.gif" alt="" class="icon" />');
-define('_hlswicon_blank', '<img src="../inc/images/xfire.gif" alt="" class="icon" />');
+define('_xfireicon_blank', '<img src="../inc/images/xfire.gif" alt="" class="icon" />');
 define('_zitaticon', '<img src="../inc/images/zitat.gif" alt="" class="icon" />');
 define('_hpicon_blank', '<img src="../inc/images/hp.gif" alt="" class="icon" />');
 define('_topicon', '<img src="../inc/images/top.gif" alt="" class="icon" />');

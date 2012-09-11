@@ -36,9 +36,9 @@ default:
                 `nick`   = '".up($_POST['name'],'','UTF-8')."',
                 `email`  = '".up($reg,'','UTF-8')."',
                 `text`   = '".up(substr(str_replace("\n", ' ', $_POST['eintrag']),0,$shout_max_zeichen),'','UTF-8')."',
-                `ip`     = '".mysql_real_escape_string($userip)."'");
+                `ip`     = '".visitorIp()."'");
 
-             db("INSERT INTO ".$db['ipcheck']." SET `ip`   = '".mysql_real_escape_string($userip)."', `what` = 'shout', `time` = '".((int)time())."'");
+             wire_ipcheck('shout');
 
             if(!isset($_GET['ajax'])) 
                 header("Location: ".$_SERVER['HTTP_REFERER'].'#shoutbox');

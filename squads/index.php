@@ -17,8 +17,8 @@ $dir = "squads";
   switch(strtolower($_GET['action'])):
     case 'shows';
       $get = _fetch(db("SELECT * FROM ".$db['squads']." WHERE `id` = '".intval($_GET['id'])."'"));
-      $qrym = db("SELECT s1.user,s1.squad,s2.id,s2.nick,s2.icq,s2.email,s2.hlswid,s2.rlname,
-                         s2.steamid,s2.level,s2.bday,s2.hp,s3.posi,s4.pid
+      $qrym = db("SELECT s1.user,s1.squad,s2.id,s2.nick,s2.icq,s2.email,s2.xfire,s2.rlname,
+                  s2.level,s2.bday,s2.hp,s3.posi,s4.pid
                   FROM ".$db['squaduser']." AS s1
                   LEFT JOIN ".$db['users']." AS s2
                   ON s2.id=s1.user
@@ -44,15 +44,6 @@ $dir = "squads";
           $icq = show(_icqstatus, array("uin" => $getm['icq']));
           $icqnr = $getm['icq'];
         }
-        
-        if(empty($getm['steamid']))
-        {
-          $steamid = "";
-          $steam = "-";
-        } else {
-          $steamid = $getm['steamid'];
-          $steam = _steamicon_blank;
-        }
   
         $class = ($color % 2) ? "contentMainFirst" : "contentMainSecond"; $color++;
         $nick = autor($getm['user'],'','','','','&amp;sq='.$getm['squad']);
@@ -70,8 +61,6 @@ $dir = "squads";
                                                      "hlsw" => $hlsw,
                                                      "emails" => eMailAddr($getm['email']),
                                                      "id" => $getm['user'],
-                                                     "steamid" => $steamid,
-  			  	  		    											         "steam" => $steam,
                                                      "class" => $class,
                                                      "nick" => $nick,
                                                      "onoff" => onlinecheck($getm['id']),
