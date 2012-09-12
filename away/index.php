@@ -1,86 +1,65 @@
 <?php
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
 $dir = "away";
 $where = _site_away;
-## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
-switch ($action):
-default:
 $where = $where.' - '._away_list;
-  if($chkMe == "unlogged" || $chkMe < 2)
-  {
-    $index = error(_error_wrong_permissions, 1);
-  } else {
 
- 	if(isset($_GET['page'])) $page = $_GET['page'];
-	else $page = 1;
-	$entrys = cnt($db['away']);
-    $qry = db("SELECT * FROM ".$db['away']." 
-			   ORDER BY id DESC 
-			   LIMIT ".($page - 1)*$maxaway.",".$maxaway."");
-			   
-	$show = '';
-    while($get = _fetch($qry)) 
-	{
-      if($get['start'] > time()) $status = _away_status_new;
-      if($get['start'] <= time() && $get['end'] >= time()) $status = _away_status_now;
-      if($get['end'] < time()) $status = _away_status_done;
-
-   	  $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-
-      if($userid == $get['userid'] || $chkMe == "4")
-	  {
-	    $value = show("page/button_edit_single", array("id" => $get['id'],
-	  												   "action" => "action=edit",
-													   "title" => _button_title_edit));
-	  } else {
-	    $value = "&nbsp;";
-	  }
-	  
-      if($get['end'] < time()) $value = "&nbsp;";
-
-      $chkMe == 4 ? $delete = show("page/button_delete_single", array("id" => $get['id'],
-	  																  "action" => "action=del",
-																	  "title" => _button_title_del,
-																	  "del" => convSpace(_confirm_del_entry))) : $delete = "&nbsp;";
-
-     $info = show($dir."/button_info", array("id" => $get['id'],
-	 										 "action" => "action=info",
-	 										 "title" =>"Info"));
-
-     $show .= show($dir."/away_show", array("class"=>$class,
-             				         	    "id"=>$get["id"],
-             					  		    "status"=>$status,
-										    "von"=>date("d.m.y",$get['start']),
-										    "bis"=>date("d.m.y",$get['end']),
-										    "grund"=>$get["titel"],
-										    "value"=>$value,
-										    "del"=>$delete,
-										    "nick"=>autor($get['userid']),
-										    "details"=>$info));
-      }
-      if(!$show) $show = _away_no_entry;
-
-	  $nav = nav($entrys,$maxaway,"?");
-      $index = show($dir."/away", array("head" => _away_head,
-	  								    "show" => $show,
-                                        "user" => _user,
-										"titel" => _banned_reason,
-										"from" => _from,
-										"to" => _away_to,
-										"status" => _status,	
-										"submit" => _button_value_addto,									
-										"nav" => $nav));
-  }
+## SECTIONS ##
+switch (isset($_GET['action']) ? $_GET['action'] : 'default'):
+default:
+    if($chkMe == "unlogged" || $chkMe < 2)
+        $index = error(_error_wrong_permissions, 1);
+    else 
+    {
+        $page = (isset($_GET['page']) ? $_GET['page'] : 1);
+        $entrys = cnt($db['away']);
+        $qry = db("SELECT * FROM ".$db['away']."  ORDER BY id DESC  LIMIT ".($page - 1)*$maxaway.",".$maxaway."");
+        
+        $show = ''; $color = 1;
+        while($get = _fetch($qry)) 
+        {
+            $status = ($get['start'] > time() ? _away_status_new : '');
+            $status = ($get['start'] <= time() && $get['end'] >= time() ? _away_status_now : $status);
+            $status = ($get['end'] < time() ? _away_status_done : $status);
+            $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+            $value = ($userid == $get['userid'] || $chkMe == "4" ? show("page/button_edit_single", array("id" => $get['id'], "action" => "action=edit", "title" => _button_title_edit)) : '&nbsp;');
+            $value = ($get['end'] < time() ? '&nbsp;' : $value);
+            $chkMe == 4 ? $delete = show("page/button_delete_single", array("id" => $get['id'], "action" => "action=del", "title" => _button_title_del, "del" => convSpace(_confirm_del_entry))) : $delete = "&nbsp;";
+            $info = show($dir."/button_info", array("id" => $get['id'], "action" => "action=info", "title" =>"Info"));
+            
+            $show .= show($dir."/away_show", array("class"=>$class,
+                                                   "id"=>$get["id"],
+                                                   "status"=>$status,
+                                                   "von"=>date("d.m.y",$get['start']),
+                                                   "bis"=>date("d.m.y",$get['end']),
+                                                   "grund"=>$get["titel"],
+                                                   "value"=>$value,
+                                                   "del"=>$delete,
+                                                   "nick"=>autor($get['userid']),
+                                                   "details"=>$info));
+        }
+        
+        $show = (empty($show) ? _away_no_entry : $show);
+        $nav = nav($entrys,$maxaway,"?");
+        $index = show($dir."/away", array("head" => _away_head,
+                                          "show" => $show,
+                                          "user" => _user,
+                                          "titel" => _banned_reason,
+                                          "from" => _from,
+                                          "to" => _away_to,
+                                          "status" => _status,
+                                          "submit" => _button_value_addto,
+                                          "nav" => $nav));
+    }
 break;
 case 'new';
 $where = $where.' - '._away_new;
@@ -110,7 +89,7 @@ $where = $where.' - '._away_new;
 										   "text" => "",
 										   "submit" => _button_value_add));
 
-     if($_GET['do'] == "set") 
+     if(isset($_GET['do']) ? ($_GET['do'] == "set") : false) 
 	 {
 	   $abdata = mktime(0,0,0,$_POST['m'],$_POST['t'],$_POST['j']);
        $bisdata = mktime(0,0,0,$_POST['monat'],$_POST['tag'],$_POST['jahr']);
@@ -143,23 +122,21 @@ $where = $where.' - '._away_new;
 											   "text" => $_POST['reason'],
 											   "submit" => _button_value_add));
 	 
-	 } else {
-      
-	  $time = mktime(23,59,59,$_POST['monat'],$_POST['tag'],$_POST['jahr']);
-	  
-             $qry = db("INSERT INTO ".$db['away']."
-                        SET `userid`= '".((int)$userid)."',
-              	       		`start`= '".((int)$abdata)."',
-              	       		`end`= '".((int)$time)."',
-                        	`titel`= '".up($_POST['titel'])."',
-                        	`reason`= '".up($_POST['reason'],1)."',
-                        	`date`= '".time()."'");
-
-
-               $index = info(_away_successful_added, "../away/");
-              }
-             }
-  }
+	 } 
+	 else 
+	 {
+	    $time = mktime(23,59,59,$_POST['monat'],$_POST['tag'],$_POST['jahr']);
+        db("INSERT INTO ".$db['away']." SET 
+        `userid`= '".((int)$userid)."',
+        `start`= '".((int)$abdata)."',
+        `end`= '".((int)$time)."',
+        `titel`= '".up($_POST['titel'])."',
+        `reason`= '".up($_POST['reason'],1)."',
+        `date`= '".time()."'");
+        $index = info(_away_successful_added, "../away/");
+        }
+    }
+}
 break;
 case 'info';
 $where = $where.' - '._info;
@@ -167,9 +144,7 @@ $where = $where.' - '._info;
   {
     $index = error(_error_wrong_permissions, 1);
   } else {
-	$qry = db("SELECT * FROM ".$db['away']." 
-			   WHERE id = '".intval($_GET['id'])."'");
- 	$get = _fetch($qry);
+	$get = db("SELECT * FROM ".$db['away']." WHERE id = '".intval($_GET['id'])."'",false,true);
 
     if($get['start'] > time()) $status = _away_status_new;
     if($get['start'] <= time() && $get['end'] >= time()) $status = _away_status_now;
@@ -207,12 +182,10 @@ case 'del';
 break;
 case 'edit';
   if($chkMe == "unlogged" || $chkMe < "2")
+      $index = error(_error_wrong_permissions, 1);
+  else 
   {
-    $index = error(_error_wrong_permissions, 1);
-  } else {
-	$qry = db("SELECT * FROM ".$db['away']." WHERE id = '".intval($_GET['id'])."'");
- 	$get = _fetch($qry);
-
+	$get = db("SELECT * FROM ".$db['away']." WHERE id = '".intval($_GET['id'])."'",false,true);
 	$date1 = show(_dropdown_date, array("day" => dropdown("day",date("d",$get['start'])),
 									   	"month" => dropdown("month",date("m",$get['start'])),
 									   	"year" => dropdown("year",date("Y",$get['start']))));
@@ -234,10 +207,11 @@ case 'edit';
 										   "text" => $get['reason'],
 										   "submit" => _button_value_edit));
 
-	$abdata = mktime(0,0,0,$_POST['m'],$_POST['t'],$_POST['j']);
-    $bisdata = mktime(0,0,0,$_POST['monat'],$_POST['tag'],$_POST['jahr']);
-    if($_GET['do'] == "set") 
+    if(isset($_GET['do']) ? ($_GET['do'] == "set") : false) 
 	{
+	   $abdata = mktime(0,0,0,$_POST['m'],$_POST['t'],$_POST['j']);
+	   $bisdata = mktime(0,0,0,$_POST['monat'],$_POST['tag'],$_POST['jahr']);
+	    
 	   if(empty($_POST['titel']) || empty($_POST['reason']) || $bisdata == $abdata || $abdata > $bisdata)
 	   {
         if(empty($_POST['titel'])) $error = show("errors/errortable", array("error" => _away_empty_titel));
@@ -271,7 +245,7 @@ case 'edit';
          $editedby = show(_edited_by, array("autor" => autor($userid),
                                             "time" => date("d.m.Y H:i", time())._uhr));
 
-             $qry = db("UPDATE ".$db['away']."
+             db("UPDATE ".$db['away']."
                     SET `start`= '".((int)$abdata)."',
               	        `end`= '".((int)$time)."',
                         `titel`= '".up($_POST['titel'])."',
@@ -286,6 +260,7 @@ case 'edit';
 break;
 endswitch;
 ## SETTINGS ##
+
 $title = $pagetitle." - ".$where."";
 $time_end = generatetime();
 $time = round($time_end - $time_start,4);
