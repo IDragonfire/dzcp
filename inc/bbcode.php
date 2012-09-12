@@ -1145,9 +1145,7 @@ function checkpwd($user, $pwd)
 //-> Infomeldung ausgeben
 function info($msg, $url, $timeout = 5)
 {
-  global $c;
-
-  if($c['direct_refresh'] == 1) 
+  if(config('direct_refresh')) 
       return header('Location: '.str_replace('&amp;', '&', $url));
 
   $u = parse_url($url); $parts = '';
@@ -1163,7 +1161,7 @@ function info($msg, $url, $timeout = 5)
   }
 
   return show("errors/info", array("msg" => $msg,
-                                   "url" => $u['path'],
+                                   "url" => (array_key_exists('path',$u) && !empty($u['path']) ? $u['path'] : ''),
                                    "rawurl" => html_entity_decode($url),
                                    "parts" => $parts,
                                    "timeout" => $timeout,
