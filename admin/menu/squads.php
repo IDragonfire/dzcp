@@ -123,7 +123,7 @@ if(_adminMenu != 'true') exit;
                          `status`       = '".((int)$_POST['status'])."',
                          `pos`          = '".((int)$_POST['position'])."'");
 					
-					$insert_id = mysql_insert_id();
+					$insert_id = sql_get_insert_id();
 					
 					if($_POST['navi'] != "lazy") {
 						if($_POST['navi'] == "1" || "2") $signnav = ">= ";

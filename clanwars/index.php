@@ -318,7 +318,7 @@ case 'showall';
       $anz_squads = cnt($db['squads'], " WHERE status = '1'");
 
       $qry = db("SELECT game FROM ".$db['squads']."");
-      while($row = mysql_fetch_object($qry))
+      while($row = (can_use_mysqli() ? mysqli_fetch_object($qry) : mysql_fetch_object($qry)))
       {
         $cwid = $row->id; }
         $results = _rows($qry);
@@ -465,7 +465,7 @@ case 'kalender';
 
       $qry = db("SELECT game FROM ".$db['squads']."
                  WHERE status = '1'");
-      while($row = mysql_fetch_object($qry))
+      while($row = (can_use_mysqli() ? mysqli_fetch_object($qry) : mysql_fetch_object($qry)))
       {
         $cwid = $row->id; }
         $results = _rows($qry);

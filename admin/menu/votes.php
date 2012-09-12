@@ -75,7 +75,7 @@ if(_adminMenu != 'true') exit;
                          `intern` = '".((int)$_POST['intern'])."',
                          `von`    = '".((int)$userid)."'");
 
-          $vid = mysql_insert_id();
+          $vid = sql_get_insert_id();
 
           $qry = db("INSERT INTO ".$db['vote_results']."
                     SET `vid`   = '".((int)$vid)."',

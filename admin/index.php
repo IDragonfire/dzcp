@@ -14,10 +14,7 @@ $dir = "admin";
 $show = "";
 
 ## SECTIONS ##
-$check = db("SELECT s1.user FROM ".$db['permissions']." s1, ".$db['users']." s2
-             WHERE s1.user = '".$userid."'
-             AND s2.id = '".intval($userid)."'
-             AND s2.pwd = '".$_SESSION['pwd']."'");
+$check = db("SELECT s1.user FROM ".$db['permissions']." s1, ".$db['users']." s2 WHERE s1.user = '".$userid."' AND s2.id = '".intval($userid)."' AND s2.pwd = '".$_SESSION['pwd']."'");
 
 if(!admin_perms($_SESSION['id']))
     $index = error(_error_wrong_permissions, 1);

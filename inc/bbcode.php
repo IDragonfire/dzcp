@@ -910,7 +910,7 @@ function checkme()
     $qry = db("SELECT level FROM ".$db['users']."
                WHERE id = '".intval($userid)."'
                AND pwd = '".$_SESSION['pwd']."'
-               AND ip = '".mysql_real_escape_string($_SESSION['ip'])."'");
+               AND ip = '".sql_real_escape_string($_SESSION['ip'])."'");
     
     if(_rows($qry))
     {

@@ -218,7 +218,7 @@ SET ".$kid."
 `matchadmins` = '".up($_POST['match_admins'])."',
 `bericht` = '".up($_POST['bericht'],1)."'");
 
-          $cwid = mysql_insert_id();
+          $cwid = sql_get_insert_id();
 
           $tmp = $_FILES['logo']['tmp_name'];
           $type = $_FILES['logo']['type'];
@@ -230,7 +230,7 @@ SET ".$kid."
             $img = @getimagesize($tmp);
 if($img1[0])
             {
-              @copy($tmp, basePath."/inc/images/clanwars/".mysql_insert_id()."_logo.".strtolower($end));
+              @copy($tmp, basePath."/inc/images/clanwars/".sql_get_insert_id()."_logo.".strtolower($end));
               @unlink($tmp);
             }
           }
@@ -245,7 +245,7 @@ if($img1[0])
             $img1 = @getimagesize($tmp1);
 if($img1[0])
             {
-              @copy($tmp1, basePath."/inc/images/clanwars/".mysql_insert_id()."_1.".strtolower($end1));
+              @copy($tmp1, basePath."/inc/images/clanwars/".sql_get_insert_id()."_1.".strtolower($end1));
               @unlink($tmp1);
             }
           }	
@@ -260,7 +260,7 @@ if($img1[0])
             $img2 = @getimagesize($tmp2);
 if($img2[0])
             {
-              @copy($tmp2, basePath."/inc/images/clanwars/".mysql_insert_id()."_2.".strtolower($end2));
+              @copy($tmp2, basePath."/inc/images/clanwars/".sql_get_insert_id()."_2.".strtolower($end2));
               @unlink($tmp2);
             }
           }
@@ -275,7 +275,7 @@ if($img2[0])
             $img3 = @getimagesize($tmp3);
 if($img3[0])
             {
-              @copy($tmp3, basePath."/inc/images/clanwars/".mysql_insert_id()."_3.".strtolower($end3));
+              @copy($tmp3, basePath."/inc/images/clanwars/".sql_get_insert_id()."_3.".strtolower($end3));
               @unlink($tmp3);
             }
           }
@@ -290,7 +290,7 @@ if($img3[0])
             $img4 = @getimagesize($tmp4);
 if($img4[0])
             {
-              @copy($tmp4, basePath."/inc/images/clanwars/".mysql_insert_id()."_4.".strtolower($end4));
+              @copy($tmp4, basePath."/inc/images/clanwars/".sql_get_insert_id()."_4.".strtolower($end4));
               @unlink($tmp4);
             }
           }	

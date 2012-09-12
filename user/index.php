@@ -248,7 +248,7 @@ case 'register';
                      `time`     = '".time()."',
                      `status`   = '1'");
 
-      $insert_id = mysql_insert_id();
+      $insert_id = sql_get_insert_id();
 
       $qry = db("INSERT INTO ".$db['permissions']."
                  SET `user` = '".((int)$insert_id)."'");
