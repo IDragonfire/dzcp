@@ -34,20 +34,28 @@
       cut_pascal($buffer, 4, 0, 1);
       $data['gamemod']    = 'bf3';
       switch (cut_pascal($buffer, 4, 0, 1)) {
-      default:          $nmap = '-';                   break;
-      case 'MP_001':    $nmap = 'Grand Bazaar';        break;
-      case 'MP_003':    $nmap = 'Teheran Highway';     break;
-      case 'MP_007':    $nmap = 'Caspian Border';      break;
-      case 'MP_011':    $nmap = 'Seine Crossing';      break;
-      case 'MP_012':    $nmap = 'Operation Firestorm'; break;
-      case 'MP_013':    $nmap = 'Damavand Peak';       break;
-      case 'MP_017':    $nmap = 'Noshahar Canals';     break;
-      case 'MP_018':    $nmap = 'Kharg Island';        break;
-      case 'MP_Subway': $nmap = 'Operation Metro';     break;
-      case 'XP1_001':   $nmap = 'Strike at Karkand';   break;
-      case 'XP1_002':   $nmap = 'Gulf of Oman';        break;
-      case 'XP1_003':   $nmap = 'Sharqi Peninsula';    break;
-      case 'XP1_004':   $nmap = 'Wake Island';         break;
+      default:          	$nmap = '-';                   break;
+      case 'MP_001':    	$nmap = 'Grand Bazaar';        break;
+      case 'MP_003':    	$nmap = 'Teheran Highway';     break;
+      case 'MP_007':    	$nmap = 'Caspian Border';      break;
+      case 'MP_011':    	$nmap = 'Seine Crossing';      break;
+      case 'MP_012':   		$nmap = 'Operation Firestorm'; break;
+      case 'MP_013':    	$nmap = 'Damavand Peak';       break;
+      case 'MP_017':    	$nmap = 'Noshahar Canals';     break;
+      case 'MP_018':    	$nmap = 'Kharg Island';        break;
+      case 'MP_Subway': 	$nmap = 'Operation Metro';     break;
+      case 'XP1_001':   	$nmap = 'Strike at Karkand';   break;
+      case 'XP1_002':   	$nmap = 'Gulf of Oman';        break;
+      case 'XP1_003':   	$nmap = 'Sharqi Peninsula';    break;
+      case 'XP1_004':   	$nmap = 'Wake Island';         break;
+	  case 'xp2_factory': 	$nmap = 'Altmetall';		   break;
+	  case 'xp2_office': 	$nmap = 'Operation 925';	   break;
+	  case 'xp2_palace': 	$nmap = 'Donya-Festung';	   break;
+	  case 'xp2_skybar': 	$nmap = 'Ziba-Turm';		   break;
+	  case 'xp3_alborz': 	$nmap = 'Elburs-Gebirge';	   break;
+	  case 'xp3_desert': 	$nmap = 'Bandar-Wüste';		   break;
+	  case 'xp3_shield': 	$nmap = 'Armored Shield';	   break;
+	  case 'xp3_valley': 	$nmap = 'Tal des Todes';	   break;
       }
       $data['mapname']    = $nmap;  
     } else if($request == 'players') {
