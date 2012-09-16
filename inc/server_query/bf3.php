@@ -11,7 +11,7 @@
   {
     global $server_timeout;
 
-    $q_port = empty($q_port) ? 48888 : $q_port;
+    $q_port = empty($q_port) ? 47200 : $q_port;
     
     @set_time_limit(20);
     $fp = @fsockopen("tcp://$ip", $q_port, $errno, $errstr, $server_timeout);
@@ -48,14 +48,14 @@
       case 'XP1_002':   	$nmap = 'Gulf of Oman';        break;
       case 'XP1_003':   	$nmap = 'Sharqi Peninsula';    break;
       case 'XP1_004':   	$nmap = 'Wake Island';         break;
-	  case 'xp2_factory': 	$nmap = 'Altmetall';		   break;
-	  case 'xp2_office': 	$nmap = 'Operation 925';	   break;
-	  case 'xp2_palace': 	$nmap = 'Donya-Festung';	   break;
-	  case 'xp2_skybar': 	$nmap = 'Ziba-Turm';		   break;
-	  case 'xp3_alborz': 	$nmap = 'Elburs-Gebirge';	   break;
-	  case 'xp3_desert': 	$nmap = 'Bandar-Wüste';		   break;
-	  case 'xp3_shield': 	$nmap = 'Armored Shield';	   break;
-	  case 'xp3_valley': 	$nmap = 'Tal des Todes';	   break;
+	  case 'XP2_Factory': 	$nmap = 'Altmetall';		   break;
+	  case 'XP2_Office': 	$nmap = 'Operation 925';	   break;
+	  case 'XP2_Palace': 	$nmap = 'Donya-Festung';	   break;
+	  case 'XP2_Skybar': 	$nmap = 'Ziba-Turm';		   break;
+	  case 'XP3_Alborz': 	$nmap = 'Elburs-Gebirge';	   break;
+	  case 'XP3_Desert': 	$nmap = 'Bandar-Wüste';		   break;
+	  case 'XP3_Shield': 	$nmap = 'Armored Shield';	   break;
+	  case 'XP3_Valley': 	$nmap = 'Tal des Todes';	   break;
       }
       $data['mapname']    = $nmap;  
     } else if($request == 'players') {
