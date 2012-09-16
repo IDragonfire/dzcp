@@ -25,13 +25,13 @@ default:
     {
         $navKat = 'lazy';
         $n_kat = '';
-        $navWhere = '';
+        $navWhere = "WHERE public = 1 ".(!permission("intnews") ? "AND `intern` = '0'" : '')."";
     } 
     else
     {
         $n_kat = "AND kat = '".$kat."'";
         $navKat = $kat;
-        $navWhere = "WHERE kat = '".$kat."'";
+        $navWhere = "WHERE kat = '".$kat."' AND public = 1 ".(!permission("intnews") ? "AND `intern` = '0'" : '')."";
     }
 
     $qry = db("SELECT * FROM ".$db['news']." 
