@@ -524,12 +524,12 @@ function make_clickable($ret) {
 /* END # from wordpress under GBU GPL license */
 
 //Diverse BB-Codefunktionen
-function bbcode($txt, $tinymce=0, $no_vid=0,$ts=0,$nolink=0)
+function bbcode($txt, $tinymce=0, $no_vid=false, $ts=0, $nolink=false)
 {
-  global $settings;
-  if($no_vid == 0 && $settings['urls_linked'] == 1 && $nolink == 0) {
+  if(!$no_vid && settings('urls_linked') && !$nolink) {
 	  $txt = make_clickable($txt);
   }
+  
   $txt = str_replace("\\","\\\\",$txt);
   $txt = str_replace("\\n","<br />",$txt);
   $txt = BadwordFilter($txt);
@@ -910,7 +910,7 @@ function checkme()
     $qry = db("SELECT level FROM ".$db['users']."
                WHERE id = '".intval($userid)."'
                AND pwd = '".$_SESSION['pwd']."'
-               AND ip = '".mysql_real_escape_string($_SESSION['ip'])."'");
+               AND ip = '".sql_real_escape_string($_SESSION['ip'])."'");
     
     if(_rows($qry))
     {
@@ -1145,9 +1145,7 @@ function checkpwd($user, $pwd)
 //-> Infomeldung ausgeben
 function info($msg, $url, $timeout = 5)
 {
-  global $c;
-
-  if($c['direct_refresh'] == 1) 
+  if(config('direct_refresh')) 
       return header('Location: '.str_replace('&amp;', '&', $url));
 
   $u = parse_url($url); $parts = '';
@@ -1163,7 +1161,7 @@ function info($msg, $url, $timeout = 5)
   }
 
   return show("errors/info", array("msg" => $msg,
-                                   "url" => $u['path'],
+                                   "url" => (array_key_exists('path',$u) && !empty($u['path']) ? $u['path'] : ''),
                                    "rawurl" => html_entity_decode($url),
                                    "parts" => $parts,
                                    "timeout" => $timeout,

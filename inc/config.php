@@ -8,6 +8,8 @@ if(!isset($installation))
 
 //DZCP Settings
 define('is_debug', false);
+define('cache_in_debug', false);
+
 define('buffer_gzip_compress', true);
 define('buffer_gzip_compress_level', 4);
 
@@ -27,8 +29,12 @@ define('xfire_refresh', (10*60));
 $picformat = array("jpg", "gif", "png");
 $passwordComponents = array("ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz","0123456789","#$@!");
 
+//MySQL Settings
+define('sql_autodetect_mysqli', true);
+define('sql_use_mysqli', true);
+
 //-> MySQL-Datenbankangaben
-$prefix = $sql_prefix;                      
+$prefix = $sql_prefix;
 $db = array("host" =>           $sql_host,
             "user" =>           $sql_user,
             "pass" =>           $sql_pass,

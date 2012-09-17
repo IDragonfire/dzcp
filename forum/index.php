@@ -965,7 +965,7 @@ case 'thread';
 						             `forum`  = 1,
                          `von`    = '".((int)$userid)."'");
 
-          $vid = mysql_insert_id();
+          $vid = sql_get_insert_id();
 
           $qry = db("INSERT INTO ".$db['vote_results']."
                     SET `vid`   = '".((int)$vid)."',
@@ -1326,7 +1326,7 @@ case 'thread';
 													 `forum`  = 1,
 													 `von`    = '".((int)$userid)."'");
 	
-						$vid = mysql_insert_id();
+						$vid = sql_get_insert_id();
 	
 						$qry = db("INSERT INTO ".$db['vote_results']."
 											SET `vid`   = '".((int)$vid)."',
@@ -1412,7 +1412,7 @@ case 'thread';
 												`lp`       = '".((int)time())."',
 												`vote`     = '".$vid."',
 												`first`	= '1'");
-				$thisFID = mysql_insert_id();
+				$thisFID = sql_get_insert_id();
                 wire_ipcheck("fid(".$_GET['kid'].")");
 	
 				$update = db("UPDATE ".$db['userstats']."

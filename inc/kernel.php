@@ -11,11 +11,11 @@ function addMod($author, $modid, $installedversion, $serverurl, $downloadurl)
     if(existsMod($author, $modid)) return false;
     
     if(db('INSERT INTO ' . $db['mods'] . ' (`author`, `modid`, `version`, `serverurl`, `downloadurl`, `installed`) ' .
-              'VALUES ("' . mysql_real_escape_string ($author) . '", "' .
-                          mysql_real_escape_string ($modid) . '", "' .
-                          mysql_real_escape_string ($installedversion) . '", "' .
-                          mysql_real_escape_string ($serverurl) . '", "' . 
-                          mysql_real_escape_string ($downloadurl) . '",NOW())' ))
+              'VALUES ("' . real_escape_string ($author) . '", "' .
+                          real_escape_string ($modid) . '", "' .
+                          real_escape_string ($installedversion) . '", "' .
+                          real_escape_string ($serverurl) . '", "' . 
+                          real_escape_string ($downloadurl) . '",NOW())' ))
     {
         wire_ipcheck('mod_add('.$modid.')');
         return true;
@@ -35,8 +35,8 @@ function updateMod($author, $modid, $newversion)
     if(!existsMod($author, $modid)) 
         return false;
     
-    if(db('UPDATE ' . $db['mods'] . ' SET  version = "' . mysql_real_escape_string ($newversion) . '", installed = NOW() ' .
-       ' WHERE author = "' . mysql_real_escape_string ($author) . '" AND modid = "' . mysql_real_escape_string ($modid) . '"'))
+    if(db('UPDATE ' . $db['mods'] . ' SET  version = "' . real_escape_string ($newversion) . '", installed = NOW() ' .
+       ' WHERE author = "' . real_escape_string ($author) . '" AND modid = "' . real_escape_string ($modid) . '"'))
     {
         wire_ipcheck('mod_upd('.$modid.')');
         return true;
@@ -57,7 +57,7 @@ function deleteMod($author, $modid)
         return false;
     
     if(db('DELETE FROM ' . $db['mods'] .
-       ' WHERE author = "' . mysql_real_escape_string ($author) . '" AND modid = "' . mysql_real_escape_string ($modid) . '"'))
+       ' WHERE author = "' . real_escape_string ($author) . '" AND modid = "' . real_escape_string ($modid) . '"'))
     {
         wire_ipcheck('mod_del('.$modid.')');
         return true;
@@ -69,7 +69,7 @@ function deleteMod($author, $modid)
 function existsMod($author, $modid) 
 {
     global $db;
-    return (db('SELECT id FROM ' . $db['mods'] . ' WHERE author = "'.mysql_real_escape_string($author).'" AND modid = "'.mysql_real_escape_string($modid).'" LIMIT 1',true));
+    return (db('SELECT id FROM ' . $db['mods'] . ' WHERE author = "'.sql_real_escape_string($author).'" AND modid = "'.sql_real_escape_string($modid).'" LIMIT 1',true));
 }
 
 /**
@@ -287,7 +287,6 @@ function show($tpl="", $array=array())
 
 /**
  * Datenbank Connect
- * Todo: Code überarbeiten, Update auf MySQLi
  *
  * @return resource
  **/
@@ -296,54 +295,110 @@ if(!isset($db)) //tinymce fix
 
 if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '')
 {
-    if(!$msql = @mysql_connect($db['host'], $db['user'], $db['pass']))
+    if(!$msql = ($is_mysqli = can_use_mysqli() ? @mysqli_connect($db['host'], $db['user'], $db['pass'], $db['db']) : @mysql_connect($db['host'], $db['user'], $db['pass'])))
     {
         echo "<b>Fehler beim Zugriff auf die Datenbank!<p>";
-        print_db_error(false);
+        sql_print_db_error(false);
     }
 
-    if(!@mysql_select_db($db['db'],$msql))
+    if(!$is_mysqli)
     {
-        echo "<b>Die angegebene Datenbank <i>".$db['db']."</i> existiert nicht!<p>";
-        print_db_error(false);
+        //MySQL
+        if(!@mysql_select_db($db['db'],$msql))
+        {
+            echo "<b>Die angegebene Datenbank <i>".$db['db']."</i> existiert nicht!<p>";
+            sql_print_db_error(false);
+        }
     }
 }
 
-function print_db_error($query=false)
+/**
+ * Erkennt ob das neuere MySQLi verwendet werden kann PHP 5.2.x
+ *
+ * @return boolean
+ **/
+function can_use_mysqli()
 {
-    global $prefix;
+    if(!is_php($version='5.2.0')) //Ab PHP 5.2.x
+        return false;
+    
+    if(!sql_use_mysqli)
+        return false;
+    
+    if(sql_autodetect_mysqli)
+        return extension_loaded('mysqli');
+    
+    return true;
+}
+
+function sql_print_db_error($query=false)
+{
+    global $prefix,$is_mysqli;
     die('<b>MySQL-Query failed:</b><br /><br /><ul>'.
-            '<li><b>ErrorNo</b> = '.str_replace($prefix,'',mysql_errno()).
-            '<li><b>Error</b>   = '.str_replace($prefix,'',mysql_error()).
+            '<li><b>ErrorNo</b> = '.str_replace($prefix,'',($is_mysqli ? mysqli_connect_errno() : mysql_errno())).
+            '<li><b>Error</b>   = '.str_replace($prefix,'',($is_mysqli ? mysqli_connect_error() : mysql_error())).
             ($query ? '<li><b>Query</b>   = '.str_replace($prefix,'',$query).'</ul>' : ''));
 }
 
 /**
  * Datenbank Query senden
- * Todo: Code überarbeiten, Update auf MySQLi + SQL-Inception Schutz
  *
  * @return resource/array/int
  **/
 function db($query,$rows=false,$fetch=false)
 {
-    if(!$qry = mysql_query($query))
-        print_db_error($db);
+    global $msql,$is_mysqli;
+    
+    if(!$qry = ($is_mysqli ? mysqli_query($msql,$query) : mysql_query($query,$msql)))
+        sql_print_db_error($query);
 
     if($fetch && $rows)
-        return mysql_fetch_array($qry);
+        return ($is_mysqli ? mysqli_fetch_array($qry) : mysql_fetch_array($qry));
     else if($fetch && !$rows)
-        return mysql_fetch_assoc($qry);
+        return ($is_mysqli ? mysqli_fetch_assoc($qry) : mysql_fetch_assoc($qry));
     else if(!$fetch && $rows)
-        return mysql_num_rows($qry);
+        return ($is_mysqli ? mysqli_num_rows($qry) : mysql_num_rows($qry));
     else
         return $qry;
 }
 
 /**
- * Informationen über die MySQL-Datenbank abrufen
- * Todo: Code überarbeiten, Update auf MySQLi
+ * Liefert die ID, die in der vorherigen Abfrage erzeugt wurde
  *
- * @return resource
+ * @return int
+ **/
+function sql_get_insert_id()
+{
+    global $msql,$is_mysqli;
+    return ((int)($is_mysqli ? mysqli_insert_id($msql) : mysql_insert_id()));
+}
+
+/**
+ * Liefert die Tabellen als assoziatives Array
+ *
+ * @return array
+ **/
+function sql_get_list_tables($db='')
+{
+    $sql = "SHOW TABLES FROM ".$db;
+    return db($sql,false,true);
+}
+
+/**
+ * Maskiert spezielle Zeichen innerhalb eines Strings für die Verwendung in einer SQL-Anweisung
+ *
+ * @return string
+ **/
+function sql_real_escape_string($input='')
+{
+    global $is_mysqli,$msql;
+    return ($is_mysqli ? mysqli_real_escape_string($msql,$input) : mysql_real_escape_string($input));
+}
+
+/**
+ * Informationen über die MySQL-Datenbank abrufen
+ *
+ * @return array
  **/
 function dbinfo()
 {
@@ -371,29 +426,28 @@ function dbinfo()
 
 /**
  * Liefert die Anzahl der Zeilen im Ergebnis
- * Todo: Code überarbeiten, Update auf MySQLi
  *
  * @return integer
  **/
 function _rows($rows)
 {
-    return mysql_num_rows($rows);
+    global $is_mysqli;
+    return $is_mysqli ? mysqli_num_rows($rows) : mysql_num_rows($rows);
 }
 
 /**
  * Liefert einen Datensatz als assoziatives Array
- * Todo: Code überarbeiten, Update auf MySQLi
  *
  * @return array
  **/
 function _fetch($fetch)
 {
-    return mysql_fetch_assoc($fetch);
+    global $is_mysqli;
+    return $is_mysqli ? mysqli_fetch_assoc($fetch) : mysql_fetch_assoc($fetch);
 }
 
 /**
  * Funktion um diverse Dinge aus Tabellen auszaehlen zu lassen
- * Todo: Code überarbeiten, Update auf MySQLi
  *
  * @return integer
  **/
@@ -405,7 +459,6 @@ function cnt($count, $where = "", $what = "id")
 
 /**
  * Funktion um diverse Dinge aus Tabellen zusammenzaehlen zu lassen
- * Todo: Code überarbeiten, Update auf MySQLi
  *
  * @return integer
  **/
@@ -417,7 +470,6 @@ function sum($db, $where = "", $what)
 
 /**
  * Funktion um Settings aus der Datenbank auslesen
- * Todo: Code überarbeiten, Update auf MySQLi
  *
  * @return mixed/array
  **/
@@ -442,7 +494,6 @@ function settings($what)
 
 /**
  * Funktion um Config aus der Datenbank auslesen
- * Todo: Code überarbeiten, Update auf MySQLi
  *
  * @return mixed/array
  **/
@@ -682,7 +733,7 @@ function cache($file='', $data='', $mode='w')
     switch(strtolower($mode)) 
     {
         case 'w':
-            if(!is_debug)
+            if(!is_debug || cache_in_debug)
             {
                 $is_array = 'n';
                 if(is_array($data))
@@ -713,7 +764,10 @@ function cache($file='', $data='', $mode='w')
                return false;
         break;
         case 'c':
-            if(!file_exists(basePath.'/inc/_cache/'.$file_hash.'.cache.php') or !is_file(basePath.'/inc/_cache/'.$file_hash.'.cache.php') || is_debug)
+            if(is_debug && !cache_in_debug)
+                return true;
+            
+            if(!file_exists(basePath.'/inc/_cache/'.$file_hash.'.cache.php') or !is_file(basePath.'/inc/_cache/'.$file_hash.'.cache.php'))
                 return true;
             
             return (time()-@filemtime(basePath.'/inc/_cache/'.$file_hash.'.cache.php') > $data);

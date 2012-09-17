@@ -248,7 +248,7 @@ case 'register';
                      `time`     = '".time()."',
                      `status`   = '1'");
 
-      $insert_id = mysql_insert_id();
+      $insert_id = sql_get_insert_id();
 
       $qry = db("INSERT INTO ".$db['permissions']."
                  SET `user` = '".((int)$insert_id)."'");
@@ -358,6 +358,7 @@ case 'userlobby';
                  LEFT JOIN ".$db['squads']." AS s2
                  ON s1.squad_id = s2.id
                  ORDER BY s1.datum");
+    $cws = '';
     while($getcw = _fetch($qrycw))
     {
       if(check_new($getcw['datum'],1))
@@ -527,6 +528,7 @@ case 'userlobby';
     }
 
     $qrycheckcw = db("SELECT id FROM ".$db['cw']."");
+    $cwcom = '';
     while($getcheckcw = _fetch($qrycheckcw))
     {
       $qrycwc = db("SELECT id,cw,datum FROM ".$db['cw_comments']."
@@ -664,6 +666,7 @@ case 'userlobby';
     }
 
     $qrychecka = db("SELECT id FROM ".$db['artikel']." WHERE public = 1");
+    $artc = '';
     while($getchecka = _fetch($qrychecka))
     {
       $qryartc = db("SELECT id,artikel,datum FROM ".$db['acomments']."
@@ -716,8 +719,8 @@ case 'userlobby';
     $chklevel = db("SELECT level FROM ".$db['users']." WHERE id = '".$userid."'");
 	$getchklevel = _fetch($chklevel);
 
-    $qryawayn = db("SELECT * FROM ".$db['away']."
-                    ORDER BY id");
+    $qryawayn = db("SELECT * FROM ".$db['away']." ORDER BY id");
+    $awayn = '';
     while($getawayn = _fetch($qryawayn))
     {
       if(check_new($getawayn['date'],1) && $getchklevel['level'] >= 2)
@@ -740,6 +743,7 @@ case 'userlobby';
                     WHERE start <= '".time()."'
 				    AND end >= '".time()."'
                     ORDER BY start");
+    $awaya = '';
     while($getawaya = _fetch($qryawaya))
     {
       if(_rows($qryawaya) && $getchklevel['level'] >= 2)
@@ -753,8 +757,7 @@ case 'userlobby';
 	   								         "wieder" => $wieder,
 											 "what" => $getawaya['titel']));
 
-        $away_now = show(_user_away_currently, array("ncaway" => _lobby_away,
-													 "caway" => $awaya));
+        $away_now = show(_user_away_currently, array("ncaway" => _lobby_away, "caway" => $awaya));
 	  } else { 
 	    $away_now = ""; 
 	  }
@@ -767,6 +770,7 @@ case 'userlobby';
                  AND s2.sid = s3.id
                  ORDER BY s1.lp DESC
                  LIMIT 10");
+    $ftopics = '';
     while($getft = _fetch($qryft))
     {
       if(fintern($getft['kid']))

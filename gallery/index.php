@@ -88,9 +88,9 @@ case 'show';
 		}
 	}
 
+	$end = "";
 	if(is_float($cnt/$gallery))
 	{
-		$end = "";
 		for($e=$t; $e<=$gallery; $e++)
 		{
 			$end .= '<td class="contentMainFirst"></td>';

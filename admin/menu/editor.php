@@ -107,7 +107,8 @@ if(_adminMenu != 'true') exit;
                      SET `titel` = '".up($_POST['titel'])."',
                          `text`  = '".up($_POST['inhalt'],1)."',
                          `html`  = '".((int)$_POST['html'])."'");
-          $insert_id = mysql_insert_id();
+						 
+          $insert_id = sql_get_insert_id();
 
           if($_POST['pos'] == "1" || "2") $sign = ">= ";
           else $sign = "> ";

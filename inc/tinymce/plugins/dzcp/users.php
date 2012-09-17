@@ -58,7 +58,7 @@ function flag($code)
       </tr>
 <?php
     $qry = db("SELECT id,nick,country FROM ".$db['users']." ".$order." ORDER BY nick");
-    while($get = mysql_fetch_array($qry))
+    while($get = _fetch($qry))
     {
         echo "<tr>\n";
         echo "  <td>".flag($get['country'])." ".$get['nick']."</td>\n";
