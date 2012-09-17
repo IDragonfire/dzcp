@@ -17,7 +17,7 @@ $index = "";
 
 ## SECTIONS ##
 $page = (isset($_GET['page']) ? $_GET['page'] : 1);
-switch ((isset($_GET['action']) ? $_GET['action'] : '')):
+switch((isset($_GET['action']) ? $_GET['action'] : '')):
 default:
     $kat = (isset($_GET['kat']) ? intval($_GET['kat']) : false);
 
@@ -43,7 +43,7 @@ default:
     $show_sticky = "";
     while($get = _fetch($qry))
     {
-        $getkat = _fetch(db("SELECT katimg FROM ".$db['newskat']." WHERE id = '".$get['kat']."'"));
+        $getkat = db("SELECT katimg FROM ".$db['newskat']." WHERE id = '".$get['kat']."'",false,true);
         $c = cnt($db['newscomments'], " WHERE news = '".$get['id']."'");
         $klapp = ""; $links = ""; $links1 = ""; $links2 = ""; $links3 = "";
 
