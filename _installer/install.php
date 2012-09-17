@@ -72,7 +72,7 @@ if(isset($_GET['agb']) && $_GET['agb'])
         _c('_installer',$pfad,$host,$user,$pwd);  
         _c('_installer/update.php',$pfad,$host,$user,$pwd);  
         _c('_installer/install.php',$pfad,$host,$user,$pwd);
-        _c('__cache',$pfad,$host,$user,$pwd);
+        _c('inc/_cache',$pfad,$host,$user,$pwd);
         _c('rss.xml',$pfad,$host,$user,$pwd);
         _c('admin',$pfad,$host,$user,$pwd);
         _c('banner',$pfad,$host,$user,$pwd);
@@ -124,7 +124,7 @@ if(isset($_GET['agb']) && $_GET['agb'])
   $cm .= _i('../_installer/install.php');
   $cm .= _i('../_installer/update.php');
 //Check Scriptfiles
-  $c = _i('../__cache',1);
+  $c = _i('../inc/_cache',1);
   $c .= _i('../rss.xml');
   $c .= _i('../admin',1);
   $c .= _i('../banner',1);
