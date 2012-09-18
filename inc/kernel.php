@@ -192,6 +192,20 @@ function parsePHPInfo()
 }
 
 /**
+ * Prüft wie PHP ausgeführt wird
+ *
+ * @return string
+ **/
+function php_sapi_type()
+{
+    $sapi_type = php_sapi_name();
+    $sapi_types = array("apache" => 'Apache HTTP Server', "apache2filter" => 'Apache 2: Filter',
+            "apache2handler" => 'Apache 2: Handler', "cgi" => 'CGI', "cgi-fcgi" => 'Fast-CGI',
+            "cli" => 'CLI', "isapi" => 'ISAPI', "nsapi" => 'NSAPI');
+    return(empty($sapi_types[substr($sapi_type, 0, 3)]) ? substr($sapi_type, 0, 3) : $sapi_types[substr($sapi_type, 0, 3)]);
+}
+
+/**
  * Funktion um eine Datei im Web auf Existenz zu prfen
  * 
  * @return mixed
