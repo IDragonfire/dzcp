@@ -8,6 +8,8 @@ if(!isset($installation))
 
 //DZCP Settings
 define('is_debug', false);
+define('cache_in_debug', true);
+
 define('buffer_gzip_compress', true);
 define('buffer_gzip_compress_level', 4);
 

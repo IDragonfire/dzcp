@@ -696,7 +696,7 @@ function cache($file='', $data='', $mode='w')
     switch(strtolower($mode)) 
     {
         case 'w':
-            if(!is_debug)
+            if(!is_debug || cache_in_debug)
             {
                 $is_array = 'n';
                 if(is_array($data))
@@ -727,7 +727,10 @@ function cache($file='', $data='', $mode='w')
                return false;
         break;
         case 'c':
-            if(!file_exists(basePath.'/inc/_cache/'.$file_hash.'.cache.php') or !is_file(basePath.'/inc/_cache/'.$file_hash.'.cache.php') || is_debug)
+            if(is_debug && !cache_in_debug)
+                return true;
+            
+            if(!file_exists(basePath.'/inc/_cache/'.$file_hash.'.cache.php') or !is_file(basePath.'/inc/_cache/'.$file_hash.'.cache.php'))
                 return true;
             
             return (time()-@filemtime(basePath.'/inc/_cache/'.$file_hash.'.cache.php') > $data);
