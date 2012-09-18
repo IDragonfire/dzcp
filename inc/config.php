@@ -26,7 +26,7 @@ define('xfire_preloader', true);
 define('xfire_skin', 'shadow'); //shadow,kampf,scifi,fantasy,wow,default
 define('xfire_refresh', (10*60));
 
-define('glossar_enabled', false); // Glossar ist buggy!
+define('glossar_enabled', true);
 
 $picformat = array("jpg", "gif", "png");
 $passwordComponents = array("ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz","0123456789","#$@!");
