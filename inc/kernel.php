@@ -294,7 +294,7 @@ function show($tpl="", $array=array())
 if(!isset($db)) //tinymce fix
     require_once(basePath."/inc/config.php");
 
-if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '')
+if($db['host'] != '' && $db['user'] != '' && $db['db'] != '')
 {
     if(!$msql = @mysql_connect($db['host'], $db['user'], $db['pass']))
     {
@@ -327,7 +327,7 @@ function print_db_error($query=false)
 function db($query,$rows=false,$fetch=false)
 {
     if(!$qry = mysql_query($query))
-        print_db_error($db);
+        print_db_error($query);
 
     if($fetch && $rows)
         return mysql_fetch_array($qry);
