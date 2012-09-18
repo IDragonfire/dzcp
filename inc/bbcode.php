@@ -2160,19 +2160,8 @@ function xfire($username='')
     return show(_xfireicon,array('username' => $username, 'img' => 'http://de.miniprofile.xfire.com/bg/'.$skin.'/type/0/'.$username.'.png'));
 }
 
-//-> Neue Languages einbinden, sofern vorhanden
-if($l = get_files(basePath.'/inc/additional-languages/'.$language.'/',false,true,array('php')))
-{
-	foreach($l AS $languages)
-	{ include(basePath.'/inc/additional-languages/'.$language.'/'.$languages); }
-}
-
-//-> Neue Funktionen einbinden, sofern vorhanden
-if($f = get_files(basePath.'/inc/additional-functions/',false,true,array('php')))
-{
-    foreach($f AS $func)
-    { include(basePath.'/inc/additional-functions/'.$func); }
-}
+//Mods und Api Laden
+include_once(basePath.'/inc/mod_api.php');
 
 //-> Navigation einbinden
 include_once(basePath.'/inc/menu-functions/navi.php');
