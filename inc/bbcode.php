@@ -181,11 +181,16 @@ function lang($lng,$pfad='')
 	if(!file_exists(basePath."/inc/lang/languages/".$lng.".php"))
 	{
 		$files = get_files(basePath.'/inc/lang/languages/',false,true,array('php'));
+		
+		if(!count($files))
+		   die('No language files found in "inc/lang/languages/*"!'); 
+		   
 		$lng = str_replace('.php','',$files[0]);
 	}
 
-	include(basePath."/inc/lang/global.php");
-	include(basePath."/inc/lang/languages/".$lng.".php");
+	require_once(basePath."/inc/lang/global.php");
+	require_once(basePath."/inc/lang/languages/".$lng.".php");
+	
 	header("Content-type: text/html; charset="._charset);
 }
 
@@ -552,6 +557,7 @@ function bbcode($txt, $tinymce=0, $no_vid=false, $ts=0, $nolink=false)
 
   return $txt;
 }
+
 function bbcode_nletter($txt)
 {
   $txt = stripslashes($txt);
