@@ -524,10 +524,9 @@ function make_clickable($ret) {
 /* END # from wordpress under GBU GPL license */
 
 //Diverse BB-Codefunktionen
-function bbcode($txt, $tinymce=0, $no_vid=0,$ts=0,$nolink=0)
+function bbcode($txt, $tinymce=0, $no_vid=false, $ts=0, $nolink=false)
 {
-  global $settings;
-  if($no_vid == 0 && $settings['urls_linked'] == 1 && $nolink == 0) {
+  if(!$no_vid && settings('urls_linked') && !$nolink) {
 	  $txt = make_clickable($txt);
   }
   $txt = str_replace("\\","\\\\",$txt);
