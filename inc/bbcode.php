@@ -1145,31 +1145,29 @@ function checkpwd($user, $pwd)
 //-> Infomeldung ausgeben
 function info($msg, $url, $timeout = 5)
 {
-  global $c;
+    if(config('direct_refresh')) 
+        return header('Location: '.str_replace('&amp;', '&', $url));
 
-  if($c['direct_refresh'] == 1) 
-      return header('Location: '.str_replace('&amp;', '&', $url));
+    $u = parse_url($url); $parts = '';
+    if(array_key_exists('query',$u) && !empty($u['query']))
+    {
+        $u['query'] = str_replace('&amp;', '&', $u['query']);
+        foreach(explode('&', $u['query']) as $p)
+        {
+            $p = explode('=', $p);
+            if(count($p) == 2) 
+            $parts .= '<input type="hidden" name="'.$p[0].'" value="'.$p[1].'" />'."\r\n";
+        }
+    }
 
-  $u = parse_url($url); $parts = '';
-  if(array_key_exists('query',$u) && !empty($u['query']))
-  {
-      $u['query'] = str_replace('&amp;', '&', $u['query']);
-      foreach(explode('&', $u['query']) as $p)
-      {
-          $p = explode('=', $p);
-          if(count($p) == 2) 
-              $parts .= '<input type="hidden" name="'.$p[0].'" value="'.$p[1].'" />'."\r\n";
-      }
-  }
-
-  return show("errors/info", array("msg" => $msg,
-                                   "url" => $u['path'],
-                                   "rawurl" => html_entity_decode($url),
-                                   "parts" => $parts,
-                                   "timeout" => $timeout,
-                                   "info" => _info,
-                                   "weiter" => _weiter,
-                                   "backtopage" => _error_fwd));
+    return show("errors/info", array("msg" => $msg,
+                                     "url" => (array_key_exists('path',$u) && !empty($u['path']) ? $u['path'] : ''),
+                                     "rawurl" => html_entity_decode($url),
+                                     "parts" => $parts,
+                                     "timeout" => $timeout,
+                                     "info" => _info,
+                                     "weiter" => _weiter,
+                                     "backtopage" => _error_fwd));
 }
 
 //-> Errormmeldung ausgeben
