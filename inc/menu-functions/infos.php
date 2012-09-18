@@ -3,7 +3,7 @@
 function infos()
 {
     // Debug Mode is enabled, infobox
-    $dg = (is_debug ? '<tr><td><table width="100%" class="subPersInfos"><tr class="persInfosContent"><td width="100%"><span class="fontBoldPersInfos">'._debug_on.'</td></tr></table></td></tr>' : '');
+    $dg = (is_debug ? '<tr><td><table width="100%" class="subPersInfos"><tr class="persInfosContent"><td width="100%"><span class="fontBoldPersInfos">'._debug_on.'</td></tr><tr class="persInfosContent"><td width="100%"><span class="fontBoldPersInfos">[time]</td></tr></table></td></tr>' : '');
     
     if(settings("persinfo") == 1)
     {
