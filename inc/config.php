@@ -8,7 +8,7 @@ if(!isset($installation))
 
 //DZCP Settings
 define('is_debug', false);
-define('cache_in_debug', true);
+define('cache_in_debug', false);
 
 define('buffer_gzip_compress', true);
 define('buffer_gzip_compress_level', 4);
@@ -25,6 +25,8 @@ define('cache_gzip_compress_level', 2);
 define('xfire_preloader', true);
 define('xfire_skin', 'shadow'); //shadow,kampf,scifi,fantasy,wow,default
 define('xfire_refresh', (10*60));
+
+define('glossar_enabled', false); // Glossar ist buggy!
 
 $picformat = array("jpg", "gif", "png");
 $passwordComponents = array("ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz","0123456789","#$@!");

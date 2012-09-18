@@ -281,43 +281,47 @@ function highlight_text($txt)
   }
   return $txt;
 }
-//-> Glossarfunktion
-$gl_words = array();
-$gl_desc = array();
-$qryglossar = db("SELECT * FROM ".$db['glossar']);
-while($getglossar = _fetch($qryglossar))
-{
-  $gl_words[] = re($getglossar['word']);
-  $gl_desc[]  = $getglossar['glossar'];
-}
 
 function regexChars($txt)
 {
-  $txt = strip_tags($txt);
-  $txt = str_replace('"','&quot;',$txt);
-  $txt = str_replace('\\','\\\\',$txt);
-  $txt = str_replace('<','\<',$txt);
-  $txt = str_replace('>','\>',$txt);
-  $txt = str_replace('/','\/',$txt);
-  $txt = str_replace('.','\.',$txt);
-  $txt = str_replace(':','\:',$txt);
-  $txt = str_replace('^','\^',$txt);
-  $txt = str_replace('$','\$',$txt);
-  $txt = str_replace('|','\|',$txt);
-  $txt = str_replace('?','\?',$txt);
-  $txt = str_replace('*','\*',$txt);
-  $txt = str_replace('+','\+',$txt);
-  $txt = str_replace('-','\-',$txt);
-  $txt = str_replace('(','\(',$txt);
-  $txt = str_replace(')','\)',$txt);
-  $txt = str_replace('[','\[',$txt);
-  $txt = str_replace(']','\]',$txt);
-  $txt = str_replace('}','\}',$txt);
-  $txt = str_replace('{','\{',$txt);
-  $txt = str_replace("\r",'',$txt);
-  $txt = str_replace("\n",'',$txt);
+    $txt = strip_tags($txt);
+    $txt = str_replace('"','&quot;',$txt);
+    $txt = str_replace('\\','\\\\',$txt);
+    $txt = str_replace('<','\<',$txt);
+    $txt = str_replace('>','\>',$txt);
+    $txt = str_replace('/','\/',$txt);
+    $txt = str_replace('.','\.',$txt);
+    $txt = str_replace(':','\:',$txt);
+    $txt = str_replace('^','\^',$txt);
+    $txt = str_replace('$','\$',$txt);
+    $txt = str_replace('|','\|',$txt);
+    $txt = str_replace('?','\?',$txt);
+    $txt = str_replace('*','\*',$txt);
+    $txt = str_replace('+','\+',$txt);
+    $txt = str_replace('-','\-',$txt);
+    $txt = str_replace('(','\(',$txt);
+    $txt = str_replace(')','\)',$txt);
+    $txt = str_replace('[','\[',$txt);
+    $txt = str_replace(']','\]',$txt);
+    $txt = str_replace('}','\}',$txt);
+    $txt = str_replace('{','\{',$txt);
+    $txt = str_replace("\r",'',$txt);
+    $txt = str_replace("\n",'',$txt);
 
-  return $txt;
+    return $txt;
+}
+
+//-> Glossarfunktion *Buggy
+if(glossar_enabled)
+{
+    $gl_words = array();
+    $gl_desc = array();
+    $qryglossar = db("SELECT * FROM ".$db['glossar']);
+    while($getglossar = _fetch($qryglossar))
+    {
+      $gl_words[] = re($getglossar['word']);
+      $gl_desc[]  = $getglossar['glossar'];
+    }
 }
 
 function glossar($txt)
@@ -331,7 +335,7 @@ function glossar($txt)
   for($s=0;$s<=count($gl_words)-1;$s++)
   {
     $w = addslashes(regexChars(html_entity_decode($gl_words[$s])));
-		$txt = str_ireplace(' '.$w.' ', ' <tmp|'.$w.'|tmp> ', $txt);
+	$txt = str_ireplace(' '.$w.' ', ' <tmp|'.$w.'|tmp> ', $txt);
     $txt = str_ireplace('>'.$w.'<', '> <tmp|'.$w.'|tmp> <', $txt);
     $txt = str_ireplace('>'.$w.' ', '> <tmp|'.$w.'|tmp> ', $txt);
   	$txt = str_ireplace(' '.$w.'<', ' <tmp|'.$w.'|tmp> <', $txt);
@@ -393,7 +397,7 @@ function replace($txt,$type=0,$no_vid_tag=0)
                                ),
                                $txt);
 
-  if($no_vid_tag == 0)
+  if(!$no_vid_tag)
   {
 	  $txt = preg_replace_callback("#\[youtube\]http\:\/\/www.youtube.com\/watch\?v\=(.*)\[\/youtube\]#Uis", #
 					create_function(
@@ -540,7 +544,7 @@ function bbcode($txt, $tinymce=0, $no_vid=false, $ts=0, $nolink=false)
   }
   $txt = smileys($txt);
 
-  if($no_vid == 0)
+  if(!$no_vid && glossar_enabled)
   $txt = glossar($txt);
 
   $txt = str_replace("&#34;","\"",$txt);
@@ -556,6 +560,7 @@ function bbcode_nletter($txt)
 
   return $txt;
 }
+
 function bbcode_nletter_plain($txt)
 {
   $txt = preg_replace("#\<\/p\>#Uis","\r\n",$txt);
@@ -567,6 +572,7 @@ function bbcode_nletter_plain($txt)
   $txt = strip_tags($txt);
   return $txt;
 }
+
 function bbcode_html($txt,$tinymce=0)
 {
   $txt = str_replace("&lt;","<",$txt);
@@ -577,7 +583,10 @@ function bbcode_html($txt,$tinymce=0)
   $txt = highlight_text($txt);
   $txt = re_bbcode($txt);
   $txt = smileys($txt);
-  $txt = glossar($txt);
+  
+  if(glossar_enabled)
+      $txt = glossar($txt);
+  
   $txt = str_replace("&#34;","\"",$txt);
 
 	return $txt;
