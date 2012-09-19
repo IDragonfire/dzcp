@@ -1534,6 +1534,12 @@ function getrank($tid, $squad="", $profil=0)
     }
 }
 
+//-> maskiert Zeilenumbrueche fuer <textarea>
+function txtArea($txt)
+{
+    return $txt;
+}
+
 //-> Session fuer den letzten Besuch setzen
 function set_lastvisit()
 {
