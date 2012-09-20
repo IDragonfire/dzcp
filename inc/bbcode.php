@@ -168,7 +168,7 @@ $files = get_files('../inc/_templates_/',true,false);
 if(isset($_COOKIE[$prev.'tmpdir']) && $_COOKIE[$prev.'tmpdir'] != NULL)
     $tmpdir = (file_exists(basePath."/inc/_templates_/".$_COOKIE[$prev.'tmpdir']."/index.html") ? $_COOKIE[$prev.'tmpdir'] : $files[0]);
 else 
-    $tmpdir = (file_exists(basePath."/inc/_templates_/".$sdir."/index.html") ? $sdir : $folder);
+    $tmpdir = (file_exists(basePath."/inc/_templates_/".$sdir."/index.html") ? $sdir : $files[0]);
 
 $designpath = '../inc/_templates_/'.$tmpdir;
 
