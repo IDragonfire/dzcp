@@ -2284,7 +2284,7 @@ case 'msg';
 break;
 case 'userlist';
     $where = _site_ulist;
-    $page = (isset($_GET['page']) ? $_GET['page'] : '1');
+    $page = (isset($_GET['page']) ? $_GET['page'] : 1);
     $entrys = cnt($db['users']," WHERE level != 0");
     $maxuserlist = config('m_userlist');
     switch(isset($_GET['show']) ? $_GET['show'] : '') 
