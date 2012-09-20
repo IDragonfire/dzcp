@@ -235,8 +235,10 @@ function show($tpl="", $array=array())
 if(!isset($db)) //tinymce fix
     require_once(basePath."/inc/config.php");
 
-if(!empty($db['host']) && !empty($db['user']) && !empty($db['pass']) && !empty($db['db']))
+if(!empty($db['host']) && !empty($db['user']) && (!empty($db['pass']) or !$db['pass']) && !empty($db['db']))
 {
+    if(!$db['pass']) $db['pass'] = '';
+    
     if(!$msql = @mysql_connect($db['host'], $db['user'], $db['pass']))
     {
         echo "<b>Fehler beim Zugriff auf die Datenbank!<p>";
