@@ -1472,14 +1472,23 @@ function update_mysql_1_6()
 	`own_date` INT(12) NOT NULL,
 	PRIMARY KEY (`id`)) ;");
     
-        db("CREATE TABLE " . $db['mods'] . " (
-      `author` varchar(32) NOT NULL,
-      `modid` varchar(32) NOT NULL,
-      `version` text NOT NULL,
-      `serverurl` text NOT NULL,
-      `downloadurl` text NOT NULL,
-      `installed` datetime NOT NULL,
-      `serverversion` text NOT NULL,
-      PRIMARY KEY (`author`,`modid`) )");
+    db("CREATE TABLE ".$db['mods']." (
+    `author` varchar(32) NOT NULL,
+    `modid` varchar(32) NOT NULL,
+    `version` text NOT NULL,
+    `serverurl` text NOT NULL,
+    `downloadurl` text NOT NULL,
+    `installed` datetime NOT NULL,
+    `serverversion` text NOT NULL,
+    PRIMARY KEY (`author`,`modid`) )");
+
+    //Click IP Counter
+    db("CREATE TABLE `".$db['clicks_ips']."` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `ip` varchar(15) NOT NULL DEFAULT '000.000.000.000',
+    `uid` int(11) NOT NULL DEFAULT '0',
+    `ids` int(11) NOT NULL DEFAULT '0',
+    `side` varchar(30) NOT NULL DEFAULT '',
+    PRIMARY KEY (`id`), KEY `ip` (`ip`))");
 	}
 ?>

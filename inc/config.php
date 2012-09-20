@@ -97,6 +97,6 @@ $db = array("host" =>           $sql_host,
             "versions" =>       $prefix."versions",
             "votes" =>          $prefix."votes",
             "vote_results" =>   $prefix."vote_results",
-            'mods' =>           $prefix.'mods'
-            );
+            'mods' =>           $prefix.'mods',
+            'clicks_ips' =>     $prefix.'clicks_ips');
 ?>

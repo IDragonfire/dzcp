@@ -1940,6 +1940,39 @@ function logout()
     session_regenerate_id();
 }
 
+//Prüft ob alle clicks nur einmal gezählt werden *gast/user
+function count_clicks($side_tag='',$clickedID=0)
+{
+    global $db,$userid;
+    
+    if(checkme() != 'unlogged')
+    {
+        if(db("SELECT id FROM ".$db['clicks_ips']." WHERE `uid` = '".$userid."' AND `ids` = '".$clickedID."' AND `side` = '".$side_tag."'",true))
+            return false;
+
+        if(db("SELECT id FROM ".$db['clicks_ips']." WHERE `ip` = '".visitorIp()."' AND `ids` = '".$clickedID."' AND `side` = '".$side_tag."'",true))
+        {
+            db("UPDATE `".$db['clicks_ips']."` SET `uid` = '".$userid."' WHERE `ip` = '".visitorIp()."' AND `ids` = '".$clickedID."' AND `side` = '".$side_tag."'");
+            return false;
+        }
+        else
+        {
+            db("INSERT INTO ".$db['clicks_ips']." (`id` ,`ip` ,`uid` ,`ids`, `side`) VALUES (NULL , '".visitorIp()."', '".$userid."', '".$clickedID."', '".$side_tag."')");
+            return true;
+        }
+    }
+    else
+    {
+        if(!db("SELECT id FROM ".$db['clicks_ips']." WHERE `ip` = '".visitorIp()."' AND `ids` = '".$clickedID."' AND `side` = '".$side_tag."'",true))
+        {
+            db("INSERT INTO ".$db['clicks_ips']." (`id` ,`ip` ,`uid` ,`ids`, `side`) VALUES (NULL , '".visitorIp()."', '0', '".$clickedID."', '".$side_tag."')");
+            return true;
+        }
+    }
+    
+    return false;
+}
+
 //Mods und Api Laden
 include_once(basePath.'/inc/mod_api.php');
 
