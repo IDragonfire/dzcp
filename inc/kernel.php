@@ -249,6 +249,23 @@ if(!empty($db['host']) && !empty($db['user']) && !empty($db['pass']) && !empty($
         print_db_error(false);
     }
 }
+else
+{
+    echo '<html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /></head><body><b>';
+    if(empty($db['host']))
+        echo "Das MySQL-Hostname fehlt in der Configuration!<p>";
+    
+    if(empty($db['user']))
+        echo "Der MySQL-Username fehlt in der Configuration!<p>";
+    
+    if(empty($db['pass']))
+        echo "Das MySQL-Passwort fehlt in der Configuration!<p>";
+    
+    if(empty($db['db']))
+        echo "Der MySQL-Datenbankname fehlt in der Configuration!<p>";
+    
+    die("Bitte überprüfe deine mysql.php!</b></body></html>");    
+}
 
 /**
  * Gibt Datenbank Fehler aus und stoppt die Ausführung des CMS 
