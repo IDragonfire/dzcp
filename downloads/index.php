@@ -171,30 +171,32 @@ case 'download';
   }
 break;
 case 'getfile';
-  if(settings("reg_dl") == "1" && $chkMe == "unlogged")
-  {
-    $index = error(_error_unregistered,1);
-  } else {
-    $qry = db("SELECT url FROM ".$db['downloads']."
-               WHERE id = '".intval($_GET['id'])."'");
-    $get = _fetch($qry);
-
-    $file = preg_replace("#added...#Uis", "", $get['url']);
+    if(settings("reg_dl") == "1" && $chkMe == "unlogged")
+        $index = error(_error_unregistered,1);
+    else 
+    {
+        $get = db("SELECT url,id FROM ".$db['downloads']." WHERE id = '".intval($_GET['id'])."'",false,true);
+        $file = preg_replace("#added...#Uis", "", $get['url']);
   
-    if(preg_match("=added...=Uis",$get['url']) != FALSE)
-      $dlFile = "files/".$file;
-    else $dlFile = $get['url'];
+        if(preg_match("=added...=Uis",$get['url']) != FALSE)
+            $dlFile = "files/".$file;
+        else 
+            $dlFile = $get['url'];
 
-    $upd = db("UPDATE ".$db['downloads']." SET `hits` = hits+1, `last_dl` = '".time()."' WHERE id = '".intval($_GET['id'])."'"); 
-//download file
-    header("Location: ".$dlFile);
-  }
+        if(count_clicks('download',$get['id']))
+            db("UPDATE ".$db['downloads']." SET `hits` = hits+1, `last_dl` = '".time()."' WHERE id = '".$get['id']."'"); 
+    
+        //download file
+        header("Location: ".$dlFile);
+    }
 break;
 endswitch;
+
 ## SETTINGS ##
 $time_end = generatetime(); 
 $time = round($time_end - $time_start,4);
 page($index, $title, $where,$time);
+
 ## OUTPUT BUFFER END ##
 gz_output();
 ?> 
