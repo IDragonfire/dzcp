@@ -1740,7 +1740,6 @@ define('_config_c_pagetitel', 'Seitentitel');
 define('_config_c_pfad', 'Script-Pfad');
 define('_config_c_language', 'Default-Sprache');
 define('_config_c_gametiger', 'Gametiger Suchoption');
-define('_config_c_pfadlink', '<a href="../pfad.php" target="_blank">aktueller Pfad</a>');
 define('_config_c_upicsize', 'Global: Uploadgr&ouml;sse Bilder');
 define('_config_c_gallerypics', 'User: Usergalerie');
 define('_config_c_upicsize_what', 'erlaubte Gr&ouml;&szlig;e der Bilder in KB (Newsbilder, Userprofilbilder usw.)');
