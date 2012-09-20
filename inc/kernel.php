@@ -1,78 +1,5 @@
 <?php
 /**
-* Fügt eine Mod zur Ueberischt ins Adminmenu hinzu.
-* @return boolean
-* 
-* Hilfe: 'true' wenn Mod erfolgreich installiert, 'false' wenn nicht erfolgreich, z.B. Mod bereits eingetragen
-*/
-function addMod($author, $modid, $installedversion, $serverurl, $downloadurl) 
-{
-    global $db;
-    if(existsMod($author, $modid)) return false;
-    
-    if(db('INSERT INTO ' . $db['mods'] . ' (`author`, `modid`, `version`, `serverurl`, `downloadurl`, `installed`) ' .
-              'VALUES ("' . mysql_real_escape_string ($author) . '", "' .
-                          mysql_real_escape_string ($modid) . '", "' .
-                          mysql_real_escape_string ($installedversion) . '", "' .
-                          mysql_real_escape_string ($serverurl) . '", "' . 
-                          mysql_real_escape_string ($downloadurl) . '",NOW())' ))
-    {
-        wire_ipcheck('mod_add('.$modid.')');
-        return true;
-    }
-    else
-        return false;
-}
-
-/**
-* Aktualisiert eine Mod Version. Um server, bzw. Download URL zu aktulaisieren muss der Mod erst entfernt werden (@see deleteMod)
-* @return boolean
-*/
-function updateMod($author, $modid, $newversion) 
-{
-    global $db;
-    
-    if(!existsMod($author, $modid)) 
-        return false;
-    
-    if(db('UPDATE ' . $db['mods'] . ' SET  version = "' . mysql_real_escape_string ($newversion) . '", installed = NOW() ' .
-       ' WHERE author = "' . mysql_real_escape_string ($author) . '" AND modid = "' . mysql_real_escape_string ($modid) . '"'))
-    {
-        wire_ipcheck('mod_upd('.$modid.')');
-        return true;
-    }
-    else
-        return false;
-}
-
-/**
-* Entfernt einen Mod aus der Uebersicht
-* @return boolean
-*/
-function deleteMod($author, $modid) 
-{
-    global $db;
-    
-    if(!existsMod($author, $modid)) 
-        return false;
-    
-    if(db('DELETE FROM ' . $db['mods'] .
-       ' WHERE author = "' . mysql_real_escape_string ($author) . '" AND modid = "' . mysql_real_escape_string ($modid) . '"'))
-    {
-        wire_ipcheck('mod_del('.$modid.')');
-        return true;
-    }
-    else
-        return false;
-}
-
-function existsMod($author, $modid) 
-{
-    global $db;
-    return (db('SELECT id FROM ' . $db['mods'] . ' WHERE author = "'.mysql_real_escape_string($author).'" AND modid = "'.mysql_real_escape_string($modid).'" LIMIT 1',true));
-}
-
-/**
 * Eine Liste der Dateien oder Verzeichnisse zusammenstellen, die sich im angegebenen Ordner befinden.
 *
 * @return array
@@ -192,6 +119,20 @@ function parsePHPInfo()
 }
 
 /**
+ * Prüft wie PHP ausgeführt wird
+ *
+ * @return string
+ **/
+function php_sapi_type()
+{
+    $sapi_type = php_sapi_name();
+    $sapi_types = array("apache" => 'Apache HTTP Server', "apache2filter" => 'Apache 2: Filter',
+            "apache2handler" => 'Apache 2: Handler', "cgi" => 'CGI', "cgi-fcgi" => 'Fast-CGI',
+            "cli" => 'CLI', "isapi" => 'ISAPI', "nsapi" => 'NSAPI');
+    return(empty($sapi_types[substr($sapi_type, 0, 3)]) ? substr($sapi_type, 0, 3) : $sapi_types[substr($sapi_type, 0, 3)]);
+}
+
+/**
  * Funktion um eine Datei im Web auf Existenz zu prfen
  * 
  * @return mixed
@@ -294,7 +235,7 @@ function show($tpl="", $array=array())
 if(!isset($db)) //tinymce fix
     require_once(basePath."/inc/config.php");
 
-if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '')
+if(!empty($db['host']) && !empty($db['user']) && !empty($db['pass']) && !empty($db['db']))
 {
     if(!$msql = @mysql_connect($db['host'], $db['user'], $db['pass']))
     {
@@ -308,7 +249,27 @@ if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '
         print_db_error(false);
     }
 }
+else
+{
+    echo '<html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /></head><body><b>';
+    if(empty($db['host']))
+        echo "Das MySQL-Hostname fehlt in der Configuration!<p>";
+    
+    if(empty($db['user']))
+        echo "Der MySQL-Username fehlt in der Configuration!<p>";
+    
+    if(empty($db['pass']))
+        echo "Das MySQL-Passwort fehlt in der Configuration!<p>";
+    
+    if(empty($db['db']))
+        echo "Der MySQL-Datenbankname fehlt in der Configuration!<p>";
+    
+    die("Bitte überprüfe deine mysql.php!</b></body></html>");    
+}
 
+/**
+ * Gibt Datenbank Fehler aus und stoppt die Ausführung des CMS 
+ **/
 function print_db_error($query=false)
 {
     global $prefix;
@@ -327,7 +288,7 @@ function print_db_error($query=false)
 function db($query,$rows=false,$fetch=false)
 {
     if(!$qry = mysql_query($query))
-        print_db_error($db);
+        print_db_error($query);
 
     if($fetch && $rows)
         return mysql_fetch_array($qry);
@@ -462,84 +423,6 @@ function config($what)
         $get = db("SELECT ".$what." FROM `".$db['config']."`",false,true);
         return $get[$what];
     }
-}
-
-/**
-* Prüft online ob DZCP aktuell ist.
-*
-* @return array
-*/
-function show_dzcp_version()
-{
-	$dzcp_version_info = 'onmouseover="DZCP.showInfo(\'<tr><td colspan=2 align=center padding=3 class=infoTop>DZCP Versions Checker</td></tr><tr><td>'._dzcp_vcheck.'</td></tr>\')" onmouseout="DZCP.hideInfo()"';
-    $return = array();
-	if(dzcp_version_checker)
-	{
-	    if(cache('dzcp_version', dzcp_version_checker_refresh, 'c'))
-	    {
-    		if($dzcp_online_v = fileExists("http://www.dzcp.de/version.txt"))
-    		{
-    			if($dzcp_online_v <= _version)
-    			{
-    				$return['version'] = '<b>'._akt_version.': <a href="" [info]><span class="fontGreen">'._version.'</span></a></b>';
-    				$return['version'] = show($return['version'],array('info' => $dzcp_version_info));
-    				$return['old'] = "";
-    			}
-    			else
-    			{
-    				$return['version'] = '<a href="http://www.dzcp.de/" target="_blank" title="external Link: www.dzcp.de"><b>'._akt_version.':</b> <span class="fontRed">'._version.'</span> / <span class="fontGreen">'.$dzcp_online_v.'</span></a>';
-    				$return['old'] = "_old";
-    			}
-    			
-    			cache('dzcp_version', $return, 'w');
-    		}
-    		else
-    		{
-    			$return['version'] = '<b>'._akt_version.': <a href="" [info]><font color="#FFFF00">'._version.'</font></a></b>';
-    			$return['version'] = show($return['version'],array('info' => $dzcp_version_info));
-    			$return['old'] = "";
-    		}
-	    }
-	    else
-	        $return = cache('dzcp_version', null, 'r');
-    }
-	else
-	{
-		//check disabled
-		$return['version'] = '<b><font color="#999999">'._akt_version.': '._version.'</font></b>';
-		$return['old'] = "";
-	}
-
-    return $return;
-}
-
-/**
-* Funktion für den DZCP.de Newsticker
-*
-* @return string
-*/
-function show_dzcp_news()
-{
-	if(dzcp_newsticker)
-	{
-	    if(cache('dzcp_newsticker', dzcp_newsticker_refresh, 'c'))
-	    {
-    		if($dzcp_news = fileExists("http://www.dzcp.de/dzcp_news.php"))
-    		{
-    			if(!empty($dzcp_news))
-    			{
-    				$javascript = '<script language="javascript" type="text/javascript">DZCP.addEvent(window, \'load\', function() { DZCP.initTicker(\'dzcpticker\', \'h\', 30); });</script>';
-    				$news = '<tr><td><div style="padding:3px"><b>DZCP News:</b><br/><div id="dzcpticker">'.$dzcp_news.'</div></div></td></tr>'; unset($dzcp_news);
-    				cache('dzcp_newsticker', $news.$javascript, 'w');
-    				return $news.$javascript;
-    			}
-    		}
-	    }
-	    else
-	        return cache('dzcp_newsticker', null, 'r');
-	}
-  
-    return '';
 }
 
 /**
@@ -682,7 +565,7 @@ function cache($file='', $data='', $mode='w')
     switch(strtolower($mode)) 
     {
         case 'w':
-            if(!is_debug)
+            if(!is_debug || cache_in_debug)
             {
                 $is_array = 'n';
                 if(is_array($data))
@@ -713,7 +596,10 @@ function cache($file='', $data='', $mode='w')
                return false;
         break;
         case 'c':
-            if(!file_exists(basePath.'/inc/_cache/'.$file_hash.'.cache.php') or !is_file(basePath.'/inc/_cache/'.$file_hash.'.cache.php') || is_debug)
+            if(is_debug && !cache_in_debug)
+                return true;
+            
+            if(!file_exists(basePath.'/inc/_cache/'.$file_hash.'.cache.php') or !is_file(basePath.'/inc/_cache/'.$file_hash.'.cache.php'))
                 return true;
             
             return (time()-@filemtime(basePath.'/inc/_cache/'.$file_hash.'.cache.php') > $data);
