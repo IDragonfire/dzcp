@@ -1451,6 +1451,7 @@ function update_mysql_1_6()
     db("ALTER TABLE `".$db['msg']."` CHANGE `see_u` `see_u` INT( 1 ) NOT NULL DEFAULT '0'");
     db("ALTER TABLE `".$db['msg']."` CHANGE `page` `page` INT( 11 ) NOT NULL DEFAULT '0'");
     db("ALTER TABLE `".$db['away']."` CHANGE `lastedit` `lastedit` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
+    db("ALTER TABLE `".$db['settings']."` DROP `pfad`");
     
     //-> Forum Sortieren
     db("ALTER TABLE ".$db['f_skats']." ADD `pos` int(5) NOT NULL");
