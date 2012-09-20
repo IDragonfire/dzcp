@@ -71,7 +71,6 @@ $upicsize = $config['upicsize'];
 $maxgallerypics = $config['m_gallerypics'];
 $maxusergb = $config['m_usergb'];
 $maxclankasse = $config['m_clankasse'];
-$maxuserlist = $config['m_userlist'];
 $maxbanned = $config['m_banned'];
 $maxadminnews = $config['m_adminnews'];
 $maxadminartikel = $config["m_adminartikel"];

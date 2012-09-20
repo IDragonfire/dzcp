@@ -2284,39 +2284,40 @@ case 'msg';
 break;
 case 'userlist';
     $where = _site_ulist;
-    $page = (isset($_GET['page']) ? $_GET['page'] : 1);
+    $page = (isset($_GET['page']) ? $_GET['page'] : '1');
     $entrys = cnt($db['users']," WHERE level != 0");
+    $maxuserlist = config('m_userlist');
     switch(isset($_GET['show']) ? $_GET['show'] : '') 
     {
         case 'search':
-            $qry = " WHERE nick LIKE '%".$_GET['search']."%' AND level != 0 ORDER BY nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+            $qry = " WHERE nick LIKE '%".$_GET['search']."%' AND level != 0 ORDER BY LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
         break;
         case 'bday':
-          $qry = " WHERE bday LIKE '".date("d", intval($_GET['time'])).".".date("m", intval($_GET['time'])).".____"."' AND level != 0 ORDER BY nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+          $qry = " WHERE bday LIKE '".date("d", intval($_GET['time'])).".".date("m", intval($_GET['time'])).".____"."' AND level != 0 ORDER BY LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
         break;
         case 'newreg':
-            $qry = " WHERE regdatum > '".$_SESSION['lastvisit']."' AND level != '0' ORDER BY regdatum DESC,nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+            $qry = " WHERE regdatum > '".$_SESSION['lastvisit']."' AND level != '0' ORDER BY regdatum DESC LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
         break;
         case 'lastlogin':
-            $qry = " WHERE level != '0' ORDER BY time DESC,nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+            $qry = " WHERE level != '0' ORDER BY time DESC LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
         break;
         case 'lastreg':
-            $qry = " WHERE level != '0' ORDER BY regdatum DESC,nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+            $qry = " WHERE level != '0' ORDER BY regdatum DESC LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
         break;
         case 'online':
-           $qry = " WHERE level != '0' ORDER BY time DESC,nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+           $qry = " WHERE level != '0' ORDER BY time DESC LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
         break;
         case 'country':
-            $qry = " WHERE level != '0' ORDER BY country,nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+            $qry = " WHERE level != '0' ORDER BY country LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
         break;
         case 'sex':
             $qry = " WHERE level != '0' ORDER BY sex DESC LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
         break;
         case 'banned':
-            $qry = " WHERE level = '0' ORDER BY nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+            $qry = " WHERE level = '0' ORDER BY id LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
         break;
         default:
-            $qry = " WHERE level != '0' ORDER BY level DESC,nick LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
+            $qry = " WHERE level != '0' ORDER BY level DESC LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist;
         break;
     }
   
