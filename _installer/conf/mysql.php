@@ -1450,6 +1450,8 @@ function update_mysql_1_6()
     db("ALTER TABLE `".$db['settings']."` ADD `urls_linked` INT(1) NOT NULL DEFAULT '1', ADD `ts_customicon` INT(1) NOT NULL DEFAULT '1' AFTER `ts_version`, ADD `ts_showchannel` INT(1) NOT NULL DEFAULT '0' AFTER `ts_customicon`");
     db("ALTER TABLE `".$db['msg']."` CHANGE `see_u` `see_u` INT( 1 ) NOT NULL DEFAULT '0'");
     db("ALTER TABLE `".$db['msg']."` CHANGE `page` `page` INT( 11 ) NOT NULL DEFAULT '0'");
+    db("ALTER TABLE `".$db['away']."` CHANGE `lastedit` `lastedit` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
+    db("ALTER TABLE `".$db['settings']."` DROP `pfad`");
     
     //-> Forum Sortieren
     db("ALTER TABLE ".$db['f_skats']." ADD `pos` int(5) NOT NULL");
@@ -1471,14 +1473,23 @@ function update_mysql_1_6()
 	`own_date` INT(12) NOT NULL,
 	PRIMARY KEY (`id`)) ;");
     
-        db("CREATE TABLE " . $db['mods'] . " (
-      `author` varchar(32) NOT NULL,
-      `modid` varchar(32) NOT NULL,
-      `version` text NOT NULL,
-      `serverurl` text NOT NULL,
-      `downloadurl` text NOT NULL,
-      `installed` datetime NOT NULL,
-      `serverversion` text NOT NULL,
-      PRIMARY KEY (`author`,`modid`) )");
+    db("CREATE TABLE ".$db['mods']." (
+    `author` varchar(32) NOT NULL,
+    `modid` varchar(32) NOT NULL,
+    `version` text NOT NULL,
+    `serverurl` text NOT NULL,
+    `downloadurl` text NOT NULL,
+    `installed` datetime NOT NULL,
+    `serverversion` text NOT NULL,
+    PRIMARY KEY (`author`,`modid`) )");
+
+    //Click IP Counter
+    db("CREATE TABLE `".$db['clicks_ips']."` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `ip` varchar(15) NOT NULL DEFAULT '000.000.000.000',
+    `uid` int(11) NOT NULL DEFAULT '0',
+    `ids` int(11) NOT NULL DEFAULT '0',
+    `side` varchar(30) NOT NULL DEFAULT '',
+    PRIMARY KEY (`id`), KEY `ip` (`ip`))");
 	}
 ?>

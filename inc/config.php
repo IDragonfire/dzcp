@@ -8,6 +8,8 @@ if(!isset($installation))
 
 //DZCP Settings
 define('is_debug', false);
+define('cache_in_debug', false);
+
 define('buffer_gzip_compress', true);
 define('buffer_gzip_compress_level', 4);
 
@@ -23,6 +25,8 @@ define('cache_gzip_compress_level', 2);
 define('xfire_preloader', true);
 define('xfire_skin', 'shadow'); //shadow,kampf,scifi,fantasy,wow,default
 define('xfire_refresh', (10*60));
+
+define('glossar_enabled', true);
 
 $picformat = array("jpg", "gif", "png");
 $passwordComponents = array("ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz","0123456789","#$@!");
@@ -93,6 +97,6 @@ $db = array("host" =>           $sql_host,
             "versions" =>       $prefix."versions",
             "votes" =>          $prefix."votes",
             "vote_results" =>   $prefix."vote_results",
-            'mods' =>           $prefix.'mods'
-            );
+            'mods' =>           $prefix.'mods',
+            'clicks_ips' =>     $prefix.'clicks_ips');
 ?>
