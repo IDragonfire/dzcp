@@ -132,18 +132,8 @@ case 'lostpwd';
 break;
 case 'logout';
   $where = _site_user_logout;
-  db("UPDATE ".$db['users']." SET online = '0', sessid = '' WHERE id = '".$userid."'");
-
   wire_ipcheck("logout(".$userid.")");
-
-  set_cookie($prev.'id', '');
-  set_cookie($prev.'pwd', '');
-  set_cookie(session_name(), '');
-
-  session_unset();
-  session_destroy();
-  session_regenerate_id();
-
+  logout(); //In BBCode
   header("Location: ../news/");
 break;
 case 'register';
