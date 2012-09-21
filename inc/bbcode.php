@@ -2008,9 +2008,7 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ=false)
 	
     if(settings("wmodus") && $chkMe != 4)
     {
-        if(config('securelogin'))
-            $secure = show("menu/secure", array("help" => _login_secure_help, "security" => _register_confirm));
-	
+        $secure = (config('securelogin') ? show("menu/secure", array("help" => _login_secure_help, "security" => _register_confirm)) : '');
         $login = show("errors/wmodus_login", array("what" => _login_login, "secure" => $secure, "signup" => _login_signup, "permanent" => _login_permanent, "lostpwd" => _login_lostpwd));
         echo show("errors/wmodus", array("wmodus" => _wartungsmodus,
                                          "head" => _wartungsmodus_head,
