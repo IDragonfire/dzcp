@@ -30,6 +30,11 @@ define('_search_for_area_forum','board-searcharea');
 define("_dzcp_vcheck", 'The DZCP Version Checker will inform about new DZCP updates and shows you whether DZCP.de is online to compare your version with the current.<br><br><span class=fontBold>Description:</span><br><font color=#17D427>Gr&uuml;n:</font> Successfully connected to DZCP.de, Up to Date!<br><font color=#FFFF00>Gelb:</font> Could not connect to DZCP.de</br><font color=#FF0000>Rot:</font>A new update available!');
 define("_debug_on", 'Debug mode is enabled!');
 
+define('_no_entrys_yet_all' , '
+<tr>
+  <td class="contentMainFirst" colspan="[colspan]" align="center">No entries!</td>
+</tr>');
+
 ## Navigation / Server ##
 define('_navi_gsv_players_online', 'Online');
 define('_navi_gsv_on_the_game', 'Players');
