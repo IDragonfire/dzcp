@@ -19,7 +19,7 @@ case 'login';
   $where = _site_user_login;
   if($_GET['do'] == "yes")
   {
-    if($secureLogin == 1 && ($_POST['secure'] != $_SESSION['sec_login'] || empty($_SESSION['sec_login'])))
+    if(config('securelogin') && ($_POST['secure'] != $_SESSION['sec_login'] || empty($_SESSION['sec_login'])))
     {
       $index = error(_error_invalid_regcode, 1);
     } else {
@@ -73,12 +73,7 @@ case 'login';
   } else {
     if($chkMe == "unlogged")
 	  {
-      if($secureLogin == 1)
-      {
-        $secure = show($dir."/secure", array("help" => _login_secure_help,
-                                             "security" => _register_confirm));
-      }
-
+        $secure = (config('securelogin') ? show($dir."/secure", array("help" => _login_secure_help, "security" => _register_confirm)) : '');
 	    $index = show($dir."/login", array("loginhead" => _login_head,
 			  							 "loginname" => _loginname,
                                          "secure" => $secure,
