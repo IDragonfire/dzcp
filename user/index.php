@@ -2308,56 +2308,62 @@ case 'userlist';
   
     $qry = db("SELECT id,nick,level,email,hp,xfire,bday,sex,icq,status,position,regdatum FROM ".$db['users'].$qry);
     $color = 1; $userliste = '';
-	while($get = _fetch($qry))
-	{
-		$email = show(_emailicon, array("email" => eMailAddr($get['email'])));
-		if(empty($get['icq']))
-			$icq = "-";
-		else 
-		{
-            $uin = show(_icqstatus, array("uin" => $get['icq']));
-            $icq = '<a href="http://www.icq.com/whitepages/about_me.php?uin='.$get['icq'].'" target="_blank">'.$uin.'</a>';
-		}
-
-		$hp = (empty($get['hp']) ? '-' : show(_hpicon, array("hp" => $get['hp'])));
-		$sex = ($get['sex'] == 1 ? _maleicon : ($get['sex'] == 2 ? _femaleicon : "-"));
-		$getstatus = ($get['status'] ? _aktiv_icon : _inaktiv_icon);
-        $status = (data($get['id'], "level") > 1 ? $getstatus : '');
-		$class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-
-        if(permission("editusers"))
-        {
-            $edit = show("page/button_edit", array("id" => "", "action" => "action=admin&amp;edit=".$get['id'], "title" => _button_title_edit));
-            $edit = str_replace("&amp;id=","",$edit);
-            $delete = show("page/button_delete", array("id" => $get['id'], "action" => "action=admin&amp;do=delete", "title" => _button_title_del));
-        } 
-        else 
-        {
-            $edit = "";
-            $delete = "";
+    
+    if(!_rows($qry))
+        $userliste = show(_no_entrys_yet_all, array("colspan" => "12"));
+    else
+    {
+    	while($get = _fetch($qry))
+    	{
+    		$email = show(_emailicon, array("email" => eMailAddr($get['email'])));
+    		if(empty($get['icq']))
+    			$icq = "-";
+    		else 
+    		{
+                $uin = show(_icqstatus, array("uin" => $get['icq']));
+                $icq = '<a href="http://www.icq.com/whitepages/about_me.php?uin='.$get['icq'].'" target="_blank">'.$uin.'</a>';
+    		}
+    
+    		$hp = (empty($get['hp']) ? '-' : show(_hpicon, array("hp" => $get['hp'])));
+    		$sex = ($get['sex'] == 1 ? _maleicon : ($get['sex'] == 2 ? _femaleicon : "-"));
+    		$getstatus = ($get['status'] ? _aktiv_icon : _inaktiv_icon);
+            $status = (data($get['id'], "level") > 1 ? $getstatus : '');
+    		$class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+    
+            if(permission("editusers"))
+            {
+                $edit = show("page/button_edit", array("id" => "", "action" => "action=admin&amp;edit=".$get['id'], "title" => _button_title_edit));
+                $edit = str_replace("&amp;id=","",$edit);
+                $delete = show("page/button_delete", array("id" => $get['id'], "action" => "action=admin&amp;do=delete", "title" => _button_title_del));
+            } 
+            else 
+            {
+                $edit = "";
+                $delete = "";
+            }
+            
+            if(!empty($get['xfire']))
+            $xfire = '<div id="infoXfire_'.re($get['xfire']).'">
+            <div style="width:100%;text-align:center"><img src="../inc/images/ajax-loader-mini.gif" alt="" /></div>
+            <script language="javascript" type="text/javascript">DZCP.initXfire("'.re($get['xfire']).'");</script></div>';
+            else
+                $xfire = '-';
+            
+    		$userliste .= show($dir."/userliste_show", array("nick" => autor($get['id'],'','',10),
+    														 "level" => getrank($get['id']),
+    														 "status" => $status,
+    														 "email" => $email,
+    														 "age" => getAge($get['bday']),
+    														 "mf" => $sex,
+                                                             "edit" => $edit,
+                                                             "delete" => $delete,
+                                                             "class" => $class,
+    														 "icq" => $icq,
+    														 "icquin" => $get['icq'],
+    														 "onoff" => onlinecheck($get['id']),
+    														 "hp" => $hp,
+    														 "xfire" => $xfire));
         }
-        
-        if(!empty($get['xfire']))
-        $xfire = '<div id="infoXfire_'.re($get['xfire']).'">
-        <div style="width:100%;text-align:center"><img src="../inc/images/ajax-loader-mini.gif" alt="" /></div>
-        <script language="javascript" type="text/javascript">DZCP.initXfire("'.re($get['xfire']).'");</script></div>';
-        else
-            $xfire = '-';
-        
-		$userliste .= show($dir."/userliste_show", array("nick" => autor($get['id'],'','',10),
-														 "level" => getrank($get['id']),
-														 "status" => $status,
-														 "email" => $email,
-														 "age" => getAge($get['bday']),
-														 "mf" => $sex,
-                                                         "edit" => $edit,
-                                                         "delete" => $delete,
-                                                         "class" => $class,
-														 "icq" => $icq,
-														 "icquin" => $get['icq'],
-														 "onoff" => onlinecheck($get['id']),
-														 "hp" => $hp,
-														 "xfire" => $xfire));
     }
 
     $seiten = nav($entrys,$maxuserlist,"?action=userlist&show=".(isset($_GET['show']) ? $_GET['show'] : 1)."");
