@@ -16,6 +16,8 @@ require_once(basePath.'/inc/kernel.php');
 require_once(basePath.'/inc/server_query/_functions.php');
 require_once(basePath."/inc/teamspeak_query.php");
 
+define('IS_DZCP', true);
+
 ## Is AjaxJob ##
 $ajaxJob = (!isset($ajaxJob) ? false : $ajaxJob);
 
@@ -1938,6 +1940,16 @@ function logout()
     session_unset();
     session_destroy();
     session_regenerate_id();
+}
+
+// Prüft die Ausgelagerten Seiten
+function include_action($page_dir='',$default='default')
+{
+    $action = (isset($_GET['action']) ? strtolower($_GET['action']) : strtolower($default));
+    if(file_exists(($modul_file=basePath.'/'.$page_dir.'/pages/action_'.$action.'.php')))
+        return array('include' => true, 'file' => $modul_file);
+    else
+        return array('include' => false, 'msg' => show(_page_not_available,array()));
 }
 
 //Prüft ob alle clicks nur einmal gezählt werden *gast/user

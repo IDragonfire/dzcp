@@ -454,7 +454,7 @@ function mkpwd($passwordLength=8)
  */
 function wire_ipcheck($what='')
 {
-    global $db,$userip;
+    global $db;
     db("INSERT INTO ".$db['ipcheck']." SET `ip` = '".visitorIp()."',`what` = '".$what."',`time` = '".time()."'");
 }
 
