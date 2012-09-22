@@ -1932,7 +1932,7 @@ function xfire($username='')
 
 function logout()
 {
-    global $userid;
+    global $db,$userid;
     db("UPDATE ".$db['users']." SET online = '0', sessid = '' WHERE id = '".$userid."'");
     set_cookie($prev.'id', '');
     set_cookie($prev.'pwd', '');
