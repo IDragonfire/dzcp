@@ -1985,7 +1985,14 @@ function count_clicks($side_tag='',$clickedID=0)
     return false;
 }
 
-//Mods und Api Laden
+//-> Sprachdefinitionen in Index ausgeben
+function fetchLanguage($lng) 
+{
+    @eval("$name = ".$lng.";");
+    return defined($lng) ? $name : $lng;
+}
+
+//-> Mods und Api Laden
 include_once(basePath.'/inc/mod_api.php');
 
 //-> Navigation einbinden
@@ -2092,7 +2099,9 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ=false)
 		{
 			if(strstr($pholder[$i], 'nav_')) 
 				$arr[$pholder[$i]] = navi($pholder[$i]);
-			else 
+			else if(strstr($pholder[$i], 'lang_')) 
+			    $arr[".$pholder[$i]."] = fetchLanguage(substr($pholder[$i], 3));
+			else
 			{
 				if(@file_exists(basePath.'/inc/menu-functions/'.$pholder[$i].'.php')) 
 					include_once(basePath.'/inc/menu-functions/'.$pholder[$i].'.php');
