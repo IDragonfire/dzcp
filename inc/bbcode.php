@@ -2100,7 +2100,7 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ=false)
 			if(strstr($pholder[$i], 'nav_')) 
 				$arr[$pholder[$i]] = navi($pholder[$i]);
 			else if(strstr($pholder[$i], 'lang_')) 
-			    $arr[".$pholder[$i]."] = fetchLanguage(substr($pholder[$i], 3));
+			    $arr[$pholder[$i]] = fetchLanguage(substr($pholder[$i], 3));
 			else
 			{
 				if(@file_exists(basePath.'/inc/menu-functions/'.$pholder[$i].'.php')) 
