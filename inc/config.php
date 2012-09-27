@@ -3,11 +3,11 @@
 require_once(basePath."/inc/mysql.php");
 
 //DZCP-Install default variable
-if(!isset($installation))
-    $installation = false;
+if(!isset($_SESSION['installer']))
+    $_SESSION['installer'] = true;
 
-if(!isset($installation_db))
-    $installation_db = false;
+if(!isset($_SESSION['db_install']))
+    $_SESSION['db_install'] = false;
 
 //DZCP Settings
 define('is_debug', false);
@@ -33,8 +33,8 @@ define('glossar_enabled', true);
 
 $picformat = array("jpg", "gif", "png");
 
-//                           Alphabet groß:              Alphabet klein:              Zahlen:      Sonderzeichen:
-$passwordComponents = array("ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz","0123456789","#$@!");
+//                           Alphabet groß:                Alphabet klein:                Zahlen:        Sonderzeichen:
+$passwordComponents = array("ABCDEFGHIJKLMNOPQRSTUVWXYZ" , "abcdefghijklmnopqrstuvwxyz" , "0123456789" , "#$@!");
 
 //-> MySQL-Datenbankangaben
 $prefix = $sql_prefix;                      
