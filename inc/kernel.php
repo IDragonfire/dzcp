@@ -232,12 +232,12 @@ function pholderreplace($pholder)
 */
 function show($tpl="", $array=array())
 {
-	global $tmpdir,$installation;
+	global $tmpdir;
 	
 	if(!empty($tpl) && $tpl != null)
 	{
-	    $template = $installation ? basePath."/_installer/html/".$tpl : basePath."/inc/_templates_/".$tmpdir."/".$tpl;
-	    $array['dir'] = $installation ? "html": '../inc/_templates_/'.$tmpdir;;
+	    $template = $_SESSION['installer'] ? basePath."/_installer/html/".$tpl : basePath."/inc/_templates_/".$tmpdir."/".$tpl;
+	    $array['dir'] = $_SESSION['installer'] ? "html": '../inc/_templates_/'.$tmpdir;;
 	  
 	    if(file_exists($template.".html"))
 			$tpl = file_get_contents($template.".html");
@@ -273,7 +273,7 @@ function show($tpl="", $array=array())
  *
  * @return resource
  **/
-if(!$installation || $installation_db) //For Installer
+if(!$_SESSION['installer'] || $_SESSION['db_install']) //For Installer
 {
     if(!isset($db)) //tinymce fix
         require_once(basePath."/inc/config.php");
