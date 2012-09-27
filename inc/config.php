@@ -32,6 +32,8 @@ define('xfire_refresh', (10*60));
 define('glossar_enabled', true);
 
 $picformat = array("jpg", "gif", "png");
+
+//                           Alphabet groß:              Alphabet klein:              Zahlen:      Sonderzeichen:
 $passwordComponents = array("ABCDEFGHIJKLMNOPQRSTUVWXYZ","abcdefghijklmnopqrstuvwxyz","0123456789","#$@!");
 
 //-> MySQL-Datenbankangaben
