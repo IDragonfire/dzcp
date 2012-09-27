@@ -474,14 +474,18 @@ function config($what)
  *
  * @return String
  */
-function mkpwd($passwordLength=8)
+function mkpwd($passwordLength=8,$specialcars=true)
 {
     global $passwordComponents;
-    
-    $password = "";
-    shuffle($passwordComponents);
     $componentsCount = count($passwordComponents);
-
+    
+    if(!$specialcars && $componentsCount == 4) //Keine Sonderzeichen
+    {
+        unset($passwordComponents[3]);
+        $componentsCount = count($passwordComponents);
+    }
+    
+    shuffle($passwordComponents); $password = '';
     for ($pos = 0; $pos < $passwordLength; $pos++)
     {
         $componentIndex = ($pos % $componentsCount);
