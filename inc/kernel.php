@@ -198,22 +198,63 @@ function visitorIp()
 }
 
 /**
+ * Filtert Platzhalter
+ *
+ * @return string
+ */
+function pholderreplace($pholder)
+{
+    $search = array('@<script[^>]*?>.*?</script>@si',
+            '@<style[^>]*?>.*?</style>@siU',
+            '@<[\/\!]*?[^<>]*?>@si',
+            '@<![\s\S]*?--[ \t\n\r]*>@');
+    //Replace
+    $pholder = preg_replace("#<script(.*?)</script>#is","",$pholder);
+    $pholder = preg_replace("#<style(.*?)</style>#is","",$pholder);
+    $pholder = preg_replace($search, '', $pholder);
+    $pholder = str_replace(" ","",$pholder);
+    $pholder = preg_replace("#[0-9]#is","",$pholder);
+    $pholder = preg_replace("#&(.*?);#s","",$pholder);
+    $pholder = str_replace("\r","",$pholder);
+    $pholder = str_replace("\n","",$pholder);
+    $pholder = preg_replace("#\](.*?)\[#is","][",$pholder);
+    $pholder = str_replace("][","^",$pholder);
+    $pholder = preg_replace("#^(.*?)\[#s","",$pholder);
+    $pholder = preg_replace("#\](.*?)$#s","",$pholder);
+    $pholder = str_replace("[","",$pholder);
+    return str_replace("]","",$pholder);
+}
+
+/**
 * Sucht nach Platzhaltern und ersetzt diese.
 *
 * @return string
 */
 function show($tpl="", $array=array())
 {
-	global $tmpdir;
+	global $tmpdir,$installation;
 	
 	if(!empty($tpl) && $tpl != null)
 	{
-	    $template = basePath."/inc/_templates_/".$tmpdir."/".$tpl;
-	    $array['dir'] = '../inc/_templates_/'.$tmpdir;
+	    $template = $installation ? basePath."/_installer/html/".$tpl : basePath."/inc/_templates_/".$tmpdir."/".$tpl;
+	    $array['dir'] = $installation ? "html": '../inc/_templates_/'.$tmpdir;;
 	  
 	    if(file_exists($template.".html"))
 			$tpl = file_get_contents($template.".html");
 	    
+	    //put placeholders in array
+	    $pholder = explode("^",pholderreplace($tpl));
+	    for($i=0;$i<=count($pholder)-1;$i++)
+	    {
+	        if(array_key_exists($pholder[$i],$array))
+	            continue;
+	        
+	        if(!strstr($pholder[$i], 'lang_'))
+	            continue;
+	        
+	        $array[$pholder[$i]] = constant(substr($pholder[$i], 4));
+	    }
+
 	    if(count($array) >= 1)
 	    {
 		    foreach($array as $value => $code)
@@ -232,39 +273,42 @@ function show($tpl="", $array=array())
  *
  * @return resource
  **/
-if(!isset($db)) //tinymce fix
-    require_once(basePath."/inc/config.php");
-
-if(!empty($db['host']) && !empty($db['user']) && !empty($db['pass']) && !empty($db['db']))
+if(!$installation || $installation_db) //For Installer
 {
-    if(!$msql = @mysql_connect($db['host'], $db['user'], $db['pass']))
+    if(!isset($db)) //tinymce fix
+        require_once(basePath."/inc/config.php");
+    
+    if(!empty($db['host']) && !empty($db['user']) /*&& !empty($db['pass'])*/ && !empty($db['db']))
     {
-        echo "<b>Fehler beim Zugriff auf die Datenbank!<p>";
-        print_db_error(false);
+        if(!$msql = @mysql_connect($db['host'], $db['user'], $db['pass']))
+        {
+            echo "<b>Fehler beim Zugriff auf die Datenbank!<p>";
+            print_db_error(false);
+        }
+    
+        if(!@mysql_select_db($db['db'],$msql))
+        {
+            echo "<b>Die angegebene Datenbank <i>".$db['db']."</i> existiert nicht!<p>";
+            print_db_error(false);
+        }
     }
-
-    if(!@mysql_select_db($db['db'],$msql))
+    else
     {
-        echo "<b>Die angegebene Datenbank <i>".$db['db']."</i> existiert nicht!<p>";
-        print_db_error(false);
+        echo '<html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /></head><body><b>';
+        if(empty($db['host']))
+            echo "Das MySQL-Hostname fehlt in der Configuration!<p>";
+        
+        if(empty($db['user']))
+            echo "Der MySQL-Username fehlt in der Configuration!<p>";
+        
+        if(empty($db['pass']))
+            echo "Das MySQL-Passwort fehlt in der Configuration!<p>";
+        
+        if(empty($db['db']))
+            echo "Der MySQL-Datenbankname fehlt in der Configuration!<p>";
+        
+        die("Bitte überprüfe deine mysql.php!</b></body></html>");    
     }
-}
-else
-{
-    echo '<html><head><meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" /></head><body><b>';
-    if(empty($db['host']))
-        echo "Das MySQL-Hostname fehlt in der Configuration!<p>";
-    
-    if(empty($db['user']))
-        echo "Der MySQL-Username fehlt in der Configuration!<p>";
-    
-    if(empty($db['pass']))
-        echo "Das MySQL-Passwort fehlt in der Configuration!<p>";
-    
-    if(empty($db['db']))
-        echo "Der MySQL-Datenbankname fehlt in der Configuration!<p>";
-    
-    die("Bitte überprüfe deine mysql.php!</b></body></html>");    
 }
 
 /**

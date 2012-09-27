@@ -6,6 +6,9 @@ require_once(basePath."/inc/mysql.php");
 if(!isset($installation))
     $installation = false;
 
+if(!isset($installation_db))
+    $installation_db = false;
+
 //DZCP Settings
 define('is_debug', false);
 define('cache_in_debug', false);
