@@ -1806,32 +1806,6 @@ function admin_perms($userid)
     return ($chkMe == 4) ? true : false;
 }
 
-//-> filter placeholders
-function pholderreplace($pholder)
-{
-  $search = array('@<script[^>]*?>.*?</script>@si',
-                  '@<style[^>]*?>.*?</style>@siU',
-                  '@<[\/\!]*?[^<>]*?>@si',
-                  '@<![\s\S]*?--[ \t\n\r]*>@');
-//Replace
-  $pholder = preg_replace("#<script(.*?)</script>#is","",$pholder);
-  $pholder = preg_replace("#<style(.*?)</style>#is","",$pholder);
-  $pholder = preg_replace($search, '', $pholder);
-  $pholder = str_replace(" ","",$pholder);
-  $pholder = preg_replace("#[0-9]#is","",$pholder);
-  $pholder = preg_replace("#&(.*?);#s","",$pholder);
-  $pholder = str_replace("\r","",$pholder);
-  $pholder = str_replace("\n","",$pholder);
-  $pholder = preg_replace("#\](.*?)\[#is","][",$pholder);
-  $pholder = str_replace("][","^",$pholder);
-  $pholder = preg_replace("#^(.*?)\[#s","",$pholder);
-  $pholder = preg_replace("#\](.*?)$#s","",$pholder);
-  $pholder = str_replace("[","",$pholder);
-  $pholder = str_replace("]","",$pholder);
-
-  return $pholder;
-}
-
 //-> Rechte abfragen
 function getPermissions($checkID = 0, $pos = 0)
 {
@@ -1945,11 +1919,13 @@ function logout()
 // Prüft die Ausgelagerten Seiten
 function include_action($page_dir='',$default='default')
 {
+    $do = (isset($_GET['do']) ? $_GET['do'] : NULL);
+    $page = (isset($_GET['page']) ? $_GET['page'] : 1);
     $action = (isset($_GET['action']) ? strtolower($_GET['action']) : strtolower($default));
     if(file_exists(($modul_file=basePath.'/'.$page_dir.'/pages/action_'.$action.'.php')))
-        return array('include' => true, 'file' => $modul_file);
+        return array('include' => true, 'page' => $page, 'do' => $do, 'file' => $modul_file);
     else
-        return array('include' => false, 'msg' => show(_page_not_available,array()));
+        return array('include' => false, 'page' => $page, 'do' => $do, 'msg' => show(_include_action_error,array('file' => $page_dir.'/pages/action_'.$action.'.php')));
 }
 
 //Prüft ob alle clicks nur einmal gezählt werden *gast/user
@@ -1983,13 +1959,6 @@ function count_clicks($side_tag='',$clickedID=0)
     }
     
     return false;
-}
-
-//-> Sprachdefinitionen in Index ausgeben
-function fetchLanguage($lng) 
-{
-    @eval("$name = ".$lng.";");
-    return defined($lng) ? $name : $lng;
 }
 
 //-> Mods und Api Laden
