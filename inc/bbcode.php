@@ -1920,7 +1920,7 @@ function logout()
 function include_action($page_dir='',$default='default')
 {
     $do = (isset($_GET['do']) ? $_GET['do'] : NULL);
-    $page = (isset($_GET['page']) ? $_GET['page'] : 1);
+    $page = ((int)(isset($_GET['page']) ? $_GET['page'] : 1));
     $action = (isset($_GET['action']) ? strtolower($_GET['action']) : strtolower($default));
     if(file_exists(($modul_file=basePath.'/'.$page_dir.'/pages/action_'.$action.'.php')))
         return array('include' => true, 'page' => $page, 'do' => $do, 'file' => $modul_file);
