@@ -35,6 +35,8 @@ define('_no_entrys_yet_all' , '
   <td class="contentMainFirst" colspan="[colspan]" align="center">No entries!</td>
 </tr>');
 
+define('_include_action_error','<br>File: "[file]" is missing or corrupted!<br/>The module functions are not available!');
+
 ## Navigation / Server ##
 define('_navi_gsv_players_online', 'Online');
 define('_navi_gsv_on_the_game', 'Players');
@@ -540,7 +542,6 @@ define('_forum_searchlink' , '- <a href="../search/">Board search</a> -');
 define('_msg_deleted' , 'The message was successfully deleted!');
 define('_info_reg_valid' , 'You successfully registered on this page!<br />
 Your password were send to your e-mail adress [email]');
-define('_server_ftp_file' , '<span class="fontBold">Target file:</span>');
 define('_edited_by' , '<br /><br /><i>last edited by [autor] at [time]</i>');
 define('_linkus_empty_text' , 'You have to indicate an url of the banner!');
 define('_gb_titel' , '<span class="fontBold">#[postid]</span> from [nick] [email] [hp] at [datum] on [zeit][uhr] [edit] [delete] [comment] [public]');
@@ -1689,10 +1690,6 @@ define('_admin_server_new' , 'Insert server');
 define('_server_admin_added' , 'The server was successfully registered!');
 define('_empty_game' , 'You have to choose an icon!');
 define('_empty_servername' , 'You have to choose a server`s name!');
-define('_server_admin_ftp_head' , 'Gameserver ftp data for the banlist (Steam only)');
-define('_server_admin_ftp_url' , 'Host');
-define('_server_admin_ftp_login' , 'Loginname');
-define('_config_server_ftp_updated' , 'The ftp data were successfully updated!');
 define('_admin_dlkat' , 'Download categories');
 define('_admin_download_kat' , 'Description');
 define('_dl_add_new' , '<a href="?admin=dl&amp;do=new">Insert new category</a>');
