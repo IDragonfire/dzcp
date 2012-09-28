@@ -28,6 +28,8 @@ define('_no_entrys_yet_all', '
   <td class="contentMainFirst" colspan="[colspan]" align="center">keine Eintr&auml;ge vorhanden!</td>
 </tr>');
 
+define('_include_action_error','<br>Die Datei: "[file]" fehlt oder ist besch&auml;digt!<br/>Die Funktion steht nicht zur Verf&uuml;gung!');
+
 ## Navigation / Server ##
 define('_navi_gsv_players_online', 'Online');
 define('_navi_gsv_on_the_game', 'Spieler');
@@ -530,7 +532,6 @@ define('_akt_version', 'DZCP Version');
 define('_forum_searchlink', '- <a href="../search/">Forensuche</a> -');
 define('_msg_deleted', 'Die Nachricht wurde erfolgreich gel&ouml;scht!');
 define('_info_reg_valid', 'Du hast dich erfolgreich registriert!<br />Dein Passwort wurde dir an die Emailadresse [email] gesendet.');
-define('_server_ftp_file', '<span class="fontBold">Zieldatei:</span>');
 define('_edited_by', '<br /><br /><i>zuletzt editiert von [autor] am [time]</i>');
 define('_linkus_empty_text', 'Du musst eine Banner-URL angeben!');
 define('_gb_titel', '<span class="fontBold">#[postid]</span> von [nick] [email] [hp] am [datum] um [zeit][uhr] [edit] [delete] [comment] [public]');
@@ -1684,10 +1685,6 @@ define('_admin_server_new', 'Neuen Server hinzuf&uuml;gen');
 define('_server_admin_added', 'Der Server wurde erfolgreich hinzugef&uuml;gt!');
 define('_empty_game', 'Du musst ein Icon ausw&auml;hlen!');
 define('_empty_servername', 'Du musst einen Servernamen angeben!');
-define('_server_admin_ftp_head', 'Gameserver-FTP-Daten f&uuml;r die Bannliste (Steam only)');
-define('_server_admin_ftp_url', 'Host');
-define('_server_admin_ftp_login', 'Login-Name');
-define('_config_server_ftp_updated', 'Die FTP-Daten wurden erfolgreich gesetzt!');
 define('_server_admin_servermaps_head', 'Mapscreens (f&uuml;r den Live-Serverstatus)');
 define('_config_server_mapname', 'Mapname');
 define('_config_server_maps_head', 'Servermaps');
