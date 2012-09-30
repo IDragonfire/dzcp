@@ -91,7 +91,6 @@ function install_155x_1600_update()
 	`author` varchar(249) NOT NULL DEFAULT '',
 	`name` varchar(249) NOT NULL DEFAULT '',
 	`version` varchar(30) NOT NULL DEFAULT '',
-	`hash` varchar(50) NOT NULL DEFAULT '',
 	`updater` int(1) NOT NULL DEFAULT '1',
 	`last_checked` int(20) NOT NULL DEFAULT '0',
 	`new_version` int(1) NOT NULL DEFAULT '0',
