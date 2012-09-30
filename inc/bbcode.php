@@ -673,14 +673,6 @@ function wrap($str, $width = 75, $break = "\n", $cut = true)
     return strtr(str_replace(htmlentities($break), $break, htmlentities(wordwrap(html_entity_decode($str), $width, $break, $cut), ENT_QUOTES)), array_flip(get_html_translation_table(HTML_SPECIALCHARS, ENT_COMPAT)));
 }
 
-//-> Funktion um Sonderzeichen zu konvertieren
-function spChars($txt)
-{
-    $search = array("Ä", "Ö", "Ü", "ä", "ö", "ü", "ß", "€");
-    $replace = array("&Auml;", "&Ouml;", "&Uuml;", "&auml;", "&ouml;", "&uuml;", "&szlig;", "&euro;");
-    return str_replace($search, $replace, $txt);
-}
-
 //-> Funktion um sauber in die DB einzutragen
 function up($txt, $bbcode=0, $charset=_charset)
 {

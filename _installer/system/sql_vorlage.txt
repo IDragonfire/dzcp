@@ -1,0 +1,7 @@
+<?php
+$sql_prefix = '{prefix}';
+$sql_host = '{host}';
+$sql_user =  '{user}'; 
+$sql_pass = '{pass}'; 
+$sql_db = '{db}';
+?>

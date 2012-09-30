@@ -1,0 +1,58 @@
+<table width="100%" cellpadding="3" cellspacing="1">
+  <tr>
+    <td class="head">&raquo; Dateirechte (CHMOD)</td>
+  </tr>
+  <tr>
+    <td align="justify">
+    Alle unten aufgelisteten Ordner und Dateien m&uuml;ssen Schreib- und Leserechte <b>775</b> besitzen!<br />
+    <br />Am Ende der Seite besteht die M&ouml;glichkeit durch die Eingabe der FTP-Daten diese Rechte automatisch setzen zu lassen, was
+    um einiges schneller geht als jeder Datei manuell die notwendigen Rechte zu verleihen.<br /><br />
+    Sobald alle Dateirechte korrekt gesetzt wurden, erscheint unten rechts der Link zum fortfahren.</div>
+    </td>
+  </tr>
+</table>
+
+[success_status]
+<table width="100%" cellpadding="3" cellspacing="1" class="emph">
+          <tr>
+            <td><b>Installationsdateien</b></td>
+            <td><b>Scriptdateien</b></td>
+          </tr>
+          <tr>
+            <td valign="top">[install]</td>
+            <td valign="top">[script]</td>
+          </tr>
+</table>
+<table width="100%" cellpadding="2" cellspacing="1">
+  <tr>
+    <td colspan="4" align="justify" class="head"><br /><b>&raquo; Automatische Rechtevergabe</b></td>
+  </tr>
+  <tr>
+    <td colspan="4" class="info"><b>Hinweis:</b> Als Pfad muss der FTP-Pfad zum Stammverzeichnis eingetragen werden!<br />
+        <b>Beispiel:</b> <i>/dzcp</i></td>
+  </tr>
+  <tr>
+    <td height="10"></td>
+  </tr>
+<form action="index.php?action=prepare&amp;do=set_chmods" method="POST">
+  <tr>
+    <td><b>FTP-Host:</b></td><td><input type="text" name="host" [disabled] value="[ftp_host]"></td>
+    <td><b>FTP-Pfad:</b></td><td><input type="text" name="pfad" [disabled] value="[ftp_pfad]"></td>
+  </tr>
+  <tr>
+    <td><b>FTP-Benutzername:</b></td><td><input type="text" name="user" [disabled] value="[ftp_user]"></td>
+    <td><b>FTP-Passwort:</b></td><td><input type="password" name="pwd" [disabled] value="[ftp_pwd]"></td>
+  </tr>
+  <tr>
+    <td height="10"></td>
+  </tr>
+  <tr>
+    <td colspan="4" align="center"><input style="width:400px;" type="submit" [disabled] value="Automatische Rechtevergabe!"></td>
+  </tr>
+</form>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+[next]

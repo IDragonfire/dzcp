@@ -1,27 +1,20 @@
 <?php
 // Start session if no headers were sent
-  if(!headers_sent())
-  {
+if(!headers_sent())
+{
     @session_start();
-  # Patch by David Vieira-Kurz of majorsecurity.de
-    #@session_regenerate_id();
     if(!isset($_SESSION['PHPSESSID']) || !isset($_COOKIE['PHPSESSID']))
     {
-      @session_destroy();
-      @session_start();
-     # @session_regenerate_id();
-      $_SESSION['PHPSESSID'] = true;
-      $_COOKIE['PHPSESSID']  = true;
+        @session_destroy();
+        @session_start();
+        $_SESSION['PHPSESSID'] = true;
+        $_COOKIE['PHPSESSID']  = true;
     }
-  }
-/*
-// prevent network traffic flooding
-  if(!isset($_SESSION['time']) || empty($_SESSION['time'])) $_SESSION['time'] = round(mtime(),1);
-  else {
-    if(round(mtime(),1) == $_SESSION['time']) die(header('HTTP/1.1 404 Not Found'));
-    else $_SESSION['time'] = round(mtime(),1);
-  }
-*/
+    
+    $_SESSION['installer'] = false;
+    $_SESSION['db_install'] = false;
+}
+
 // functions needed
   function mtime()
   {

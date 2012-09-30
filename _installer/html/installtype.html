@@ -1,0 +1,42 @@
+<table width="100%" cellpadding="2" cellspacing="1">
+  <tr>
+    <td colspan="2" class="head"><br /><b>&raquo; Installations Type ausw&auml;hlen</b><br /></td>
+  </tr>
+  <tr>
+    <td></td>
+  </tr>
+  <tr>
+    <td colspan="2">W&auml;hlen Sie "DZCP-Neuinstallation" um DZCP zu installieren, andernfalls "DZCP-Update" um eine bestehende Version zu aktualisieren.</td>
+  </tr>
+  <tr>
+    <td height="10"></td>
+  </tr>
+<form action="index.php?action=prepare" method="POST">
+  <tr class="info">
+    <td><table width="300" height="30" border="0" cellspacing="0" cellpadding="0">
+        <tr class="info">
+          <td width="55%"><b>&nbsp;DZCP-Neuinstallation:</b></td>
+        </tr>
+    </table></td><td><div align="center"><input name="type" type="radio" id="type_0" value="0" checked="checked" /></div></td>
+  </tr>
+  <tr>
+    <td></td><td height="5"></td>
+  </tr>  
+  <tr class="info">
+    <td><table width="300" height="30" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td width="55%"><b>&nbsp;DZCP-Update:</b></td>
+        </tr>
+    </table></td><td><div align="center"><input type="radio" name="type" value="1" id="type_1" /></div></td>
+  </tr>
+  <tr>
+    <td height="10"></td>
+  </tr>
+  <tr>
+    <td colspan="2"><script language="JavaScript1.2">document.writeln('<input type="button" value="Zur&uuml;ck" class="button" onclick="document.forms[0].action=\'index.php\';document.forms[0].submit()" tabindex="6">');</script> | <form action="install.php?action=prepare&amp;do=set_chmods" method="POST"><input type="submit" value="Weiter"></td>
+  </tr>
+</form>
+  <tr>
+    <td>&nbsp;</td>
+  </tr>
+</table>

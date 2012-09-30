@@ -133,7 +133,7 @@ function php_sapi_type()
 }
 
 /**
- * Funktion um eine Datei im Web auf Existenz zu prfen
+ * Funktion um eine Datei im Web auf Existenz zu prüfen
  * 
  * @return mixed
  **/
@@ -146,6 +146,8 @@ function fileExists($url)
 
     if(!ping_port($host,$port,2))
         return false;
+    
+    unset($host,$port);
 
     if(!$content = @file_get_contents($url))
 		return false;
@@ -165,16 +167,20 @@ function ping_port($ip='0.0.0.0',$port=0000,$timeout=2)
 		$fp = fsockopen($ip, $port, $errno, $errstr, $timeout);
 		if($fp)
 		{
+		    unset($ip,$port,$errno,$errstr,$timeout);
 			@fclose($fp);
 			return true;
 		}
+		
+		unset($ip,$port,$errno,$errstr,$timeout);
 	}
 	
+	unset($ip,$port,$timeout);
 	return false;
 }
 
 /**
- * Gibt die IP des Besuchers / Users zurück.
+ * Gibt die IP des Besuchers / Users zurück
  *
  * @return String
  */
@@ -254,6 +260,8 @@ function show($tpl="", $array=array())
 	        
 	        $array[$pholder[$i]] = constant(substr($pholder[$i], 4));
 	    }
+	    
+	    unset($pholder);
 
 	    if(count($array) >= 1)
 	    {
@@ -270,15 +278,13 @@ function show($tpl="", $array=array())
 /**
  * Datenbank Connect
  * Todo: Code überarbeiten, Update auf MySQLi
- *
- * @return resource
  **/
 if(!$_SESSION['installer'] || $_SESSION['db_install']) //For Installer
 {
     if(!isset($db)) //tinymce fix
         require_once(basePath."/inc/config.php");
     
-    if(!empty($db['host']) && !empty($db['user']) /*&& !empty($db['pass'])*/ && !empty($db['db']))
+    if(!empty($db['host']) && !empty($db['user']) && !empty($db['pass']) && !empty($db['db']))
     {
         if(!$msql = @mysql_connect($db['host'], $db['user'], $db['pass']))
         {
@@ -329,7 +335,7 @@ function print_db_error($query=false)
  *
  * @return resource/array/int
  **/
-function db($query,$rows=false,$fetch=false)
+function db($query,$rows=false,$fetch=false,$clear_output=false)
 {
     if(!$qry = mysql_query($query))
         print_db_error($query);
@@ -340,8 +346,10 @@ function db($query,$rows=false,$fetch=false)
         return mysql_fetch_assoc($qry);
     else if(!$fetch && $rows)
         return mysql_num_rows($qry);
-    else
+    else if(!$clear_output)
         return $qry;
+    else
+        unset($qry); //clear mem
 }
 
 /**
@@ -493,7 +501,8 @@ function mkpwd($passwordLength=8,$specialcars=true)
         $random = rand(0, $componentLength-1);
         $password .= $passwordComponents[$componentIndex]{ $random };
     }
-
+    
+    unset($random,$componentLength,$componentIndex);
 	return $password;
 }
 
@@ -682,5 +691,17 @@ function isSpider()
     }
     
     return false;
+}
+
+/**
+ * Funktion um Sonderzeichen zu konvertieren
+ *
+ * @return string
+ */
+function spChars($txt)
+{
+    $search = array("Ä", "Ö", "Ü", "ä", "ö", "ü", "ß", "€");
+    $replace = array("&Auml;", "&Ouml;", "&Uuml;", "&auml;", "&ouml;", "&uuml;", "&szlig;", "&euro;");
+    return str_replace($search, $replace, $txt);
 }
 ?>

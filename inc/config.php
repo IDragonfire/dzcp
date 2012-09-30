@@ -1,40 +1,54 @@
 <?php
-## REQUIRES ##
-require_once(basePath."/inc/mysql.php");
+#########################################
+//-> DZCP Settings Start
+#########################################
+define('is_debug', false); // Schaltet den Debug Modus ein, zeigt alle fehler und Notices etc.
+define('cache_in_debug', false); // Entscheidet ob im Debug Modus Seiten gecached werden können
 
-//DZCP-Install default variable
+define('buffer_gzip_compress', true); // Soll die Seite mit Hilfe der GZIP-Komprimierung übertragen werden
+define('buffer_gzip_compress_level', 4); // Level der Kompression 1 - 9 *Optimal Level 4
+
+define('dzcp_newsticker', true); // DZCP.de Newsticker in der Administration anzeigen
+define('dzcp_newsticker_refresh', (15*60)); // Wie lange soll gewartet werden um den Newsticker zu aktualisieren
+
+define('dzcp_version_checker', true); // Version auf DZCP.de abgleichen und benachrichtigen ob eine neue Version zur verfügung steht
+define('dzcp_version_checker_refresh', (30*60)); // Wie lange soll gewartet werden um einen Versionsabgleich durchzuführen
+
+define('cache_gzip_compress', true); // Soll der Cache als GZIP komprimiert werden
+define('cache_gzip_compress_level', 2); // Level der Kompression 1 - 9 *Optimal Level 2
+
+define('xfire_preloader', true); // XFire Profil per AJAX vorausladen
+define('xfire_skin', 'shadow'); // Skin von XFire: shadow,kampf,scifi,fantasy,wow,default
+define('xfire_refresh', (10*60)); // Wann soll das Profilbild aktualisiert werden
+
+define('glossar_enabled', true); // Schaltet die Glossar Funktion bei Wörtern an oder aus
+
+$picformat = array("jpg", "gif", "png"); // Unterstützte Bildformate
+
+// Zeichen für den Passwort Generator:
+//                           Alphabet groß:                Alphabet klein:                Zahlen:        Sonderzeichen:
+$passwordComponents = array("ABCDEFGHIJKLMNOPQRSTUVWXYZ" , "abcdefghijklmnopqrstuvwxyz" , "0123456789" , "#$@!");
+
+#########################################
+//-> DZCP Settings Ende
+#########################################
+
+//-> DZCP-Install default variable
 if(!isset($_SESSION['installer']))
-    $_SESSION['installer'] = true;
+    $_SESSION['installer'] = false;
 
 if(!isset($_SESSION['db_install']))
     $_SESSION['db_install'] = false;
 
-//DZCP Settings
-define('is_debug', false);
-define('cache_in_debug', false);
+## REQUIRES ##
+if(file_exists(basePath."/inc/mysql.php"))
+    require_once(basePath."/inc/mysql.php");
+else
+{ $sql_host = ''; $sql_user = ''; $sql_pass = ''; $sql_db = ''; $sql_prefix = ''; }
 
-define('buffer_gzip_compress', true);
-define('buffer_gzip_compress_level', 4);
-
-define('dzcp_newsticker', true);
-define('dzcp_newsticker_refresh', (15*60));
-
-define('dzcp_version_checker', true);
-define('dzcp_version_checker_refresh', (30*60));
-
-define('cache_gzip_compress', true);
-define('cache_gzip_compress_level', 2);
-
-define('xfire_preloader', true);
-define('xfire_skin', 'shadow'); //shadow,kampf,scifi,fantasy,wow,default
-define('xfire_refresh', (10*60));
-
-define('glossar_enabled', true);
-
-$picformat = array("jpg", "gif", "png");
-
-//                           Alphabet groß:                Alphabet klein:                Zahlen:        Sonderzeichen:
-$passwordComponents = array("ABCDEFGHIJKLMNOPQRSTUVWXYZ" , "abcdefghijklmnopqrstuvwxyz" , "0123456789" , "#$@!");
+//-> Redirect to Installer
+if(empty($sql_user) && empty($sql_pass) && empty($sql_db) && !$_SESSION['installer'] && file_exists(basePath."/_installer/index.php"))
+    header('Location: ../_installer/index.php');
 
 //-> MySQL-Datenbankangaben
 $prefix = $sql_prefix;                      
@@ -44,9 +58,9 @@ $db = array("host" =>           $sql_host,
             "db" =>             $sql_db,
             "artikel" =>        $prefix."artikel",
             "acomments" =>      $prefix."acomments",
+            "addons" =>         $prefix."addons",
             "awards" =>         $prefix."awards",
       		"away" =>           $prefix."away",
-            "banned" =>         $prefix."banned",
             "buddys" =>         $prefix."userbuddys",
             "ipcheck" =>        $prefix."ipcheck",
             "clankasse" =>      $prefix."clankasse",
@@ -99,9 +113,7 @@ $db = array("host" =>           $sql_host,
             "usergb" =>         $prefix."usergb",
             "userpos" =>        $prefix."userposis",    
             "userstats" =>      $prefix."userstats",
-            "versions" =>       $prefix."versions",
             "votes" =>          $prefix."votes",
             "vote_results" =>   $prefix."vote_results",
-            'mods' =>           $prefix.'mods',
-            'clicks_ips' =>     $prefix.'clicks_ips');
+            "clicks_ips" =>     $prefix."clicks_ips");
 ?>
