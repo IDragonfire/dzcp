@@ -55,5 +55,5 @@ define('mysql_setup_saved', 'Die MySQL-Daten wurden erfolgreich gespeichert!<br 
 define('prepare_files_success', 'Alle notwendigen Dateirechte sind gesetzt. Klicken Sie unten rechts auf Weiter um fortzufahren.');
 define('saved_user', 'Die Datenbank Informationen wurden erfolgreich gespeichert!<br />Klicken Sie auf &quot;Weiter&quot;.');
 define('no_db_update', 'Die Datenbank ist bereits aktuell, es ist kein Update deiner Datenbank notwendig.');
-define('no_db_update_selected', 'Du musst die zuvor installierte Version von DZCP auswählen um mit dem Update zu beginnen!');
+define('no_db_update_selected', 'Du musst die zuvor installierte Version von DZCP ausw&auml;hlen um mit dem Update zu beginnen!');
 ?>
