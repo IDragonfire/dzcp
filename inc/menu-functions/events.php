@@ -7,6 +7,8 @@ function events()
               WHERE datum > ".time()."
               ORDER BY datum
               LIMIT ".$maxevent."");
+   
+   $eventbox = '';
    while($get = _fetch($qry))
    {
      $events = show(_next_event_link, array("datum" => date("d.m.",$get['datum']),
