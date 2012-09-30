@@ -1,6 +1,8 @@
 <?php
 ob_start();
 define('basePath', '../../../../');
+$_SESSION['installer'] = false;
+$_SESSION['db_install'] = false;
 require_once(basePath.'/inc/kernel.php');
 
 if(empty($_GET['sort']) || $_GET['sort'] == 'clan')

@@ -1,0 +1,34 @@
+[msg]
+<table width="100%" cellpadding="3" cellspacing="1">  
+  <tr>
+    <td class="head" colspan="4">&raquo; Adminaccount</td>
+  </tr>
+  <form action="index.php?action=mysql_setup_users" method="POST">
+  <tr>
+    <td><b>Loginname:</b></td><td><input type="text" [disabled] name="login" value="[login]"></td>
+      <td><b>Nickname:</b></td><td><input type="text" [disabled] name="nick" value="[nick]"></td>
+  </tr>
+  <tr>
+    <td><b>E-Mail:</b></td><td><input type="text" [disabled] name="email" value="[email]"></td>
+    <td><b>Passwort:</b></td><td><input type="password" [disabled] name="pwd" value="[pwd]"></td>
+  </tr>
+  <tr>
+    <td class="head" colspan="4">&raquo; DZCP-Konfiguration</td>
+  </tr>
+  <tr>
+    <td><b>Clanname:</b></td><td><input type="text" [disabled] name="clanname" value="[clanname]"></td>
+    <td><b>Seitentitel:</b></td><td><input type="text" [disabled] name="seitentitel" value="[seitentitel]"></td>
+  </tr>
+  <tr>
+    <td><b>E-Mail Absender (Webseite):</b></td>
+    <td><input type="text" name="emailweb" [disabled] value="[emailweb]"></td>
+    <td><b>Login Sicherheitsabfrage:</b></td><td><input name="loginsec" type="checkbox" id="loginsec" value="1" [disabled] [loginsec] /></td>
+  </tr>
+  <tr>
+    <td colspan="4"><input type="submit" [disabled] name="save" id="save" value="Speichern" /> <input name="loginnow" type="checkbox" id="loginnow" value="1" [disabled] [loginnowsec] /> 
+      *Sofort anmelden</td>
+    </tr>
+  </form>
+</table>
+<br />
+[next]

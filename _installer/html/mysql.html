@@ -1,0 +1,60 @@
+<table width="100%" cellpadding="3" cellspacing="1">
+  <tr>
+    <td colspan="5" class="head">&raquo; MySQL Datenbank</td>
+  </tr>
+  <tr>
+    <td align="justify" colspan="6">
+      Bitte geben Sie unten Ihre Zugangsdaten f&uuml;r die MySQL-Datenbank ein. Diese entnehmen Sie von Ihrem Provider.<br />
+      Sobald die Testverbindung erfolgreich absolviert worden ist werden Sie aufgefordert die MySQL-Daten abzuspeichern.<br />
+      Danach erscheint unten Rechts der Link zur Fortsetzung der Installation.
+    <br />
+    <br />
+    <span class="info"><b>Hinweis:</b> Dieser Vorgang kann ggf. einige Sekunden dauern, achten Sie also bitte darauf, die Seite w&auml;hrend dessen nicht neu zu laden!</span></td>
+  </tr>
+</table>
+
+<br />[msg]
+<form action="index.php?action=mysql&amp;do=test_mysql" method="POST">
+<table width="100%" cellpadding="3" cellspacing="1">
+  <tr>
+    <td colspan="6" align="justify" class="head"><br /><b>&raquo; MySQL Zugangsdaten</b></td>
+  </tr>
+  <tr>
+    <td colspan="6" class="info"><b>Hinweis:</b> Das Prefix kann optional angegeben werden. 
+    Es bietet die M&ouml;glichkeit das Script mehrmals auf einer Datenbank zu installieren!<br /> </td>
+  </tr>
+  <tr>
+    <td width="5%" height="10"></td>
+  </tr>
+  <tr>
+    <td><b>Host:</b></td><td width="37%"><input type="text" name="host" [disabled] value="[mysql_host]"></td>
+    <td width="11%"><b>Datenbank:</b></td><td width="20%"><input type="text" [disabled] name="database" value="[mysql_database]"></td>
+    <td width="7%"><b>Prefix:</b></td><td width="20%"><input type="text" [disabled] name="prefix" value="[mysql_prefix]"></td>
+  </tr>
+  <tr>
+    <td><b>User:</b></td><td><input type="text" name="user" [disabled] value="[mysql_user]"></td>
+    <td><b>Passwort:</b></td><td><input type="password" [disabled] name="pwd" value="[mysql_pwd]"></td>
+    <td colspan="2"><input style="width:210px;" type="submit" [disabled] value="MySQL-Daten testen!"></td>
+  </tr>
+  <tr>
+    <td height="25" colspan="6"><hr /></td>
+  </tr>
+  <tr>
+    <td colspan="6"><table width="289" border="0" cellpadding="0" cellspacing="0">
+  <tr>
+    <td width="42%"><strong>MySQL DB-Engine:</strong></td><td width="58%">
+      <select name="dbEngine" id="dbEngine">
+        <option [dbe_selected0] [disabled] value="0">Server Standard</option>
+        <option [dbe_selected1] [disabled] value="1">MyISAM Engine</option>
+        <option [dbe_selected2] [disabled] value="2">InnoDB Engine</option>
+		<option [dbe_selected3] [disabled] value="3">NDB Engine</option>
+      </select></td>
+  </tr>
+</table></td>
+  </tr>
+  <tr>
+    <td height="25" colspan="6"><hr /></td>
+  </tr>
+</table>
+</form>
+[next]
