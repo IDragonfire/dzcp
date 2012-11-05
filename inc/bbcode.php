@@ -1463,23 +1463,23 @@ function getAge($bday)
 }
 
 //-> Ausgabe der Position des einzelnen Members
+//-> TODO: Fehler im abrufen der Namen und IDs *pruefen
 function getrank($tid, $squad="", $profil=0)
 {
     global $db;
     if($squad)
     {
         if($profil)
-            $qry = db("SELECT * FROM ".$db['userpos']." AS s1 LEFT JOIN ".$db['squads']." AS s2 ON s1.squad = s2.id WHERE s1.user = '".intval($tid)."' AND s1.squad = '".intval($squad)."' AND s1.posi != '0'");
+            $qry = db("SELECT posi FROM ".$db['userpos']." AS s1 LEFT JOIN ".$db['squads']." AS s2 ON s1.squad = s2.id WHERE s1.user = '".intval($tid)."' AND s1.squad = '".intval($squad)."' AND s1.posi != '0'");
         else
-            $qry = db("SELECT * FROM ".$db['userpos']." WHERE user = '".intval($tid)."' AND squad = '".intval($squad)."' AND posi != '0'");
+            $qry = db("SELECT posi FROM ".$db['userpos']." WHERE user = '".intval($tid)."' AND squad = '".intval($squad)."' AND posi != '0'");
     	  
         if(_rows($qry))
         {
             while($get = _fetch($qry))
             {
-                $getp = db("SELECT * FROM ".$db['pos']." WHERE id = '".intval($get['posi'])."'",false,true);
-                $squadname = (!empty($get['name']) ? '<b>'.$get['name'].':</b> ' : '');
-                return $squadname.$getp['position'];
+                $getp = db("SELECT position,name FROM ".$db['pos']." WHERE id = '".intval($get['posi'])."'",false,true);
+                return (!empty($getp['name']) ? '<b>'.$getp['name'].':</b> '.$getp['position'] : $getp['position']);
             }
         } 
         else 
