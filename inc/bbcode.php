@@ -1431,7 +1431,7 @@ function sgames($game = '')
 function voteanswer($what, $vid)
 {
     global $db;
-    $get = db("SELECT * FROM ".$db['vote_results']." WHERE what = '".up($what)."' AND vid = '".$vid."'",false,true);
+    $get = db("SELECT sel FROM ".$db['vote_results']." WHERE what = '".up($what)."' AND vid = '".$vid."'",false,true);
     return $get['sel'];
 }
 
