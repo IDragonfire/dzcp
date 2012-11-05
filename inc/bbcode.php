@@ -594,11 +594,6 @@ function re($txt)
     return htmlspecialchars_decode($txt);
 }
 
-function re_entry($txt)
-{
-    return stripslashes($txt);
-}
-
 //-> Smileys ausgeben
 function smileys($txt)
 {
@@ -831,7 +826,7 @@ function forumcheck($tid, $what)
     return (db("SELECT ".$what." FROM ".$db['f_threads']." WHERE id = '".intval($tid)."' AND ".$what." = '1'",true) >= 1);
 }
 
-//-> Prüft, ob User ein Member des Squads ist
+//-> Prï¿½ft, ob User ein Member des Squads ist
 function squadmember($squad_id)
 {
     global $db;
@@ -1234,7 +1229,7 @@ function data($tid, $what)
 {
     global $db;
     $get = db("SELECT ".$what." FROM ".$db['users']." WHERE id = '".intval($tid)."'",false,true);
-    return re_entry($get[$what]);
+    return stripslashes($get[$what]);
 }
 
 //-> einzelne Userstatistiken ermitteln
@@ -1738,7 +1733,7 @@ function useravatar($userid, $width=100,$height=100)
     return $pic;
 }
 
-// Userpic für Hoverinformationen ausgeben
+// Userpic fï¿½r Hoverinformationen ausgeben
 function hoveruserpic($userid, $width=170,$height=210)
 {
     global $picformat;
@@ -1908,7 +1903,7 @@ function logout()
     session_regenerate_id();
 }
 
-// Prüft die Ausgelagerten Seiten
+// Prï¿½ft die Ausgelagerten Seiten
 function include_action($page_dir='',$default='default')
 {
     $do = (isset($_GET['do']) ? $_GET['do'] : NULL);
@@ -1920,7 +1915,7 @@ function include_action($page_dir='',$default='default')
         return array('include' => false, 'page' => $page, 'do' => $do, 'msg' => show(_include_action_error,array('file' => $page_dir.'/pages/action_'.$action.'.php')));
 }
 
-//Prüft ob alle clicks nur einmal gezählt werden *gast/user
+//Prï¿½ft ob alle clicks nur einmal gezï¿½hlt werden *gast/user
 function count_clicks($side_tag='',$clickedID=0)
 {
     global $db,$userid;
