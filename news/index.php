@@ -24,13 +24,13 @@ default:
   $kat = intval($_GET['kat']);
   if($kat == "lazy" || empty($kat) || $kat == NULL) 
   {
-    $navKat = 'lazy';
-    $n_kat = '';
-    $navWhere = '';
+        $navKat = 'lazy';
+        $n_kat = '';
+        $navWhere = "WHERE public = 1 ".(!permission("intnews") ? "AND `intern` = '0'" : '')."";
   } else {
-    $n_kat = "AND kat = '".$kat."'";
-    $navKat = $kat;
-    $navWhere = "WHERE kat = '".$kat."'";
+        $n_kat = "AND kat = '".$kat."'";
+        $navKat = $kat;
+        $navWhere = "WHERE kat = '".$kat."' AND public = 1 ".(!permission("intnews") ? "AND `intern` = '0'" : '')."";
   }
 
   if(!permission("intnews")) $sqlint = "AND `intern` = '0'";
@@ -49,7 +49,6 @@ default:
 
     if($c == "1")
     {
-<<<<<<< HEAD
       $comments = show(_news_comment, array("comments" => "1",
                                             "id" => $get['id']));
     } else {
@@ -64,17 +63,6 @@ default:
                                            "id" => $get['id']));
     } else {
       $klapp = "";
-=======
-        $navKat = 'lazy';
-        $n_kat = '';
-        $navWhere = "WHERE public = 1 ".(!permission("intnews") ? "AND `intern` = '0'" : '')."";
-    } 
-    else
-    {
-        $n_kat = "AND kat = '".$kat."'";
-        $navKat = $kat;
-        $navWhere = "WHERE kat = '".$kat."' AND public = 1 ".(!permission("intnews") ? "AND `intern` = '0'" : '')."";
->>>>>>> a99b735... #186 fix
     }
 
     $viewed = show(_news_viewed, array("viewed" => $get['viewed']));
