@@ -3,23 +3,16 @@
 define('_charset', 'iso-8859-1');
 
 ## ADDED FOR 1.6 Final
-define('_config_version', 'Mod/AddOns verwalten');
-define('_v_head', 'Mod/AddOn Versionen verwalten');
-define('_v_name', 'Mod/AddOn Name');
-define('_v_own', 'eigene Version');
-define('_v_server', 'aktuelle Version');
-define('_config_v_add', 'Mod/AddOn hinzuf&uuml;gen');
-define('_v_server_hover', 'Versionspr&uuml;fung auf');
-define('_v_unknown', 'unbekannt');
-define('_v_fsockopen_not_allowed', 'fsockopen nicht erlaubt');
-define('_v_no_data', 'Daten nicht abgerufen');
-define('_v_get_data', 'Daten abrufen');
-define('_v_server_id', 'Mod/AddOn ID auf Server');
-define('_v_download_link', 'Mod/AddOn Download Link');
-define('_v_added', 'Mod/AddOn hinzugef&uuml;gt');
-define('_v_edited', 'Mod/AddOn erfolgreich bearbeitet');
-define('_confirm_del_version', 'Es wird nur der Eintrag aus dieser Liste gel&ouml;scht, wirklich l&ouml;schen?');
-define('_v_no_server', 'Kein Kontrollserver');
+define('_config_mods', 'Mod/AddOns &Uumlbersicht');
+define('_mod_head', 'Mod/AddOn &Uumlbersicht');
+define('_mod_author', 'Autor');
+define('_mod_name', 'Name');
+define('_mod_yourVersion', 'eigene Version');
+define('_mod_link', 'Link');
+define('_mod_installed', 'installiert am');
+define('_mod_updated', 'aktualisiert am');
+define('_mod_copyAndPasteInfo', 'Copy und Paste Informationen');
+define('_mod_clickMe', 'klick mich');
 
 define('_search_con_or', 'mind. ein Wort muss vorhanden sein');
 define('_search_con_and', 'absolute &Uuml;bereinstimmung');

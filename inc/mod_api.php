@@ -12,12 +12,12 @@ function addMod($author, $modid, $installedversion, $serverurl, $downloadurl)
     if(self::existsMod($author, $modid)) 
         return false;
         
-    if(db('INSERT INTO ' . $db['mods'] . ' (`author`, `modid`, `version`, `serverurl`, `downloadurl`, `installed`) ' .
+    if(db('INSERT INTO ' . $db['mods'] . ' (`author`, `modid`, `version`, `serverurl`, `downloadurl`, `installed`, `updated`) ' .
         'VALUES ("' . mysql_real_escape_string ($author) . '", "' .
         mysql_real_escape_string ($modid) . '", "' .
         mysql_real_escape_string ($installedversion) . '", "' .
         mysql_real_escape_string ($serverurl) . '", "' .
-        mysql_real_escape_string ($downloadurl) . '",NOW())' ))
+        mysql_real_escape_string ($downloadurl) . '",NOW(), NOW())' ))
     {
         wire_ipcheck('mod_add('.$modid.')');
         return true;
@@ -38,7 +38,7 @@ function updateMod($author, $modid, $newversion)
     if(!self::existsMod($author, $modid))
         return false;
         
-    if(db('UPDATE ' . $db['mods'] . ' SET  version = "' . mysql_real_escape_string ($newversion) . '", installed = NOW() ' . 
+    if(db('UPDATE ' . $db['mods'] . ' SET  version = "' . mysql_real_escape_string ($newversion) . '", updated = NOW() ' . 
           ' WHERE author = "' . mysql_real_escape_string ($author) . '" AND modid = "' . mysql_real_escape_string ($modid) . '"'))
     {
         wire_ipcheck('mod_upd('.$modid.')');

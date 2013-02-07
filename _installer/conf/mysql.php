@@ -1464,16 +1464,6 @@ function update_mysql_1_6()
      }
     $qry = $qrx;
 	//-> Mod/AddOns verwalten
-	db("CREATE TABLE ".$db['versions']." (
-	`id` INT(11) NOT NULL AUTO_INCREMENT,
-	`id_server` INT(11) NOT NULL,
-	`name` VARCHAR(100) NOT NULL,
-	`server` LONGTEXT NOT NULL,
-	`download_link` LONGTEXT NOT NULL,
-	`own_version` VARCHAR(11) NOT NULL,
-	`own_date` INT(12) NOT NULL,
-	PRIMARY KEY (`id`)) ;");
-    
     db("CREATE TABLE ".$db['mods']." (
     `author` varchar(32) NOT NULL,
     `modid` varchar(32) NOT NULL,
@@ -1481,6 +1471,7 @@ function update_mysql_1_6()
     `serverurl` text NOT NULL,
     `downloadurl` text NOT NULL,
     `installed` datetime NOT NULL,
+    `updated` datetime NOT NULL,
     `serverversion` text NOT NULL,
     PRIMARY KEY (`author`,`modid`) )");
 

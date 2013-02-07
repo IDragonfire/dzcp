@@ -13,7 +13,7 @@
 */
     
 if(_adminMenu != 'true') exit;
-$where = $where.': '._config_version;
+$where = $where.': '._config_mods;
 if($chkMe != 4) {
     $show = error(_error_wrong_permissions, 1);
 } else {
@@ -28,6 +28,7 @@ if($chkMe != 4) {
                    'version' => $get[ 'version' ] , 
                    'server_version' => '?',
                    'installed' => $get[ 'installed' ],
+                   'updated' => $get[ 'updated' ],
                    'dl_link' => $get[ 'downloadurl'] );
             $text .= implode(PHP_EOL, $modData);
             $text .= PHP_EOL . $get['serverurl'] . PHP_EOL . '###';
@@ -37,6 +38,17 @@ if($chkMe != 4) {
             $i ++;
         }
     }
-	$show = show ( $dir . '/form_mods', array( 'rows' => $rows, 'support' => $text) );
+    $replace = array( 'rows' => $rows, 'support' => $text);
+    $replace['_mod_head'] = _mod_head;
+    $replace['_mod_name'] = _mod_name;
+    $replace['_mod_author'] = _mod_author;
+    $replace['_mod_yourVersion'] = _mod_yourVersion;
+    $replace['_mod_link'] = _mod_link;
+    $replace['_mod_installed'] = _mod_installed;
+    $replace['_mod_updated'] = _mod_updated;
+    $replace['_mod_copyAndPasteInfo'] = _mod_copyAndPasteInfo;
+    $replace['_mod_clickMe'] = _mod_clickMe;
+    
+	$show = show ( $dir . '/form_mods', $replace);
 }    
 ?>

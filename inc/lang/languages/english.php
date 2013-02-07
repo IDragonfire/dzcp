@@ -3,23 +3,16 @@
 define('_charset', 'iso-8859-1');
 
 ## ADDED FOR 1.6 Final
-define('_config_version', 'Mod/AddOns manager');
-define('_v_head', 'Mod/AddOn version manager');
-define('_v_name', 'Mod/AddOn name');
-define('_v_own', 'own version');
-define('_v_server', 'latest version');
-define('_config_v_add', 'add Mod/AddOn');
-define('_v_server_hover', 'Check version on');
-define('_v_unknown', 'unknown');
-define('_v_fsockopen_not_allowed', 'fsockopen not allowed');
-define('_v_no_data', 'no data requested');
-define('_v_get_data', 'request data');
-define('_v_server_id', 'Mod/AddOn ID on server');
-define('_v_download_link', 'Mod/AddOn download link');
-define('_v_added', 'Mod/AddOn added');
-define('_v_edited', 'Mod/AddOn successfully added');
-define('_confirm_del_version', 'It only removes the entry from this list, delete?');
-define('_v_no_server', 'no control server');
+define('_config_mods', 'Mod/AddOns Overview');
+define('_mod_head', 'Mod/AddOn Overview');
+define('_mod_author', 'Author');
+define('_mod_name', 'Name');
+define('_mod_yourVersion', 'own Version');
+define('_mod_link', 'Link');
+define('_mod_installed', 'installed on');
+define('_mod_updated', 'updated on');
+define('_mod_copyAndPasteInfo', 'Copy and Paste Information');
+define('_mod_clickMe', 'click me');
 
 define('_search_con_or', 'at least one word');
 define('_search_con_and', 'character by character');
@@ -607,7 +600,7 @@ define('_editor_from' , 'From');
 define('intern' , '<span class="fontWichtig">Internal</span>');
 define('_comments_head' , 'Comments');
 define('_click_close' , 'close');
-## Begrüßungen ##
+## Begrungen ##
 define('_welcome_18' , 'Good evening,');
 define('_welcome_13' , 'Good day,');
 define('_welcome_11' , 'Good lunch,');
@@ -796,7 +789,7 @@ define('_country_list' , '
 <option value="yu"> Yugoslavia</option>
 <option value="ye"> Yemen</option>
 <option value="zm"> Zambia</option>');
-## Globale Userränge ##
+## Globale Userrnge ##
 define('_status_banned' , 'banned');
 define('_status_unregged' , 'unregistered');
 define('_status_user' , 'User');
@@ -894,7 +887,7 @@ define('_forum_search_results' , 'Search results');
 define('_forum_online_head' , 'Browsing the board');
 define('_forum_nobody_is_online' , 'Right now no user is browsing the board!');
 define('_forum_nobody_is_online2' , 'Right now no user except you is browsing the board!');
-## Gästebuch ##
+## Gstebuch ##
 define('_gb_delete_successful' , 'The entry was successfully deleted!');
 define('_gb_head' , 'Guestbook');
 define('_gb_add_head' , 'Insert entry');
