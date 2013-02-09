@@ -7,8 +7,7 @@ $server_link       = 'toc://{IP}:{S_PORT}';
 
 ##############################################################################################################################
 
-function server_query_tactical_operations($ip, $port, $q_port, $request)
-{
+function server_query_tactical_operations($ip, $port, $q_port, $request) {
     global $server_timeout;
     $q_port = empty($q_port) ? $port + 10 : $q_port;
     

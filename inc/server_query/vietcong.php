@@ -7,8 +7,7 @@ $server_link       = 'vietcong://{IP}:{S_PORT}';
 
 ##############################################################################################################################
 
-function server_query_vietcong($ip, $port, $q_port, $request)
-{
+function server_query_vietcong($ip, $port, $q_port, $request) {
     global $server_timeout;
     $q_port = empty($q_port) ? 15425 : $q_port;
     

@@ -12,150 +12,150 @@ if ($chkMe != 4) {
 } else {
     if ($_GET['do'] == "update") {
         if ($_POST) {
-            $qry = db("UPDATE " . $db['config'] . " 
-                     SET `upicsize`           = '" . ((int) $_POST['m_upicsize']) . "', 
-                         `m_gallerypics`      = '" . ((int) $_POST['m_gallerypics']) . "', 
-                         `m_usergb`           = '" . ((int) $_POST['m_usergb']) . "', 
-                         `m_artikel`          = '" . ((int) $_POST['m_artikel']) . "', 
-                         `m_adminartikel`     = '" . ((int) $_POST['m_adminartikel']) . "', 
-                         `m_clanwars`         = '" . ((int) $_POST['m_clanwars']) . "', 
-                         `m_awards`           = '" . ((int) $_POST['m_awards']) . "', 
-                         `allowhover`         = '" . ((int) $_POST['ahover']) . "', 
-                         `securelogin`        = '" . ((int) $_POST['securelogin']) . "', 
-                         `m_clankasse`        = '" . ((int) $_POST['m_clankasse']) . "', 
-                         `m_userlist`         = '" . ((int) $_POST['m_userlist']) . "', 
-                         `m_banned`           = '" . ((int) $_POST['m_banned']) . "', 
-                         `m_adminnews`        = '" . ((int) $_POST['m_adminnews']) . "', 
-                         `l_servernavi`       = '" . ((int) $_POST['l_servernavi']) . "', 
-                         `l_shoutnick`        = '" . ((int) $_POST['l_shoutnick']) . "', 
-                         `m_gb`               = '" . ((int) $_POST['m_gb']) . "', 
-                         `m_fthreads`         = '" . ((int) $_POST['m_fthreads']) . "', 
-                         `m_fposts`           = '" . ((int) $_POST['m_fposts']) . "', 
-                         `gallery`            = '" . ((int) $_POST['m_gallery']) . "', 
-                         `m_news`             = '" . ((int) $_POST['m_news']) . "', 
-                         `m_shout`            = '" . ((int) $_POST['m_shout']) . "', 
-                         `m_comments`         = '" . ((int) $_POST['m_comments']) . "', 
-                         `m_archivnews`       = '" . ((int) $_POST['m_archivnews']) . "', 
-                         `maxwidth`           = '" . ((int) $_POST['maxwidth']) . "', 
-                         `f_forum`            = '" . ((int) $_POST['f_forum']) . "', 
-                         `f_cwcom`            = '" . ((int) $_POST['f_cwcom']) . "', 
-                         `f_gb`               = '" . ((int) $_POST['f_gb']) . "', 
-                         `f_artikelcom`       = '" . ((int) $_POST['f_artikelcom']) . "', 
-                         `f_membergb`         = '" . ((int) $_POST['f_membergb']) . "', 
-                         `f_shout`            = '" . ((int) $_POST['f_shout']) . "', 
-                         `f_newscom`          = '" . ((int) $_POST['f_newscom']) . "', 
-                         `l_newsadmin`        = '" . ((int) $_POST['l_newsadmin']) . "', 
-                         `l_shouttext`        = '" . ((int) $_POST['l_shouttext']) . "', 
-                         `l_newsarchiv`       = '" . ((int) $_POST['l_newsarchiv']) . "', 
-                         `l_forumtopic`       = '" . ((int) $_POST['l_forumtopic']) . "', 
-                         `l_forumsubtopic`    = '" . ((int) $_POST['l_forumsubtopic']) . "', 
-                         `l_clanwars`         = '" . ((int) $_POST['l_clanwars']) . "', 
-                         `m_lnews`            = '" . ((int) $_POST['m_lnews']) . "', 
-                         `m_lartikel`         = '" . ((int) $_POST['m_lartikel']) . "', 
-                                                  `m_events`           = '" . ((int) $_POST['m_events']) . "', 
-                         `m_topdl`            = '" . ((int) $_POST['m_topdl']) . "', 
-                         `m_ftopics`          = '" . ((int) $_POST['m_ftopics']) . "', 
-                         `m_cwcomments`       = '" . ((int) $_POST['m_cwcomments']) . "', 
-                         `m_lwars`            = '" . ((int) $_POST['m_lwars']) . "', 
-                         `m_lreg`             = '" . ((int) $_POST['m_lreg']) . "', 
-                         `m_nwars`            = '" . ((int) $_POST['m_nwars']) . "', 
-                         `l_topdl`            = '" . ((int) $_POST['l_topdl']) . "', 
-                         `l_ftopics`          = '" . ((int) $_POST['l_ftopics']) . "', 
-                         `l_lreg`             = '" . ((int) $_POST['l_lreg']) . "', 
-                         `l_lnews`            = '" . ((int) $_POST['l_lnews']) . "', 
-                         `l_lartikel`         = '" . ((int) $_POST['l_lartikel']) . "', 
-                         `l_lwars`            = '" . ((int) $_POST['l_lwars']) . "', 
-                         `teamrow`            = '" . ((int) $_POST['teamrow']) . "', 
-                         `shout_max_zeichen`  = '" . ((int) $_POST['zeichen']) . "', 
-                         `maxshoutarchiv`     = '" . ((int) $_POST['m_shouta']) . "', 
-                                                  `m_away`             = '" . ((int) $_POST['m_away']) . "', 
-                                                  `direct_refresh`     = '" . ((int) $_POST['direct_refresh']) . "', 
-                                                  `cache_teamspeak`    = '" . ((int) $_POST['cache_teamspeak']) . "', 
-                                                  `cache_server`       = '" . ((int) $_POST['cache_server']) . "', 
-                         `l_nwars`            = '" . ((int) $_POST['l_nwars']) . "' 
+            $qry = db("UPDATE " . $db['config'] . "
+                     SET `upicsize`           = '" . ((int) $_POST['m_upicsize']) . "',
+                         `m_gallerypics`      = '" . ((int) $_POST['m_gallerypics']) . "',
+                         `m_usergb`           = '" . ((int) $_POST['m_usergb']) . "',
+                         `m_artikel`          = '" . ((int) $_POST['m_artikel']) . "',
+                         `m_adminartikel`     = '" . ((int) $_POST['m_adminartikel']) . "',
+                         `m_clanwars`         = '" . ((int) $_POST['m_clanwars']) . "',
+                         `m_awards`           = '" . ((int) $_POST['m_awards']) . "',
+                         `allowhover`         = '" . ((int) $_POST['ahover']) . "',
+                         `securelogin`        = '" . ((int) $_POST['securelogin']) . "',
+                         `m_clankasse`        = '" . ((int) $_POST['m_clankasse']) . "',
+                         `m_userlist`         = '" . ((int) $_POST['m_userlist']) . "',
+                         `m_banned`           = '" . ((int) $_POST['m_banned']) . "',
+                         `m_adminnews`        = '" . ((int) $_POST['m_adminnews']) . "',
+                         `l_servernavi`       = '" . ((int) $_POST['l_servernavi']) . "',
+                         `l_shoutnick`        = '" . ((int) $_POST['l_shoutnick']) . "',
+                         `m_gb`               = '" . ((int) $_POST['m_gb']) . "',
+                         `m_fthreads`         = '" . ((int) $_POST['m_fthreads']) . "',
+                         `m_fposts`           = '" . ((int) $_POST['m_fposts']) . "',
+                         `gallery`            = '" . ((int) $_POST['m_gallery']) . "',
+                         `m_news`             = '" . ((int) $_POST['m_news']) . "',
+                         `m_shout`            = '" . ((int) $_POST['m_shout']) . "',
+                         `m_comments`         = '" . ((int) $_POST['m_comments']) . "',
+                         `m_archivnews`       = '" . ((int) $_POST['m_archivnews']) . "',
+                         `maxwidth`           = '" . ((int) $_POST['maxwidth']) . "',
+                         `f_forum`            = '" . ((int) $_POST['f_forum']) . "',
+                         `f_cwcom`            = '" . ((int) $_POST['f_cwcom']) . "',
+                         `f_gb`               = '" . ((int) $_POST['f_gb']) . "',
+                         `f_artikelcom`       = '" . ((int) $_POST['f_artikelcom']) . "',
+                         `f_membergb`         = '" . ((int) $_POST['f_membergb']) . "',
+                         `f_shout`            = '" . ((int) $_POST['f_shout']) . "',
+                         `f_newscom`          = '" . ((int) $_POST['f_newscom']) . "',
+                         `l_newsadmin`        = '" . ((int) $_POST['l_newsadmin']) . "',
+                         `l_shouttext`        = '" . ((int) $_POST['l_shouttext']) . "',
+                         `l_newsarchiv`       = '" . ((int) $_POST['l_newsarchiv']) . "',
+                         `l_forumtopic`       = '" . ((int) $_POST['l_forumtopic']) . "',
+                         `l_forumsubtopic`    = '" . ((int) $_POST['l_forumsubtopic']) . "',
+                         `l_clanwars`         = '" . ((int) $_POST['l_clanwars']) . "',
+                         `m_lnews`            = '" . ((int) $_POST['m_lnews']) . "',
+                         `m_lartikel`         = '" . ((int) $_POST['m_lartikel']) . "',
+                                                  `m_events`           = '" . ((int) $_POST['m_events']) . "',
+                         `m_topdl`            = '" . ((int) $_POST['m_topdl']) . "',
+                         `m_ftopics`          = '" . ((int) $_POST['m_ftopics']) . "',
+                         `m_cwcomments`       = '" . ((int) $_POST['m_cwcomments']) . "',
+                         `m_lwars`            = '" . ((int) $_POST['m_lwars']) . "',
+                         `m_lreg`             = '" . ((int) $_POST['m_lreg']) . "',
+                         `m_nwars`            = '" . ((int) $_POST['m_nwars']) . "',
+                         `l_topdl`            = '" . ((int) $_POST['l_topdl']) . "',
+                         `l_ftopics`          = '" . ((int) $_POST['l_ftopics']) . "',
+                         `l_lreg`             = '" . ((int) $_POST['l_lreg']) . "',
+                         `l_lnews`            = '" . ((int) $_POST['l_lnews']) . "',
+                         `l_lartikel`         = '" . ((int) $_POST['l_lartikel']) . "',
+                         `l_lwars`            = '" . ((int) $_POST['l_lwars']) . "',
+                         `teamrow`            = '" . ((int) $_POST['teamrow']) . "',
+                         `shout_max_zeichen`  = '" . ((int) $_POST['zeichen']) . "',
+                         `maxshoutarchiv`     = '" . ((int) $_POST['m_shouta']) . "',
+                                                  `m_away`             = '" . ((int) $_POST['m_away']) . "',
+                                                  `direct_refresh`     = '" . ((int) $_POST['direct_refresh']) . "',
+                                                  `cache_teamspeak`    = '" . ((int) $_POST['cache_teamspeak']) . "',
+                                                  `cache_server`       = '" . ((int) $_POST['cache_server']) . "',
+                         `l_nwars`            = '" . ((int) $_POST['l_nwars']) . "'
                      WHERE id = 1");
             
-            $qry = db("UPDATE " . $db['settings'] . " 
-                     SET `clanname`           = '" . up($_POST['clanname']) . "', 
-                         `pagetitel`          = '" . up($_POST['pagetitel']) . "', 
-                         `pfad`               = '" . up($_POST['pfad']) . "', 
-                         `badwords`           = '" . up($_POST['badwords']) . "', 
-                         `gmaps_key`          = '" . up($_POST['gmaps_key']) . "', 
-                         `gmaps_who`          = '" . ((int) $_POST['gmaps_who']) . "', 
-                         `language`           = '" . $_POST['language'] . "', 
-                         `gametiger`          = '" . $_POST['gametiger'] . "', 
-                         `regcode`            = '" . ((int) $_POST['regcode']) . "', 
-                                                 `forum_vote`         = '" . ((int) $_POST['forum_vote']) . "', 
-                         `reg_forum`          = '" . ((int) $_POST['reg_forum']) . "', 
-                         `reg_artikel`        = '" . ((int) $_POST['reg_artikel']) . "', 
-                         `reg_shout`          = '" . ((int) $_POST['reg_shout']) . "', 
-                         `reg_cwcomments`     = '" . ((int) $_POST['reg_cwcomments']) . "', 
-                         `squadtmpl`          = '" . ((int) $_POST['squadtmpl']) . "', 
-                         `counter_start`      = '" . ((int) $_POST['counter_start']) . "', 
-                         `reg_newscomments`   = '" . ((int) $_POST['reg_nc']) . "', 
-                         `reg_dl`             = '" . ((int) $_POST['reg_dl']) . "', 
-                         `eml_reg_subj`       = '" . up($_POST['eml_reg_subj']) . "', 
-                         `eml_pwd_subj`       = '" . up($_POST['eml_pwd_subj']) . "', 
-                         `eml_nletter_subj`   = '" . up($_POST['eml_nletter_subj']) . "', 
-                                                 `eml_pn_subj`          = '" . up($_POST['eml_pn_subj']) . "', 
-                                                 `double_post`          = '" . ((int) $_POST['double_post']) . "', 
-                                                 `gb_activ`                  = '" . ((int) $_POST['gb_activ']) . "', 
-                                                 `eml_fabo_npost_subj`   = '" . up($_POST['eml_fabo_npost_subj']) . "', 
-                                                 `eml_fabo_tedit_subj`   = '" . up($_POST['eml_fabo_tedit_subj']) . "', 
-                                                 `eml_fabo_pedit_subj`   = '" . up($_POST['eml_fabo_pedit_subj']) . "', 
-                         `eml_reg`            = '" . up($_POST['eml_reg']) . "', 
-                         `eml_pwd`            = '" . up($_POST['eml_pwd']) . "', 
-                         `eml_nletter`        = '" . up($_POST['eml_nletter']) . "', 
-                                                 `eml_pn`              = '" . up($_POST['eml_pn']) . "', 
-                                                 `eml_fabo_npost`     = '" . up($_POST['eml_fabo_npost']) . "', 
-                                                 `eml_fabo_tedit`     = '" . up($_POST['eml_fabo_tedit']) . "', 
-                                                 `eml_fabo_pedit`     = '" . up($_POST['eml_fabo_pedit']) . "', 
-                         `mailfrom`           = '" . up($_POST['mailfrom']) . "', 
-                         `tmpdir`             = '" . up($_POST['tmpdir']) . "', 
-                         `persinfo`           = '" . ((int) $_POST['persinfo']) . "', 
-                         `wmodus`             = '" . ((int) $_POST['wmodus']) . "', 
-                         `balken_cw`          = '" . up($_POST['balken_cw']) . "', 
-                         `balken_vote`        = '" . up($_POST['balken_vote']) . "', 
-                         `balken_vote_menu`   = '" . up($_POST['balken_vote_menu']) . "', 
-                         `urls_linked`   = '" . up($_POST['urls_linked']) . "' 
+            $qry = db("UPDATE " . $db['settings'] . "
+                     SET `clanname`           = '" . up($_POST['clanname']) . "',
+                         `pagetitel`          = '" . up($_POST['pagetitel']) . "',
+                         `pfad`               = '" . up($_POST['pfad']) . "',
+                         `badwords`           = '" . up($_POST['badwords']) . "',
+                         `gmaps_key`          = '" . up($_POST['gmaps_key']) . "',
+                         `gmaps_who`          = '" . ((int) $_POST['gmaps_who']) . "',
+                         `language`           = '" . $_POST['language'] . "',
+                         `gametiger`          = '" . $_POST['gametiger'] . "',
+                         `regcode`            = '" . ((int) $_POST['regcode']) . "',
+                                                 `forum_vote`         = '" . ((int) $_POST['forum_vote']) . "',
+                         `reg_forum`          = '" . ((int) $_POST['reg_forum']) . "',
+                         `reg_artikel`        = '" . ((int) $_POST['reg_artikel']) . "',
+                         `reg_shout`          = '" . ((int) $_POST['reg_shout']) . "',
+                         `reg_cwcomments`     = '" . ((int) $_POST['reg_cwcomments']) . "',
+                         `squadtmpl`          = '" . ((int) $_POST['squadtmpl']) . "',
+                         `counter_start`      = '" . ((int) $_POST['counter_start']) . "',
+                         `reg_newscomments`   = '" . ((int) $_POST['reg_nc']) . "',
+                         `reg_dl`             = '" . ((int) $_POST['reg_dl']) . "',
+                         `eml_reg_subj`       = '" . up($_POST['eml_reg_subj']) . "',
+                         `eml_pwd_subj`       = '" . up($_POST['eml_pwd_subj']) . "',
+                         `eml_nletter_subj`   = '" . up($_POST['eml_nletter_subj']) . "',
+                                                 `eml_pn_subj`          = '" . up($_POST['eml_pn_subj']) . "',
+                                                 `double_post`          = '" . ((int) $_POST['double_post']) . "',
+                                                 `gb_activ`                  = '" . ((int) $_POST['gb_activ']) . "',
+                                                 `eml_fabo_npost_subj`   = '" . up($_POST['eml_fabo_npost_subj']) . "',
+                                                 `eml_fabo_tedit_subj`   = '" . up($_POST['eml_fabo_tedit_subj']) . "',
+                                                 `eml_fabo_pedit_subj`   = '" . up($_POST['eml_fabo_pedit_subj']) . "',
+                         `eml_reg`            = '" . up($_POST['eml_reg']) . "',
+                         `eml_pwd`            = '" . up($_POST['eml_pwd']) . "',
+                         `eml_nletter`        = '" . up($_POST['eml_nletter']) . "',
+                                                 `eml_pn`              = '" . up($_POST['eml_pn']) . "',
+                                                 `eml_fabo_npost`     = '" . up($_POST['eml_fabo_npost']) . "',
+                                                 `eml_fabo_tedit`     = '" . up($_POST['eml_fabo_tedit']) . "',
+                                                 `eml_fabo_pedit`     = '" . up($_POST['eml_fabo_pedit']) . "',
+                         `mailfrom`           = '" . up($_POST['mailfrom']) . "',
+                         `tmpdir`             = '" . up($_POST['tmpdir']) . "',
+                         `persinfo`           = '" . ((int) $_POST['persinfo']) . "',
+                         `wmodus`             = '" . ((int) $_POST['wmodus']) . "',
+                         `balken_cw`          = '" . up($_POST['balken_cw']) . "',
+                         `balken_vote`        = '" . up($_POST['balken_vote']) . "',
+                         `balken_vote_menu`   = '" . up($_POST['balken_vote_menu']) . "',
+                         `urls_linked`   = '" . up($_POST['urls_linked']) . "'
                      WHERE id = 1");
             
             if (!empty($_POST['gmaps_key'])) {
-                $qry = db("SELECT id,city,country FROM " . $db['users'] . " 
-                       WHERE city != '' AND `gmaps_koord` = '' 
+                $qry = db("SELECT id,city,country FROM " . $db['users'] . "
+                       WHERE city != '' AND `gmaps_koord` = ''
                        ORDER BY id DESC");
                 while ($get = _fetch($qry)) {
                     $cc .= 'getCord(\'' . re($get['city']) . '\',\'' . re($get['country']) . '\',\'' . $get['id'] . '\');' . "\r\n";
                 }
                 
-                $show = '<script language="javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=' . $_POST['gmaps_key'] . '" type="text/javascript"></script> 
-            <script language="javascript" type="text/javascript"> 
-                function getCord(city,country,id)  
-                { 
-                  var geocoder = new GClientGeocoder(); 
-                      geocoder.setCache(null); 
-                  var address = city+\', \'+country;  
-             
-                  geocoder.getLatLng(address, 
-                    function(point)  
-                    { 
-                      if(point)  
-                      { 
-                        $.post(\'index.php?admin=config&do=port&id=\'+id, \'koord=\'+point); 
-                      } 
-                    } 
-                  ); 
-                } 
-                ' . $cc . ' 
-                </script> 
+                $show = '<script language="javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key=' . $_POST['gmaps_key'] . '" type="text/javascript"></script>
+            <script language="javascript" type="text/javascript">
+                function getCord(city,country,id) 
+                {
+                  var geocoder = new GClientGeocoder();
+                      geocoder.setCache(null);
+                  var address = city+\', \'+country; 
+            
+                  geocoder.getLatLng(address,
+                    function(point) 
+                    {
+                      if(point) 
+                      {
+                        $.post(\'index.php?admin=config&do=port&id=\'+id, \'koord=\'+point);
+                      }
+                    }
+                  );
+                }
+                ' . $cc . '
+                </script>
           ';
             }
             
             $show .= info(_config_set, "?admin=config", 10);
         }
     } else if ($_GET['do'] == 'port') {
-        $qry = db("UPDATE " . $db['users'] . " 
-                   SET `gmaps_koord` = '" . up($_POST['koord']) . "' 
+        $qry = db("UPDATE " . $db['users'] . "
+                   SET `gmaps_koord` = '" . up($_POST['koord']) . "'
                    WHERE id = '" . $_GET['id'] . "'");
         exit;
     } else {
@@ -497,93 +497,4 @@ if ($chkMe != 4) {
         ));
     }
 }
-?>                               "c_l_lartikel" => _config_c_lartikel,
-                                                 "c_m_artikel" => _config_c_martikel,
-                                                 "c_m_adminartikel" => _config_c_madminartikel,
-                                                                                                 "c_m_away" => _config_c_away,
-                                                 "m_artikel" => $get['m_artikel'],
-                                                 "m_adminartikel" => $get['m_adminartikel'],
-                                                                                                  "m_away" => $get['m_away'],
-                                                 "wmodus" => _wartungsmodus_head,
-                                                 "wmodus_info" => _wartungsmodus_info,
-                                                 "c_wmodus" => $gets['wmodus'],
-                                                 "selwm" => $selwm,
-                                                 "c_l_lwars" => _config_c_lwars,
-                                                 "c_l_nwars" => _config_c_nwars,
-                                                 "c_l_clanwars" => _config_c_lcws,
-                                                 "l_clanwars" => $get['l_clanwars'],
-                                                 "l_newsadmin" => $get['l_newsadmin'],
-                                                 "l_shouttext" => $get['l_shouttext'],
-                                                 "l_newsarchiv" => $get['l_newsarchiv'],
-                                                 "l_forumtopic" => $get['l_forumtopic'],
-                                                 "l_forumsubtopic" => $get['l_forumsubtopic'],
-                                                 "l_topdl" => $get['l_topdl'],
-                                                 "l_ftopics" => $get['l_ftopics'],
-                                                 "l_lnews" => $get['l_lnews'],
-                                                 "l_lartikel" => $get['l_lartikel'],
-                                                 "l_lwars" => $get['l_lwars'],
-                                                 "l_nwars" => $get['l_nwars'],
-                                                 "main" => _config_c_main,
-                                                 "c_clanname" => _config_c_clanname,
-                                                 "c_pagetitel" => _config_c_pagetitel,
-                                                 "c_pfad" => _config_c_pfad,
-                                                 "pfadlink" => _config_c_pfadlink,
-                                                 "c_language" => _config_c_language,
-                                                 "c_gametiger" => _config_c_gametiger,
-                                                 "pfad" => re($gets['pfad']),
-                                                 "clanname" => re($gets['clanname']),
-                                                 "pagetitel" => re($gets['pagetitel']),
-                                                 "nothing" => _nothing,
-                                                 "lang" => $lang,
-                                                 "ja" => _yes,
-                                                 "nein" => _no,
-                                                 "hover" => _config_hover,
-                                                 "seclogin" => _config_seclogin,
-                                                 "standard" => _config_hover_standard,
-                                                 "all_on" => _config_hover_all,
-                                                 "cw_only" => _config_hover_cw,
-                                                                                                 "fotum_vote" => _config_fotum_vote,
-                                                                                                 "fotum_vote_info" => _config_fotum_vote_info,
-                                                                                                 "double_post" => _config_double_post,
-                                                                                                 "gbactiv" => _config_gb_activ,
-                                                                                                 "gb_activ_info" => _config_gb_activ_info,
-                                                                                                 "sel_fv" => $sel_fv,
-                                                 "sel_sl" => $sel_sl,
-                                                                                                 "sel_dp" => $sel_dp,
-                                                                                                 "sel_gba" => $sel_gba,
-                                                 "selh_all" => $selh_all,
-                                                 "selh_cw" => $selh_cw,
-                                                 "selr_nc" => $selr_nc,
-                                                 "selr_forum" => $selr_forum,
-                                                 "selr_dl" => $selr_dl,
-                                                 "selr_artikel" => $selr_artikel,
-                                                 "reg_head" => _admin_reg_head,
-                                                 "reg_info" => _admin_reg_info,
-                                                 "reg_forum" => _forum,
-                                                 "reg_nc" => _admin_nc,
-                                                 "reg_dl" => _dl,
-                                                 "teamrow" => _config_c_teamrow,
-                                                 "teamrow_info" => _config_c_teamrow_info,
-                                                 "c_teamrow" => $get['teamrow'],
-                                                 "reg_artikel" => _reg_artikel,
-                                                 "c_f_artikelcom" => _reg_artikel,
-                                                 "f_artikelcom" => $get['f_artikelcom'],
-                                                 "balken" => _config_head_balken,
-                                                 "balken_cw_head" => _config_balken_cw,
-                                                 "balken_info" => _config_balken_info,
-                                                 "balken_vote_head" => _config_balken_vote_head,
-                                                 "balken_vote_menu_head" => _config_balken_vote_menu_head,
-                                                 "balken_cw" => $gets['balken_cw'],
-                                                 "balken_vote" => $gets['balken_vote'],
-                                                 "balken_vote_menu" => $gets['balken_vote_menu'],
-                                                 'urls_linked' => _config_url_linked_head,
-                                                 'urls_linked_info' => _urls_linked_info,
-                                                 "sel_url" => $sel_url));
-  
-        $show = show($dir."/form", array("head" => _config_global_head,
-                                         "what" => "config",
-                                         "value" => _button_value_config,
-                                         "show" => $show_));
-      }
-    }
 ?>

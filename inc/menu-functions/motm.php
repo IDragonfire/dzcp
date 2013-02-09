@@ -1,6 +1,5 @@
 <?php
-function motm()
-{
+function motm() {
     global $db, $allowHover;
     
     $userpics = get_files(basePath . '/inc/images/uploads/userpics/');
@@ -12,7 +11,6 @@ function motm()
                 $temparr[] = $rs['id'];
                 $a++;
                 break;
-                ;
             }
         }
     }

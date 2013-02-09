@@ -7,8 +7,7 @@ $server_link       = 'quake4://{IP}:{S_PORT}';
 
 ##############################################################################################################################
 
-function server_query_quake4($ip, $port, $q_port, $request)
-{
+function server_query_quake4($ip, $port, $q_port, $request) {
     global $server_timeout;
     $q_port = empty($q_port) ? $port : $q_port;
     

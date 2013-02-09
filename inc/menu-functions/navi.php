@@ -1,6 +1,5 @@
 <?php
-function navi($kat)
-{
+function navi($kat) {
     global $db, $chkMe, $userid, $designpath;
     
     $navi = "";

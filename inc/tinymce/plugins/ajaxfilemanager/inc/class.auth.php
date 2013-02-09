@@ -11,15 +11,13 @@ if (!defined('AJAX_INIT_DONE')) {
  * @link www.phpletter.com
  * @since 4/August/2007
  */
-class Auth
-{
+class Auth {
     /**
      * check if the user has logged
      *
      * @return boolean
      */
-    function isLoggedIn()
-    {
+    function isLoggedIn() {
         return (!empty($_SESSION[$this->__loginIndexInSession]) ? true : false);
     }
     /**
@@ -27,8 +25,7 @@ class Auth
      * @return boolean
      *
      */
-    function login()
-    {
+    function login() {
         if ($_POST['username'] == CONFIG_LOGIN_USERNAME && $_POST['password'] == CONFIG_LOGIN_PASSWORD) {
             $_SESSION[$this->__loginIndexInSession] = true;
             return true;

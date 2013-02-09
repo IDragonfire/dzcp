@@ -43,15 +43,15 @@ if (!permission("editkalender")) {
         } else {
             $time = mktime($_POST['h'], $_POST['min'], 0, $_POST['m'], $_POST['t'], $_POST['j']);
             
-            $insert = db("INSERT INTO " . $db['events'] . " 
-                      SET `datum` = '" . ((int) $time) . "', 
-                          `title` = '" . up($_POST['title']) . "', 
+            $insert = db("INSERT INTO " . $db['events'] . "
+                      SET `datum` = '" . ((int) $time) . "',
+                          `title` = '" . up($_POST['title']) . "',
                           `event` = '" . up($_POST['event'], 1) . "'");
             
             $show = info(_kalender_successful_added, "?admin=kalender");
         }
     } elseif ($_GET['do'] == "edit") {
-        $qry = db("SELECT * FROM " . $db['events'] . " 
+        $qry = db("SELECT * FROM " . $db['events'] . "
                  WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
@@ -87,21 +87,21 @@ if (!permission("editkalender")) {
         } else {
             $time = mktime($_POST['h'], $_POST['min'], 0, $_POST['m'], $_POST['t'], $_POST['j']);
             
-            $update = db("UPDATE " . $db['events'] . " 
-                      SET `datum` = '" . ((int) $time) . "', 
-                          `title` = '" . up($_POST['title']) . "', 
-                          `event` = '" . up($_POST['event'], 1) . "' 
+            $update = db("UPDATE " . $db['events'] . "
+                      SET `datum` = '" . ((int) $time) . "',
+                          `title` = '" . up($_POST['title']) . "',
+                          `event` = '" . up($_POST['event'], 1) . "'
                       WHERE id = '" . intval($_GET['id']) . "'");
             
             $show = info(_kalender_successful_edited, "?admin=kalender");
         }
     } elseif ($_GET['do'] == "delete") {
-        $del = db("DELETE FROM " . $db['events'] . " 
+        $del = db("DELETE FROM " . $db['events'] . "
                  WHERE id = '" . intval($_GET['id']) . "'");
         
         $show = info(_kalender_deleted, "?admin=kalender");
     } else {
-        $qry = db("SELECT * FROM " . $db['events'] . " 
+        $qry = db("SELECT * FROM " . $db['events'] . "
                  ORDER BY datum DESC");
         while ($get = _fetch($qry)) {
             $edit   = show("page/button_edit_single", array(
@@ -139,19 +139,4 @@ if (!permission("editkalender")) {
         ));
     }
 }
-?>                                           "time" => $get['datum'],
-                                                      "id" => $get['sqid'],
-                                                      "class" => $class,
-                                                      "edit" => $edit,
-                                                      "delete" => $delete));
-        }
-
-        $show = show($dir."/kalender", array("head" => _kalender_admin_head,
-                                             "date" => _datum,
-                                             "titel" => _kalender_event,
-                                             "show" => $show_,
-                                             "add" => _kalender_admin_head_add
-                                             ));
-    }
-  }
 ?>

@@ -10,7 +10,7 @@ $where = $where . ': ' . _config_newskats_edit_head;
 if (!permission("news") && !permission('artikel')) {
     $show = error(_error_wrong_permissions, 1);
 } else {
-    $qry = db("SELECT * FROM " . $db['newskat'] . " 
+    $qry = db("SELECT * FROM " . $db['newskat'] . "
                  ORDER BY `kategorie`");
     while ($get = _fetch($qry)) {
         $edit   = show("page/button_edit_single", array(
@@ -49,13 +49,13 @@ if (!permission("news") && !permission('artikel')) {
         "mainkat" => _config_newskats_kat
     ));
     if ($_GET['do'] == "delete") {
-        $qry = db("SELECT katimg FROM " . $db['newskat'] . " 
+        $qry = db("SELECT katimg FROM " . $db['newskat'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
         @unlink(basePath . "/inc/images/newskat/" . $get['katimg']);
         
-        $del = db("DELETE FROM " . $db['newskat'] . " 
+        $del = db("DELETE FROM " . $db['newskat'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         
         $show = info(_config_newskat_deleted, "?admin=news");
@@ -84,14 +84,14 @@ if (!permission("news") && !permission('artikel')) {
         if (empty($_POST['kat'])) {
             $show = error(_config_empty_katname, 1);
         } else {
-            $qry = db("INSERT INTO " . $db['newskat'] . " 
-                     SET `katimg`     = '" . up($_POST['img']) . "', 
+            $qry = db("INSERT INTO " . $db['newskat'] . "
+                     SET `katimg`     = '" . up($_POST['img']) . "',
                          `kategorie`  = '" . up($_POST['kat']) . "'");
             
             $show = info(_config_newskats_added, "?admin=news");
         }
     } elseif ($_GET['do'] == "edit") {
-        $qry = db("SELECT * FROM " . $db['newskat'] . " 
+        $qry = db("SELECT * FROM " . $db['newskat'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
@@ -137,32 +137,13 @@ if (!permission("news") && !permission('artikel')) {
             else
                 $katimg = "`katimg` = '" . up($_POST['img']) . "',";
             
-            $qry = db("UPDATE " . $db['newskat'] . " 
-                     SET " . $katimg . " 
-                         `kategorie` = '" . up($_POST['kat']) . "' 
+            $qry = db("UPDATE " . $db['newskat'] . "
+                     SET " . $katimg . "
+                         `kategorie` = '" . up($_POST['kat']) . "'
                      WHERE id = '" . intval($_GET['id']) . "'");
             
             $show = info(_config_newskats_edited, "?admin=news");
         }
     }
 }
-?>                "upload" => $upload,
-                                                "img" => $img));
-      } elseif($_GET['do'] == "editnewskat") {
-        if(empty($_POST['kat']))
-        {
-          $show = error(_config_empty_katname,1);
-        } else {
-          if($_POST['img'] == "lazy") $katimg = "";
-          else $katimg = "`katimg` = '".up($_POST['img'])."',";
-
-          $qry = db("UPDATE ".$db['newskat']."
-                     SET ".$katimg."
-                         `kategorie` = '".up($_POST['kat'])."'
-                     WHERE id = '".intval($_GET['id'])."'");
-
-          $show = info(_config_newskats_edited, "?admin=news");
-        }
-      }
-    }
 ?>

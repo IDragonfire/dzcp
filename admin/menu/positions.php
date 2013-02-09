@@ -10,7 +10,7 @@ $where = $where . ': ' . _admin_pos;
 if ($chkMe != 4) {
     $show = error(_error_wrong_permissions, 1);
 } else {
-    $qry = db("SELECT * FROM " . $db['pos'] . " 
+    $qry = db("SELECT * FROM " . $db['pos'] . "
                  ORDER BY pid");
     while ($get = _fetch($qry)) {
         $edit   = show("page/button_edit_single", array(
@@ -47,7 +47,7 @@ if ($chkMe != 4) {
     ));
     
     if ($_GET['do'] == "edit") {
-        $qry1 = db("SELECT * FROM " . $db['pos'] . " 
+        $qry1 = db("SELECT * FROM " . $db['pos'] . "
                     ORDER BY pid");
         while ($get1 = _fetch($qry1)) {
             $positions .= show(_select_field, array(
@@ -57,7 +57,7 @@ if ($chkMe != 4) {
             ));
         }
         
-        $qry = db("SELECT * FROM " . $db['pos'] . " 
+        $qry = db("SELECT * FROM " . $db['pos'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
@@ -89,14 +89,14 @@ if ($chkMe != 4) {
                 else
                     $sign = "> ";
                 
-                $posi = db("UPDATE " . $db['pos'] . " 
-                        SET `pid` = pid+1 
+                $posi = db("UPDATE " . $db['pos'] . "
+                        SET `pid` = pid+1
                         WHERE pid " . $sign . " '" . intval($_POST['pos']) . "'");
             }
             
-            $qry = db("UPDATE " . $db['pos'] . " 
-                     SET `position` = '" . up($_POST['kat']) . "' 
-                         " . $pid . " 
+            $qry = db("UPDATE " . $db['pos'] . "
+                     SET `position` = '" . up($_POST['kat']) . "'
+                         " . $pid . "
                      WHERE id = '" . intval($_GET['id']) . "'");
             // permissions
             db("DELETE FROM " . $db['permissions'] . " WHERE `pos` = '" . intval($_GET['id']) . "'");
@@ -127,7 +127,7 @@ if ($chkMe != 4) {
         $show = info(_pos_admin_deleted, "?admin=positions");
         
     } elseif ($_GET['do'] == "new") {
-        $qry = db("SELECT * FROM " . $db['pos'] . " 
+        $qry = db("SELECT * FROM " . $db['pos'] . "
                    ORDER BY pid");
         while ($get = _fetch($qry)) {
             $positions .= show(_select_field, array(
@@ -159,12 +159,12 @@ if ($chkMe != 4) {
             else
                 $sign = "> ";
             
-            $posi = db("UPDATE " . $db['pos'] . " 
-                      SET `pid` = pid+1 
+            $posi = db("UPDATE " . $db['pos'] . "
+                      SET `pid` = pid+1
                       WHERE pid " . $sign . " '" . intval($_POST['pos']) . "'");
             
-            $qry   = db("INSERT INTO " . $db['pos'] . " 
-                     SET `pid`        = '" . ((int) $_POST['pos']) . "', 
+            $qry   = db("INSERT INTO " . $db['pos'] . "
+                     SET `pid`        = '" . ((int) $_POST['pos']) . "',
                          `position`  = '" . up($_POST['kat']) . "'");
             $posID = mysql_insert_id();
             // permissions
@@ -187,21 +187,4 @@ if ($chkMe != 4) {
         }
     }
 }
-?>                if(!empty($p))$p = ', '.substr($p, 0, strlen($p) - 1);
-                                    
-          db("INSERT INTO ".$db['permissions']." SET `pos` = '".$posID."'".$p);
-    ////////////////////
-    
-    // internal boardpermissions
-          if(!empty($_POST['board']))
-          {
-            foreach($_POST['board'] AS $v)
-              db("INSERT INTO ".$db['f_access']." SET `pos` = '".$posID."', `forum` = '".$v."'");
-          }
-    ////////////////////
-    
-          $show = info(_pos_admin_added, "?admin=positions");
-        }
-      }
-    }
 ?>

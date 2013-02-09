@@ -25,8 +25,7 @@ if (isset($config['general.engine']))
  * @param String $default_value Default value to return if value not found.
  * @return String request value by name without magic quoting or default value.
  */
-function getRequestParam($name, $default_value = false)
-{
+function getRequestParam($name, $default_value = false) {
     if (!isset($_REQUEST[$name]))
         return $default_value;
     
@@ -42,8 +41,7 @@ function getRequestParam($name, $default_value = false)
     return $_REQUEST[$name];
 }
 
-function &getLogger()
-{
+function &getLogger() {
     global $mcLogger, $man;
     
     if (isset($man))
@@ -62,40 +60,35 @@ function &getLogger()
     return $mcLogger;
 }
 
-function debug($msg)
-{
+function debug($msg) {
     $args = func_get_args();
     
     $log = getLogger();
     $log->debug(implode(', ', $args));
 }
 
-function info($msg)
-{
+function info($msg) {
     $args = func_get_args();
     
     $log = getLogger();
     $log->info(implode(', ', $args));
 }
 
-function error($msg)
-{
+function error($msg) {
     $args = func_get_args();
     
     $log = getLogger();
     $log->error(implode(', ', $args));
 }
 
-function warn($msg)
-{
+function warn($msg) {
     $args = func_get_args();
     
     $log = getLogger();
     $log->warn(implode(', ', $args));
 }
 
-function fatal($msg)
-{
+function fatal($msg) {
     $args = func_get_args();
     
     $log = getLogger();

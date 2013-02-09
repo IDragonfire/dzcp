@@ -18,9 +18,9 @@ if (permission('gallery')) {
                 ));
             }
             
-            $ins = db("INSERT INTO " . $db['gallery'] . " 
-                   SET `kat`            = '" . up($_POST['gallery']) . "', 
-                       `beschreibung`   = '" . up($_POST['beschreibung'], 1) . "', 
+            $ins = db("INSERT INTO " . $db['gallery'] . "
+                   SET `kat`            = '" . up($_POST['gallery']) . "',
+                       `beschreibung`   = '" . up($_POST['beschreibung'], 1) . "',
                        `datum`          = '" . ((int) time()) . "'");
             
             $show = show($dir . "/form_gallery_step2", array(
@@ -56,7 +56,7 @@ if (permission('gallery')) {
         
         $show = info(_gallery_added, "?admin=gallery");
     } elseif ($_GET['do'] == "delgal") {
-        $qry = db("DELETE FROM " . $db['gallery'] . " 
+        $qry = db("DELETE FROM " . $db['gallery'] . "
                  WHERE id = '" . intval($_GET['id']) . "'");
         
         $files = get_files("../gallery/images/");
@@ -77,7 +77,7 @@ if (permission('gallery')) {
         
         $show = info(_gallery_pic_deleted, "../gallery/?action=show&amp;id=" . $pid[1] . "");
     } elseif ($_GET['do'] == "edit") {
-        $qry = db("SELECT * FROM " . $db['gallery'] . " 
+        $qry = db("SELECT * FROM " . $db['gallery'] . "
                  WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
@@ -91,14 +91,14 @@ if (permission('gallery')) {
             "e_beschr" => re($get['beschreibung'])
         ));
     } elseif ($_GET['do'] == "editgallery") {
-        $qry = db("UPDATE " . $db['gallery'] . " 
-                 SET `kat`          = '" . up($_POST['gallery']) . "', 
-                     `beschreibung` = '" . up($_POST['beschreibung'], 1) . "' 
+        $qry = db("UPDATE " . $db['gallery'] . "
+                 SET `kat`          = '" . up($_POST['gallery']) . "',
+                     `beschreibung` = '" . up($_POST['beschreibung'], 1) . "'
                  WHERE id = '" . intval($_GET['id']) . "'");
         
         $show = info(_gallery_edited, "?admin=gallery");
     } elseif ($_GET['do'] == "new") {
-        $qry = db("SELECT * FROM " . $db['gallery'] . " 
+        $qry = db("SELECT * FROM " . $db['gallery'] . "
                  WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
@@ -117,7 +117,7 @@ if (permission('gallery')) {
         ));
         
     } elseif ($_GET['do'] == "editstep2") {
-        $qry = db("SELECT * FROM " . $db['gallery'] . " 
+        $qry = db("SELECT * FROM " . $db['gallery'] . "
                  WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
@@ -182,7 +182,7 @@ if (permission('gallery')) {
             "option" => $option
         ));
     } else {
-        $qry = db("SELECT * FROM " . $db['gallery'] . " 
+        $qry = db("SELECT * FROM " . $db['gallery'] . "
                    ORDER BY id DESC");
         while ($get = _fetch($qry)) {
             $files = get_files("../gallery/images/");
@@ -240,15 +240,4 @@ if (permission('gallery')) {
 } else {
     $show = error(_error_wrong_permissions, 1);
 }
-?>          "cnt" => $cnt));
-      
-        }
-        
-        $show = show($dir."/gallery",array("show" => $show,
-                                           "head" => _gallery_head,
-                                           "add" => _gallery_show_admin));
-      }
-    } else {
-      $show = error(_error_wrong_permissions, 1);
-    }
 ?>

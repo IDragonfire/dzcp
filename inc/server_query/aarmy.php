@@ -7,8 +7,7 @@ $server_link       = 'aarmy://{IP}:{S_PORT}';
 
 ##############################################################################################################################
 
-function server_query_aarmy($ip, $port, $q_port, $request)
-{
+function server_query_aarmy($ip, $port, $q_port, $request) {
     global $server_timeout;
     $q_port = empty($q_port) ? 1717 : $q_port;
     

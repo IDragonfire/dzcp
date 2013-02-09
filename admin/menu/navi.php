@@ -11,13 +11,13 @@ if (!permission("editor")) {
     $show = error(_error_wrong_permissions, 1);
 } else {
     if ($_GET['do'] == "add") {
-        $qry = db("SELECT s2.*, s1.name AS katname, s1.placeholder FROM " . $db['navi_kats'] . " AS s1 LEFT JOIN " . $db['navi'] . " AS s2 ON s1.`placeholder` = s2.`kat` 
+        $qry = db("SELECT s2.*, s1.name AS katname, s1.placeholder FROM " . $db['navi_kats'] . " AS s1 LEFT JOIN " . $db['navi'] . " AS s2 ON s1.`placeholder` = s2.`kat`
                    ORDER BY s1.name, s2.pos");
         while ($get = _fetch($qry)) {
             if ($thiskat != $get['kat']) {
-                $position .= ' 
-              <option class="dropdownKat" value="lazy">' . re($get['katname']) . '</option> 
-              <option value="' . re($get['placeholder']) . '-1">-> ' . _admin_first . '</option> 
+                $position .= '
+              <option class="dropdownKat" value="lazy">' . re($get['katname']) . '</option>
+              <option value="' . re($get['placeholder']) . '-1">-> ' . _admin_first . '</option>
             ';
             }
             $thiskat = $get['kat'];
@@ -58,44 +58,44 @@ if (!permission("editor")) {
             $kat = preg_replace('/-(\d+)/', '', $_POST['pos']);
             $pos = preg_replace("=nav_(.*?)-=", "", $_POST['pos']);
             
-            $posi = db("UPDATE " . $db['navi'] . " 
-                      SET `pos` = pos+1 
+            $posi = db("UPDATE " . $db['navi'] . "
+                      SET `pos` = pos+1
                       WHERE pos " . $sign . " '" . intval($pos) . "'");
             
-            $posi = db("INSERT INTO " . $db['navi'] . " 
-                      SET `pos`       = '" . ((int) $pos) . "', 
-                          `kat`       = '" . up($kat) . "', 
-                          `name`      = '" . up($_POST['name']) . "', 
-                          `url`       = '" . up($_POST['url']) . "', 
-                          `shown`     = '1', 
-                          `target`    = '" . ((int) $_POST['target']) . "', 
-                          `internal`  = '" . ((int) $_POST['internal']) . "', 
-                          `type`      = '2', 
+            $posi = db("INSERT INTO " . $db['navi'] . "
+                      SET `pos`       = '" . ((int) $pos) . "',
+                          `kat`       = '" . up($kat) . "',
+                          `name`      = '" . up($_POST['name']) . "',
+                          `url`       = '" . up($_POST['url']) . "',
+                          `shown`     = '1',
+                          `target`    = '" . ((int) $_POST['target']) . "',
+                          `internal`  = '" . ((int) $_POST['internal']) . "',
+                          `type`      = '2',
                           `wichtig`   = '" . ((int) $_POST['wichtig']) . "'");
             $show = info(_navi_added, "?admin=navi");
         }
     } elseif ($_GET['do'] == "delete") {
-        $qry = db("SELECT * FROM " . $db['navi'] . " 
+        $qry = db("SELECT * FROM " . $db['navi'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
-        $del = db("DELETE FROM " . $db['sites'] . " 
+        $del = db("DELETE FROM " . $db['sites'] . "
                    WHERE id = '" . intval($get['editor']) . "'");
         
-        $del = db("DELETE FROM " . $db['navi'] . " 
+        $del = db("DELETE FROM " . $db['navi'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         
         $show = info(_navi_deleted, "?admin=navi");
     } elseif ($_GET['do'] == "edit") {
-        $qry     = db("SELECT s2.*, s1.name AS katname, s1.placeholder FROM " . $db['navi_kats'] . " AS s1 LEFT JOIN " . $db['navi'] . " AS s2 ON s1.`placeholder` = s2.`kat` 
+        $qry     = db("SELECT s2.*, s1.name AS katname, s1.placeholder FROM " . $db['navi_kats'] . " AS s1 LEFT JOIN " . $db['navi'] . " AS s2 ON s1.`placeholder` = s2.`kat`
                    ORDER BY s1.name, s2.pos");
         $i       = 1;
         $thiskat = '';
         while ($get = _fetch($qry)) {
             if ($thiskat != $get['kat']) {
-                $position .= ' 
-              <option class="dropdownKat" value="lazy">' . re($get['katname']) . '</option> 
-              <option value="' . re($get['placeholder']) . '-1">-> ' . _admin_first . '</option> 
+                $position .= '
+              <option class="dropdownKat" value="lazy">' . re($get['katname']) . '</option>
+              <option value="' . re($get['placeholder']) . '-1">-> ' . _admin_first . '</option>
             ';
             }
             $thiskat = $get['kat'];
@@ -106,7 +106,7 @@ if (!permission("editor")) {
             $i++;
         }
         
-        $qry = db("SELECT * FROM " . $db['navi'] . " 
+        $qry = db("SELECT * FROM " . $db['navi'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
@@ -158,31 +158,31 @@ if (!permission("editor")) {
         $kat = preg_replace('/-(\d+)/', '', $_POST['pos']);
         $pos = preg_replace("=nav_(.+)-=", "", $_POST['pos']);
         
-        $posi = db("UPDATE " . $db['navi'] . " 
-                    SET pos = pos+1 
+        $posi = db("UPDATE " . $db['navi'] . "
+                    SET pos = pos+1
                     WHERE pos " . $sign . " '" . intval($pos) . "'");
         
-        $posi = db("UPDATE " . $db['navi'] . " 
-                    SET `pos`       = '" . ((int) $pos) . "', 
-                        `kat`       = '" . up($kat) . "', 
-                        `name`      = '" . up($_POST['name']) . "', 
-                        `url`       = '" . up($_POST['url']) . "', 
-                        `target`    = '" . ((int) $_POST['target']) . "', 
-                        `shown`     = '" . ((int) $_POST['sichtbar']) . "', 
-                        `internal`  = '" . ((int) $_POST['internal']) . "', 
-                        `wichtig`   = '" . ((int) $_POST['wichtig']) . "' 
+        $posi = db("UPDATE " . $db['navi'] . "
+                    SET `pos`       = '" . ((int) $pos) . "',
+                        `kat`       = '" . up($kat) . "',
+                        `name`      = '" . up($_POST['name']) . "',
+                        `url`       = '" . up($_POST['url']) . "',
+                        `target`    = '" . ((int) $_POST['target']) . "',
+                        `shown`     = '" . ((int) $_POST['sichtbar']) . "',
+                        `internal`  = '" . ((int) $_POST['internal']) . "',
+                        `wichtig`   = '" . ((int) $_POST['wichtig']) . "'
                     WHERE id = '" . intval($_GET['id']) . "'");
         
         $show = info(_navi_edited, "?admin=navi");
     } elseif ($_GET['do'] == "menu") {
-        $posi = db("UPDATE " . $db['navi'] . " 
-                    SET `shown`     = '" . ((int) $_GET['set']) . "' 
+        $posi = db("UPDATE " . $db['navi'] . "
+                    SET `shown`     = '" . ((int) $_GET['set']) . "'
                     WHERE id = '" . intval($_GET['id']) . "'");
         
         header("Location: ?admin=navi");
     } else if ($_GET['do'] == 'intern') {
-        $posi = db("UPDATE " . $db['navi_kats'] . " 
-                    SET `intern` = '" . ((int) $_GET['set']) . "' 
+        $posi = db("UPDATE " . $db['navi_kats'] . "
+                    SET `intern` = '" . ((int) $_GET['set']) . "'
                     WHERE id = '" . intval($_GET['id']) . "'");
         
         header("Location: ?admin=navi");
@@ -210,10 +210,10 @@ if (!permission("editor")) {
             "do" => 'updatekat&amp;id=' . $get['id']
         ));
     } else if ($_GET['do'] == 'updatekat') {
-        db("UPDATE " . $db['navi_kats'] . " 
-            SET `name`        = '" . up($_POST['name']) . "', 
-                `placeholder` = 'nav_" . up($_POST['placeholder']) . "', 
-                `level`       = '" . intval($_POST['level']) . "' 
+        db("UPDATE " . $db['navi_kats'] . "
+            SET `name`        = '" . up($_POST['name']) . "',
+                `placeholder` = 'nav_" . up($_POST['placeholder']) . "',
+                `level`       = '" . intval($_POST['level']) . "'
             WHERE `id` = '" . intval($_GET['id']) . "'");
         
         $show = info(_menukat_updated, '?admin=navi');
@@ -244,9 +244,9 @@ if (!permission("editor")) {
             "do" => 'insertkat'
         ));
     } else if ($_GET['do'] == 'insertkat') {
-        db("INSERT INTO " . $db['navi_kats'] . " 
-            SET `name`        = '" . up($_POST['name']) . "', 
-                `placeholder` = 'nav_" . up($_POST['placeholder']) . "', 
+        db("INSERT INTO " . $db['navi_kats'] . "
+            SET `name`        = '" . up($_POST['name']) . "',
+                `placeholder` = 'nav_" . up($_POST['placeholder']) . "',
                 `level`       = '" . intval($_POST['intern']) . "'");
         
         $show = info(_menukat_inserted, '?admin=navi');
@@ -363,46 +363,4 @@ if (!permission("editor")) {
         ));
     }
 }
-?>          $edit = '';
-            $delete = '';
-          } else {
-            $edit = show("page/button_edit_single", array("id" => $get['id'],
-                                                          "action" => "admin=navi&amp;do=editkat",
-                                                          "title" => _button_title_edit));
-            $delete = show("page/button_delete_single", array("id" => $get['id'],
-                                                              "action" => "admin=navi&amp;do=deletekat",
-                                                              "title" => _button_title_del,
-                                                              "del" => convSpace(_confirm_del_menu)));
-          }
-          $show_kats .= show($dir."/navi_kats", array("name" => re($get['name']),
-                                                      "intern" => (empty($get['intern']) ? _noicon : _yesicon),
-                                                      "id" => $get['id'],
-                                                      "set" => (empty($get['intern']) ? 1 : 0),
-                                                      "placeholder" => str_replace('nav_', '', re($get['placeholder'])),
-                                                      "class" => $class,
-                                                      "edit" => $edit,
-                                                      "del" => $delete));
-        }        
-        
-        $show = show($dir."/navi", array("show" => $show_,
-                                         "intern" => _config_forum_intern,
-                                         "name" => _navi_name,
-                                         "info" => _navi_info,
-                                         "kat" => _config_newskats_kat,
-                                         "placeholder" => _placeholder,
-                                         "head_kat" => _menu_kats_head,
-                                         "add_kat" => _menu_add_kat,
-                                         "show_kats" => $show_kats,
-                                         "url" => _navi_url,
-                                         "intern" => _internal,
-                                         "standard" => _standard_link_do,
-                                         "shown" => _navi_shown,
-                                         "head" => _navi_head,
-                                         "add" => _navi_add_head,
-                                         "type" => _navi_type,
-                                         "wichtig" => _navi_wichtig,
-                                         "edit" => _editicon_blank,
-                                         "del" => _deleteicon_blank));
-      }
-    }
 ?>

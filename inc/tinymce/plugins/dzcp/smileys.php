@@ -1,7 +1,6 @@
 <?php
 ob_start();
-function get_files($dir)
-{
+function get_files($dir) {
     $dp    = @opendir($dir);
     $files = array();
     while ($file = @readdir($dp)) {

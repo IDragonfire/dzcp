@@ -1,7 +1,6 @@
 <?php
 //-> Votemenu
-function vote($ajax = false)
-{
+function vote($ajax = false) {
     global $db, $balken_vote_menu, $prev;
     $qry = db("SELECT * FROM " . $db['votes'] . " WHERE menu = '1' AND forum = 0");
     $get = _fetch($qry);

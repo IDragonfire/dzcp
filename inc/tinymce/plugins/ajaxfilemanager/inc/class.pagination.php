@@ -9,8 +9,7 @@ if (!defined('AJAX_INIT_DONE')) {
  * @since 27/Nov/20006
  *
  */
-class pagination
-{
+class pagination {
     var $totalItems = 0;
     var $itemsPerPage = 30;
     var $currentPage = 1;
@@ -35,8 +34,7 @@ class pagination
      * @param boolean $friendlyUrl set the returned url
      * as search engine friendly or Normal Url
      */
-    function pagination($friendlyUrl = false)
-    {
+    function pagination($friendlyUrl = false) {
         $this->friendlyUrl = $friendlyUrl;
         $this->__resetCurrentPage();
     }
@@ -46,8 +44,7 @@ class pagination
      *
      * @param integer $value maximum number of items per page
      */
-    function setLimit($value)
-    {
+    function setLimit($value) {
         $this->itemsPerPage = intval($value);
     }
     /**
@@ -55,8 +52,7 @@ class pagination
      *
      * @return integer
      */
-    function getLimit()
-    {
+    function getLimit() {
         return $this->itemsPerPage;
     }
     
@@ -65,8 +61,7 @@ class pagination
      *
      * @param integer $value the total number of items
      */
-    function setTotal($value)
-    {
+    function setTotal($value) {
         $this->totalItems = intval($value);
     }
     /**
@@ -74,16 +69,14 @@ class pagination
      *
      * @return integer total number of items
      */
-    function getTotal()
-    {
+    function getTotal() {
         return $this->totalItems;
     }
     /**
      * get total pages will be used to display all records
      *
      */
-    function getTotalPages()
-    {
+    function getTotalPages() {
         $output = floor(($this->totalItems / $this->itemsPerPage));
         if ($this->totalItems % $this->itemsPerPage) {
             $output++;
@@ -96,23 +89,20 @@ class pagination
      *
      * @param string $value e.g. page
      */
-    function setPageIndex($value)
-    {
+    function setPageIndex($value) {
         $this->pageIndex = $value;
         $this->__resetCurrentPage();
     }
     
     
-    function getPageIndex()
-    {
+    function getPageIndex() {
         return $this->pageIndex;
     }
     /**
      * initiate or reset the current page number
      *
      */
-    function __resetCurrentPage()
-    {
+    function __resetCurrentPage() {
         $this->currentPage = ((isset($_GET[$this->pageIndex]) && intval($_GET[$this->pageIndex]) > 0) ? intval($_GET[$this->pageIndex]) : 1);
     }
     
@@ -121,8 +111,7 @@ class pagination
      *
      * @param string $value the base url
      */
-    function setUrl($value = "")
-    {
+    function setUrl($value = "") {
         if (empty($value)) {
             if ($this->friendlyUrl) {
                 $this->url = "http://" . $_SERVER['HTTP_HOST'] . "/";
@@ -140,8 +129,7 @@ class pagination
      *
      * @return string the base url
      */
-    function getUrl()
-    {
+    function getUrl() {
         if (empty($this->url)) {
             $this->setUrl();
             
@@ -153,8 +141,7 @@ class pagination
      * set base url for pagination links after exculed those keys
      * identified on excluded query strings
      */
-    function __setBaseUrl()
-    {
+    function __setBaseUrl() {
         if (empty($this->url)) {
             $this->getUrl();
         }
@@ -184,8 +171,7 @@ class pagination
      * identified on excluded query strings
      *
      */
-    function __getBaseUrl()
-    {
+    function __getBaseUrl() {
         if (empty($this->baseUrl)) {
             $this->__setBaseUrl();
         }
@@ -198,8 +184,7 @@ class pagination
      *
      * @return interger the first item number displayed within current page
      */
-    function getFirstItem()
-    {
+    function getFirstItem() {
         $output             = 0;
         $temStartItemNumber = (($this->currentPage - 1) * $this->itemsPerPage + 1);
         if ($this->totalItems && $temStartItemNumber <= $this->totalItems) {
@@ -212,8 +197,7 @@ class pagination
      *
      * @return interger the last item number
      */
-    function getLastItem()
-    {
+    function getLastItem() {
         $output           = 0;
         $temEndItemNumber = (($this->currentPage) * $this->itemsPerPage);
         if ($this->totalItems) {
@@ -232,8 +216,7 @@ class pagination
      *
      * @param unknown_type $value
      */
-    function setGroupLimit($value)
-    {
+    function setGroupLimit($value) {
         $this->groupLimit = intval($value);
     }
     /**
@@ -241,8 +224,7 @@ class pagination
      *
      * @return integer the page grouping limit
      */
-    function getGroupLimit()
-    {
+    function getGroupLimit() {
         return $this->groupLimit;
     }
     /**
@@ -252,16 +234,14 @@ class pagination
      *
      * @return iner
      */
-    function getPageOffset()
-    {
+    function getPageOffset() {
         return (($this->currentPage - 1) * $this->itemsPerPage);
     }
     /**
      * get the last url if any
      * @return  string the last url
      */
-    function getLastUrl()
-    {
+    function getLastUrl() {
         $url        = "";
         $totalPages = $this->getTotalPages();
         if ($this->currentPage < $totalPages) {
@@ -285,8 +265,7 @@ class pagination
      * @return string the first url
      */
     
-    function getFirstUrl()
-    {
+    function getFirstUrl() {
         $url = "";
         if ($this->currentPage > 1) {
             $url = $this->__getBaseUrl();
@@ -307,8 +286,7 @@ class pagination
      * @param array $excludedQueryStrings excluded the value from $_GET
      * @return string the previous page url
      */
-    function getPreviousUrl()
-    {
+    function getPreviousUrl() {
         $url = "";
         if ($this->currentPage > 1 && $this->totalItems > 0) {
             $url = $this->__getBaseUrl();
@@ -329,8 +307,7 @@ class pagination
      * @param array $excludedQueryStrings excluded the value from $_GET
      * @return string the next page url
      */
-    function getNextUrl()
-    {
+    function getNextUrl() {
         $url = "";
         if ($this->totalItems > ($this->currentPage * $this->itemsPerPage)) {
             $url = $this->__getBaseUrl();
@@ -352,8 +329,7 @@ class pagination
      * <a class="pagination_group active" href='#'>2</a>
      * <a class="pagination_group" href='yoururl'>3</a>
      */
-    function getGroupUrls()
-    {
+    function getGroupUrls() {
         $output = "";
         if ($this->totalItems > 0) {
             $displayedPages = 0;
@@ -397,8 +373,7 @@ class pagination
      *
      * @param string $value
      */
-    function setPreviousText($value)
-    {
+    function setPreviousText($value) {
         $this->previousText = $value;
     }
     /**
@@ -406,8 +381,7 @@ class pagination
      *
      * @param string $value
      */
-    function setFirstText($value)
-    {
+    function setFirstText($value) {
         $this->firstText = $value;
     }
     /**
@@ -416,8 +390,7 @@ class pagination
      * @param string $value
      */
     
-    function setNextText($value)
-    {
+    function setNextText($value) {
         $this->nextText = $value;
     }
     /**
@@ -425,8 +398,7 @@ class pagination
      *
      * @param string $value
      */
-    function setLastText($value)
-    {
+    function setLastText($value) {
         $this->lastText = $value;
     }
     
@@ -436,13 +408,11 @@ class pagination
      * @param array the lists of the query string keys
      */
     
-    function setExcludedQueryString($values = array())
-    {
+    function setExcludedQueryString($values = array()) {
         $this->excludedQueryStrings = $values;
     }
     
-    function getExcludedQueryString()
-    {
+    function getExcludedQueryString() {
         return $this->excludedQueryStrings;
     }
     
@@ -452,8 +422,7 @@ class pagination
      * @param string $baseUrl
      * @param string $extra the query string added to the base url
      */
-    function __appendQueryString($baseUrl, $extra)
-    {
+    function __appendQueryString($baseUrl, $extra) {
         $output = trim($baseUrl);
         if (strpos($baseUrl, "?") !== false) {
             $output .= "&" . $extra;
@@ -467,8 +436,7 @@ class pagination
      *
      * @param integer $type
      */
-    function getPaginationHTML($type = 1, $cssClass = "pagination")
-    {
+    function getPaginationHTML($type = 1, $cssClass = "pagination") {
         $output = '';
         $output .= "<div class=\"pagination_content\"><p class=\"$cssClass\">\n";
         switch ($type) {

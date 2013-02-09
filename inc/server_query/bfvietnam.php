@@ -7,8 +7,7 @@ $server_link       = '{IP}:{S_PORT}';
 
 ##############################################################################################################################
 
-function server_query_bfvietnam($ip, $port, $q_port, $request)
-{
+function server_query_bfvietnam($ip, $port, $q_port, $request) {
     global $server_timeout;
     $q_port = empty($q_port) ? 23000 : $q_port;
     

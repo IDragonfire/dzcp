@@ -275,7 +275,6 @@ define('_clankasse_new', '<form action="" method="get" onsubmit="return(DZCP.sub
       <input id="contentSubmit" type="submit" class="submit" value="Insert new contribution" />
     </form>');
 define('_config_c_floods_what', 'Here you can adjust the time in secontds which a user have to wait<br />to write something new in this area');
-;
 define('_confirm_del_shout', 'You really want to delete this shoutbox entry');
 ## ADDED FOR 1.4.9.3
 define('_ergebnisticker_more', 'More Results');

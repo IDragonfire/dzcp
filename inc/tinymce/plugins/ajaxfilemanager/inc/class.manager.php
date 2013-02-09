@@ -11,8 +11,7 @@ if (!defined('AJAX_INIT_DONE')) {
  *
  */
 require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . "class.file.php");
-class manager
-{
+class manager {
     var $currentFolderPath;
     var $sessionAction = null; //object to session action
     var $flags = array('no' => 'noFlag', 'cut' => 'cutFlag', 'copy' => 'copyFlag');
@@ -29,8 +28,7 @@ class manager
      * @path the path to a folder
      * @calculateSubdir force to get the subdirectories information
      */
-    function __construct($path = null, $calculateSubdir = true)
-    {
+    function __construct($path = null, $calculateSubdir = true) {
         $this->calculateSubdir = $calculateSubdir;
         if (defined('CONFIG_SYS_FOLDER_SHOWN_ON_TOP')) {
             $this->forceFolderOnTop = CONFIG_SYS_FOLDER_SHOWN_ON_TOP;
@@ -78,31 +76,27 @@ class manager
         
     }
     
-    function setSessionAction(&$session)
-    {
+    function setSessionAction(&$session) {
         $this->sessionAction = $session;
     }
     /**
      * constructor
      */
-    function manager($path = null, $calculateSubdir = true)
-    {
+    function manager($path = null, $calculateSubdir = true) {
         $this->__construct($path, $calculateSubdir);
     }
     /**
      * get current folder path
      * @return  string
      */
-    function getCurrentFolderPath()
-    {
+    function getCurrentFolderPath() {
         return $this->currentFolderPath;
     }
     /**
      * get the list of files and folders under this current fold
      *    @return array
      */
-    function getFileList()
-    {
+    function getFileList() {
         $outputs    = array();
         $files      = array();
         $folders    = array();
@@ -188,8 +182,7 @@ class manager
      * @param string $path
      * @return array
      */
-    function getFolderInfo($path = null)
-    {
+    function getFolderInfo($path = null) {
         if (is_null($path)) {
             return $this->currentFolderInfo;
         } else {
@@ -207,8 +200,7 @@ class manager
      * @param string file name
      * @return array
      */
-    function getFileType($fileName, $checkIfDir = false)
-    {
+    function getFileType($fileName, $checkIfDir = false) {
         $ext = strtolower($this->_getExtension($fileName, $checkIfDir));
         
         foreach ($this->fileTypes as $fileType) {
@@ -266,16 +258,14 @@ class manager
      *
      * @return arrray
      */
-    function getFileTypes()
-    {
+    function getFileTypes() {
         return $this->fileTypes;
     }
     /**
      * print out the file types
      *
      */
-    function printFileTypes()
-    {
+    function printFileTypes() {
         foreach ($fileTypes as $fileType) {
             if (isset($fileType[0]) && is_array($fileType[0])) {
                 foreach ($fileType[0] as $type) {
@@ -292,8 +282,7 @@ class manager
      * @return string
      * @copyright this function originally come from Andy's php 
      */
-    function _getExtension($file, $checkIfDir = false)
-    {
+    function _getExtension($file, $checkIfDir = false) {
         if ($checkIfDir && file_exists($file) && is_dir($file)) {
             return '';
         } else {
@@ -303,8 +292,7 @@ class manager
         
     }
     
-    function isDirEmpty($path)
-    {
+    function isDirEmpty($path) {
         $dirHandler = @opendir($path);
         if ($dirHandler) {
             while (false !== ($file = readdir($dirHandler))) {

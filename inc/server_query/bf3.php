@@ -7,8 +7,7 @@ $server_link       = 'bf3://{IP}:{S_PORT}';
 
 ##############################################################################################################################
 
-function server_query_bf3($ip, $port, $q_port, $request)
-{
+function server_query_bf3($ip, $port, $q_port, $request) {
     global $server_timeout;
     
     $q_port = empty($q_port) ? 47200 : $q_port;

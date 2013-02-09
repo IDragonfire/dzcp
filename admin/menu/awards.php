@@ -11,7 +11,7 @@ if (!permission("awards")) {
     $show = error(_error_wrong_permissions, 1);
 } else {
     if ($_GET['do'] == "new") {
-        $qry = db("SELECT * FROM " . $db['squads'] . " 
+        $qry = db("SELECT * FROM " . $db['squads'] . "
                    ORDER BY game ASC");
         while ($get = _fetch($qry)) {
             $squads .= show(_awards_admin_add_select_field_squads, array(
@@ -46,11 +46,11 @@ if (!permission("awards")) {
             "award_prize" => ""
         ));
     } elseif ($_GET['do'] == "edit") {
-        $qry = db("SELECT * FROM " . $db['awards'] . " 
+        $qry = db("SELECT * FROM " . $db['awards'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
-        $qrym = db("SELECT * FROM " . $db['squads'] . " 
+        $qrym = db("SELECT * FROM " . $db['squads'] . "
                     ORDER BY game");
         while ($gets = _fetch($qrym)) {
             if ($get['squad'] == $gets['id'])
@@ -110,13 +110,13 @@ if (!permission("awards")) {
             
             $datum = mktime(0, 0, 0, $_POST['m'], $_POST['t'], $_POST['j']);
             
-            $qry = db("INSERT INTO " . $db['awards'] . " 
-                     SET `date`     = '" . ((int) $datum) . "', 
-                         `postdate` = '" . ((int) time()) . "', 
-                                   `squad`    = '" . ((int) $_POST['squad']) . "', 
-                                 `event`    = '" . up($_POST['event']) . "', 
-                         `url`      = '" . links($_POST['url']) . "', 
-                                   `place`    = '" . up($place) . "', 
+            $qry = db("INSERT INTO " . $db['awards'] . "
+                     SET `date`     = '" . ((int) $datum) . "',
+                         `postdate` = '" . ((int) time()) . "',
+                                   `squad`    = '" . ((int) $_POST['squad']) . "',
+                                 `event`    = '" . up($_POST['event']) . "',
+                         `url`      = '" . links($_POST['url']) . "',
+                                   `place`    = '" . up($place) . "',
                                    `prize`    = '" . up($prize) . "'");
             
             $show = info(_awards_admin_added, "?admin=awards");
@@ -142,23 +142,23 @@ if (!permission("awards")) {
         
         $datum = mktime(0, 0, 0, $_POST['m'], $_POST['t'], $_POST['j']);
         
-        $qry = db("UPDATE " . $db['awards'] . " 
-                   SET `date`   = '" . ((int) $datum) . "', 
-                                 `squad`  = '" . (int) ($_POST['squad']) . "', 
-                                 `event`  = '" . up($_POST['event']) . "', 
-                       `url`    = '" . links($_POST['url']) . "', 
-                                 `place`  = '" . up($place) . "', 
-                                 `prize`  = '" . up($prize) . "' 
+        $qry = db("UPDATE " . $db['awards'] . "
+                   SET `date`   = '" . ((int) $datum) . "',
+                                 `squad`  = '" . (int) ($_POST['squad']) . "',
+                                 `event`  = '" . up($_POST['event']) . "',
+                       `url`    = '" . links($_POST['url']) . "',
+                                 `place`  = '" . up($place) . "',
+                                 `prize`  = '" . up($prize) . "'
                    WHERE id = '" . intval($_GET['id']) . "'");
         
         $show = info(_awards_admin_edited, "?admin=awards");
     } elseif ($_GET['do'] == "delete") {
-        $qry = db("DELETE FROM " . $db['awards'] . " 
+        $qry = db("DELETE FROM " . $db['awards'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         
         $show = info(_awards_admin_deleted, "?admin=awards");
     } else {
-        $qry = db("SELECT * FROM " . $db['awards'] . " 
+        $qry = db("SELECT * FROM " . $db['awards'] . "
                    ORDER BY date DESC");
         while ($get = _fetch($qry)) {
             $edit   = show("page/button_edit_single", array(
@@ -195,20 +195,4 @@ if (!permission("awards")) {
         ));
     }
 }
-?>,
-                                                    "award" => re($get['event']),
-                                                    "id" => $get['squad'],
-                                                    "class" => $class,
-                                                    "edit" => $edit,
-                                                    "delete" => $delete));
-        }
-
-        $show = show($dir."/awards", array("head" => _awards_head,
-                                           "date" => _datum,
-                                           "titel" => _award,
-                                           "show" => $show_,
-                                           "add" => _awards_admin_head_add
-                                           ));
-      }
-    }
 ?>

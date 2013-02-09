@@ -6,16 +6,14 @@ TS3 Class  by Sebastien Gerard <sebeuu@gmail.com>
 modified by CodeKing for DZCP 08-01-2010 (mm-dd-yyyy)
 */
 
-function teamspeakViewer($s)
-{
+function teamspeakViewer($s) {
     return ($s['ts_version'] == 3) ? teamspeak3($s) : teamspeak2($s);
 }
 
 ######################################
 ### TS 2 Viewer###
 ######################################
-function teamspeak2($s)
-{
+function teamspeak2($s) {
     @set_time_limit(10);
     $fp = @fsockopen($s['ts_ip'], $s['ts_sport'], $errno, $errstr, 2);
     @stream_set_timeout($fp, 2, 0);
@@ -137,8 +135,7 @@ function teamspeak2($s)
     return $teamspeak;
 }
 
-function setUserStatus($img)
-{
+function setUserStatus($img) {
     switch ($img) {
         case "1":
             $img = "<img src=\"../inc/images/tsicons/ccommander.gif\" class=\"tsicon\" alt=\"\">";
@@ -380,8 +377,7 @@ function setUserStatus($img)
     return $img;
 }
 
-function setCPriv($str)
-{
+function setCPriv($str) {
     switch ($str) {
         case "1": //Channel Admin
             $str = "&nbsp;CA";
@@ -515,14 +511,12 @@ function setCPriv($str)
     return $str;
 }
 
-function removeChar($str)
-{
+function removeChar($str) {
     $str = str_replace('"', '', $str);
     return $str;
 }
 
-function time_convert($time, $ms = false)
-{
+function time_convert($time, $ms = false) {
     if ($ms)
         $time = $time / 1000;
     
@@ -543,8 +537,7 @@ function time_convert($time, $ms = false)
     return $time;
 }
 
-function getCodec($codec)
-{
+function getCodec($codec) {
     switch ($codec) {
         case "0":
             $codec = "CELP 5.2 Kbit";
@@ -606,8 +599,7 @@ function getCodec($codec)
     return $codec;
 }
 
-function setPPriv($str)
-{
+function setPPriv($str) {
     switch ($str) {
         case "5": //Server Admin
             $str = "R&nbsp;SA";
@@ -625,8 +617,7 @@ function setPPriv($str)
     return $str;
 }
 
-function setPPrivText($str)
-{
+function setPPrivText($str) {
     switch ($str) {
         case "5": //Server Admin
             $str = "Server Administrator<br />Registered";
@@ -644,8 +635,7 @@ function setPPrivText($str)
     return $str;
 }
 
-function setCPrivText($str)
-{
+function setCPrivText($str) {
     switch ($str) {
         case "1": //Channel Admin
             $str = "Channel Admin";
@@ -779,8 +769,7 @@ function setCPrivText($str)
     return $str;
 }
 
-function indexOf($str, $strChar)
-{
+function indexOf($str, $strChar) {
     if (strlen(strchr($str, $strChar)) > 0) {
         $position_num = strpos($str, $strChar) + strlen($strChar);
         return $position_num;
@@ -788,8 +777,7 @@ function indexOf($str, $strChar)
         return -1;
     }
 }
-function getChannelName($cid, $ip, $port, $tPort)
-{
+function getChannelName($cid, $ip, $port, $tPort) {
     $name   = "Uknown";
     $cArray = getChannels($ip, $port, $tPort);
     
@@ -801,8 +789,7 @@ function getChannelName($cid, $ip, $port, $tPort)
     return $name;
 }
 
-function getChannels($ip, $port, $tPort)
-{
+function getChannels($ip, $port, $tPort) {
     $cArray = array();
     $out    = "";
     $j      = 0;
@@ -838,8 +825,7 @@ function getChannels($ip, $port, $tPort)
     
     return $cArray;
 }
-function getTSChannelUsers($ip, $port, $tPort)
-{
+function getTSChannelUsers($ip, $port, $tPort) {
     $uArray     = array();
     $innerArray = array();
     $out        = "";
@@ -875,8 +861,7 @@ function getTSChannelUsers($ip, $port, $tPort)
     return $uArray;
 }
 
-function usedID($usedArray, $cid)
-{
+function usedID($usedArray, $cid) {
     $ok = true;
     for ($i = 0; $i < count($usedArray); $i++) {
         if ($usedArray[$i] == $cid) {
@@ -886,8 +871,7 @@ function usedID($usedArray, $cid)
     return $ok;
 }
 
-function defaultInfo($ip, $tPort, $port)
-{
+function defaultInfo($ip, $tPort, $port) {
     $out  = "";
     $html = "";
     
@@ -940,8 +924,7 @@ function defaultInfo($ip, $tPort, $port)
     return $html;
 }
 
-function channelInfo($ip, $tPort, $port, $cID)
-{
+function channelInfo($ip, $tPort, $port, $cID) {
     $cArray = getChannels($ip, $port, $tPort);
     $uArray = getTSChannelUsers($ip, $port, $tPort);
     $html   = "";
@@ -982,8 +965,7 @@ function channelInfo($ip, $tPort, $port, $cID)
     return $html;
 }
 
-function getTSVersion($ip, $tPort, $port)
-{
+function getTSVersion($ip, $tPort, $port) {
     $out = "";
     $fp  = fsockopen($ip, $tPort, $errno, $errstr, 2);
     stream_set_timeout($fp, 1, 0);
@@ -1009,8 +991,7 @@ function getTSVersion($ip, $tPort, $port)
 ### TS 3 Viewer###
 ######################################
 
-function teamspeak3($settings)
-{
+function teamspeak3($settings) {
     $tsstatus = new TSStatus($settings['ts_ip'], $settings['ts_port'], $settings['ts_sport'], $settings['ts_customicon'], $settings['ts_showchannel']);
     
     return show("menu/teamspeak", array(
@@ -1019,8 +1000,7 @@ function teamspeak3($settings)
     ));
 }
 
-class TSStatus
-{
+class TSStatus {
     var $_host;
     var $_qport;
     var $_port;
@@ -1040,8 +1020,7 @@ class TSStatus
     var $_showIcons;
     var $_showOnly;
     
-    function TSStatus($host, $port, $queryPort, $customicon, $showchannel)
-    {
+    function TSStatus($host, $port, $queryPort, $customicon, $showchannel) {
         $this->_host  = $host;
         $this->_port  = $port;
         $this->_qport = $queryPort;
@@ -1065,8 +1044,7 @@ class TSStatus
         $this->_showIcons   = $customicon;
         $this->_showOnly    = $showchannel;
     }
-    function update()
-    {
+    function update() {
         $response = $this->queryServer();
         if ($response !== false && empty($this->error)) {
             $lines = explode("\n\rerror id=0 msg=ok\n\r", $response);
@@ -1088,8 +1066,7 @@ class TSStatus
         }
     }
     
-    function sendCommand($fp, $cmd)
-    {
+    function sendCommand($fp, $cmd) {
         if (empty($this->error)) {
             @fputs($fp, "$cmd\n");
             $response = "";
@@ -1107,8 +1084,7 @@ class TSStatus
         return $response;
     }
     
-    function tsvars($str)
-    {
+    function tsvars($str) {
         $str  = explode("\n", $str);
         $vars = array();
         for ($i = 0; $i < sizeof($str); $i++)
@@ -1116,8 +1092,7 @@ class TSStatus
         return $vars;
     }
     
-    function queryServer()
-    {
+    function queryServer() {
         @set_time_limit(10);
         $fp            = @fsockopen($this->_host, $this->_qport, $errno, $errstr, 2);
         $this->_socket = $fp;
@@ -1144,8 +1119,7 @@ class TSStatus
         }
         return false;
     }
-    function unescape($str)
-    {
+    function unescape($str) {
         $find = array(
             '\\\\',
             "\/",
@@ -1176,8 +1150,7 @@ class TSStatus
         return str_replace($find, $rplc, $str);
     }
     
-    function parseLine($rawLine)
-    {
+    function parseLine($rawLine) {
         $datas    = array();
         $rawItems = explode("|", $rawLine);
         foreach ($rawItems as $rawItem) {
@@ -1192,13 +1165,11 @@ class TSStatus
         return $datas;
     }
     
-    function sortUsers($a, $b)
-    {
+    function sortUsers($a, $b) {
         return strcasecmp($a["client_nickname"], $b["client_nickname"]);
     }
     
-    function renderFlags($channel)
-    {
+    function renderFlags($channel) {
         $flags = array();
         if ($channel["channel_flag_default"] == 1)
             $flags[] = '16x16_default.png';
@@ -1211,8 +1182,7 @@ class TSStatus
             $out .= '<img src="../inc/images/tsicons/' . $flag . '" alt="" class="icon" />';
         return $out;
     }
-    function user_groups($user)
-    {
+    function user_groups($user) {
         $server  = array();
         $server  = explode(",", $user['client_servergroups']);
         $channel = array();
@@ -1237,8 +1207,7 @@ class TSStatus
         }
         return $out;
     }
-    function icon($id, $title = "")
-    {
+    function icon($id, $title = "") {
         if ($id != 0) {
             if ($id < 0)
                 $id = $id + 4294967296;
@@ -1267,8 +1236,7 @@ class TSStatus
             return empty($pfad) ? "" : "<img src=\"" . $pfad . "\" alt=\"\" class=\"tsicon\"" . $title . " />";
         }
     }
-    function renderUsers($parentId, $i, $tpl)
-    {
+    function renderUsers($parentId, $i, $tpl) {
         $out = "";
         foreach ($this->_userDatas as $user) {
             if ($user["client_type"] == 0 && $user["cid"] == $parentId) {
@@ -1293,15 +1261,13 @@ class TSStatus
         }
         return $out;
     }
-    function getChannelInfos($cid, $full = false)
-    {
+    function getChannelInfos($cid, $full = false) {
         foreach ($this->_channelDatas as $channel) {
             if ($channel['cid'] == $cid)
                 return ($full) ? $channel : $channel['channel_name'];
         }
     }
-    function channel_icon($channel)
-    {
+    function channel_icon($channel) {
         $icon = "16x16_channel_green.png";
         if ($channel["channel_maxclients"] > -1 && ($channel["total_clients"] >= $channel["channel_maxclients"]))
             $icon = "16x16_channel_red.png";
@@ -1311,13 +1277,11 @@ class TSStatus
             $icon = "16x16_channel_yellow.png";
         return "../inc/images/tsicons/" . $icon;
     }
-    function channel_name($channel, $tpl = false, $joints)
-    {
+    function channel_name($channel, $tpl = false, $joints) {
         return '<a href="' . ($tpl ? '?cID=' . $channel['cid'] . '&amp;cName=' . rawurlencode($joints) : 'javascript:DZCP.popup(\'../teamspeak/login.php?ts3&amp;cName=' . rawurlencode($joints) . '\', \'600\', \'100\')') . '" 
         class="navTeamspeak" style="font-weight:bold;white-space:nowrap" title="' . rep2($channel['channel_name']) . '">' . rep2($channel['channel_name']) . '</a>' . "\n";
     }
-    function sub_channel($channels, $channel, $i, $tpl, $joints)
-    {
+    function sub_channel($channels, $channel, $i, $tpl, $joints) {
         $out = "";
         foreach ($channels as $sub_channel) {
             if ($channel == $sub_channel['pid']) {
@@ -1355,8 +1319,7 @@ class TSStatus
         }
         return $out;
     }
-    function render($tpl = false)
-    {
+    function render($tpl = false) {
         if (!$this->_updated)
             $this->update();
         if ($this->error == '') {
@@ -1404,8 +1367,7 @@ class TSStatus
         } else
             return $this->error;
     }
-    function welcome($s, $cid, $cname = "")
-    {
+    function welcome($s, $cid, $cname = "") {
         $out = "";
         if (!$this->_updated)
             $this->update();
@@ -1437,8 +1399,7 @@ class TSStatus
     }
 }
 
-function rep2($var)
-{
+function rep2($var) {
     $var = secure_dzcp($var);
     $var = preg_replace("/\[(.*?)spacer(.*?)\]/", "", $var);
     return strtr($var, array(
@@ -1453,8 +1414,7 @@ function rep2($var)
         '[/URL]' => ''
     ));
 }
-function secure_dzcp($replace)
-{
+function secure_dzcp($replace) {
     $replace = str_replace("\"", "&quot;", $replace);
     /* Only do the slow convert if there are 8-bit characters */
     /* avoid using 0xA0 (\240) in ereg ranges. RH73 does not like that */

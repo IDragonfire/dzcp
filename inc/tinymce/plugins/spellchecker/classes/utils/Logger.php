@@ -18,8 +18,7 @@ define('MC_LOGGER_FATAL', 40);
  * Logging utility class. This class handles basic logging with levels, log rotation and custom log formats. It's
  * designed to be compact but still powerful and flexible.
  */
-class Moxiecode_Logger
-{
+class Moxiecode_Logger {
     // Private fields
     var $_path;
     var $_filename;
@@ -32,8 +31,7 @@ class Moxiecode_Logger
     /**
      * Constructs a new logger instance.
      */
-    function Moxiecode_Logger()
-    {
+    function Moxiecode_Logger() {
         $this->_path     = "";
         $this->_filename = "{level}.log";
         $this->setMaxSize("100k");
@@ -47,8 +45,7 @@ class Moxiecode_Logger
      *
      * @param int $level Log level instance for example MC_LOGGER_DEBUG.
      */
-    function setLevel($level)
-    {
+    function setLevel($level) {
         if (is_string($level)) {
             switch (strtolower($level)) {
                 case "debug":
@@ -85,43 +82,35 @@ class Moxiecode_Logger
      *
      * @return int Current log level for example MC_LOGGER_DEBUG.
      */
-    function getLevel()
-    {
+    function getLevel() {
         return $this->_level;
     }
     
-    function setPath($path)
-    {
+    function setPath($path) {
         $this->_path = $path;
     }
     
-    function getPath()
-    {
+    function getPath() {
         return $this->_path;
     }
     
-    function setFileName($file_name)
-    {
+    function setFileName($file_name) {
         $this->_filename = $file_name;
     }
     
-    function getFileName()
-    {
+    function getFileName() {
         return $this->_filename;
     }
     
-    function setFormat($format)
-    {
+    function setFormat($format) {
         $this->_format = $format;
     }
     
-    function getFormat()
-    {
+    function getFormat() {
         return $this->_format;
     }
     
-    function setMaxSize($size)
-    {
+    function setMaxSize($size) {
         // Fix log max size
         $logMaxSizeBytes = intval(preg_replace("/[^0-9]/", "", $size));
         
@@ -137,78 +126,64 @@ class Moxiecode_Logger
         $this->_maxSize      = $size;
     }
     
-    function getMaxSize()
-    {
+    function getMaxSize() {
         return $this->_maxSize;
     }
     
-    function setMaxFiles($max_files)
-    {
+    function setMaxFiles($max_files) {
         $this->_maxFiles = $max_files;
     }
     
-    function getMaxFiles()
-    {
+    function getMaxFiles() {
         return $this->_maxFiles;
     }
     
-    function debug($msg)
-    {
+    function debug($msg) {
         $args = func_get_args();
         $this->_logMsg(MC_LOGGER_DEBUG, implode(', ', $args));
     }
     
-    function info($msg)
-    {
+    function info($msg) {
         $args = func_get_args();
         $this->_logMsg(MC_LOGGER_INFO, implode(', ', $args));
     }
     
-    function warn($msg)
-    {
+    function warn($msg) {
         $args = func_get_args();
         $this->_logMsg(MC_LOGGER_WARN, implode(', ', $args));
     }
     
-    function error($msg)
-    {
+    function error($msg) {
         $args = func_get_args();
         $this->_logMsg(MC_LOGGER_ERROR, implode(', ', $args));
     }
     
-    function fatal($msg)
-    {
+    function fatal($msg) {
         $args = func_get_args();
         $this->_logMsg(MC_LOGGER_FATAL, implode(', ', $args));
     }
     
-    function isDebugEnabled()
-    {
+    function isDebugEnabled() {
         return $this->_level >= MC_LOGGER_DEBUG;
     }
     
-    function isInfoEnabled()
-    {
+    function isInfoEnabled() {
         return $this->_level >= MC_LOGGER_INFO;
     }
     
-    function isWarnEnabled()
-    {
+    function isWarnEnabled() {
         return $this->_level >= MC_LOGGER_WARN;
     }
     
-    function isErrorEnabled()
-    {
+    function isErrorEnabled() {
         return $this->_level >= MC_LOGGER_ERROR;
     }
     
-    function isFatalEnabled()
-    {
+    function isFatalEnabled() {
         return $this->_level >= MC_LOGGER_FATAL;
     }
     
-    function _logMsg($level, $message)
-    {
+    function _logMsg($level, $message) {
         $roll = false;
         
         if ($level < $this->_level)
@@ -285,8 +260,7 @@ class Moxiecode_Logger
      *
      * @param String $path Unix path to convert.
      */
-    function toOSPath($path)
-    {
+    function toOSPath($path) {
         return str_replace("/", DIRECTORY_SEPARATOR, $path);
     }
 }

@@ -996,7 +996,6 @@ switch ($action):
                 $hp = "-";
             else
                 $hp = "<a href=\"" . $get['hp'] . "\" target=\"_blank\">" . $get['hp'] . "</a>";
-            ;
             
             if (empty($get['email']))
                 $email = "-";
@@ -3268,7 +3267,6 @@ switch ($action):
                      WHERE user = '" . intval($_GET['id']) . "'");
                         
                         $index = info(_user_deleted, "?action=userlist");
-                        ;
                     }
                 }
             } else {

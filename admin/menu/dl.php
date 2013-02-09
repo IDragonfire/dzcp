@@ -10,7 +10,7 @@ $where = $where . ': ' . _admin_dlkat;
 if (!permission("downloads")) {
     $show = error(_error_wrong_permissions, 1);
 } else {
-    $qry = db("SELECT * FROM " . $db['dl_kat'] . " 
+    $qry = db("SELECT * FROM " . $db['dl_kat'] . "
                  ORDER BY name");
     while ($get = _fetch($qry)) {
         $edit   = show("page/button_edit_single", array(
@@ -47,7 +47,7 @@ if (!permission("downloads")) {
     ));
     
     if ($_GET['do'] == "edit") {
-        $qry = db("SELECT * FROM " . $db['dl_kat'] . " 
+        $qry = db("SELECT * FROM " . $db['dl_kat'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
@@ -62,14 +62,14 @@ if (!permission("downloads")) {
         if (empty($_POST['kat'])) {
             $show = error(_dl_empty_kat, 1);
         } else {
-            $qry = db("UPDATE " . $db['dl_kat'] . " 
-                     SET `name` = '" . up($_POST['kat']) . "' 
+            $qry = db("UPDATE " . $db['dl_kat'] . "
+                     SET `name` = '" . up($_POST['kat']) . "'
                      WHERE id = '" . intval($_GET['id']) . "'");
             
             $show = info(_dl_admin_edited, "?admin=dl");
         }
     } elseif ($_GET['do'] == "delete") {
-        $qry = db("DELETE FROM " . $db['dl_kat'] . " 
+        $qry = db("DELETE FROM " . $db['dl_kat'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         
         $show = info(_dl_admin_deleted, "?admin=dl");
@@ -86,27 +86,11 @@ if (!permission("downloads")) {
         if (empty($_POST['kat'])) {
             $show = error(_dl_empty_kat, 1);
         } else {
-            $qry = db("INSERT INTO " . $db['dl_kat'] . " 
+            $qry = db("INSERT INTO " . $db['dl_kat'] . "
                      SET `name` = '" . up($_POST['kat']) . "'");
             
             $show = info(_dl_admin_added, "?admin=dl");
         }
     }
 }
-?>d",
-                                                "kat" => "",
-                                                "what" => _button_value_add,
-                                                "dlkat" => _dl_dlkat));
-      } elseif($_GET['do'] == "add") {
-        if(empty($_POST['kat']))
-        {
-          $show = error(_dl_empty_kat,1);
-        } else {
-          $qry = db("INSERT INTO ".$db['dl_kat']."
-                     SET `name` = '".up($_POST['kat'])."'");
-
-          $show = info(_dl_admin_added, "?admin=dl");
-        }
-      }
-    }
 ?>

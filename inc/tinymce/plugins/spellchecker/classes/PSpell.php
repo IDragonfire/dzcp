@@ -7,8 +7,7 @@
  * @copyright Copyright � 2004-2007, Moxiecode Systems AB, All rights reserved.
  */
 
-class PSpell extends SpellChecker
-{
+class PSpell extends SpellChecker {
     /**
      * Spellchecks an array of words.
      *
@@ -16,8 +15,7 @@ class PSpell extends SpellChecker
      * @param {Array} $words Array of words to spellcheck.
      * @return {Array} Array of misspelled words.
      */
-    function &checkWords($lang, $words)
-    {
+    function &checkWords($lang, $words) {
         $plink = $this->_getPLink($lang);
         
         $outWords = array();
@@ -36,8 +34,7 @@ class PSpell extends SpellChecker
      * @param {String} $word Specific word to get suggestions for.
      * @return {Array} Array of suggestions for the specified word.
      */
-    function &getSuggestions($lang, $word)
-    {
+    function &getSuggestions($lang, $word) {
         $words = pspell_suggest($this->_getPLink($lang), $word);
         
         for ($i = 0; $i < count($words); $i++)
@@ -49,8 +46,7 @@ class PSpell extends SpellChecker
     /**
      * Opens a link for pspell.
      */
-    function &_getPLink($lang)
-    {
+    function &_getPLink($lang) {
         // Check for native PSpell support
         if (!function_exists("pspell_new"))
             $this->throwError("PSpell support not found in PHP installation.");

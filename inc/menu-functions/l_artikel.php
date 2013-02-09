@@ -1,7 +1,6 @@
 <?php
 //-> Last Articles
-function l_artikel()
-{
+function l_artikel() {
     global $db, $maxlartikel, $lartikel, $allowHover;
     $qry = db("SELECT id,titel,text,autor,datum,kat,public FROM " . $db['artikel'] . "
                WHERE public = 1

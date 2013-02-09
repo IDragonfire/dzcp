@@ -1,6 +1,5 @@
 <?php
-function server($serverID = 0)
-{
+function server($serverID = 0) {
     global $db, $servermenu, $language;
     
     if (empty($serverID)) {

@@ -7,8 +7,7 @@ $server_link       = 'bf2142://{IP}:{S_PORT}';
 
 ##############################################################################################################################
 
-function server_query_bf2142($ip, $port, $q_port, $request)
-{
+function server_query_bf2142($ip, $port, $q_port, $request) {
     global $server_timeout;
     $q_port = empty($q_port) ? 29900 : $q_port;
     

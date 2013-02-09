@@ -1,7 +1,6 @@
 <?php
 //kalender
-function kalender($month = "", $year = "")
-{
+function kalender($month = "", $year = "") {
     global $db;
     if (!empty($month) && !empty($year)) {
         $monat = cal($month);

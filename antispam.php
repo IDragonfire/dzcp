@@ -40,8 +40,7 @@ if (function_exists('gd_info')) {
     $rectMin = -20;
     $rectMax = 20;
     
-    function hex2rgb($color, $type)
-    {
+    function hex2rgb($color, $type) {
         if ($type == 'r')
             $r = hexdec(substr($color, 1, 2));
         elseif ($type == 'g')

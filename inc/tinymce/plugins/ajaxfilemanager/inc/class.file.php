@@ -10,8 +10,7 @@ if (!defined('AJAX_INIT_DONE')) {
  * @since 22/April/2007
  *
  */
-class file
-{
+class file {
     var $fileInfo = "";
     var $filePath = "";
     var $fileStat = "";
@@ -23,8 +22,7 @@ class file
      *
      * @param string $path the path to a file or folder
      */
-    function __construct($path = null)
-    {
+    function __construct($path = null) {
         if (!is_null($path)) {
             if (file_exists($path)) {
                 $this->filePath = $path;
@@ -70,8 +68,7 @@ class file
      *
      * @param string $path
      */
-    function file($path = null)
-    {
+    function file($path = null) {
         $this->__construct($path);
     }
     
@@ -82,8 +79,7 @@ class file
      * @param file path $path
      * @return boolean
      */
-    function isWritable($path = null)
-    {
+    function isWritable($path = null) {
         $path = (is_null($path) ? $this->filePath : $path);
         if (DIRECTORY_SEPARATOR == "\\") {
             $path = slashToBackslash($path);
@@ -112,8 +108,7 @@ class file
      *
      * @return boolean true if the files is readable.
      */
-    function isReadable($path = null)
-    {
+    function isReadable($path = null) {
         $path = is_null($path) ? $this->filePath : $path;
         return @is_readable(slashToBackslash($path));
     }
@@ -124,8 +119,7 @@ class file
      * @param string $time
      * @return boolean
      */
-    function setLastModified($path = null, $time)
-    {
+    function setLastModified($path = null, $time) {
         $path = is_null($path) ? $this->filePath : $path;
         $time = is_null($time) ? time() : $time;
         return @touch(slashToBackslash($path), $time);
@@ -139,8 +133,7 @@ class file
      * @dirOwner
      * @return boolean
      */
-    function mkdir($path = null, $mask = null, $dirOwner = '')
-    {
+    function mkdir($path = null, $mask = null, $dirOwner = '') {
         $path = is_null($path) ? $this->filePath : $path;
         if (!file_exists($path)) {
             $mask   = is_null($mask) ? $this->mask : $mask;
@@ -162,8 +155,7 @@ class file
      * @param the file path $path
      * @param  $owner
      */
-    function chown($path, $owner)
-    {
+    function chown($path, $owner) {
         if (!empty($owner)) {
             $owners = explode(":", $owner);
             if (!empty($owners[0]))
@@ -182,8 +174,7 @@ class file
      * @param       string   $dest      Destination path
      * @return      bool     Returns TRUE on success, FALSE on failure
      */
-    function copyTo($source, $dest)
-    {
+    function copyTo($source, $dest) {
         $source = removeTrailingSlash(backslashToSlash($source));
         $dest   = removeTrailingSlash(backslashToSlash($dest));
         if (!file_exists($dest) || !is_dir($dest)) {
@@ -239,8 +230,7 @@ class file
      * @param string $destFolder the path of destination folder
      * @return string
      */
-    function getNextAvailableFileName($fileToMove, $destFolder)
-    {
+    function getNextAvailableFileName($fileToMove, $destFolder) {
         $folderPath = addslashes(backslashToSlash(getParentPath($fileToMove)));
         $destFolder = addslashes(backslashToSlash(getParentPath($destFolder)));
         $finalPath  = $destFolder . basename($fileToMove);
@@ -270,16 +260,14 @@ class file
      *
      * @return array
      */
-    function getFileInfo()
-    {
+    function getFileInfo() {
         return $this->fileInfo;
     }
     /**
      * close 
      *
      */
-    function close()
-    {
+    function close() {
         $this->fileInfo = null;
         $this->fileStat = null;
     }
@@ -289,8 +277,7 @@ class file
      * @param string $path
      * @return boolean
      */
-    function delete($path = null)
-    {
+    function delete($path = null) {
         $path = is_null($path) ? $this->filePath : $path;
         if (file_exists($path)) {
             if (is_file($path)) {
@@ -308,8 +295,7 @@ class file
      * @param string $path
      * @return boolean
      */
-    function emptyFolder($path)
-    {
+    function emptyFolder($path) {
         $path = is_null($path) ? $this->filePath : "";
         if (file_exists($path) && is_dir($path)) {
             return $this->__recursive_remove_directory($path, true);
@@ -317,8 +303,7 @@ class file
         return false;
     }
     
-    function _debug($info)
-    {
+    function _debug($info) {
         if ($this->debug) {
             echo $info . "<br>\n";
         } else {
@@ -339,8 +324,7 @@ class file
      * @param boolean $empty
      * @return boolean
      */
-    function __recursive_remove_directory($directory, $empty = FALSE)
-    {
+    function __recursive_remove_directory($directory, $empty = FALSE) {
         // if the path has a slash at the end we remove it here
         if (substr($directory, -1) == '/') {
             $directory = substr($directory, 0, -1);

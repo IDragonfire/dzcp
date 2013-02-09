@@ -97,22 +97,22 @@ if (permission("artikel")) {
             ));
         } else {
             if ($_POST) {
-                $qry = db("INSERT INTO " . $db['artikel'] . " 
-                       SET `autor`  = '" . ((int) $userid) . "', 
-                           `kat`    = '" . ((int) $_POST['kat']) . "', 
-                           `titel`  = '" . up($_POST['titel']) . "', 
-                           `text`   = '" . up($_POST['artikel'], 1) . "', 
-                           `link1`  = '" . up($_POST['link1']) . "', 
-                           `link2`  = '" . up($_POST['link2']) . "', 
-                           `link3`  = '" . up($_POST['link3']) . "', 
-                           `url1`   = '" . links($_POST['url1']) . "', 
-                           `url2`   = '" . links($_POST['url2']) . "', 
+                $qry = db("INSERT INTO " . $db['artikel'] . "
+                       SET `autor`  = '" . ((int) $userid) . "',
+                           `kat`    = '" . ((int) $_POST['kat']) . "',
+                           `titel`  = '" . up($_POST['titel']) . "',
+                           `text`   = '" . up($_POST['artikel'], 1) . "',
+                           `link1`  = '" . up($_POST['link1']) . "',
+                           `link2`  = '" . up($_POST['link2']) . "',
+                           `link3`  = '" . up($_POST['link3']) . "',
+                           `url1`   = '" . links($_POST['url1']) . "',
+                           `url2`   = '" . links($_POST['url2']) . "',
                            `url3`   = '" . links($_POST['url3']) . "'");
             }
             $show = info(_artikel_added, "?admin=artikel");
         }
     } elseif ($_GET['do'] == "edit") {
-        $qry = db("SELECT * FROM " . $db['artikel'] . " 
+        $qry = db("SELECT * FROM " . $db['artikel'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
@@ -160,32 +160,32 @@ if (permission("artikel")) {
         ));
     } elseif ($_GET['do'] == "editartikel") {
         if ($_POST) {
-            $qry = db("UPDATE " . $db['artikel'] . " 
-                     SET `kat`    = '" . ((int) $_POST['kat']) . "', 
-                         `titel`  = '" . up($_POST['titel']) . "', 
-                         `text`   = '" . up($_POST['artikel'], 1) . "', 
-                         `link1`  = '" . up($_POST['link1']) . "', 
-                         `link2`  = '" . up($_POST['link2']) . "', 
-                         `link3`  = '" . up($_POST['link3']) . "', 
-                         `url1`   = '" . links($_POST['url1']) . "', 
-                         `url2`   = '" . links($_POST['url2']) . "', 
-                         `url3`   = '" . links($_POST['url3']) . "' 
+            $qry = db("UPDATE " . $db['artikel'] . "
+                     SET `kat`    = '" . ((int) $_POST['kat']) . "',
+                         `titel`  = '" . up($_POST['titel']) . "',
+                         `text`   = '" . up($_POST['artikel'], 1) . "',
+                         `link1`  = '" . up($_POST['link1']) . "',
+                         `link2`  = '" . up($_POST['link2']) . "',
+                         `link3`  = '" . up($_POST['link3']) . "',
+                         `url1`   = '" . links($_POST['url1']) . "',
+                         `url2`   = '" . links($_POST['url2']) . "',
+                         `url3`   = '" . links($_POST['url3']) . "'
                      WHERE id = '" . intval($_GET['id']) . "'");
         }
         $show = info(_artikel_edited, "?admin=artikel");
     } elseif ($_GET['do'] == "delete") {
-        $qry  = db("DELETE FROM " . $db['artikel'] . " 
+        $qry  = db("DELETE FROM " . $db['artikel'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         $show = info(_artikel_deleted, "?admin=artikel");
     } elseif ($_GET['do'] == 'public') {
         if ($_GET['what'] == 'set') {
-            $upd = db("UPDATE " . $db['artikel'] . " 
-                     SET `public` = '1', 
-                                   `datum`  = '" . time() . "' 
+            $upd = db("UPDATE " . $db['artikel'] . "
+                     SET `public` = '1',
+                                   `datum`  = '" . time() . "'
                      WHERE id = '" . intval($_GET['id']) . "'");
         } elseif ($_GET['what'] == 'unset') {
-            $upd = db("UPDATE " . $db['artikel'] . " 
-                     SET `public` = '0' 
+            $upd = db("UPDATE " . $db['artikel'] . "
+                     SET `public` = '0'
                      WHERE id = '" . intval($_GET['id']) . "'");
         }
         
@@ -197,8 +197,8 @@ if (permission("artikel")) {
             $page = 1;
         
         $entrys = cnt($db['artikel']);
-        $qry    = db("SELECT * FROM " . $db['artikel'] . " 
-                   ORDER BY `public` ASC, `datum` DESC  
+        $qry    = db("SELECT * FROM " . $db['artikel'] . "
+                   ORDER BY `public` ASC, `datum` DESC 
                                      LIMIT " . ($page - 1) * $maxadminartikel . "," . $maxadminartikel . "");
         while ($get = _fetch($qry)) {
             $edit   = show("page/button_edit_single", array(
@@ -256,42 +256,4 @@ if (permission("artikel")) {
 } else {
     $show = error(_error_wrong_permissions, 1);
 }
-?>rtikel)));
-          $titel = show(_artikel_show_link, array("titel" => re(cut($get['titel'],$lnewsadmin)),
-                                                  "id" => $get['id']));
-  
-          $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-
-          $public = ($get['public'] == 1)
-               ? '<a href="?admin=artikel&amp;do=public&amp;id='.$get['id'].'&amp;what=unset"><img src="../inc/images/public.gif" alt="" title="'._non_public.'" /></a>'
-               : '<a href="?admin=artikel&amp;do=public&amp;id='.$get['id'].'&amp;what=set"><img src="../inc/images/nonpublic.gif" alt="" title="'._public.'" /></a>';
-
-          if(empty($get['datum'])) $datum = _no_public;
-          else $datum = date("d.m.y H:i", $get['datum'])._uhr;
-          
-          $show_ .= show($dir."/admin_show", array("date" => $datum,
-                                                   "titel" => $titel,
-                                                   "class" => $class,
-                                                   "autor" => autor($get['autor']),
-                                                       "intnews" => "",
-                                                   "sticky" => "",
-                                                   "public" => $public,
-                                                   "edit" => $edit,
-                                                   "delete" => $delete));
-        }
-        $nav = nav($entrys,$maxadminnews,"?admin=artikel");
-        $show = show($dir."/admin_news", array("head" => _artikel,
-                                               "nav" => $nav,
-                                               "autor" => _autor,
-                                               "titel" => _titel,
-                                               "date" => _datum,
-                                               "show" => $show_,
-                                               "val" => "artikel",
-                                               "edit" => _editicon_blank,
-                                               "delete" => _deleteicon_blank,
-                                               "add" => _artikel_add));
-      }
-    } else {
-      $show = error(_error_wrong_permissions, 1);
-    }
 ?>

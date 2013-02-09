@@ -10,13 +10,11 @@ if (!defined('AJAX_INIT_DONE')) {
  * @since 22/May/2007
  *
  */
-class SessionAction
-{
+class SessionAction {
     var $actionIndex = 'ajax_file_action';
     var $selectedDocIndex = 'ajax_selected_doc';
     var $fromFolderIndex = 'ajax_from_folder';
-    function __construct()
-    {
+    function __construct() {
         if (!isset($_SESSION[$this->actionIndex])) {
             $_SESSION[$this->actionIndex] = '';
         }
@@ -28,16 +26,14 @@ class SessionAction
         }
     }
     
-    function SessionAction()
-    {
+    function SessionAction() {
         $this->__construct();
     }
     /**
      * count the  number of selected documents
      *
      */
-    function count()
-    {
+    function count() {
         return (isset($_SESSION[$this->selectedDocIndex]) ? sizeof($_SESSION[$this->selectedDocIndex]) : 0);
     }
     /**
@@ -45,8 +41,7 @@ class SessionAction
      *
      * @param array $selectedDocuments
      */
-    function set($selectedDocuments)
-    {
+    function set($selectedDocuments) {
         $_SESSION[$this->selectedDocIndex] = $selectedDocuments;
         
     }
@@ -54,13 +49,11 @@ class SessionAction
      * get the selected documents
      * @return array
      */
-    function get()
-    {
+    function get() {
         return (isset($_SESSION[$this->selectedDocIndex]) ? $_SESSION[$this->selectedDocIndex] : array());
     }
     
-    function setAction($action)
-    {
+    function setAction($action) {
         $_SESSION[$this->actionIndex] = $action;
     }
     /**
@@ -68,8 +61,7 @@ class SessionAction
      *
      * @return unknown
      */
-    function getAction()
-    {
+    function getAction() {
         return (isset($_SESSION[$this->actionIndex]) ? $_SESSION[$this->actionIndex] : '');
     }
     /**
@@ -77,8 +69,7 @@ class SessionAction
      *
      * @param string $folder
      */
-    function setFolder($folder)
-    {
+    function setFolder($folder) {
         $_SESSION[$this->fromFolderIndex] = $folder;
     }
     /**
@@ -86,8 +77,7 @@ class SessionAction
      *
      * @return string
      */
-    function getFolder()
-    {
+    function getFolder() {
         return (isset($_SESSION[$this->fromFolderIndex]) ? $_SESSION[$this->fromFolderIndex] : '');
     }
 }

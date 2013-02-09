@@ -1,13 +1,11 @@
 <?php
 $server_timeout = 5;
 
-function validate($string, $pattern = 'a-zA-Z0-9')
-{
+function validate($string, $pattern = 'a-zA-Z0-9') {
     return strtolower(str_replace(' ', '', preg_replace("#[^" . $pattern . "+]#Uis", '', $string)));
 }
 
-function cut_string(&$buffer, $end_marker = "\x00")
-{
+function cut_string(&$buffer, $end_marker = "\x00") {
     $length = strpos($buffer, $end_marker);
     
     if ($length === FALSE) {
@@ -21,15 +19,13 @@ function cut_string(&$buffer, $end_marker = "\x00")
     return $string;
 }
 
-function _unpack($string, $format)
-{
+function _unpack($string, $format) {
     list(, $string) = unpack($format, $string);
     
     return $string;
 }
 
-function cut_byte(&$buffer, $length)
-{
+function cut_byte(&$buffer, $length) {
     $string = substr($buffer, 0, $length);
     
     $buffer = substr($buffer, $length);
@@ -37,8 +33,7 @@ function cut_byte(&$buffer, $length)
     return $string;
 }
 
-function _time($seconds)
-{
+function _time($seconds) {
     if ($seconds < 0) {
         return "";
     }
@@ -54,8 +49,7 @@ function _time($seconds)
     return "{$h}:{$m}:{$s}";
 }
 
-function parse_color($string, $type)
-{
+function parse_color($string, $type) {
     switch ($type) {
         case "swat4":
             $string = preg_replace("/\[c=......\]/Usi", "", $string);
@@ -69,8 +63,7 @@ function parse_color($string, $type)
     return $string;
 }
 
-function cut_pascal(&$buffer, $start_byte = 1, $length_adjust = 0, $end_byte = 0)
-{
+function cut_pascal(&$buffer, $start_byte = 1, $length_adjust = 0, $end_byte = 0) {
     $length = ord(substr($buffer, 0, $start_byte)) + $length_adjust;
     $string = substr($buffer, $start_byte, $length);
     $buffer = substr($buffer, $start_byte + $length + $end_byte);

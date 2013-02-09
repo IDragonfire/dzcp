@@ -1,7 +1,6 @@
 <?php
 //-> Partners Menu
-function partners()
-{
+function partners() {
     global $db;
     $qry = db("SELECT * FROM " . $db['partners'] . " ORDER BY `textlink` ASC, `id` DESC");
     while ($get = _fetch($qry)) {
@@ -22,4 +21,4 @@ function partners()
     
     return empty($partners) ? '' : ($table ? '<table class="navContent" cellspacing="0">' . $partners . '</table>' : $partners);
 }
-?> 
+?>

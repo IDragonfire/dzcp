@@ -11,21 +11,21 @@ if (!permission("links")) {
     $index = error(_error_wrong_permissions, 1);
 } else {
     if ($_GET['do'] == "new") {
-        $linktyp = ' 
-<tr> 
-  <td class="contentMainTop" width="25%"><span class="fontBold">' . _link_type . ':</span></td> 
-  <td class="contentMainFirst" align="center"> 
-    <table class="hperc" cellspacing="2"> 
-      <tr> 
-        <td style="width:20px"><input type="radio" name="type" class="checkbox" value="links" checked=\"checked\" /></td> 
-        <td>' . _link . '</td> 
-      </tr> 
-      <tr> 
-        <td><input type="radio" name="type" class="checkbox" value="sponsoren" /></td> 
-        <td>' . _sponsor . '</td> 
-      </tr> 
-    </table> 
-  </td> 
+        $linktyp = '
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">' . _link_type . ':</span></td>
+  <td class="contentMainFirst" align="center">
+    <table class="hperc" cellspacing="2">
+      <tr>
+        <td style="width:20px"><input type="radio" name="type" class="checkbox" value="links" checked=\"checked\" /></td>
+        <td>' . _link . '</td>
+      </tr>
+      <tr>
+        <td><input type="radio" name="type" class="checkbox" value="sponsoren" /></td>
+        <td>' . _sponsor . '</td>
+      </tr>
+    </table>
+  </td>
 </tr>';
         $show    = show($dir . "/form_links", array(
             "head" => _links_admin_head,
@@ -54,16 +54,16 @@ if (!permission("links")) {
             elseif (empty($_POST['text']))
                 $show = error(_links_empty_text, 1);
         } else {
-            $qry = db("INSERT INTO " . $db['links'] . " 
-                     SET `url`          = '" . links($_POST['link']) . "', 
-                         `text`         = '" . up($_POST['text']) . "', 
-                         `banner`       = '" . up($_POST['banner']) . "', 
+            $qry = db("INSERT INTO " . $db['links'] . "
+                     SET `url`          = '" . links($_POST['link']) . "',
+                         `text`         = '" . up($_POST['text']) . "',
+                         `banner`       = '" . up($_POST['banner']) . "',
                          `beschreibung` = '" . up($_POST['beschreibung'], 1) . "'");
             
             $show = info(_link_added, "?admin=links");
         }
     } elseif ($_GET['do'] == "edit") {
-        $qry = db("SELECT * FROM " . $db[$_GET['type']] . " 
+        $qry = db("SELECT * FROM " . $db[$_GET['type']] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
@@ -104,22 +104,22 @@ if (!permission("links")) {
             elseif (empty($_POST['text']))
                 $show = error(_links_empty_text, 1);
         } else {
-            $qry = db("UPDATE " . $db['links'] . " 
-                       SET `url`          = '" . links($_POST['link']) . "', 
-                           `text`         = '" . up($_POST['text']) . "', 
-                           `banner`       = '" . up($_POST['banner']) . "', 
-                           `beschreibung` = '" . up($_POST['beschreibung'], 1) . "' 
+            $qry = db("UPDATE " . $db['links'] . "
+                       SET `url`          = '" . links($_POST['link']) . "',
+                           `text`         = '" . up($_POST['text']) . "',
+                           `banner`       = '" . up($_POST['banner']) . "',
+                           `beschreibung` = '" . up($_POST['beschreibung'], 1) . "'
                        WHERE id = '" . intval($_GET['id']) . "'");
             
             $show = info(_link_edited, "?admin=links");
         }
     } elseif ($_GET['do'] == "delete") {
-        $qry = db("DELETE FROM " . $db[$_GET['type']] . " 
+        $qry = db("DELETE FROM " . $db[$_GET['type']] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         
         $show = info(_link_deleted, "?admin=links");
     } else {
-        $qry = db("SELECT * FROM " . $db['links'] . " 
+        $qry = db("SELECT * FROM " . $db['links'] . "
                    ORDER BY banner DESC");
         while ($get = _fetch($qry)) {
             $edit   = show("page/button_edit_single", array(
@@ -155,24 +155,4 @@ if (!permission("links")) {
         ));
     }
 }
-?>     "del" => convSpace(_confirm_del_link)));
-
-          $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-
-          $show1 .= show($dir."/links_show", array("link" => cut(re($get['url']),40),
-                                                   "class" => $class,
-                                                   "type" => "links",
-                                                   "edit" => $edit,
-                                                   "delete" => $delete
-                                                   ));
-        }
-
-        $show = show($dir."/links", array("head1" => _links_head,
-                                          "head2" => _sponsor_head,
-                                          "titel" => _link,
-                                          "show1" => $show1,
-                                          "add" => _links_admin_head
-                                          ));
-      }
-    }
 ?>

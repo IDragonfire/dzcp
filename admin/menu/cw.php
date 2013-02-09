@@ -11,8 +11,8 @@ if (!permission("clanwars")) {
     $show = error(_error_wrong_permissions, 1);
 } else {
     if ($_GET['do'] == "new") {
-        $qry = db("SELECT * FROM " . $db['squads'] . " 
-WHERE status = '1' 
+        $qry = db("SELECT * FROM " . $db['squads'] . "
+WHERE status = '1'
 ORDER BY game ASC");
         while ($get = _fetch($qry)) {
             $squads .= show(_cw_add_select_field_squads, array(
@@ -97,13 +97,13 @@ ORDER BY game ASC");
             "cw_gametype" => ""
         ));
     } elseif ($_GET['do'] == "edit") {
-        $qry = db("SELECT * FROM " . $db['cw'] . " 
+        $qry = db("SELECT * FROM " . $db['cw'] . "
 WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
         list($xonx1, $xonx2) = explode('on', $get['xonx']);
-        $qrym = db("SELECT * FROM " . $db['squads'] . " 
-WHERE status = '1' 
+        $qrym = db("SELECT * FROM " . $db['squads'] . "
+WHERE status = '1'
 ORDER BY game");
         while ($gets = _fetch($qrym)) {
             if ($get['squad_id'] == $gets['id'])
@@ -217,25 +217,25 @@ ORDER BY game");
             else
                 $kid = "`gcountry` = '" . $_POST['land'] . "',";
             
-            $qry = db("INSERT INTO " . $db['cw'] . " 
-SET " . $kid . " 
-" . $xonx . " 
-`datum` = '" . ((int) $datum) . "', 
-`squad_id` = '" . ((int) $_POST['squad']) . "', 
-`clantag` = '" . up($_POST['clantag']) . "', 
-`gegner` = '" . up($_POST['gegner']) . "', 
-`url` = '" . links($_POST['url']) . "', 
-`liga` = '" . up($_POST['liga']) . "', 
-`gametype` = '" . up($_POST['gametype']) . "', 
-`punkte` = '" . ((int) $_POST['punkte']) . "', 
-`gpunkte` = '" . ((int) $_POST['gpunkte']) . "', 
-`maps` = '" . up($_POST['maps']) . "', 
-`serverip` = '" . up($_POST['serverip']) . "', 
-`servername` = '" . up($_POST['servername']) . "', 
-`serverpwd` = '" . up($_POST['serverpwd']) . "', 
-`lineup` = '" . up($_POST['lineup']) . "', 
-`glineup` = '" . up($_POST['glineup']) . "', 
-`matchadmins` = '" . up($_POST['match_admins']) . "', 
+            $qry = db("INSERT INTO " . $db['cw'] . "
+SET " . $kid . "
+" . $xonx . "
+`datum` = '" . ((int) $datum) . "',
+`squad_id` = '" . ((int) $_POST['squad']) . "',
+`clantag` = '" . up($_POST['clantag']) . "',
+`gegner` = '" . up($_POST['gegner']) . "',
+`url` = '" . links($_POST['url']) . "',
+`liga` = '" . up($_POST['liga']) . "',
+`gametype` = '" . up($_POST['gametype']) . "',
+`punkte` = '" . ((int) $_POST['punkte']) . "',
+`gpunkte` = '" . ((int) $_POST['gpunkte']) . "',
+`maps` = '" . up($_POST['maps']) . "',
+`serverip` = '" . up($_POST['serverip']) . "',
+`servername` = '" . up($_POST['servername']) . "',
+`serverpwd` = '" . up($_POST['serverpwd']) . "',
+`lineup` = '" . up($_POST['lineup']) . "',
+`glineup` = '" . up($_POST['glineup']) . "',
+`matchadmins` = '" . up($_POST['match_admins']) . "',
 `bericht` = '" . up($_POST['bericht'], 1) . "'");
             
             $cwid = mysql_insert_id();
@@ -328,26 +328,26 @@ SET " . $kid . "
             else
                 $kid = "`gcountry` = '" . $_POST['land'] . "',";
             
-            $qry = db("UPDATE " . $db['cw'] . " 
-SET " . $xonx . " 
-" . $kid . " 
-`datum` = '" . ((int) $datum) . "', 
-`squad_id` = '" . ((int) $_POST['squad']) . "', 
-`clantag` = '" . up($_POST['clantag']) . "', 
-`gegner` = '" . up($_POST['gegner']) . "', 
-`url` = '" . links($_POST['url']) . "', 
-`liga` = '" . up($_POST['liga']) . "', 
-`gametype` = '" . up($_POST['gametype']) . "', 
-`punkte` = '" . ((int) $_POST['punkte']) . "', 
-`gpunkte` = '" . ((int) $_POST['gpunkte']) . "', 
-`maps` = '" . up($_POST['maps']) . "', 
-`serverip` = '" . up($_POST['serverip']) . "', 
-`servername` = '" . up($_POST['servername']) . "', 
-`serverpwd` = '" . up($_POST['serverpwd']) . "', 
-`lineup` = '" . up($_POST['lineup']) . "', 
-`glineup` = '" . up($_POST['glineup']) . "', 
-`matchadmins` = '" . up($_POST['match_admins']) . "', 
-`bericht` = '" . up($_POST['bericht'], 1) . "' 
+            $qry = db("UPDATE " . $db['cw'] . "
+SET " . $xonx . "
+" . $kid . "
+`datum` = '" . ((int) $datum) . "',
+`squad_id` = '" . ((int) $_POST['squad']) . "',
+`clantag` = '" . up($_POST['clantag']) . "',
+`gegner` = '" . up($_POST['gegner']) . "',
+`url` = '" . links($_POST['url']) . "',
+`liga` = '" . up($_POST['liga']) . "',
+`gametype` = '" . up($_POST['gametype']) . "',
+`punkte` = '" . ((int) $_POST['punkte']) . "',
+`gpunkte` = '" . ((int) $_POST['gpunkte']) . "',
+`maps` = '" . up($_POST['maps']) . "',
+`serverip` = '" . up($_POST['serverip']) . "',
+`servername` = '" . up($_POST['servername']) . "',
+`serverpwd` = '" . up($_POST['serverpwd']) . "',
+`lineup` = '" . up($_POST['lineup']) . "',
+`glineup` = '" . up($_POST['glineup']) . "',
+`matchadmins` = '" . up($_POST['match_admins']) . "',
+`bericht` = '" . up($_POST['bericht'], 1) . "'
 WHERE id = '" . intval($_GET['id']) . "'");
             
             $cwid = $_GET['id'];
@@ -451,16 +451,16 @@ WHERE id = '" . intval($_GET['id']) . "'");
             $show = info(_cw_admin_edited, "?admin=cw");
         }
     } elseif ($_GET['do'] == "delete") {
-        $qry = db("DELETE FROM " . $db['cw'] . " 
+        $qry = db("DELETE FROM " . $db['cw'] . "
 WHERE id = '" . intval($_GET['id']) . "'");
         
-        $qry = db("DELETE FROM " . $db['cw_comments'] . " 
+        $qry = db("DELETE FROM " . $db['cw_comments'] . "
 WHERE cw = '" . intval($_GET['id']) . "'");
         
         $show = info(_cw_admin_deleted, "?admin=cw");
     } elseif ($_GET['do'] == "top") {
-        $qry = db("UPDATE " . $db['cw'] . " 
-SET `top` = '" . intval($_GET['set']) . "' 
+        $qry = db("UPDATE " . $db['cw'] . "
+SET `top` = '" . intval($_GET['set']) . "'
 WHERE id = '" . intval($_GET['id']) . "'");
         
         $show = info((empty($_GET['set']) ? _cw_admin_top_unsetted : _cw_admin_top_setted), "?admin=cw");
@@ -474,8 +474,8 @@ WHERE id = '" . intval($_GET['id']) . "'");
             $whereqry = ' WHERE squad_id = ' . $_GET['squad'] . ' ';
         }
         
-        $qry    = db("SELECT * FROM " . $db['cw'] . " " . $whereqry . " 
-ORDER BY datum DESC 
+        $qry    = db("SELECT * FROM " . $db['cw'] . " " . $whereqry . "
+ORDER BY datum DESC
 LIMIT " . ($page - 1) * $maxadmincw . "," . $maxadmincw . "");
         $entrys = cnt($db['cw']);
         $squads .= show(_cw_edit_select_field_squads, array(
@@ -484,8 +484,8 @@ LIMIT " . ($page - 1) * $maxadmincw . "," . $maxadmincw . "");
             "id" => "?admin=cw"
         ));
         
-        $qrys = db("SELECT * FROM " . $db['squads'] . " 
-WHERE status = '1' 
+        $qrys = db("SELECT * FROM " . $db['squads'] . "
+WHERE status = '1'
 ORDER BY game ASC");
         
         while ($gets = _fetch($qrys)) {
@@ -542,22 +542,4 @@ ORDER BY game ASC");
         ));
     }
 }
-?>'],
-                                                      "edit" => $edit,
-                                                      "delete" => $delete
-                                                      ));
-        }
-
-        $show = show($dir."/clanwars", array("head" => _clanwars,
-                                             "add" => _cw_admin_head,
-                                             "date" => _datum,
-                                             "titel" => _opponent,
-                                              "squads" => $squads,
-"what" => _filter,
-"sort" => _ulist_sort,
-                                             "show" => $show_,
-                                             "navi" => nav($entrys,$maxadmincw,"?admin=cw&amp;squad=".$_GET['squad']."")
-                                             ));
-      }
-    }
 ?>

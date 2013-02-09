@@ -1,7 +1,6 @@
 <?php
 //-> Last News
-function l_news()
-{
+function l_news() {
     global $db, $maxlnews, $lnews, $allowHover;
     if (!permission("intnews"))
         $int = "AND intern = 0";

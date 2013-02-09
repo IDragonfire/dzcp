@@ -1,7 +1,6 @@
 <?php
 //-> Begr��ung nach Tageszeit
-function welcome()
-{
+function welcome() {
     global $chkMe, $userid;
     
     $return = "<script language=\"javascript\" type=\"text/javascript\">

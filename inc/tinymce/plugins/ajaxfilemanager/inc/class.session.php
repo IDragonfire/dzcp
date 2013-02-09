@@ -13,8 +13,7 @@ if (!defined('AJAX_INIT_DONE')) {
  */
 
 require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . "class.file.php");
-class Session
-{
+class Session {
     var $lifeTime;
     var $fp = null;
     var $dir = null;
@@ -34,8 +33,7 @@ class Session
      * constructor
      *
      */
-    function __construct()
-    {
+    function __construct() {
         //check if the session folder read and writable
         $dir = new file();
         if (!file_exists(CONFIG_SYS_DIR_SESSION_PATH)) {
@@ -60,20 +58,17 @@ class Session
      * constructor
      *
      */
-    function Session()
-    {
+    function Session() {
         $this->__construct();
     }
     /**
      * session init
      * @return boolean
      */
-    function init()
-    {
+    function init() {
     }
     
-    function gc()
-    {
+    function gc() {
         //init the counter file
         $fp = @fopen($this->gcCounterFile, 'a+');
         if ($fp) {
@@ -96,8 +91,7 @@ class Session
      * garbage collection function
      *
      */
-    function _gc()
-    {
+    function _gc() {
         //remove expired file from session folder
         $dirHandler = @opendir($this->dir);
         $output     = '';
@@ -165,8 +159,7 @@ class Session
      *
      * @param unknown_type $msg
      */
-    function _log($msg)
-    {
+    function _log($msg) {
         $msg = "<?php die(); ?>\n" . $msg;
         $fp  = @fopen($this->gcLogFile, 'w+');
         if ($fp) {
@@ -181,8 +174,7 @@ class Session
      *
      * @return string return empty if failed
      */
-    function getSessionDir()
-    {
+    function getSessionDir() {
         if (!file_exists($this->sessionDir) && !is_dir($this->sessionDir)) {
             $dir = new file();
             if (!$dir->mkdir($this->sessionDir)) {

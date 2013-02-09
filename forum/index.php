@@ -828,7 +828,6 @@ switch ($action):
                     $intern        = 'checked="checked"';
                     $internVisible = 'style="display:none"';
                 }
-                ;
                 if ($getv['closed'] == "1") {
                     $isclosed = "checked=\"checked\"";
                     $display  = 'none';
@@ -1008,7 +1007,6 @@ switch ($action):
                         $intern        = 'checked="checked"';
                         $internVisible = 'style="display:none"';
                     }
-                    ;
                     if ($_POST['closed'])
                         $closed = "checked=\"checked\"";
                     
@@ -1288,7 +1286,6 @@ switch ($action):
                         $intern        = 'checked="checked"';
                         $internVisible = 'style="display:none"';
                     }
-                    ;
                     
                     if (isset($userid)) {
                         $form = show("page/editor_regged", array(
@@ -1449,7 +1446,6 @@ switch ($action):
                             $intern        = 'checked="checked"';
                             $internVisible = 'style="display:none"';
                         }
-                        ;
                         if ($_POST['closed'])
                             $closed = "checked=\"checked\"";
                         

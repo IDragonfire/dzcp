@@ -6,8 +6,7 @@ if (!defined('AJAX_INIT_DONE')) {
 include_once(CLASS_FILE);
 require_once(CLASS_SESSION_ACTION);
 require_once(CLASS_MANAGER);
-class Search
-{
+class Search {
     var $rootFolder = '';
     var $files = array();
     var $rootFolderInfo = array();
@@ -18,8 +17,7 @@ class Search
      *
      * @param string $rootFolder
      */
-    function __construct($rootFolder)
-    {
+    function __construct($rootFolder) {
         $this->rootFolder    = $rootFolder;
         $this->sessionAction = new SessionAction();
         $objRootFolder       = new file($this->rootFolder);
@@ -55,8 +53,7 @@ class Search
      *
      * @param string $rootFolder
      */
-    function Search($rootFolder)
-    {
+    function Search($rootFolder) {
         $this->__construct($rootFolder);
     }
     
@@ -66,8 +63,7 @@ class Search
      * @param string $key
      * @param string $value
      */
-    function addSearchKeyword($key, $value)
-    {
+    function addSearchKeyword($key, $value) {
         $this->searchkeywords[$key] = $value;
     }
     /**
@@ -75,8 +71,7 @@ class Search
      *
      * @param array $keywords
      */
-    function addSearchKeywords($keywords)
-    {
+    function addSearchKeywords($keywords) {
         foreach ($this->searchkeywords as $k => $v) {
             if (array_key_exists($k, $keywords) !== false) {
                 $this->searchkeywords[$k] = $keywords[$k];
@@ -87,8 +82,7 @@ class Search
      * get the file according to the search keywords
      *
      */
-    function doSearch($baseFolderPath = null)
-    {
+    function doSearch($baseFolderPath = null) {
         $baseFolderPath = addTrailingSlash(backslashToSlash((is_null($baseFolderPath) ? $this->rootFolder : $baseFolderPath)));
         
         $dirHandler = @opendir($baseFolderPath);
@@ -150,13 +144,11 @@ class Search
         
     }
     
-    function getFoundFiles()
-    {
+    function getFoundFiles() {
         return $this->files;
     }
     
-    function getRootFolderInfo()
-    {
+    function getRootFolderInfo() {
         return $this->rootFolderInfo;
     }
 }

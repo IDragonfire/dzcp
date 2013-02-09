@@ -10,7 +10,7 @@ $where = $where . ': ' . _server_admin_head;
 if (!permission("editserver")) {
     $show = error(_error_wrong_permissions, 1);
 } else {
-    $qry = db("SELECT * FROM " . $db['server'] . " 
+    $qry = db("SELECT * FROM " . $db['server'] . "
                  ORDER BY id");
     while ($get = _fetch($qry)) {
         $gameicon = show(_gameicon, array(
@@ -111,31 +111,31 @@ if (!permission("editserver")) {
         }
         $tsport  = empty($_POST['ts_port']) ? $tsport : $_POST['ts_port'];
         $tsqport = empty($_POST['ts_sport']) ? $tsqport : $_POST['ts_sport'];
-        $qry     = db("UPDATE " . $db['settings'] . " 
-                   SET `ts_port`        = '" . ((int) $tsport) . "', 
-                       `ts_sport`          = '" . ((int) $tsqport) . "', 
-                       `ts_width`       = '" . ((int) $_POST['ts_width']) . "', 
-                       `ts_version`     = '" . ((int) $_POST['ts_version']) . "', 
-                       `ts_ip`          = '" . up($_POST['ts_ip']) . "', 
-                       `ts_customicon`  = '" . ((int) $_POST['ts_customicon']) . "', 
-                       `ts_showchannel` = '" . ((int) $_POST['ts_showchannel']) . "' 
+        $qry     = db("UPDATE " . $db['settings'] . "
+                   SET `ts_port`        = '" . ((int) $tsport) . "',
+                       `ts_sport`          = '" . ((int) $tsqport) . "',
+                       `ts_width`       = '" . ((int) $_POST['ts_width']) . "',
+                       `ts_version`     = '" . ((int) $_POST['ts_version']) . "',
+                       `ts_ip`          = '" . up($_POST['ts_ip']) . "',
+                       `ts_customicon`  = '" . ((int) $_POST['ts_customicon']) . "',
+                       `ts_showchannel` = '" . ((int) $_POST['ts_showchannel']) . "'
                    WHERE id = 1");
         
         $show = info(_config_server_ts_updated, "?admin=server");
         
     } elseif ($_GET['do'] == "menu") {
-        $qrys = db("SELECT * FROM " . $db['server'] . " 
+        $qrys = db("SELECT * FROM " . $db['server'] . "
                     WHERE id = '" . intval($_GET['id']) . "'");
         $get  = _fetch($qrys);
         
         if ($get['navi'] == "1") {
-            $qry = db("UPDATE " . $db['server'] . " 
-                     SET `navi` = '0' 
+            $qry = db("UPDATE " . $db['server'] . "
+                     SET `navi` = '0'
                      WHERE id = '" . intval($_GET['id']) . "'");
         } else {
             if ($get['status'] != "nope") {
-                $qry = db("UPDATE " . $db['server'] . " 
-                       SET `navi` = '1' 
+                $qry = db("UPDATE " . $db['server'] . "
+                       SET `navi` = '1'
                        WHERE id = '" . intval($_GET['id']) . "'");
                 
                 
@@ -146,7 +146,7 @@ if (!permission("editserver")) {
         }
         $show = header("Location: ?admin=server");
     } elseif ($_GET['do'] == "edit") {
-        $qry = db("SELECT * FROM " . $db['server'] . " 
+        $qry = db("SELECT * FROM " . $db['server'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
@@ -220,20 +220,20 @@ if (!permission("editserver")) {
             else
                 $status = "`status` = '" . up($_POST['status']) . "',";
             
-            $qry = db("UPDATE " . $db['server'] . " 
-                     SET `ip`         = '" . up($_POST['ip']) . "', 
-                         `port`       = '" . ((int) $_POST['port']) . "', 
-                         `qport`      = '" . up($_POST['qport']) . "', 
-                         `name`       = '" . up($_POST['name']) . "', 
-                         " . $game . " 
-                         " . $status . " 
-                         `pwd`        = '" . up($_POST['pwd']) . "' 
+            $qry = db("UPDATE " . $db['server'] . "
+                     SET `ip`         = '" . up($_POST['ip']) . "',
+                         `port`       = '" . ((int) $_POST['port']) . "',
+                         `qport`      = '" . up($_POST['qport']) . "',
+                         `name`       = '" . up($_POST['name']) . "',
+                         " . $game . "
+                         " . $status . "
+                         `pwd`        = '" . up($_POST['pwd']) . "'
                      WHERE id = '" . intval($_GET['id']) . "'");
             
             $show = info(_server_admin_edited, "?admin=server");
         }
     } elseif ($_GET['do'] == "delete") {
-        $qry = db("DELETE FROM " . $db['server'] . " 
+        $qry = db("DELETE FROM " . $db['server'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         
         $show = info(_server_admin_deleted, "?admin=server");
@@ -277,63 +277,17 @@ if (!permission("editserver")) {
         } elseif (empty($_POST['name'])) {
             $show = error(_empty_servername, 1);
         } else {
-            $qry = db("INSERT INTO " . $db['server'] . " 
-                     SET `ip`         = '" . up($_POST['ip']) . "', 
-                         `port`       = '" . ((int) $_POST['port']) . "', 
-                         `qport`      = '" . up($_POST['qport']) . "', 
-                         `name`       = '" . up($_POST['name']) . "', 
-                         `pwd`        = '" . up($_POST['pwd']) . "', 
-                         `game`       = '" . up($_POST['game']) . "', 
+            $qry = db("INSERT INTO " . $db['server'] . "
+                     SET `ip`         = '" . up($_POST['ip']) . "',
+                         `port`       = '" . ((int) $_POST['port']) . "',
+                         `qport`      = '" . up($_POST['qport']) . "',
+                         `name`       = '" . up($_POST['name']) . "',
+                         `pwd`        = '" . up($_POST['pwd']) . "',
+                         `game`       = '" . up($_POST['game']) . "',
                          `status`     = '" . up($_POST['status']) . "'");
             
             $show = info(_server_admin_added, "?admin=server");
         }
     }
 }
-?>(_select_field, array("value" => $files[$i],
-                                               "what" => strtoupper(preg_replace("#\.(.*?)$#","",$files[$i])),
-                                               "sel" => ""));
-        }
-
-        $show = show($dir."/server_add", array("newhead" => _admin_server_new,
-                                               "ip" => _server_ip,
-                                               "pwd" => _pwd,
-                                               "value" => _button_value_add,
-                                               "games" => sgames(),
-                                               "no_status" => _no_live_status,
-                                               "game" => _game,
-                                               "port" => _server_admin_qport,
-                                               "status" => _admin_status,
-                                               "status_info" => _admin_status_info,
-                                               "name" => _server_name,
-                                               "c_ftp_host" => _server_admin_ftp_url,
-                                               "c_ftp_login" => _server_admin_ftp_login,
-                                               "c_ftp_pwd" => _pwd,
-                                               "c_ftp_pfad" => _server_admin_ftp_path,
-                                               "ftphead" => _server_admin_ftp_head,
-                                               "c_ftp_file" => _server_ftp_file,
-                                               "sgame" => $game));
-      } elseif($_GET['do'] == "add")
-      {
-        if(empty($_POST['ip']) || empty($_POST['port']))
-        {
-          $show = error(_empty_ip,1);
-        } elseif($_POST['game'] == "lazy") {
-          $show = error(_empty_game,1);
-        } elseif(empty($_POST['name'])) {
-          $show = error(_empty_servername,1);
-        } else {
-          $qry = db("INSERT INTO ".$db['server']."
-                     SET `ip`         = '".up($_POST['ip'])."',
-                         `port`       = '".((int)$_POST['port'])."',
-                         `qport`      = '".up($_POST['qport'])."',
-                         `name`       = '".up($_POST['name'])."',
-                         `pwd`        = '".up($_POST['pwd'])."',
-                         `game`       = '".up($_POST['game'])."',
-                         `status`     = '".up($_POST['status'])."'");
-
-          $show = info(_server_admin_added, "?admin=server");
-        }
-      }
-    }
 ?>

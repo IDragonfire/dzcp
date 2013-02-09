@@ -1,9 +1,7 @@
 <?php
 //-> Forum Vote
-function fvote($id, $ajax = false)
-{
+function fvote($id, $ajax = false) {
     global $db, $balken_vote_menu, $prev;
-    ;
     
     if (!permission("votes"))
         $intern = ' AND intern = 0';

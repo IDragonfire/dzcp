@@ -21,13 +21,11 @@ else $_SESSION['time'] = round(mtime(),1);
 }
 */
 // functions needed
-function mtime()
-{
+function mtime() {
     list($usec, $sec) = explode(" ", microtime());
     return ((float) $usec + (float) $sec);
 }
-function secure($string)
-{
+function secure($string) {
     $string = trim($string);
     $string = str_replace("#", "&#35;", $string);
     $string = str_replace("(", "&#40;", $string);
@@ -79,8 +77,7 @@ for (reset($_FILES); list($key, $value) = each($_FILES); ) {
 }
 
 // won't needed any more, will get back empty return in case of incompatibility
-function safe()
-{
+function safe() {
     return;
 }
 ?>

@@ -1,6 +1,5 @@
 <?php
-function events()
-{
+function events() {
     global $db, $maxevent;
     
     $qry = db("SELECT id,datum,title,event FROM " . $db['events'] . "
@@ -21,6 +20,5 @@ function events()
     
     
     return empty($eventbox) ? '<center style="margin:2px 0">' . _no_events . '</center>' : '<table class="navContent" cellspacing="0">' . $eventbox . '</table>';
-    ;
 }
 ?>

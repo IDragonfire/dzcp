@@ -1,7 +1,6 @@
 <?php
 //-> Teamausgabe in der Navigation
-function team($tID = '')
-{
+function team($tID = '') {
     global $db, $teamRow, $l_team;
     //SQL
     if (!empty($tID))
@@ -12,16 +11,16 @@ function team($tID = '')
     $get = _fetch(db("SELECT * FROM " . $db['squads'] . " " . $where . ""));
     
     //Members
-    $qrym = db("SELECT s1.squad,s2.id,s2.level,s2.nick,s2.status,s2.rlname,s2.bday,s4.position 
-                FROM " . $db['squaduser'] . " AS s1 
-                LEFT JOIN " . $db['users'] . " AS s2 
-                ON s2.id=s1.user 
-                LEFT JOIN " . $db['userpos'] . " AS s3 
-                ON s3.squad=s1.squad AND s3.user=s1.user 
-                LEFT JOIN " . $db['pos'] . " AS s4 
-                ON s4.id=s3.posi 
-                WHERE s1.squad='" . $get['id'] . "' 
-                AND s2.level != 0 
+    $qrym = db("SELECT s1.squad,s2.id,s2.level,s2.nick,s2.status,s2.rlname,s2.bday,s4.position
+                FROM " . $db['squaduser'] . " AS s1
+                LEFT JOIN " . $db['users'] . " AS s2
+                ON s2.id=s1.user
+                LEFT JOIN " . $db['userpos'] . " AS s3
+                ON s3.squad=s1.squad AND s3.user=s1.user
+                LEFT JOIN " . $db['pos'] . " AS s4
+                ON s4.id=s3.posi
+                WHERE s1.squad='" . $get['id'] . "'
+                AND s2.level != 0
                 ORDER BY s4.pid");
     $i    = 1;
     $cnt  = 0;
@@ -83,8 +82,5 @@ function team($tID = '')
         "end" => $end
     ));
     return '<div id="navTeam">' . $team . '</div>';
-}
-?> 
-n '<div id="navTeam">'.$team.'</div>';
 }
 ?>

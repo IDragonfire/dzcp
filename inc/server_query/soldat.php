@@ -7,8 +7,7 @@ $server_link       = 'soldat://{IP}:{S_PORT}';
 
 ##############################################################################################################################
 
-function server_query_soldat($ip, $port, $q_port, $request)
-{
+function server_query_soldat($ip, $port, $q_port, $request) {
     $q_port = empty($q_port) ? $port + 123 : $q_port;
     
     @set_time_limit(2);

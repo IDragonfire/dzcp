@@ -1,7 +1,6 @@
 <?php
 //-> Sponsors Menu
-function sponsors()
-{
+function sponsors() {
     global $db;
     $qry = db("SELECT * FROM " . $db['sponsoren'] . " WHERE box = 1 ORDER BY pos");
     while ($get = _fetch($qry)) {

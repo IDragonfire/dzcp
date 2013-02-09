@@ -22,24 +22,21 @@ $b = "<br />";
 ################
 ## Funktionen ##
 ################
-function _ex($function)
-{
+function _ex($function) {
     if (function_exists($function))
         return TRUE;
     else
         return FALSE;
 }
 
-function _is($var)
-{
+function _is($var) {
     if (is_writable($var))
         return TRUE;
     else
         return FALSE;
 }
 
-function _i($file, $var = "0")
-{
+function _i($file, $var = "0") {
     global $b;
     
     if ($var == 1)
@@ -57,20 +54,17 @@ function _i($file, $var = "0")
     return $c;
 }
 
-function _c($file, $pfad, $host, $user, $pwd)
-{
+function _c($file, $pfad, $host, $user, $pwd) {
     $conn = @ftp_connect($host);
     @ftp_login($conn, $user, $pwd);
     
     ftp_site($conn, 'CHMOD 0777 ' . $pfad . '/' . $file);
 }
 
-function _s($e)
-{
+function _s($e) {
     return;
 }
-function _m($prefix, $host, $user, $pwd, $db)
-{
+function _m($prefix, $host, $user, $pwd, $db) {
     $fp = @fopen("../inc/mysql.php", "w");
     @fwrite($fp, "<?php
                  \$sql_prefix = '" . $prefix . "';
@@ -81,8 +75,7 @@ function _m($prefix, $host, $user, $pwd, $db)
                ?>");
     @fclose($fp);
 }
-function get_files($dir)
-{
+function get_files($dir) {
     $dp    = @opendir($dir);
     $files = array();
     while ($file = @readdir($dp)) {

@@ -9,8 +9,7 @@
  * @copyright Copyright � 2004-2007, Moxiecode Systems AB, All rights reserved.
  */
 
-class EnchantSpell extends SpellChecker
-{
+class EnchantSpell extends SpellChecker {
     /**
      * Spellchecks an array of words.
      *
@@ -18,8 +17,7 @@ class EnchantSpell extends SpellChecker
      * @param Array $words Array of words to check.
      * @return Array of misspelled words.
      */
-    function &checkWords($lang, $words)
-    {
+    function &checkWords($lang, $words) {
         $r = enchant_broker_init();
         
         if (enchant_broker_dict_exists($r, $lang)) {
@@ -47,8 +45,7 @@ class EnchantSpell extends SpellChecker
      * @param String $word Specific word to get suggestions for.
      * @return Array of suggestions for the specified word.
      */
-    function &getSuggestions($lang, $word)
-    {
+    function &getSuggestions($lang, $word) {
         $r     = enchant_broker_init();
         $suggs = array();
         

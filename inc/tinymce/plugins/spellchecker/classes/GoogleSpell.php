@@ -7,8 +7,7 @@
  * @copyright Copyright � 2004-2007, Moxiecode Systems AB, All rights reserved.
  */
 
-class GoogleSpell extends SpellChecker
-{
+class GoogleSpell extends SpellChecker {
     /**
      * Spellchecks an array of words.
      *
@@ -16,8 +15,7 @@ class GoogleSpell extends SpellChecker
      * @param {Array} $words Array of words to spellcheck.
      * @return {Array} Array of misspelled words.
      */
-    function &checkWords($lang, $words)
-    {
+    function &checkWords($lang, $words) {
         $wordstr = implode(' ', $words);
         $matches = $this->_getMatches($lang, $wordstr);
         $words   = array();
@@ -35,8 +33,7 @@ class GoogleSpell extends SpellChecker
      * @param {String} $word Specific word to get suggestions for.
      * @return {Array} Array of suggestions for the specified word.
      */
-    function &getSuggestions($lang, $word)
-    {
+    function &getSuggestions($lang, $word) {
         $sug     = array();
         $osug    = array();
         $matches = $this->_getMatches($lang, $word);
@@ -53,8 +50,7 @@ class GoogleSpell extends SpellChecker
         return $osug;
     }
     
-    function &_getMatches($lang, $str)
-    {
+    function &_getMatches($lang, $str) {
         $server = "www.google.com";
         $port   = 443;
         $path   = "/tbproxy/spell?lang=" . $lang . "&hl=en";
@@ -109,8 +105,7 @@ class GoogleSpell extends SpellChecker
         return $matches;
     }
     
-    function _unhtmlentities($string)
-    {
+    function _unhtmlentities($string) {
         $string = preg_replace('~&#x([0-9a-f]+);~ei', 'chr(hexdec("\\1"))', $string);
         $string = preg_replace('~&#([0-9]+);~e', 'chr(\\1)', $string);
         
@@ -123,8 +118,7 @@ class GoogleSpell extends SpellChecker
 
 // Patch in multibyte support
 if (!function_exists('mb_substr')) {
-    function mb_substr($str, $start, $len = '', $encoding = "UTF-8")
-    {
+    function mb_substr($str, $start, $len = '', $encoding = "UTF-8") {
         $limit = strlen($str);
         
         for ($s = 0; $start > 0; --$start) { // found the real start

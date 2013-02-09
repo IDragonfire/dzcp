@@ -12,14 +12,14 @@ if (!permission("editor")) {
 } else {
     $wysiwyg = '_word';
     if ($_GET['do'] == "add") {
-        $qry     = db("SELECT s2.*, s1.name AS katname, s1.placeholder FROM " . $db['navi_kats'] . " AS s1 LEFT JOIN " . $db['navi'] . " AS s2 ON s1.`placeholder` = s2.`kat` 
+        $qry     = db("SELECT s2.*, s1.name AS katname, s1.placeholder FROM " . $db['navi_kats'] . " AS s1 LEFT JOIN " . $db['navi'] . " AS s2 ON s1.`placeholder` = s2.`kat`
                    ORDER BY s1.name, s2.pos");
         $thiskat = '';
         while ($get = _fetch($qry)) {
             if ($thiskat != $get['kat']) {
-                $position .= ' 
-              <option class="dropdownKat" value="lazy">' . re($get['katname']) . '</option> 
-              <option value="' . re($get['placeholder']) . '-1">-> ' . _admin_first . '</option> 
+                $position .= '
+              <option class="dropdownKat" value="lazy">' . re($get['katname']) . '</option>
+              <option value="' . re($get['placeholder']) . '-1">-> ' . _admin_first . '</option>
             ';
             }
             $thiskat = $get['kat'];
@@ -69,14 +69,14 @@ if (!permission("editor")) {
             $kat_ = preg_replace('/-(\d+)/', '', $_POST['pos']);
             $pos_ = preg_replace("=nav_(.*?)-=", "", $_POST['pos']);
             
-            $qry     = db("SELECT s2.*, s1.name AS katname, s1.placeholder FROM " . $db['navi_kats'] . " AS s1 LEFT JOIN " . $db['navi'] . " AS s2 ON s1.`placeholder` = s2.`kat` 
+            $qry     = db("SELECT s2.*, s1.name AS katname, s1.placeholder FROM " . $db['navi_kats'] . " AS s1 LEFT JOIN " . $db['navi'] . " AS s2 ON s1.`placeholder` = s2.`kat`
                      ORDER BY s1.name, s2.pos");
             $thiskat = '';
             while ($get = _fetch($qry)) {
                 if ($thiskat != $get['kat']) {
-                    $position .= ' 
-                <option class="dropdownKat" value="lazy">' . re($get['katname']) . '</option> 
-                <option value="' . re($get['placeholder']) . '-1">-> ' . _admin_first . '</option> 
+                    $position .= '
+                <option class="dropdownKat" value="lazy">' . re($get['katname']) . '</option>
+                <option value="' . re($get['placeholder']) . '-1">-> ' . _admin_first . '</option>
               ';
                 }
                 
@@ -109,9 +109,9 @@ if (!permission("editor")) {
                 "do" => "addsite"
             ));
         } else {
-            $qry       = db("INSERT INTO " . $db['sites'] . " 
-                     SET `titel` = '" . up($_POST['titel']) . "', 
-                         `text`  = '" . up($_POST['inhalt'], 1) . "', 
+            $qry       = db("INSERT INTO " . $db['sites'] . "
+                     SET `titel` = '" . up($_POST['titel']) . "',
+                         `text`  = '" . up($_POST['inhalt'], 1) . "',
                          `html`  = '" . ((int) $_POST['html']) . "'");
             $insert_id = mysql_insert_id();
             
@@ -125,35 +125,35 @@ if (!permission("editor")) {
             
             $url = "../sites/?show=" . $insert_id . "";
             
-            $posi = db("UPDATE " . $db['navi'] . " 
-                      SET `pos` = pos+1 
+            $posi = db("UPDATE " . $db['navi'] . "
+                      SET `pos` = pos+1
                       WHERE pos " . $sign . " '" . intval($pos) . "'");
             
-            $posi = db("INSERT INTO " . $db['navi'] . " 
-                      SET `pos`     = '" . ((int) $pos) . "', 
-                          `kat`     = '" . up($kat) . "', 
-                          `name`    = '" . up($_POST['name']) . "', 
-                          `url`     = '" . up($url) . "', 
-                          `shown`   = '1', 
-                          `type`    = '3', 
-                          `editor`  = '" . ((int) $insert_id) . "', 
+            $posi = db("INSERT INTO " . $db['navi'] . "
+                      SET `pos`     = '" . ((int) $pos) . "',
+                          `kat`     = '" . up($kat) . "',
+                          `name`    = '" . up($_POST['name']) . "',
+                          `url`     = '" . up($url) . "',
+                          `shown`   = '1',
+                          `type`    = '3',
+                          `editor`  = '" . ((int) $insert_id) . "',
                           `wichtig` = '0'");
             
             $show = info(_site_added, "?admin=editor");
         }
     } elseif ($_GET['do'] == "edit") {
-        $qrys = db("SELECT * FROM " . $db['sites'] . " 
+        $qrys = db("SELECT * FROM " . $db['sites'] . "
                     WHERE id = '" . intval($_GET['id']) . "'");
         $gets = _fetch($qrys);
         
-        $qry     = db("SELECT s2.*, s1.name AS katname, s1.placeholder FROM " . $db['navi_kats'] . " AS s1 LEFT JOIN " . $db['navi'] . " AS s2 ON s1.`placeholder` = s2.`kat` 
+        $qry     = db("SELECT s2.*, s1.name AS katname, s1.placeholder FROM " . $db['navi_kats'] . " AS s1 LEFT JOIN " . $db['navi'] . " AS s2 ON s1.`placeholder` = s2.`kat`
                    ORDER BY s1.name, s2.pos");
         $thiskat = '';
         while ($get = _fetch($qry)) {
             if ($thiskat != $get['kat']) {
-                $position .= ' 
-              <option class="dropdownKat" value="lazy">' . re($get['katname']) . '</option> 
-              <option value="' . re($get['placeholder']) . '-1">-> ' . _admin_first . '</option> 
+                $position .= '
+              <option class="dropdownKat" value="lazy">' . re($get['katname']) . '</option>
+              <option value="' . re($get['placeholder']) . '-1">-> ' . _admin_first . '</option>
             ';
             }
             $thiskat = $get['kat'];
@@ -162,7 +162,7 @@ if (!permission("editor")) {
             $position .= empty($get['name']) ? '' : '<option value="' . re($get['placeholder']) . '-' . ($get['pos'] + 1) . '" ' . $sel . '>' . _nach . ' -> ' . navi_name(re($get['name'])) . '</option>';
         }
         
-        $qryn = db("SELECT * FROM " . $db['navi'] . " 
+        $qryn = db("SELECT * FROM " . $db['navi'] . "
                     WHERE editor = '" . intval($_GET['id']) . "'");
         $getn = _fetch($qryn);
         
@@ -207,14 +207,14 @@ if (!permission("editor")) {
             if (isset($_POST['html']))
                 $checked = "checked=\"checked\"";
             
-            $qry     = db("SELECT s2.*, s1.name AS katname, s1.placeholder FROM " . $db['navi_kats'] . " AS s1 LEFT JOIN " . $db['navi'] . " AS s2 ON s1.`placeholder` = s2.`kat` 
+            $qry     = db("SELECT s2.*, s1.name AS katname, s1.placeholder FROM " . $db['navi_kats'] . " AS s1 LEFT JOIN " . $db['navi'] . " AS s2 ON s1.`placeholder` = s2.`kat`
                      ORDER BY s1.name, s2.pos");
             $thiskat = '';
             while ($get = _fetch($qry)) {
                 if ($thiskat != $get['kat']) {
-                    $position .= ' 
-                <option class="dropdownKat" value="lazy">' . re($get['katname']) . '</option> 
-                <option value="' . re($get['placeholder']) . '-1">-> ' . _admin_first . '</option> 
+                    $position .= '
+                <option class="dropdownKat" value="lazy">' . re($get['katname']) . '</option>
+                <option value="' . re($get['placeholder']) . '-1">-> ' . _admin_first . '</option>
               ';
                 }
                 $thiskat = $get['kat'];
@@ -246,10 +246,10 @@ if (!permission("editor")) {
                 "do" => "editsite&amp;id=" . $_GET['id'] . ""
             ));
         } else {
-            $qry = db("UPDATE " . $db['sites'] . " 
-                     SET `titel` = '" . up($_POST['titel']) . "', 
-                         `text`  = '" . up($_POST['inhalt'], 1) . "', 
-                         `html`   = '" . ((int) $_POST['html']) . "' 
+            $qry = db("UPDATE " . $db['sites'] . "
+                     SET `titel` = '" . up($_POST['titel']) . "',
+                         `text`  = '" . up($_POST['inhalt'], 1) . "',
+                         `html`   = '" . ((int) $_POST['html']) . "'
                      WHERE id = '" . intval($_GET['id']) . "'");
             
             if ($_POST['pos'] == "1" || "2")
@@ -262,23 +262,23 @@ if (!permission("editor")) {
             
             $url = "../sites/?show=" . $_GET['id'] . "";
             
-            $posi = db("UPDATE " . $db['navi'] . " 
-                      SET `pos` = pos+1 
+            $posi = db("UPDATE " . $db['navi'] . "
+                      SET `pos` = pos+1
                       WHERE pos " . $sign . " '" . intval($pos) . "'");
             
-            $posi = db("UPDATE " . $db['navi'] . " 
-                      SET `pos`     = '" . ((int) $pos) . "', 
-                          `kat`     = '" . up($kat) . "', 
-                          `name`    = '" . up($_POST['name']) . "', 
-                          `url`     = '" . up($url) . "' 
+            $posi = db("UPDATE " . $db['navi'] . "
+                      SET `pos`     = '" . ((int) $pos) . "',
+                          `kat`     = '" . up($kat) . "',
+                          `name`    = '" . up($_POST['name']) . "',
+                          `url`     = '" . up($url) . "'
                       WHERE editor = '" . intval($_GET['id']) . "'");
             
             $show = info(_site_edited, "?admin=editor");
         }
     } elseif ($_GET['do'] == "delete") {
-        $qry  = db("DELETE FROM " . $db['sites'] . " 
+        $qry  = db("DELETE FROM " . $db['sites'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
-        $qry  = db("DELETE FROM " . $db['navi'] . " 
+        $qry  = db("DELETE FROM " . $db['navi'] . "
                    WHERE editor = '" . intval($_GET['id']) . "'");
         $show = info(_editor_deleted, "?admin=editor");
     } else {
@@ -316,29 +316,4 @@ if (!permission("editor")) {
         ));
     }
 }
-?>      while($get = _fetch($qry))
-        {
-          $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-          $edit = show("page/button_edit_single", array("id" => $get['id'],
-                                                        "action" => "admin=editor&amp;do=edit",
-                                                        "title" => _button_title_edit));
-          $delete = show("page/button_delete_single", array("id" => $get['id'],
-                                                            "action" => "admin=editor&amp;do=delete",
-                                                            "title" => _button_title_del,
-                                                            "del" => convSpace(_confirm_del_site)));
-
-          $show_ .= show($dir."/editor_show", array("name" => "<a href='../sites/?show=".$get['id']."'>".re($get['titel'])."</a>",
-                                                    "del" => $delete,
-                                                    "edit" => $edit,
-                                                    "class" => $class));
-        }
-
-        $show = show($dir."/editor", array("head" => _editor_head,
-                                           "show" => $show_,
-                                           "add" => _editor_add_head,
-                                           "edit" => _editicon_blank,
-                                           "del" => _deleteicon_blank,
-                                           "name" => _editor_name));
-      }
-    }
 ?>

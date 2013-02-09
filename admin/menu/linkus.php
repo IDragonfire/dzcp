@@ -33,16 +33,16 @@ if (permission('links')) {
             elseif (empty($_POST['text']))
                 $show = error(_linkus_empty_text, 1);
         } else {
-            $qry = db("INSERT INTO " . $db['linkus'] . " 
-                     SET `url`          = '" . links($_POST['link']) . "', 
-                         `text`         = '" . up($_POST['text']) . "', 
-                         `banner`       = '" . up($_POST['banner']) . "', 
+            $qry = db("INSERT INTO " . $db['linkus'] . "
+                     SET `url`          = '" . links($_POST['link']) . "',
+                         `text`         = '" . up($_POST['text']) . "',
+                         `banner`       = '" . up($_POST['banner']) . "',
                          `beschreibung` = '" . up($_POST['beschreibung']) . "'");
             
             $show = info(_linkus_added, "?admin=linkus");
         }
     } elseif ($_GET['do'] == "edit") {
-        $qry = db("SELECT * FROM " . $db['linkus'] . " 
+        $qry = db("SELECT * FROM " . $db['linkus'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
@@ -69,22 +69,22 @@ if (permission('links')) {
             elseif (empty($_POST['text']))
                 $show = error(_linkus_empty_text, 1);
         } else {
-            $qry = db("UPDATE " . $db['linkus'] . " 
-                     SET `url`          = '" . links($_POST['link']) . "', 
-                         `text`         = '" . up($_POST['text']) . "', 
-                         `banner`       = '" . up($_POST['banner']) . "', 
-                         `beschreibung` = '" . up($_POST['beschreibung']) . "' 
+            $qry = db("UPDATE " . $db['linkus'] . "
+                     SET `url`          = '" . links($_POST['link']) . "',
+                         `text`         = '" . up($_POST['text']) . "',
+                         `banner`       = '" . up($_POST['banner']) . "',
+                         `beschreibung` = '" . up($_POST['beschreibung']) . "'
                      WHERE id = '" . intval($_GET['id']) . "'");
             
             $show = info(_linkus_edited, "?admin=linkus");
         }
     } elseif ($_GET['do'] == "delete") {
-        $qry = db("DELETE FROM " . $db['linkus'] . " 
+        $qry = db("DELETE FROM " . $db['linkus'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         
         $show = info(_linkus_deleted, "?admin=linkus");
     } else {
-        $qry = db("SELECT * FROM " . $db['linkus'] . " 
+        $qry = db("SELECT * FROM " . $db['linkus'] . "
                    ORDER BY banner DESC");
         $cnt = 1;
         while ($get = _fetch($qry)) {
@@ -129,21 +129,4 @@ if (permission('links')) {
 } else {
     $show = error(_error_wrong_permissions, 1);
 }
-?>                         "beschreibung" => re($get['beschreibung']),
-                                                    "edit" => $edit,
-                                                    "delete" => $delete,
-                                                    "cnt" => $cnt,
-                                                    "banner" => $banner,
-                                                    "besch" => re($get['beschreibung']),
-                                                                          "url" => $get['url']));
-          $cnt++;
-        }
-
-        $show = show($dir."/linkus", array("head" => _linkus_head,
-                                           "show" => $show_,
-                                           "add" => _linkus_admin_head));
-      }
-    } else {
-      $show = error(_error_wrong_permissions, 1);
-    }
 ?>

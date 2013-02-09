@@ -1,4 +1,4 @@
-<?
+<?php
 ## OUTPUT BUFFER START ##
 include_once("../../../buffer.php");
 ## INCLUDES ##

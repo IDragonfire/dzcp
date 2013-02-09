@@ -8,15 +8,13 @@ if (empty($_GET['sort']) || $_GET['sort'] == 'clan') {
 } else
     $order = 'WHERE level != \'banned\'';
 
-function rawflag($code)
-{
+function rawflag($code) {
     if (!file_exists("../../../images/flaggen/" . $code . ".gif"))
         return 'nocountry';
     else
         return $code;
 }
-function flag($code)
-{
+function flag($code) {
     if (!file_exists("../../../images/flaggen/" . $code . ".gif"))
         return '<img src="../../../images/flaggen/nocountry.gif" alt="" style="vertical-align:middle" />';
     else

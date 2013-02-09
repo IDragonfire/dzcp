@@ -35,15 +35,15 @@ if ($chkMe != 4) {
         if (empty($_POST['link'])) {
             $show = error(_empty_url, 1);
         } else {
-            $qry = db("INSERT INTO " . $db['partners'] . " 
-                     SET `link`     = '" . links($_POST['link']) . "', 
-                         `banner`   = '" . up(empty($_POST['textlink']) ? $_POST['banner'] : $_POST['textlink']) . "', 
+            $qry = db("INSERT INTO " . $db['partners'] . "
+                     SET `link`     = '" . links($_POST['link']) . "',
+                         `banner`   = '" . up(empty($_POST['textlink']) ? $_POST['banner'] : $_POST['textlink']) . "',
                          `textlink` = '" . intval(empty($_POST['textlink']) ? 0 : 1) . "'");
             
             $show = info(_partners_added, "?admin=partners");
         }
     } elseif ($_GET['do'] == "edit") {
-        $qry = db("SELECT * FROM " . $db['partners'] . " 
+        $qry = db("SELECT * FROM " . $db['partners'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
@@ -76,21 +76,21 @@ if ($chkMe != 4) {
         if (empty($_POST['link'])) {
             $show = error(_empty_url, 1);
         } else {
-            $qry = db("UPDATE " . $db['partners'] . " 
-                     SET `link`     = '" . links($_POST['link']) . "', 
-                         `banner`   = '" . up(empty($_POST['textlink']) ? $_POST['banner'] : $_POST['textlink']) . "', 
-                         `textlink` = '" . intval(empty($_POST['textlink']) ? 0 : 1) . "' 
+            $qry = db("UPDATE " . $db['partners'] . "
+                     SET `link`     = '" . links($_POST['link']) . "',
+                         `banner`   = '" . up(empty($_POST['textlink']) ? $_POST['banner'] : $_POST['textlink']) . "',
+                         `textlink` = '" . intval(empty($_POST['textlink']) ? 0 : 1) . "'
                      WHERE id = '" . intval($_GET['id']) . "'");
             
             $show = info(_partners_edited, "?admin=partners");
         }
     } elseif ($_GET['do'] == "delete") {
-        $del = db("DELETE FROM " . $db['partners'] . " 
+        $del = db("DELETE FROM " . $db['partners'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         
         $show = info(_partners_deleted, "?admin=partners");
     } else {
-        $qry = db("SELECT * FROM " . $db['partners'] . " 
+        $qry = db("SELECT * FROM " . $db['partners'] . "
                    ORDER BY id");
         while ($get = _fetch($qry)) {
             $edit   = show("page/button_edit_single", array(
@@ -130,20 +130,4 @@ if ($chkMe != 4) {
         ));
     }
 }
-?>: '<center>'._partnerbuttons_textlink.': <b>'.re($get['banner']).'</b></center>'),
-                                                      "link" => re($get['link']),
-                                                      "id" => $get['id'],
-                                                      "edit" => $edit,
-                                                      "delete" => $delete));
-        }
-
-        $show = show($dir."/partners", array("head" => _partners_head,
-                                             "add" => _partners_link_add,
-                                             "show" => $show_,
-                                             "edit" => _editicon_blank,
-                                             "del" =>_deleteicon_blank,
-                                             "link" => _link,
-                                             "button" => _partners_button));
-      }
-    }
 ?>

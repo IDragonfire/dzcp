@@ -10,8 +10,7 @@ if (!defined('AJAX_INIT_DONE')) {
  * @since 22/April/2007
  *
  */
-class Upload
-{
+class Upload {
     var $fileType = ""; //the file type
     var $originalFileName = "";
     var $fileName = ""; //the file final name
@@ -35,13 +34,11 @@ class Upload
     var $errorCodes = array(0 => 'the file uploaded with success', 1 => 'The uploaded file exceeds the upload_max_filesize directive in php.ini', 2 => 'The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form', 3 => 'The uploaded file was only partially uploaded', 4 => 'No file was uploaded.', 6 => 'Missing a temporary folder', 7 => 'Failed to write file to disk', 8 => 'File upload stopped by extension', 999 => 'No error code avaiable');
     
     
-    function Upload()
-    {
+    function Upload() {
         //doing nothing
     }
     
-    function isFileUploaded($indexInPost = "file")
-    {
+    function isFileUploaded($indexInPost = "file") {
         $this->errCode = isset($_FILES[$indexInPost]['error']) ? $_FILES[$indexInPost]['error'] : 999;
         if ((isset($_FILES[$indexInPost]['error']) && $_FILES[$indexInPost] == 0) || (!empty($_FILES[$indexInPost]['tmp_name']) && $_FILES[$indexInPost]['tmp_name'] != 'none')) {
             $this->_value           = $_FILES[$indexInPost];
@@ -56,8 +53,7 @@ class Upload
         }
     }
     
-    function getErrorCodeMsg()
-    {
+    function getErrorCodeMsg() {
         return (isset($this->errorCodes[$this->errCode]) ? $this->errorCodes[$this->errCode] : "");
     }
     /**
@@ -67,8 +63,7 @@ class Upload
      * @param array $validFileExt
      * @return boolean
      */
-    function isPermittedFileExt($validFileExt = array())
-    {
+    function isPermittedFileExt($validFileExt = array()) {
         $tem = array();
         
         if (sizeof($validFileExt)) {
@@ -107,8 +102,7 @@ class Upload
      *
      * @param integer $maxSize
      */
-    function isSizeTooBig($maxSize = "")
-    {
+    function isSizeTooBig($maxSize = "") {
         if ($this->fileSize > $maxSize) {
             $this->deleteUploadedFile();
             return true;
@@ -121,8 +115,7 @@ class Upload
      *
      * @param array $invalidFileExt
      */
-    function setInvalidFileExt($invalidFileExt = array())
-    {
+    function setInvalidFileExt($invalidFileExt = array()) {
         $tem = array();
         if (sizeof($invalidFileExt)) {
             foreach ($invalidFileExt as $k => $v) {
@@ -137,8 +130,7 @@ class Upload
      *
      * @return string
      */
-    function getFileType()
-    {
+    function getFileType() {
         return $this->fileType;
     }
     /**
@@ -146,8 +138,7 @@ class Upload
      *
      * @param string $fileName the path to a file or just the file name
      */
-    function getFileExt()
-    {
+    function getFileExt() {
         //return strtolower(substr(strrchr($this->fileName, "."), 1));
         return substr(strrchr($this->originalFileName, "."), 1);
     }
@@ -159,8 +150,7 @@ class Upload
      * @param unknown_type $overwrite
      * @return unknown
      */
-    function moveUploadedFile($dest, $fileBaseName = '', $overwrite = false)
-    {
+    function moveUploadedFile($dest, $fileBaseName = '', $overwrite = false) {
         //ensure the directory path ending with /
         if ($dest != '' && substr($dest, -1) != '/') {
             $dest .= '/';
@@ -208,8 +198,7 @@ class Upload
      * @param mixed $invalidImageExts invalid image extension
      * @param bool $delete force to delete the uploaded file
      */
-    function isImage($invalidImageExts = array(), $delete = true)
-    {
+    function isImage($invalidImageExts = array(), $delete = true) {
         if (!is_array($invalidImageExts) && !empty($invalidImageExts)) {
             $invalidImageExts = explode(",", $invalidImageExts);
         }
@@ -256,8 +245,7 @@ class Upload
      *
      * @return mixed none or PEAR_error
      */
-    function resize($filePath, $thumb_suffix = "", $new_x = 0, $new_y = 0)
-    {
+    function resize($filePath, $thumb_suffix = "", $new_x = 0, $new_y = 0) {
         if (empty($filePath)) {
             $filePath = $this->dirPath . $this->fileBaseName . $thumb_suffix . $this->fileExtension;
         }
@@ -278,8 +266,7 @@ class Upload
      * @param int $new_y the thumbnail height
      * @return unknown
      */
-    function _resize($fileName, $new_x, $new_y)
-    {
+    function _resize($fileName, $new_x, $new_y) {
         $functionName = 'ImageCreateFrom' . $this->fileType;
         
         
@@ -320,8 +307,7 @@ class Upload
      * @param int $quality
      * @return boolean
      */
-    function _imageSave($newImageHandler, $fileName, $quality = 90)
-    {
+    function _imageSave($newImageHandler, $fileName, $quality = 90) {
         $functionName = 'image' . $this->fileType;
         if ($functionName($newImageHandler, $fileName, $quality)) {
             imagedestroy($newImageHandler);
@@ -338,8 +324,7 @@ class Upload
      * @access public
      * @return void
      */
-    function _get_image_details($image)
-    {
+    function _get_image_details($image) {
         //echo $image;
         $data = @GetImageSize($image);
         #1 = GIF, 2 = JPG, 3 = PNG, 4 = SWF, 5 = PSD, 6 = BMP, 7 = TIFF(intel byte order), 8 = TIFF(motorola byte order,
@@ -390,8 +375,7 @@ class Upload
      * @param int $thumbnailHeight
      * @return array array("name"=>"image name", "width"=>"image width", "height"=>"image height")
      */
-    function getThumbInfo($originalImageName, $originaleImageWidth, $originalImageHeight, $thumbnailSuffix, $thumbnailWidth, $thumbnailHeight)
-    {
+    function getThumbInfo($originalImageName, $originaleImageWidth, $originalImageHeight, $thumbnailSuffix, $thumbnailWidth, $thumbnailHeight) {
         $outputs         = array(
             "name" => "",
             "width" => 0,
@@ -434,21 +418,18 @@ class Upload
     /**
      * get the uploaded file
      */
-    function deleteUploadedFile()
-    {
+    function deleteUploadedFile() {
         @unlink($this->filePath);
     }
     /**
      * destroy the tmp file
      *
      */
-    function finish()
-    {
+    function finish() {
         @unlink($this->_value['tmp_name']);
     }
     
-    function displayError()
-    {
+    function displayError() {
         if (sizeof($this->errors)) {
             echo "<pre>";
             print_r($this->errors);
@@ -459,8 +440,7 @@ class Upload
      * get the path which the file uploaded to
      *
      */
-    function getFilePath()
-    {
+    function getFilePath() {
         return $this->filePath;
     }
     /**
@@ -468,18 +448,15 @@ class Upload
      *
      * @return unknown
      */
-    function getDirPath()
-    {
+    function getDirPath() {
         return $this->dirPath;
     }
     
-    function getFileBaseName()
-    {
+    function getFileBaseName() {
         return $this->fileBaseName;
     }
     
-    function getFileName()
-    {
+    function getFileName() {
         return $this->fileName;
     }
     /**
@@ -487,8 +464,7 @@ class Upload
      *
      * @return integer
      */
-    function getImageWidth()
-    {
+    function getImageWidth() {
         return $this->img_x;
     }
     /**
@@ -496,8 +472,7 @@ class Upload
      *
      * @return integer
      */
-    function getImageHeight()
-    {
+    function getImageHeight() {
         return $this->img_y;
     }
     /**
@@ -505,8 +480,7 @@ class Upload
      *
      * @return string
      */
-    function getFileSize()
-    {
+    function getFileSize() {
         return $this->fileSize;
     }
     /**
@@ -516,8 +490,7 @@ class Upload
      * @param string $originalImageName
      * @param string $arrayThumbnailSuffix
      */
-    function deleteFileAndThumbs($dirPath, $originalImageName, $arrayThumbnailSuffix)
-    {
+    function deleteFileAndThumbs($dirPath, $originalImageName, $arrayThumbnailSuffix) {
         //ensure the directory path ending with /
         if ($dirPath != '' && substr($dirPath, -1) != '/') {
             $dirPath .= '/';

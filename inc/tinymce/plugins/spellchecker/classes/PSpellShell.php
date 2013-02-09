@@ -7,8 +7,7 @@
  * @copyright Copyright � 2004-2007, Moxiecode Systems AB, All rights reserved.
  */
 
-class PSpellShell extends SpellChecker
-{
+class PSpellShell extends SpellChecker {
     /**
      * Spellchecks an array of words.
      *
@@ -16,8 +15,7 @@ class PSpellShell extends SpellChecker
      * @param {Array} $words Array of words to spellcheck.
      * @return {Array} Array of misspelled words.
      */
-    function &checkWords($lang, $words)
-    {
+    function &checkWords($lang, $words) {
         $cmd = $this->_getCMD($lang);
         
         if ($fh = fopen($this->_tmpfile, "w")) {
@@ -59,8 +57,7 @@ class PSpellShell extends SpellChecker
      * @param {String} $word Specific word to get suggestions for.
      * @return {Array} Array of suggestions for the specified word.
      */
-    function &getSuggestions($lang, $word)
-    {
+    function &getSuggestions($lang, $word) {
         $cmd = $this->_getCMD($lang);
         
         if (function_exists("mb_convert_encoding"))
@@ -103,8 +100,7 @@ class PSpellShell extends SpellChecker
         return array();
     }
     
-    function _getCMD($lang)
-    {
+    function _getCMD($lang) {
         $this->_tmpfile = tempnam($this->_config['PSpellShell.tmp'], "tinyspell");
         
         if (preg_match("#win#i", php_uname()))

@@ -21,8 +21,7 @@ $server_name_config = array(
 
 ##############################################################################################################################
 
-function server_query_quake3($ip, $port, $game, $request)
-{
+function server_query_quake3($ip, $port, $game, $request) {
     global $server_timeout;
     $q_port = empty($q_port) ? 29900 : $q_port;
     

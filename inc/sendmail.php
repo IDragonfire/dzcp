@@ -4,8 +4,7 @@
 
 modified by CodeKing for DZCP 10-27-2006 (mm-dd-yyyy)
 */
-class mailer
-{
+class mailer {
     var $Mailer = "mail"; // mail, sendmail or smtp
     
     ////////////////////////////////////////////////
@@ -58,65 +57,55 @@ class mailer
     // Mailscript begin
     /////////////////////////////////////////////////
     
-    function IsHTML($bool)
-    {
+    function IsHTML($bool) {
         if ($bool == true)
             $this->ContentType = "text/html";
         else
             $this->ContentType = "text/plain";
     }
     
-    function IsSMTP()
-    {
+    function IsSMTP() {
         $this->Mailer = "smtp";
     }
     
-    function IsMail()
-    {
+    function IsMail() {
         $this->Mailer = "mail";
     }
     
-    function IsSendmail()
-    {
+    function IsSendmail() {
         $this->Mailer = "sendmail";
     }
     
-    function IsQmail()
-    {
+    function IsQmail() {
         $this->Sendmail = "/var/qmail/bin/sendmail";
         $this->Mailer   = "sendmail";
     }
     
-    function AddAddress($address, $name = "")
-    {
+    function AddAddress($address, $name = "") {
         $cur               = count($this->to);
         $this->to[$cur][0] = trim($address);
         $this->to[$cur][1] = $name;
     }
     
-    function AddCC($address, $name = "")
-    {
+    function AddCC($address, $name = "") {
         $cur               = count($this->cc);
         $this->cc[$cur][0] = trim($address);
         $this->cc[$cur][1] = $name;
     }
     
-    function AddBCC($address, $name = "")
-    {
+    function AddBCC($address, $name = "") {
         $cur                = count($this->bcc);
         $this->bcc[$cur][0] = trim($address);
         $this->bcc[$cur][1] = $name;
     }
     
-    function AddReplyTo($address, $name = "")
-    {
+    function AddReplyTo($address, $name = "") {
         $cur                    = count($this->ReplyTo);
         $this->ReplyTo[$cur][0] = trim($address);
         $this->ReplyTo[$cur][1] = $name;
     }
     
-    function Send()
-    {
+    function Send() {
         $header = "";
         $body   = "";
         
@@ -152,8 +141,7 @@ class mailer
         return true;
     }
     
-    function SendToQueue($queue_path, $send_time = 0)
-    {
+    function SendToQueue($queue_path, $send_time = 0) {
         $message = array();
         $header  = "";
         $body    = "";
@@ -230,8 +218,7 @@ class mailer
         return ($msg_id . ".pqm");
     }
     
-    function sendmail_send($header, $body)
-    {
+    function sendmail_send($header, $body) {
         if ($this->Sender != "")
             $sendmail = sprintf("%s -oi -f %s -t", $this->Sendmail, $this->Sender);
         else
@@ -254,8 +241,7 @@ class mailer
         return true;
     }
     
-    function mail_send($header, $body)
-    {
+    function mail_send($header, $body) {
         $to = $this->to[0][0];
         for ($i = 1; $i < count($this->to); $i++)
             $to .= sprintf(",%s", $this->to[$i][0]);
@@ -283,8 +269,7 @@ class mailer
         return true;
     }
     
-    function smtp_send($header, $body)
-    {
+    function smtp_send($header, $body) {
         $smtp = new SMTP;
         
         $smtp->do_debug = $this->SMTPDebug;
@@ -369,8 +354,7 @@ class mailer
         return true;
     }
     
-    function addr_append($type, $addr)
-    {
+    function addr_append($type, $addr) {
         $addr_str = $type . ": ";
         $addr_str .= $this->addr_format($addr[0]);
         if (count($addr) > 1) {
@@ -384,8 +368,7 @@ class mailer
         return ($addr_str);
     }
     
-    function addr_list($list_array)
-    {
+    function addr_list($list_array) {
         $addr_list = "";
         for ($i = 0; $i < count($list_array); $i++) {
             if ($i > 0)
@@ -396,8 +379,7 @@ class mailer
         return $addr_list;
     }
     
-    function addr_format($addr)
-    {
+    function addr_format($addr) {
         if (empty($addr[1]))
             $formatted = $addr[0];
         else
@@ -406,8 +388,7 @@ class mailer
         return $formatted;
     }
     
-    function word_wrap($message, $length, $qp_mode = false)
-    {
+    function word_wrap($message, $length, $qp_mode = false) {
         if ($qp_mode)
             $soft_break = sprintf(" =%s", $this->LE);
         else
@@ -474,8 +455,7 @@ class mailer
         return ($message);
     }
     
-    function create_header()
-    {
+    function create_header() {
         $header = array();
         
         $uniq_id           = md5(uniqid(time()));
@@ -550,8 +530,7 @@ class mailer
         return (join("", $header));
     }
     
-    function create_body()
-    {
+    function create_body() {
         $body = array();
         
         if ($this->WordWrap > 0)
@@ -622,8 +601,7 @@ class mailer
         return $sBody;
     }
     
-    function AddAttachment($path, $name = "", $encoding = "base64", $type = "application/octet-stream")
-    {
+    function AddAttachment($path, $name = "", $encoding = "base64", $type = "application/octet-stream") {
         if (!@is_file($path)) {
             $this->error_handler(sprintf("Could not access [%s] file", $path));
             return false;
@@ -647,8 +625,7 @@ class mailer
         return true;
     }
     
-    function attach_all()
-    {
+    function attach_all() {
         $mime = array();
         
         for ($i = 0; $i < count($this->attachment); $i++) {
@@ -691,8 +668,7 @@ class mailer
         return (join("", $mime));
     }
     
-    function encode_file($path, $encoding = "base64")
-    {
+    function encode_file($path, $encoding = "base64") {
         if (!@$fd = fopen($path, "rb")) {
             $this->error_handler(sprintf("File Error: Could not open file %s", $path));
             return false;
@@ -704,8 +680,7 @@ class mailer
         return ($encoded);
     }
     
-    function encode_string($str, $encoding = "base64")
-    {
+    function encode_string($str, $encoding = "base64") {
         switch (strtolower($encoding)) {
             case "base64":
                 $encoded = chunk_split(base64_encode($str));
@@ -733,8 +708,7 @@ class mailer
         return ($encoded);
     }
     
-    function encode_qp($str)
-    {
+    function encode_qp($str) {
         $encoded = $this->fix_eol($str);
         if (substr($encoded, -2) != $this->LE)
             $encoded .= $this->LE;
@@ -748,8 +722,7 @@ class mailer
         return $encoded;
     }
     
-    function AddStringAttachment($string, $filename, $encoding = "base64", $type = "application/octet-stream")
-    {
+    function AddStringAttachment($string, $filename, $encoding = "base64", $type = "application/octet-stream") {
         $cur                       = count($this->attachment);
         $this->attachment[$cur][0] = $string;
         $this->attachment[$cur][1] = $filename;
@@ -761,8 +734,7 @@ class mailer
         $this->attachment[$cur][7] = 0;
     }
     
-    function AddEmbeddedImage($path, $cid, $name = "", $encoding = "base64", $type = "application/octet-stream")
-    {
+    function AddEmbeddedImage($path, $cid, $name = "", $encoding = "base64", $type = "application/octet-stream") {
         if (!@is_file($path)) {
             $this->error_handler(sprintf("Could not access [%s] file", $path));
             return false;
@@ -785,8 +757,7 @@ class mailer
         return true;
     }
     
-    function EmbeddedImageCount()
-    {
+    function EmbeddedImageCount() {
         $ret = 0;
         for ($i = 0; $i < count($this->attachment); $i++) {
             if ($this->attachment[$i][6] == "inline")
@@ -796,50 +767,41 @@ class mailer
         return $ret;
     }
     
-    function ClearAddresses()
-    {
+    function ClearAddresses() {
         $this->to = array();
     }
     
-    function ClearCCs()
-    {
+    function ClearCCs() {
         $this->cc = array();
     }
     
-    function ClearBCCs()
-    {
+    function ClearBCCs() {
         $this->bcc = array();
     }
     
-    function ClearReplyTos()
-    {
+    function ClearReplyTos() {
         $this->ReplyTo = array();
     }
     
-    function ClearAllRecipients()
-    {
+    function ClearAllRecipients() {
         $this->to  = array();
         $this->cc  = array();
         $this->bcc = array();
     }
     
-    function ClearAttachments()
-    {
+    function ClearAttachments() {
         $this->attachment = array();
     }
     
-    function ClearCustomHeaders()
-    {
+    function ClearCustomHeaders() {
         $this->CustomHeader = array();
     }
     
-    function error_handler($msg)
-    {
+    function error_handler($msg) {
         $this->ErrorInfo = $msg;
     }
     
-    function rfc_date()
-    {
+    function rfc_date() {
         $tz   = date("Z");
         $tzs  = ($tz < 0) ? "-" : "+";
         $tz   = abs($tz);
@@ -848,15 +810,13 @@ class mailer
         return $date;
     }
     
-    function received()
-    {
+    function received() {
         $str = sprintf("Received: from phpmailer ([%s]) by %s " . "with HTTP;%s\t %s%s", $this->get_server_var("REMOTE_ADDR"), $this->get_server_var("SERVER_NAME"), $this->LE, $this->rfc_date(), $this->LE);
         
         return $str;
     }
     
-    function get_server_var($varName)
-    {
+    function get_server_var($varName) {
         global $HTTP_SERVER_VARS;
         global $HTTP_ENV_VARS;
         
@@ -872,21 +832,18 @@ class mailer
             return "";
     }
     
-    function fix_eol($str)
-    {
+    function fix_eol($str) {
         $str = str_replace("\r\n", "\n", $str);
         $str = str_replace("\r", "\n", $str);
         $str = str_replace("\n", $this->LE, $str);
         return $str;
     }
     
-    function AddCustomHeader($custom_header)
-    {
+    function AddCustomHeader($custom_header) {
         $this->CustomHeader[] = $custom_header;
     }
     
-    function AddMSMailHeaders()
-    {
+    function AddMSMailHeaders() {
         $MSHeader = "";
         if ($this->Priority == 1)
             $MSPriority = "High";
@@ -903,8 +860,7 @@ class mailer
     
 }
 
-class Boundary
-{
+class Boundary {
     var $ID = 0;
     var $ContentType = "text/plain";
     var $Encoding = "";
@@ -913,13 +869,11 @@ class Boundary
     var $CharSet = "";
     var $LE = "\n";
     
-    function Boundary($boundary_id)
-    {
+    function Boundary($boundary_id) {
         $this->ID = $boundary_id;
     }
     
-    function GetSource($bLineEnding = true)
-    {
+    function GetSource($bLineEnding = true) {
         $ret    = array();
         $mime[] = sprintf("--%s%s", $this->ID, $this->LE);
         $mime[] = sprintf("Content-Type: %s; charset = \"%s\"%s", $this->ContentType, $this->CharSet, $this->LE);
@@ -939,8 +893,7 @@ class Boundary
 /*
 SMTP Class
 */
-class SMTP
-{
+class SMTP {
     var $SMTP_PORT = 25;
     var $CRLF = "\r\n";
     
@@ -950,8 +903,7 @@ class SMTP
     
     var $do_debug;
     
-    function SMTP()
-    {
+    function SMTP() {
         $this->smtp_conn = 0;
         $this->error     = null;
         $this->helo_rply = null;
@@ -959,8 +911,7 @@ class SMTP
         $this->do_debug = 0;
     }
     
-    function Connect($host, $port = 0, $tval = 30)
-    {
+    function Connect($host, $port = 0, $tval = 30) {
         $this->error = null;
         
         if ($this->connected()) {
@@ -1000,8 +951,7 @@ class SMTP
         return true;
     }
     
-    function Authenticate($username, $password)
-    {
+    function Authenticate($username, $password) {
         fputs($this->smtp_conn, "AUTH LOGIN" . $this->CRLF);
         
         $rply = $this->get_lines();
@@ -1056,8 +1006,7 @@ class SMTP
         return true;
     }
     
-    function Connected()
-    {
+    function Connected() {
         if (!empty($this->smtp_conn)) {
             $sock_status = socket_get_status($this->smtp_conn);
             if ($sock_status["eof"]) {
@@ -1072,8 +1021,7 @@ class SMTP
         return false;
     }
     
-    function Close()
-    {
+    function Close() {
         $this->error     = null;
         $this->helo_rply = null;
         if (!empty($this->smtp_conn)) {
@@ -1082,8 +1030,7 @@ class SMTP
         }
     }
     
-    function Data($msg_data)
-    {
+    function Data($msg_data) {
         $this->error = null;
         
         if (!$this->connected()) {
@@ -1176,8 +1123,7 @@ class SMTP
         return true;
     }
     
-    function Expand($name)
-    {
+    function Expand($name) {
         $this->error = null;
         
         if (!$this->connected()) {
@@ -1216,8 +1162,7 @@ class SMTP
         return $rval;
     }
     
-    function Hello($host = "")
-    {
+    function Hello($host = "") {
         $this->error = null;
         
         if (!$this->connected()) {
@@ -1257,8 +1202,7 @@ class SMTP
         return true;
     }
     
-    function Help($keyword = "")
-    {
+    function Help($keyword = "") {
         $this->error = null;
         
         if (!$this->connected()) {
@@ -1297,8 +1241,7 @@ class SMTP
         return $rply;
     }
     
-    function Mail($from)
-    {
+    function Mail($from) {
         $this->error = null;
         
         if (!$this->connected()) {
@@ -1331,8 +1274,7 @@ class SMTP
         return true;
     }
     
-    function Noop()
-    {
+    function Noop() {
         $this->error = null;
         
         if (!$this->connected()) {
@@ -1365,8 +1307,7 @@ class SMTP
         return true;
     }
     
-    function Quit($close_on_error = true)
-    {
+    function Quit($close_on_error = true) {
         $this->error = null;
         
         if (!$this->connected()) {
@@ -1407,8 +1348,7 @@ class SMTP
         return $rval;
     }
     
-    function Recipient($to)
-    {
+    function Recipient($to) {
         $this->error = null;
         
         if (!$this->connected()) {
@@ -1441,8 +1381,7 @@ class SMTP
         return true;
     }
     
-    function Reset()
-    {
+    function Reset() {
         $this->error = null;
         
         if (!$this->connected()) {
@@ -1476,8 +1415,7 @@ class SMTP
         return true;
     }
     
-    function Send($from)
-    {
+    function Send($from) {
         $this->error = null;
         
         if (!$this->connected()) {
@@ -1510,8 +1448,7 @@ class SMTP
         return true;
     }
     
-    function SendAndMail($from)
-    {
+    function SendAndMail($from) {
         $this->error = null;
         
         if (!$this->connected()) {
@@ -1544,8 +1481,7 @@ class SMTP
         return true;
     }
     
-    function SendOrMail($from)
-    {
+    function SendOrMail($from) {
         $this->error = null;
         
         if (!$this->connected()) {
@@ -1578,8 +1514,7 @@ class SMTP
         return true;
     }
     
-    function Turn()
-    {
+    function Turn() {
         $this->error = array(
             "error" => "This method, TURN, of the SMTP " . "is not implemented"
         );
@@ -1589,8 +1524,7 @@ class SMTP
         return false;
     }
     
-    function Verify($name)
-    {
+    function Verify($name) {
         $this->error = null;
         
         if (!$this->connected()) {
@@ -1623,8 +1557,7 @@ class SMTP
         return $rply;
     }
     
-    function get_lines()
-    {
+    function get_lines() {
         $data = "";
         while ($str = fgets($this->smtp_conn, 515)) {
             if ($this->do_debug >= 4) {

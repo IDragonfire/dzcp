@@ -13,8 +13,4 @@ $login = show("menu/login", array(
     "permanent" => _login_permanent,
     "lostpwd" => _login_lostpwd
 ));
-?> 
-             "signup" => _login_signup,
-                                        "permanent" => _login_permanent,
-                                        "lostpwd" => _login_lostpwd));
 ?>

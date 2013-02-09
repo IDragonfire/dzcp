@@ -7,8 +7,7 @@ $server_link       = 'cnc://{IP}:{S_PORT}';
 
 ##############################################################################################################################
 
-function server_query_cnc($ip, $port, $q_port, $request)
-{
+function server_query_cnc($ip, $port, $q_port, $request) {
     global $server_timeout;
     $q_port = empty($q_port) ? $port : $q_port;
     
@@ -40,7 +39,6 @@ function server_query_cnc($ip, $port, $q_port, $request)
                 $status_post = socket_get_status($connect);
             } while ($status_pre['unread_bytes'] != $status_post['unread_bytes']);
         }
-        ;
         fclose($connect);
         $data    = ($output);
         $temp    = array();

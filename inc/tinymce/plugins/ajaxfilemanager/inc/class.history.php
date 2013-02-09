@@ -11,8 +11,7 @@ if (!defined('AJAX_INIT_DONE')) {
  * @since 22/May/2007
  *
  */
-class History
-{
+class History {
     var $history = array(); //keep all changes
     var $path = ''; //path to the iamge
     var $session = null;
@@ -22,8 +21,7 @@ class History
      * @param string $path the path to the image 
      * @param object $session an instance of session class
      */
-    function __construct($path, &$session)
-    {
+    function __construct($path, &$session) {
         $this->path = $path;
         $this->session =& $session;
         if (!isset($_SESSION[$this->path])) {
@@ -37,8 +35,7 @@ class History
      * @param string $path the path to the image 
      * @param object $session an instance of session class
      */
-    function History($path, &$session)
-    {
+    function History($path, &$session) {
         $this->__construct($path, $session);
     }
     
@@ -48,8 +45,7 @@ class History
      * @param string $key
      * @param string $info   array('name', 'restorable', 'is_original')
      */
-    function add($info)
-    {
+    function add($info) {
         $_SESSION[$this->path][] = $info;
     }
     /**
@@ -57,8 +53,7 @@ class History
      *
      * @return array array('name', 'restorable', 'is_original')
      */
-    function getNumRestorable()
-    {
+    function getNumRestorable() {
         $output = 0;
         if (isset($_SESSION[$this->path]) && is_array($_SESSION[$this->path])) {
             foreach ($_SESSION[$this->path] as $k => $v) {
@@ -79,8 +74,7 @@ class History
      *
      * @return  return empty array when failed
      */
-    function getLastestRestorable()
-    {
+    function getLastestRestorable() {
         if (isset($_SESSION[$this->path]) && is_array($_SESSION[$this->path]) && sizeof($_SESSION[$this->path])) {
             $sessionImages = array_reverse($_SESSION[$this->path], true);
             $lastestKey    = '';
@@ -99,8 +93,7 @@ class History
      *
      * @return array
      */
-    function getOriginalImage()
-    {
+    function getOriginalImage() {
         $outputs = array();
         if (isset($_SESSION[$this->path]) && is_array($_SESSION[$this->path])) {
             $sessionImages = array_reverse($_SESSION[$this->path], true);
@@ -124,8 +117,7 @@ class History
      *
      * @return boolean
      */
-    function restore()
-    {
+    function restore() {
         if (isset($_SESSION[$this->path]) && is_array($_SESSION[$this->path]) && sizeof($_SESSION[$this->path])) {
             $sessionImages = array_reverse($_SESSION[$this->path], true);
             $lastestKey    = '';

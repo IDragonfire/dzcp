@@ -7,8 +7,7 @@ $server_link       = 'ffow://{IP}:{S_PORT}?game=FrontlinesFuelofWar&amp;action=s
 
 ##############################################################################################################################
 
-function server_query_frontlines($ip, $port, $q_port, $request)
-{
+function server_query_frontlines($ip, $port, $q_port, $request) {
     global $server_timeout;
     $q_port = empty($q_port) ? 5478 : $q_port;
     

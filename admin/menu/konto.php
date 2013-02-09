@@ -77,15 +77,15 @@ if (!permission("clankasse")) {
         "konto" => $konto
     ));
     if ($_GET['do'] == "update") {
-        $qry  = db("UPDATE " . $db['settings'] . " 
-                   SET `k_inhaber`    = '" . up($_POST['inhaber']) . "', 
-                       `k_nr`         = '" . up($_POST['kontonr']) . "', 
-                       `k_waehrung`   = '" . up($_POST['waehrung']) . "', 
-                       `k_bank`       = '" . up($_POST['bank']) . "', 
-                       `k_blz`        = '" . up($_POST['blz']) . "', 
-                       `k_vwz`        = '" . up($_POST['vwz']) . "', 
-                       `iban`         = '" . up($_POST['iban']) . "', 
-                       `bic`          = '" . up($_POST['bic']) . "' 
+        $qry  = db("UPDATE " . $db['settings'] . "
+                   SET `k_inhaber`    = '" . up($_POST['inhaber']) . "',
+                       `k_nr`         = '" . up($_POST['kontonr']) . "',
+                       `k_waehrung`   = '" . up($_POST['waehrung']) . "',
+                       `k_bank`       = '" . up($_POST['bank']) . "',
+                       `k_blz`        = '" . up($_POST['blz']) . "',
+                       `k_vwz`        = '" . up($_POST['vwz']) . "',
+                       `iban`         = '" . up($_POST['iban']) . "',
+                       `bic`          = '" . up($_POST['bic']) . "'
                    WHERE id = 1");
         $show = info(_config_set, "?admin=konto");
     } elseif ($_GET['do'] == "new") {
@@ -100,13 +100,13 @@ if (!permission("clankasse")) {
         if (empty($_POST['kat'])) {
             $show = error(_clankasse_empty_kat, 1);
         } else {
-            $qry = db("INSERT INTO " . $db['c_kats'] . " 
+            $qry = db("INSERT INTO " . $db['c_kats'] . "
                      SET `kat` = '" . up($_POST['kat']) . "'");
             
             $show = info(_clankasse_kat_added, "?admin=konto");
         }
     } elseif ($_GET['do'] == "edit") {
-        $qry = db("SELECT * FROM " . $db['c_kats'] . " 
+        $qry = db("SELECT * FROM " . $db['c_kats'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
@@ -122,44 +122,17 @@ if (!permission("clankasse")) {
         if (empty($_POST['kat'])) {
             $show = error(_clankasse_empty_kat, 1);
         } else {
-            $qry = db("UPDATE " . $db['c_kats'] . " 
-                     SET `kat` = '" . up($_POST['kat']) . "' 
+            $qry = db("UPDATE " . $db['c_kats'] . "
+                     SET `kat` = '" . up($_POST['kat']) . "'
                      WHERE id = '" . intval($_GET['id']) . "'");
             
             $show = info(_clankasse_kat_edited, "?admin=konto");
         }
     } elseif ($_GET['do'] == "delete") {
-        $qry = db("DELETE FROM " . $db['c_kats'] . " 
+        $qry = db("DELETE FROM " . $db['c_kats'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         
         $show = info(_clankasse_kat_deleted, "?admin=konto");
     }
 }
-?>])."'");
-        $get = _fetch($qry);
-
-        $show = show($dir."/form_clankasse", array("newhead" => _clankasse_edit_head,
-                                                   "do" => "editkat&amp;id=".$_GET['id']."",
-                                                   "kat" => re($get['kat']),
-                                                   "top" => _config_c_clankasse,
-                                                   "what" => _button_value_edit,
-                                                   "dlkat" => _admin_download_kat));
-      } elseif($_GET['do'] == "editkat") {
-        if(empty($_POST['kat']))
-        {
-          $show = error(_clankasse_empty_kat, 1);
-        } else {
-          $qry = db("UPDATE ".$db['c_kats']."
-                     SET `kat` = '".up($_POST['kat'])."'
-                     WHERE id = '".intval($_GET['id'])."'");
-
-          $show = info(_clankasse_kat_edited, "?admin=konto");
-        }
-      } elseif($_GET['do'] == "delete") {
-        $qry = db("DELETE FROM ".$db['c_kats']."
-                   WHERE id = '".intval($_GET['id'])."'");
-
-        $show = info(_clankasse_kat_deleted, "?admin=konto");
-      }
-    }
 ?>

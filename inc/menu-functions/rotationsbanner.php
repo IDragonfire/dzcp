@@ -1,9 +1,8 @@
 <?php
 //-> Rotationsbanner
-function rotationsbanner()
-{
+function rotationsbanner() {
     global $db;
-    $qry = db("SELECT * FROM " . $db['sponsoren'] . " 
+    $qry = db("SELECT * FROM " . $db['sponsoren'] . "
                      WHERE banner = 1 ORDER BY RAND() LIMIT 1");
     while ($get = _fetch($qry)) {
         $rotationbanner .= show(_sponsors_bannerlink, array(
@@ -14,8 +13,5 @@ function rotationsbanner()
     }
     
     return empty($rotationbanner) ? '' : $rotationbanner;
-}
-?> 
-: $rotationbanner;
 }
 ?>

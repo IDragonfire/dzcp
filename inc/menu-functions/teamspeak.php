@@ -1,7 +1,6 @@
 <?php
 //-> Teamspeak statusscript
-function teamspeak($js = 0)
-{
+function teamspeak($js = 0) {
     global $db, $settings, $language, $c;
     
     header('Content-Type: text/html; charset=iso-8859-1');

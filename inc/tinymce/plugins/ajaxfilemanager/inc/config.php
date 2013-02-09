@@ -25,8 +25,7 @@ if (!headers_sent()) {
  * @param string $input
  * @return string
  */
-function secureFileName($input)
-{
+function secureFileName($input) {
     return preg_replace('/[^a-zA-Z0-9\-_]/', '', $input);
 }
 //Directories Declarations    

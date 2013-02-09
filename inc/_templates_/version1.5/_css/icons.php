@@ -6,8 +6,7 @@ Sets the icons before content in a <select>-Tag (Mozilla/Netscape only!)
 ## SET CONTENT TYPE
 header("Content-type: text/css");
 ## SETTINGS
-function getIcons($dir)
-{
+function getIcons($dir) {
     $dp       = @opendir($dir);
     $allicons = array();
     while ($icons = @readdir($dp)) {

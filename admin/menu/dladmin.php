@@ -11,7 +11,7 @@ if (!permission("downloads")) {
     $show = error(_error_wrong_permissions, 1);
 } else {
     if ($_GET['do'] == "new") {
-        $qry = db("SELECT * FROM " . $db['dl_kat'] . " 
+        $qry = db("SELECT * FROM " . $db['dl_kat'] . "
                    ORDER BY name");
         while ($get = _fetch($qry)) {
             $kats .= show(_select_field, array(
@@ -61,21 +61,21 @@ if (!permission("downloads")) {
             else
                 $dl = up($_POST['url']);
             
-            $qry = db("INSERT INTO " . $db['downloads'] . " 
-                     SET `download`     = '" . up($_POST['download']) . "', 
-                         `url`          = '" . $dl . "', 
-                         `date`         = '" . ((int) time()) . "', 
-                         `beschreibung` = '" . up($_POST['beschreibung'], 1) . "', 
+            $qry = db("INSERT INTO " . $db['downloads'] . "
+                     SET `download`     = '" . up($_POST['download']) . "',
+                         `url`          = '" . $dl . "',
+                         `date`         = '" . ((int) time()) . "',
+                         `beschreibung` = '" . up($_POST['beschreibung'], 1) . "',
                          `kat`          = '" . ((int) $_POST['kat']) . "'");
             
             $show = info(_downloads_added, "?admin=dladmin");
         }
     } elseif ($_GET['do'] == "edit") {
-        $qry = db("SELECT * FROM " . $db['downloads'] . " 
+        $qry = db("SELECT * FROM " . $db['downloads'] . "
                     WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
-        $qryk = db("SELECT * FROM " . $db['dl_kat'] . " 
+        $qryk = db("SELECT * FROM " . $db['dl_kat'] . "
                     ORDER BY name");
         while ($getk = _fetch($qryk)) {
             if ($getk['id'] == $get['kat'])
@@ -121,23 +121,23 @@ if (!permission("downloads")) {
             else
                 $dl = up($_POST['url']);
             
-            $qry = db("UPDATE " . $db['downloads'] . " 
-                     SET `download`     = '" . up($_POST['download']) . "', 
-                         `url`          = '" . $dl . "', 
-                         `beschreibung` = '" . up($_POST['beschreibung'], 1) . "', 
-                         `date`         = '" . ((int) time()) . "', 
-                         `kat`          = '" . ((int) $_POST['kat']) . "' 
+            $qry = db("UPDATE " . $db['downloads'] . "
+                     SET `download`     = '" . up($_POST['download']) . "',
+                         `url`          = '" . $dl . "',
+                         `beschreibung` = '" . up($_POST['beschreibung'], 1) . "',
+                         `date`         = '" . ((int) time()) . "',
+                         `kat`          = '" . ((int) $_POST['kat']) . "'
                      WHERE id = '" . intval($_GET['id']) . "'");
             
             $show = info(_downloads_edited, "?admin=dladmin");
         }
     } elseif ($_GET['do'] == "delete") {
-        $qry = db("DELETE FROM " . $db['downloads'] . " 
+        $qry = db("DELETE FROM " . $db['downloads'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         
         $show = info(_downloads_deleted, "?admin=dladmin");
     } else {
-        $qry = db("SELECT * FROM " . $db['downloads'] . " 
+        $qry = db("SELECT * FROM " . $db['downloads'] . "
                    ORDER BY id");
         while ($get = _fetch($qry)) {
             $edit   = show("page/button_edit_single", array(
@@ -172,24 +172,4 @@ if (!permission("downloads")) {
         ));
     }
 }
-?>                                                    "title" => _button_title_del,
-                                                            "del" => convSpace(_confirm_del_dl)));
-
-          $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-          $show_ .= show($dir."/downloads_show", array("id" => $get['id'],
-                                                       "dl" => re($get['download']),
-                                                       "class" => $class,
-                                                       "edit" => $edit,
-                                                       "delete" => $delete
-                                                       ));
-        }
-
-        $show = show($dir."/downloads", array("head" => _dl,
-                                              "date" => _datum,
-                                              "titel" => _dl_file,
-                                              "add" => _downloads_admin_head,
-                                              "show" => $show_
-                                              ));
-      }
-    }
 ?>

@@ -1,6 +1,5 @@
 <?php
-function ftopics()
-{
+function ftopics() {
     global $db, $maxftopics, $lftopics, $maxfposts, $allowHover;
     
     $f   = 0;

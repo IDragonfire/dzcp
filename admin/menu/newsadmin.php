@@ -198,29 +198,29 @@ if (permission("news")) {
             }
             
             
-            $qry = db("INSERT INTO " . $db['news'] . " 
-                     SET `autor`      = '" . ((int) $userid) . "', 
-                         `kat`        = '" . ((int) $_POST['kat']) . "', 
-                         `titel`      = '" . up($_POST['titel']) . "', 
-                         `text`       = '" . up($_POST['newstext'], 1) . "', 
-                         `klapplink`  = '" . up($_POST['klapptitel']) . "', 
-                         `klapptext`  = '" . up($_POST['morenews'], 1) . "', 
-                         `link1`      = '" . up($_POST['link1']) . "', 
-                         `link2`      = '" . up($_POST['link2']) . "', 
-                         `link3`      = '" . up($_POST['link3']) . "', 
-                         `url1`       = '" . links($_POST['url1']) . "', 
-                         `url2`       = '" . links($_POST['url2']) . "', 
-                         `url3`       = '" . links($_POST['url3']) . "', 
-                         `intern`     = '" . ((int) $_POST['intern']) . "', 
-                         " . $timeshift . " 
-                                                 " . $public . " 
-                                                 " . $datum . " 
+            $qry = db("INSERT INTO " . $db['news'] . "
+                     SET `autor`      = '" . ((int) $userid) . "',
+                         `kat`        = '" . ((int) $_POST['kat']) . "',
+                         `titel`      = '" . up($_POST['titel']) . "',
+                         `text`       = '" . up($_POST['newstext'], 1) . "',
+                         `klapplink`  = '" . up($_POST['klapptitel']) . "',
+                         `klapptext`  = '" . up($_POST['morenews'], 1) . "',
+                         `link1`      = '" . up($_POST['link1']) . "',
+                         `link2`      = '" . up($_POST['link2']) . "',
+                         `link3`      = '" . up($_POST['link3']) . "',
+                         `url1`       = '" . links($_POST['url1']) . "',
+                         `url2`       = '" . links($_POST['url2']) . "',
+                         `url3`       = '" . links($_POST['url3']) . "',
+                         `intern`     = '" . ((int) $_POST['intern']) . "',
+                         " . $timeshift . "
+                                                 " . $public . "
+                                                 " . $datum . "
                                                  `sticky`     = '" . ((int) $stickytime) . "'");
             
             $show = info(_news_sended, "?admin=newsadmin");
         }
     } elseif ($_GET['do'] == "edit") {
-        $qry = db("SELECT * FROM " . $db['news'] . " 
+        $qry = db("SELECT * FROM " . $db['news'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
@@ -366,43 +366,43 @@ if (permission("news")) {
                 $datum     = '';
             }
             
-            $qry = db("UPDATE " . $db['news'] . " 
-                     SET `kat`        = '" . ((int) $_POST['kat']) . "', 
-                         `titel`      = '" . up($_POST['titel']) . "', 
-                         `text`       = '" . up($_POST['newstext'], 1) . "', 
-                         `klapplink`  = '" . up($_POST['klapptitel']) . "', 
-                         `klapptext`  = '" . up($_POST['morenews'], 1) . "', 
-                         `link1`      = '" . up($_POST['link1']) . "', 
-                         `url1`       = '" . links($_POST['url1']) . "', 
-                         `link2`      = '" . up($_POST['link2']) . "', 
-                         `url2`       = '" . links($_POST['url2']) . "', 
-                         `link3`      = '" . up($_POST['link3']) . "', 
-                                   `intern`     = '" . ((int) $_POST['intern']) . "', 
-                         `url3`       = '" . links($_POST['url3']) . "', 
-                                                 " . $timeshift . " 
-                                                 " . $public . " 
-                                                 " . $datum . " 
-                         `sticky`     = '" . ((int) $stickytime) . "' 
+            $qry = db("UPDATE " . $db['news'] . "
+                     SET `kat`        = '" . ((int) $_POST['kat']) . "',
+                         `titel`      = '" . up($_POST['titel']) . "',
+                         `text`       = '" . up($_POST['newstext'], 1) . "',
+                         `klapplink`  = '" . up($_POST['klapptitel']) . "',
+                         `klapptext`  = '" . up($_POST['morenews'], 1) . "',
+                         `link1`      = '" . up($_POST['link1']) . "',
+                         `url1`       = '" . links($_POST['url1']) . "',
+                         `link2`      = '" . up($_POST['link2']) . "',
+                         `url2`       = '" . links($_POST['url2']) . "',
+                         `link3`      = '" . up($_POST['link3']) . "',
+                                   `intern`     = '" . ((int) $_POST['intern']) . "',
+                         `url3`       = '" . links($_POST['url3']) . "',
+                                                 " . $timeshift . "
+                                                 " . $public . "
+                                                 " . $datum . "
+                         `sticky`     = '" . ((int) $stickytime) . "'
                      WHERE id = '" . intval($_GET['id']) . "'");
         }
         $show = info(_news_edited, "?admin=newsadmin");
     } elseif ($_GET['do'] == 'public') {
         if ($_GET['what'] == 'set') {
-            $upd = db("UPDATE " . $db['news'] . " 
-                     SET `public` = '1', 
-                                      `datum`  = '" . time() . "' 
+            $upd = db("UPDATE " . $db['news'] . "
+                     SET `public` = '1',
+                                      `datum`  = '" . time() . "'
                      WHERE id = '" . intval($_GET['id']) . "'");
         } elseif ($_GET['what'] == 'unset') {
-            $upd = db("UPDATE " . $db['news'] . " 
-                     SET `public` = '0' 
+            $upd = db("UPDATE " . $db['news'] . "
+                     SET `public` = '0'
                      WHERE id = '" . intval($_GET['id']) . "'");
         }
         
         header("Location: ?admin=newsadmin");
     } elseif ($_GET['do'] == "delete") {
-        $del = db("DELETE FROM " . $db['news'] . " 
+        $del = db("DELETE FROM " . $db['news'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
-        $del = db("DELETE FROM " . $db['newscomments'] . " 
+        $del = db("DELETE FROM " . $db['newscomments'] . "
                    WHERE news = '" . intval($_GET['id']) . "'");
         
         $show = info(_news_deleted, "?admin=newsadmin");
@@ -478,47 +478,4 @@ if (permission("news")) {
 } else {
     $show = error(_error_wrong_permissions, 1);
 }
-?>     "title" => _button_title_del,
-                                                            "del" => convSpace(_confirm_del_news)));
-          $titel = show(_news_show_link, array("titel" => re(cut($get['titel'],$lnewsadmin)),
-                                               "id" => $get['id']));
-  
-          $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-  
-          if($get['intern'] == "1") $intern = _votes_intern;
-          else $intern = "";
-          if($get['sticky'] == "0") $sticky = "";
-          else $sticky = _news_sticky;
-         
-          $public = ($get['public'] == 1)
-               ? '<a href="?admin=newsadmin&amp;do=public&amp;id='.$get['id'].'&amp;what=unset"><img src="../inc/images/public.gif" alt="" title="'._non_public.'" /></a>'
-               : '<a href="?admin=newsadmin&amp;do=public&amp;id='.$get['id'].'&amp;what=set"><img src="../inc/images/nonpublic.gif" alt="" title="'._public.'" /></a>';
-          if(empty($get['datum'])) $datum = _no_public;
-          else $datum = date("d.m.y H:i", $get['datum'])._uhr;
-          
-          $show_ .= show($dir."/admin_show", array("date" => $datum,
-                                                   "titel" => $titel,
-                                                   "class" => $class,
-                                                   "autor" => autor($get['autor']),
-                                                       "intnews" => $intern,
-                                                   "sticky" => $sticky,
-                                                   "public" => $public,
-                                                   "edit" => $edit,
-                                                   "delete" => $delete));
-        }
-        $nav = nav($entrys,$maxadminnews,"?admin=newsadmin");
-        $show = show($dir."/admin_news", array("head" => _news_admin_head,
-                                               "nav" => $nav,
-                                               "autor" => _autor,
-                                               "titel" => _titel,
-                                               "val" => "newsadmin",
-                                               "date" => _datum,
-                                               "show" => $show_,
-                                               "edit" => _editicon_blank,
-                                               "delete" => _deleteicon_blank,
-                                               "add" => _admin_news_head));
-      }
-    } else {
-      $show = error(_error_wrong_permissions, 1);
-    }
 ?>

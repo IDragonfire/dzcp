@@ -1,10 +1,9 @@
 <?php
 //zuletzt registrierte User
-function l_reg()
-{
+function l_reg() {
     global $db, $llreg, $maxlreg;
-    $qry = db("SELECT id,nick,country,regdatum FROM " . $db['users'] . " 
-               ORDER BY regdatum DESC 
+    $qry = db("SELECT id,nick,country,regdatum FROM " . $db['users'] . "
+               ORDER BY regdatum DESC
                LIMIT " . $maxlreg . "");
     while ($get = _fetch($qry)) {
         $lreg .= show("menu/last_reg", array(
@@ -16,8 +15,5 @@ function l_reg()
     }
     
     return empty($lreg) ? '' : '<table class="navContent" cellspacing="0">' . $lreg . '</table>';
-}
-?> 
-="0">'.$lreg.'</table>';
 }
 ?>

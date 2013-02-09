@@ -1,7 +1,6 @@
 <?php
 //User of the Moment
-function uotm()
-{
+function uotm() {
     global $db, $allowHover;
     
     $imgFiles = array();

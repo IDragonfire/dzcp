@@ -31,19 +31,12 @@ if ($chkMe != 4) {
         "show" => $show_
     ));
     if ($_GET['do'] == "update") {
-        $qry = db("UPDATE " . $db['settings'] . " 
-                   SET `i_autor` = '" . up($_POST['seitenautor'], 1) . "', 
-                       `i_domain` = '" . up($_POST['domain']) . "' 
+        $qry = db("UPDATE " . $db['settings'] . "
+                   SET `i_autor` = '" . up($_POST['seitenautor'], 1) . "',
+                       `i_domain` = '" . up($_POST['domain']) . "'
                    WHERE id = 1");
         
         $show = info(_config_set, "?admin=impressum");
     }
 }
-?>SET `i_autor` = '".up($_POST['seitenautor'], 1)."',
-                       `i_domain` = '".up($_POST['domain'])."'
-                   WHERE id = 1");
-
-        $show = info(_config_set, "?admin=impressum");
-      }
-    }
- ?>
+?>

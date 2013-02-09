@@ -11,8 +11,8 @@ if (!permission("rankings")) {
     $show = error(_error_wrong_permissions, 1);
 } else {
     if ($_GET['do'] == "add") {
-        $qrys = db("SELECT * FROM " . $db['squads'] . " 
-                    WHERE status = '1' 
+        $qrys = db("SELECT * FROM " . $db['squads'] . "
+                    WHERE status = '1'
                     ORDER BY game ASC");
         while ($gets = _fetch($qrys)) {
             $squads .= show(_select_field_ranking_add, array(
@@ -44,22 +44,22 @@ if (!permission("rankings")) {
             elseif (empty($_POST['rank']))
                 $show = error(_error_empty_rank, 1);
         } else {
-            $qry = db("INSERT INTO " . $db['rankings'] . " 
-                     SET `league`   = '" . up($_POST['league']) . "', 
-                         `squad`    = '" . up($_POST['squad']) . "', 
-                         `url`      = '" . links($_POST['url']) . "', 
-                         `rank`     = '" . ((int) $_POST['rank']) . "', 
+            $qry = db("INSERT INTO " . $db['rankings'] . "
+                     SET `league`   = '" . up($_POST['league']) . "',
+                         `squad`    = '" . up($_POST['squad']) . "',
+                         `url`      = '" . links($_POST['url']) . "',
+                         `rank`     = '" . ((int) $_POST['rank']) . "',
                          `postdate` = '" . ((int) time()) . "'");
             
             $show = info(_ranking_added, "?admin=rankings");
         }
     } elseif ($_GET['do'] == "edit") {
-        $qry = db("SELECT * FROM " . $db['rankings'] . " 
+        $qry = db("SELECT * FROM " . $db['rankings'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         $get = _fetch($qry);
         
-        $qrys = db("SELECT * FROM " . $db['squads'] . " 
-                    WHERE status = '1' 
+        $qrys = db("SELECT * FROM " . $db['squads'] . "
+                    WHERE status = '1'
                     ORDER BY game ASC");
         while ($gets = _fetch($qrys)) {
             if ($get['squad'] == $gets['id'])
@@ -95,30 +95,30 @@ if (!permission("rankings")) {
             elseif (empty($_POST['rank']))
                 $show = error(_error_empty_rank, 1);
         } else {
-            $qry = db("SELECT rank FROM " . $db['rankings'] . " 
+            $qry = db("SELECT rank FROM " . $db['rankings'] . "
                      WHERE id = '" . intval($_GET['id']) . "'");
             $get = _fetch($qry);
             
-            $qry = db("UPDATE " . $db['rankings'] . " 
-                     SET `league`       = '" . up($_POST['league']) . "', 
-                         `squad`        = '" . up($_POST['squad']) . "', 
-                         `url`          = '" . links($_POST['url']) . "', 
-                         `rank`         = '" . ((int) $_POST['rank']) . "', 
-                         `lastranking`  = '" . ((int) $get['rank']) . "', 
-                         `postdate`     = '" . ((int) time()) . "' 
+            $qry = db("UPDATE " . $db['rankings'] . "
+                     SET `league`       = '" . up($_POST['league']) . "',
+                         `squad`        = '" . up($_POST['squad']) . "',
+                         `url`          = '" . links($_POST['url']) . "',
+                         `rank`         = '" . ((int) $_POST['rank']) . "',
+                         `lastranking`  = '" . ((int) $get['rank']) . "',
+                         `postdate`     = '" . ((int) time()) . "'
                      WHERE id = '" . intval($_GET['id']) . "'");
             
             $show = info(_ranking_edited, "?admin=rankings");
         }
     } elseif ($_GET['do'] == "delete") {
-        $del = db("DELETE FROM " . $db['rankings'] . " 
+        $del = db("DELETE FROM " . $db['rankings'] . "
                    WHERE id = '" . intval($_GET['id']) . "'");
         
         $show = info(_ranking_deleted, "?admin=rankings");
     } else {
-        $qry = db("SELECT s1.*,s2.name,s2.id AS sqid FROM " . $db['rankings'] . " AS s1 
-                 LEFT JOIN " . $db['squads'] . " AS s2 
-                 ON s1.squad = s2.id 
+        $qry = db("SELECT s1.*,s2.name,s2.id AS sqid FROM " . $db['rankings'] . " AS s1
+                 LEFT JOIN " . $db['squads'] . " AS s2
+                 ON s1.squad = s2.id
                  ORDER BY s1.postdate DESC");
         while ($get = _fetch($qry)) {
             $edit   = show("page/button_edit_single", array(
@@ -155,20 +155,4 @@ if (!permission("rankings")) {
         ));
     }
 }
-?>= show($dir."/rankings_show", array("squad" => re($get['name']),
-                                                      "league" => re($get['league']),
-                                                      "id" => $get['sqid'],
-                                                      "class" => $class,
-                                                      "edit" => $edit,
-                                                      "delete" => $delete));
-        }
-
-        $show = show($dir."/rankings", array("head" => _config_rankings,
-                                             "league" => _cw_head_liga,
-                                             "squad" => _cw_head_squad,
-                                             "show" => $show_,
-                                             "add" => _rankings_add_head
-                                             ));
-      }
-    }
 ?>

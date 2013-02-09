@@ -1,6 +1,5 @@
 <?php
-function random_gallery()
-{
+function random_gallery() {
     global $db;
     
     $imgArr = array();

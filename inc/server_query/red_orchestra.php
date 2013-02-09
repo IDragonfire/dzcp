@@ -7,8 +7,7 @@ $server_link       = 'ut2004://{IP}:{S_PORT}';
 
 ##############################################################################################################################
 
-function server_query_red_orchestra($ip, $port, $q_port, $request)
-{
+function server_query_red_orchestra($ip, $port, $q_port, $request) {
     $q_port = empty($q_port) ? $port + 10 : $q_port;
     
     if ($request == "info") {

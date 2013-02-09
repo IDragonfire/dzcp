@@ -1,7 +1,6 @@
 <?php
 //-> Top Downloads
-function top_dl()
-{
+function top_dl() {
     global $db, $maxtopdl, $ltopdl, $allowHover;
     $qry = db("SELECT * FROM " . $db['downloads'] . " ORDER BY hits DESC
              LIMIT " . $maxtopdl . "");

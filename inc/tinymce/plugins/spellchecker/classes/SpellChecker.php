@@ -7,15 +7,13 @@
  * @copyright Copyright � 2004-2007, Moxiecode Systems AB, All rights reserved.
  */
 
-class SpellChecker
-{
+class SpellChecker {
     /**
      * Constructor.
      *
      * @param $config Configuration name/value array.
      */
-    function SpellChecker(&$config)
-    {
+    function SpellChecker(&$config) {
         $this->_config = $config;
     }
     
@@ -25,8 +23,7 @@ class SpellChecker
      * @param $args.. Arguments.
      * @return {Array} Array of all input arguments. 
      */
-    function &loopback( /* args.. */ )
-    {
+    function &loopback( /* args.. */ ) {
         return func_get_args();
     }
     
@@ -37,8 +34,7 @@ class SpellChecker
      * @param {Array} $words Array of words to spellcheck.
      * @return {Array} Array of misspelled words.
      */
-    function &checkWords($lang, $words)
-    {
+    function &checkWords($lang, $words) {
         return $words;
     }
     
@@ -49,8 +45,7 @@ class SpellChecker
      * @param {String} $word Specific word to get suggestions for.
      * @return {Array} Array of suggestions for the specified word.
      */
-    function &getSuggestions($lang, $word)
-    {
+    function &getSuggestions($lang, $word) {
         return array();
     }
     
@@ -59,8 +54,7 @@ class SpellChecker
      *
      * @param {String} $str Message to send back to user.
      */
-    function throwError($str)
-    {
+    function throwError($str) {
         die('{"result":null,"id":null,"error":{"errstr":"' . addslashes($str) . '","errfile":"","errline":null,"errcontext":"","level":"FATAL"}}');
     }
 }

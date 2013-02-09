@@ -1,7 +1,6 @@
 <?php
 // Funktionen
-function makePrev()
-{
+function makePrev() {
     $arr = array(
         0,
         1,
@@ -17,8 +16,7 @@ function makePrev()
     return $arr[rand(0, 9)] . $arr[rand(0, 9)] . $arr[rand(0, 9)];
 }
 
-function up($txt, $bbcode = 0)
-{
+function up($txt, $bbcode = 0) {
     $txt = str_replace("& ", "&amp; ", $txt);
     $txt = str_replace("\"", "&#34;", $txt);
     $txt = trim($txt);
@@ -30,8 +28,7 @@ function up($txt, $bbcode = 0)
     return $txt;
 }
 
-function spChars($txt)
-{
+function spChars($txt) {
     $txt = str_replace("", "&Auml;", $txt);
     $txt = str_replace("", "&auml;", $txt);
     $txt = str_replace("", "&Uuml;", $txt);
@@ -48,8 +45,7 @@ function spChars($txt)
 $installation = false;
 include(basePath . '/inc/config.php');
 
-function install_mysql($login, $nick, $pwd, $email)
-{
+function install_mysql($login, $nick, $pwd, $email) {
     global $db;
     //-> Awards
     $qry = db("DROP TABLE IF EXISTS " . $db['awards'] . "");
@@ -980,8 +976,7 @@ function install_mysql($login, $nick, $pwd, $email)
     }
 }
 
-function update_mysql()
-{
+function update_mysql() {
     global $db;
     
     $qry = db("CREATE TABLE " . $db['profile'] . " (
@@ -1152,8 +1147,7 @@ function update_mysql()
     $qry = db("INSERT INTO " . $db['linkus'] . " (`id`, `url`, `text`, `banner`, `beschreibung`) VALUES (1, 'http://www.dzcp.de', 'http://www.dzcp.de/banner/button.gif', 1, 'deV!L`z Clanportal')");
 }
 
-function update_mysql_1_3()
-{
+function update_mysql_1_3() {
     global $db;
     
     $qry = db("ALTER TABLE " . $db['settings'] . " ADD `iban` varchar(100) NOT NULL default '',
@@ -1165,8 +1159,7 @@ function update_mysql_1_3()
     $qry = db("ALTER TABLE " . $db['users'] . " ADD `listck` int(1) NOT NULL");
     
 }
-function update_mysql_1_4()
-{
+function update_mysql_1_4() {
     global $db;
     
     $qry = db("ALTER TABLE " . $db['config'] . " ADD `id` int(1) NOT NULL default '1' FIRST,
@@ -1277,8 +1270,7 @@ Passwort: [pwd]
     $qry = db("DELETE FROM " . $db['profile'] . "
              WHERE feldname = 'city'");
 }
-function update_mysql_1_5()
-{
+function update_mysql_1_5() {
     global $db;
     
     db("ALTER TABLE " . $db['f_threads'] . " ADD `vote` varchar(10) NOT NULL default '0'");
@@ -1400,15 +1392,13 @@ VALUES
     db("ALTER TABLE " . $db['cw'] . " ADD `top` INT(1) NOT NULL default '0'");
     db("UPDATE " . $db['cw'] . " SET `top` = '1' WHERE `id` = '1'");
 }
-function update_mysql_1_5_1()
-{
+function update_mysql_1_5_1() {
     global $db;
     db("ALTER TABLE " . $db['serverliste'] . " CHANGE `clanurl` `clanurl` VARCHAR( 255 ) NOT NULL");
     db("ALTER TABLE " . $db['settings'] . " ADD `double_post` INT(1) NOT NULL default '1'");
     db("ALTER TABLE " . $db['settings'] . " ADD `forum_vote` INT(1) NOT NULL default '1'");
 }
-function update_mysql_1_5_2()
-{
+function update_mysql_1_5_2() {
     global $db;
     db("ALTER TABLE " . $db['settings'] . " ADD `gb_activ` INT(1) NOT NULL default '1'");
     db("ALTER TABLE " . $db['settings'] . " ADD `ts_version` INT(1) NOT NULL AFTER `ts_sport`");
@@ -1440,14 +1430,12 @@ function update_mysql_1_5_2()
                                       ADD `cache_server` INT( 10 ) NOT NULL DEFAULT '30',
                                       ADD `direct_refresh` INT( 1 ) NOT NULL DEFAULT '0'");
 }
-function update_mysql_1_5_4()
-{
+function update_mysql_1_5_4() {
     global $db;
     db("INSERT INTO " . $db['partners'] . " (`link`, `banner`) VALUES ('http://www.modsbar.de', 'mb_88x32.gif');");
     db("INSERT INTO " . $db['partners'] . " (`link`, `banner`) VALUES ('http://www.templatebar.de', 'tb_88x32.gif');");
 }
-function update_mysql_1_6()
-{
+function update_mysql_1_6() {
     global $db;
     db("ALTER TABLE `" . $db['f_threads'] . "` CHANGE `edited` `edited` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
     db("ALTER TABLE `" . $db['users'] . "` CHANGE `whereami` `whereami` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");

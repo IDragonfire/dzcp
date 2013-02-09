@@ -1,6 +1,5 @@
 <?php
-function newsticker()
-{
+function newsticker() {
     global $db, $allowHover;
     
     if (!permission("intnews"))

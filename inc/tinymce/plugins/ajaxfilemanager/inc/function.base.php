@@ -15,8 +15,7 @@ require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . "config.php");
  * force to ensure existence of stripos
  */
 if (!function_exists("stripos")) {
-    function stripos($str, $needle, $offset = 0)
-    {
+    function stripos($str, $needle, $offset = 0) {
         return @strpos(strtolower($str), strtolower($needle), $offset);
     }
 }
@@ -26,8 +25,7 @@ if (!function_exists("stripos")) {
  * @param array $excls specify those unwanted query string
  * @return string
  */
-function getCurrentUrl($excls = array())
-{
+function getCurrentUrl($excls = array()) {
     $output = $_SERVER['PHP_SELF'];
     $count  = 1;
     foreach ($_GET as $k => $v) {
@@ -48,8 +46,7 @@ function getCurrentUrl($excls = array())
  *
  * @param array $array
  */
-function displayArray($array, $comments = "")
-{
+function displayArray($array, $comments = "") {
     echo "<pre>";
     echo $comments;
     print_r($array);
@@ -67,8 +64,7 @@ function displayArray($array, $comments = "")
  * @param array $invalidExts
  * @return boolean
  */
-function isValidExt($filePath, $validExts, $invalidExts = array())
-{
+function isValidExt($filePath, $validExts, $invalidExts = array()) {
     $tem = array();
     
     if (sizeof($validExts)) {
@@ -113,14 +109,12 @@ function isValidExt($filePath, $validExts, $invalidExts = array())
  * @param  string $value the path to the file
  * @return string 
  */
-function relToAbs($value)
-{
+function relToAbs($value) {
     return backslashToSlash(preg_replace("/(\\\\)/", "\\", getRealPath($value)));
     
 }
 
-function getRelativeFileUrl($value, $relativeTo)
-{
+function getRelativeFileUrl($value, $relativeTo) {
     $output    = '';
     $wwwroot   = removeTrailingSlash(backslashToSlash(getRootPath()));
     $urlprefix = "";
@@ -137,8 +131,7 @@ function getRelativeFileUrl($value, $relativeTo)
  * @param string $value the path to the file
  * @return string
  */
-function slashToBackslash($value)
-{
+function slashToBackslash($value) {
     return str_replace("/", DIRECTORY_SEPARATOR, $value);
 }
 
@@ -148,8 +141,7 @@ function slashToBackslash($value)
  * @param string $value the path to the file
  * @return string
  */
-function backslashToSlash($value)
-{
+function backslashToSlash($value) {
     return str_replace(DIRECTORY_SEPARATOR, "/", $value);
 }
 
@@ -159,8 +151,7 @@ function backslashToSlash($value)
  * @param string $value
  * @return string
  */
-function removeTrailingSlash($value)
-{
+function removeTrailingSlash($value) {
     if (preg_match('@^.+/$@i', $value)) {
         $value = substr($value, 0, strlen($value) - 1);
     }
@@ -173,8 +164,7 @@ function removeTrailingSlash($value)
  * @param string $value 
  * @return string
  */
-function addTrailingSlash($value)
-{
+function addTrailingSlash($value) {
     if (preg_match('@^.*[^/]{1}$@i', $value)) {
         $value .= '/';
     }
@@ -187,8 +177,7 @@ function addTrailingSlash($value)
  * @param string $value
  * @return string
  */
-function transformFilePath($value)
-{
+function transformFilePath($value) {
     $rootPath = addTrailingSlash(backslashToSlash(getRealPath(CONFIG_SYS_ROOT_PATH)));
     $value    = addTrailingSlash(backslashToSlash(getRealPath($value)));
     if (!empty($rootPath) && ($i = strpos($value, $rootPath)) !== false) {
@@ -203,8 +192,7 @@ function transformFilePath($value)
  * @param string $value
  * @return string
  */
-function prependSlash($value)
-{
+function prependSlash($value) {
     if (($value && $value[0] != '/') || !$value) {
         $value = "/" . $value;
     }
@@ -212,8 +200,7 @@ function prependSlash($value)
 }
 
 
-function writeInfo($data, $die = false)
-{
+function writeInfo($data, $die = false) {
     /*        $fp = @fopen(dirname(__FILE__) . DIRECTORY_SEPARATOR . 'data.php', 'w+');
     $data  = '<?php
     die();
@@ -231,8 +218,7 @@ function writeInfo($data, $die = false)
 /**
  * no cachable header
  */
-function addNoCacheHeaders()
-{
+function addNoCacheHeaders() {
     header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
     header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
     header("Cache-Control: no-store, no-cache, must-revalidate");
@@ -244,8 +230,7 @@ function addNoCacheHeaders()
  * @param string $baseUrl
  * @param string $extra the query string added to the base url
  */
-function appendQueryString($baseUrl, $extra)
-{
+function appendQueryString($baseUrl, $extra) {
     $output = $baseUrl;
     if (!empty($extra)) {
         if (strpos($baseUrl, "?") !== false) {
@@ -263,8 +248,7 @@ function appendQueryString($baseUrl, $extra)
  * @param array $excluded
  * @return string
  */
-function makeQueryString($excluded = array())
-{
+function makeQueryString($excluded = array()) {
     $output = '';
     $count  = 1;
     foreach ($_GET as $k => $v) {
@@ -281,8 +265,7 @@ function makeQueryString($excluded = array())
  * @param string $value
  * @return string
  */
-function getParentPath($value)
-{
+function getParentPath($value) {
     $value = removeTrailingSlash(backslashToSlash($value));
     if (false !== ($index = strrpos($value, "/"))) {
         return substr($value, 0, $index);
@@ -297,8 +280,7 @@ function getParentPath($value)
  * @param string $value
  * @return  boolean
  */
-function isUnderRoot($value)
-{
+function isUnderRoot($value) {
     $roorPath = strtolower(addTrailingSlash(backslashToSlash(getRealPath(CONFIG_SYS_ROOT_PATH))));
     if (file_exists($value) && @strpos(strtolower(addTrailingSlash(backslashToSlash(getRealPath($value)))), $roorPath) === 0) {
         return true;
@@ -311,8 +293,7 @@ function isUnderRoot($value)
  * @param string $value
  * @return boolean
  */
-function isUnderSession($value)
-{
+function isUnderSession($value) {
     global $session;
     $sessionPath = strtolower(addTrailingSlash(backslashToSlash(getRealPath($session->getSessionDir()))));
     if (file_exists($value) && @strpos(strtolower(addTrailingSlash(backslashToSlash(getRealPath($value)))), $sessionPath) === 0) {
@@ -331,8 +312,7 @@ function isUnderSession($value)
  * @param integer $thumbnailHeight
  * @return array()
  */
-function getThumbWidthHeight($originaleImageWidth, $originalImageHeight, $thumbnailWidth, $thumbnailHeight)
-{
+function getThumbWidthHeight($originaleImageWidth, $originalImageHeight, $thumbnailWidth, $thumbnailHeight) {
     $outputs         = array(
         "width" => 0,
         "height" => 0
@@ -366,8 +346,7 @@ function getThumbWidthHeight($originaleImageWidth, $originalImageHeight, $thumbn
  * @param string $value
  * @return string
  */
-function getAbsPath($value)
-{
+function getAbsPath($value) {
     if (substr($value, 0, 1) == "/")
         return slashToBackslash(DIR_AJAX_ROOT . $value);
     
@@ -380,8 +359,7 @@ function getAbsPath($value)
  * @param string $value
  * @return string
  */
-function getBaseName($value)
-{
+function getBaseName($value) {
     $value = removeTrailingSlash(backslashToSlash($value));
     
     if (false !== ($index = strrpos($value, "/"))) {
@@ -391,8 +369,7 @@ function getBaseName($value)
     }
 }
 
-function myRealPath($path)
-{
+function myRealPath($path) {
     if (strpos($path, ':/') !== false) {
         return $path;
     }
@@ -431,8 +408,7 @@ function myRealPath($path)
  * @param string $value a relative path
  * @return string absolute path of the input
  */
-function getRealPath($value)
-{
+function getRealPath($value) {
     $output = '';
     if (($path = realpath($value)) && $path != $value) {
         $output = $path;
@@ -448,8 +424,7 @@ function getRealPath($value)
  * @param string $value
  * @return string
  */
-function getFileUrl($value)
-{
+function getFileUrl($value) {
     $output  = '';
     $wwwroot = removeTrailingSlash(backslashToSlash(getRootPath()));
     
@@ -476,8 +451,7 @@ function getFileUrl($value)
  * @param integer $size.
  * @return String
  */
-function transformFileSize($size)
-{
+function transformFileSize($size) {
     if ($size > 1048576) {
         return round($size / 1048576, 1) . " MB";
     } elseif ($size > 1024) {
@@ -495,8 +469,7 @@ function transformFileSize($size)
  * @param string $value
  * @return string
  */
-function removeBeginingSlash($value)
-{
+function removeBeginingSlash($value) {
     $value = backslashToSlash($value);
     if (strpos($value, "/") === 0) {
         $value = substr($value, 1);
@@ -509,8 +482,7 @@ function removeBeginingSlash($value)
  *
  * @return String.
  */
-function getRootPath()
-{
+function getRootPath() {
     $output = "";
     
     if (defined('CONFIG_WEBSITE_DOCUMENT_ROOT') && CONFIG_WEBSITE_DOCUMENT_ROOT) {
@@ -536,8 +508,7 @@ function getRootPath()
  * @param string $value
  * @return string
  */
-function addBeginingSlash($value)
-{
+function addBeginingSlash($value) {
     if (strpos($value, "/") !== 0 && !empty($value)) {
         $value .= "/" . $value;
     }
@@ -553,8 +524,7 @@ function addBeginingSlash($value)
  *
  * @param string $fileName the path to a file or just the file name
  */
-function getFileExt($filePath)
-{
+function getFileExt($filePath) {
     return @substr(@strrchr($filePath, "."), 1);
 }
 
@@ -565,8 +535,7 @@ function getFileExt($filePath)
  * @param string $final_dir
  * @return string
  */
-function getRelativePath($start_dir, $final_dir)
-{
+function getRelativePath($start_dir, $final_dir) {
     //
     $firstPathParts  = explode(DIRECTORY_SEPARATOR, $start_dir);
     $secondPathParts = explode(DIRECTORY_SEPARATOR, $final_dir);
@@ -604,8 +573,7 @@ function getRelativePath($start_dir, $final_dir)
  * @return integer
  *
  */
-function getMemoryLimit()
-{
+function getMemoryLimit() {
     $output = @ini_get('memory_limit') or $output = -1;
     if (intval($output) < 0) { //unlimited
         $output = 999999999999999999;
@@ -624,8 +592,7 @@ function getMemoryLimit()
  *
  * @param string $path
  */
-function getFileContent($path)
-{
+function getFileContent($path) {
     return @file_get_contents($path);
     //return str_replace(array("\r", "\n", '"', "\t"), array("", "\\n", '\"', "\\t"), @file_get_contents($path));
 }
@@ -639,8 +606,7 @@ function getFileContent($path)
  * @param string $prefixName the prefix before the folder name
  * @return array
  */
-function getFolderListing($path, $indexNumber = null, $prefixNumber = ' ', $prefixName = ' - ', $outputs = array())
-{
+function getFolderListing($path, $indexNumber = null, $prefixNumber = ' ', $prefixName = ' - ', $outputs = array()) {
     $path = removeTrailingSlash(backslashToSlash($path));
     if (is_null($indexNumber)) {
         $outputs[IMG_LBL_ROOT_FOLDER] = removeTrailingSlash(backslashToSlash($path));
@@ -677,8 +643,7 @@ function getFolderListing($path, $indexNumber = null, $prefixNumber = ' ', $pref
  *
  * @return array
  */
-function getValidTextEditorExts()
-{
+function getValidTextEditorExts() {
     $validEditorExts = explode(',', CONFIG_EDITABLE_VALID_EXTS);
     if (CONFIG_UPLOAD_VALID_EXTS) { //exclude those exts not shown on CONFIG_UPLOAD_VALID_EXTS
         $validUploadExts = explode(',', CONFIG_UPLOAD_VALID_EXTS);
@@ -706,8 +671,7 @@ function getValidTextEditorExts()
  * @param string $string
  * @return booolean
  */
-function isValidPattern($pattern, $string)
-{
+function isValidPattern($pattern, $string) {
     if (($pattern) === '') {
         return true;
     } else if (strpos($pattern, ",") !== false) {
@@ -732,8 +696,7 @@ function isValidPattern($pattern, $string)
  * @param string $string
  * @return booolean
  */
-function isInvalidPattern($pattern, $string)
-{
+function isInvalidPattern($pattern, $string) {
     if (($pattern) === '') {
         return false;
     } else if (strpos($pattern, ",") !== false) {
@@ -756,8 +719,7 @@ function isInvalidPattern($pattern, $string)
  *
  * @param string $fileName
  */
-function shortenFileName($fileName, $maxLeng = 17, $indicate = '...')
-{
+function shortenFileName($fileName, $maxLeng = 17, $indicate = '...') {
     if (strlen($fileName) > $maxLeng) {
         $fileName = substr($fileName, 0, $maxLeng - strlen($indicate)) . $indicate;
     }
@@ -765,8 +727,7 @@ function shortenFileName($fileName, $maxLeng = 17, $indicate = '...')
     
 }
 if (!function_exists('mime_content_type')) {
-    function mime_content_type($f)
-    {
+    function mime_content_type($f) {
         return trim(@exec('file -bi ' . escapeshellarg($f)));
     }
 }
@@ -777,8 +738,7 @@ if (!function_exists('mime_content_type')) {
  * @param string $path the path to the document
  * @return boolean
  */
-function isListingDocument($path)
-{
+function isListingDocument($path) {
     $file = basename($path);
     if (CONFIG_SYS_PATTERN_FORMAT == 'list') { // comma delimited vague file/folder name
         
@@ -894,8 +854,7 @@ function isListingDocument($path)
  * @param string $path
  * 
  */
-function downloadFile($path, $newFileName = null)
-{
+function downloadFile($path, $newFileName = null) {
     if (file_exists($path) && is_file($path)) {
         $mimeContentType = 'application/octet-stream';
         if (function_exists('finfo_open')) {
@@ -940,8 +899,7 @@ function downloadFile($path, $newFileName = null)
  * @param string $whiteSpaceChars
  * @return string
  */
-function trimlrm($hayStack, $whiteSpaceChars = "\t\n\r\0\x0B")
-{
+function trimlrm($hayStack, $whiteSpaceChars = "\t\n\r\0\x0B") {
     return str_replace($whiteSpaceChars, '', trim($hayStack));
 }
 
@@ -951,8 +909,7 @@ function trimlrm($hayStack, $whiteSpaceChars = "\t\n\r\0\x0B")
  * @param string $path
  * @return string 
  */
-function getParentFolderPath($path)
-{
+function getParentFolderPath($path) {
     $realPath       = addTrailingSlash(backslashToSlash(getRealPath($path)));
     $parentRealPath = addTrailingSlash(backslashToSlash(dirname($realPath)));
     $differentPath  = addTrailingSlash(substr($realPath, strlen($parentRealPath)));
@@ -964,8 +921,7 @@ function getParentFolderPath($path)
     }
 }
 
-function getCurrentFolderPath()
-{
+function getCurrentFolderPath() {
     $folderPathIndex            = 'path';
     $lastVisitedFolderPathIndex = 'ajax_last_visited_folder';
     if (isset($_GET[$folderPathIndex]) && file_exists($_GET[$folderPathIndex]) && !is_file($_GET[$folderPathIndex])) {
@@ -988,8 +944,7 @@ function getCurrentFolderPath()
 }
 
 if (!function_exists("imagerotate")) {
-    function imagerotate($src_img, $angle, $bicubic = false)
-    {
+    function imagerotate($src_img, $angle, $bicubic = false) {
         // convert degrees to radians
         
         $angle = (360 - $angle) + 180;

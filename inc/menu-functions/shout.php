@@ -1,9 +1,8 @@
 <?php
 //-> Shoutbox
-function shout($ajax = 0)
-{
+function shout($ajax = 0) {
     global $db, $maxshout, $lshouttext, $lshoutnick, $shout_max_zeichen, $userid, $chkMe;
-    $qry = db("SELECT * FROM " . $db['shout'] . " 
+    $qry = db("SELECT * FROM " . $db['shout'] . "
                ORDER BY id DESC LIMIT " . $maxshout . "");
     $i   = 1;
     while ($get = _fetch($qry)) {
@@ -69,10 +68,5 @@ function shout($ajax = 0)
     ));
     
     return empty($ajax) ? '<table class="navContent" cellspacing="0">' . $shout . '</table>' : $show;
-}
-?> 
-                    "add" => $add));
-
-  return empty($ajax) ? '<table class="navContent" cellspacing="0">'.$shout.'</table>' : $show;
 }
 ?>

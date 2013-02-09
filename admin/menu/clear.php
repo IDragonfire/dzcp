@@ -16,23 +16,23 @@ if ($chkMe != 4) {
         } else {
             $time = time() - ($_POST['days'] * 24 * 60 * 60);
             if (isset($_POST['news'])) {
-                $del = db("DELETE FROM " . $db['news'] . " 
+                $del = db("DELETE FROM " . $db['news'] . "
                        WHERE datum <= '" . intval($time) . "'");
-                $del = db("DELETE FROM " . $db['newscomments'] . " 
+                $del = db("DELETE FROM " . $db['newscomments'] . "
                        WHERE datum <= '" . intval($time) . "'");
             }
             if (isset($_POST['away'])) {
-                $del = db("DELETE FROM " . $db['away'] . " 
+                $del = db("DELETE FROM " . $db['away'] . "
                        WHERE date <= '" . intval($time) . "'");
             }
             if (isset($_POST['forum'])) {
-                $qry = db("SELECT id FROM " . $db['f_threads'] . " 
-                       WHERE t_date <= '" . intval($time) . "' 
+                $qry = db("SELECT id FROM " . $db['f_threads'] . "
+                       WHERE t_date <= '" . intval($time) . "'
                        AND sticky != 1");
                 while ($get = _fetch($qry)) {
-                    $del = db("DELETE FROM " . $db['f_threads'] . " 
+                    $del = db("DELETE FROM " . $db['f_threads'] . "
                          WHERE id = '" . intval($get['id']) . "'");
-                    $del = db("DELETE FROM " . $db['f_posts'] . " 
+                    $del = db("DELETE FROM " . $db['f_posts'] . "
                          WHERE sid = '" . intval($get['id']) . "'");
                 }
             }
@@ -53,8 +53,4 @@ if ($chkMe != 4) {
         ));
     }
 }
-?>       "c_days" => "",
-                                          "forum_info" => _clear_forum_info));
-      }
-    }
 ?>

@@ -6,8 +6,7 @@ require_once(basePath . "/inc/mysql.php");
 if (!isset($installation))
     $installation = false;
 
-function show($tpl, $array)
-{
+function show($tpl, $array) {
     global $tmpdir;
     $template = "../inc/_templates_/" . $tmpdir . "/" . $tpl;
     
@@ -96,29 +95,10 @@ if ($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != 
         die("<b>Die angegebene Datenbank <i>" . $db['db'] . "</i> existiert nicht!");
 }
 
-function db($db)
-{
+function db($db) {
     global $prefix;
     if (!$qry = mysql_query($db))
         die('<b>MySQL-Query failed:</b><br /><br /><ul>' . '<li><b>ErrorNo</b> = ' . str_replace($prefix, '', mysql_errno()) . '<li><b>Error</b>   = ' . str_replace($prefix, '', mysql_error()) . '<li><b>Query</b>   = ' . str_replace($prefix, '', $db) . '</ul>');
     return $qry;
-}
-?>esults"
-            );
-
-if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '')
-{
-    if(!$msql = mysql_connect($db['host'],$db['user'],$db['pass'])) die("<b>Fehler beim Zugriff auf die Datenbank!");
-    if(!mysql_select_db($db['db'],$msql)) die("<b>Die angegebene Datenbank <i>".$db['db']."</i> existiert nicht!");
-}
-
-function db($db)
-{
-  global $prefix;
-  if(!$qry = mysql_query($db)) die('<b>MySQL-Query failed:</b><br /><br /><ul>'.
-                                   '<li><b>ErrorNo</b> = '.str_replace($prefix,'',mysql_errno()).
-                                   '<li><b>Error</b>   = '.str_replace($prefix,'',mysql_error()).
-                                   '<li><b>Query</b>   = '.str_replace($prefix,'',$db).'</ul>');
-  return $qry;
 }
 ?>

@@ -16,8 +16,7 @@ if (!defined('AJAX_INIT_DONE')) {
 
 
 
-class Image
-{
+class Image {
     var $_debug = false;
     var $_errors = array();
     var $gdInfo = array(); //keep all information of GD extension
@@ -38,13 +37,11 @@ class Image
      * @return Image
      */
     
-    function __construct($debug = false)
-    {
+    function __construct($debug = false) {
         $this->enableDebug($debug);
         $this->gdInfo = $this->getGDInfo();
     }
-    function Image($debug = false)
-    {
+    function Image($debug = false) {
         $this->__construct($debug);
     }
     /**
@@ -52,16 +49,14 @@ class Image
      *
      * @param boolean $value
      */
-    function enableDebug($value)
-    {
+    function enableDebug($value) {
         $this->_debug = ($value ? true : false);
     }
     /**
      * check if debug enable
      * @return boolean
      */
-    function _isDebugEnable()
-    {
+    function _isDebugEnable() {
         return $this->_debug;
     }
     
@@ -73,8 +68,7 @@ class Image
      * @access private
      * @copyright this function originally come from Andy's php 
      */
-    function _debug($value)
-    {
+    function _debug($value) {
         $this->_errors[] = $value;
         if ($this->_debug) {
             echo $value . "<br />\n";
@@ -84,8 +78,7 @@ class Image
      * show erros
      *
      */
-    function showErrors()
-    {
+    function showErrors() {
         if (sizeof($this->_errors)) {
             foreach ($this->_errors as $error) {
                 echo $error . "<br />\n";
@@ -100,8 +93,7 @@ class Image
      * @access public
      * @copyright this function originally come from Andy's php 
      */
-    function loadImage($filename)
-    {
+    function loadImage($filename) {
         $ext  = strtolower($this->_getExtension($filename));
         $func = 'imagecreatefrom' . ($ext == 'jpg' ? 'jpeg' : $ext);
         if (!$this->_isSupported($filename, $ext, $func, false)) {
@@ -157,8 +149,7 @@ class Image
      * @access public
      * @copyright this function originally come from Andy's php 
      */
-    function loadImageFromString($string)
-    {
+    function loadImageFromString($string) {
         $this->imageFile = $filename;
         $this->_imgOrig  = imagecreatefromstring($string);
         if (!$this->_imgOrig) {
@@ -179,8 +170,7 @@ class Image
      * @access public
      * @copyright this function originally come from Andy's php 
      */
-    function saveImage($filename, $quality = 90, $forcetype = '')
-    {
+    function saveImage($filename, $quality = 90, $forcetype = '') {
         if ($this->_imgFinal == null) {
             $this->_debug('No changes intend to be made.');
             return false;
@@ -224,8 +214,7 @@ class Image
      * @access public
      * @copyright this function originally come from Andy's php 
      */
-    function showImage($type = '', $quality = '')
-    {
+    function showImage($type = '', $quality = '') {
         if ($this->_imgFinal == null) {
             $this->_debug('There is no cropped image to show.');
             return false;
@@ -268,8 +257,7 @@ class Image
      * @access public
      * @copyright this function originally come from Andy's php 
      */
-    function crop($dst_x, $dst_y, $dst_w, $dst_h)
-    {
+    function crop($dst_x, $dst_y, $dst_w, $dst_h) {
         if ($this->_imgOrig == null) {
             $this->_debug('The original image has not been loaded.');
             return false;
@@ -315,8 +303,7 @@ class Image
      *
      * @return mixed none or PEAR_error
      */
-    function resize($new_x, $new_y, $constraint = false, $unchangeIfsmaller = false)
-    {
+    function resize($new_x, $new_y, $constraint = false, $unchangeIfsmaller = false) {
         if (!$this->_imgOrig) {
             $this->_debug('No image fould.');
             return false;
@@ -372,8 +359,7 @@ class Image
      * @param string $mode can be save, view and both
      * @return unknown
      */
-    function _resize($new_x, $new_y)
-    {
+    function _resize($new_x, $new_y) {
         $this->_createFinalImageHandler($new_x, $new_y);
         // hacks fot transparency of png24 files
         if ($this->_imgInfoOrig['type'] == 'png') {
@@ -414,8 +400,7 @@ class Image
      * @return string
      * @copyright this function originally come from Andy's php 
      */
-    function _getExtension($file)
-    {
+    function _getExtension($file) {
         $ext = '';
         if (strrpos($file, '.')) {
             $ext = strtolower(substr($file, (strrpos($file, '.') ? strrpos($file, '.') + 1 : strlen($file)), strlen($file)));
@@ -434,8 +419,7 @@ class Image
      * @access private
      * @copyright this function originally come from Andy's php 
      */
-    function _isSupported($filename, $extension, $function, $write = false)
-    {
+    function _isSupported($filename, $extension, $function, $write = false) {
         $giftype = ($write) ? ' Create Support' : ' Read Support';
         $support = strtoupper($extension) . ($extension == 'gif' ? $giftype : ' Support');
         
@@ -463,8 +447,7 @@ class Image
      * @param string $direction
      * @return boolean
      */
-    function flip($direction = "horizontal")
-    {
+    function flip($direction = "horizontal") {
         $this->_createFinalImageHandler($this->_imgInfoOrig['width'], $this->_imgInfoOrig['height']);
         if ($direction != "vertical") {
             $dst_x = 0;
@@ -508,8 +491,7 @@ class Image
      *
      * @return boolean
      */
-    function flipVertical()
-    {
+    function flipVertical() {
         return $this->flip('vertical');
     }
     /**
@@ -517,8 +499,7 @@ class Image
      *
      * @return string
      */
-    function flipHorizontal()
-    {
+    function flipHorizontal() {
         return $this->flip('horizontal');
     }
     
@@ -531,8 +512,7 @@ class Image
      * @access private
      * @copyright this function originally come from Andy's php 
      */
-    function getGDInfo($versionOnly = false)
-    {
+    function getGDInfo($versionOnly = false) {
         $outputs = array();
         if (function_exists('gd_info')) {
             $outputs = gd_info();
@@ -613,8 +593,7 @@ class Image
      * @access public
      * @copyright this function originally come from Andy's php 
      */
-    function DestroyImages($original = true)
-    {
+    function DestroyImages($original = true) {
         if (!is_null($this->_imgFinal)) {
             @imagedestroy($this->_imgFinal);
         }
@@ -625,8 +604,7 @@ class Image
         }
     }
     
-    function getImageInfo($imagePath)
-    {
+    function getImageInfo($imagePath) {
         return $this->_getImageInfo($imagePath);
     }
     /**
@@ -634,8 +612,7 @@ class Image
      * @access public
      * @return array
      */
-    function _getImageInfo($imagePath)
-    {
+    function _getImageInfo($imagePath) {
         $outputs   = array();
         $imageInfo = @getimagesize($imagePath);
         if ($imageInfo && is_array($imageInfo)) {
@@ -672,8 +649,7 @@ class Image
         return $outputs;
         
     }
-    function rotate($angle, $bgColor = 0)
-    {
+    function rotate($angle, $bgColor = 0) {
         $angle = intval($angle) - 360;
         while ($angle < 0) {
             $angle += 360;
@@ -693,8 +669,7 @@ class Image
      *
      * @return array
      */
-    function getOriginalImageInfo()
-    {
+    function getOriginalImageInfo() {
         return $this->_imgInfoOrig;
     }
     /**
@@ -702,8 +677,7 @@ class Image
      *
      * @return array
      */
-    function getFinalImageInfo()
-    {
+    function getFinalImageInfo() {
         if ($this->_imgInfoFinal['width'] == '') {
             if (is_null($this->_imgFinal)) {
                 $this->_imgInfoFinal = $this->_imgInfoOrig;
@@ -724,8 +698,7 @@ class Image
      *     @return boolean
      *     @copyright original from noname at nivelzero dot ro
      */
-    function _createFinalImageHandler($dst_w, $dst_h)
-    {
+    function _createFinalImageHandler($dst_w, $dst_h) {
         if (function_exists('ImageCreateTrueColor')) {
             $this->_imgFinal = @imagecreatetruecolor($dst_w, $dst_h);
         } else {
