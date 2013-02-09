@@ -1,21 +1,23 @@
 <?php
 ob_start();
 
-  define('basePath', dirname(__FILE__));
+define('basePath', dirname(__FILE__));
 
-  include(basePath."/inc/config.php");
-  include(basePath."/inc/bbcode.php");
+include(basePath . "/inc/config.php");
+include(basePath . "/inc/bbcode.php");
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
   <head>
     <title></title>
-    <link rel="stylesheet" type="text/css" href="../inc/_templates_/<?php echo $sdir;?>/_css/stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="../inc/_templates_/<?php
+echo $sdir;
+?>/_css/stylesheet.css">
   </head>
   <body style="margin:0"> 
 <?php
-  $pic = str_replace('&','&amp;',str_replace('img=','',$_SERVER['QUERY_STRING']));
-  echo'<a href="javascript:window.close()"><img id="popupPic" src="'.$pic.'" alt="" border="0" /></a>';
+$pic = str_replace('&', '&amp;', str_replace('img=', '', $_SERVER['QUERY_STRING']));
+echo '<a href="javascript:window.close()"><img id="popupPic" src="' . $pic . '" alt="" border="0" /></a>';
 ?>
   <script language="javascript" type="text/javascript">
     <!--
@@ -48,5 +50,5 @@ ob_start();
 </body>
 </html>
 <?php
-  ob_end_flush();
+ob_end_flush();
 ?> 

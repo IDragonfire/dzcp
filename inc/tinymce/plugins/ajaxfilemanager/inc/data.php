@@ -1,5 +1,5 @@
 <?php
-	die();
+die();
 ?><pre>Array
 (
     [currentFolderPath] => ../../../../uploaded/

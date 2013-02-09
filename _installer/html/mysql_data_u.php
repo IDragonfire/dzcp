@@ -11,13 +11,23 @@
   </tr>
 <form action="update.php?action=install&amp;do=test_mysql" method="POST">
   <tr>
-    <td><b>Host:</b></td><td><input type="text" name="host" value="<?php echo $host; ?>"></td>
-    <td><b>Datenbank:</b></td><td><input type="text" name="database" value="<?php echo $database; ?>"></td>
-    <td><b>Prefix:</b></td><td><input type="text" name="prefix" value="<?php echo $prefix; ?>"></td>
+    <td><b>Host:</b></td><td><input type="text" name="host" value="<?php
+echo $host;
+?>"></td>
+    <td><b>Datenbank:</b></td><td><input type="text" name="database" value="<?php
+echo $database;
+?>"></td>
+    <td><b>Prefix:</b></td><td><input type="text" name="prefix" value="<?php
+echo $prefix;
+?>"></td>
   </tr>
   <tr>
-    <td><b>User:</b></td><td><input type="text" name="user" value="<?php echo $user; ?>"></td>
-    <td><b>Passwort:</b></td><td><input type="password" name="pwd" value="<?php echo $pwd; ?>"></td>
+    <td><b>User:</b></td><td><input type="text" name="user" value="<?php
+echo $user;
+?>"></td>
+    <td><b>Passwort:</b></td><td><input type="password" name="pwd" value="<?php
+echo $pwd;
+?>"></td>
     <td colspan="2"><input style="width:210px;" type="submit" value="MySQL-Daten testen!"></td>
   </tr>
 </form>

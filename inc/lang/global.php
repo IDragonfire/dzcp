@@ -131,7 +131,7 @@ define('_forum_dowhat_edit_post', 'editpost&amp;id=[id]');
 define('_forum_select_field_kat', '<option value="[value]" class="dropdownKat">[what]</option> [skat]');
 define('_forum_select_field_skat', '<option value="[value]">-> [what]</option>');
 define('_forum_select_field_search', '<option value="[value]" [sel]>-> [what]</option>');
-## Gästebuch ##
+## Gï¿½stebuch ##
 define('_gb_commenticon', '<a href="?action=admin&amp;do=addcomment&amp;id=[id]"><img src="../inc/images/comment.gif" alt="" title="[title]" class="icon" /></a>');
 ## DropDownmenu-Datum/Zeit ##
 define('_dropdown_date', '<select id="t" name="t" class="dropdown">[day]</select> <select id="m" name="m" class="dropdown">[month]</select> <select id="j" name="j" class="dropdown">[year]</select>');

@@ -22,77 +22,77 @@ $b = "<br />";
 ################
 ## Funktionen ##
 ################
-function _ex ($function)
+function _ex($function)
 {
-  if(function_exists($function))
-    return TRUE;
-  else
-    return FALSE;
+    if (function_exists($function))
+        return TRUE;
+    else
+        return FALSE;
 }
 
-function _is ($var)
+function _is($var)
 {
-  if(is_writable($var))
-    return TRUE;
-  else
-    return FALSE;
+    if (is_writable($var))
+        return TRUE;
+    else
+        return FALSE;
 }
 
-function _i ($file, $var="0")
+function _i($file, $var = "0")
 {
-  global $b;
-  
-  if($var == 1) $what = "Dir:&nbsp;";
-  else $what = "File:";
+    global $b;
     
-  $_file = preg_replace("#\.\.#Uis", "", $file);
-  $c = '';
-  if(_is($file))
-    $c .= _true."<font color='green'><b>".$what."</b>&nbsp;&nbsp;&nbsp; ".$_file."</font>".$b;
-  else
-    $c .= _false."<font color='red'><b>".$what."</b>&nbsp;&nbsp;&nbsp; ".$_file."</font>".$b;
+    if ($var == 1)
+        $what = "Dir:&nbsp;";
+    else
+        $what = "File:";
     
-  return $c;
+    $_file = preg_replace("#\.\.#Uis", "", $file);
+    $c     = '';
+    if (_is($file))
+        $c .= _true . "<font color='green'><b>" . $what . "</b>&nbsp;&nbsp;&nbsp; " . $_file . "</font>" . $b;
+    else
+        $c .= _false . "<font color='red'><b>" . $what . "</b>&nbsp;&nbsp;&nbsp; " . $_file . "</font>" . $b;
+    
+    return $c;
 }
 
-function _c ($file,$pfad,$host,$user,$pwd)
+function _c($file, $pfad, $host, $user, $pwd)
 {
-  $conn = @ftp_connect($host);
-  @ftp_login($conn, $user, $pwd);
-  
-  ftp_site($conn, 'CHMOD 0777 '.$pfad.'/'.$file);
+    $conn = @ftp_connect($host);
+    @ftp_login($conn, $user, $pwd);
+    
+    ftp_site($conn, 'CHMOD 0777 ' . $pfad . '/' . $file);
 }
 
-function _s ($e)
+function _s($e)
 {
-  return;
+    return;
 }
-function _m ($prefix, $host, $user, $pwd, $db)
+function _m($prefix, $host, $user, $pwd, $db)
 {
-  $fp = @fopen("../inc/mysql.php","w");
-  @fwrite($fp,"<?php
-                 \$sql_prefix = '".$prefix."';
-                 \$sql_host = '".$host."';
-                 \$sql_user =  '".$user."'; 
-                 \$sql_pass = '".$pwd."'; 
-                 \$sql_db = '".$db."';
+    $fp = @fopen("../inc/mysql.php", "w");
+    @fwrite($fp, "<?php
+                 \$sql_prefix = '" . $prefix . "';
+                 \$sql_host = '" . $host . "';
+                 \$sql_user =  '" . $user . "'; 
+                 \$sql_pass = '" . $pwd . "'; 
+                 \$sql_db = '" . $db . "';
                ?>");
-  @fclose($fp);
+    @fclose($fp);
 }
 function get_files($dir)
 {
-  $dp = @opendir($dir);
-  $files = array();
-  while($file = @readdir($dp))
-  {
-    if($file != '.' && $file != '..')
-    {
-      array_push($files, $file);
+    $dp    = @opendir($dir);
+    $files = array();
+    while ($file = @readdir($dp)) {
+        if ($file != '.' && $file != '..') {
+            array_push($files, $file);
+        }
     }
-  }
-  @closedir($dp);
-  sort($files);
-
-  return($files);
+    @closedir($dp);
+    sort($files);
+    
+    return ($files);
 }
 ?>

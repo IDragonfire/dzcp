@@ -32,56 +32,56 @@
                         <tr>
                           <td width="38"></td>
                           <td>
-                          <?php   
-                            if(isset($_GET['action']) && $_GET['action'] == "")
-                              echo _link_start;
-                            else
-                              echo _link_start_1; 
-                          ?>
+                          <?php
+if (isset($_GET['action']) && $_GET['action'] == "")
+    echo _link_start;
+else
+    echo _link_start_1;
+?>
                           </td>
                         </tr>
                         <tr>
                           <td></td>
                           <td>
-                          <?php   
-                            if(isset($_GET['action']) && $_GET['action'] == "prepare")
-                              echo _link_prepare;
-                            else
-                              echo _link_prepare_1; 
-                          ?>
+                          <?php
+if (isset($_GET['action']) && $_GET['action'] == "prepare")
+    echo _link_prepare;
+else
+    echo _link_prepare_1;
+?>
                           </td>
                         </tr>
                         <tr>
                           <td></td>
                           <td>
-                          <?php   
-                            if(isset($_GET['action']) && $_GET['action'] == "install")
-                              echo _link_install;
-                            else
-                              echo _link_install_1; 
-                          ?>
+                          <?php
+if (isset($_GET['action']) && $_GET['action'] == "install")
+    echo _link_install;
+else
+    echo _link_install_1;
+?>
                           </td>
                         </tr>
                         <tr>
                           <td></td>
                           <td>
-                          <?php   
-                            if(isset($_GET['action']) && $_GET['action'] == "database")
-                              echo _link_db;
-                            else
-                              echo _link_dbu_1; 
-                          ?>
+                          <?php
+if (isset($_GET['action']) && $_GET['action'] == "database")
+    echo _link_db;
+else
+    echo _link_dbu_1;
+?>
                           </td>
                         </tr>
                         <tr>
                           <td></td>
                           <td>
-                          <?php   
-                            if(isset($_GET['action']) && $_GET['action'] == "done")
-                              echo _link_done;
-                            else
-                              echo _link_done_1; 
-                          ?>
+                          <?php
+if (isset($_GET['action']) && $_GET['action'] == "done")
+    echo _link_done;
+else
+    echo _link_done_1;
+?>
                           </td>
                         </tr>
                       </table>
@@ -94,19 +94,25 @@
                     <td height="7"></td>
                   </tr>
                   <tr>
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Version:</b> <?php echo _version; ?></td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Version:</b> <?php
+echo _version;
+?></td>
                   </tr>
                   <tr>
                     <td height="3"></td>
                   </tr>
                   <tr>
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Released:</b> <?php echo _release; ?></td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Released:</b> <?php
+echo _release;
+?></td>
                   </tr>
                   <tr>
                     <td height="255"></td>
                   </tr>
                   <tr>
-                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&copy; <?php echo date("Y", time()); ?> <a href="http://www.dzcp.de" target="_blank">www.dzcp.de</a></td>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&copy; <?php
+echo date("Y", time());
+?> <a href="http://www.dzcp.de" target="_blank">www.dzcp.de</a></td>
                   </tr>
                 </table>
               </td>

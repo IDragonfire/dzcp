@@ -11,13 +11,23 @@
   </tr>
 <form action="install.php?action=install&amp;do=test_mysql" method="POST">
   <tr>
-    <td><b>Host:</b></td><td><input type="text" name="host" value="<?php echo !empty($sql_db) ? $sql_host : ''; ?>"></td>
-    <td><b>Datenbank:</b></td><td><input type="text" name="database" value="<?php echo !empty($sql_db) ? $sql_db : ''; ?>"></td>
-    <td><b>Prefix:</b></td><td><input type="text" name="prefix" value="<?php echo !empty($sql_prefix) ? $sql_prefix : 'dzcp_'; ?>"></td>
+    <td><b>Host:</b></td><td><input type="text" name="host" value="<?php
+echo !empty($sql_db) ? $sql_host : '';
+?>"></td>
+    <td><b>Datenbank:</b></td><td><input type="text" name="database" value="<?php
+echo !empty($sql_db) ? $sql_db : '';
+?>"></td>
+    <td><b>Prefix:</b></td><td><input type="text" name="prefix" value="<?php
+echo !empty($sql_prefix) ? $sql_prefix : 'dzcp_';
+?>"></td>
   </tr>
   <tr>
-    <td><b>User:</b></td><td><input type="text" name="user" value="<?php echo !empty($sql_user) ? $sql_user : ''; ?>"></td>
-    <td><b>Passwort:</b></td><td><input type="password" name="pwd" value="<?php echo !empty($sql_pass) ? $sql_pass : ''; ?>"></td>
+    <td><b>User:</b></td><td><input type="text" name="user" value="<?php
+echo !empty($sql_user) ? $sql_user : '';
+?>"></td>
+    <td><b>Passwort:</b></td><td><input type="password" name="pwd" value="<?php
+echo !empty($sql_pass) ? $sql_pass : '';
+?>"></td>
     <td colspan="2"><input style="width:210px;" type="submit" value="MySQL-Daten testen!"></td>
   </tr>
 </form>

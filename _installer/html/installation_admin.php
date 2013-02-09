@@ -4,12 +4,20 @@
   </tr>
   <form action="install.php?action=database&amp;do=install" method="POST">
   <tr>
-    <td><b>Loginname:</b></td><td><input type="text" name="login" value="<?php echo isset($_POST['login']) ? $_POST['login'] : ''; ?>"></td>
-    <td><b>Nickname:</b></td><td><input type="text" name="nick" value="<?php echo isset($_POST['nick']) ? $_POST['nick'] : ''; ?>"></td>
+    <td><b>Loginname:</b></td><td><input type="text" name="login" value="<?php
+echo isset($_POST['login']) ? $_POST['login'] : '';
+?>"></td>
+    <td><b>Nickname:</b></td><td><input type="text" name="nick" value="<?php
+echo isset($_POST['nick']) ? $_POST['nick'] : '';
+?>"></td>
   </tr>
   <tr>
-    <td><b>E-Mail:</b></td><td><input type="text" name="email" value="<?php echo isset($_POST['email']) ? $_POST['email'] : ''; ?>"></td>
-    <td><b>Passwort:</b></td><td><input type="password" name="pwd" value="<?php echo isset($_POST['pwd']) ? $_POST['pwd'] : ''; ?>"></td>
+    <td><b>E-Mail:</b></td><td><input type="text" name="email" value="<?php
+echo isset($_POST['email']) ? $_POST['email'] : '';
+?>"></td>
+    <td><b>Passwort:</b></td><td><input type="password" name="pwd" value="<?php
+echo isset($_POST['pwd']) ? $_POST['pwd'] : '';
+?>"></td>
   </tr>
   <tr>
     <td height="20"></td>
