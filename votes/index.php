@@ -36,7 +36,7 @@ default:
                 ' ORDER BY id');
     $results = '';
     $check = '';
-    $stimmen = 0;
+    $stimmen = sum($db['vote_results']," WHERE vid = '".$get['id']."'","stimmen");
     $vid = 'vid_' . (int) $get['id'];
     if($get['intern'] == 1) {
       $showVoted = '';
@@ -52,7 +52,6 @@ default:
       }
     $hostIpcheck = ipcheck($vid);
     while($getv = _fetch($qryv)) {
-      $stimmen += $getv['stimmen'];
       $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++; 
       if($hostIpcheck || $ipcheck || isset($_COOKIE[$prev."vid_".$get['id']]) || $get['closed'] == 1) {
         $percent = @round($getv['stimmen']/$stimmen*100,2);
