@@ -57,7 +57,8 @@ if(_adminMenu != 'true') exit;
 																					 "pname" => _loginname,
 																					 "pnick" => _nick,
 																					 "pemail" => _email,
-																					 "pbild" => _config_c_upicsize,
+																					 "pbild" => _profil_ppic,
+																					 "abild" => _profil_avatar,
 																					 "ppwd" => _pwd,
 																					 "squadhead" => _admin_user_squadhead,
 																					 "squad" => _member_admin_squad,
@@ -180,27 +181,56 @@ if(_adminMenu != 'true') exit;
         }
       }
 
-      $tmpname = $_FILES['file']['tmp_name'];
-      $name = $_FILES['file']['name'];
-      $type = $_FILES['file']['type'];
-      $size = $_FILES['file']['size'];
-        
-      $endung = explode(".", $_FILES['file']['name']);
-      $endung = strtolower($endung[count($endung)-1]);
-  
-      if($tmpname)
-      {
-        $imageinfo = getimagesize($tmpname);
-				foreach($picformat as $tmpendung)
-        {
-          if(file_exists(basePath."/inc/images/uploads/userpics/".$insert_id.".".$tmpendung))
-          {
-            @unlink(basePath."/inc/images/uploads/userpics/".$insert_id.".".$tmpendung);
-          }
-        }
-        copy($tmpname, basePath."/inc/images/uploads/userpics/".$insert_id.".".strtolower($endung)."");
-        @unlink($_FILES['file']['tmp_name']);
-	  }
+	//Profilfoto
+	if(!empty($_FILES['file']))
+	{
+		$tmpname = $_FILES['file']['tmp_name'];
+		$name = $_FILES['file']['name'];
+		$type = $_FILES['file']['type'];
+		$size = $_FILES['file']['size'];
+			
+		$endung = explode(".", $_FILES['file']['name']);
+		$endung = strtolower($endung[count($endung)-1]);
+	  
+		if($tmpname)
+		{
+			$imageinfo = getimagesize($tmpname);
+			foreach($picformat as $tmpendung)
+			{
+				if(file_exists(basePath."/inc/images/uploads/userpics/".$insert_id.".".$tmpendung)) {
+					@unlink(basePath."/inc/images/uploads/userpics/".$insert_id.".".$tmpendung);
+				}
+			}
+			copy($tmpname, basePath."/inc/images/uploads/userpics/".$insert_id.".".strtolower($endung)."");
+			@unlink($_FILES['file']['tmp_name']);
+		}
+	}
+	
+	//Avatar
+	if(!empty($_FILES['file_avatar']))
+	{
+		$tmpname = $_FILES['file_avatar']['tmp_name'];
+		$name = $_FILES['file_avatar']['name'];
+		$type = $_FILES['file_avatar']['type'];
+		$size = $_FILES['file_avatar']['size'];
+			
+		$endung = explode(".", $_FILES['file_avatar']['name']);
+		$endung = strtolower($endung[count($endung)-1]);
+	  
+		if($tmpname)
+		{
+			$imageinfo = getimagesize($tmpname);
+			foreach($picformat as $tmpendung)
+			{
+				if(file_exists(basePath."/inc/images/uploads/useravatare/".$insert_id.".".$tmpendung)) {
+				@unlink(basePath."/inc/images/uploads/useravatare/".$insert_id.".".$tmpendung);
+				}
+			}
+			
+			copy($tmpname, basePath."/inc/images/uploads/useravatare/".$insert_id.".".strtolower($endung)."");
+			@unlink($_FILES['file_avatar']['tmp_name']);
+		}
+	}
 		
 	  $qry = db("INSERT INTO ".$db['userstats']."
 				       SET `user`       = '".((int)$insert_id)."',
