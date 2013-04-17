@@ -806,7 +806,7 @@ case 'details';
                                        "logo_gegner" => $logo_gegner,
 				                  			  		 "squad" => $show,
 				                  				  	 "squad_name" => re($get['name']),
-  			                  						 "gametype" => re($get['gametype']),
+  			                  						 "gametype" => empty($get['gametype']) ? '-' : re($get['gametype']),
 	  			                  					 "lineup" => preg_replace("#\,#","<br />",re($get['lineup'])),
 		  		                  					 "glineup" => preg_replace("#\,#","<br />",re($get['glineup'])),
 			  					                  	 "match_admins" => empty($get['matchadmins']) ? '-' : re($get['matchadmins']),
