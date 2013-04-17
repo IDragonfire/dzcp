@@ -1278,13 +1278,14 @@ case 'user';
       if(empty($get['rlname'])) $rlname = '-';
       else $rlname = re($get['rlname']);
 
+	  $city = re($get['city']); $beschreibung = bbcode($get['beschreibung']);
       $show = show($dir."/profil_show",array("hardware_head" => $hardware_head,
                                              "about" => _profil_about,
                                              "rang" => $rang,
                                              "country" => flag($get['country']),
                                              "rangpic" => $rangpic,
                                              "pcity" => _profil_city,
-                                             "city" => re($get['city']),
+                                             "city" => (empty($city) ? '-' : $city),
                                              "prank" => _profile_rank,
                                              "stats_hits" => _profil_pagehits,
                                              "stats_profilhits" => _profil_profilhits,
@@ -1348,7 +1349,7 @@ case 'user';
 	  					  				                     "pstatus" => _profil_status,
 		  					  			                     "position" => getrank($get['id']),
 			  					  		                     "status" => $status,
-				  					  	                     "ich" => bbcode($get['beschreibung']),
+				  					  	                     "ich" => (empty($beschreibung) ? '-' : $beschreibung),
 					  					                       "custom_about" => $custom_about,
 						  				                       "custom_contact" => $custom_contact,
 							  			                       "custom_favos" => $custom_favos,
