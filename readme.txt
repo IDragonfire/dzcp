@@ -1,7 +1,7 @@
 ########################################
-# deV!L`z Clanportal - kurz 'DZCP'
-# ====================================
-# www.dzcp.de
+# deV!L`z Clanportal - kurz 'DZCP'     #
+# =====================================#
+# www.dzcp.de                          #
 ########################################
 
 
@@ -1496,6 +1496,26 @@ Update von 1.5.1 zu 1.5.2
 
 	
 	Ebenso sind aus der CSS-Datei sind die Zeilen 1360 - 1450 zu übernehmen, sonst funktioniert die neue Lightbox nicht.
+
+
+Update von 1.5.3 zu 1.6
+=============================
+
+	1. Info's
+	================================
+	
+
+
+
+	2. Update automatisch
+	================================
+	
+	Eichfach alle php Dateien austauschen.
+
+        3. Update manuell
+	================================
+  
+        Aufgrund der vielzahl an Änderungen, wird kein manuelles Update für diese Version aufgeführt.
 
 
 	Datenbank updaten:

@@ -22,7 +22,13 @@ default:
   {
     while($get = _fetch($qry))
     {
-      $files = get_files("images/");
+      $imgArr = array();
+	  $files = get_files("images/");
+	  
+	   foreach($files AS $file)
+  	  {
+    	if(intval($file) == $get['id']) array_push($imgArr, $file);
+  	  }
   
       $cnt = 0;
       for($i=0; $i<count($files); $i++)
@@ -40,6 +46,7 @@ default:
       $show .= show($dir."/gallery_show", array("link" => re($get['kat']),
                                                 "class" => $class,
                                                 "images" => $cntpics,
+												"image" => $imgArr[0],
                                                 "id" => $get['id'],
                                                 "beschreibung" => bbcode($get['beschreibung']),
   	    												    	          "cnt" => $cnt));
