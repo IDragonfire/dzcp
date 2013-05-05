@@ -21,7 +21,7 @@ if(_adminMenu != 'true') exit;
                                              "sel" => ""));
         }
 
-        $files = get_files('../downloads/files/');
+        $files = get_files('../downloads/files/',false,true);
         for($i=0; $i<count($files); $i++)
         {
           $dl .= show(_downloads_files_exists, array("dl" => $files[$i],
@@ -52,7 +52,7 @@ if(_adminMenu != 'true') exit;
           if(empty($_POST['download'])) $show = error(_downloads_empty_download, 1);
           elseif(empty($_POST['url']))  $show = error(_downloads_empty_url, 1);
         } else {
-          
+
           if(preg_match("#^www#i",$_POST['url'])) $dl = links($_POST['url']);
           else                                    $dl = up($_POST['url']);
 

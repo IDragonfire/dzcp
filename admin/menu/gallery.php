@@ -45,7 +45,7 @@ if(_adminMenu != 'true') exit;
         $end = explode(".", $_FILES['file'.$i]['name']);
         $end = $end[count($end)-1];
         $imginfo = getimagesize($tmp);
-        
+
         if($_FILES['file'.$i])
         {
           if(($type == "image/gif" || $type == "image/pjpeg" || $type == "image/jpeg" || $type == "image/png") && $imginfo[0])
@@ -61,7 +61,7 @@ if(_adminMenu != 'true') exit;
       $qry = db("DELETE FROM ".$db['gallery']."
                  WHERE id = '".intval($_GET['id'])."'");
 
-      $files = get_files("../gallery/images/");
+      $files = get_files("../gallery/images/",false,true);
       for($i=0; $i<count($files); $i++)
       {
         if(preg_match("#".$_GET['id']."_(.*?).(gif|jpg|jpeg|png)#",strtolower($files[$i]))!= FALSE)
@@ -140,7 +140,7 @@ if(_adminMenu != 'true') exit;
       $galid = $_GET['id'];
       $anzahl = $_POST['anzahl'];
 
-      $files = get_files("../gallery/images/");
+      $files = get_files("../gallery/images/",false,true);
 
       $cnt = 0;
       for($c=0; $c<count($files); $c++)
@@ -159,7 +159,7 @@ if(_adminMenu != 'true') exit;
         $end = explode(".", $_FILES['file'.$i]['name']);
         $end = $end[count($end)-1];
         $imginfo = getimagesize($tmp);
-        
+
         if($_FILES['file'.$i])
         {
           if(($type == "image/gif" || $type == "image/pjpeg" || $type == "image/jpeg") && $imginfo[0])
@@ -188,8 +188,8 @@ if(_adminMenu != 'true') exit;
                    ORDER BY id DESC");
         while($get = _fetch($qry))
         {
-          $files = get_files("../gallery/images/");
-      
+          $files = get_files("../gallery/images/",false,true);
+
           $cnt = 0;
           for($i=0; $i<count($files); $i++)
           {
@@ -208,10 +208,10 @@ if(_adminMenu != 'true') exit;
                                                          "del" => convSpace(_confirm_del_gallery)));
           $new = show(_gal_newicon, array("id" => $get['id'],
                                           "titel" => _button_value_newgal));
-          
+
           if($cnt == 1) $cntpics = _gallery_image;
           else $cntpics = _gallery_images;
-      
+
           $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
           $show .= show($dir."/gallery_show", array("link" => re($get['kat']),
                                                     "class" => $class,
@@ -221,10 +221,10 @@ if(_adminMenu != 'true') exit;
                                                     "images" => $cntpics,
                                                     "id" => $get['id'],
                                                     "beschreibung" => bbcode($get['beschreibung']),
-      	    												    	          "cnt" => $cnt));
-      
+                                                                                "cnt" => $cnt));
+
         }
-        
+
         $show = show($dir."/gallery",array("show" => $show,
                                            "head" => _gallery_head,
                                            "add" => _gallery_show_admin));

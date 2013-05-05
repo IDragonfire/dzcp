@@ -44,7 +44,7 @@ default:
                                                           "action" => "action=do&amp;what=delete",
                                                           "title" => _button_title_del,
                                                           "del" => convSpace(_confirm_del_taktik)));
-        
+
         $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
         $show .= show($dir."/taktiken_show", array("map" => re($get['map']),
                                                    "id" => $get['id'],
@@ -136,13 +136,13 @@ case 'do':
     $index = error(_error_wrong_permissions, 1);
   } else {
     $wysiwyg = '_word';
-    
+
     if($_GET['what'] == "new")
     {
       $qry = db("SELECT * FROM ".$db['taktik']."");
       $get = _fetch($qry);
 
-      $files = get_files("../inc/images/uploads/taktiken/");
+      $files = get_files("../inc/images/uploads/taktiken/",false,true);
       for($i=0; $i<count($files); $i++)
       {
         $screen .= show(_member_admin_select_icons, array("iconimg" => $files[$i]));
@@ -189,8 +189,8 @@ case 'do':
       $qry = db("SELECT * FROM ".$db['taktik']."
                  WHERE id = ".intval($_GET['id']));
       $get = _fetch($qry);
-      
-      $files = get_files("../inc/images/uploads/taktiken/");
+
+      $files = get_files("../inc/images/uploads/taktiken/",false,true);
       for($i=0; $i<count($files); $i++)
       {
         $screen .= show(_member_admin_select_icons, array("iconimg" => $files[$i]));

@@ -23,13 +23,13 @@ default:
     while($get = _fetch($qry))
     {
       $imgArr = array();
-	  $files = get_files("images/");
-	  
-	   foreach($files AS $file)
-  	  {
-    	if(intval($file) == $get['id']) array_push($imgArr, $file);
-  	  }
-  
+      $files = get_files("images/",false,true);
+
+       foreach($files AS $file)
+        {
+        if(intval($file) == $get['id']) array_push($imgArr, $file);
+        }
+
       $cnt = 0;
       for($i=0; $i<count($files); $i++)
       {
@@ -38,19 +38,19 @@ default:
           $cnt++;
         }
       }
-      
+
       if($cnt == 1) $cntpics = _gallery_image;
       else $cntpics = _gallery_images;
-      
+
       $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
       $show .= show($dir."/gallery_show", array("link" => re($get['kat']),
                                                 "class" => $class,
                                                 "images" => $cntpics,
-												"image" => $imgArr[0],
+                                                "image" => $imgArr[0],
                                                 "id" => $get['id'],
                                                 "beschreibung" => bbcode($get['beschreibung']),
-  	    												    	          "cnt" => $cnt));
-      
+                                                                            "cnt" => $cnt));
+
     }
   } else $show = show(_no_entrys_yet, array("colspan" => "10"));
 
@@ -58,7 +58,7 @@ default:
                                       "head" => _gallery_head));
 break;
 case 'show';
-  $files = get_files("images/");
+  $files = get_files("images/",false,true);
   $t = 1;
   $cnt = 0;
   for($i=0; $i<count($files); $i++)

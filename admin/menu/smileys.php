@@ -24,7 +24,7 @@ if(_adminMenu != 'true') exit;
         $size = $_FILES['smiley']['size'];
         $imageinfo = getimagesize($tmpname);
         $spfad = "../inc/images/smileys/";
-        
+
         if(!$tmpname || empty($_POST['bbcode']) || $type == "image/pjpeg" || $type == "image/jpeg" || !$imageinfo[0] || preg_match("#[[:punct:]]|[[:space:]]#",$_POST['bbcode']) || file_exists($spfad.$_POST['bbcode'].".gif"))
         {
           if(!$tmpname)                                                    $show = error(_smileys_error_file, 1);
@@ -65,7 +65,7 @@ if(_adminMenu != 'true') exit;
           }
         }
       } else {
-        $files = get_files('../inc/images/smileys');
+        $files = get_files('../inc/images/smileys',false,true);
         for($i=0; $i<count($files); $i++)
         {
           if($files[$i] != '^^.gif')

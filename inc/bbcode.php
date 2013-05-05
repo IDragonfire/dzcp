@@ -128,10 +128,10 @@ if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pwd']) && empty($_SESSIO
                WHERE user = '".intval($_COOKIE[$prev.'id'])."'");
 
     $qry = db("UPDATE ".$db['users']."
-      				 SET `online` = 1,
+                       SET `online` = 1,
                    `sessid` = '".session_id()."',
                    `ip`     = '".$userip."'
-		    		   WHERE id = ".intval($_COOKIE[$prev.'id']));
+                       WHERE id = ".intval($_COOKIE[$prev.'id']));
     $_SESSION['lastvisit'] = data(intval($_COOKIE[$prev.'id']), "time");
   }
 
@@ -160,7 +160,7 @@ function userid()
   return $get['id'];
 }
 //-> Templateswitch
-$files = get_files('../inc/_templates_/');
+$files = get_files(basePath.'/inc/_templates_/',true);
 $folder = $files[0];
 if(isset($_COOKIE[$prev.'tmpdir']) && $_COOKIE[$prev.'tmpdir'] != NULL)
 {
@@ -178,7 +178,7 @@ function lang($lng,$pfad='')
   global $charset;
   if(!file_exists(basePath."/inc/lang/languages/".$lng.".php"))
   {
-    $files = get_files(basePath.'/inc/lang/languages/');
+    $files = get_files(basePath.'/inc/lang/languages/',false,true,array('php'));
     $lng = str_replace('.php','',$files[0]);
   }
 
@@ -189,29 +189,29 @@ function lang($lng,$pfad='')
 //-> Sprachdateien auflisten
 function languages()
 {
-	$lang="";
-	$files = get_files('../inc/lang/languages/');
-	for($i=0;$i<=count($files)-1;$i++)
-	{
-		$file = str_replace('.php','',$files[$i]);
-		$upFile = strtoupper(substr($file,0,1)).substr($file,1);
+    $lang="";
+    $files = get_files('../inc/lang/languages/',false,true,array('php'));
+    for($i=0;$i<=count($files)-1;$i++)
+    {
+        $file = str_replace('.php','',$files[$i]);
+        $upFile = strtoupper(substr($file,0,1)).substr($file,1);
 
-		if(file_exists('../inc/lang/flaggen/'.$file.'.gif'))
-			$lang .= '<a href="../user/?action=language&amp;set='.$file.'"><img src="../inc/lang/flaggen/'.$file.'.gif" alt="'.$upFile.'" title="'.$upFile.'" class="icon" /></a> ';
-	}
+        if(file_exists('../inc/lang/flaggen/'.$file.'.gif'))
+            $lang .= '<a href="../user/?action=language&amp;set='.$file.'"><img src="../inc/lang/flaggen/'.$file.'.gif" alt="'.$upFile.'" title="'.$upFile.'" class="icon" /></a> ';
+    }
 
-	return $lang;
+    return $lang;
 }
 
 //-> Userspezifiesche Dinge
 if(isset($userid) && $ajaxJob != true)
 {
-	db("UPDATE ".$db['userstats']."
-	SET `hits` = hits+1, `lastvisit` = '".((int)$_SESSION['lastvisit'])."' 
-	WHERE user = ".$userid);
+    db("UPDATE ".$db['userstats']."
+    SET `hits` = hits+1, `lastvisit` = '".((int)$_SESSION['lastvisit'])."'
+    WHERE user = ".$userid);
 
-	$u_b1 = "<!--";
-	$u_b2 = "-->";
+    $u_b1 = "<!--";
+    $u_b2 = "-->";
 }
 
 //-> Settings auslesen (=> Adminmenu)
@@ -337,10 +337,10 @@ function glossar($txt)
   for($s=0;$s<=count($gl_words)-1;$s++)
   {
     $w = addslashes(regexChars(html_entity_decode($gl_words[$s])));
-		$txt = str_ireplace(' '.$w.' ', ' <tmp|'.$w.'|tmp> ', $txt);
+        $txt = str_ireplace(' '.$w.' ', ' <tmp|'.$w.'|tmp> ', $txt);
     $txt = str_ireplace('>'.$w.'<', '> <tmp|'.$w.'|tmp> <', $txt);
     $txt = str_ireplace('>'.$w.' ', '> <tmp|'.$w.'|tmp> ', $txt);
-  	$txt = str_ireplace(' '.$w.'<', ' <tmp|'.$w.'|tmp> <', $txt);
+      $txt = str_ireplace(' '.$w.'<', ' <tmp|'.$w.'|tmp> <', $txt);
   }
 
 // replace words
@@ -361,7 +361,7 @@ function glossar($txt)
   return $txt;
 }
 function bbcodetolow($founds) {
-	return "[".strtolower($founds[1])."]".trim($founds[2])."[/".strtolower($founds[3])."]";
+    return "[".strtolower($founds[1])."]".trim($founds[2])."[/".strtolower($founds[3])."]";
 }
 //-> Replaces
 function replace($txt,$type=0,$no_vid_tag=0)
@@ -372,22 +372,22 @@ function replace($txt,$type=0,$no_vid_tag=0)
     $txt = preg_replace("#<img src=\"(.*?)\" mce_src=\"(.*?)\"(.*?)\>#i","<img src=\"$2\" alt=\"\">",$txt);
   $txt = preg_replace_callback("/\[(.*?)\](.*?)\[\/(.*?)\]/","bbcodetolow",$txt);
   $var = array("/\[url\](.*?)\[\/url\]/",
-  			   "/\[img\](.*?)\[\/img\]/",
+                 "/\[img\](.*?)\[\/img\]/",
                "/\[url\=(http\:\/\/)?(.*?)\](.*?)\[\/url\]/",
-			   "/\[b\](.*?)\[\/b\]/",
-			   "/\[i\](.*?)\[\/i\]/",
-			   "/\[u\](.*?)\[\/u\]/",
-			   "/\[color=(.*?)\](.*?)\[\/color\]/");
+               "/\[b\](.*?)\[\/b\]/",
+               "/\[i\](.*?)\[\/i\]/",
+               "/\[u\](.*?)\[\/u\]/",
+               "/\[color=(.*?)\](.*?)\[\/color\]/");
 
-	$repl = array("<a href=\"$1\" target=\"_blank\">$1</a>",
-				"<img src=\"$1\" class=\"content\" alt=\"\" />",
+    $repl = array("<a href=\"$1\" target=\"_blank\">$1</a>",
+                "<img src=\"$1\" class=\"content\" alt=\"\" />",
                 "<a href=\"http://$2\" target=\"_blank\">$3</a>",
-				"<b>$1</b>",
-				"<i>$1</i>",
-				"<u>$1</u>",
-				"<span style=\"color:$1\">$2</span>");
+                "<b>$1</b>",
+                "<i>$1</i>",
+                "<u>$1</u>",
+                "<span style=\"color:$1\">$2</span>");
 
-	$txt = preg_replace($var,$repl,$txt);
+    $txt = preg_replace($var,$repl,$txt);
 
   $txt = preg_replace_callback("#\<img(.*?)\>#",
                 create_function(
@@ -401,14 +401,14 @@ function replace($txt,$type=0,$no_vid_tag=0)
 
   if($no_vid_tag == 0)
   {
-	  $txt = preg_replace_callback("#\[youtube\]http\:\/\/www.youtube.com\/watch\?v\=(.*)\[\/youtube\]#Uis", #
-					create_function(
-									 '$yt',
-									 '
-									  $width = 425; $height = 344;
-									  return "<object width=\"".$width."\" height=\"".$height."\"><param name=\"movie\" value=\"http://www.youtube.com/v/".trim($yt[1])."&amp;hl=de&amp;fs=1\"></param><param name=\"allowFullScreen\" value=\"true\"></param><param name=\"allowscriptaccess\" value=\"always\"></param><embed src=\"http://www.youtube.com/v/".trim($yt[1])."&amp;hl=de&amp;fs=1\" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"".$width."\" height=\"".$height."\"></embed></object>";
-									'
-								   ), $txt);
+      $txt = preg_replace_callback("#\[youtube\]http\:\/\/www.youtube.com\/watch\?v\=(.*)\[\/youtube\]#Uis", #
+                    create_function(
+                                     '$yt',
+                                     '
+                                      $width = 425; $height = 344;
+                                      return "<object width=\"".$width."\" height=\"".$height."\"><param name=\"movie\" value=\"http://www.youtube.com/v/".trim($yt[1])."&amp;hl=de&amp;fs=1\"></param><param name=\"allowFullScreen\" value=\"true\"></param><param name=\"allowscriptaccess\" value=\"always\"></param><embed src=\"http://www.youtube.com/v/".trim($yt[1])."&amp;hl=de&amp;fs=1\" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"".$width."\" height=\"".$height."\"></embed></object>";
+                                    '
+                                   ), $txt);
   }
 
   $txt = str_replace("\"","&#34;",$txt);
@@ -463,12 +463,12 @@ function eMailAddr($email)
 //-> Leerzeichen mit + ersetzen (w3c)
 function convSpace($string)
 {
-	return str_replace(" ","+",$string);
+    return str_replace(" ","+",$string);
 }
 //-> BBCode
 function re_bbcode($txt)
 {
-	$txt = str_replace("'", "&#39;", $txt);
+    $txt = str_replace("'", "&#39;", $txt);
   $txt = str_replace("[","&#91;",$txt);
   $txt = str_replace("]","&#93;",$txt);
   $txt = str_replace("&lt;","&#60;",$txt);
@@ -476,55 +476,55 @@ function re_bbcode($txt)
 //  $txt = str_replace('<p></p>', '<p>&nbsp;</p>', $txt);
   $txt = stripslashes($txt);
 
-	return $txt;
+    return $txt;
 }
 /* START # from wordpress under GBU GPL license
    URL autolink function */
 function _make_url_clickable_cb($matches) {
-	$ret = '';
-	$url = $matches[2];
- 
-	if ( empty($url) )
-		return $matches[0];
-	// removed trailing [.,;:] from URL
-	if ( in_array(substr($url, -1), array('.', ',', ';', ':')) === true ) {
-		$ret = substr($url, -1);
-		$url = substr($url, 0, strlen($url)-1);
-	}
-	return $matches[1] . "<a href=\"$url\" rel=\"nofollow\">$url</a>" . $ret;
+    $ret = '';
+    $url = $matches[2];
+
+    if ( empty($url) )
+        return $matches[0];
+    // removed trailing [.,;:] from URL
+    if ( in_array(substr($url, -1), array('.', ',', ';', ':')) === true ) {
+        $ret = substr($url, -1);
+        $url = substr($url, 0, strlen($url)-1);
+    }
+    return $matches[1] . "<a href=\"$url\" rel=\"nofollow\">$url</a>" . $ret;
 }
- 
+
 function _make_web_ftp_clickable_cb($matches) {
-	$ret = '';
-	$dest = $matches[2];
-	$dest = 'http://' . $dest;
- 
-	if ( empty($dest) )
-		return $matches[0];
-	// removed trailing [,;:] from URL
-	if ( in_array(substr($dest, -1), array('.', ',', ';', ':')) === true ) {
-		$ret = substr($dest, -1);
-		$dest = substr($dest, 0, strlen($dest)-1);
-	}
-	return $matches[1] . "<a href=\"$dest\" rel=\"nofollow\">$dest</a>" . $ret;
+    $ret = '';
+    $dest = $matches[2];
+    $dest = 'http://' . $dest;
+
+    if ( empty($dest) )
+        return $matches[0];
+    // removed trailing [,;:] from URL
+    if ( in_array(substr($dest, -1), array('.', ',', ';', ':')) === true ) {
+        $ret = substr($dest, -1);
+        $dest = substr($dest, 0, strlen($dest)-1);
+    }
+    return $matches[1] . "<a href=\"$dest\" rel=\"nofollow\">$dest</a>" . $ret;
 }
- 
+
 function _make_email_clickable_cb($matches) {
-	$email = $matches[2] . '@' . $matches[3];
-	return $matches[1] . "<a href=\"mailto:$email\">$email</a>";
+    $email = $matches[2] . '@' . $matches[3];
+    return $matches[1] . "<a href=\"mailto:$email\">$email</a>";
 }
- 
+
 function make_clickable($ret) {
-	$ret = ' ' . $ret;
-	// in testing, using arrays here was found to be faster
-	$ret = preg_replace_callback('#([\s>])([\w]+?://[\w\\x80-\\xff\#$%&~/.\-;:=,?@\[\]+]*)#is', '_make_url_clickable_cb', $ret);
-	$ret = preg_replace_callback('#([\s>])((www|ftp)\.[\w\\x80-\\xff\#$%&~/.\-;:=,?@\[\]+]*)#is', '_make_web_ftp_clickable_cb', $ret);
-	$ret = preg_replace_callback('#([\s>])([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})#i', '_make_email_clickable_cb', $ret);
- 
-	// this one is not in an array because we need it to run last, for cleanup of accidental links within links
-	$ret = preg_replace("#(<a( [^>]+?>|>))<a [^>]+?>([^>]+?)</a></a>#i", "$1$3</a>", $ret);
-	$ret = trim($ret);
-	return $ret;
+    $ret = ' ' . $ret;
+    // in testing, using arrays here was found to be faster
+    $ret = preg_replace_callback('#([\s>])([\w]+?://[\w\\x80-\\xff\#$%&~/.\-;:=,?@\[\]+]*)#is', '_make_url_clickable_cb', $ret);
+    $ret = preg_replace_callback('#([\s>])((www|ftp)\.[\w\\x80-\\xff\#$%&~/.\-;:=,?@\[\]+]*)#is', '_make_web_ftp_clickable_cb', $ret);
+    $ret = preg_replace_callback('#([\s>])([.0-9a-z_+-]+)@(([0-9a-z-]+\.)+[0-9a-z]{2,})#i', '_make_email_clickable_cb', $ret);
+
+    // this one is not in an array because we need it to run last, for cleanup of accidental links within links
+    $ret = preg_replace("#(<a( [^>]+?>|>))<a [^>]+?>([^>]+?)</a></a>#i", "$1$3</a>", $ret);
+    $ret = trim($ret);
+    return $ret;
 }
 
 /* END # from wordpress under GBU GPL license */
@@ -534,7 +534,7 @@ function bbcode($txt, $tinymce=0, $no_vid=0,$ts=0,$nolink=0)
 {
   global $settings;
   if($no_vid == 0 && $settings['urls_linked'] == 1 && $nolink == 0) {
-	  $txt = make_clickable($txt);
+      $txt = make_clickable($txt);
   }
   $txt = str_replace("\\","\\\\",$txt);
   $txt = str_replace("\\n","<br />",$txt);
@@ -543,7 +543,7 @@ function bbcode($txt, $tinymce=0, $no_vid=0,$ts=0,$nolink=0)
   $txt = highlight_text($txt);
   $txt = re_bbcode($txt);
   if($ts == 0) {
-  	$txt = strip_tags($txt,"<br><object><em><param><embed><strong><iframe><hr><table><tr><td><div><span><a><b><font><i><u><p><ul><ol><li><br /><img>");
+      $txt = strip_tags($txt,"<br><object><em><param><embed><strong><iframe><hr><table><tr><td><div><span><a><b><font><i><u><p><ul><ol><li><br /><img>");
   }
   $txt = smileys($txt);
 
@@ -587,18 +587,18 @@ function bbcode_html($txt,$tinymce=0)
   $txt = glossar($txt);
   $txt = str_replace("&#34;","\"",$txt);
 
-	return $txt;
+    return $txt;
 }
 //-> Textteil in Zitat-Tags setzen
 function zitat($nick,$zitat)
 {
-	$zitat = str_replace(chr(145), chr(39), $zitat);
-	$zitat = str_replace(chr(146), chr(39), $zitat);
-	$zitat = str_replace("'", "&#39;", $zitat);
-	$zitat = str_replace(chr(147), chr(34), $zitat);
-	$zitat = str_replace(chr(148), chr(34), $zitat);
-	$zitat = str_replace(chr(10), " ", $zitat);
-	$zitat = str_replace(chr(13), " ", $zitat);
+    $zitat = str_replace(chr(145), chr(39), $zitat);
+    $zitat = str_replace(chr(146), chr(39), $zitat);
+    $zitat = str_replace("'", "&#39;", $zitat);
+    $zitat = str_replace(chr(147), chr(34), $zitat);
+    $zitat = str_replace(chr(148), chr(34), $zitat);
+    $zitat = str_replace(chr(10), " ", $zitat);
+    $zitat = str_replace(chr(13), " ", $zitat);
   $zitat = preg_replace("#[\n\r]+#", "<br />", $zitat);
   $zitat = '<div class="quote"><b>'.$nick.' '._wrote.':</b><br />'.re_bbcode($zitat).'</div><br /><br /><br />';
 
@@ -628,7 +628,7 @@ function re_entry($txt)
 //-> Smileys ausgeben
 function smileys($txt)
 {
-  $files = get_files('../inc/images/smileys');
+  $files = get_files('../inc/images/smileys',false,true);
   for($i=0; $i<count($files); $i++)
   {
     $smileys = $files[$i];
@@ -640,7 +640,7 @@ function smileys($txt)
     }
   }
 
-	$var = array("/\ :D/",
+    $var = array("/\ :D/",
                "/\ :P/",
                "/\ ;\)/",
                "/\ :\)/",
@@ -666,7 +666,7 @@ function smileys($txt)
 //-> Flaggen ausgeben
 function flagge($txt)
 {
-	$var = array("/\:de:/",
+    $var = array("/\:de:/",
                "/\:ch:/",
                "/\:at:/",
                "/\:au:/",
@@ -752,20 +752,81 @@ function wrap($str, $width = 75, $break = "\n", $cut = true)
   return strtr(str_replace(htmlentities($break), $break, htmlentities(wordwrap(html_entity_decode($str), $width, $break, $cut), ENT_QUOTES)), array_flip(get_html_translation_table(HTML_SPECIALCHARS, ENT_COMPAT)));
 }
 //-> Funktion um Dateien aus einem Verzeichnis auszulesen
-function get_files($dir)
+function get_files($dir=null,$only_dir=false,$only_files=false,$file_ext=array(),$preg_match=false,$blacklist=array())
 {
-  $dp = @opendir($dir);
-  $files = array();
-  while($file = @readdir($dp))
-  {
-    if($file != '.' && $file != '..')
-      array_push($files, $file);
-  }
-  @closedir($dp);
-  sort($files);
+    $files = array();
+    if($handle = @opendir($dir))
+    {
+        if($only_dir) ## Ordner ##
+        {
+            while(false !== ($file = readdir($handle)))
+            {
+                if($file != '.' && $file != '..' && !is_file($dir.'/'.$file))
+                {
+                    if(!count($blacklist) && ($preg_match ? preg_match($preg_match,$file) : true))
+                        $files[] = $file;
+                    else
+                    {
+                        if(!in_array($file, $blacklist) && ($preg_match ? preg_match($preg_match,$file) : true))
+                            $files[] = $file;
+                    }
+                }
+            } //while end
+        }
+        else if($only_files) ## Dateien ##
+        {
+            while(false !== ($file = readdir($handle)))
+            {
+                if($file != '.' && $file != '..' && is_file($dir.'/'.$file))
+                {
+                    if(!in_array($file, $blacklist) && !count($file_ext) && ($preg_match ? preg_match($preg_match,$file) : true))
+                        $files[] = $file;
+                    else
+                    {
+                        ## Extension Filter ##
+                        $exp_string = array_reverse(explode(".", $file));
+                        if(!in_array($file, $blacklist) && in_array(strtolower($exp_string[0]), $file_ext) && ($preg_match ? preg_match($preg_match,$file) : true))
+                            $files[] = $file;
+                    }
+                }
+            } //while end
+        }
+        else ## Ordner & Dateien ##
+        {
+            while(false !== ($file = readdir($handle)))
+            {
+                if($file != '.' && $file != '..' && is_file($dir.'/'.$file))
+                {
+                    if(!in_array($file, $blacklist) && !count($file_ext) && ($preg_match ? preg_match($preg_match,$file) : true))
+                        $files[] = $file;
+                    else
+                    {
+                        ## Extension Filter ##
+                        $exp_string = array_reverse(explode(".", $file));
+                        if(!in_array($file, $blacklist) && in_array(strtolower($exp_string[0]), $file_ext) && ($preg_match ? preg_match($preg_match,$file) : true))
+                            $files[] = $file;
+                    }
+                }
+                else
+                {
+                    if(!in_array($file, $blacklist) && $file != '.' && $file != '..' && ($preg_match ? preg_match($preg_match,$file) : true))
+                        $files[] = $file;
+                }
+            } //while end
+        }
 
-  return($files);
+        if(is_resource($handle))
+            closedir($handle);
+
+        if(!count($files))
+            return false;
+
+        return $files;
+    }
+    else
+        return false;
 }
+
 //-> Funktion um eine Datei im Web auf Existenz zu prfen
 function fileExists($url)
 {
@@ -1144,13 +1205,13 @@ function cw_result_details($punkte, $gpunkte)
   if($punkte > $gpunkte)
   {
     $result = '<td class="contentMainFirst" align="center"><span class="CwWon">'.$punkte.'</span></td>
-	             <td class="contentMainFirst" align="center"><span class="CwLost">'.$gpunkte.'</span></td>';
+                 <td class="contentMainFirst" align="center"><span class="CwLost">'.$gpunkte.'</span></td>';
   } elseif($punkte < $gpunkte) {
     $result = '<td class="contentMainFirst" align="center"><span class="CwLost">'.$punkte.'</span></td>
-	             <td class="contentMainFirst" align="center"><span class="CwWon">'.$gpunkte.'</span></td>';
+                 <td class="contentMainFirst" align="center"><span class="CwWon">'.$gpunkte.'</span></td>';
   } else {
     $result = '<td class="contentMainFirst" align="center"><span class="CwDraw">'.$punkte.'</span></td>
-	             <td class="contentMainFirst" align="center"><span class="CwDraw">'.$gpunkte.'</span></td>';
+                 <td class="contentMainFirst" align="center"><span class="CwDraw">'.$gpunkte.'</span></td>';
   }
 
   return $result;
@@ -1191,7 +1252,7 @@ function links($hp)
 {
   if(!empty($hp))
   {
-	  $link = str_replace("http://","",$hp);
+      $link = str_replace("http://","",$hp);
     return 'http://'.$link;
   }
 }
@@ -1321,13 +1382,13 @@ function check_url($url)
 function nav($entrys, $perpage, $urlpart, $icon=true)
 {
     global $page, $_SERVER;
-	  if($perpage == 0)  return "&#xAB; <span class=\"fontSites\">0</span> &#xBB;";
+      if($perpage == 0)  return "&#xAB; <span class=\"fontSites\">0</span> &#xBB;";
       if($icon == true) $icon = '<img src="../inc/images/multipage.gif" alt="" class="icon" /> '._seiten;
 
       if($entrys <= $perpage) return $icon.' &#xAB; <span class="fontSites">1</span> &#xBB;';
       if(!$page || $page < 1) $page = 2;
-	  
-	  $pages = ceil($entrys/$perpage);
+
+      $pages = ceil($entrys/$perpage);
       $result = "";
 
       if(($page-5) <= 2 && $page != 1)
@@ -1377,26 +1438,26 @@ function artikelSites($sites, $id)
 //-> Nickausgabe mit Profillink oder Emaillink (reg/nicht reg)
 function autor($uid, $class="", $nick="", $email="", $cut="",$add="")
 {
-	global $db;
-	$qry = db("SELECT nick,country FROM ".$db['users']."
-			   WHERE id = '".intval($uid)."'");
-	$get = _fetch($qry);
-	if(_rows($qry))
-	{
-		$nickname = (!empty($cut)) ? cut(re($get['nick']), $cut) : re($get['nick']);
-		$result = show(_user_link, array("id" => $uid,
-										 "country" => flag($get['country']),
-										 "class" => $class,
-										 "get" => $add,
-										 "nick" => $nickname));
-	} else {
-		$nickname = (!empty($cut)) ? cut(re($nick), $cut) : re($nick);
-		$result = show(_user_link_noreg, array("nick" => $nickname,
-										       "class" => $class,
-										 	   "email" => eMailAddr($email)));
-	}
+    global $db;
+    $qry = db("SELECT nick,country FROM ".$db['users']."
+               WHERE id = '".intval($uid)."'");
+    $get = _fetch($qry);
+    if(_rows($qry))
+    {
+        $nickname = (!empty($cut)) ? cut(re($get['nick']), $cut) : re($get['nick']);
+        $result = show(_user_link, array("id" => $uid,
+                                         "country" => flag($get['country']),
+                                         "class" => $class,
+                                         "get" => $add,
+                                         "nick" => $nickname));
+    } else {
+        $nickname = (!empty($cut)) ? cut(re($nick), $cut) : re($nick);
+        $result = show(_user_link_noreg, array("nick" => $nickname,
+                                               "class" => $class,
+                                                "email" => eMailAddr($email)));
+    }
 
-	return $result;
+    return $result;
 }
 function cleanautor($uid, $class="", $nick="", $email="", $cut="")
 {
@@ -1407,7 +1468,7 @@ function cleanautor($uid, $class="", $nick="", $email="", $cut="")
     if(_rows($qry))
     {
       $result = show(_user_link_preview, array("id" => $uid,
-        				                               "country" => flag($get['country']),
+                                                       "country" => flag($get['country']),
                                                "class" => $class,
                                                "nick" => re($get['nick'])));
     } else {
@@ -1441,7 +1502,7 @@ function fabo_autor($uid)
     if(_rows($qry))
 
       $result = show(_user_link_fabo, array("id" => $uid,
-				            "nick" => re($get['nick'])));
+                            "nick" => re($get['nick'])));
 
   return $result;
 }
@@ -1454,7 +1515,7 @@ function blank_autor($uid)
     if(_rows($qry))
 
       $result = show(_user_link_blank, array("id" => $uid,
-				                                     "nick" => re($get['nick'])));
+                                                     "nick" => re($get['nick'])));
 
   return $result;
 }
@@ -1525,30 +1586,30 @@ function sendMail($mailto,$subject,$content)
   $mail->Body = bbcode_nletter($content);
   $mail->AltBody = bbcode_nletter_plain($content);
 
-	return $mail->Send();
+    return $mail->Send();
 }
 function check_msg_emal()
 {
   global $db,$clanname,$httphost;
     $qry = db("SELECT s1.an,s1.page,s1.titel,s1.sendmail,s1.id AS mid,s2.id,s2.nick,s2.email,s2.pnmail FROM ".$db['msg']." AS s1
-			   LEFT JOIN ".$db['users']." AS s2 ON s2.id = s1.an
+               LEFT JOIN ".$db['users']." AS s2 ON s2.id = s1.an
                WHERE page = 0
-			   AND sendmail = 0");
+               AND sendmail = 0");
     while($get = _fetch($qry))
     {
       if($get['pnmail'] == 1)
-  	  {
-  	  	$upd = db("UPDATE ".$db['msg']." SET `sendmail` = '1' WHERE id = '".$get['mid']."'");
+        {
+            $upd = db("UPDATE ".$db['msg']." SET `sendmail` = '1' WHERE id = '".$get['mid']."'");
 
-  	  	$subj = show(settings('eml_pn_subj'), array("domain" => $httphost));
+            $subj = show(settings('eml_pn_subj'), array("domain" => $httphost));
 
-  	 	  $message = show(settings('eml_pn'), array("nick" => re($get['nick']),
-  	  											                      "domain" => $httphost,
-                              									  "titel" => $get['titel'],
-                              										"clan" => $clanname));
+             $message = show(settings('eml_pn'), array("nick" => re($get['nick']),
+                                                                          "domain" => $httphost,
+                                                                    "titel" => $get['titel'],
+                                                                      "clan" => $clanname));
 
-  	  	sendMail(re($get['email']), $subj, $message);
-  	  }
+            sendMail(re($get['email']), $subj, $message);
+        }
     }
 }
 check_msg_emal();
@@ -1556,15 +1617,15 @@ function perm_sendnews($uID)
 {
   global $db;
  // check rank permission
-	 $team = db("SELECT s1.`news` FROM ".$db['permissions']." AS s1
-							 LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
-							 WHERE s2.`user` = '".intval($uID)."' AND s1.`news` = '1' AND s2.`posi` != '0'");
+     $team = db("SELECT s1.`news` FROM ".$db['permissions']." AS s1
+                             LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
+                             WHERE s2.`user` = '".intval($uID)."' AND s1.`news` = '1' AND s2.`posi` != '0'");
 
  // check user permission
-	 $user = db("SELECT id FROM ".$db['permissions']." WHERE user = '".intval($uID)."' AND `news` = '1'");
+     $user = db("SELECT id FROM ".$db['permissions']." WHERE user = '".intval($uID)."' AND `news` = '1'");
 
-	 if(_rows($user) || _rows($team)) return true;
-	 else return false;
+     if(_rows($user) || _rows($team)) return true;
+     else return false;
 }
 //-> selektiert die SteamID zum Abgleich mit anderen Daten
 function steamid($nick,$steamid)
@@ -1655,8 +1716,8 @@ function dropdown($what, $wert, $age = 0)
     {
       if($i == 0 || $i == 15 || $i == 30 || $i == 45)
       {
-	      if($i==$wert) $return .= "<option value=\"".$i."\" selected=\"selected\">".$i."</option>\n";
-	      else $return .= "<option value=\"".$i."\">".$i."</option>\n";
+          if($i==$wert) $return .= "<option value=\"".$i."\" selected=\"selected\">".$i."</option>\n";
+          else $return .= "<option value=\"".$i."\">".$i."</option>\n";
       }
     }
   }
@@ -1666,7 +1727,7 @@ function dropdown($what, $wert, $age = 0)
 //Games fuer den Livestatus
 function sgames($game = '')
 {
-  $protocols = get_files(basePath.'/inc/server_query/');
+  $protocols = get_files(basePath.'/inc/server_query/',false,true,array('php'));
   foreach($protocols AS $protocol)
   {
     unset($gamemods, $server_name_config);
@@ -1901,40 +1962,40 @@ function onlinecheck($tid)
 //Funktion fuer die Sprachdefinierung der Profilfelder
 function pfields_name($name)
 {
-	$name = preg_replace("=_city_=Uis", _profil_city, $name);
-	$name = preg_replace("=_hobbys_=Uis", _profil_hobbys, $name);
-	$name = preg_replace("=_job_=Uis", _profil_job, $name);
-	$name = preg_replace("=_motto_=Uis", _profil_motto, $name);
-	$name = preg_replace("=_exclans_=Uis", _profil_exclans, $name);
-	$name = preg_replace("=_email2_=Uis", _profil_email2, $name);
-	$name = preg_replace("=_email3_=Uis", _profil_email3, $name);
-	$name = preg_replace("=_autor_=Uis", _profil_autor, $name);
-	$name = preg_replace("=_auto_=Uis", _profil_auto, $name);
-	$name = preg_replace("=_buch_=Uis", _profil_buch, $name);
-	$name = preg_replace("=_drink_=Uis", _profil_drink, $name);
-	$name = preg_replace("=_essen_=Uis", _profil_essen, $name);
-	$name = preg_replace("=_favoclan_=Uis", _profil_favoclan, $name);
-	$name = preg_replace("=_film_=Uis", _profil_film, $name);
-	$name = preg_replace("=_game_=Uis", _profil_game, $name);
-	$name = preg_replace("=_map_=Uis", _profil_map, $name);
-	$name = preg_replace("=_musik_=Uis", _profil_musik, $name);
-	$name = preg_replace("=_person_=Uis", _profil_person, $name);
-	$name = preg_replace("=_song_=Uis", _profil_song, $name);
-	$name = preg_replace("=_spieler_=Uis", _profil_spieler, $name);
-	$name = preg_replace("=_sportler_=Uis", _profil_sportler, $name);
-	$name = preg_replace("=_sport_=Uis", _profil_sport, $name);
-	$name = preg_replace("=_waffe_=Uis", _profil_waffe, $name);
-	$name = preg_replace("=_board_=Uis", _profil_board, $name);
-	$name = preg_replace("=_cpu_=Uis", _profil_cpu, $name);
-	$name = preg_replace("=_graka_=Uis", _profil_graka, $name);
-	$name = preg_replace("=_hdd_=Uis", _profil_hdd, $name);
-	$name = preg_replace("=_headset_=Uis", _profil_headset, $name);
-	$name = preg_replace("=_inet_=Uis", _profil_inet, $name);
-	$name = preg_replace("=_maus_=Uis", _profil_maus, $name);
-	$name = preg_replace("=_mauspad_=Uis", _profil_mauspad, $name);
-	$name = preg_replace("=_monitor_=Uis", _profil_monitor, $name);
-	$name = preg_replace("=_ram_=Uis", _profil_ram, $name);
-	$name = preg_replace("=_system_=Uis", _profil_os, $name);
+    $name = preg_replace("=_city_=Uis", _profil_city, $name);
+    $name = preg_replace("=_hobbys_=Uis", _profil_hobbys, $name);
+    $name = preg_replace("=_job_=Uis", _profil_job, $name);
+    $name = preg_replace("=_motto_=Uis", _profil_motto, $name);
+    $name = preg_replace("=_exclans_=Uis", _profil_exclans, $name);
+    $name = preg_replace("=_email2_=Uis", _profil_email2, $name);
+    $name = preg_replace("=_email3_=Uis", _profil_email3, $name);
+    $name = preg_replace("=_autor_=Uis", _profil_autor, $name);
+    $name = preg_replace("=_auto_=Uis", _profil_auto, $name);
+    $name = preg_replace("=_buch_=Uis", _profil_buch, $name);
+    $name = preg_replace("=_drink_=Uis", _profil_drink, $name);
+    $name = preg_replace("=_essen_=Uis", _profil_essen, $name);
+    $name = preg_replace("=_favoclan_=Uis", _profil_favoclan, $name);
+    $name = preg_replace("=_film_=Uis", _profil_film, $name);
+    $name = preg_replace("=_game_=Uis", _profil_game, $name);
+    $name = preg_replace("=_map_=Uis", _profil_map, $name);
+    $name = preg_replace("=_musik_=Uis", _profil_musik, $name);
+    $name = preg_replace("=_person_=Uis", _profil_person, $name);
+    $name = preg_replace("=_song_=Uis", _profil_song, $name);
+    $name = preg_replace("=_spieler_=Uis", _profil_spieler, $name);
+    $name = preg_replace("=_sportler_=Uis", _profil_sportler, $name);
+    $name = preg_replace("=_sport_=Uis", _profil_sport, $name);
+    $name = preg_replace("=_waffe_=Uis", _profil_waffe, $name);
+    $name = preg_replace("=_board_=Uis", _profil_board, $name);
+    $name = preg_replace("=_cpu_=Uis", _profil_cpu, $name);
+    $name = preg_replace("=_graka_=Uis", _profil_graka, $name);
+    $name = preg_replace("=_hdd_=Uis", _profil_hdd, $name);
+    $name = preg_replace("=_headset_=Uis", _profil_headset, $name);
+    $name = preg_replace("=_inet_=Uis", _profil_inet, $name);
+    $name = preg_replace("=_maus_=Uis", _profil_maus, $name);
+    $name = preg_replace("=_mauspad_=Uis", _profil_mauspad, $name);
+    $name = preg_replace("=_monitor_=Uis", _profil_monitor, $name);
+    $name = preg_replace("=_ram_=Uis", _profil_ram, $name);
+    $name = preg_replace("=_system_=Uis", _profil_os, $name);
 
   return $name;
 }
@@ -2137,14 +2198,14 @@ function infos($checkBrowser = "")
       if(preg_match("/Opera/i",$data))          $browser = "Opera";
       elseif(preg_match("/Konqueror/i",$data))  $browser = "Konqueror";
       elseif(preg_match("/Firefox/i",$data))    $browser = "Mozilla Firefox";
-	  elseif(preg_match("/chrome/i",$data))     $browser = "Google Chrome";
-	  elseif(preg_match("/Safari/i",$data))     $browser = "Safari";
+      elseif(preg_match("/chrome/i",$data))     $browser = "Google Chrome";
+      elseif(preg_match("/Safari/i",$data))     $browser = "Safari";
       elseif(preg_match("/MSIE 5/i",$data))     $browser = "Internet Explorer 5";
       elseif(preg_match("/MSIE 6/i",$data))     $browser = "Internet Explorer 6";
       elseif(preg_match("/MSIE 7/i",$data))     $browser = "Internet Explorer 7";
       elseif(preg_match("/MSIE 8/i",$data))     $browser = "Internet Explorer 8";
-	  elseif(preg_match("/MSIE 9/i",$data))     $browser = "Internet Explorer 9";
-	  elseif(preg_match("/MSIE 10/i",$data))     $browser = "Internet Explorer 10";
+      elseif(preg_match("/MSIE 9/i",$data))     $browser = "Internet Explorer 9";
+      elseif(preg_match("/MSIE 10/i",$data))     $browser = "Internet Explorer 10";
       else                                      $browser = _unknown_browser;
 
       $res = "<script language=\"javascript\" type=\"text/javascript\">
@@ -2173,19 +2234,19 @@ function userpic($userid, $width=170,$height=210)
   global $picformat;
 
     foreach($picformat as $endung)
-		{
-			if(file_exists(basePath."/inc/images/uploads/userpics/".$userid.".".$endung))
-			{
-				$pic = show(_userpic_link, array("id" => $userid,
-																				 "endung" => $endung,
+        {
+            if(file_exists(basePath."/inc/images/uploads/userpics/".$userid.".".$endung))
+            {
+                $pic = show(_userpic_link, array("id" => $userid,
+                                                                                 "endung" => $endung,
                                          "width" => $width,
                                          "height" => $height));
-				break;
-			}	else {
-				$pic = show(_no_userpic, array("width" => $width,
+                break;
+            }	else {
+                $pic = show(_no_userpic, array("width" => $width,
                                        "height" => $height));
-			}
-		}
+            }
+        }
 
   return $pic;
 }
@@ -2195,19 +2256,19 @@ function useravatar($userid, $width=100,$height=100)
   global $picformat;
 
     foreach($picformat as $endung)
-		{
-			if(file_exists(basePath."/inc/images/uploads/useravatare/".$userid.".".$endung))
-			{
-				$pic = show(_userava_link, array("id" => $userid,
-																				 "endung" => $endung,
+        {
+            if(file_exists(basePath."/inc/images/uploads/useravatare/".$userid.".".$endung))
+            {
+                $pic = show(_userava_link, array("id" => $userid,
+                                                                                 "endung" => $endung,
                                          "width" => $width,
                                          "height" => $height));
-				break;
-			}	else {
-				$pic = show(_no_userava, array("width" => $width,
+                break;
+            }	else {
+                $pic = show(_no_userava, array("width" => $width,
                                        "height" => $height));
-			}
-		}
+            }
+        }
 
   return $pic;
 }
@@ -2217,15 +2278,15 @@ function hoveruserpic($userid, $width=170,$height=210)
   global $picformat;
 
     foreach($picformat as $endung)
-		{
-			if(file_exists(basePath."/inc/images/uploads/userpics/".$userid.".".$endung))
-			{
-				$pic = "../inc/images/uploads/userpics/".$userid.".".$endung."', '".$width."', '".$height."";
-				break;
-			}	else {
-				$pic = "../inc/images/nopic.gif".$userid.".".$endung."', '".$width."', '".$height."";
-			}
-		}
+        {
+            if(file_exists(basePath."/inc/images/uploads/userpics/".$userid.".".$endung))
+            {
+                $pic = "../inc/images/uploads/userpics/".$userid.".".$endung."', '".$width."', '".$height."";
+                break;
+            }	else {
+                $pic = "../inc/images/nopic.gif".$userid.".".$endung."', '".$width."', '".$height."";
+            }
+        }
 
   return $pic;
 }
@@ -2382,19 +2443,19 @@ function getBoardPermissions($checkID = 0, $pos = 0)
   return $i_forum;
 }
 //-> Neue Languages einbinden, sofern vorhanden
-if($l = get_files(basePath.'/inc/additional-languages/'.$language.'/'))
+if($l = get_files(basePath.'/inc/additional-languages/'.$language.'/',false,true,array('php')))
 {
-	foreach($l AS $languages)
-	{
-		$extl = explode('.', strtolower($languages));
-		$extl = $extl[count($extl) - 1];
-		if($extl == 'php') {
-			include(basePath.'/inc/additional-languages/'.$language.'/'.$languages);
-		}
-	}
+    foreach($l AS $languages)
+    {
+        $extl = explode('.', strtolower($languages));
+        $extl = $extl[count($extl) - 1];
+        if($extl == 'php') {
+            include(basePath.'/inc/additional-languages/'.$language.'/'.$languages);
+        }
+    }
 }
 //-> Neue Funktionen einbinden, sofern vorhanden
-if($f = get_files(basePath.'/inc/additional-functions/'))
+if($f = get_files(basePath.'/inc/additional-functions/',false,true,array('php')))
 {
   foreach($f AS $func)
   {
@@ -2413,14 +2474,14 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
 {
   global $db,$userid,$userip,$tmpdir,$secureLogin,$chkMe,$charset;
   global $u_b1,$u_b2,$designpath,$maxwidth,$language,$cp_color,$copyright;
-  
+
 // user gebannt? Logge aus!
     if($chkMe == 'banned') header("Location: ../user/?action=logout");
 //  JS-Dateine einbinden
     $lng = ($language=='deutsch')?'de':'en';
     $edr = ($wysiwyg=='_word')?'advanced':'normal';
     $lcolor = ($cp_color==1)?'lcolor=true;':'';
-	
+
     $java_vars = '<script language="javascript" type="text/javascript">
 <!--
  var maxW = '.$maxwidth.',lng = \''.$lng.'\',dzcp_editor = \''.$edr.'\';'.$lcolor.'
@@ -2456,22 +2517,22 @@ if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USE
 
 //check permissions
     if($chkMe == "unlogged") include_once(basePath.'/inc/menu-functions/login.php');
-    else 
-	{
-		$check_msg = check_msg();
-		set_lastvisit();
-		$login = "";
-		db("UPDATE ".$db['users']." SET `time` = '".((int)time())."', `whereami` = '".up($where)."' WHERE id = '".intval($userid)."'");
+    else
+    {
+        $check_msg = check_msg();
+        set_lastvisit();
+        $login = "";
+        db("UPDATE ".$db['users']." SET `time` = '".((int)time())."', `whereami` = '".up($where)."' WHERE id = '".intval($userid)."'");
     }
 
 //init templateswitch
-	$tmpldir=""; $tmps = get_files('../inc/_templates_/');
+    $tmpldir=""; $tmps = get_files('../inc/_templates_/',true);
     for($i=0; $i<count($tmps); $i++)
     {
-		$selt = ($tmpdir == $tmps[$i] ? 'selected="selected"' : '');
-		$tmpldir .= show(_select_field, array("value" => "../user/?action=switch&amp;set=".$tmps[$i],  "what" => $tmps[$i],  "sel" => $selt));
+        $selt = ($tmpdir == $tmps[$i] ? 'selected="selected"' : '');
+        $tmpldir .= show(_select_field, array("value" => "../user/?action=switch&amp;set=".$tmps[$i],  "what" => $tmps[$i],  "sel" => $selt));
     }
-	
+
 //misc vars
     $template_switch = show("menu/tmp_switch", array("templates" => $tmpldir));
     $clanname = re(settings("clanname"));
@@ -2503,30 +2564,30 @@ if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USE
     $pholdervars = pholderreplace($pholdervars);
 //put placeholders in array
     $pholder = explode("^",$pholder);
-    for($i=0;$i<=count($pholder)-1;$i++) 
-	{
-		if(strstr($pholder[$i], 'nav_')) 
-			$arr[$pholder[$i]] = navi($pholder[$i]);
-		else 
-		{
-			if(@file_exists(basePath.'/inc/menu-functions/'.$pholder[$i].'.php')) 
-				include_once(basePath.'/inc/menu-functions/'.$pholder[$i].'.php');
-			
-			if(function_exists($pholder[$i]))
-				$arr[$pholder[$i]] = $pholder[$i]();
-		}
-	}
-	
-    $pholdervars = explode("^",$pholdervars);
-    for($i=0;$i<=count($pholdervars)-1;$i++) 
-	{ $arr[$pholdervars[$i]] = $$pholdervars[$i]; }
+    for($i=0;$i<=count($pholder)-1;$i++)
+    {
+        if(strstr($pholder[$i], 'nav_'))
+            $arr[$pholder[$i]] = navi($pholder[$i]);
+        else
+        {
+            if(@file_exists(basePath.'/inc/menu-functions/'.$pholder[$i].'.php'))
+                include_once(basePath.'/inc/menu-functions/'.$pholder[$i].'.php');
 
-	//index output
+            if(function_exists($pholder[$i]))
+                $arr[$pholder[$i]] = $pholder[$i]();
+        }
+    }
+
+    $pholdervars = explode("^",$pholdervars);
+    for($i=0;$i<=count($pholdervars)-1;$i++)
+    { $arr[$pholdervars[$i]] = $$pholdervars[$i]; }
+
+    //index output
     if(file_exists("../inc/_templates_/".$tmpdir."/".$index_templ.".html")) {
-    	echo show($index_templ, $arr);
-	} else {
-    	echo show("index", $arr);
-	}
+        echo show($index_templ, $arr);
+    } else {
+        echo show("index", $arr);
+    }
   }
 }
 ?>
