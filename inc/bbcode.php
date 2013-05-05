@@ -115,29 +115,47 @@ $maxawards = $c['m_awards'];
 $sdir = $settings['tmpdir'];
 $userip = $_SERVER['REMOTE_ADDR'];
 
-if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pwd']) && empty($_SESSION['id']))
+//-> Auslesen der Cookies und automatisch anmelden
+if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSION['id']) && checkme() == "unlogged")
 {
-  $_SESSION['id']   = intval($_COOKIE[$prev.'id']);
-  $_SESSION['pwd']  = $_COOKIE[$prev.'pwd'];
-  $_SESSION['ip']   = $_SERVER['REMOTE_ADDR'];
+    ## User aus der Datenbank suchen ##
+    $sql = db($sql="SELECT id,user,nick,pwd,email,level,time,pkey FROM ".$db['users']." WHERE id = '".$_COOKIE[$prev.'id']."' AND pkey = '".$_COOKIE[$prev.'pkey']."' AND level != '0'");
+    if(_rows($sql))
+    {
+        $get = _fetch($sql);
 
-  if(data(intval($_COOKIE[$prev.'id']), "ip") != $_SESSION['ip'])
-  {
-    $qry = db("UPDATE ".$db['userstats']."
-               SET `logins` = logins+1
-               WHERE user = '".intval($_COOKIE[$prev.'id'])."'");
+        ## Generiere neuen permanent-key ##
+        $permanent_key = md5(mkpwd(8));
+        set_cookie($prev."pkey",$permanent_key);
 
-    $qry = db("UPDATE ".$db['users']."
-                       SET `online` = 1,
-                   `sessid` = '".session_id()."',
-                   `ip`     = '".$userip."'
-                       WHERE id = ".intval($_COOKIE[$prev.'id']));
-    $_SESSION['lastvisit'] = data(intval($_COOKIE[$prev.'id']), "time");
-  }
+        ## Schreibe Werte in die Server Sessions ##
+        $_SESSION['id']         = $get['id'];
+        $_SESSION['pwd']        = $get['pwd'];
+        $_SESSION['lastvisit']  = $get['time'];
+        $_SESSION['ip']         = $_SERVER['REMOTE_ADDR'];
 
-  if(empty($_SESSION['lastvisit']))
-    $_SESSION['lastvisit'] = data(intval($_COOKIE[$prev.'id']), "time");
+        if(data($get['id'], "ip") != $_SESSION['ip'])
+            $_SESSION['lastvisit'] = data($get['id'], "time");
+
+        if(empty($_SESSION['lastvisit']))
+            $_SESSION['lastvisit'] = data($get['id'], "time");
+
+        ## Aktualisiere Datenbank ##
+        db("UPDATE ".$db['users']." SET `online` = '1', `sessid` = '".session_id()."', `ip` = '".$_SESSION['ip']."', `pkey` = '".$permanent_key."' WHERE id = '".$get['id']."'");
+
+        ## Aktualisiere die User-Statistik ##
+        db("UPDATE ".$db['userstats']." SET `logins` = logins+1 WHERE user = '".$get['id']."'");
+    }
+    else
+    {
+        $_SESSION['id']        = '';
+        $_SESSION['pwd']       = '';
+        $_SESSION['ip']        = '';
+        $_SESSION['lastvisit'] = '';
+        $_SESSION['pkey']      = '';
+    }
 }
+
 $userid = userid();
 $chkMe = checkme();
 if($chkMe == "unlogged")
