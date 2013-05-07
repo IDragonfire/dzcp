@@ -43,7 +43,7 @@ default:
         $pm = show(_clankasse_minus, array("betrag" => $betrag,
                                            "w" => $w));
       }
-      
+
       $edit = show("page/button_edit_single", array("id" => $get['id'],
                                                    "title" => _button_title_edit,
                                                    "action" => "action=admin&amp;do=edit"));
@@ -51,7 +51,7 @@ default:
                                                        "title" => _button_title_delete,
                                                        "action" => "action=admin&amp;do=delete",
                                                        "del" => convSpace(_confirm_del_entry)));
-      
+
       $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
 
       $show .= show($dir."/clankasse_show", array("betrag" => $pm,
@@ -100,7 +100,7 @@ default:
     {
       if($gets['user'])
       {
-        if(paycheck($gets['payed']))
+        if($gets['payed'] >= time())
         {
           $status = show(_clankasse_status_payed, array("payed" => date("d.m.Y", $gets['payed'])));
         } elseif(date("d.m.Y", $gets['payed']) == date("d.m.Y", time())) {
@@ -132,7 +132,7 @@ default:
                                            "knr" => _clankasse_nr,
                                            "kblz" => _clankasse_blz,
                                            "kbank" => _clankasse_bank,
-										                       "kvwz" => _clankasse_vwz,
+                                                               "kvwz" => _clankasse_vwz,
                                            "cfor" => _clankasse_for,
                                            "cdatum" => _datum,
                                            "ctransaktion" => _clankasse_ctransaktion,
@@ -150,7 +150,7 @@ default:
                                            "iban" => $get['iban'],
                                            "bic" => $get['bic'],
                                            "bank" => $get['k_bank'],
-										   "vwz" => $get['k_vwz'],
+                                           "vwz" => $get['k_vwz'],
                                            "summe" => $gesamt,
                                            "seiten" => $seiten,
                                            "beitrag" => $beitrag));
@@ -170,8 +170,8 @@ case 'admin':
       }
 
       $dropdown_date = show(_dropdown_date, array("day" => dropdown("day",date("d",time())),
-			    	                                      "month" => dropdown("month",date("m",time())),
-                                   	              "year" => dropdown("year",date("Y",time()))));
+                                                          "month" => dropdown("month",date("m",time())),
+                                                     "year" => dropdown("year",date("Y",time()))));
 
       $index = show($dir."/new", array("newhead" => _clankasse_head_new,
                                        "betrag" => _clankasse_cbetrag,
@@ -244,8 +244,8 @@ case 'admin':
       $get = _fetch($qry);
 
       $dropdown_date = show(_dropdown_date, array("day" => dropdown("day",date("d",$get['datum'])),
-			 	      	                                  "month" => dropdown("month",date("m",$get['datum'])),
-                                      	          "year" => dropdown("year",date("Y",$get['datum']))));
+                                                             "month" => dropdown("month",date("m",$get['datum'])),
+                                                    "year" => dropdown("year",date("Y",$get['datum']))));
 
       if($get['pm'] == "0") $psel = "selected=\"selected\"";
       else $msel = "selected=\"selected\"";

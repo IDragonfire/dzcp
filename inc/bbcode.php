@@ -956,15 +956,10 @@ function highlight($word)
 function updateCounter()
 {
     global $db,$reload,$today,$datum,$userip;
-    $ipcheck = db("SELECT id,ip,datum FROM ".$db['c_ips']."
-                   WHERE ip = '".$userip."'
-                   AND FROM_UNIXTIME(datum,'%d.%m.%Y') = '".date("d.m.Y")."'");
+    $ipcheck = db("SELECT id,ip,datum FROM ".$db['c_ips']." WHERE ip = '".$userip."' AND FROM_UNIXTIME(datum,'%d.%m.%Y') = '".date("d.m.Y")."'");
     $get = _fetch($ipcheck);
 
-    $qry = db("DELETE FROM ".$db['c_ips']."
-               WHERE datum+".$reload." <= ".time()."
-               OR FROM_UNIXTIME(datum,'%d.%m.%Y') != '".date("d.m.Y")."'");
-
+    db("DELETE FROM ".$db['c_ips']." WHERE datum+".$reload." <= ".time()." OR FROM_UNIXTIME(datum,'%d.%m.%Y') != '".date("d.m.Y")."'");
     $count = db("SELECT id,visitors,today FROM ".$db['counter']." WHERE today = '".$today."'");
     if(_rows($ipcheck)>=1)
     {
@@ -1028,21 +1023,11 @@ function online_reg()
     return cnt($db['users'], " WHERE time+'".$useronline."'>'".time()."' AND online = '1'");
 }
 
-//-> Prueft den Zahlstatus eines Users (Clankasse)
-function paycheck($tocheck)
-{
-    return ($tocheck >= time() ? true : false);
-}
-
 //-> Prueft, ob User eingeloggt ist und wenn ja welches Level er besitzt
 function checkme()
 {
     global $db,$userid;
-    $qry = db("SELECT level FROM ".$db['users']."
-               WHERE id = '".intval($userid)."'
-               AND pwd = '".$_SESSION['pwd']."'
-               AND ip = '".$_SESSION['ip']."'");
-
+    $qry = db("SELECT level FROM ".$db['users']." WHERE id = '".intval($userid)."' AND pwd = '".$_SESSION['pwd']."' AND ip = '".$_SESSION['ip']."'");
     if(_rows($qry))
     {
         $get = _fetch($qry);
@@ -1100,25 +1085,6 @@ function forumcheck($tid, $what)
     return(_rows($qry) ? true : false);
 }
 
-//-> Prft, ob User ein Member des Squads ist
-function squadmember($squad_id)
-{
-    global $db;
-    $qry = db("SELECT id FROM ".$db['squaduser']." WHERE squad = '".intval($squad_id)."' AND user = '".$_SESSION['id']."'");
-    return (_rows($qry) ? true : false);
-}
-
-//-> Gibt ein selectfield mit Ja und Nein aus
-function select_field($what,$where,$tid)
-{
-    global $db;
-    $qry = db("SELECT ".$what." FROM ".$db[$where]." WHERE user = '".intval($tid)."' AND ".$what." = '1'");
-    if(_rows($qry))
-        return "<option value=\"0\">"._no."</option><option value=\"1\" selected=\"selected\">"._yes."</option>";
-    else
-        return "<option value=\"0\">"._no."</option><option value=\"1\">"._yes."</option>";
-}
-
 //-> Prueft ob ein User schon in der Buddyliste vorhanden ist
 function check_buddy($buddy)
 {
@@ -1157,16 +1123,6 @@ function cw_result_nopic($punkte, $gpunkte)
         return '<span class="CwLost">'.$punkte.':'.$gpunkte.'</span>';
     else
         return '<span class="CwDraw">'.$punkte.':'.$gpunkte.'</span>';
-}
-
-function cw_result_nopic_raw($punkte, $gpunkte)
-{
-  if($punkte > $gpunkte)
-      return '<span class=CwWon>'.$punkte.':'.$gpunkte.'</span>';
-  else if($punkte < $gpunkte)
-      return '<span class=CwLost>'.$punkte.':'.$gpunkte.'</span>';
-  else
-      return '<span class=CwDraw>'.$punkte.':'.$gpunkte.'</span>';
 }
 
 //-> Funktion um bei Clanwars Endergebnisse auszuwerten ohne bild und ohne farbe
@@ -1286,7 +1242,6 @@ function checkpwd($user, $pwd)
 function info($msg, $url, $timeout = 5)
 {
     global $c;
-
     if($c['direct_refresh'])
         return header('Location: '.str_replace('&amp;', '&', $url));
 
@@ -1362,7 +1317,6 @@ function check_url($url)
 function nav($entrys, $perpage, $urlpart, $icon=true)
 {
     global $page;
-
     if($perpage == 0)
         return "&#xAB; <span class=\"fontSites\">0</span> &#xBB;";
 
@@ -1413,7 +1367,6 @@ function nav($entrys, $perpage, $urlpart, $icon=true)
 function artikelSites($sites, $id)
 {
     global $part;
-
     $i = 0; $seiten = '';
     for($i=0;$i<$sites;$i++)
     {
@@ -1464,7 +1417,6 @@ function cleanautor($uid, $class="", $nick="", $email="", $cut="")
 function rawautor($uid)
 {
     global $db;
-
     $qry = db("SELECT nick,country FROM ".$db['users']." WHERE id = '".intval($uid)."'");
     if(_rows($qry))
     {
@@ -1479,7 +1431,6 @@ function rawautor($uid)
 function fabo_autor($uid)
 {
     global $db;
-
     $qry = db("SELECT nick FROM ".$db['users']." WHERE id = '".$uid."'");
     if(_rows($qry))
     {
@@ -1515,16 +1466,13 @@ function jsconvert($txt)
 function fintern($id)
 {
     global $db,$userid,$chkMe;
-    $fget = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1
-                       LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id
-                       WHERE s2.`id` = '".intval($id)."'"));
+    $fget = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1 LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id WHERE s2.`id` = '".intval($id)."'"));
 
     if($chkMe == "unlogged")
         return empty($fget['intern']) ? true : false;
     else
     {
-      $team = db("SELECT * FROM ".$db['f_access']." AS s1 LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
-                  WHERE s2.`user` = '".intval($userid)."' AND s2.`posi` != '0' AND s1.`forum` = '".intval($id)."'");
+      $team = db("SELECT * FROM ".$db['f_access']." AS s1 LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi` WHERE s2.`user` = '".intval($userid)."' AND s2.`posi` != '0' AND s1.`forum` = '".intval($id)."'");
       $user = db("SELECT * FROM ".$db['f_access']." WHERE `user` = '".intval($userid)."' AND `forum` = '".intval($id)."'");
 
       if(_rows($user) || _rows($team) || $chkMe == 4 || $fget['intern'] == 0)
@@ -1556,7 +1504,6 @@ function userstats($tid, $what)
 function sendMail($mailto,$subject,$content)
 {
     global $mailfrom;
-
     $mail = new Mailer();
     $mail->IsHTML(true);
     $mail->From = $mailfrom;
@@ -1571,10 +1518,7 @@ function sendMail($mailto,$subject,$content)
 function check_msg_emal()
 {
     global $db,$clanname,$httphost;
-    $qry = db("SELECT s1.an,s1.page,s1.titel,s1.sendmail,s1.id AS mid,s2.id,s2.nick,s2.email,s2.pnmail FROM ".$db['msg']." AS s1
-               LEFT JOIN ".$db['users']." AS s2 ON s2.id = s1.an
-               WHERE page = 0
-               AND sendmail = 0");
+    $qry = db("SELECT s1.an,s1.page,s1.titel,s1.sendmail,s1.id AS mid,s2.id,s2.nick,s2.email,s2.pnmail FROM ".$db['msg']." AS s1 LEFT JOIN ".$db['users']." AS s2 ON s2.id = s1.an WHERE page = 0 AND sendmail = 0");
     while($get = _fetch($qry))
     {
         if($get['pnmail'] == 1)
@@ -1982,12 +1926,6 @@ function convert_feed($txt)
 {
     global $charset;
     $txt = stripslashes($txt);
-    $txt = str_replace("","Ae",$txt);
-    $txt = str_replace("","ae",$txt);
-    $txt = str_replace("","Ue",$txt);
-    $txt = str_replace("","ue",$txt);
-    $txt = str_replace("","Oe",$txt);
-    $txt = str_replace("","oe",$txt);
     $txt = str_replace("&Auml;","Ae",$txt);
     $txt = str_replace("&auml;","ae",$txt);
     $txt = str_replace("&Uuml;","Ue",$txt);
@@ -2366,7 +2304,7 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
     $lcolor = ($cp_color==1)?'lcolor=true;':'';
     $java_vars = '<script language="javascript" type="text/javascript"><!-- var maxW = '.$maxwidth.',lng = \''.$lng.'\',dzcp_editor = \''.$edr.'\';'.$lcolor.' //--></script>';
 
-    if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') AND !strstr($_SERVER['HTTP_USER_AGENT'],'webOS'))
+    if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') && !strstr($_SERVER['HTTP_USER_AGENT'],'webOS'))
         $java_vars = '<script language="javascript" type="text/javascript" src="'.$designpath.'/_js/wysiwyg'.$wysiwyg.'.js"></script>';
 
     if(settings("wmodus") && $chkMe != 4)
