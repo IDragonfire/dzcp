@@ -169,7 +169,7 @@ if(_adminMenu != 'true') exit;
         $qrys = db("SELECT * FROM ".$db['settings']."");
         $gets = _fetch($qrys);
 
-        $files = get_files('../inc/lang/languages/',true);
+        $files = get_files('../inc/lang/languages/',false,true,array('php'));
         for($i=0; $i<count($files); $i++)
         {
           if($gets['language'] == $files[$i]) $sel = "selected=\"selected\"";
