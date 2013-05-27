@@ -2302,10 +2302,10 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
     $lng = ($language=='deutsch')?'de':'en';
     $edr = ($wysiwyg=='_word')?'advanced':'normal';
     $lcolor = ($cp_color==1)?'lcolor=true;':'';
-    $java_vars = '<script language="javascript" type="text/javascript"><!-- var maxW = '.$maxwidth.',lng = \''.$lng.'\',dzcp_editor = \''.$edr.'\';'.$lcolor.' //--></script>';
+    $java_vars = '<script language="javascript" type="text/javascript">var maxW = '.$maxwidth.',lng = \''.$lng.'\',dzcp_editor = \''.$edr.'\';'.$lcolor.'</script>'."\n";
 
     if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') && !strstr($_SERVER['HTTP_USER_AGENT'],'webOS'))
-        $java_vars = '<script language="javascript" type="text/javascript" src="'.$designpath.'/_js/wysiwyg'.$wysiwyg.'.js"></script>';
+        $java_vars .= '<script language="javascript" type="text/javascript" src="'.$designpath.'/_js/wysiwyg.js"></script>'."\n";;
 
     if(settings("wmodus") && $chkMe != 4)
     {
