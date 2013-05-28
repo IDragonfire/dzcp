@@ -20,14 +20,14 @@ function up($txt,$bbcode=0)
 
 function spChars($txt)
 {
-  $txt = str_replace("","&Auml;",$txt);
-  $txt = str_replace("","&auml;",$txt);
-  $txt = str_replace("","&Uuml;",$txt);
-  $txt = str_replace("","&uuml;",$txt);
-  $txt = str_replace("","&Ouml;",$txt);
-  $txt = str_replace("","&ouml;",$txt);
-  $txt = str_replace("","&szlig;",$txt);
-  $txt = str_replace("","&euro;",$txt);
+  $txt = str_replace("Ä","&Auml;",$txt);
+  $txt = str_replace("ä","&auml;",$txt);
+  $txt = str_replace("Ü","&Uuml;",$txt);
+  $txt = str_replace("ü","&uuml;",$txt);
+  $txt = str_replace("Ö","&Ouml;",$txt);
+  $txt = str_replace("ö","&ouml;",$txt);
+  $txt = str_replace("ß","&szlig;",$txt);
+  $txt = str_replace("€","&euro;",$txt);
 
   return $txt;
 }
@@ -271,7 +271,7 @@ function install_mysql($login, $nick, $pwd, $email)
              `reg_dl` int(1) NOT NULL default '1',
              `reg_artikel` int(1) NOT NULL default '1',
              `reg_newscomments` int(1) NOT NULL default '1',
-             `tmpdir` varchar(100) NOT NULL default 'version1.5',
+             `tmpdir` varchar(100) NOT NULL default 'version1.6',
              `wmodus` int(1) NOT NULL default '0',
              `persinfo` int(1) NOT NULL default '1',
              `iban` varchar(100) NOT NULL default '',
@@ -1328,13 +1328,12 @@ function update_mysql_1_5()
           `type`     = '1', `internal` = '0', `wichtig` = '0', `editor` = '0'");
 
   db("ALTER TABLE ".$db['config']." ADD `m_events` int(5) default '5' NOT NULL");
-  db("INSERT INTO ".$db['config']." SET `m_events` = '5'");
   db("ALTER TABLE ".$db['artikel']." ADD `public` int(1) default '0' NOT NULL");
   db("UPDATE ".$db['artikel']." SET `public` = '1'");
   db("ALTER TABLE ".$db['news']." ADD `public` int(1) default '0' NOT NULL");
   db("UPDATE ".$db['news']." SET `public` = '1'");
   db("ALTER TABLE ".$db['config']." ADD `m_away` int(5) default '10' NOT NULL");
-  db("INSERT INTO ".$db['config']." SET `m_away` = '10'");
+  db("INSERT INTO ".$db['config']." SET `m_away` = '10', `m_events` = '5'");
 
   db("DROP TABLE IF EXISTS ".$db['away']);
   db("CREATE TABLE ".$db['away']." (
@@ -1440,26 +1439,51 @@ function update_mysql_1_5_4()
 }
 function update_mysql_1_6()
 {
-      global $db;
+    global $db;
     db("ALTER TABLE `".$db['f_threads']."` CHANGE `edited` `edited` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
     db("ALTER TABLE `".$db['users']."` CHANGE `whereami` `whereami` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
     db("ALTER TABLE `".$db['downloads']."` ADD `last_dl` INT( 20 ) NOT NULL DEFAULT '0' AFTER `date`");
     db("ALTER TABLE `".$db['settings']."` CHANGE `i_autor` `i_autor` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
     db("ALTER TABLE `".$db['gb']."` CHANGE `hp` `hp` VARCHAR(130) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
     db("ALTER TABLE `".$db['permissions']."` ADD `gs_showpw` INT(1) NOT NULL DEFAULT '0'");
+    db("ALTER TABLE `".$db['permissions']."` ADD `slideshow` INT(1) NOT NULL DEFAULT '0'");
     db("ALTER TABLE `".$db['settings']."` ADD `urls_linked` INT(1) NOT NULL DEFAULT '1', ADD `ts_customicon` INT(1) NOT NULL DEFAULT '1' AFTER `ts_version`, ADD `ts_showchannel` INT(1) NOT NULL DEFAULT '0' AFTER `ts_customicon`");
     db("ALTER TABLE `".$db['msg']."` CHANGE `see_u` `see_u` INT( 1 ) NOT NULL DEFAULT '0'");
     db("ALTER TABLE `".$db['newskat']."` CHANGE `katimg` `katimg` tinytext CHARACTER SET latin1 COLLATE latin1_swedish_ci");
     db("ALTER TABLE `".$db['users']."` ADD `pkey` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `sessid`;");
+    db("ALTER TABLE `".$db['gb']."` CHANGE `editby` `editby` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
+    db("ALTER TABLE `".$db['usergb']."` CHANGE `editby` `editby` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
+    db("ALTER TABLE `".$db['newscomments']."` CHANGE `editby` `editby` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
+    db("ALTER TABLE `".$db['acomments']."` CHANGE `editby` `editby` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
+    db("ALTER TABLE `".$db['cw_comments']."` CHANGE `editby` `editby` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
+    db("ALTER TABLE `".$db['f_posts']."` CHANGE `edited` `edited` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
+    db("ALTER TABLE `".$db['gb']."` CHANGE `public` `public` INT( 1 ) NOT NULL DEFAULT '0'");
 
     //-> Forum Sortieren
     db("ALTER TABLE ".$db['f_skats']." ADD `pos` int(5) NOT NULL");
 
     //-> Forum Sortieren funktion: schreibe id von spalte in pos feld um konflikte zu vermeiden!
     $qry = db("SELECT id FROM ".$db['f_skats']."");
-     while($get = mysql_fetch_array($qry)){
-       $qrx .= db("UPDATE ".$db['f_skats']." SET `pos` = '".$get['id']."' WHERE `id` = '".$get['id']."'");
+     while($get = mysql_fetch_assoc($qry)){
+        db("UPDATE ".$db['f_skats']." SET `pos` = '".$get['id']."' WHERE `id` = '".$get['id']."'");
      }
-    $qry = $qrx;
+
+     //-> Slideshow
+     db("DROP TABLE IF EXISTS ".$db['slideshow']."");
+     db("CREATE TABLE ".$db['slideshow']." (
+        `id` int(5) NOT NULL auto_increment,
+        `pos` int(5) NOT NULL default '0',
+        `bez` varchar(200) NOT NULL default '',
+        `desc` varchar(249) NOT NULL default '',
+        `url` varchar(200) NOT NULL default '',
+        `target` int(11) NOT NULL default '0',
+        PRIMARY KEY  (`id`))");
+
+    $qry = db("SELECT id FROM ".$db['users']." WHERE level = 4");
+    if(mysql_num_rows($qry)>= 1)
+    while($get = mysql_fetch_assoc($qry)) {
+        db($sql="UPDATE ".$db['permissions']." SET slideshow = 1, gs_showpw = 1 WHERE id = '".$get['id']."'");
+        echo $sql.'<p>';
+    }
 }
 ?>
