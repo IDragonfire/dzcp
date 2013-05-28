@@ -4,6 +4,59 @@ header("Content-type: text/html; charset=".$charset);
 
 
 ## ADDED / REDEFINED FOR 1.6 Final
+define(_txt_navi_main, 'Main Navigation');
+define(_txt_navi_clan, 'Clan Navigation');
+define(_txt_navi_server, 'Server Navigation');
+define(_txt_navi_misc, 'Misc Navigation');
+define(_txt_userarea, 'Userarea');
+define(_txt_vote, 'Vote');
+define(_txt_partners, 'Partners');
+define(_txt_sponsors, 'Sponsors');
+define(_txt_counter, 'Counter');
+define(_txt_l_news, 'News');
+define(_txt_ftopics, 'Topics');
+define(_txt_l_wars, 'Last Wars');
+define(_txt_n_wars, 'Next Wars');
+define(_txt_teams, 'Teams');
+define(_txt_gallerie, 'Our Gallerys');
+define(_txt_top_match, 'Top Match');
+define(_txt_shout, 'Shoutbox');
+define(_txt_template_switch, 'Switch Template');
+define(_txt_events, 'Events');
+define(_txt_kalender, 'Calendar');
+define(_txt_l_artikel, 'Articles');
+define(_txt_l_reg, 'new Users');
+define(_txt_motm, 'Member of the Moment');
+define(_txt_random_gallery, 'random Gallerypic');
+define(_txt_server, 'Server');
+define(_txt_teamspeak, 'Teamspeak');
+define(_txt_top_dl, 'Top Downloads');
+define(_txt_uotm, 'User of the Moment');
+
+define(_gal_pics, 'Pics in Gallery');
+define(_config_slideshow, 'Slideshow');
+define(_perm_slideshow, 'Manage Slideshow Pics');
+define(_slider, 'Slideshow');
+define(_slider_admin_add, 'Add new Slideshowpicture');
+define(_slider_admin_add_done, 'Slideshowpicture successfully added');
+define(_slider_admin_del, 'Realy Delete this Slideshowpicture?');
+define(_slider_admin_del_done, 'Slideshowpicture successfully deleted');
+define(_slider_admin_edit, 'edit Slideshowpicture');
+define(_slider_admin_edit_done, 'Slideshowpicture successfully edited!');
+define(_slider_admin_error_empty_bezeichnung, 'you have to enter a title');
+define(_slider_admin_error_empty_url, 'you have to enter a link');
+define(_slider_admin_error_nopic, 'You have to upload a picture');
+define(_slider_bezeichnung, 'Title');
+define(_slider_new_window, 'new Window?');
+define(_slider_pic, 'Picture');
+define(_slider_desc, 'Description');
+define(_slider_position, 'Position');
+define(_slider_position_first, 'first');
+define(_slider_position_lazy, '<option value="lazy">- no change -</option>');
+define(_slider_url, 'URL');
+define(_news_userimage, 'Own Newspicture');
+define(_newspic_del, 'delete Newspicture?');
+define(_newspic_deleted, 'Newspicture deleted successfully'); 
 define('_max', 'max.');
 
 ## ADDED / REDEFINED FOR 1.5 Final
