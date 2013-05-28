@@ -104,16 +104,22 @@ default:
 
     if($get['intern'] == "1") $intern = _votes_intern;
     else $intern = "";
+	
+	if(file_exists('../inc/images/uploads/news/'.$get['id'].'.jpg')){
+		$newsimage = '../inc/images/uploads/news/'.$get['id'].'.jpg';
+	}else{
+		$newsimage = '../inc/images/newskat/'.$getkat['katimg'];
+	} 
 
     $show_sticky .= show($dir."/news_show", array("titel" => re($get['titel']),
-                                                  "kat" => re($getkat['katimg']),
+                                                  "kat" => $newsimage,
                                                   "id" => $get['id'],
                                                   "comments" => $comments,
                                                   "showmore" => "",
                                                   "dp" => "none",
                                                   "dir" => $designpath,
                                                   "nautor" => _autor,
-			                                            "intern" => $intern,
+			                                      "intern" => $intern,
                                                   "sticky" => _news_sticky,
                                                   "ndatum" => _datum,
                                                   "ncomments" => _news_kommentare.":",
@@ -198,16 +204,22 @@ default:
 
     if($get['intern'] == "1") $intern = _votes_intern;
     else $intern = "";
-
+ 
+	if(file_exists('../inc/images/uploads/news/'.$get['id'].'.jpg')){
+		$newsimage = '../inc/images/uploads/news/'.$get['id'].'.jpg';
+	}else{
+		$newsimage = '../inc/images/newskat/'.$getkat['katimg'];
+	} 
+	
     $show .= show($dir."/news_show", array("titel" => re($get['titel']),
-                                           "kat" => re($getkat['katimg']),
+                                           "kat" => $newsimage,
                                            "id" => $get['id'],
                                            "comments" => $comments,
                                            "showmore" => "",
                                            "dp" => "none",
                                            "nautor" => _autor,
                                            "dir" => $designpath,
-			                                     "intern" => $intern,
+			                               "intern" => $intern,
                                            "sticky" => "",
                                            "ndatum" => _datum,
                                            "ncomments" => _news_kommentare.":",
@@ -424,9 +436,15 @@ case 'show';
     if($get['intern'] == "1") $intern = _votes_intern;
     else $intern = "";
 
+	if(file_exists('../inc/images/uploads/news/'.$get['id'].'.jpg')){
+		$newsimage = '../inc/images/uploads/news/'.$get['id'].'.jpg';
+	}else{
+		$newsimage = '../inc/images/newskat/'.$getkat['katimg'];
+	} 
+	
     $title = re($get['titel']).' - '.$title;
     $index = show($dir."/news_show_full", array("titel" => re($get['titel']),
-                                           "kat" => re($getkat['katimg']),
+                                           "kat" => $newsimage,
                                            "id" => $get['id'],
                                            "comments" => "",
                                            "dp" => "compact",

@@ -138,9 +138,9 @@ case 'lostpwd';
                        `what` = '".$protocol."',
                        `time` = '".((int)time())."'");
 
-                $message = show(settings('eml_pwd'), array("user" => $_POST['user'],
+                $message = show(re(settings('eml_pwd')), array("user" => $_POST['user'],
                                                                                                      "pwd" => $pwd));
-                $subject = settings('eml_pwd_subj');
+                $subject = re(settings('eml_pwd_subj'));
 
           sendMail($_POST['email'],$subject,$message);
 
@@ -296,9 +296,9 @@ case 'register';
                      `what` = '".$protocol."',
                      `time` = '".((int)time())."'");
 
-          $message = show(settings('eml_reg'), array("user" => up($_POST['user']),
+          $message = show(re(settings('eml_reg')), array("user" => up($_POST['user']),
                                                    "pwd" => $mkpwd));
-        $subject = settings('eml_reg_subj');
+        $subject = re(settings('eml_reg_subj'));
 
         sendMail($_POST['email'],$subject,$message);
 
@@ -2713,7 +2713,6 @@ case 'language';
 break;
 case 'switch';
   $index = set_cookie($prev.'tmpdir',$_GET['set']);
-
   header("Location: ".$_SERVER['HTTP_REFERER']);
 break;
 case 'admin';
