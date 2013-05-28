@@ -8,7 +8,7 @@
   var isWin = (navigator.appVersion.toLowerCase().indexOf("win") != -1) ? true : false;
   var isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;
   
-// DZCP JAVASCRIPT LIBARY FOR JQUERY V2.0.0
+// DZCP JAVASCRIPT LIBARY FOR JQUERY >= V1.9
   var DZCP = {
 
   //init
