@@ -6,24 +6,48 @@ require_once(basePath."/inc/mysql.php");
 if(!isset($installation))
 $installation = false;
 
-function show($tpl, $array)
+function show($tpl="", $array=array(), $array_lang_constant=array(), $array_block=array())
 {
-  global $tmpdir;
-    $template = "../inc/_templates_/".$tmpdir."/".$tpl;
-  
-    if($fp = @fopen($template.".".html, "r"))
-      $tpl = @fread($fp, filesize($template.".".html));
-    
-    $array['dir'] = '../inc/_templates_/'.$tmpdir;
-    foreach($array as $value => $code)
+    global $tmpdir;
+    if(!empty($tpl) && $tpl != null)
     {
-      $tpl = str_replace('['.$value.']', $code, $tpl);
+        $template = basePath."/inc/_templates_/".$tmpdir."/".$tpl;
+        $array['dir'] = '../inc/_templates_/'.$tmpdir;
+
+        if(file_exists($template.".html"))
+            $tpl = file_get_contents($template.".html");
+
+        //put placeholders in array
+        $pholder = explode("^",pholderreplace($tpl));
+        for($i=0;$i<=count($pholder)-1;$i++)
+        {
+            if(in_array($pholder[$i],$array_block))
+                continue;
+
+            if(array_key_exists($pholder[$i],$array))
+                continue;
+
+            if(!strstr($pholder[$i], 'lang_'))
+                continue;
+
+            if(defined(substr($pholder[$i], 4)))
+                $array[$pholder[$i]] = (count($array_lang_constant) >= 1 ? show(constant(substr($pholder[$i], 4)),$array_lang_constant) : constant(substr($pholder[$i], 4)));
+        }
+
+        unset($pholder);
+
+        if(count($array) >= 1)
+        {
+            foreach($array as $value => $code)
+            { $tpl = str_replace('['.$value.']', $code, $tpl); }
+        }
     }
-  return $tpl;
+
+    return $tpl;
 }
 
 //-> MySQL-Datenbankangaben
-$prefix = $sql_prefix;                      
+$prefix = $sql_prefix;
 $db = array("host" =>           $sql_host,
             "user" =>           $sql_user,
             "pass" =>           $sql_pass,
@@ -31,7 +55,7 @@ $db = array("host" =>           $sql_host,
             "artikel" =>        $prefix."artikel",
             "acomments" =>      $prefix."acomments",
             "awards" =>         $prefix."awards",
-      			"away" =>           $prefix."away",
+              "away" =>           $prefix."away",
             "banned" =>         $prefix."banned",
             "buddys" =>         $prefix."userbuddys",
             "ipcheck" =>        $prefix."ipcheck",
@@ -49,7 +73,7 @@ $db = array("host" =>           $sql_host,
             "dl_kat" =>         $prefix."download_kat",
             "events" =>         $prefix."events",
             "f_access" =>       $prefix."f_access",
-      			"f_abo" =>          $prefix."f_abo",
+              "f_abo" =>          $prefix."f_abo",
             "f_kats" =>         $prefix."forumkats",
             "f_posts" =>        $prefix."forumposts",
             "f_skats" =>        $prefix."forumsubkats",
@@ -79,20 +103,20 @@ $db = array("host" =>           $sql_host,
             "squads" =>         $prefix."squads",
             "squaduser" =>      $prefix."squaduser",
             "sponsoren" =>      $prefix."sponsoren",
+            "slideshow" =>      $prefix."slideshow",
             "taktik" =>         $prefix."taktiken",
-            "users" =>          $prefix."users", 
+            "users" =>          $prefix."users",
             "usergallery" =>    $prefix."usergallery",
             "usergb" =>         $prefix."usergb",
-            "userpos" =>        $prefix."userposis",    
+            "userpos" =>        $prefix."userposis",
             "userstats" =>      $prefix."userstats",
             "votes" =>          $prefix."votes",
-            "vote_results" =>   $prefix."vote_results"
-            );
+            "vote_results" =>   $prefix."vote_results");
 
 if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '')
 {
-	if(!$msql = mysql_connect($db['host'],$db['user'],$db['pass'])) die("<b>Fehler beim Zugriff auf die Datenbank!");
-	if(!mysql_select_db($db['db'],$msql)) die("<b>Die angegebene Datenbank <i>".$db['db']."</i> existiert nicht!");
+    if(!$msql = mysql_connect($db['host'],$db['user'],$db['pass'])) die("<b>Fehler beim Zugriff auf die Datenbank!");
+    if(!mysql_select_db($db['db'],$msql)) die("<b>Die angegebene Datenbank <i>".$db['db']."</i> existiert nicht!");
 }
 
 function db($db)

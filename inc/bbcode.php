@@ -357,7 +357,7 @@ function glossar($txt)
     // replace words
     for($g=0;$g<=count($gl_words)-1;$g++)
     {
-        $desc = regexChars(html_entity_decode($gl_desc[$g]));
+        $desc = regexChars($gl_desc[$g]);
         $info = 'onmouseover="DZCP.showInfo(\''.jsconvert($desc).'\')" onmouseout="DZCP.hideInfo()"';
         $w = regexChars(html_entity_decode($gl_words[$g]));
         $r = "<a class=\"glossar\" href=\"../glossar/?word=".$gl_words[$g]."\" ".$info.">".$gl_words[$g]."</a>";
@@ -467,6 +467,7 @@ function convSpace($string)
 //-> BBCode
 function re_bbcode($txt)
 {
+    $txt = spChars($txt);
     $txt = str_replace("'", "&#39;", $txt);
     $txt = str_replace("[","&#91;",$txt);
     $txt = str_replace("]","&#93;",$txt);
@@ -537,15 +538,15 @@ function make_clickable($ret)
 //Diverse BB-Codefunktionen
 function bbcode($txt, $tinymce=0, $no_vid=0,$ts=0,$nolink=0)
 {
-    global $settings;
-
+    global $settings,$charset;
+    $txt = html_entity_decode($txt,ENT_COMPAT,$charset);
     if($no_vid == 0 && $settings['urls_linked'] == 1 && $nolink == 0)
         $txt = make_clickable($txt);
 
     $txt = str_replace("\\","\\\\",$txt);
     $txt = str_replace("\\n","<br />",$txt);
     $txt = BadwordFilter($txt);
-    $txt = replace($txt,$tinymce,$no_vid);
+   # $txt = replace($txt,$tinymce,$no_vid);
     $txt = highlight_text($txt);
     $txt = re_bbcode($txt);
 
@@ -610,16 +611,17 @@ function zitat($nick,$zitat)
 //-> convert string for output
 function re($txt)
 {
-    $txt = stripslashes($txt);
-    $txt = str_replace("& ","&amp; ",$txt);
-    $txt = str_replace("[","&#91;",$txt);
-    $txt = str_replace("]","&#93;",$txt);
-    $txt = str_replace("\"","&#34;",$txt);
-    $txt = str_replace("<","&#60;",$txt);
-    $txt = str_replace(">","&#62;",$txt);
-    $txt = str_replace("(", "&#40;", $txt);
-    $txt = str_replace(")", "&#41;", $txt);
-    return htmlspecialchars_decode($txt);
+  $txt = stripslashes($txt);
+  $txt = str_replace("& ","&amp; ",$txt);
+  $txt = str_replace("[","&#91;",$txt);
+  $txt = str_replace("]","&#93;",$txt);
+  $txt = str_replace("\"","&#34;",$txt);
+  $txt = str_replace("<","&#60;",$txt);
+  $txt = str_replace(">","&#62;",$txt);
+  $txt = str_replace("(", "&#40;", $txt);
+  $txt = str_replace(")", "&#41;", $txt);
+
+  return $txt;
 }
 
 function re_entry($txt)
@@ -881,33 +883,41 @@ function dbinfo()
     $info["size"] = @round($sum/1048576,2);
     return $info;
 }
+
 //-> Funktion um Sonderzeichen zu konvertieren
 function spChars($txt)
 {
-    $txt = str_replace("","&Auml;",$txt);
-    $txt = str_replace("","&auml;",$txt);
-    $txt = str_replace("","&Uuml;",$txt);
-    $txt = str_replace("","&uuml;",$txt);
-    $txt = str_replace("","&Ouml;",$txt);
-    $txt = str_replace("","&ouml;",$txt);
-    $txt = str_replace("","&szlig;",$txt);
-    return str_replace("","&euro;",$txt);
+  $txt = str_replace("Ä","&Auml;",$txt);
+  $txt = str_replace("ä","&auml;",$txt);
+  $txt = str_replace("Ü","&Uuml;",$txt);
+  $txt = str_replace("ü","&uuml;",$txt);
+  $txt = str_replace("Ö","&Ouml;",$txt);
+  $txt = str_replace("ö","&ouml;",$txt);
+  $txt = str_replace("ß","&szlig;",$txt);
+  $txt = str_replace("€","&euro;",$txt);
+
+  return $txt;
 }
 
 //-> Funktion um sauber in die DB einzutragen
-function up($txt, $bbcode=0, $charset='')
+function up($txt, $bbcode=0, $charset_set='')
 {
-    $txt = str_replace("& ","&amp; ",$txt);
-    $txt = str_replace("\"","&#34;",$txt);
+  global $charset;
 
-    if(empty($bbcode))
-    {
-        $txt = htmlentities(html_entity_decode($txt), ENT_QUOTES, $charset);
-        $txt = nl2br($txt);
-    }
+  if(!empty($charset_set))
+      $charset = $charset_set;
 
-    $txt = spChars($txt);
-    return trim($txt);
+  $txt = str_replace("& ","&amp; ",$txt);
+  $txt = str_replace("\"","&#34;",$txt);
+
+  if(empty($bbcode))
+  {
+    $txt = htmlentities(html_entity_decode($txt), ENT_QUOTES, $charset);
+    $txt = nl2br($txt);
+  }
+  $txt = spChars($txt);
+
+  return trim($txt);
 }
 
 //MySQL-Funktionen
@@ -1524,8 +1534,8 @@ function check_msg_emal()
         if($get['pnmail'] == 1)
         {
             db("UPDATE ".$db['msg']." SET `sendmail` = '1' WHERE id = '".$get['mid']."'");
-            $subj = show(settings('eml_pn_subj'), array("domain" => $httphost));
-            $message = show(settings('eml_pn'), array("nick" => re($get['nick']), "domain" => $httphost, "titel" => $get['titel'], "clan" => $clanname));
+            $subj = show(re(settings('eml_pn_subj')), array("domain" => $httphost));
+            $message = show(re(settings('eml_pn')), array("nick" => re($get['nick']), "domain" => $httphost, "titel" => $get['titel'], "clan" => $clanname));
             sendMail(re($get['email']), $subj, $message);
         }
     }
@@ -2399,4 +2409,3 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
         echo (file_exists("../inc/_templates_/".$tmpdir."/".$index_templ.".html") ? show($index_templ, $arr) : show("index", $arr));
     }
 }
-?>
