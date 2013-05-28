@@ -1,0 +1,221 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--[ DZCP � by Frank "deV!L" Herrmann - www.dzcp.de & Patrick "Richy" Richert - www.my-starmedia.de]-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>[title]</title>
+    <meta http-equiv="title" content="[title]" />
+    <meta http-equiv="pragma" content="No-Cache" />
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+    <link rel="stylesheet" type="text/css" href="[dir]/_css/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="[dir]/_css/icons.php" media="screen" />
+    <link rel="alternate" type="application/rss+xml" href="../rss.xml" title="[rss] RSS-Feed" />
+    <link rel="shortcut icon" href="../favicon.ico" type="image/ico" />
+    <link rel="home" href="/" title="Home" />
+    <script language="javascript" type="text/javascript" src="[dir]/_js/jquery.js"></script>
+    <script language="javascript" type="text/javascript" src="../inc/tinymce/tiny_mce_gzip.js"></script>
+    [java_vars]
+    <script language="javascript" type="text/javascript" src="[dir]/_js/jquery.tools.js"></script>
+    <script language="javascript" type="text/javascript" src="[dir]/_js/jquery-ui.js"></script>
+    <script language="javascript" type="text/javascript" src="[dir]/_js/lightbox.js"></script>
+    <script language="javascript" type="text/javascript" src="[dir]/_js/dzcp.js"></script>
+</head>
+<body>
+<!-- Template Start -->
+
+<!-- Wrapper bereich Start -->
+<div id="wrapper">
+  <!-- Header Start -->
+  <div id="header">
+    <img src="[dir]/images/clanlogo.png" alt="Clanlogo"/>
+    <div id="rotationsbanner" class="corner">[rotationsbanner]</div>
+  </div>
+  <!-- Header Ende -->
+  <div id="content">
+    <!-- linke Spalte Start -->
+    <div class="sideContent">
+      <!-- Main Navigation Start -->
+      <div class="mainNavigation corner">
+        <h2 class="headline">[lang_txt_navi_main]</h2>
+        <ul>
+          [nav_main]
+        </ul>
+      </div>
+      <!-- Main Navigation Ende -->
+      <!-- Vote Box Start -->
+      <div class="box corner">
+        <h2 class="headline">[lang_txt_vote]</h2>
+        [vote]
+      </div>
+      <!-- Vote Box Ende -->
+       <!-- Switchbox Gameserver/Teamviewer Start -->
+      <div class="box corner">
+        <h2 class="headline tabs">
+          <span class="tabright">[lang_txt_server]</span>
+          <span class="tableft">[lang_txt_teamspeak]</span>
+        </h2>
+        <div class="switchs">[server]</div>
+        <div class="switchs">[teamspeak]</div>
+      </div>
+      <!-- Switchbox Gamserver/Teamviewer Ende -->
+      <!-- Switchbox Partners/Sponsors Start -->
+      <div class="box corner">
+        <h2 class="headline tabs">
+          <span class="tabright">[lang_txt_partners]</span>
+          <span class="tableft">[lang_txt_sponsors]</span>
+        </h2>
+        <div class="switchs">[partners]</div>
+        <div class="switchs">[sponsors]</div>
+      </div>
+      <!-- Switchbox News/Forum Ende -->
+      <!-- Counter Box Start -->
+      <div class="box corner">
+        <h2 class="headline">[lang_txt_counter]</h2>
+        [counter]
+      </div>
+      <!-- Counter Box Ende -->
+    </div>
+    <!-- linke Spalte Ende -->
+    <!-- mittlere Spalte Start -->
+    <div id="middleContent">
+      <div class="index corner" style="margin-bottom:5px; padding:7px">
+        <div class="leftFloat">[welcome]</div>
+        <div class="rightFloat">[languages]</div>
+        <div class="clearFix"></div>
+      </div>
+      <div class="index corner">
+        <!-- Slideshow Plugin Start -->
+        [slideshow]
+        <!-- Slideshow Plugin Ende -->
+        <!-- Wo bin ich & Suche Start -->
+        <div id="brackets">
+          [where]
+          <div id="search">[search]</div>
+        </div>
+        <!-- Wo bin ich $ Suche Ende -->
+        <!-- Main Content Frame Start -->
+        <div id="index">[index]</div>
+        <!-- Main Content Frame Ende -->
+        <!-- Gallery Box Start -->
+        <div id="galleriebox" class="corner">
+          <h2 class="headline">[lang_txt_gallerie]</h2>
+          [gallerie]
+          <div class="clearFix"></div>
+        </div>
+        <!-- Gallery Box Ende -->
+      </div>
+    </div>
+    <!-- mittlere Spalte Ende -->
+    <!-- rechte Spalte Start -->
+    <div class="sideContent">
+      <!-- Userbereich Start -->
+      <div class="box corner">
+        <h2 class="headline">[lang_txt_userarea]</h2>
+        [login]
+        [nav_user][nav_trial][nav_member][nav_admin]
+      </div>
+      <!-- Userbereich Ende -->
+      <!-- Switchbox News/Artikel Start -->
+      <div class="box corner">
+        <h2 class="headline tabs">
+          <span class="tabright">[lang_txt_l_news]</span>
+          <span class="tableft">[lang_txt_l_artikel]</span>
+        </h2>
+        <div class="switchs">[l_news]</div>
+        <div class="switchs">[l_artikel]</div>
+      </div>
+      <!-- Switchbox News/Artikel Ende -->
+      <!-- Ftopics Box Start -->
+      <div class="box corner">
+        <h2 class="headline">[lang_txt_ftopics]</h2>
+        [ftopics]
+      </div>
+      <!-- Ftopics Box Ende -->
+      <!-- Switchbox lWars/nWars Start -->
+      <div class="box corner">
+        <h2 class="headline tabs">
+          <span class="tabright">[lang_txt_l_wars]</span>
+          <span class="tableft">[lang_txt_n_wars]</span>
+        </h2>
+        <div class="switchs">[l_wars]</div>
+        <div class="switchs">[n_wars]</div>
+      </div>
+      <!-- Switchbox lWars/nWars Ende -->
+      <!-- Team Box Start -->
+      <div class="box corner">
+        <h2 class="headline">[lang_txt_teams]</h2>
+        [team]
+      </div>
+      <!-- Team Box Ende -->
+      <!-- Top Match Box Start -->
+      <div class="box corner">
+        <h2 class="headline">[lang_txt_top_match]</h2>
+        [top_match]
+      </div>
+      <!-- Top Match Box Ende -->
+      <!-- Switchbox Kalender/Events Start -->
+      <div class="box corner">
+        <h2 class="headline tabs">
+          <span class="tabright">[lang_txt_kalender]</span>
+          <span class="tableft">[lang_txt_events]</span>
+        </h2>
+        <div class="switchs">[kalender]</div>
+        <div class="switchs">[events]</div>
+      </div>
+      <!-- Switchbox Kalender/Events Ende -->
+      <!-- Shoutbox Start -->
+      <div class="box corner">
+        <h2 class="headline">[lang_txt_shout]</h2>
+        [shout]
+      </div>
+      <!-- Shoutbox Ende -->
+      <!-- Templateswitch Box Start -->
+      <div class="box corner">
+        <h2 class="headline">[lang_txt_template_switch]</h2>
+        [template_switch]
+      </div>
+      <!-- Templateswitch Box Ende -->
+    </div>
+    <!-- rechte Spalte Ende -->
+    <!-- Clearfix Hack Start -->
+    <div class="clearFix"></div>
+    <!-- ClearFix Hack Ende -->
+  </div>
+</div>
+<!-- Wrapper bereich Ende -->
+<!-- Footer Start -->
+<div id="footer">
+  <div id="footwrapper">
+    <!-- Foot Navi Clan Start -->
+    <div class="footNavigation leftFloat">
+      <h2>[lang_txt_navi_clan]</h2>
+      <ul>
+        [nav_clan]
+      </ul>
+    </div>
+    <!-- Foot Navi Clan Ende -->
+    <!-- Foot Navi Server Start -->
+    <div class="footNavigation leftFloat">
+      <h2>[lang_txt_navi_server]</h2>
+      <ul>
+        [nav_server]
+      </ul>
+    </div>
+    <!-- Foot Navi Server Ende -->
+    <!-- Foot Navi Misc Start -->
+    <div class="footNavigation leftFloat">
+      <h2>[lang_txt_navi_misc]</h2>
+      <ul>
+        [nav_misc]
+      </ul>
+    </div>
+    <!-- Foot Navi Misc Ende -->
+    <!-- Foot Platzhalter f�r weiteren Content Start -->
+    <div class="leftFloat">&nbsp;</div>
+    <!-- Foot Platzhalter f�r weiteren Content Ende -->
+    <div class="clearFix"></div>
+  </div>
+</div>
+<!-- Footer Ende -->
+<!-- Template Ende -->
+</body>
+</html>

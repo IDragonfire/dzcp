@@ -1,0 +1,42 @@
+<tr>
+  <td class="contentHead"><span class="fontBold">[head]</span></td>
+</tr>
+<tr>
+  <td class="contentMainFirst">
+    <div id="memberMap"><noscript><br /><center>You have to enable javascript to view the membermap!</center></noscript></div>
+  </td>
+</tr>
+<tr>
+  <td class="contentBottom">
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=places&sensor=false"></script>
+    <script type="text/javascript">
+      <!--
+        var myLatlng = new google.maps.LatLng(51.200000, 10.00000);
+        var myOptions = {
+          zoom: 6,
+          center: myLatlng,
+          mapTypeId: google.maps.MapTypeId.ROADMAP
+        }
+        var map = new google.maps.Map(document.getElementById("memberMap"), myOptions);
+        var locationArray = [ [mm_coords] ];
+        var userInfo = [ [mm_infos] ];
+        var iconInfo = [ [mm_infos] ];
+        var markerIcon = { [mm_markerIcon] };
+
+        var coord;
+        for (coord in locationArray) {
+            var marker = new google.maps.Marker({
+                            position: locationArray[coord],
+                            map: map
+                          });
+            if(markerIcon[coord]) {
+                marker.setIcon('../inc/images/mappin.png');
+            }
+            google.maps.event.addListener(marker, "mouseover", function(userInfo) { return function() {DZCP.showInfo(userInfo);}}(userInfo[coord]));
+            google.maps.event.addListener(marker, "mouseout", function() { DZCP.hideInfo(); });
+        }
+        
+      //-->
+    </script>
+  </td>
+</tr>

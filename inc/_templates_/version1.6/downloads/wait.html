@@ -1,0 +1,28 @@
+<tr>
+  <td class="contentHead" align="center"><span class="fontBold">[head]</span></td>
+</tr>
+<tr>
+  <td class="contentMainFirst" align="center">
+    <div id="dl"></div>
+    <script>
+      var c = 5; 
+      fc(); 
+      function fc()
+      {
+        if(c>0)
+        {
+          document.getElementById("dl").innerHTML = "[before] " + c + " [after]";
+          c = c - 1;
+          setTimeout("fc()", 1000)
+        } else {
+          //w('download.php?file=[file]&art=[art]','Download','300','10','no');
+          window.location.href = '[href]';
+          document.getElementById("dl").innerHTML = '[dl]<br />[dllink][dl2]';
+        }
+      }
+    </script>
+  </td>
+</tr>
+<tr>
+  <td span class="contentBottom"></td>
+</tr>

@@ -1,0 +1,135 @@
+<tr>
+  <td class="contentHead" colspan="2" align="center"><span class="fontBold">[registerhead]</span></td>
+</tr>
+<tr>
+<td>
+[gmaps]
+<form id="adduser" name="adduser" enctype="multipart/form-data" action="?admin=adduser&amp;do=add" method="post" onsubmit="return(DZCP.submitButton())">
+<input id="gmaps_koord" name="gmaps_koord" type="hidden" value="" />
+<table class="hperc" cellspacing="1">
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[pname]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="user" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[pnick]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="nick" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[pemail]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="email" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[ppwd]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="password" name="pwd" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentHead" colspan="2"><span class="fontBold">[about]</span></td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[pbild]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="file" name="file" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold"><span class="fontBold">[preal]:</span></span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="rlname" value="" class="inputField_dis_profil"
+    onfocus="this.className='inputField_en_profil';"
+    onblur="this.className='inputField_dis_profil';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[psex]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <select name="sex" class="dropdown">[sex]</select>
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[pbday]:</span></td>
+  <td class="contentMainFirst" align="center">
+	[dropdown_age]
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[pcity]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" id="city" name="city" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[pcountry]:</span></td>
+  <td class="contentMainFirst" align="center">[country]</td>
+</tr>
+<tr>
+  <td class="contentMainTop" align="center" colspan="3"><span class="fontBold">[squadhead]</span></td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="150" valign="top"><span class="fontBold">[squad]/[posi]:</span></td>
+  <td class="contentMainFirst" colspan="2">
+    <table width="100%">
+      [esquad]
+    </table>
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="150"><span class="fontBold">[level]:</span></td>
+  <td class="contentMainFirst" colspan="2" align="center">
+    <select name="level" class="dropdown" onchange="hidelevels(this.value)">
+      <option value="banned" >[banned]</option>
+      <option value="1" selected="selected">[ruser]</option>
+      <option value="2" >[trial]</option>
+      <option value="3" >[member]</option>
+      <option value="4" >[admin]</option>
+    </select>
+  </td>
+</tr>
+<tr>
+  <td class="contentMainFirst" colspan="3" style="text-align: center; padding:2px;">[level_info]</td>
+</tr>
+</table>
+<table class="mainContent" cellspacing="1" style="margin:0;margin-top:-1px">
+<tr>
+  <td class="contentMainTop" width="150"><span class="fontBold">[rechte]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <div class="permissions">
+      [getpermissions]
+    </div>
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[forenrechte]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <div class="permissions">
+      [getboardpermissions]
+    </div>
+  </td>
+</tr>
+</table>
+<table class="mainContent" cellspacing="1" style="margin:0;margin-top:-1px">
+<tr>
+  <td class="contentBottom" colspan="3"><input id="contentSubmit" type="submit" value="[value]" onclick="return(getCord())" class="submit" /></td>
+</tr>
+</table>
+</form>
+</td>
+</tr>

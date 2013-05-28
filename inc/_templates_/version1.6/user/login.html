@@ -1,0 +1,33 @@
+  <tr>
+    <td>
+      <form name="contentLogin" action="../user/?action=login&amp;do=yes" method="post" onsubmit="return(DZCP.submitButton())">
+        <table class="mainContent" cellspacing="1">
+          <tr>
+            <td class="contentHead" colspan="2" align="center"><span class="fontBold">[loginhead]</span></td>
+          </tr>
+          <tr>
+            <td class="contentMainTop" width="25%"><span class="fontBold">[loginname]:</span></td>
+            <td class="contentMainFirst">
+              <input type=text name="user" class="inputField_dis"
+              onfocus="this.className='inputField_en';"
+              onblur="this.className='inputField_dis';" [dis] />
+            </td>
+          </tr>
+          <tr>
+            <td class="contentMainTop"><span class="fontBold">[pwd]:</span></td>
+            <td class="contentMainFirst">
+              <input type=password name="pwd" class="inputField_dis"
+              onfocus="this.className='inputField_en';"
+              onblur="this.className='inputField_dis';" [dis] required><br /><br />
+              <input class="checkbox" type="checkbox" name="permanent" value="1"> [permanent]<br />
+              <a href="../user/?action=lostpwd">[lostpwd]?</a>
+            </td>
+          </tr>
+          [secure]
+          <tr>
+            <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="LogIn" class="submit" /></td>
+          </tr>
+        </table>
+      </form>
+    </td>
+  </tr>

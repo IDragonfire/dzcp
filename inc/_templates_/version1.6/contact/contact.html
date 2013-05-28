@@ -1,0 +1,67 @@
+<tr>
+  <td class="contentHead" colspan="2" align="center"><span class="fontBold">[head]</span></td>
+</tr>
+</table>
+<form name="contact" action="?action=do&amp;what=[what]" method="post" onsubmit="return(DZCP.submitButton())">
+<table class="mainContent" cellspacing="1">
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[nick]: <span class="fontWichtig">*</span></span></td>
+  <td class="contentMainFirst" width="75%" align="center">
+    <input type="text" name="nick" class="inputField_dis"
+    onfocus="this.className='inputField_en';" 
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[email]: <span class="fontWichtig">*</span></span></td>
+  <td class="contentMainFirst" width="75%" align="center">
+    <input type="text" name="email" class="inputField_dis"
+    onfocus="this.className='inputField_en';" 
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[icq]:</span></td>
+  <td class="contentMainFirst" width="75%" align="center">
+    <input type="text" name="icq" class="inputField_dis"
+    onfocus="this.className='inputField_en';" 
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+[joinus]
+<tr>
+  <td class="contentMainTop" width="25%" valign="top"><span class="fontBold">[nachricht]: <span class="fontWichtig">*</span></span><br />[why]</td>
+  <td class="contentMainFirst" align="center" width="75%">
+    <textarea name="text" class="inputField_dis"
+    onfocus="this.className='inputField_en';" 
+    onblur="this.className='inputField_dis';" cols="8" rows="auto"></textarea>
+  </td>
+</tr>
+<tr> 
+   <td class="contentMainTop"><span class="fontBold">[security]:</span></td>
+   <td class="contentMainFirst" align="center">
+     <table class="hperc" cellspacing="0">
+       <tr>
+         <td style="text-align:right"><img src="../antispam.php?secure=[what]&amp;num=5" alt="" class="icon" /></td>
+         <td>&nbsp;</td>
+         <td style="width:50%;vertical-align:middle">
+           <input class="inputField_dis_mid" type="text" name="secure" 
+           onfocus="this.className='inputField_en_mid'"
+           onblur="this.className='inputField_dis_mid'" style="text-align:center" />
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" colspan="2" align="center">[pflicht]</td>
+</tr>
+<tr>
+  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[value]" class="submit" name="send" /></td>
+</tr>
+</table>
+</form>
+<table class="mainContent" cellspacing="1">
+  <tr>
+    <td class="contentBottom" colspan="2">&nbsp;</td>
+  </tr>

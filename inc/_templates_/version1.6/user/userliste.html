@@ -1,0 +1,53 @@
+<tr>
+  <td class="contentHead" colspan="12" align="center"><span class="fontBold">[userlistehead]</span> [ [cnt] ]</td>
+</tr>
+<tr>
+  <td class="contentMainFirst" colspan="12" align="center">[nav]</td>
+</tr>
+<tr>
+  <td class="contentHead" colspan="12" align="center">
+    <table class="hperc" cellspacing="0">
+      <tr>
+        <td style="text-align:center">
+          <form name="formChange" action="">
+            <select name="changeme" onchange="DZCP.switchuser()"  class="dropdown">
+              <option selected="selected" value="" class="dropdownKat">[sort]</option>
+              <option value="?action=userlist">-> [normal] </option>
+              <option value="?action=userlist&amp;show=online">-> [online]</option>
+              <option value="?action=userlist&amp;show=lastreg">-> [lastreg]</option>
+              <option value="?action=userlist&amp;show=country">-> [country]</option>
+              <option value="?action=userlist&amp;show=sex">-> [sex]</option>
+              <option value="?action=userlist&amp;show=lastlogin">-> [login]</option>
+              <option value="?action=userlist&amp;show=banned">-> [banned]</option>
+            </select>
+          </form>
+        </td>
+        <td style="text-align:center;width:50%">
+          <form id="userlist" action="" method="get" onsubmit="return(DZCP.submitButton())">
+            <input type="hidden" name="action" value="userlist" />
+            <input type="hidden" name="show" value="search" />
+            <input class="inputField_dis_mid" type="text" name="search" value="[search]" 
+              onfocus="this.className='inputField_en_mid';if(this.value=='[search]')this.value=''" 
+              onblur="this.className='inputField_dis_mid';if(this.value=='')this.value='[search]'" />
+            &nbsp;&nbsp;
+            <input id="contentSubmit" type="submit" class="submit" value="[value]" />
+          </form>
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+  <td colspan="2" class="contentMainTop"><span class="fontBold">[nickhead]</span></td>
+  <td colspan="3" class="contentMainTop"><span class="fontBold">[statushead]</span></td>    
+  <td width="1%" align="center" class="contentMainTop"><span class="fontBold">[icqicon]</span></td>  
+  <td width="1%" class="contentMainTop"><span class="fontBold">[hpicon]</span></td>  
+  <td width="1%" class="contentMainTop"><span class="fontBold">[hlswicon]</span></td>
+  <td width="1%" class="contentMainTop"><span class="fontBold">[mficon]</span></td>  
+  <td width="20" class="contentMainTop"><span class="fontBold">[agehead]</span></td>  
+  [edel]
+</tr>
+[show]
+<tr>
+  <td class="contentBottom" colspan="12"></td>
+</tr>

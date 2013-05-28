@@ -1,0 +1,95 @@
+<tr>
+  <td class="contentHead" colspan="7" align="center"><span class="fontBold">[serveradmin_head]</span></td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="1%"><span class="fontBold">[game]</span></td>
+  <td class="contentMainTop" width="140"><span class="fontBold">[sip]</span></td>
+  <td class="contentMainTop" colspan="5"><span class="fontBold">[name]</span></td>
+</tr>
+[show]
+<tr>
+  <td class="contentBottom" colspan="7">
+    <form action="" method="get" onsubmit="return(DZCP.submitButton())">
+      <input type="hidden" name="admin" value="server" />
+      <input type="hidden" name="do" value="new" />
+      <input id="contentSubmit" type="submit" class="submit" value="[add]" />
+    </form>
+  </td>
+</tr>
+</table>
+<table class="mainContent" cellspacing="1">
+<tr>
+  <td class="contentHead" style="text-align:left"><span class="fontBold">[legende]:</span></td>
+</tr>
+<tr>
+  <td class="contentMainFirst" align="center">
+    [yesno] = <span class="fontItalic">[legendemenu]</span>
+  </td>
+</tr>
+</table>
+<table class="mainContent" cellspacing="1">
+<tr>
+<td>
+<form action="?admin=server&amp;do=ts" method="post" name="teamspeak" onsubmit="return(DZCP.submitButton('tssubmit'))">
+<table class="hperc" cellspacing="1">
+<tr>
+  <td class="contentHead" colspan="2" align="center"><span class="fontBold">[ts_head]</span></td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="150"><span class="fontBold">Teamspeak Version:</span></td>
+  <td class="contentMainFirst" align="center">
+    <select id="ts_version" name="ts_version" class="dropdown" onchange="DZCP.TS3Settings(this.value)">
+      <option value="2">Teamspeak 2 Server</option>
+      <option value="3"[ts_version]>Teamspeak 3 Server</option>
+    </select>
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[teamspeak]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="ts_ip" value="[ts_ip]" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" style="width: 100px;" /> : 
+    <input type="text" name="ts_port" value="[ts_port]" class="inputField_dis_mid"
+    onfocus="this.className='inputField_en_mid';"
+    onblur="this.className='inputField_dis_mid';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[sport]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="ts_sport" value="[ts_sport]" class="inputField_dis_mid"
+    onfocus="this.className='inputField_en_mid';"
+    onblur="this.className='inputField_dis_mid';" />
+    <br /><span class="fontItalic">TS 2 Standard: 51234</span>&nbsp;|&nbsp;<span class="fontItalic">TS 3 Standard: 10011</span></td>
+</tr>
+<tr>
+  <td colspan="2">
+  	<table class="hperc" id="ts3settings"[ts_showsettings]>
+    <tr>
+      <td class="contentMainTop"  width="149"><span class="fontBold">[ts_customicon]:</span></td>
+      <td class="contentMainFirst" align="center">
+        <select id="ts_customicon" name="ts_customicon" class="dropdown">
+          <option value="0">[off]</option>
+          <option value="1"[ts_checkcustomicon]>[on]</option>
+        </select></td>
+    </tr>
+    <tr>
+      <td class="contentMainTop"><span class="fontBold">[ts_showchannel]:</span></td>
+      <td class="contentMainFirst" align="center">
+        <select id="ts_showchannel" name="ts_showchannel" class="dropdown">
+          <option value="0">[off]</option>
+          <option value="1"[ts_checkshowchannel]>[on]</option>
+        </select>
+        <br />[ts_showchannel_desc]</td>
+    </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+  <td class="contentBottom" colspan="2"><input id="tssubmit" type="submit" value="[value]" class="submit" /></td>
+</tr>
+</table>
+</form>
+</td>
+</tr>

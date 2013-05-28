@@ -1,0 +1,79 @@
+<tr>
+  <td class="contentHead" colspan="3" align="center"><span class="fontBold">[add_head]</span></td> 
+</tr>
+<tr>
+<td>
+<form name="serverliste" action="?action=addserver" method="post" onsubmit="return(DZCP.submitButton())">
+<input type="hidden" name="datum" value="[datum]">
+<table class="hperc" cellspacing="1">
+<tr> 
+  <td class="contentMainTop"><span class="fontBold">[clan]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type=text name="clanname" class="inputField_dis"
+    onfocus="this.className='inputField_en';" 
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[hp]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type=text name="clanurl" value="http://" class="inputField_dis"
+    onfocus="this.className='inputField_en';" 
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[serverip]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type=text name="ip" class="inputField_dis"
+    onfocus="this.className='inputField_en';" 
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[serverport]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type=text name="port" class="inputField_dis_mid"
+    onfocus="this.className='inputField_en_mid';" 
+    onblur="this.className='inputField_dis_mid';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[slots]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type=text name="slots" class="inputField_dis_mid"
+    onfocus="this.className='inputField_en_mid';" 
+    onblur="this.className='inputField_dis_mid';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[serverpasswort]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type=text name="pwd" class="inputField_dis_mid"
+    onfocus="this.className='inputField_en_mid';" 
+    onblur="this.className='inputField_dis_mid';" />
+  </td>
+</tr>
+<tr> 
+   <td class="contentMainTop"><span class="fontBold">[security]:</span></td>
+   <td class="contentMainFirst" align="center">
+     <table class="hperc" cellspacing="0">
+       <tr>
+         <td style="text-align:right"><img src="../antispam.php?secure=[what]&amp;num=5" alt="" class="icon" /></td>
+         <td stle="width:5%">&nbsp;</td>
+         <td style="width:50%;vertical-align:middle">
+           <input class="inputField_dis_mid" type="text" name="secure" 
+           onfocus="this.className='inputField_en_mid'"
+           onblur="this.className='inputField_dis_mid'" style="text-align:center" />
+        </td>
+      </tr>
+    </table>
+  </td>
+</tr>
+<tr>
+  <td class="contentBottom" colspan="3"><input id="contentSubmit" type="submit" value="[value]" class="submit" name="send" /></td>
+</tr>
+</table>
+</form>
+</td>
+</tr>

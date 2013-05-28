@@ -1,0 +1,138 @@
+<tr>
+  <td>
+    <script language="javascript" type="text/javascript">
+      var prevURL = '../news/?action=preview';
+    </script>
+    <form enctype="multipart/form-data" id="newsForm" name="newsForm" action="?admin=newsadmin&amp;do=[do]" method="post" onsubmit="return(DZCP.submitButton())">
+      <table class="hperc" cellspacing="1">
+        <tr>
+          <td class="contentHead" colspan="2" align="center"><span class="fontBold">[head]</span></td>
+        </tr>
+        [error]
+        <tr>
+          <td class="contentMainTop"><span class="fontBold">[nautor]:</span></td>
+          <td class="contentMainFirst" align="center">[autor]</td>
+        </tr>
+        <tr>
+          <td class="contentMainTop"><span class="fontBold">[nkat]:</span></td>
+          <td class="contentMainFirst" align="center">
+            <select name="kat" class="dropdown">
+              [kat]
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="contentMainTop"><span class="fontBold">[nimage]:</span></td>
+          <td class="contentMainFirst" align="center">
+            [n_newspic][delnewspic]
+      	 	<input type="file" name="newspic">
+          </td>
+        </tr>
+        <tr>
+          <td class="contentMainTop"><span class="fontBold">[ntitel]:</span></td>
+          <td class="contentMainFirst" align="center">
+            <input type="text" name="titel" value="[titel]" class="inputField_dis"
+            onfocus="this.className='inputField_en';"
+            onblur="this.className='inputField_dis';" />
+          </td>
+        </tr>
+        <tr>
+          <td class="contentMainFirst" align="center" colspan="2">
+            <textarea id="newstext" name="newstext" cols="0" rows="0" class="editorStyleWord">[newstext]</textarea>
+          </td>
+        </tr>
+        <tr>
+          <td class="contentMainTop"><span class="fontBold">[nklapptitel]:</span></td>
+          <td class="contentMainFirst" align="center">
+            <img src="../inc/images/expand.gif" alt="" />
+            <input type="text" name="klapptitel" value="[klapplink]" class="inputField_dis"
+            onfocus="this.className='inputField_en';"
+            onblur="this.className='inputField_dis';" /></td>
+        </tr>
+        <tr>
+          <td class="contentMainFirst" align="center" colspan="2">
+             <textarea id="morenews" name="morenews" cols="0" rows="0" class="editorStyleWord">[morenews]</textarea>
+          </td>
+        </tr>
+        <tr>
+          <td class="contentMainTop"><span class="fontBold">[linkname] 1:</span></td>
+          <td class="contentMainFirst" align="center">
+            <input type="text" name="link1" value="[link1]" class="inputField_dis"
+            onfocus="this.className='inputField_en';"
+            onblur="this.className='inputField_dis';" />
+          </td>
+        </tr>
+        <tr>
+          <td class="contentMainTop"><span class="fontBold">[nurl] 1:</span></td>
+          <td class="contentMainFirst" align="center">
+            <input type="text" name="url1" value="[url1]" class="inputField_dis"
+            onfocus="this.className='inputField_en';"
+            onblur="this.className='inputField_dis';" />
+          </td>
+        </tr>
+        <tr>
+          <td class="contentMainTop"><span class="fontBold">[linkname] 2:</span></td>
+          <td class="contentMainFirst" align="center">
+            <input type="text" name="link2" value="[link2]" class="inputField_dis"
+            onfocus="this.className='inputField_en';"
+            onblur="this.className='inputField_dis';" />
+          </td>
+        </tr>
+        <tr>
+          <td class="contentMainTop"><span class="fontBold">[nurl] 2:</span></td>
+          <td class="contentMainFirst" align="center">
+            <input type="text" name="url2" value="[url2]" class="inputField_dis"
+            onfocus="this.className='inputField_en';"
+            onblur="this.className='inputField_dis';" />
+          </td>
+        </tr>
+        <tr>
+          <td class="contentMainTop"><span class="fontBold">[linkname] 3:</span></td>
+          <td class="contentMainFirst" align="center">
+            <input type="text" name="link3" value="[link3]" class="inputField_dis"
+            onfocus="this.className='inputField_en';"
+            onblur="this.className='inputField_dis';" />
+          </td>
+        </tr>
+        <tr>
+          <td class="contentMainTop"><span class="fontBold">[nurl] 3:</span></td>
+          <td class="contentMainFirst" align="center">
+            <input type="text" name="url3" value="[url3]" class="inputField_dis"
+            onfocus="this.className='inputField_en';"
+            onblur="this.className='inputField_dis';" />
+          </td>
+        </tr>
+        <tr>
+          <td class="contentMainTop"><span class="fontBold">[interna]:</span></td>
+          <td class="contentMainFirst" align="center">
+            <input class="checkbox" type="checkbox" value="1" name="intern" [intern] />
+          </td>
+        </tr>
+        <tr>
+          <td class="contentMainTop"><span class="fontBold">[gettimeshift]:</span></td>
+          <td class="contentMainFirst" align="center">
+            <div align="left"><input class="checkbox" type="checkbox" value="1" name="timeshift" [timeshift] /> [from]</div>
+            [timeshift_date]&nbsp;&nbsp;[timeshift_time]
+          </td>
+        </tr>
+        <tr>
+          <td class="contentMainTop"><span class="fontBold">[getsticky]:</span></td>
+          <td class="contentMainFirst" align="center">
+            <div align="left"><input class="checkbox" type="checkbox" value="1" name="sticky" [sticky] /> [till]</div>
+            [dropdown_date]&nbsp;&nbsp;[dropdown_time]
+          </td>
+        </tr>
+        <tr>
+          <td class="contentBottom" colspan="2"><input id="contentSubmit"  type="submit" value="[button]" class="submit" /> <input type="button"  value="[preview]" class="submit" onclick="DZCP.ajaxPreview('newsForm')" /></td>
+        </tr>
+      </table>
+    </form>
+  </td>
+</tr>
+</table>
+<table class="hperc" cellspacing="0">
+<tr>
+  <td>
+    <div id="previewDIV"></div>
+  </td>
+</tr>

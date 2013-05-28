@@ -1,0 +1,46 @@
+<form name="contact" action="send.php?action=do&amp;what=[what]" method="post" onsubmit="return DZCP.submitButton('newssubmit')">
+<table class="mainContent" cellspacing="1">
+				<tr>
+				  <td class="contentMainTop" width="25%"><span class="fontBold">[nick]:</span></td>
+				  <td class="contentMainFirst" width="75%" align="center">[user]</td>
+				</tr>
+				<tr>
+				  <td class="contentMainTop" width="25%"><span class="fontBold">[hp]:</span></td>
+				  <td class="contentMainFirst" width="75%" align="center">
+					<input type="text" name="hp" class="inputField_dis" value="[s_hp]"
+					onfocus="this.className='inputField_en';" 
+					onblur="this.className='inputField_dis';" />
+				  </td>
+				</tr>
+				<tr>
+				  <td class="contentMainTop" width="25%"><span class="fontBold">[titel]:</span> <span class="fontWichtig">*</span></td>
+				  <td class="contentMainFirst" width="75%" align="center">
+					<input type="text" name="titel" class="inputField_dis" value="[s_titel]"
+					onfocus="this.className='inputField_en';" 
+					onblur="this.className='inputField_dis';" />
+				  </td>
+				</tr>
+				<tr>
+				  <td class="contentMainTop" width="25%" valign="top"><span class="fontBold">[nachricht]:</span> <span class="fontWichtig">*</span></td>
+				  <td class="contentMainFirst" align="center" width="75%">
+					<textarea name="text" class="inputField_dis"
+					onfocus="this.className='inputField_en';" 
+					onblur="this.className='inputField_dis';" cols="8" rows="auto">[s_text]</textarea>
+				  </td>
+				</tr>
+				<tr>
+				  <td class="contentMainTop" width="25%" valign="top"><span class="fontBold">[note]:</span></td>
+				  <td class="contentMainFirst" align="center" width="75%">
+					<textarea name="info" class="inputField_dis"
+					onfocus="this.className='inputField_en';" 
+					onblur="this.className='inputField_dis';" cols="8" rows="auto">[s_info]</textarea>
+				  </td>
+				</tr>
+				<tr>
+				  <td class="contentMainTop" colspan="2" align="center">[pflicht]</td>
+				</tr>
+				<tr>
+				  <td class="contentBottom" colspan="2"><input type="submit" id="newssubmit" value="[value]" class="submit" name="send" /></td>
+				</tr>
+</table>
+				</form>

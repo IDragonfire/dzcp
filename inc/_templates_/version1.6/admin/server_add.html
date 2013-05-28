@@ -1,0 +1,114 @@
+<tr>
+<td>
+<form name="server" action="?admin=server&amp;do=add" method="post" onsubmit="return(DZCP.submitButton())">
+<table class="hperc" cellspacing="1">
+<tr>
+  <td class="contentHead" align="center" colspan="2"><span class="fontBold">[newhead]</span></td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="100"><span class="fontBold">[ip]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="ip" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" style="width: 100px;" />:
+    <input type="text" name="port" class="inputField_dis_mid"
+    onfocus="this.className='inputField_en_mid';"
+    onblur="this.className='inputField_dis_mid';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[port]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="qport" value="" class="inputField_dis_mid"
+    onfocus="this.className='inputField_en_mid';"
+    onblur="this.className='inputField_dis_mid';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[name]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="name" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[pwd]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="pwd" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[game]-Icon:</span></td>
+  <td class="contentMainFirst" align="center">
+    <select name="game" class="dropdown">
+      [sgame]
+    </select>
+    <br /><a href="../upload/">upload</a>
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[status]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <select name="status" class="dropdown" style="width:180px">
+      <option value="nope" class="dropdownKat">[no_status]</option>
+      [games] 
+    </select>
+  </td>
+</tr>
+<!--
+<tr>
+  <td class="contentHead" align="center" colspan="2"><span class="fontBold">[ftphead]</span></td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[c_ftp_host]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="ftp_host" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';">
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[c_ftp_login]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="ftp_login" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';">
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[c_ftp_pwd]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="password" name="ftp_pwd" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';">
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[c_ftp_pfad]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="ftp_pfad" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';">
+    <br />z.b. /gameserver/CS/cstrike/
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop">[c_ftp_file]:</td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="ftp_file" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';">
+    <br />z.b. banned.cfg
+  </td>
+</tr>
+-->
+<tr>
+  <td class="contentBottom" colspan="2"><input id="contentSubmit"  type="submit" value="[value]" class="submit" /></td>
+</tr>
+</table>
+</form>
+</td>
+</tr>
