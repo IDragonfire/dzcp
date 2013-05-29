@@ -54,9 +54,10 @@ define(_slider_position, 'Position');
 define(_slider_position_first, 'first');
 define(_slider_position_lazy, '<option value="lazy">- no change -</option>');
 define(_slider_url, 'URL');
+define(_slider_show_title, 'Show title');
 define(_news_userimage, 'Own Newspicture');
 define(_newspic_del, 'delete Newspicture?');
-define(_newspic_deleted, 'Newspicture deleted successfully'); 
+define(_newspic_deleted, 'Newspicture deleted successfully');
 define('_max', 'max.');
 
 ## ADDED / REDEFINED FOR 1.5 Final
@@ -260,14 +261,14 @@ define('_msg_sendnews_user' , '
       <input type="hidden" name="action" value="msg" />
       <input type="hidden" name="do" value="sendnewsdone" />
       <input type="hidden" name="id" value="[id]" />
-	  <input type="hidden" name="datum" value="[datum]" />
+      <input type="hidden" name="datum" value="[datum]" />
       <input id="contentSubmit" type="submit" class="submit" value="Submit" />
     </form>
   </td>
 </tr>');
 define('_msg_sendnews_done' , '
 <tr>
-  <td align="center" class="contentMainTop"><span class="fontRed">	
+  <td align="center" class="contentMainTop"><span class="fontRed">
 This news is / was made from the [user] edited!!!</span></td>
 </tr>');
 define('_send_news_done' , 'Thank you for your news!');
@@ -580,7 +581,7 @@ define('_welcome_guest' , ' <img src="../inc/images/flaggen/nocountry.gif" alt="
 define('_online_head' , 'User online');
 define('_online_whereami' , 'Area');
 define('_back' , '<a href="javascript: history.go(-1)" class="files">back</a>');
-define('_contact_text_fightus' , '	
+define('_contact_text_fightus' , '
 Someone filled out the fightus contactform!<br />
 Each clanwar admin received this message!<br /><br />
 <span class="fontBold">Team:</span> [squad]<br /><br />
@@ -1443,7 +1444,7 @@ define('_user_delete_verify' , '
 <tr>
   <td class="contentMainFirst" align="center">
     Are you sure to delete the user [user]?<br />
-    <span class="fontUnder">Every</span> activities from this user will be deleted, too!<br /><br /> 
+    <span class="fontUnder">Every</span> activities from this user will be deleted, too!<br /><br />
     <a href="?action=admin&amp;do=delete&verify=yes&amp;id=[id]">Yes, delete [user]!</a>
   </td>
 </tr>');
@@ -1601,7 +1602,7 @@ or partly or completely deleted by the author without separate announcement.
 <br /><br />
 <h2><span class="fontBold">2. Referrals and links</span></h2>
 <br />
-The author is not responsible for any contents linked or referred to from his pages - unless he has full knowledge of illegal contents and would be able to prevent the visitors of his site fromviewing those pages. 
+The author is not responsible for any contents linked or referred to from his pages - unless he has full knowledge of illegal contents and would be able to prevent the visitors of his site fromviewing those pages.
 If any damage occurs by the use of information presented there, only the author of the respective pages might be liable, not the one who has linked to these pages. Furthermore the author is not liable for any postings or messages published by users of discussion boards, guestbooks or mailinglists provided on his page.
 <br /><br />
 <h2><span class="fontBold">3. Copyright</span></h2>
@@ -1609,7 +1610,7 @@ If any damage occurs by the use of information presented there, only the author 
 The author intended not to use any copyrighted material for the publication or, if not possible, to indicate the copyright of the respective object.
 <br />
 The copyright for any material created by the author is reserved. Any duplication or use of objects such as images, diagrams, sounds or texts in other
-electronic or printed publications is not permitted without the author\'s agreement. 
+electronic or printed publications is not permitted without the author\'s agreement.
 <br /><br />
 <h2><span class="fontBold">4. Privacy policy<</span></h2>
 <br />

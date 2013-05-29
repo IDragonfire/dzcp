@@ -53,9 +53,11 @@ define(_slider_position, 'Position');
 define(_slider_position_first, 'als erstes');
 define(_slider_position_lazy, '<option value="lazy">- nicht &auml;ndern -</option>');
 define(_slider_url, 'URL');
+define(_slider_show_title, 'Title anzeigen');
+
 define(_news_userimage, 'Eigenes Newsbild');
 define(_newspic_del, 'Newsbild l&ouml;schen?');
-define(_newspic_deleted, 'Newsbild erfolgreich gel&ouml;scht'); 
+define(_newspic_deleted, 'Newsbild erfolgreich gel&ouml;scht');
 define('_max', 'max.');
 
 ## ADDED / REDEFINED FOR 1.5 Final
@@ -257,7 +259,7 @@ define('_msg_sendnews_user', '
       <input type="hidden" name="action" value="msg" />
       <input type="hidden" name="do" value="sendnewsdone" />
       <input type="hidden" name="id" value="[id]" />
-	  <input type="hidden" name="datum" value="[datum]" />
+      <input type="hidden" name="datum" value="[datum]" />
       <input id="contentSubmit" type="submit" class="submit" value="Best&auml;tigen" />
     </form>
   </td>
@@ -1435,7 +1437,7 @@ define('_user_delete_verify', '
 <tr>
   <td class="contentMainFirst" align="center">
     Bist du dir sicher das du den User [user] l&ouml;schen willst?<br />
-    <span class="fontUnder">Alle</span> Aktivit&auml;ten dieses Users auf dieser Seite werden damit gel&ouml;scht!<br /><br /> 
+    <span class="fontUnder">Alle</span> Aktivit&auml;ten dieses Users auf dieser Seite werden damit gel&ouml;scht!<br /><br />
     <a href="?action=admin&amp;do=delete&verify=yes&amp;id=[id]">Ja, l&ouml;schen!</a>
   </td>
 </tr>');
@@ -1605,11 +1607,11 @@ Gestaltung, die Inhalte oder die Urheberschaft der verlinkten/verkn&uuml;pften S
 <br /><h2><span class="fontBold">3. Urheber- und Kennzeichenrecht</span></h2>
 <br />
 Der Autor ist bestrebt, in allen Publikationen die Urheberrechte der verwendeten Bilder, Grafiken, Tondokumente, Videosequenzen und Texte
-zu beachten, von ihm selbst erstellte Bilder, Grafiken, Tondokumente, Videosequenzen und Texte zu nutzen oder auf lizenzfreie Grafiken, Tondokumente, Videosequenzen und Texte zur&uuml;ckzugreifen. 
+zu beachten, von ihm selbst erstellte Bilder, Grafiken, Tondokumente, Videosequenzen und Texte zu nutzen oder auf lizenzfreie Grafiken, Tondokumente, Videosequenzen und Texte zur&uuml;ckzugreifen.
 <br />
 Alle innerhalb des Internetangebotes genannten und ggf. durch Dritte gesch&uuml;tzten Marken- und Warenzeichen unterliegen uneingeschr&auml;nkt den Bestimmungen des jeweils g&uuml;ltigen Kennzeichenrechts und den Besitzrechten der jeweiligen eingetragenen Eigent&uuml;mer. Allein aufgrund der blo&szlig;en Nennung ist nicht der Schluss zu ziehen, dass Markenzeichen nicht durch Rechte Dritter gesch&uuml;tzt sind!
 <br />
-Das Copyright f&uuml;r ver&ouml;ffentlichte, vom Autor selbst erstellte Objekte bleibt allein beim Autor der Seiten. 
+Das Copyright f&uuml;r ver&ouml;ffentlichte, vom Autor selbst erstellte Objekte bleibt allein beim Autor der Seiten.
 Eine Vervielf&auml;ltigung oder Verwendung solcher Grafiken, Tondokumente, Videosequenzen und Texte in anderen elektronischen oder gedruckten Publikationen ist ohne ausdr&uuml;ckliche Zustimmung des Autors nicht gestattet.
 <br />
 <br /><h2><span class="fontBold">4. Datenschutz</span></h2>
