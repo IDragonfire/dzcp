@@ -39,6 +39,15 @@
     </td>
   </tr>
   <tr>
+    <td width="25%" class="contentMainTop"><span class="fontBold">[lang_slider_show_title]:</span></td>
+    <td class="contentMainFirst" align="center">
+      <select name="showbez" class="dropdown">
+        <option value="0">[nein]</option>
+        <option value="1" [selected_txt]>[ja]</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
     <td width="25%" style="vertical-align:middel;" class="contentMainTop"><span class="fontBold">[pic]:</span></td>
     <td class="contentMainFirst" align="center">
       [v_pic]
@@ -48,9 +57,9 @@
   <tr>
     <td width="25%" class="contentMainTop"><span class="fontBold">[desc]:</span></td>
     <td class="contentMainFirst" align="center">
-      <textarea rows="0" cols="0" class="shoutTextfield_dis" id="slidedesc" name="desc" 
-    onkeydown="DZCP.maxlength(this.form.desc,this.form.l,120);" 
-    onkeyup="DZCP.maxlength(this.form.desc,this.form.l,120);" 
+      <textarea rows="0" cols="0" class="shoutTextfield_dis" id="slidedesc" name="desc"
+    onkeydown="DZCP.maxlength(this.form.desc,this.form.l,120);"
+    onkeyup="DZCP.maxlength(this.form.desc,this.form.l,120);"
     onblur="this.className='shoutTextfield_dis';" onfocus="this.className='shoutTextfield_en';" [dis]>[tdesc]</textarea>
     <br />
     [noch] <input type="text" id="l" name="l" value="120" class="shoutLength" readonly="readonly" /> [t_zeichen]

@@ -19,7 +19,7 @@ var POS = [{
 	}
 },{
 	'height': 21,
-	'width': 185,
+	'width': 221,
 	'block_top': 19,
 	'block_left': 0,
 	'top': 21,

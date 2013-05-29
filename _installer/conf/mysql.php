@@ -1475,9 +1475,10 @@ function update_mysql_1_6()
         `id` int(5) NOT NULL auto_increment,
         `pos` int(5) NOT NULL default '0',
         `bez` varchar(200) NOT NULL default '',
+        `showbez` int(1) NOT NULL default '1',
         `desc` varchar(249) NOT NULL default '',
         `url` varchar(200) NOT NULL default '',
-        `target` int(11) NOT NULL default '0',
+        `target` int(1) NOT NULL default '0',
         PRIMARY KEY  (`id`))");
 
     $qry = db("SELECT id FROM ".$db['users']." WHERE level = 4");

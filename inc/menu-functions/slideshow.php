@@ -12,7 +12,7 @@ function slideshow()
             $target = ($get['target'] == "1" ? ",1" : "");
             $pic .= show("menu/slideshowbild", array("image" => "<img src=\"../inc/images/slideshow/".$get['id'].".jpg\" alt=\"\" />",
                                                      "link" => "'".$get['url']."'".$target,
-                                                     "bez" => $get['bez'],
+                                                     "bez" => $get['showbez'] ? $get['bez'] : '',
                                                      "text" => $get['desc']));
 
             $tabs .= '<a href="#" class="slidertabs" id="slider'.$get['id'].'"></a>';
