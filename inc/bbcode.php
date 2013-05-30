@@ -2362,6 +2362,7 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
         $dir = $designpath;
         $title = re(strip_tags($title));
 
+        $where = preg_replace_callback("#autor_(.*?)$#",create_function('$id', 'return data("$id[1]","nick");'),$where);
         $index = empty($index) ? '' : (empty($check_msg) ? '' : $check_msg).'<table class="mainContent" cellspacing="1" style="margin-top:0">'.$index.'</table>';
 
         //-> Sort & filter placeholders
@@ -2372,7 +2373,7 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
         $pholder = file_get_contents($designpath."/index.html");
 
         //filter placeholders
-        $blArr = array("[title]","[copyright]","[java_vars]","[login]", "[template_switch]","[headtitle]","[index]", "[time]","[rss]","[dir]","[charset]");
+        $blArr = array("[title]","[copyright]","[java_vars]","[login]", "[template_switch]","[headtitle]","[index]", "[time]","[rss]","[dir]","[charset]","[where]");
         for($i=0;$i<=count($blArr)-1;$i++)
         {
             if(preg_match("#".$blArr[$i]."#",$pholder))
