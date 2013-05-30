@@ -12,9 +12,9 @@ function slideshow()
             if(empty($get['desc']) && !$get['showbez'])
                 $slideroverlay = '';
             else if(!empty($get['desc']) && !$get['showbez'])
-                $slideroverlay = '<div class="slideroverlay"><span>'.$get['desc'].'</span></div>';
+                $slideroverlay = '<div class="slideroverlay"><span>'.bbcode(wrap(re($get['desc']))).'</span></div>';
             else
-                $slideroverlay = '<div class="slideroverlay"><h2>'.$get['bez'].'</h2><span>'.$get['desc'].'</span></div>';
+                $slideroverlay = '<div class="slideroverlay"><h2>'.bbcode(wrap(re($get['bez']))).'</h2><span>'.bbcode(wrap(re($get['desc']))).'</span></div>';
 
             $target = ($get['target'] == "1" ? ",1" : "");
             $pic .= show("menu/slideshowbild", array("image" => "<img src=\"../inc/images/slideshow/".$get['id'].".jpg\" alt=\"\" />",
