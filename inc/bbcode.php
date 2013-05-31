@@ -837,6 +837,23 @@ function get_files($dir=null,$only_dir=false,$only_files=false,$file_ext=array()
         return false;
 }
 
+//-> Gibt einen Teil eines nummerischen Arrays wieder
+function limited_array($array=array(),$begin,$max)
+{
+    $array_exp = array();
+    $range=range($begin=($begin-1), ($begin+$max-1));
+    foreach($array as $key => $wert)
+    {
+        if(array_var_exists($key, $range))
+            $array_exp[$key] = $wert;
+    }
+
+    return $array_exp;
+}
+
+function array_var_exists($var,$search)
+{ foreach($search as $key => $var_) { if($var_==$var) return true; } return false; }
+
 //-> Funktion um eine Datei im Web auf Existenz zu prfen
 function fileExists($url)
 {
