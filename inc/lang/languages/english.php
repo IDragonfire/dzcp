@@ -1721,7 +1721,7 @@ define('_dl_admin_added' , 'The download category was successfully registered!')
 define('_dl_admin_deleted' , 'The download category was successfully deleted!');
 define('_dl_edit_head' , 'Edit download category');
 define('_dl_admin_edited' , 'The download category was successfully edited!');
-define('_config_global_head' , 'Configurationn');
+define('_config_global_head' , 'Configuration');
 define('_config_c_limits' , 'Limits');
 define('_config_c_limits_what' , 'Here you can adjust the amount of entrys which will be maximum shown');
 define('_config_c_usergb' , 'User guestbook');
