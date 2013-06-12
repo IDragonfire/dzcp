@@ -2229,6 +2229,32 @@ function pholderreplace($pholder)
     return str_replace("]","",$pholder);
 }
 
+//-> Zugriff auf die Seite
+function check_internal_url()
+{
+    global $db,$chkMe;
+    $url = '..'.str_ireplace('index.php','',str_ireplace(str_ireplace('\\','/',basePath),'',$_SERVER['SCRIPT_FILENAME']));
+    $url_query = $url.'?'.$_SERVER['QUERY_STRING'];
+    $sql_url_query = db("SELECT internal FROM `".$db['navi']."` WHERE `url` LIKE '".$url_query."' LIMIT 1");
+    $sql_url = db("SELECT internal FROM `".$db['navi']."` WHERE `url` LIKE '".$url."' LIMIT 1");
+    $sql_found_row = false;
+    if(_rows($sql_url_query))
+    {
+        $sql_found_row = true;
+        $get = _fetch($sql_url_query);
+        if(($get['internal'] && $chkMe == 'unlogged'))
+            return true;
+    }
+    else if(_rows($sql_url) && !$sql_found_row)
+    {
+        $get = _fetch($sql_url);
+        if(($get['internal'] && $chkMe == 'unlogged'))
+            return true;
+    }
+
+    return false;
+}
+
 //-> Ladezeit
 function generatetime()
 {
