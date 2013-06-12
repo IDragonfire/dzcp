@@ -2233,7 +2233,7 @@ function pholderreplace($pholder)
 function check_internal_url()
 {
     global $db,$chkMe;
-    $url = '..'.str_ireplace('index.php','',str_ireplace(str_ireplace('\\','/',basePath),'',$_SERVER['SCRIPT_FILENAME']));
+    $url = '..'.str_ireplace(array('index.php','send.php'),'',str_ireplace(str_ireplace('\\','/',basePath),'',$_SERVER['SCRIPT_FILENAME']));
     $url_query = $url.'?'.$_SERVER['QUERY_STRING'];
     $sql_url_query = db("SELECT internal FROM `".$db['navi']."` WHERE `url` LIKE '".$url_query."' LIMIT 1");
     $sql_url = db("SELECT internal FROM `".$db['navi']."` WHERE `url` LIKE '".$url."' LIMIT 1");
