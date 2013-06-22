@@ -96,22 +96,22 @@ if(_adminMenu != 'true') exit;
                          `counter_start`      = '".((int)$_POST['counter_start'])."',
                          `reg_newscomments`   = '".((int)$_POST['reg_nc'])."',
                          `reg_dl`             = '".((int)$_POST['reg_dl'])."',
-                         `eml_reg_subj`       = '".up($_POST['eml_reg_subj'])."',
-                         `eml_pwd_subj`       = '".up($_POST['eml_pwd_subj'])."',
-                         `eml_nletter_subj`   = '".up($_POST['eml_nletter_subj'])."',
-                                                 `eml_pn_subj`	      = '".up($_POST['eml_pn_subj'])."',
+                         `eml_reg_subj`       = '".$_POST['eml_reg_subj']."',
+                         `eml_pwd_subj`       = '".$_POST['eml_pwd_subj']."',
+                         `eml_nletter_subj`   = '".$_POST['eml_nletter_subj']."',
+                                                 `eml_pn_subj`	      = '".$_POST['eml_pn_subj']."',
                                                  `double_post`	      = '".((int)$_POST['double_post'])."',
                                                  `gb_activ`	      		= '".((int)$_POST['gb_activ'])."',
-                                                 `eml_fabo_npost_subj`   = '".up($_POST['eml_fabo_npost_subj'])."',
-                                                 `eml_fabo_tedit_subj`   = '".up($_POST['eml_fabo_tedit_subj'])."',
-                                                 `eml_fabo_pedit_subj`   = '".up($_POST['eml_fabo_pedit_subj'])."',
-                         `eml_reg`            = '".up($_POST['eml_reg'])."',
-                         `eml_pwd`            = '".up($_POST['eml_pwd'])."',
-                         `eml_nletter`        = '".up($_POST['eml_nletter'])."',
-                                                 `eml_pn`        	  = '".up($_POST['eml_pn'])."',
-                                                 `eml_fabo_npost`     = '".up($_POST['eml_fabo_npost'])."',
-                                                 `eml_fabo_tedit`     = '".up($_POST['eml_fabo_tedit'])."',
-                                                 `eml_fabo_pedit`     = '".up($_POST['eml_fabo_pedit'])."',
+                                                 `eml_fabo_npost_subj`   = '".$_POST['eml_fabo_npost_subj']."',
+                                                 `eml_fabo_tedit_subj`   = '".$_POST['eml_fabo_tedit_subj']."',
+                                                 `eml_fabo_pedit_subj`   = '".$_POST['eml_fabo_pedit_subj']."',
+                         `eml_reg`            = '".$_POST['eml_reg']."',
+                         `eml_pwd`            = '".$_POST['eml_pwd']."',
+                         `eml_nletter`        = '".$_POST['eml_nletter']."',
+                                                 `eml_pn`        	  = '".$_POST['eml_pn']."',
+                                                 `eml_fabo_npost`     = '".$_POST['eml_fabo_npost']."',
+                                                 `eml_fabo_tedit`     = '".$_POST['eml_fabo_tedit']."',
+                                                 `eml_fabo_pedit`     = '".$_POST['eml_fabo_pedit']."',
                          `mailfrom`           = '".up($_POST['mailfrom'])."',
                          `tmpdir`             = '".up($_POST['tmpdir'])."',
                          `persinfo`           = '".((int)$_POST['persinfo'])."',
@@ -124,9 +124,7 @@ if(_adminMenu != 'true') exit;
 
           if(!empty($_POST['gmaps_key']))
           {
-            $qry = db("SELECT id,city,country FROM ".$db['users']."
-                       WHERE city != '' AND `gmaps_koord` = ''
-                       ORDER BY id DESC");
+            $qry = db("SELECT id,city,country FROM ".$db['users']." WHERE city != '' AND `gmaps_koord` = '' ORDER BY id DESC");
             while($get = _fetch($qry))
             {
               $cc .= 'getCord(\''.re($get['city']).'\',\''.re($get['country']).'\',\''.$get['id'].'\');'."\r\n";
