@@ -18,9 +18,9 @@ switch ($action):
 default:
     $fvote = '';
     if($forum_vote == 0)
-        $fvote = ' AND forum = 0';
+        $fvote = 'forum = 0';
 
-    $whereIntern = 'intern = 0';
+    $whereIntern = ' AND intern = 0';
     $order = 'datum DESC';
     if(permission('votes'))
     {
@@ -28,7 +28,7 @@ default:
         $order = 'intern DESC';
     }
 
-    $qry = db('SELECT * FROM '.$db['votes'].' WHERE '.$whereIntern.$fvote.' ORDER BY ' . $order);
+    $qry = db('SELECT * FROM '.$db['votes'].' WHERE '.$fvote.$whereIntern.' ORDER BY ' . $order);
 
   while($get = _fetch($qry)) {
     $qryv = db('SELECT * FROM ' . $db['vote_results'] .
