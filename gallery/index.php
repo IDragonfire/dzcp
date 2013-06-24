@@ -11,10 +11,6 @@ $where = _site_gallery;
 $title = $pagetitle." - ".$where."";
 $dir = "gallery";
 ## SECTIONS ##
-if(check_internal_url())
-    $index = error(_error_have_to_be_logged, 1);
-else
-{
     if(!isset($_GET['action'])) $action = "";
     else $action = $_GET['action'];
 
@@ -122,7 +118,6 @@ else
                                         "head" => _subgallery_head));
     break;
     endswitch;
-}
 ## SETTINGS ##
 $time_end = generatetime();
 $time = round($time_end - $time_start,4);
