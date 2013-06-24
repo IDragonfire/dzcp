@@ -54,7 +54,7 @@ if(_adminMenu != 'true') exit;
                          `l_clanwars`         = '".((int)$_POST['l_clanwars'])."',
                          `m_lnews`            = '".((int)$_POST['m_lnews'])."',
                          `m_lartikel`         = '".((int)$_POST['m_lartikel'])."',
-                                                  `m_events`           = '".((int)$_POST['m_events'])."',
+                         `m_events`           = '".((int)$_POST['m_events'])."',
                          `m_topdl`            = '".((int)$_POST['m_topdl'])."',
                          `m_ftopics`          = '".((int)$_POST['m_ftopics'])."',
                          `m_cwcomments`       = '".((int)$_POST['m_cwcomments'])."',
@@ -170,25 +170,14 @@ if(_adminMenu != 'true') exit;
         $files = get_files('../inc/lang/languages/',false,true,array('php'));
         for($i=0; $i<count($files); $i++)
         {
-          if($gets['language'] == $files[$i]) $sel = "selected=\"selected\"";
-          else $sel = "";
-
-          $lng = preg_replace("#.php#", "",$files[$i]);
-
-          $lang .= show(_select_field, array("value" => $lng,
-                                             "what" => $lng,
-                                             "sel" => $sel));
+            $lng = preg_replace("#.php#", "",$files[$i]);
+            $lang .= show(_select_field, array("value" => $lng, "what" => $lng, "sel" => $gets['language'] == $lng ? 'selected="selected"' : ''));
         }
 
         $tmps = get_files('../inc/_templates_/',true);
         for($i=0; $i<count($tmps); $i++)
         {
-          if($gets['tmpdir'] == $tmps[$i]) $selt = "selected=\"selected\"";
-          else $selt = "";
-
-          $tmpldir .= show(_select_field, array("value" => $tmps[$i],
-                                                "what" => $tmps[$i],
-                                                "sel" => $selt));
+            $tmpldir .= show(_select_field, array("value" => $tmps[$i], "what" => $tmps[$i], "sel" => $gets['tmpdir'] == $tmps[$i] ? 'selected="selected"' : ''));
         }
 
         if($gets['regcode'] == "1") $selyes = "selected=\"selected\"";
@@ -207,9 +196,9 @@ if(_adminMenu != 'true') exit;
         if($get['allowhover'] == 1)        $selh_all = "selected=\"selected\"";
         if($get['allowhover'] == 2)        $selh_cw = "selected=\"selected\"";
         if($gets['gmaps_who'] == 1)        $sel_gm = "selected=\"selected\"";
-                if($gets['double_post'] == 1)      $sel_dp = "selected=\"selected\"";
-                if($gets['forum_vote'] == 1)       $sel_fv = "selected=\"selected\"";
-                if($gets['gb_activ'] == 1)         $sel_gba = "selected=\"selected\"";
+        if($gets['double_post'] == 1)      $sel_dp = "selected=\"selected\"";
+        if($gets['forum_vote'] == 1)       $sel_fv = "selected=\"selected\"";
+        if($gets['gb_activ'] == 1)         $sel_gba = "selected=\"selected\"";
                                 if($gets['urls_linked'] == 1)      $sel_url = "selected=\"selected\"";
         $wysiwyg = '_word';
 
