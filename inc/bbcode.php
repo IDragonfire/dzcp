@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+error_reporting(0);
 
 ## INCLUDES/REQUIRES ##
 require_once(basePath.'/inc/secure.php');
@@ -546,7 +546,7 @@ function bbcode($txt, $tinymce=0, $no_vid=0,$ts=0,$nolink=0)
     $txt = str_replace("\\","\\\\",$txt);
     $txt = str_replace("\\n","<br />",$txt);
     $txt = BadwordFilter($txt);
-   # $txt = replace($txt,$tinymce,$no_vid);
+    $txt = replace($txt,$tinymce,$no_vid);
     $txt = highlight_text($txt);
     $txt = re_bbcode($txt);
 
@@ -1874,12 +1874,12 @@ function onlinecheck($tid)
 //Funktion fuer die Sprachdefinierung der Profilfelder
 function pfields_name($name)
 {
-    $pattern = array("=_city_=Uis","=_hobbys_=Uis","=_motto_=Uis","=_exclans_=Uis","=_email2_=Uis","=_email3_=Uis","=_autor_=Uis","=_auto_=Uis","=_buch_=Uis",
+    $pattern = array("=_city_=Uis","=_hobbys_=Uis","=_motto_=Uis","=_job_=Uis","=_exclans_=Uis","=_email2_=Uis","=_email3_=Uis","=_autor_=Uis","=_auto_=Uis","=_buch_=Uis",
     "=_drink_=Uis","=_essen_=Uis","=_favoclan_=Uis","=_film_=Uis","=_game_=Uis","=_map_=Uis","=_musik_=Uis","=_person_=Uis","=_song_=Uis","=_spieler_=Uis","=_sportler_=Uis",
     "=_sport_=Uis","=_waffe_=Uis","=_board_=Uis","=_cpu_=Uis","=_graka_=Uis","=_hdd_=Uis","=_headset_=Uis","=_inet_=Uis","=_maus_=Uis","=_mauspad_=Uis","=_monitor_=Uis",
     "=_ram_=Uis","=_system_=Uis");
 
-    $replacement = array(_profil_city,_profil_hobbys,_profil_job,_profil_motto,_profil_exclans,_profil_email2,_profil_email3,_profil_autor,_profil_auto,
+    $replacement = array(_profil_city,_profil_hobbys,_profil_motto,_profil_job,_profil_exclans,_profil_email2,_profil_email3,_profil_autor,_profil_auto,
     _profil_buch,_profil_drink,_profil_essen,_profil_favoclan,_profil_film,_profil_game,_profil_map,_profil_musik,_profil_person,_profil_song,_profil_spieler,
     _profil_sportler,_profil_sport,_profil_waffe,_profil_board,_profil_cpu,_profil_graka,_profil_hdd,_profil_headset,_profil_inet,_profil_maus,_profil_mauspad,
     _profil_monitor,_profil_ram,_profil_os);
@@ -2050,6 +2050,7 @@ function infos($checkBrowser = "")
         elseif(preg_match("/NT 4.0/i",$data))       		$system = "Windows NT 4";
         elseif(preg_match("/NT 6.0/i",$data))       		$system = "Windows Vista";
         elseif(preg_match("/NT 6.1/i",$data))       		$system = "Windows 7";
+        elseif(preg_match("/NT 6.2/i",$data))       		$system = "Windows 8";
         elseif(preg_match("/Windows ME/i",$data))   		$system = "Windows 9x + ME";
         elseif(preg_match("/Windows 98/i",$data))   		$system = "Windows 9x + ME";
         elseif(preg_match("/Windows 95/i",$data))   		$system = "Windows 9x + ME";
@@ -2069,7 +2070,7 @@ function infos($checkBrowser = "")
         elseif(preg_match("/MSIE 7/i",$data))     $browser = "Internet Explorer 7";
         elseif(preg_match("/MSIE 8/i",$data))     $browser = "Internet Explorer 8";
         elseif(preg_match("/MSIE 9/i",$data))     $browser = "Internet Explorer 9";
-        elseif(preg_match("/MSIE 10/i",$data))     $browser = "Internet Explorer 10";
+        elseif(preg_match("/MSIE 10/i",$data))    $browser = "Internet Explorer 10";
         else                                      $browser = _unknown_browser;
 
         $res = "<script language=\"javascript\" type=\"text/javascript\">doc.write(screen.width + ' x ' + screen.height)</script>";
@@ -2233,7 +2234,7 @@ function pholderreplace($pholder)
 function check_internal_url()
 {
     global $db,$chkMe;
-    $url = '..'.str_ireplace(array('index.php','send.php'),'',str_ireplace(str_ireplace('\\','/',basePath),'',$_SERVER['SCRIPT_FILENAME']));
+    $url = '..'.str_ireplace('index.php','',str_ireplace(str_ireplace('\\','/',basePath),'',$_SERVER['SCRIPT_FILENAME']));
     $url_query = $url.'?'.$_SERVER['QUERY_STRING'];
     $sql_url_query = db("SELECT internal FROM `".$db['navi']."` WHERE `url` LIKE '".$url_query."' LIMIT 1");
     $sql_url = db("SELECT internal FROM `".$db['navi']."` WHERE `url` LIKE '".$url."' LIMIT 1");
