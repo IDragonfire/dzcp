@@ -594,6 +594,14 @@ function bbcode_html($txt,$tinymce=0)
     return str_replace("&#34;","\"",$txt);
 }
 
+function bbcode_email($txt)
+{
+    $txt = bbcode($txt);
+    $txt = str_replace("&#91;","[",$txt);
+    $txt = str_replace("&#93;","]",$txt);
+    return $txt;
+}
+
 //-> Textteil in Zitat-Tags setzen
 function zitat($nick,$zitat)
 {
@@ -1552,7 +1560,7 @@ function check_msg_emal()
         {
             db("UPDATE ".$db['msg']." SET `sendmail` = '1' WHERE id = '".$get['mid']."'");
             $subj = show(re(settings('eml_pn_subj')), array("domain" => $httphost));
-            $message = show(re(settings('eml_pn')), array("nick" => re($get['nick']), "domain" => $httphost, "titel" => $get['titel'], "clan" => $clanname));
+            $message = show(bbcode_email(settings('eml_pn')), array("nick" => re($get['nick']), "domain" => $httphost, "titel" => $get['titel'], "clan" => $clanname));
             sendMail(re($get['email']), $subj, $message);
         }
     }

@@ -1076,7 +1076,7 @@ case 'thread';
 
           $subj = show(re(settings('eml_fabo_tedit_subj')), array("titel" => $title));
 
-           $message = show(re(settings('eml_fabo_tedit')), array("nick" => re($getabo['nick']),
+           $message = show(bbcode_email(settings('eml_fabo_tedit')), array("nick" => re($getabo['nick']),
                                                                 "postuser" => fabo_autor($userid),
                                                             "topic" => $gettopic['topic'],
                                                             "titel" => $title,
@@ -1567,7 +1567,7 @@ case 'post';
 
           $subj = show(re(settings('eml_fabo_pedit_subj')), array("titel" => $title));
 
-           $message = show(re(settings('eml_fabo_pedit')), array("nick" => re($getabo['nick']),
+           $message = show(bbcode_email(settings('eml_fabo_pedit')), array("nick" => re($getabo['nick']),
                                                                "postuser" => fabo_autor($userid),
                                                             "topic" => $gettopic['topic'],
                                                             "titel" => $title,
@@ -2181,7 +2181,7 @@ case 'post';
 
                             $subj = show(re(settings('eml_fabo_npost_subj')), array("titel" => $title));
 
-                            $message = show(re(settings('eml_fabo_npost')), array("nick" => re($getabo['nick']),
+                            $message = show(bbcode_email(settings('eml_fabo_npost')), array("nick" => re($getabo['nick']),
                                                                             "postuser" => fabo_autor($userid),
                                                                             "topic" => $gettopic['topic'],
                                                                             "titel" => $title,

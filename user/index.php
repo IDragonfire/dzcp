@@ -138,7 +138,7 @@ case 'lostpwd';
                        `what` = '".$protocol."',
                        `time` = '".((int)time())."'");
 
-                $message = show(re(settings('eml_pwd')), array("user" => $_POST['user'],
+                $message = show(bbcode_email(settings('eml_pwd')), array("user" => $_POST['user'],
                                                                                                      "pwd" => $pwd));
                 $subject = re(settings('eml_pwd_subj'));
 
@@ -296,7 +296,7 @@ case 'register';
                      `what` = '".$protocol."',
                      `time` = '".((int)time())."'");
 
-          $message = show(re(settings('eml_reg')), array("user" => up($_POST['user']),
+          $message = show(bbcode_email(settings('eml_reg')), array("user" => up($_POST['user']),
                                                    "pwd" => $mkpwd));
         $subject = re(settings('eml_reg_subj'));
 
