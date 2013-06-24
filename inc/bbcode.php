@@ -2242,25 +2242,27 @@ function pholderreplace($pholder)
 function check_internal_url()
 {
     global $db,$chkMe;
-    $url = '..'.str_ireplace('index.php','',str_ireplace(str_ireplace('\\','/',basePath),'',$_SERVER['SCRIPT_FILENAME']));
-    $url_query = $url.'?'.$_SERVER['QUERY_STRING'];
-    $sql_url_query = db("SELECT internal FROM `".$db['navi']."` WHERE `url` LIKE '".$url_query."' LIMIT 1");
-    $sql_url = db("SELECT internal FROM `".$db['navi']."` WHERE `url` LIKE '".$url."' LIMIT 1");
-    $sql_found_row = false;
-    if(_rows($sql_url_query))
-    {
-        $sql_found_row = true;
-        $get = _fetch($sql_url_query);
-        if(($get['internal'] && $chkMe == 'unlogged'))
-            return true;
+    if($chkMe != "unlogged") return false;
+    $install_pfad = explode("/",dirname(dirname($_SERVER['SCRIPT_NAME'])."../"));
+    $now_pfad = explode("/",$_SERVER['REQUEST_URI']);
+    foreach($now_pfad as $key => $value) {
+        if($value != $install_pfad[$key]) {
+            $pfad .= "/".$value;
+        }
     }
-    else if(_rows($sql_url) && !$sql_found_row)
-    {
-        $get = _fetch($sql_url);
-        if(($get['internal'] && $chkMe == 'unlogged'))
-            return true;
+    list($pfad,$rest) = split('&',$pfad);
+    $pfad = "..".$pfad;
+    if(strpos($pfad, "?") === false && strpos($pfad, ".php") === false) {
+        $pfad .= "/";
     }
-
+    $qry_navi = db("SELECT * FROM ".$db['navi']." WHERE url = '".$pfad."'");
+    if(_rows($qry_navi) == 0) {
+        list($pfad,$rest) = split('\?',$pfad);
+        $qry_navi = db("SELECT * FROM ".$db['navi']." WHERE url = '".$pfad."'");
+        if(_rows($qry_navi) == 0) $qry_navi = db("SELECT * FROM ".$db['navi']." WHERE url = '".str_replace("index.php","",$pfad)."'");
+    }
+    $get_navi = _fetch($qry_navi);
+    if($get_navi['internal']) return true;
     return false;
 }
 
@@ -2413,6 +2415,9 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
         $rss = $clanname;
         $dir = $designpath;
         $title = re(strip_tags($title));
+
+        if(check_internal_url())
+            $index = error(_error_have_to_be_logged, 1);
 
         $where = preg_replace_callback("#autor_(.*?)$#",create_function('$id', 'return data("$id[1]","nick");'),$where);
         $index = empty($index) ? '' : (empty($check_msg) ? '' : $check_msg).'<table class="mainContent" cellspacing="1" style="margin-top:0">'.$index.'</table>';
