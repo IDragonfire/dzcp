@@ -16,8 +16,9 @@ $dir = "gallery";
 
     switch ($action):
     default:
-      $qry = db("SELECT * FROM ".$db['gallery']."
-                 ORDER BY id DESC");
+	  $intern = "";
+	  if(!permission('galleryintern')) $intern = " WHERE intern = '0'";
+      $qry = db("SELECT * FROM ".$db['gallery'].$intern." ORDER BY id DESC");
       if(_rows($qry))
       {
         while($get = _fetch($qry))
@@ -58,6 +59,13 @@ $dir = "gallery";
                                           "head" => _gallery_head));
     break;
     case 'show';
+      $qry = db("SELECT * FROM ".$db['gallery']."
+                 WHERE id = '".intval($_GET['id'])."'");
+      $get = _fetch($qry);
+	  if(!permission('galleryintern') && $get['intern']) {
+		$index = error(_error_no_access);
+	  	break;
+	  }
       $files = get_files("images/",false,true);
       $t = 1;
       $cnt = 0;
@@ -105,10 +113,6 @@ $dir = "gallery";
         }
         $end = $end."</tr>";
       }
-
-      $qry = db("SELECT * FROM ".$db['gallery']."
-                 WHERE id = '".intval($_GET['id'])."'");
-      $get = _fetch($qry);
 
       $index = show($dir."/show", array("gallery" => re($get['kat']),
                                         "show" => $show,

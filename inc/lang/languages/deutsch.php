@@ -60,13 +60,16 @@ define(_newspic_del, 'Newsbild l&ouml;schen?');
 define(_newspic_deleted, 'Newsbild erfolgreich gel&ouml;scht');
 define('_max', 'max.');
 
-## ADDED / REDEFINED FOR 1.5 Final
-define('_id_dont_exist', 'Die von dir angegebene ID existiert nicht!');
-define('_perm_editts', 'Teamspeak Server verwalten');
+define('_perm_galleryintern','Interne Gallery einsehen');
+define('_perm_dlintern','Interne Download einsehen');
+
 define('_config_url_linked_head', 'URLs verlinken');
 define('_ts_settings_customicon', 'Eigene Icons runterladen');
 define('_ts_settings_showchannels', 'Nur Channels mit Usern anzeigen');
 define('_ts_settings_showchannels_desc', 'Wenn dies eingeschaltet ist werden nur Channels angezeigt in denen auch User sind.');
+## ADDED / REDEFINED FOR 1.5 Final
+define('_id_dont_exist', 'Die von dir angegebene ID existiert nicht!');
+define('_perm_editts', 'Teamspeak Server verwalten');
 
 ## ADDED / REDEFINED FOR 1.5.2
 define('_button_title_del_account', 'User-Account l&ouml;schen');

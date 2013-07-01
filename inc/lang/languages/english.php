@@ -60,15 +60,18 @@ define(_newspic_del, 'delete Newspicture?');
 define(_newspic_deleted, 'Newspicture deleted successfully');
 define('_max', 'max.');
 
+define('_perm_galleryintern','View internal Gallery');
+define('_perm_dlintern','View internal Downloads');
+
+define('_config_url_linked_head', "URLs linking");
+define('_ts_settings_customicon', 'custom icons downloading');
+define('_ts_settings_showchannels', 'Only show channels with user');
+define('_ts_settings_showchannels_desc', 'If this is on, they will only show channels there are users.');
 ## ADDED / REDEFINED FOR 1.5 Final
 define('_side_membermap', 'Membermap');
 define('_id_dont_exist', 'The requested ID does not exist!');
 define('_perm_editts', 'manage teamspeak server');
 define('_perm_receivecws', 'receive fight us form');
-define('_config_url_linked_head', "URLs linking");
-define('_ts_settings_customicon', 'custom icons downloading');
-define('_ts_settings_showchannels', 'Only show channels with user');
-define('_ts_settings_showchannels_desc', 'If this is on, they will only show channels there are users.');
 
 ## ADDED / REDEFINED FOR 1.5.2
 define('_button_title_del_account' , 'User-Account delete');

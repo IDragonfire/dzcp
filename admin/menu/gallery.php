@@ -21,6 +21,7 @@ if(_adminMenu != 'true') exit;
 
         $ins = db("INSERT INTO ".$db['gallery']."
                    SET `kat`            = '".up($_POST['gallery'])."',
+                       `intern`   = '".((int)$_POST['intern'])."',
                        `beschreibung`   = '".up($_POST['beschreibung'], 1)."',
                        `datum`          = '".((int)time())."'");
 
@@ -87,15 +88,18 @@ if(_adminMenu != 'true') exit;
 
       $show = show($dir."/form_gallery_edit", array("head" => _gallery_admin_edit,
                                               "gallery" => _gallery_gallery,
+                                              "intern" => _internal,
                                               "beschr" => _beschreibung,
                                               "value" => _button_value_edit,
                                               "id" => $get['id'],
                                               "e_gal" => re($get['kat']),
+                                              "e_intern" => $get['intern'] ? 'checked="checked"' : '',
                                               "e_beschr" => re($get['beschreibung'])));
     } elseif($_GET['do'] == "editgallery") {
       $qry = db("UPDATE ".$db['gallery']."
                  SET `kat`          = '".up($_POST['gallery'])."',
-                     `beschreibung` = '".up($_POST['beschreibung'], 1)."'
+				 `intern`          = '".((int)$_POST['intern'])."',
+				 `beschreibung` = '".up($_POST['beschreibung'], 1)."'
                  WHERE id = '".intval($_GET['id'])."'");
 
       $show = info(_gallery_edited, "?admin=gallery");
@@ -179,6 +183,7 @@ if(_adminMenu != 'true') exit;
 
       $show = show($dir."/form_gallery", array("head" => _gallery_admin_head,
                                         "gallery" => _gallery_gallery,
+                                        "intern" => _internal,
                                         "beschr" => _beschreibung,
                                         "value" => _error_fwd,
                                         "count" => _gallery_count,

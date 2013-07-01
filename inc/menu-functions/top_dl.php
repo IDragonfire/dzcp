@@ -3,8 +3,9 @@
 function top_dl()
 {
   global $db,$maxtopdl,$ltopdl,$allowHover;
-  $qry = db("SELECT * FROM ".$db['downloads']." ORDER BY hits DESC
-             LIMIT ".$maxtopdl."");
+  $intern = "";
+  if(!permission('dlintern')) $intern = " WHERE intern = '0'";
+  $qry = db("SELECT * FROM ".$db['downloads'].$intern." ORDER BY hits DESC LIMIT ".$maxtopdl."");
   while($get = _fetch($qry))
   {
     if($allowHover == 1)

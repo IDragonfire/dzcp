@@ -30,6 +30,7 @@ if(_adminMenu != 'true') exit;
 
         $show = show($dir."/form_dl", array("admin_head" => _downloads_admin_head,
                                             "ddownload" => "",
+                                            "dintern" => "",
                                              "durl" => "",
                                              "oder" => _or,
                                              "lang" => $language,
@@ -45,7 +46,8 @@ if(_adminMenu != 'true') exit;
                                              "kats" => $kats,
                                              "url" => _downloads_url,
                                              "beschreibung" => _beschreibung,
-                                             "download" => _downloads_name));
+                                             "download" => _downloads_name,
+                                             "intern" => _internal));
       } elseif($_GET['do'] == "add") {
         if(empty($_POST['download']) || empty($_POST['url']))
         {
@@ -61,7 +63,8 @@ if(_adminMenu != 'true') exit;
                          `url`          = '".$dl."',
                          `date`         = '".((int)time())."',
                          `beschreibung` = '".up($_POST['beschreibung'],1)."',
-                         `kat`          = '".((int)$_POST['kat'])."'");
+                         `kat`          = '".((int)$_POST['kat'])."',
+                         `intern`          = '".((int)$_POST['intern'])."'");
 
           $show = info(_downloads_added, "?admin=dladmin");
         }
@@ -84,6 +87,7 @@ if(_adminMenu != 'true') exit;
 
         $show = show($dir."/form_dl", array("admin_head" => _downloads_admin_head_edit,
                                             "ddownload" => re($get['download']),
+                                            "dintern" => $get['intern'] ? 'checked="checked"' : '',
                                             "durl" => re($get['url']),
                                             "file" => $dl,
                                             "lokal" => _downloads_lokal,
@@ -98,7 +102,8 @@ if(_adminMenu != 'true') exit;
                                             "kats" => $kats,
                                             "url" => _downloads_url,
                                             "beschreibung" => _beschreibung,
-                                            "download" => _downloads_name));
+                                            "download" => _downloads_name,
+                                            "intern" => _internal));
       } elseif($_GET['do'] == "editdl") {
         if(empty($_POST['download']) || empty($_POST['url']))
         {
@@ -113,7 +118,8 @@ if(_adminMenu != 'true') exit;
                          `url`          = '".$dl."',
                          `beschreibung` = '".up($_POST['beschreibung'],1)."',
                          `date`         = '".((int)time())."',
-                         `kat`          = '".((int)$_POST['kat'])."'
+                         `kat`          = '".((int)$_POST['kat'])."',
+                         `intern`          = '".((int)$_POST['intern'])."'
                      WHERE id = '".intval($_GET['id'])."'");
 
           $show = info(_downloads_edited, "?admin=dladmin");

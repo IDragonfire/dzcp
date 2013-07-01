@@ -3,7 +3,9 @@
 function gallerie()
 {
     global $db,$picformat;
-    $get = _fetch(db("SELECT id,kat FROM ".$db['gallery']." ORDER BY RAND()")); $gallery = '';
+	$intern = "";
+	if(!permission('galleryintern')) $intern = " WHERE intern = '0'";
+    $get = _fetch(db("SELECT id,kat FROM ".$db['gallery'].$intern." ORDER BY RAND()")); $gallery = '';
     $files = get_files(basePath.'/gallery/images/',false,true,$picformat,"#^".$get['id']."_(.*)#");
     $cnt = count($files);
     if($files && count($files) >= 1)
