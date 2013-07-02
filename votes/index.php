@@ -16,19 +16,17 @@ else $action = $_GET['action'];
 
 switch ($action):
 default:
-    $fvote = '';
-    if($forum_vote == 0)
-        $fvote = 'forum = 0';
-
-    $whereIntern = ' AND intern = 0';
+    $whereIntern .= ' WHERE intern = 0';
     $order = 'datum DESC';
     if(permission('votes'))
     {
         $whereIntern = '';
         $order = 'intern DESC';
     }
-
-    $qry = db('SELECT * FROM '.$db['votes'].' WHERE '.$fvote.$whereIntern.' ORDER BY ' . $order);
+    $fvote = '';
+    if($forum_vote == 0)
+        $fvote = empty($whereIntern) ? ' WHERE forum = 0' : ' AND forum = 0';
+    $qry = db('SELECT * FROM '.$db['votes'].''.$whereIntern.$fvote.' ORDER BY ' . $order);
 
   while($get = _fetch($qry)) {
     $qryv = db('SELECT * FROM ' . $db['vote_results'] .
