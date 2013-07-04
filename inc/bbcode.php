@@ -969,7 +969,10 @@ function sum($db, $where = "", $what)
     $cnt = _fetch(db("SELECT SUM(".$what.") AS num FROM ".$db.$where));
     return $cnt['num'];
 }
-
+function orderby($sort) {
+	if($_GET['orderby'] == $sort && $_GET['order'] == "ASC") return "&orderby=".$sort."&order=DESC";
+	return "&orderby=".$sort."&order=ASC";
+}
 //-> Funktion um einer id einen Nick zuzuweisen
 function nick_id($tid)
 {

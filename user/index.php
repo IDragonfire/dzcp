@@ -2463,6 +2463,12 @@ if($_GET['show'] == "search")
                WHERE level = '0'
                            ORDER BY nick
                LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
+  } elseif(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("nick","bday"))) {
+	  $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,
+                      bday,sex,icq,status,position FROM ".$db['users']."
+               WHERE level != '0'
+                           ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."
+               LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
   } else {
       $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,bday,sex,
                icq,status,position FROM ".$db['users']."
@@ -2533,8 +2539,9 @@ if($_GET['show'] == "search")
                                                                                                          "hp" => $hp,
                                                                                                          "hlsw" => $hlsw));
     }
-
-  $seiten = nav($entrys,$maxuserlist,"?action=userlist&show=".$_GET['show']."");
+  $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
+  $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
+  $seiten = nav($entrys,$maxuserlist,"?action=userlist&show=".$_GET['show']."".$orderby);
 
   if(permission("editusers"))
   {
@@ -2546,7 +2553,7 @@ if($_GET['show'] == "search")
   else $search = _nick;
 
     $index = show($dir."/userliste", array("userlistehead" => _userlist,
-                                                                                 "nickhead" => _nick,
+                                         "nickhead" => _nick,
                                          "normal" => _ulist_normal,
                                          "country" => _ulist_country,
                                          "sex" => _ulist_sex,
@@ -2561,17 +2568,19 @@ if($_GET['show'] == "search")
                                          "edel" => $edel,
                                          "search" => $search,
                                          "value" => _button_value_search,
-                                                                                 "mficon" => _mficon_blank,
+                                         "mficon" => _mficon_blank,
                                          "nav" => $seiten,
-                                                                                 "statushead" => _status,
-                                                                                 "emailicon" => _emailicon_blank,
-                                                                                 "addbuddyicon" => _addbuddyicon_blank,
-                                                                                 "agehead" => _profil_age,
-                                                                                 "icqicon" => _icqicon_blank,
-                                                                                 "pnicon" => _pnicon_blank,
-                                                                                 "hpicon" => _hpicon_blank,
-                                                                                 "hlswicon" => _hlswicon_blank,
-                                                                                 "show" => $userliste));
+                                         "statushead" => _status,
+                                         "emailicon" => _emailicon_blank,
+                                         "addbuddyicon" => _addbuddyicon_blank,
+                                         "agehead" => _profil_age,
+                                         "icqicon" => _icqicon_blank,
+                                         "pnicon" => _pnicon_blank,
+                                         "hpicon" => _hpicon_blank,
+                                         "hlswicon" => _hlswicon_blank,
+                                         "order_nick" => orderby('nick'),
+                                         "order_age" => orderby('bday'),
+                                         "show" => $userliste));
 break;
 case 'buddys';
   $where = _site_user_buddys;
