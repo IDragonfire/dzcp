@@ -1,9 +1,9 @@
 <?php
 function navi($kat)
 {
-	global $db,$chkMe,$userid,$designpath;
-	
-	$navi="";
+    global $db,$chkMe,$userid,$designpath;
+
+    $navi="";
     if($k = _fetch(db("SELECT `level` FROM ".$db['navi_kats']." WHERE `placeholder` = '".up($kat)."'")))
     {
       $intern = ($chkMe >= 2) ? '' : " AND s1.`internal` = '0'";
@@ -15,24 +15,24 @@ function navi($kat)
       {
         if($get['type'] == 0) $link = '';
         elseif($get['type'] == 1 || $get['type'] == 2 || $get['type'] == 3) {
-        
+
           $name = ($get['wichtig'] == 1) ? '<span class="fontWichtig">'.navi_name(re($get['name'])).'</span>' : navi_name(re($get['name']));
           $target = ($get['target'] == 1) ? '_blank' : '_self';
-  
+
           if(file_exists($designpath.'/menu/'.$get['kat'].'.html')) {
             $link = show("menu/".$get['kat']."", array("target" => $target,
-                                                       "href" => re($get['url']),
+                                                       "href" => preg_replace('"( |^)(www.[-a-zA-Z0-9@:%_\+.~#?&//=]+)"i', 'http://\2', re($get['url'])),
                                                        "title" => strip_tags($name),
                                                        "css" => ucfirst(str_replace('nav_', '', re($get['kat']))),
                                                        "link" => $name));
-          } else {   
+          } else {
             $link = show("menu/nav_link", array("target" => $target,
-                                                "href" => re($get['url']),
-                                                "title" => strip_tags($name),      
-                                                "css" => ucfirst(str_replace('nav_', '', re($get['kat']))),                                        
+                                                "href" => preg_replace('"( |^)(www.[-a-zA-Z0-9@:%_\+.~#?&//=]+)"i', 'http://\2', re($get['url'])),
+                                                "title" => strip_tags($name),
+                                                "css" => ucfirst(str_replace('nav_', '', re($get['kat']))),
                                                 "link" => $name));
           }
-          $table = strstr($link, '<tr>') ? true : false; 
+          $table = strstr($link, '<tr>') ? true : false;
         }
         $navi .= $link;
       }
