@@ -969,17 +969,22 @@ function sum($db, $where = "", $what)
     $cnt = _fetch(db("SELECT SUM(".$what.") AS num FROM ".$db.$where));
     return $cnt['num'];
 }
+
 function orderby($sort) {
-	$split = explode("&",$_SERVER['QUERY_STRING']);
-	$url = "?";
-	foreach($split as $part) {
-		if(strpos($part,"orderby") === false && strpos($part,"order") === false && strpos($part,"order") === false) {
-			$url .= $part;
-			$url .= "&";
-		}
-	}
-	if($_GET['orderby'] == $sort && $_GET['order'] == "ASC") return $url."orderby=".$sort."&order=DESC";
-	return $url."orderby=".$sort."&order=ASC";
+    $split = explode("&",$_SERVER['QUERY_STRING']);
+    $url = "?";
+
+    foreach($split as $part) {
+        if(strpos($part,"orderby") === false && strpos($part,"order") === false && !empty($part)) {
+            $url .= $part;
+            $url .= "&";
+        }
+    }
+
+    if($_GET['orderby'] == $sort && $_GET['order'] == "ASC")
+        return $url."orderby=".$sort."&order=DESC";
+
+    return $url."orderby=".$sort."&order=ASC";
 }
 //-> Funktion um einer id einen Nick zuzuweisen
 function nick_id($tid)
@@ -1600,7 +1605,7 @@ function check_new($datum,$new = "",$datum2 = "")
     {
         $get = _fetch(db("SELECT lastvisit FROM ".$db['userstats']." WHERE user = '".intval($userid)."'"));
         if($datum >= $get['lastvisit'] || $datum2 >= $get['lastvisit'])
-            return (empty($new) ? _newicon : '');
+            return (empty($new) ? _newicon : $new);
     }
 }
 
