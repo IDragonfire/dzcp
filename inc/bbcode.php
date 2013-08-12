@@ -1607,6 +1607,8 @@ function check_new($datum,$new = "",$datum2 = "")
         if($datum >= $get['lastvisit'] || $datum2 >= $get['lastvisit'])
             return (empty($new) ? _newicon : $new);
     }
+
+    return empty($new) ? false : '';
 }
 
 //-> DropDown Mens Date/Time
