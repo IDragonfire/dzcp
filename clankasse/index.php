@@ -26,11 +26,19 @@ default:
     else $page = 1;
 
     $entrys = cnt($db['clankasse']);
+    if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("betrag","transaktion","datum","member"))) {
+			$sub_orderby = "";
+			if($_GET['orderby'] == "betrag") $sub_orderby = "pm ".$_GET['order'].",";
+	       $qry = db("SELECT * FROM ".$db['clankasse']."
+                       ORDER BY ".$sub_orderby.mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."
+                       LIMIT ".($page - 1)*$maxclankasse.",".$maxclankasse."");
 
-    $qry = db("SELECT * FROM ".$db['clankasse']."
-               ORDER BY datum DESC
-               LIMIT ".($page - 1)*$maxclankasse.",".$maxclankasse."");
-    while ($get = _fetch($qry))
+	}
+    else { $qry = db("SELECT * FROM ".$db['clankasse']."
+                      ORDER BY datum DESC
+                      LIMIT ".($page - 1)*$maxclankasse.",".$maxclankasse."");
+	}
+	while ($get = _fetch($qry))
     {
       $betrag = $get['betrag'];
       $betrag = str_replace(".",",",$betrag);
@@ -90,12 +98,23 @@ default:
 
    if(permission("clankasse")) $new = _clankasse_new;
 
-   $qrys = db("SELECT tbl1.id,tbl1.nick,tbl2.user,tbl2.payed
+    if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("nick","payed"))) {
+			$qrys = db("SELECT tbl1.id,tbl1.nick,tbl2.user,tbl2.payed
+               FROM ".$db['users']." AS tbl1
+               LEFT JOIN ".$db['c_payed']." AS tbl2 ON tbl2.user = tbl1.id
+               WHERE tbl1.listck = '1'
+               OR tbl1.level = '4'
+               ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."");
+
+	}
+    else { 
+		$qrys = db("SELECT tbl1.id,tbl1.nick,tbl2.user,tbl2.payed
                FROM ".$db['users']." AS tbl1
                LEFT JOIN ".$db['c_payed']." AS tbl2 ON tbl2.user = tbl1.id
                WHERE tbl1.listck = '1'
                OR tbl1.level = '4'
                ORDER BY tbl1.nick");
+	}
     while($gets = _fetch($qrys))
     {
       if($gets['user'])
@@ -132,7 +151,7 @@ default:
                                            "knr" => _clankasse_nr,
                                            "kblz" => _clankasse_blz,
                                            "kbank" => _clankasse_bank,
-                                                               "kvwz" => _clankasse_vwz,
+                                           "kvwz" => _clankasse_vwz,
                                            "cfor" => _clankasse_for,
                                            "cdatum" => _datum,
                                            "ctransaktion" => _clankasse_ctransaktion,
@@ -143,6 +162,12 @@ default:
                                            "didpayed" => _clankasse_didpayed,
                                            "nick" => _nick,
                                            "status" => _clankasse_status_status,
+										   "order_nick" => orderby('nick'),
+										   "order_status" => orderby('payed'),
+										   "order_cdatum" => orderby('datum'),
+										   "order_ctransaktion" => orderby('transaktion'),
+										   "order_cfor" => orderby('member'),
+										   "order_cbetrag" => orderby('betrag'),
                                            "inhaber" => $get['k_inhaber'],
                                            "kontonr" => $get['k_nr'],
                                            "new" => $new,

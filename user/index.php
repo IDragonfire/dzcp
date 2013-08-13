@@ -2464,11 +2464,14 @@ if($_GET['show'] == "search")
                            ORDER BY nick
                LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
   } elseif(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("nick","bday"))) {
+	  $tmp_orderby = $_GET['orderby'];
+	  if($_GET['orderby'] == "bday") $_GET['orderby'] = "bday_order";
 	  $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,
-                      bday,sex,icq,status,position FROM ".$db['users']."
+                      bday,sex,icq,status,position,STR_TO_DATE(bday, '%d.%m.%Y') AS bday_order FROM ".$db['users']."
                WHERE level != '0'
                            ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."
                LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
+	  $_GET['orderby'] = $tmp_orderby;
   } else {
       $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,bday,sex,
                icq,status,position FROM ".$db['users']."

@@ -26,11 +26,17 @@ $dir = "online";
                                              "whereami" => $whereami,
                                              "class" => $class));
   }
-
-  $qry = db("SELECT * FROM ".$db['c_who']."
-             WHERE online+'".$useronline."'>'".time()."'
-             AND login = 0
-             ORDER BY whereami");
+		if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("whereami","autor"))) {
+	          $qry = db("SELECT * FROM ".$db['c_who']."
+                         WHERE online+'".$useronline."'>'".time()."'
+                         AND login = 0
+                         ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."");
+		}
+        else{$qry = db("SELECT * FROM ".$db['c_who']."
+                       WHERE online+'".$useronline."'>'".time()."'
+                       AND login = 0
+                       ORDER BY whereami");
+  }
   while($get = _fetch($qry))
   {
     if(!preg_match("#autor_#is",$get['whereami'])) $whereami = re($get['whereami']);
@@ -49,6 +55,8 @@ $dir = "online";
   $index = show($dir."/online", array("show" => $show,
                                       "head" => _online_head,
                                       "user" => _status_user.'/'._server_ip,
+									  "order_user" => orderby('autor'),
+									  "order_where" => orderby('whereami'),
                                       "where" => _online_whereami));
 
 ## SETTINGS ##

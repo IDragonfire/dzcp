@@ -833,13 +833,19 @@ else
         $from = mktime(0,0,0,$pmonth,1,$pyear);
         $til = mktime(0,0,0,$pmonth+1,1,$pyear);
 
-        $qry = db("SELECT id,titel,autor,datum,kat,text
-                   FROM ".$db['news']."
+        $qry = db("SELECT id,titel,autor,datum,kat,text FROM ".$db['news']."
                    WHERE datum BETWEEN ".$from ." AND ".$til."
                    ".$intern."
                    ORDER BY datum DESC
                    LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
         $entrys = cnt($db['news'], " WHERE datum BETWEEN ".$from." AND ".$til." ".$intern."");
+      } elseif(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("date","autor","titel","kat"))) {
+	    $qry = db("SELECT id,titel,autor,datum,kat,text FROM ".$db['news']."
+                   ".$intern2."
+                   ".$n_kat."
+                   ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."
+                   LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
+	    $entrys = cnt($db['news'], " ".$intern2." ".$n_kat);
       } else {
         $qry = db("SELECT id,titel,autor,datum,kat,text
                    FROM ".$db['news']."
@@ -917,7 +923,10 @@ else
 
       }
 
-      $nav = nav($entrys,$maxarchivnews,"?action=archiv&year=".$pyear."&month=".$pmonth."&search=".$psearch."");
+      $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
+      $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
+      $nav = nav($entrys,$maxarchivnews,"?action=archiv&year=".$pyear."&month=".$pmonth."&search=".$psearch."".$orderby);
+
       $index = show($dir."/archiv", array("head" => _news_archiv_head,
                                           "head_sort" => _news_archiv_sort,
                                           "date" => _datum,
@@ -931,6 +940,10 @@ else
                                           "btn_search" => _button_value_search,
                                           "thisyear" => $ty,
                                           "kat" => _news_admin_kat,
+										  "order_date" => orderby('datum'),
+										  "order_titel" => orderby('titel'),
+										  "order_autor" => orderby('autor'),
+										  "order_kat" => orderby('kat'),
                                           "show" => $show,
                                           "stats" => $stats,
                                           "stichwort" => _stichwort,

@@ -174,9 +174,12 @@ if($chkMe == "unlogged")
 function userid()
 {
     global $db;
-    $qry = db("SELECT id FROM ".$db['users']." WHERE id = '".$_SESSION['id']."' AND pwd = '".$_SESSION['pwd']."'");
-    $get = _fetch($qry);
-    return $get['id'];
+    if(empty($_SESSION['id']) || empty($_SESSION['pwd'])) return 0;
+	$sql = db("SELECT id FROM ".$db['users']." WHERE id = '".$_SESSION['id']."' AND pwd = '".$_SESSION['pwd']."'");
+	if(!_rows($sql)) return 0;
+	$get = _fetch($sql);
+	return $get['id'];
+    return 0;
 }
 
 //-> Templateswitch
@@ -241,7 +244,7 @@ if(isset($userid) && $ajaxJob != true)
 function settings($what)
 {
     global $db;
-    $get = _fetch(db("SELECT ".$what." FROM ".$db['settings'].""));
+	$get = _fetch(db("SELECT ".$what." FROM ".$db['settings'].""));
     return $get[$what];
 }
 
@@ -773,6 +776,7 @@ function wrap($str, $width = 75, $break = "\n", $cut = true)
 function get_files($dir=null,$only_dir=false,$only_files=false,$file_ext=array(),$preg_match=false,$blacklist=array())
 {
     $files = array();
+    if(!file_exists($dir) && !is_dir($dir)) return $files;
     if($handle = @opendir($dir))
     {
         if($only_dir) ## Ordner ##
@@ -959,15 +963,27 @@ function _fetch($fetch)
 //-> Funktion um diverse Dinge aus Tabellen auszaehlen zu lassen
 function cnt($count, $where = "", $what = "id")
 {
-    $cnt = _fetch(db("SELECT COUNT(".$what.") AS num FROM ".$count." ".$where));
-    return $cnt['num'];
+    $cnt_sql = db("SELECT COUNT(".$what.") AS num FROM ".$count." ".$where.";");
+    if(_rows($cnt_sql))
+    {
+        $cnt = _fetch($cnt_sql);
+        return $cnt['num'];
+    }
+
+    return 0;
 }
 
 //-> Funktion um diverse Dinge aus Tabellen zusammenzaehlen zu lassen
 function sum($db, $where = "", $what)
 {
-    $cnt = _fetch(db("SELECT SUM(".$what.") AS num FROM ".$db.$where));
-    return $cnt['num'];
+    $cnt_sql = db("SELECT SUM(".$what.") AS num FROM ".$db.$where.";");
+    if(_rows($cnt_sql))
+    {
+        $cnt = _fetch($cnt_sql);
+        return $cnt['num'];
+    }
+
+    return 0;
 }
 
 function orderby($sort) {
@@ -986,6 +1002,7 @@ function orderby($sort) {
 
     return $url."orderby=".$sort."&order=ASC";
 }
+
 //-> Funktion um einer id einen Nick zuzuweisen
 function nick_id($tid)
 {
@@ -1075,17 +1092,21 @@ function online_reg()
 }
 
 //-> Prueft, ob User eingeloggt ist und wenn ja welches Level er besitzt
-function checkme()
+function checkme($userid_set=0)
 {
-    global $db,$userid;
-    $qry = db("SELECT level FROM ".$db['users']." WHERE id = '".intval($userid)."' AND pwd = '".$_SESSION['pwd']."' AND ip = '".$_SESSION['ip']."'");
-    if(_rows($qry))
-    {
-        $get = _fetch($qry);
-        return $get['level'];
-    }
-    else
+    global $db;
+    if(!$userid = ($userid_set != 0 ? intval($userid_set) : userid()))
         return "unlogged";
+
+	$qry = db("SELECT level FROM ".$db['users']." WHERE id = ".$userid." AND pwd = '".$_SESSION['pwd']."' AND ip = '".$_SESSION['ip']."'");
+	if(_rows($qry))
+	{
+		$get = _fetch($qry);
+		return $get['level'];
+	}
+	else
+		return "unlogged";
+    }
 }
 
 //-> Prueft, ob ein User diverse Rechte besitzt

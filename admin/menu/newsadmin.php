@@ -398,8 +398,15 @@ if(_adminMenu != 'true') exit;
         else $page = 1;
   
         $entrys = cnt($db['news']);
+		if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("titel","datum","autor"))) {
+	    $qry = db("SELECT * FROM ".$db['news']."
+                   ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."
+                   LIMIT ".($page - 1)*$maxadminnews.",".$maxadminnews."");
+		}
+        else{
         $qry = db("SELECT * FROM ".$db['news']." ORDER BY `public` ASC, `datum` DESC LIMIT ".($page - 1)*$maxadminnews.",".$maxadminnews."");
-        while($get = _fetch($qry))
+		}
+		while($get = _fetch($qry))
         {
           $edit = show("page/button_edit_single", array("id" => $get['id'],
                                                         "action" => "admin=newsadmin&amp;do=edit",
@@ -434,7 +441,11 @@ if(_adminMenu != 'true') exit;
 												   "edit" => $edit,
                                                    "delete" => $delete));
         }
-        $nav = nav($entrys,$maxadminnews,"?admin=newsadmin");
+		
+        $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
+        $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
+        $nav = nav($entrys,$maxadminnews,"?admin=newsadmin".$_GET['show']."".$orderby);
+
         $show = show($dir."/admin_news", array("head" => _news_admin_head,
                                                "nav" => $nav,
                                                "autor" => _autor,
@@ -442,6 +453,9 @@ if(_adminMenu != 'true') exit;
                                                "val" => "newsadmin",
                                                "date" => _datum,
                                                "show" => $show_,
+    										   "order_autor" => orderby('autor'),
+									           "order_date" => orderby('datum'),
+									           "order_titel" => orderby('titel'),
                                                "edit" => _editicon_blank,
                                                "delete" => _deleteicon_blank,
                                                "add" => _admin_news_head));
