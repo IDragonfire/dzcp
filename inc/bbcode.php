@@ -1106,7 +1106,6 @@ function checkme($userid_set=0)
 	}
 	else
 		return "unlogged";
-    }
 }
 
 //-> Prueft, ob ein User diverse Rechte besitzt
