@@ -32,6 +32,25 @@ function spChars($txt)
   return $txt;
 }
 
+function visitorIp()
+{
+    $TheIp=$_SERVER['REMOTE_ADDR'];
+    if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $TheIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
+
+    if(isset($_SERVER['HTTP_CLIENT_IP']) && !empty($_SERVER['HTTP_CLIENT_IP']))
+        $TheIp = $_SERVER['HTTP_CLIENT_IP'];
+
+    if(isset($_SERVER['HTTP_FROM']) && !empty($_SERVER['HTTP_FROM']))
+        $TheIp = $_SERVER['HTTP_FROM'];
+
+    $TheIp_X = explode('.',$TheIp);
+    if(count($TheIp_X) == 4 && $TheIp_X[0]<=255 && $TheIp_X[1]<=255 && $TheIp_X[2]<=255 && $TheIp_X[3]<=255 && preg_match("!^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$!",$TheIp))
+        return trim($TheIp);
+
+    return '0.0.0.0';
+}
+
 //MySQL-Daten einlesen
 $installation = false;
 include(basePath.'/inc/config.php');
@@ -959,13 +978,13 @@ function install_mysql($login, $nick, $pwd, $email)
 //-> Sessionvariabeln setzen
   $_SESSION['id'] = "1";
   $_SESSION['pwd'] = md5($pwd);
-  $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
+  $_SESSION['ip'] = visitorIp();
 
   if($login || $nick || $pwd || $email)
   {
     $_SESSION['id'] = "1";
     $_SESSION['pwd'] = md5($pwd);
-    $_SESSION['ip'] = $_SERVER['REMOTE_ADDR'];
+    $_SESSION['ip'] = visitorIp();
   }
 }
 
