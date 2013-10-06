@@ -1699,7 +1699,7 @@ case 'editprofile';
                                     `gmaps_koord`  = '".up($_POST['gmaps_koord'])."',
                                     `hp`           = '".links($_POST['hp'])."',
                                     `icq`          = '".((int)$icq)."',
-                                    `hlswid`       = '".up($_POST['hlswid'])."',
+                                    `hlswid`       = '".up(trim($_POST['hlswid']))."',
                                     `steamid`      = '".$steamid."',
                                     `signatur`     = '".up($_POST['sig'],1)."',
                                     `beschreibung` = '".up($_POST['ich'],1)."'
