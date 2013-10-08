@@ -1,0 +1,128 @@
+* {
+	font-size: 10px;
+	font-family: tahoma,Arial,Helvetica,sans-serif;
+}
+
+body {
+	margin: 0;
+}
+
+#profile {
+	width: 254px;
+	height: 48px;
+	padding: 4px;
+	background: url(images/background.png) no-repeat;
+	overflow: hidden;
+}
+
+#profile:hover {
+	background: url(images/background_hover.png) no-repeat;
+}
+
+#avatar {
+	float: left;
+	width: 40px;
+	height: 40px;
+}
+
+#avatar img {
+	border: none;
+	margin: 4px;
+}
+
+#info {
+	float: left;
+	margin-left: 5px;
+}
+
+#info a {
+	font-weight: bold;
+	text-decoration: none;
+}
+
+.ingame #avatar {
+	background-image: url(images/iconholder_ingame.jpg);
+}
+
+.ingame #info {
+	color: #8bc53f;
+}
+
+.ingame #info a {
+	color: #b1fb50;
+}
+
+.online #avatar {
+	background-image: url(images/iconholder_online.jpg);
+}
+
+.online #info {
+	color: #6f9fc8;
+}
+
+.online #info a {
+	color: #8ecbff;
+}
+
+.offline #avatar {
+	background-image: url(images/iconholder_offline.jpg);
+}
+
+.offline #info, .offline #info a {
+	color: #898989;
+}
+
+#menu {
+	position: absolute;
+	left: 148px;
+	width: 100px;
+}
+
+#menu img {
+	float:right;
+}
+
+#menu img:hover {
+	cursor: pointer;
+}
+
+#menu ul {
+	background-color: #2F312D;
+	border: 1px solid #686A65;
+	margin: 0;
+	margin-right: 15px;
+	padding: 0;
+	list-style-type: none;
+}
+
+#menu, #menu a {
+	color: #efefef;
+	text-decoration: none;
+}
+
+#menu li {
+	padding: 3px;
+}
+
+#menu li:hover {
+	background-color: #91863C;
+}
+
+#menu img:hover {
+	background-image: url('images/arrow-hover.png');
+}
+
+.error {
+	color: #ff4444;
+	font-size: 12px;
+	background: url('images/cross.png') center left no-repeat;
+	padding: 0;
+	padding-left: 18px;
+	margin: 0;
+	margin-top: .5em;
+}
+
+.error img {
+	vertical-align: middle;
+	margin: 2px;
+}

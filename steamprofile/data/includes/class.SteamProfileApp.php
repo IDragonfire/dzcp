@@ -1,0 +1,46 @@
+<?php
+/**
+ *	This file is part of SteamProfile.
+ *
+ *	Written by Nico Bergemann <barracuda415@yahoo.de>
+ *	Copyright 2008 Nico Bergemann
+ *
+ *	SteamProfile is free software: you can redistribute it and/or modify
+ *	it under the terms of the GNU General Public License as published by
+ *	the Free Software Foundation, either version 3 of the License, or
+ *	(at your option) any later version.
+ *
+ *	SteamProfile is distributed in the hope that it will be useful,
+ *	but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *	GNU General Public License for more details.
+ *
+ *	You should have received a copy of the GNU General Public License
+ *	along with SteamProfile.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+require_once 'class.Cache.php';
+require_once 'class.RequestLimiter.php';
+
+class SteamProfileApp
+{
+	protected $sID;
+	protected $aConfig;
+	
+	public function SetConfig($aConfig)
+	{
+		$this->aConfig = $aConfig;
+	}
+
+	public function Run()
+	{
+		if(isset($_GET['id']))
+			$this->sID = $_GET['id'];
+		else
+			throw new Exception('No Steam-ID or Community-ID specified!');
+			
+		if($this->aConfig['bHotlinkCheck'] && !isset($_SESSION['sp_allowed']))
+			throw new Exception('Hotlinking is forbidden!');
+	}
+}
+?>
