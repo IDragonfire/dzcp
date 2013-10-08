@@ -31,7 +31,7 @@ $dir = "admin";
     $check = _fetch($qry);
 
     unset($amenu);
-    $files = get_files(basePath.'/admin/menu/');
+    $files = get_files(basePath.'/admin/menu/',false,true);
     foreach($files AS $file)
     {
       if(strstr(strtolower($file), '.php'))
@@ -43,16 +43,16 @@ $dir = "admin";
         $file = str_replace('.php', '', $file);
         @eval("\$link = _config_".$file.";");
         @eval("\$permission = ".$navPerm.";");
-        
-	foreach($picformat AS $end)
-	{
-		if(file_exists(basePath.'/admin/menu/'.$file.'.'.$end))
-			break;
-	}
+
+    foreach($picformat AS $end)
+    {
+        if(file_exists(basePath.'/admin/menu/'.$file.'.'.$end))
+            break;
+    }
 
         if(!empty($navType) && !empty($navPerm) && $permission)
         {
-        	$amenu[$navType][$link] = show("['[link]','?admin=[name]','background-image:url(menu/[name].".$end.");'],\n", array("link" => $link, 'name' => $file));
+            $amenu[$navType][$link] = show("['[link]','?admin=[name]','background-image:url(menu/[name].".$end.");'],\n", array("link" => $link, 'name' => $file));
         }
       }
     }
@@ -72,7 +72,7 @@ $dir = "admin";
     {
       $adminc1 = '/*'; $adminc2 = '*/';
     }
-      
+
     if(function_exists('fsockopen'))
     {
       $dzcp_v = fileExists("http://www.dzcp.de/version.txt");
@@ -84,14 +84,14 @@ $dir = "admin";
         $version = "<a href=\"http://www.dzcp.de\" target=\"_blank\" title=\"external Link: www.dzcp.de\"><b>"._akt_version.":</b> <span class=\"fontRed\">"._version."</span></a>";
         $old = "_old";
       }
-	  
-	  $dzcp_news = @file_get_contents('http://www.dzcp.de/dzcp_news.php');
+
+      $dzcp_news = @file_get_contents('http://www.dzcp.de/dzcp_news.php');
     }
     if(@file_exists(basePath."/_installer") && $chkMe == 4)
-		{
-			$index = _installdir;
-		} else {
-    
+        {
+            $index = _installdir;
+        } else {
+
     $index = show($dir."/admin", array("head" => _config_head,
                                        "forumkats" => $fkats,
                                        "newskats" => $nkats,
@@ -109,8 +109,8 @@ $dir = "admin";
                                        "radmin2" => $radmin2,
                                        "adminc1" => $adminc1,
                                        "adminc2" => $adminc2,
-																			 "show" => $show));
-		}
+                                                                             "show" => $show));
+        }
   }
 ## SETTINGS ##
 $time_end = generatetime();

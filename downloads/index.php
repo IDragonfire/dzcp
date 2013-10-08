@@ -16,6 +16,8 @@ else $action = $_GET['action'];
 
 switch ($action):
 default:  
+  $intern = "";
+  if(!permission('dlintern')) $intern = " AND intern = '0'";
   $qry = db("SELECT * FROM ".$db['dl_kat']."
              ORDER BY name");
   $t = 1;
@@ -26,7 +28,7 @@ default:
     else                    $kid = "";
       
     $qrydl = db("SELECT * FROM ".$db['downloads']."
-                 WHERE kat = '".$get['id']."'
+                 WHERE kat = '".$get['id']."'".$intern."
                  ORDER BY download");
     $show = "";
     if(_rows($qrydl))
@@ -95,7 +97,10 @@ case 'download';
     $qry = db("SELECT * FROM ".$db['downloads']."
                WHERE id = '".intval($_GET['id'])."'");
     $get = _fetch($qry);
-
+	if(!permission('dlintern') && $get['intern']) {
+		$index = error(_error_no_access);
+	  	break;
+	}
     $file = preg_replace("#added...#Uis", "files/", $get['url']);
     if(strpos($get['url'],"../") != 0) $rawfile = @basename($file);
     else                                   $rawfile = re($get['download']);

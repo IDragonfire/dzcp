@@ -47,12 +47,12 @@ $dir = "squads";
         
         if(empty($getm['steamid']))
         {
-          $steamid = "";
-          $steam = "-";
-        } else {
-          $steamid = $getm['steamid'];
-          $steam = _steamicon_blank;
-        }
+          $steamid = "-";
+          $steam = _steamid;
+        } else { 
+          $steamid = show(_steamicon, array("steamid" => re($getm['steamid'])))." ".re($getm['steamid']);
+          $steam = _steamid; 
+        } 
   
         $class = ($color % 2) ? "contentMainFirst" : "contentMainSecond"; $color++;
         $nick = autor($getm['user'],'','','','','&amp;sq='.$getm['squad']);

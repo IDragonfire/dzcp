@@ -181,10 +181,16 @@ if(_adminMenu != 'true') exit;
         else $page = 1;
   
         $entrys = cnt($db['artikel']);
-        $qry = db("SELECT * FROM ".$db['artikel']."
-                   ORDER BY `public` ASC, `datum` DESC 
-									 LIMIT ".($page - 1)*$maxadminartikel.",".$maxadminartikel."");
-        while($get = _fetch($qry))
+		if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("titel","datum","autor"))) {
+	    $qry = db("SELECT * FROM ".$db['artikel']."
+                   ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."
+                   LIMIT ".($page - 1)*$maxadminartikel.",".$maxadminartikel."");
+		}
+        else {$qry = db("SELECT * FROM ".$db['artikel']."
+                         ORDER BY `public` ASC, `datum` DESC 
+		                 LIMIT ".($page - 1)*$maxadminartikel.",".$maxadminartikel."");
+		}
+		while($get = _fetch($qry))
         {
           $edit = show("page/button_edit_single", array("id" => $get['id'],
                                                         "action" => "admin=artikel&amp;do=edit",
@@ -215,12 +221,18 @@ if(_adminMenu != 'true') exit;
                                                    "edit" => $edit,
                                                    "delete" => $delete));
         }
-        $nav = nav($entrys,$maxadminnews,"?admin=artikel");
+        $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
+        $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
+        $nav = nav($entrys,$maxadminnews,"?admin=artikel".$_GET['show']."".$orderby);
+
         $show = show($dir."/admin_news", array("head" => _artikel,
                                                "nav" => $nav,
                                                "autor" => _autor,
                                                "titel" => _titel,
                                                "date" => _datum,
+											   "order_autor" => orderby('autor'),
+									           "order_date" => orderby('datum'),
+									           "order_titel" => orderby('titel'),
                                                "show" => $show_,
                                                "val" => "artikel",
                                                "edit" => _editicon_blank,

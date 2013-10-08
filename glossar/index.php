@@ -18,21 +18,21 @@ default:
   if(!empty($_GET['word']))
   {
     $a = substr($_GET['word'],0,1);
-    
+
     $glword = "WHERE word = '".up($_GET['word'])."'
                OR word LIKE '".up($a)."%' ";
-  } elseif(!empty($_GET['bst'])) {
+  } elseif(!empty($_GET['bst']) && $_GET['bst'] != 'all') {
     $glword = "WHERE word LIKE '".up($_GET['bst'])."%' ";
     $a = $_GET['bst'];
   }
-  
+
   $qry = db("SELECT * FROM ".$db['glossar']." ".$glword." ORDER BY word");
   while($get = _fetch($qry))
   {
     $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-    
+
     if($_GET['word'] == $get['word']) $class = 'highlightSearchTarget';
-    
+
     $show .= show($dir."/glossar_show", array("word" => re($get['word']),
                                               "class" => $class,
                                               "glossar" => bbcode($get['glossar'])));
@@ -42,8 +42,8 @@ default:
   for($i=0;$i<count($bst);$i++)
   {
     $bclass = (empty($a) && ($bst[$i]) == _all || strtolower($bst[$i]) == strtolower($a)) ? 'fontWichtig' : '';
-    $ret = ($bst[$i] == _all) ? '' : "?bst=".$bst[$i];
-    
+    $ret = ($bst[$i] == _all) ? '?bst=all' : "?bst=".$bst[$i];
+
     $abc .= "<a href=\"".$ret."\" title=\"".$bst[$i]."\"><span class=\"".$bclass."\">".$bst[$i]."</span></a> ";
   }
 

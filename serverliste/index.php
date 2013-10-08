@@ -16,9 +16,17 @@ else $action = $_GET['action'];
 
 switch ($action):
 default:
+  if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("clanname","slots"))) {
+  $qry = db("SELECT ip,port,clanname,clanurl,pwd,checked,slots
+                   FROM ".$db['serverliste']."
+				   WHERE checked = 1
+                   ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."");
+  }
+  else{
   $qry = db("SELECT ip,port,clanname,clanurl,pwd,checked,slots
              FROM ".$db['serverliste']."
              WHERE checked = 1");
+  }
   if(_rows($qry))
   {
     while ($get = _fetch($qry))
@@ -36,7 +44,11 @@ default:
                                                           "map" => $map));
     }
   } else {
-    $serverlist = show(_no_entrys_yet, array("colspan" => "4"));
+        $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
+        $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
+        $serverlist = show(_no_entrys_yet, array("colspan" => "4").$_GET['show']."".$orderby);
+
+    #$serverlist = show(_no_entrys_yet, array("colspan" => "4"));
   }
 
   $index = show($dir."/serverliste", array("serverlist" => $serverlist,
@@ -46,6 +58,8 @@ default:
                                            "slots" => _slist_slots,
                                            "pwd" => _pwd,
                                            "eintragen" => _slist_add,
+										   "order_clan" => orderby('clanname'),
+										   "order_slots" => orderby('slots'),
                                            "hlswip" => _gt_addip));
 break;
 case 'add':

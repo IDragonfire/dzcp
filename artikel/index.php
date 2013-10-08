@@ -18,23 +18,34 @@ switch ($action):
 default:
   if(isset($_GET['page'])) $page = $_GET['page'];
   else $page = 1;
-
+  
+  if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("artikel","titel","datum","kat"))) {
   $qry = db("SELECT * FROM ".$db['artikel']."
+               WHERE public = 1
+               ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."
+               LIMIT ".($page - 1)*$martikel.",".$martikel."");
+  }
+			   
+  else {$qry = db("SELECT * FROM ".$db['artikel']."
              WHERE public = 1
 			 ORDER BY datum DESC
 			 LIMIT ".($page - 1)*$martikel.",".$martikel."");
-
+  }
   $entrys = cnt($db['artikel']);
+  
   if(_rows($qry))
   {
     while($get = _fetch($qry))
     {
+	  $qryk = db("SELECT kategorie FROM ".$db['newskat']."
+                  WHERE id = '".$get['kat']."'");
+      $getk = _fetch($qryk);
       $titel = '<a style="display:block" href="?action=show&amp;id='.$get['id'].'">'.$get['titel'].'</a>';
 
       $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
 
       $show .= show($dir."/artikel_show", array("titel" => $titel,
-                                                "kat" => $kat,
+                                                "kat" => re($getk['kategorie']),
                                                 "id" => $get['id'],
                                                 "display" => "none",
                                                 "nautor" => _autor,
@@ -51,13 +62,20 @@ default:
     $show = show(_no_entrys_yet, array("colspan" => "4"));
   }
 
-  $seiten = nav($entrys,$martikel,"?page");
+  $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
+  $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
+  $seiten = nav($entrys,$martikel,"?page".$_GET['show']."".$orderby);
   $index = show($dir."/artikel", array("show" => $show,
                                        "stats" => $stats,
                                        "nav" => $seiten,
                                        "artikel" => _artikel,
+									   "kat" => _news_admin_kat,
                                        "datum" => _datum,
                                        "autor" => _autor,
+									   "order_autor" => orderby('autor'),
+									   "order_datum" => orderby('datum'),
+									   "order_titel" => orderby('titel'),
+									   "order_kat" => orderby('kat'),
                                        "archiv" => _news_archiv));
 break;
 case 'show';

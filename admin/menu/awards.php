@@ -143,8 +143,14 @@ if(_adminMenu != 'true') exit;
 
         $show = info(_awards_admin_deleted, "?admin=awards");
       } else {
-        $qry = db("SELECT * FROM ".$db['awards']."
+        
+		if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("event","date"))) {
+             $qry = db("SELECT * FROM ".$db['awards']."
+                        ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."");
+        }
+		else {$qry = db("SELECT * FROM ".$db['awards']."
                    ORDER BY date DESC");
+		}
         while($get = _fetch($qry))
         {
           $edit = show("page/button_edit_single", array("id" => $get['id'],
@@ -169,6 +175,8 @@ if(_adminMenu != 'true') exit;
                                            "date" => _datum,
                                            "titel" => _award,
                                            "show" => $show_,
+										   "order_titel" => orderby('event'),
+										   "order_date" => orderby('date'),
                                            "add" => _awards_admin_head_add
                                            ));
       }

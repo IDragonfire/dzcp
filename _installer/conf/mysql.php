@@ -20,14 +20,14 @@ function up($txt,$bbcode=0)
 
 function spChars($txt)
 {
-  $txt = str_replace("","&Auml;",$txt);
-  $txt = str_replace("","&auml;",$txt);
-  $txt = str_replace("","&Uuml;",$txt);
-  $txt = str_replace("","&uuml;",$txt);
-  $txt = str_replace("","&Ouml;",$txt);
-  $txt = str_replace("","&ouml;",$txt);
-  $txt = str_replace("","&szlig;",$txt);
-  $txt = str_replace("","&euro;",$txt);
+  $txt = str_replace("Ä","&Auml;",$txt);
+  $txt = str_replace("ä","&auml;",$txt);
+  $txt = str_replace("Ü","&Uuml;",$txt);
+  $txt = str_replace("ü","&uuml;",$txt);
+  $txt = str_replace("Ö","&Ouml;",$txt);
+  $txt = str_replace("ö","&ouml;",$txt);
+  $txt = str_replace("ß","&szlig;",$txt);
+  $txt = str_replace("€","&euro;",$txt);
 
   return $txt;
 }
@@ -271,7 +271,7 @@ function install_mysql($login, $nick, $pwd, $email)
              `reg_dl` int(1) NOT NULL default '1',
              `reg_artikel` int(1) NOT NULL default '1',
              `reg_newscomments` int(1) NOT NULL default '1',
-             `tmpdir` varchar(100) NOT NULL default 'version1.5',
+             `tmpdir` varchar(100) NOT NULL default 'version1.6',
              `wmodus` int(1) NOT NULL default '0',
              `persinfo` int(1) NOT NULL default '1',
              `iban` varchar(100) NOT NULL default '',
@@ -849,25 +849,25 @@ function install_mysql($login, $nick, $pwd, $email)
              PRIMARY KEY  (`id`)
              ) ");
   $qry = db("ALTER TABLE ".$db['users']."	ADD `drink` varchar(249) NOT NULL default '',
- 									   		                  ADD `essen` varchar(249) NOT NULL default '',
-									   		                  ADD `film` varchar(249) NOT NULL default '',
-									   		                  ADD `musik` varchar(249) NOT NULL default '',
-									   		                  ADD `song` varchar(249) NOT NULL default '',
-									   		                  ADD `buch` varchar(249) NOT NULL default '',
-											                    ADD `autor` varchar(249) NOT NULL default '',
-											                    ADD `person` varchar(249) NOT NULL default '',
-											                    ADD `sport` varchar(249) NOT NULL default '',
-											                    ADD `sportler` varchar(249) NOT NULL default '',
-											                    ADD `auto` varchar(249) NOT NULL default '',
-											                    ADD `game` varchar(249) NOT NULL default '',
-											                    ADD `favoclan` varchar(249) NOT NULL default '',
-											                    ADD `spieler` varchar(249) NOT NULL default '',
-											                    ADD `map` varchar(249) NOT NULL default '',
-											                    ADD `waffe` varchar(249) NOT NULL default '',
-											                    ADD `rasse` varchar(249) NOT NULL default '',
-											                    ADD `url2` varchar(249) NOT NULL default '',
-											                    ADD `url3` varchar(249) NOT NULL default '',
-											                    ADD `beschreibung` text NULL");
+                                                                  ADD `essen` varchar(249) NOT NULL default '',
+                                                                 ADD `film` varchar(249) NOT NULL default '',
+                                                                 ADD `musik` varchar(249) NOT NULL default '',
+                                                                 ADD `song` varchar(249) NOT NULL default '',
+                                                                 ADD `buch` varchar(249) NOT NULL default '',
+                                                                ADD `autor` varchar(249) NOT NULL default '',
+                                                                ADD `person` varchar(249) NOT NULL default '',
+                                                                ADD `sport` varchar(249) NOT NULL default '',
+                                                                ADD `sportler` varchar(249) NOT NULL default '',
+                                                                ADD `auto` varchar(249) NOT NULL default '',
+                                                                ADD `game` varchar(249) NOT NULL default '',
+                                                                ADD `favoclan` varchar(249) NOT NULL default '',
+                                                                ADD `spieler` varchar(249) NOT NULL default '',
+                                                                ADD `map` varchar(249) NOT NULL default '',
+                                                                ADD `waffe` varchar(249) NOT NULL default '',
+                                                                ADD `rasse` varchar(249) NOT NULL default '',
+                                                                ADD `url2` varchar(249) NOT NULL default '',
+                                                                ADD `url3` varchar(249) NOT NULL default '',
+                                                                ADD `beschreibung` text NULL");
   $qry = db("INSERT INTO ".$db['users']." (`id`, `user`, `nick`, `pwd`, `regdatum`, `email`, `level`, `position`, `status`, `online`, `ip`, `sessid`) VALUES (1, '".$login."', '".$nick."', '".md5($pwd)."', '".time()."', '".$email."', '4', 1, 1, 1, '".$_SERVER['REMOTE_ADDR']."', '".session_id()."')");
 //-> Userposis
   $qry = db("DROP TABLE IF EXISTS ".$db['userpos']."");
@@ -1304,19 +1304,19 @@ function update_mysql_1_5()
   $eml_pn = "---------------------------------\r\n\r\nHallo [nick],\r\n\r\nDu hast eine neue Nachricht in deinem Postfach.\r\n\r\nTitel: [titel]\r\n\r\n<a href=\"http://[domain]/user/index.php?action=msg\">Zum Nachrichten-Center</a>\r\n\r\nVG\r\n\r\n[clan]\r\n\r\n---------------------------------";
 
   db("UPDATE ".$db['settings']."
-  	  SET `eml_fabo_npost_subj` = '".up($eml_fabo_npost_subj)."',
-  		  `eml_fabo_tedit_subj`   = '".up($eml_fabo_tedit_subj)."',
-  		  `eml_fabo_pedit_subj`   = '".up($eml_fabo_pedit_subj)."',
-  		  `eml_pn_subj`   		    = '".up($eml_pn_subj)."',
-  		  `eml_fabo_npost`        = '".up($eml_fabo_npost)."',
-  		  `eml_fabo_tedit`        = '".up($eml_fabo_tedit)."',
-  		  `eml_fabo_pedit`        = '".up($eml_fabo_pedit)."',
-  		  `eml_pn`		            = '".up($eml_pn)."'
-  	  WHERE `id` = '1'");
+        SET `eml_fabo_npost_subj` = '".up($eml_fabo_npost_subj)."',
+            `eml_fabo_tedit_subj`   = '".up($eml_fabo_tedit_subj)."',
+            `eml_fabo_pedit_subj`   = '".up($eml_fabo_pedit_subj)."',
+            `eml_pn_subj`   		    = '".up($eml_pn_subj)."',
+            `eml_fabo_npost`        = '".up($eml_fabo_npost)."',
+            `eml_fabo_tedit`        = '".up($eml_fabo_tedit)."',
+            `eml_fabo_pedit`        = '".up($eml_fabo_pedit)."',
+            `eml_pn`		            = '".up($eml_pn)."'
+        WHERE `id` = '1'");
 
   db("ALTER TABLE ".$db['users']." ADD `pnmail` int(1) NOT NULL default '1'");
   db("ALTER TABLE ".$db['msg']." ADD `sendmail` int(1) default '0'");
-	db("UPDATE ".$db['msg']." SET `sendmail` = '1'");
+    db("UPDATE ".$db['msg']." SET `sendmail` = '1'");
   db("ALTER TABLE ".$db['gb']." ADD `public` int(1) NOT NULL");
   db("UPDATE ".$db['gb']." SET `public` = '1'");
   db("ALTER TABLE ".$db['pos']." ADD `nletter` int(1) NOT NULL");
@@ -1325,53 +1325,52 @@ function update_mysql_1_5()
   db("ALTER TABLE ".$db['msg']." ADD `sendnewsuser` int(5) default '0' NOT NULL");
 
   db("INSERT INTO ".$db['navi']." SET `pos`   = '0', `kat`   = 'nav_main', `shown` = '1', `name`  = '_news_send_', `url`   = '../news/send.php', `target`   = '0',
-		  `type`     = '1', `internal` = '0', `wichtig` = '0', `editor` = '0'");
+          `type`     = '1', `internal` = '0', `wichtig` = '0', `editor` = '0'");
 
   db("ALTER TABLE ".$db['config']." ADD `m_events` int(5) default '5' NOT NULL");
-  db("INSERT INTO ".$db['config']." SET `m_events` = '5'");
   db("ALTER TABLE ".$db['artikel']." ADD `public` int(1) default '0' NOT NULL");
   db("UPDATE ".$db['artikel']." SET `public` = '1'");
   db("ALTER TABLE ".$db['news']." ADD `public` int(1) default '0' NOT NULL");
   db("UPDATE ".$db['news']." SET `public` = '1'");
   db("ALTER TABLE ".$db['config']." ADD `m_away` int(5) default '10' NOT NULL");
-  db("INSERT INTO ".$db['config']." SET `m_away` = '10'");
+  db("INSERT INTO ".$db['config']." SET `m_away` = '10', `m_events` = '5'");
 
   db("DROP TABLE IF EXISTS ".$db['away']);
   db("CREATE TABLE ".$db['away']." (
-      	 `id` int(5) NOT NULL auto_increment,
-		 `userid` INT(14) not null  default '0',
-		 `titel` varchar(30) not null,
-		 `reason` longtext not null,
-		 `start` int(20) not null  default '0',
-		 `end` int(20) not null  default '0',
-		 `date` text not null,
-		 `lastedit` text not null,
-		  PRIMARY KEY (`id`)
-		  ) ;");
+           `id` int(5) NOT NULL auto_increment,
+         `userid` INT(14) not null  default '0',
+         `titel` varchar(30) not null,
+         `reason` longtext not null,
+         `start` int(20) not null  default '0',
+         `end` int(20) not null  default '0',
+         `date` text not null,
+         `lastedit` text not null,
+          PRIMARY KEY (`id`)
+          ) ;");
 
   db("INSERT INTO ".$db['navi']." SET `pos` = '1', `kat` = 'nav_trial', `shown` = '1', `name` = '_awaycal_', `url` = '../away/', `type` = '2', `internal` = '1'");
 
   db("DROP TABLE IF EXISTS ".$db['sponsoren']);
   db("CREATE TABLE ".$db['sponsoren']." (
           `id` int(5) NOT NULL auto_increment,
-		  `name` varchar(249) NOT NULL,
-		  `link` varchar(249) NOT NULL,
-		  `beschreibung` text NOT NULL,
-		  `site` int(1) NOT NULL default '0',
-		  `send` varchar(5) NOT NULL,
-		  `slink` varchar(249) NOT NULL,
-		  `banner` int(1) NOT NULL default '0',
-		  `bend` varchar(5) NOT NULL,
-		  `blink` varchar(249) NOT NULL,
-		  `box` int(1) NOT NULL default '0',
-		  `xend` varchar(5) NOT NULL,
-		  `xlink` varchar(255) NOT NULL,
-		  `pos` int(5) NOT NULL,
-		  `hits` int(50) NOT NULL default '0',
-		  PRIMARY KEY  (`id`)
-		) ;");
+          `name` varchar(249) NOT NULL,
+          `link` varchar(249) NOT NULL,
+          `beschreibung` text NOT NULL,
+          `site` int(1) NOT NULL default '0',
+          `send` varchar(5) NOT NULL,
+          `slink` varchar(249) NOT NULL,
+          `banner` int(1) NOT NULL default '0',
+          `bend` varchar(5) NOT NULL,
+          `blink` varchar(249) NOT NULL,
+          `box` int(1) NOT NULL default '0',
+          `xend` varchar(5) NOT NULL,
+          `xlink` varchar(255) NOT NULL,
+          `pos` int(5) NOT NULL,
+          `hits` int(50) NOT NULL default '0',
+          PRIMARY KEY  (`id`)
+        ) ;");
 
-		db("INSERT INTO ".$db['sponsoren']." (`id`, `name`, `link`, `beschreibung`, `site`, `send`, `slink`, `banner`, `bend`, `blink`, `box`, `xend`, `xlink`, `pos`, `hits`)
+        db("INSERT INTO ".$db['sponsoren']." (`id`, `name`, `link`, `beschreibung`, `site`, `send`, `slink`, `banner`, `bend`, `blink`, `box`, `xend`, `xlink`, `pos`, `hits`)
 VALUES
 (1, 'DZCP', 'http://www.dzcp.de', '<p>deV!L\'z Clanportal, das CMS for Online-Clans!</p>', 0, '', '', 0, '', '', 1, 'gif', '', 7, 0),
 (2, 'DZCP Rotationsbanner', 'http://www.dzcp.de', '<p>deV!L`z Clanportal</p>', 0, '', '', 1, '', 'http://www.dzcp.de/banner/dzcp.gif', 0, '', '', 5, 0),
@@ -1395,18 +1394,18 @@ VALUES
 function update_mysql_1_5_1()
 {
   global $db;
-	  db("ALTER TABLE ".$db['serverliste']." CHANGE `clanurl` `clanurl` VARCHAR( 255 ) NOT NULL");
-		db("ALTER TABLE ".$db['settings']." ADD `double_post` INT(1) NOT NULL default '1'");
-		db("ALTER TABLE ".$db['settings']." ADD `forum_vote` INT(1) NOT NULL default '1'");
+      db("ALTER TABLE ".$db['serverliste']." CHANGE `clanurl` `clanurl` VARCHAR( 255 ) NOT NULL");
+        db("ALTER TABLE ".$db['settings']." ADD `double_post` INT(1) NOT NULL default '1'");
+        db("ALTER TABLE ".$db['settings']." ADD `forum_vote` INT(1) NOT NULL default '1'");
 }
 function update_mysql_1_5_2()
 {
   global $db;
-		db("ALTER TABLE ".$db['settings']." ADD `gb_activ` INT(1) NOT NULL default '1'");
-		db("ALTER TABLE ".$db['settings']." ADD `ts_version` INT(1) NOT NULL AFTER `ts_sport`");
-		db("UPDATE ".$db['settings']." SET `ts_version` = '3' WHERE `id` = '1'");
-		db("ALTER TABLE ".$db['news']." ADD `timeshift` INT(14) NOT NULL default '0'");
-		db("ALTER TABLE ".$db['squads']." ADD `team_show` INT(1) NOT NULL default '1'");
+        db("ALTER TABLE ".$db['settings']." ADD `gb_activ` INT(1) NOT NULL default '1'");
+        db("ALTER TABLE ".$db['settings']." ADD `ts_version` INT(1) NOT NULL AFTER `ts_sport`");
+        db("UPDATE ".$db['settings']." SET `ts_version` = '3' WHERE `id` = '1'");
+        db("ALTER TABLE ".$db['news']." ADD `timeshift` INT(14) NOT NULL default '0'");
+        db("ALTER TABLE ".$db['squads']." ADD `team_show` INT(1) NOT NULL default '1'");
 
     db("DROP TABLE IF EXISTS ".$db['navi_kats']);
     db("CREATE TABLE ".$db['navi_kats']." (
@@ -1435,30 +1434,74 @@ function update_mysql_1_5_2()
 function update_mysql_1_5_4()
 {
   global $db;
-		db("INSERT INTO ".$db['partners']." (`link`, `banner`) VALUES ('http://www.modsbar.de', 'mb_88x32.gif');");
-  	db("INSERT INTO ".$db['partners']." (`link`, `banner`) VALUES ('http://www.templatebar.de', 'tb_88x32.gif');");
+        db("INSERT INTO ".$db['partners']." (`link`, `banner`) VALUES ('http://www.modsbar.de', 'mb_88x32.gif');");
+      db("INSERT INTO ".$db['partners']." (`link`, `banner`) VALUES ('http://www.templatebar.de', 'tb_88x32.gif');");
 }
 function update_mysql_1_6()
 {
-  	global $db;
+    global $db;
     db("ALTER TABLE `".$db['f_threads']."` CHANGE `edited` `edited` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
-	db("ALTER TABLE `".$db['users']."` CHANGE `whereami` `whereami` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
-	db("ALTER TABLE `".$db['downloads']."` ADD `last_dl` INT( 20 ) NOT NULL DEFAULT '0' AFTER `date`");
+    db("ALTER TABLE `".$db['users']."` CHANGE `whereami` `whereami` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
+    db("ALTER TABLE `".$db['downloads']."` ADD `last_dl` INT( 20 ) NOT NULL DEFAULT '0' AFTER `date`");
     db("ALTER TABLE `".$db['settings']."` CHANGE `i_autor` `i_autor` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
     db("ALTER TABLE `".$db['gb']."` CHANGE `hp` `hp` VARCHAR(130) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
     db("ALTER TABLE `".$db['permissions']."` ADD `gs_showpw` INT(1) NOT NULL DEFAULT '0'");
+    db("ALTER TABLE `".$db['permissions']."` ADD `slideshow` INT(1) NOT NULL DEFAULT '0'");
+    db("ALTER TABLE `".$db['permissions']."` ADD `galleryintern` INT(1) NOT NULL DEFAULT '0'");
+    db("ALTER TABLE `".$db['permissions']."` ADD `dlintern` INT(1) NOT NULL DEFAULT '0'");
+    db("ALTER TABLE `".$db['gallery']."` ADD `intern` INT(1) NOT NULL DEFAULT '0'");
+    db("ALTER TABLE `".$db['downloads']."` ADD `intern` INT(1) NOT NULL DEFAULT '0'");
     db("ALTER TABLE `".$db['settings']."` ADD `urls_linked` INT(1) NOT NULL DEFAULT '1', ADD `ts_customicon` INT(1) NOT NULL DEFAULT '1' AFTER `ts_version`, ADD `ts_showchannel` INT(1) NOT NULL DEFAULT '0' AFTER `ts_customicon`");
     db("ALTER TABLE `".$db['msg']."` CHANGE `see_u` `see_u` INT( 1 ) NOT NULL DEFAULT '0'");
     db("ALTER TABLE `".$db['newskat']."` CHANGE `katimg` `katimg` tinytext CHARACTER SET latin1 COLLATE latin1_swedish_ci");
-	
+    db("ALTER TABLE `".$db['users']."` ADD `pkey` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `sessid`;");
+    db("ALTER TABLE `".$db['gb']."` CHANGE `editby` `editby` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
+    db("ALTER TABLE `".$db['usergb']."` CHANGE `editby` `editby` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
+    db("ALTER TABLE `".$db['newscomments']."` CHANGE `editby` `editby` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
+    db("ALTER TABLE `".$db['acomments']."` CHANGE `editby` `editby` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
+    db("ALTER TABLE `".$db['cw_comments']."` CHANGE `editby` `editby` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
+    db("ALTER TABLE `".$db['f_posts']."` CHANGE `edited` `edited` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
+    db("ALTER TABLE `".$db['gb']."` CHANGE `public` `public` INT( 1 ) NOT NULL DEFAULT '0'");
+    db("ALTER TABLE `".$db['msg']."` CHANGE `page` `page` INT( 1 ) NOT NULL DEFAULT '0'");
+    db("ALTER TABLE `".$db['settings']."` CHANGE `pagetitel` `pagetitel` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;");
+    db("ALTER TABLE `".$db['settings']."` CHANGE `clanname` `clanname` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;");
+    db("ALTER TABLE `".$db['sites']."` CHANGE `titel` `titel` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;");
+    db("ALTER TABLE `".$db['clankasse']."` CHANGE `betrag` `betrag` FlOAT(10) NOT NULL");
+    db("ALTER TABLE `".$db['users']."` CHANGE `gmaps_koord` `gmaps_koord` VARCHAR( 249 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
+    db("ALTER TABLE `".$db['permissions']."` CHANGE `pos` `pos` INT( 1 ) NOT NULL DEFAULT '0';");
+    db("ALTER TABLE `".$db['rankings']."` CHANGE `lastranking` `lastranking` INT( 10 ) NOT NULL DEFAULT '0';");
+	db("ALTER TABLE `".$db['users']."` ADD `xboxid` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
+	db("ALTER TABLE `".$db['users']."` ADD `psnid` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
+	db("ALTER TABLE `".$db['users']."` ADD `skypename` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
+	db("ALTER TABLE `".$db['users']."` ADD `originid` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
+	db("ALTER TABLE `".$db['users']."` ADD `battlenetid` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
+
     //-> Forum Sortieren
     db("ALTER TABLE ".$db['f_skats']." ADD `pos` int(5) NOT NULL");
 
     //-> Forum Sortieren funktion: schreibe id von spalte in pos feld um konflikte zu vermeiden!
     $qry = db("SELECT id FROM ".$db['f_skats']."");
-     while($get = mysql_fetch_array($qry)){
-	   $qrx .= db("UPDATE ".$db['f_skats']." SET `pos` = '".$get['id']."' WHERE `id` = '".$get['id']."'");
+     while($get = mysql_fetch_assoc($qry)){
+        db("UPDATE ".$db['f_skats']." SET `pos` = '".$get['id']."' WHERE `id` = '".$get['id']."'");
      }
-    $qry = $qrx;
+
+     //-> Slideshow
+     db("DROP TABLE IF EXISTS ".$db['slideshow']."");
+     db("CREATE TABLE ".$db['slideshow']." (
+        `id` int(5) NOT NULL auto_increment,
+        `pos` int(5) NOT NULL default '0',
+        `bez` varchar(200) NOT NULL default '',
+        `showbez` int(1) NOT NULL default '1',
+        `desc` varchar(249) NOT NULL default '',
+        `url` varchar(200) NOT NULL default '',
+        `target` int(1) NOT NULL default '0',
+        PRIMARY KEY  (`id`))");
+
+    $qry = db("SELECT id FROM ".$db['users']." WHERE level = 4");
+    if(mysql_num_rows($qry)>= 1)
+    while($get = mysql_fetch_assoc($qry)) {
+        db($sql="UPDATE ".$db['permissions']." SET slideshow = 1, gs_showpw = 1 WHERE id = '".$get['id']."'");
+        echo $sql.'<p>';
+    }
 }
 ?>

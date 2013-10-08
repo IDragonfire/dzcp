@@ -4,16 +4,18 @@
   var tickerc = 0, mTimer = new Array(), tickerTo = new Array(), tickerSpeed = new Array();
   var shoutInterval = 15000; // refresh interval of the shoutbox in ms
   var teamspeakInterval = 15000; // refresh interval of the teamspeak viewer in ms
-
-// DZCP JAVASCRIPT LIBARY
+  var isIE  = (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;
+  var isWin = (navigator.appVersion.toLowerCase().indexOf("win") != -1) ? true : false;
+  var isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;
+  
+// DZCP JAVASCRIPT LIBARY FOR JQUERY >= V1.9
   var DZCP = {
 
   //init
     init: function() {
-      doc.body.id = 'dzcp-engine-1.5';
+      doc.body.id = 'dzcp-engine-1.6';
       $('body').append('<div id="infoDiv"></div>');
       
-
     	layer = $('#infoDiv')[0];
     	doc.body.onmousemove = DZCP.trackMouse;
 
@@ -91,26 +93,29 @@
     	return true;
     },
 
-  // handle popups
+    // handle popups
     popup: function(url, x, y) {
-      url = (url.indexOf('img=') == -1) ? url : '../popup.php?' + url;
-      x = parseInt(x); y = parseInt(y) + 50;
-
-      popup = window.open(url, 'Popup', "width=1,height=1,location=0,scrollbars=0,resizable=1,status=0");
-
-      popup.resizeTo(x, y);
-      popup.moveTo((screen.width - x) / 2, (screen.height-y) / 2);
-      popup.focus();
+        x = parseInt(x); y = parseInt(y) + 50;
+        popup = window.open(url, 'Popup', "width=1,height=1,location=0,scrollbars=0,resizable=1,status=0");
+        popup.resizeTo(x, y);
+        popup.moveTo((screen.width - x) / 2, (screen.height-y) / 2);
+        popup.focus();
     },
 
   // init Gameserver via Ajax
     initGameServer: function(serverID) {
-      $(function() { $('#navGameServer_' + serverID).load('../inc/ajax.php?i=server&serverID=' + serverID); });
+		DZCP.initDynLoader("navGameServer_" + serverID,"../inc/ajax.php?i=server&serverID=" + serverID);
     },
 
   // init Teamspeakserver via Ajax
     initTeamspeakServer: function() {
-      $(function() { $('#navTeamspeakServer').load('../inc/ajax.php?i=teamspeak'); });
+		DZCP.initDynLoader("navTeamspeakServer","../inc/ajax.php?i=teamspeak");
+    },
+	
+    // init Ajax DynLoader
+    initDynLoader: function(tag,url) {
+        var request = $.ajax({ url: url, type: "GET", data: {}, cache:false, dataType: "html" });
+        request.done(function(msg) { $('#' + tag).html( msg ); });
     },
 
   // submit shoutbox
@@ -118,7 +123,7 @@
       $.post('../shout/index.php?ajax', $('#shoutForm').serialize(),function(req) {
         if(req) alert(req.replace(/  /g, ' '));
         $('#navShout').load('../inc/ajax.php?i=shoutbox');
-        if(!req) $('#shouteintrag').attr('value', '');
+        if(!req) $('#shouteintrag').prop('value', '');
       });
 
       return false;
@@ -213,21 +218,21 @@
         if($('#more' + id).css('display') == 'none')
         {
         	$('#more' + id).css('display', '');
-        	$('#img' + id).attr('src', '../inc/images/collapse.gif');
+        	$('#img' + id).prop('src', '../inc/images/collapse.gif');
         } else {
         	$('#more' + id).css('display', 'none');
-          $('#img' + id).attr('src', '../inc/images/expand.gif');
+          $('#img' + id).prop('src', '../inc/images/expand.gif');
         }
       }
     },
   // toggle with effect
   	fadetoggle: function(id) {
 		$("#more_"+id).fadeToggle("slow", "swing");
-		if($('#img_'+id).attr('alt') == "hidden") {
-			$('#img_'+id).attr({alt: 'normal',
+		if($('#img_'+id).prop('alt') == "hidden") {
+			$('#img_'+id).prop({alt: 'normal',
 								src: '../inc/images/toggle_normal.png'});
 		} else {
-			$('#img_'+id).attr({alt: 'hidden',
+			$('#img_'+id).prop({alt: 'hidden',
 								src: '../inc/images/toggle_hidden.png'});
 		}
 	},
@@ -322,7 +327,7 @@
         if(thisTag == "editorStyle" || thisTag == "editorStyleWord" || thisTag == "editorStyleNewsletter")
         {
           var inst = tinyMCE.getInstanceById(thisID);
-          $('#' + thisID).attr('value', inst.getBody().innerHTML);
+          $('#' + thisID).prop('value', inst.getBody().innerHTML);
         }
       }
 
@@ -331,7 +336,7 @@
                              + '</div>');
 
       var url = prevURL;
-      var addpars = (form == 'cwForm') ? '&s1=' + $('#screen1').attr('value') + '&s2=' + $('#screen2').attr('value') + '&s3=' + $('#screen3').attr('value') + '&s4=' + $('#screen4').attr('value') : '';
+      var addpars = (form == 'cwForm') ? '&s1=' + $('#screen1').prop('value') + '&s2=' + $('#screen2').prop('value') + '&s3=' + $('#screen3').prop('value') + '&s4=' + $('#screen4').prop('value') : '';
       $.post(url, $('#' + form).serialize() + addpars, function(req) {
         $('#previewDIV').html(req);
       });
@@ -349,7 +354,7 @@
 
   // forum search
     hideForumFirst: function() {
-      $('#allkat').attr('checked', false);
+      $('#allkat').prop('checked', false);
     },
 
     hideForumAll: function() {
@@ -366,7 +371,7 @@
     submitButton: function(id) {
       submitID = (id) ? id : 'contentSubmit';
 
-      $('#' + submitID).attr("disabled", true);
+      $('#' + submitID).prop("disabled", true);
       $('#' + submitID).css('color', '#909090');
       $('#' + submitID).css('cursor', 'default');
 
@@ -454,11 +459,5 @@
   }
 
 // load global events
-  $(document).ready(function() {
-    DZCP.init();
-  });
-// load global events
-  $(window).load(function() {
-    DZCP.resizeImages();
-  });
-
+$(document).ready(function() { DZCP.init(); });
+$(window).load(function() { DZCP.resizeImages(); });

@@ -54,7 +54,7 @@ if(_adminMenu != 'true') exit;
                          `l_clanwars`         = '".((int)$_POST['l_clanwars'])."',
                          `m_lnews`            = '".((int)$_POST['m_lnews'])."',
                          `m_lartikel`         = '".((int)$_POST['m_lartikel'])."',
-						 						 `m_events`           = '".((int)$_POST['m_events'])."',
+                         `m_events`           = '".((int)$_POST['m_events'])."',
                          `m_topdl`            = '".((int)$_POST['m_topdl'])."',
                          `m_ftopics`          = '".((int)$_POST['m_ftopics'])."',
                          `m_cwcomments`       = '".((int)$_POST['m_cwcomments'])."',
@@ -70,13 +70,13 @@ if(_adminMenu != 'true') exit;
                          `teamrow`            = '".((int)$_POST['teamrow'])."',
                          `shout_max_zeichen`  = '".((int)$_POST['zeichen'])."',
                          `maxshoutarchiv`     = '".((int)$_POST['m_shouta'])."',
-						 						 `m_away`             = '".((int)$_POST['m_away'])."',
-						 						 `direct_refresh`     = '".((int)$_POST['direct_refresh'])."',
-						 						 `cache_teamspeak`    = '".((int)$_POST['cache_teamspeak'])."',
-						 						 `cache_server`       = '".((int)$_POST['cache_server'])."',
+                                                  `m_away`             = '".((int)$_POST['m_away'])."',
+                                                  `direct_refresh`     = '".((int)$_POST['direct_refresh'])."',
+                                                  `cache_teamspeak`    = '".((int)$_POST['cache_teamspeak'])."',
+                                                  `cache_server`       = '".((int)$_POST['cache_server'])."',
                          `l_nwars`            = '".((int)$_POST['l_nwars'])."'
                      WHERE id = 1");
-  
+
           $qry = db("UPDATE ".$db['settings']."
                      SET `clanname`           = '".up($_POST['clanname'])."',
                          `pagetitel`          = '".up($_POST['pagetitel'])."',
@@ -87,7 +87,7 @@ if(_adminMenu != 'true') exit;
                          `language`           = '".$_POST['language']."',
                          `gametiger`          = '".$_POST['gametiger']."',
                          `regcode`            = '".((int)$_POST['regcode'])."',
-												 `forum_vote`         = '".((int)$_POST['forum_vote'])."',
+                                                 `forum_vote`         = '".((int)$_POST['forum_vote'])."',
                          `reg_forum`          = '".((int)$_POST['reg_forum'])."',
                          `reg_artikel`        = '".((int)$_POST['reg_artikel'])."',
                          `reg_shout`          = '".((int)$_POST['reg_shout'])."',
@@ -96,22 +96,22 @@ if(_adminMenu != 'true') exit;
                          `counter_start`      = '".((int)$_POST['counter_start'])."',
                          `reg_newscomments`   = '".((int)$_POST['reg_nc'])."',
                          `reg_dl`             = '".((int)$_POST['reg_dl'])."',
-                         `eml_reg_subj`       = '".up($_POST['eml_reg_subj'])."',
-                         `eml_pwd_subj`       = '".up($_POST['eml_pwd_subj'])."',
-                         `eml_nletter_subj`   = '".up($_POST['eml_nletter_subj'])."',
-												 `eml_pn_subj`	      = '".up($_POST['eml_pn_subj'])."',
-												 `double_post`	      = '".((int)$_POST['double_post'])."',
-												 `gb_activ`	      		= '".((int)$_POST['gb_activ'])."',
-												 `eml_fabo_npost_subj`   = '".up($_POST['eml_fabo_npost_subj'])."',
-												 `eml_fabo_tedit_subj`   = '".up($_POST['eml_fabo_tedit_subj'])."',
-												 `eml_fabo_pedit_subj`   = '".up($_POST['eml_fabo_pedit_subj'])."',
-                         `eml_reg`            = '".up($_POST['eml_reg'])."',
-                         `eml_pwd`            = '".up($_POST['eml_pwd'])."',
-                         `eml_nletter`        = '".up($_POST['eml_nletter'])."',
-												 `eml_pn`        	  = '".up($_POST['eml_pn'])."',
-												 `eml_fabo_npost`     = '".up($_POST['eml_fabo_npost'])."',
-												 `eml_fabo_tedit`     = '".up($_POST['eml_fabo_tedit'])."',
-												 `eml_fabo_pedit`     = '".up($_POST['eml_fabo_pedit'])."',
+                         `eml_reg_subj`       = '".$_POST['eml_reg_subj']."',
+                         `eml_pwd_subj`       = '".$_POST['eml_pwd_subj']."',
+                         `eml_nletter_subj`   = '".$_POST['eml_nletter_subj']."',
+                                                 `eml_pn_subj`	      = '".$_POST['eml_pn_subj']."',
+                                                 `double_post`	      = '".((int)$_POST['double_post'])."',
+                                                 `gb_activ`	      		= '".((int)$_POST['gb_activ'])."',
+                                                 `eml_fabo_npost_subj`   = '".$_POST['eml_fabo_npost_subj']."',
+                                                 `eml_fabo_tedit_subj`   = '".$_POST['eml_fabo_tedit_subj']."',
+                                                 `eml_fabo_pedit_subj`   = '".$_POST['eml_fabo_pedit_subj']."',
+                         `eml_reg`            = '".up($_POST['eml_reg'],1)."',
+                         `eml_pwd`            = '".up($_POST['eml_pwd'],1)."',
+                         `eml_nletter`        = '".up($_POST['eml_nletter'],1)."',
+                         `eml_pn`        	  = '".up($_POST['eml_pn'],1)."',
+                         `eml_fabo_npost`     = '".up($_POST['eml_fabo_npost'],1)."',
+                         `eml_fabo_tedit`     = '".up($_POST['eml_fabo_tedit'],1)."',
+                         `eml_fabo_pedit`     = '".up($_POST['eml_fabo_pedit'],1)."',
                          `mailfrom`           = '".up($_POST['mailfrom'])."',
                          `tmpdir`             = '".up($_POST['tmpdir'])."',
                          `persinfo`           = '".((int)$_POST['persinfo'])."',
@@ -121,29 +121,27 @@ if(_adminMenu != 'true') exit;
                          `balken_vote_menu`   = '".up($_POST['balken_vote_menu'])."',
                          `urls_linked`   = '".up($_POST['urls_linked'])."'
                      WHERE id = 1");
-  
+
           if(!empty($_POST['gmaps_key']))
           {
-            $qry = db("SELECT id,city,country FROM ".$db['users']."
-                       WHERE city != '' AND `gmaps_koord` = ''
-                       ORDER BY id DESC");
+            $qry = db("SELECT id,city,country FROM ".$db['users']." WHERE city != '' AND `gmaps_koord` = '' ORDER BY id DESC");
             while($get = _fetch($qry))
             {
               $cc .= 'getCord(\''.re($get['city']).'\',\''.re($get['country']).'\',\''.$get['id'].'\');'."\r\n";
             }
-            
+
             $show = '<script language="javascript" src="http://maps.google.com/maps?file=api&amp;v=2&amp;key='.$_POST['gmaps_key'].'" type="text/javascript"></script>
             <script language="javascript" type="text/javascript">
-                function getCord(city,country,id) 
+                function getCord(city,country,id)
                 {
                   var geocoder = new GClientGeocoder();
                       geocoder.setCache(null);
-                  var address = city+\', \'+country; 
-            
+                  var address = city+\', \'+country;
+
                   geocoder.getLatLng(address,
-                    function(point) 
+                    function(point)
                     {
-                      if(point) 
+                      if(point)
                       {
                         $.post(\'index.php?admin=config&do=port&id=\'+id, \'koord=\'+point);
                       }
@@ -154,7 +152,7 @@ if(_adminMenu != 'true') exit;
                 </script>
           ';
           }
-          
+
           $show .= info(_config_set, "?admin=config", 10);
         }
       } else if($_GET['do']=='port') {
@@ -165,37 +163,26 @@ if(_adminMenu != 'true') exit;
       } else {
         $qry = db("SELECT * FROM ".$db['config']."");
         $get = _fetch($qry);
-  
+
         $qrys = db("SELECT * FROM ".$db['settings']."");
         $gets = _fetch($qrys);
-  
-        $files = get_files('../inc/lang/languages/');
+
+        $files = get_files('../inc/lang/languages/',false,true,array('php'));
         for($i=0; $i<count($files); $i++)
         {
-          if($gets['language'] == $files[$i]) $sel = "selected=\"selected\"";
-          else $sel = "";
-  
-          $lng = preg_replace("#.php#", "",$files[$i]);
-  
-          $lang .= show(_select_field, array("value" => $lng,
-                                             "what" => $lng,
-                                             "sel" => $sel));
+            $lng = preg_replace("#.php#", "",$files[$i]);
+            $lang .= show(_select_field, array("value" => $lng, "what" => $lng, "sel" => $gets['language'] == $lng ? 'selected="selected"' : ''));
         }
-  
-        $tmps = get_files('../inc/_templates_/');
+
+        $tmps = get_files('../inc/_templates_/',true);
         for($i=0; $i<count($tmps); $i++)
         {
-          if($gets['tmpdir'] == $tmps[$i]) $selt = "selected=\"selected\"";
-          else $selt = "";
-  
-          $tmpldir .= show(_select_field, array("value" => $tmps[$i],
-                                                "what" => $tmps[$i],
-                                                "sel" => $selt));
+            $tmpldir .= show(_select_field, array("value" => $tmps[$i], "what" => $tmps[$i], "sel" => $gets['tmpdir'] == $tmps[$i] ? 'selected="selected"' : ''));
         }
-  
+
         if($gets['regcode'] == "1") $selyes = "selected=\"selected\"";
         else $selno = "selected=\"selected\"";
-  
+
         if($gets['reg_forum'] == 1)        $selr_forum = "selected=\"selected\"";
         if($gets['reg_newscomments'] == 1) $selr_nc = "selected=\"selected\"";
         if($gets['reg_dl'] == 1)           $selr_dl = "selected=\"selected\"";
@@ -209,12 +196,12 @@ if(_adminMenu != 'true') exit;
         if($get['allowhover'] == 1)        $selh_all = "selected=\"selected\"";
         if($get['allowhover'] == 2)        $selh_cw = "selected=\"selected\"";
         if($gets['gmaps_who'] == 1)        $sel_gm = "selected=\"selected\"";
-				if($gets['double_post'] == 1)      $sel_dp = "selected=\"selected\"";
-				if($gets['forum_vote'] == 1)       $sel_fv = "selected=\"selected\"";
-				if($gets['gb_activ'] == 1)         $sel_gba = "selected=\"selected\"";
+        if($gets['double_post'] == 1)      $sel_dp = "selected=\"selected\"";
+        if($gets['forum_vote'] == 1)       $sel_fv = "selected=\"selected\"";
+        if($gets['gb_activ'] == 1)         $sel_gba = "selected=\"selected\"";
                                 if($gets['urls_linked'] == 1)      $sel_url = "selected=\"selected\"";
         $wysiwyg = '_word';
-        
+
         $show_ = show($dir."/form_config", array("limits" => _config_c_limits,
                                                  "limits_what" => _config_c_limits_what,
                                                  "c_m_usergb" => _config_c_usergb,
@@ -230,6 +217,8 @@ if(_adminMenu != 'true') exit;
                                                  "direct_refresh_info" => _config_direct_refresh_info,
                                                  "sel_gm" => $sel_gm,
                                                  "seconds" => _seconds,
+                                                 "c_m_zeichen" => _zeichen,
+                                                 "max" => _max,
                                                  "cache_info" => _config_cache_info,
                                                  "cache_teamspeak" => $get['cache_teamspeak'],
                                                  "cache_server" => $get['cache_server'],
@@ -237,35 +226,35 @@ if(_adminMenu != 'true') exit;
                                                  "c_eml_reg_subj" => $gets['eml_reg_subj'],
                                                  "c_eml_pwd_subj" => $gets['eml_pwd_subj'],
                                                  "c_eml_nletter_subj" => $gets['eml_nletter_subj'],
-																								 "c_eml_pn_subj" => $gets['eml_pn_subj'],
-																								 "c_eml_fabo_npost_subj" => $gets['eml_fabo_npost_subj'],
-																								 "c_eml_fabo_tedit_subj" => $gets['eml_fabo_tedit_subj'],
+                                                                                                 "c_eml_pn_subj" => $gets['eml_pn_subj'],
+                                                                                                 "c_eml_fabo_npost_subj" => $gets['eml_fabo_npost_subj'],
+                                                                                                 "c_eml_fabo_tedit_subj" => $gets['eml_fabo_tedit_subj'],
                                                  "c_eml_fabo_pedit_subj" => $gets['eml_fabo_pedit_subj'],
-																								 "c_eml_reg" => txtArea($gets['eml_reg']),
+                                                                                                 "c_eml_reg" => txtArea($gets['eml_reg']),
                                                  "c_eml_pwd" => txtArea($gets['eml_pwd']),
                                                  "c_eml_nletter" => txtArea($gets['eml_nletter']),
-																								 "c_eml_pn" => txtArea($gets['eml_pn']),
-																								 "c_eml_fabo_npost" => txtArea($gets['eml_fabo_npost']),
-																								 "c_eml_fabo_tedit" => txtArea($gets['eml_fabo_tedit']),
-																								 "c_eml_fabo_pedit" => txtArea($gets['eml_fabo_pedit']),
+                                                                                                 "c_eml_pn" => txtArea($gets['eml_pn']),
+                                                                                                 "c_eml_fabo_npost" => txtArea($gets['eml_fabo_npost']),
+                                                                                                 "c_eml_fabo_tedit" => txtArea($gets['eml_fabo_tedit']),
+                                                                                                 "c_eml_fabo_pedit" => txtArea($gets['eml_fabo_pedit']),
                                                  "eml_head" => _admin_eml_head,
                                                  "eml_reg_subj" => _admin_reg_subj,
                                                  "eml_pwd_subj" => _admin_pwd_subj,
                                                  "eml_nletter_subj" => _admin_nletter_subj,
-																								 "eml_pn_subj" => _admin_pn_subj,
-																								 "eml_fabo_npost_subj" => _admin_fabo_npost_subj,
-																								 "eml_fabo_tedit_subj" => _admin_fabo_tedit_subj,
-																								 "eml_fabo_pedit_subj" => _admin_fabo_pedit_subj,
+                                                                                                 "eml_pn_subj" => _admin_pn_subj,
+                                                                                                 "eml_fabo_npost_subj" => _admin_fabo_npost_subj,
+                                                                                                 "eml_fabo_tedit_subj" => _admin_fabo_tedit_subj,
+                                                                                                 "eml_fabo_pedit_subj" => _admin_fabo_pedit_subj,
                                                  "eml_reg" => _admin_reg,
                                                  "eml_pwd" => _admin_pwd,
                                                  "gmaps_who" => _admin_gmaps_who,
                                                  "gmaps_who_mem" => _gmaps_who_mem,
                                                  "gmaps_who_all" => _gmaps_who_all,
                                                  "eml_nletter" => _admin_nletter,
-																								 "eml_pn" => _admin_pn,
-																								 "eml_fabo_npost" => _admin_fabo_npost,
-																								 "eml_fabo_tedit" => _admin_fabo_tedit,
-																								 "eml_fabo_pedit" => _admin_fabo_pedit,
+                                                                                                 "eml_pn" => _admin_pn,
+                                                                                                 "eml_fabo_npost" => _admin_fabo_npost,
+                                                                                                 "eml_fabo_tedit" => _admin_fabo_tedit,
+                                                                                                 "eml_fabo_pedit" => _admin_fabo_pedit,
                                                  "eml_info" => _admin_eml_info,
                                                  "main_info" => _main_info,
                                                  "c_m_comments" => _config_c_comments,
@@ -282,7 +271,7 @@ if(_adminMenu != 'true') exit;
                                                  "c_m_ftopics" => _config_c_ftopics,
                                                  "c_m_lwars" => _config_c_lwars,
                                                  "c_m_nwars" => _config_c_nwars,
-												 												 "c_m_events" => _config_c_events,
+                                                                                                  "c_m_events" => _config_c_events,
                                                  "c_m_gallerypics" => _config_c_gallerypics,
                                                  "c_m_upicsize" => _config_c_upicsize,
                                                  "c_m_gallery" => _config_c_gallery,
@@ -332,7 +321,7 @@ if(_adminMenu != 'true') exit;
                                                  "m_ftopics" => $get['m_ftopics'],
                                                  "m_lwars" => $get['m_lwars'],
                                                  "m_nwars" => $get['m_nwars'],
-												 												 "m_events" => $get['m_events'],
+                                                                                                  "m_events" => $get['m_events'],
                                                  "m_topdl" => $get['m_topdl'],
                                                  "m_usergb" => $get['m_usergb'],
                                                  "m_clankasse" => $get['m_clankasse'],
@@ -386,10 +375,10 @@ if(_adminMenu != 'true') exit;
                                                  "c_l_lartikel" => _config_c_lartikel,
                                                  "c_m_artikel" => _config_c_martikel,
                                                  "c_m_adminartikel" => _config_c_madminartikel,
-																								 "c_m_away" => _config_c_away,
+                                                                                                 "c_m_away" => _config_c_away,
                                                  "m_artikel" => $get['m_artikel'],
                                                  "m_adminartikel" => $get['m_adminartikel'],
-												 												 "m_away" => $get['m_away'],
+                                                                                                  "m_away" => $get['m_away'],
                                                  "wmodus" => _wartungsmodus_head,
                                                  "wmodus_info" => _wartungsmodus_info,
                                                  "c_wmodus" => $gets['wmodus'],
@@ -428,15 +417,15 @@ if(_adminMenu != 'true') exit;
                                                  "standard" => _config_hover_standard,
                                                  "all_on" => _config_hover_all,
                                                  "cw_only" => _config_hover_cw,
-																								 "fotum_vote" => _config_fotum_vote,
-																								 "fotum_vote_info" => _config_fotum_vote_info,
-																								 "double_post" => _config_double_post,
-																								 "gbactiv" => _config_gb_activ,
-																								 "gb_activ_info" => _config_gb_activ_info,
-																								 "sel_fv" => $sel_fv,
+                                                                                                 "fotum_vote" => _config_fotum_vote,
+                                                                                                 "fotum_vote_info" => _config_fotum_vote_info,
+                                                                                                 "double_post" => _config_double_post,
+                                                                                                 "gbactiv" => _config_gb_activ,
+                                                                                                 "gb_activ_info" => _config_gb_activ_info,
+                                                                                                 "sel_fv" => $sel_fv,
                                                  "sel_sl" => $sel_sl,
-																								 "sel_dp" => $sel_dp,
-																								 "sel_gba" => $sel_gba,
+                                                                                                 "sel_dp" => $sel_dp,
+                                                                                                 "sel_gba" => $sel_gba,
                                                  "selh_all" => $selh_all,
                                                  "selh_cw" => $selh_cw,
                                                  "selr_nc" => $selr_nc,
@@ -465,7 +454,7 @@ if(_adminMenu != 'true') exit;
                                                  'urls_linked' => _config_url_linked_head,
                                                  'urls_linked_info' => _urls_linked_info,
                                                  "sel_url" => $sel_url));
-  
+
         $show = show($dir."/form", array("head" => _config_global_head,
                                          "what" => "config",
                                          "value" => _button_value_config,

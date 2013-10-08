@@ -26,11 +26,19 @@ default:
     else $page = 1;
 
     $entrys = cnt($db['clankasse']);
+    if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("betrag","transaktion","datum","member"))) {
+			$sub_orderby = "";
+			if($_GET['orderby'] == "betrag") $sub_orderby = "pm ".$_GET['order'].",";
+	       $qry = db("SELECT * FROM ".$db['clankasse']."
+                       ORDER BY ".$sub_orderby.mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."
+                       LIMIT ".($page - 1)*$maxclankasse.",".$maxclankasse."");
 
-    $qry = db("SELECT * FROM ".$db['clankasse']."
-               ORDER BY datum DESC
-               LIMIT ".($page - 1)*$maxclankasse.",".$maxclankasse."");
-    while ($get = _fetch($qry))
+	}
+    else { $qry = db("SELECT * FROM ".$db['clankasse']."
+                      ORDER BY datum DESC
+                      LIMIT ".($page - 1)*$maxclankasse.",".$maxclankasse."");
+	}
+	while ($get = _fetch($qry))
     {
       $betrag = $get['betrag'];
       $betrag = str_replace(".",",",$betrag);
@@ -43,7 +51,7 @@ default:
         $pm = show(_clankasse_minus, array("betrag" => $betrag,
                                            "w" => $w));
       }
-      
+
       $edit = show("page/button_edit_single", array("id" => $get['id'],
                                                    "title" => _button_title_edit,
                                                    "action" => "action=admin&amp;do=edit"));
@@ -51,7 +59,7 @@ default:
                                                        "title" => _button_title_delete,
                                                        "action" => "action=admin&amp;do=delete",
                                                        "del" => convSpace(_confirm_del_entry)));
-      
+
       $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
 
       $show .= show($dir."/clankasse_show", array("betrag" => $pm,
@@ -90,17 +98,28 @@ default:
 
    if(permission("clankasse")) $new = _clankasse_new;
 
-   $qrys = db("SELECT tbl1.id,tbl1.nick,tbl2.user,tbl2.payed
+    if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("nick","payed"))) {
+			$qrys = db("SELECT tbl1.id,tbl1.nick,tbl2.user,tbl2.payed
+               FROM ".$db['users']." AS tbl1
+               LEFT JOIN ".$db['c_payed']." AS tbl2 ON tbl2.user = tbl1.id
+               WHERE tbl1.listck = '1'
+               OR tbl1.level = '4'
+               ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."");
+
+	}
+    else { 
+		$qrys = db("SELECT tbl1.id,tbl1.nick,tbl2.user,tbl2.payed
                FROM ".$db['users']." AS tbl1
                LEFT JOIN ".$db['c_payed']." AS tbl2 ON tbl2.user = tbl1.id
                WHERE tbl1.listck = '1'
                OR tbl1.level = '4'
                ORDER BY tbl1.nick");
+	}
     while($gets = _fetch($qrys))
     {
       if($gets['user'])
       {
-        if(paycheck($gets['payed']))
+        if($gets['payed'] >= time())
         {
           $status = show(_clankasse_status_payed, array("payed" => date("d.m.Y", $gets['payed'])));
         } elseif(date("d.m.Y", $gets['payed']) == date("d.m.Y", time())) {
@@ -132,7 +151,7 @@ default:
                                            "knr" => _clankasse_nr,
                                            "kblz" => _clankasse_blz,
                                            "kbank" => _clankasse_bank,
-										                       "kvwz" => _clankasse_vwz,
+                                           "kvwz" => _clankasse_vwz,
                                            "cfor" => _clankasse_for,
                                            "cdatum" => _datum,
                                            "ctransaktion" => _clankasse_ctransaktion,
@@ -143,6 +162,12 @@ default:
                                            "didpayed" => _clankasse_didpayed,
                                            "nick" => _nick,
                                            "status" => _clankasse_status_status,
+										   "order_nick" => orderby('nick'),
+										   "order_status" => orderby('payed'),
+										   "order_cdatum" => orderby('datum'),
+										   "order_ctransaktion" => orderby('transaktion'),
+										   "order_cfor" => orderby('member'),
+										   "order_cbetrag" => orderby('betrag'),
                                            "inhaber" => $get['k_inhaber'],
                                            "kontonr" => $get['k_nr'],
                                            "new" => $new,
@@ -150,7 +175,7 @@ default:
                                            "iban" => $get['iban'],
                                            "bic" => $get['bic'],
                                            "bank" => $get['k_bank'],
-										   "vwz" => $get['k_vwz'],
+                                           "vwz" => $get['k_vwz'],
                                            "summe" => $gesamt,
                                            "seiten" => $seiten,
                                            "beitrag" => $beitrag));
@@ -170,8 +195,8 @@ case 'admin':
       }
 
       $dropdown_date = show(_dropdown_date, array("day" => dropdown("day",date("d",time())),
-			    	                                      "month" => dropdown("month",date("m",time())),
-                                   	              "year" => dropdown("year",date("Y",time()))));
+                                                          "month" => dropdown("month",date("m",time())),
+                                                     "year" => dropdown("year",date("Y",time()))));
 
       $index = show($dir."/new", array("newhead" => _clankasse_head_new,
                                        "betrag" => _clankasse_cbetrag,
@@ -244,8 +269,8 @@ case 'admin':
       $get = _fetch($qry);
 
       $dropdown_date = show(_dropdown_date, array("day" => dropdown("day",date("d",$get['datum'])),
-			 	      	                                  "month" => dropdown("month",date("m",$get['datum'])),
-                                      	          "year" => dropdown("year",date("Y",$get['datum']))));
+                                                             "month" => dropdown("month",date("m",$get['datum'])),
+                                                    "year" => dropdown("year",date("Y",$get['datum']))));
 
       if($get['pm'] == "0") $psel = "selected=\"selected\"";
       else $msel = "selected=\"selected\"";

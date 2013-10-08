@@ -2,13 +2,74 @@
 $charset = 'iso-8859-1';
 header("Content-type: text/html; charset=".$charset);
 
-## ADDED / REDEFINED FOR 1.5 Final
-define('_id_dont_exist', 'Die von dir angegebene ID existiert nicht!');
-define('_perm_editts', 'Teamspeak Server verwalten');
+## ADDED / REDEFINED FOR 1.6 Final
+define(_txt_navi_main, 'Hauptnavigation');
+define(_txt_navi_clan, 'Clannavigation');
+define(_txt_navi_server, 'Servernavigation');
+define(_txt_navi_misc, 'Sonstiges');
+define(_txt_userarea, 'Benutzerbereich');
+define(_txt_vote, 'Umfragen');
+define(_txt_partners, 'Partner');
+define(_txt_sponsors, 'Sponsoren');
+define(_txt_counter, 'Statistik');
+define(_txt_l_news, 'Neuigkeiten');
+define(_txt_ftopics, 'Foreneintr&auml;ge');
+define(_txt_l_wars, 'Letzte Wars');
+define(_txt_n_wars, 'n&auml;chste Wars');
+define(_txt_teams, 'Teams');
+define(_txt_gallerie, 'Unsere Gallerien');
+define(_txt_top_match, 'Top Match');
+define(_txt_shout, 'Shoutbox');
+define(_txt_template_switch, 'Design &auml;ndern');
+define(_txt_events, 'Termine');
+define(_txt_kalender, 'Kalender');
+define(_txt_l_artikel, 'Artikel');
+define(_txt_l_reg, 'neue User');
+define(_txt_motm, 'Member of the Moment');
+define(_txt_random_gallery, 'zuf&auml;lliges Galleriebild');
+define(_txt_server, 'Server');
+define(_txt_teamspeak, 'Teamspeak');
+define(_txt_top_dl, 'Top Downloads');
+define(_txt_uotm, 'User of the Moment');
+
+define(_gal_pics, 'Bilder in Gallerie');
+define(_config_slideshow, 'Slideshow');
+define(_perm_slideshow, 'Slideshow-Bilder verwalten');
+define(_slider, 'Slideshow');
+define(_slider_admin_add, 'Neues Slideshowbild hinzuf&uuml;gen');
+define(_slider_admin_add_done, 'Das Slideshowbild wurde erfolgreich eingef&uuml;gt');
+define(_slider_admin_del, 'Soll das Slideshowbild wirklich gel&ouml;scht werden');
+define(_slider_admin_del_done, 'Das Slideshowbild wurde erfolgreich gel&ouml;scht');
+define(_slider_admin_edit, 'Slideshowbild editieren');
+define(_slider_admin_edit_done, 'Die &Auml;nderungen wurden erfolgreich &uuml;bernommen!');
+define(_slider_admin_error_empty_bezeichnung, 'Du musst eine Bezeichnung eingeben');
+define(_slider_admin_error_empty_url, 'Du musst einen Link hinterlegen');
+define(_slider_admin_error_nopic, 'Du musst ein Bild hochladen');
+define(_slider_bezeichnung, 'Bezeichnung');
+define(_slider_new_window, 'Neues Fenster?');
+define(_slider_pic, 'Bild');
+define(_slider_desc, 'Beschreibung');
+define(_slider_position, 'Position');
+define(_slider_position_first, 'als erstes');
+define(_slider_position_lazy, '<option value="lazy">- nicht &auml;ndern -</option>');
+define(_slider_url, 'URL');
+define(_slider_show_title, 'Title anzeigen');
+
+define(_news_userimage, 'Eigenes Newsbild');
+define(_newspic_del, 'Newsbild l&ouml;schen?');
+define(_newspic_deleted, 'Newsbild erfolgreich gel&ouml;scht');
+define('_max', 'max.');
+
+define('_perm_galleryintern','Interne Gallery einsehen');
+define('_perm_dlintern','Interne Download einsehen');
+
 define('_config_url_linked_head', 'URLs verlinken');
 define('_ts_settings_customicon', 'Eigene Icons runterladen');
 define('_ts_settings_showchannels', 'Nur Channels mit Usern anzeigen');
 define('_ts_settings_showchannels_desc', 'Wenn dies eingeschaltet ist werden nur Channels angezeigt in denen auch User sind.');
+## ADDED / REDEFINED FOR 1.5 Final
+define('_id_dont_exist', 'Die von dir angegebene ID existiert nicht!');
+define('_perm_editts', 'Teamspeak Server verwalten');
 
 ## ADDED / REDEFINED FOR 1.5.2
 define('_button_title_del_account', 'User-Account l&ouml;schen');
@@ -201,7 +262,7 @@ define('_msg_sendnews_user', '
       <input type="hidden" name="action" value="msg" />
       <input type="hidden" name="do" value="sendnewsdone" />
       <input type="hidden" name="id" value="[id]" />
-	  <input type="hidden" name="datum" value="[datum]" />
+      <input type="hidden" name="datum" value="[datum]" />
       <input id="contentSubmit" type="submit" class="submit" value="Best&auml;tigen" />
     </form>
   </td>
@@ -1379,7 +1440,7 @@ define('_user_delete_verify', '
 <tr>
   <td class="contentMainFirst" align="center">
     Bist du dir sicher das du den User [user] l&ouml;schen willst?<br />
-    <span class="fontUnder">Alle</span> Aktivit&auml;ten dieses Users auf dieser Seite werden damit gel&ouml;scht!<br /><br /> 
+    <span class="fontUnder">Alle</span> Aktivit&auml;ten dieses Users auf dieser Seite werden damit gel&ouml;scht!<br /><br />
     <a href="?action=admin&amp;do=delete&verify=yes&amp;id=[id]">Ja, l&ouml;schen!</a>
   </td>
 </tr>');
@@ -1549,11 +1610,11 @@ Gestaltung, die Inhalte oder die Urheberschaft der verlinkten/verkn&uuml;pften S
 <br /><h2><span class="fontBold">3. Urheber- und Kennzeichenrecht</span></h2>
 <br />
 Der Autor ist bestrebt, in allen Publikationen die Urheberrechte der verwendeten Bilder, Grafiken, Tondokumente, Videosequenzen und Texte
-zu beachten, von ihm selbst erstellte Bilder, Grafiken, Tondokumente, Videosequenzen und Texte zu nutzen oder auf lizenzfreie Grafiken, Tondokumente, Videosequenzen und Texte zur&uuml;ckzugreifen. 
+zu beachten, von ihm selbst erstellte Bilder, Grafiken, Tondokumente, Videosequenzen und Texte zu nutzen oder auf lizenzfreie Grafiken, Tondokumente, Videosequenzen und Texte zur&uuml;ckzugreifen.
 <br />
 Alle innerhalb des Internetangebotes genannten und ggf. durch Dritte gesch&uuml;tzten Marken- und Warenzeichen unterliegen uneingeschr&auml;nkt den Bestimmungen des jeweils g&uuml;ltigen Kennzeichenrechts und den Besitzrechten der jeweiligen eingetragenen Eigent&uuml;mer. Allein aufgrund der blo&szlig;en Nennung ist nicht der Schluss zu ziehen, dass Markenzeichen nicht durch Rechte Dritter gesch&uuml;tzt sind!
 <br />
-Das Copyright f&uuml;r ver&ouml;ffentlichte, vom Autor selbst erstellte Objekte bleibt allein beim Autor der Seiten. 
+Das Copyright f&uuml;r ver&ouml;ffentlichte, vom Autor selbst erstellte Objekte bleibt allein beim Autor der Seiten.
 Eine Vervielf&auml;ltigung oder Verwendung solcher Grafiken, Tondokumente, Videosequenzen und Texte in anderen elektronischen oder gedruckten Publikationen ist ohne ausdr&uuml;ckliche Zustimmung des Autors nicht gestattet.
 <br />
 <br /><h2><span class="fontBold">4. Datenschutz</span></h2>
@@ -2049,6 +2110,18 @@ define('_legende', 'Legende');
 define('_hlswid', 'XFire Name');
 define('_hlswstatus', 'XFire');
 define('_steamid', 'Steam-ID');
+define(_xboxid, 'Xbox Live');
+define(_xboxstatus, 'Xbox Live');
+define(_xboxuserpic, 'Xbox Live Avatar:');
+define(_psnid, 'Playstation Network');
+define(_psnstatus, 'Playstation Network');
+define(_skypeid, 'Skype Name');
+define(_skypestatus, 'Skype');
+define(_originid, 'Origin');
+define(_originstatus, 'Origin');
+define(_battlenetid, 'Battlenet');
+define(_battlenetstatus, 'Battlenet');
+define(_steamicon,  '<img src="../inc/images/steam.gif" alt="" class="icon" onmouseover="DZCP.showInfo(\'<tr><td><img src=../steamprofile/spimage.php?id=[steamid] alt= /></td></tr>\')" onmouseout="DZCP.hideInfo()" />');			
 define('_link', 'Link');
 define('_linkname', 'Linkname');
 define('_url', 'URL');

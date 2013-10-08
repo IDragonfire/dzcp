@@ -24,9 +24,18 @@ $where = $where.' - '._away_list;
  	if(isset($_GET['page'])) $page = $_GET['page'];
 	else $page = 1;
 	$entrys = cnt($db['away']);
-    $qry = db("SELECT * FROM ".$db['away']." 
+    if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("userid","start","end"))) {
+	$tmp_orderby = $_GET['orderby'];
+	if($_GET['orderby'] == "start") $_GET['orderby'] = "start ".$_GET['order'].", end";
+	$qry = db("SELECT * FROM ".$db['away']." 
+               ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."
+               LIMIT ".($page - 1)*$maxaway.",".$maxaway."");
+	$_GET['orderby'] = $tmp_orderby; 
+	}
+	else {$qry = db("SELECT * FROM ".$db['away']." 
 			   ORDER BY id DESC 
 			   LIMIT ".($page - 1)*$maxaway.",".$maxaway."");
+	}
     while($get = _fetch($qry)) 
 	{
       if($get['start'] > time()) $status = _away_status_new;
@@ -66,16 +75,23 @@ $where = $where.' - '._away_list;
 										    "nick"=>autor($get['userid']),
 										    "details"=>$info));
       }
-      if(!$show) $show = _away_no_entry;
+     
+	  if(!$show) $show = _away_no_entry;
+      $orderby = empty($_GET['orderby']) ? "" : "?orderby".$_GET['orderby'];
+      $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
+      $nav= nav($entrys,$maxaway,"?".$_GET['show']."".$orderby);
 
-	  $nav = nav($entrys,$maxaway,"?");
       $index = show($dir."/away", array("head" => _away_head,
 	  								    "show" => $show,
                                         "user" => _user,
 										"titel" => _banned_reason,
 										"from" => _from,
 										"to" => _away_to,
-										"status" => _status,	
+										"status" => _status,
+										"order_user" => orderby('userid'),
+										"order_status" => orderby('end'),	
+										"order_from" => orderby('start'),
+										"order_to" => orderby('end'),
 										"submit" => _button_value_addto,									
 										"nav" => $nav));
   }

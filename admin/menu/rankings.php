@@ -105,11 +105,19 @@ if(_adminMenu != 'true') exit;
 
         $show = info(_ranking_deleted, "?admin=rankings");
       } else {
-      $qry = db("SELECT s1.*,s2.name,s2.id AS sqid FROM ".$db['rankings']." AS s1
-                 LEFT JOIN ".$db['squads']." AS s2
-                 ON s1.squad = s2.id
-                 ORDER BY s1.postdate DESC");
-        while($get = _fetch($qry))
+		if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("name","league"))) {
+	    $qry = db("SELECT s1.*,s2.name,s2.id AS sqid FROM ".$db['rankings']." AS s1
+                   LEFT JOIN ".$db['squads']." AS s2
+                   ON s1.squad = s2.id
+                   ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."");
+	   }
+
+       else{$qry = db("SELECT s1.*,s2.name,s2.id AS sqid FROM ".$db['rankings']." AS s1
+                       LEFT JOIN ".$db['squads']." AS s2
+                       ON s1.squad = s2.id
+                       ORDER BY s1.postdate DESC");
+	   }
+		while($get = _fetch($qry))
         {
           $edit = show("page/button_edit_single", array("id" => $get['id'],
                                                         "action" => "admin=rankings&amp;do=edit",
@@ -133,6 +141,8 @@ if(_adminMenu != 'true') exit;
                                              "league" => _cw_head_liga,
                                              "squad" => _cw_head_squad,
                                              "show" => $show_,
+											 "order_squad" => orderby('name'),
+											 "order_league" => orderby('league'),
                                              "add" => _rankings_add_head
                                              ));
       }
