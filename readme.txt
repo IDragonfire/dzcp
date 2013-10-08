@@ -44,10 +44,12 @@ Update von 1.5.3 zu 1.6
         -Template version1.6 inkl. erweiterte Platzhalter für die Boxen (Boxentitel werden beim ändern der Sprache mit übersetzt)
         -Platzhalter [where] für die Ausgabe des Seitentitels innerhalb des Templates hinzugefügt
         -Dynamische Platzhalter [lang_xxxx] für die Ausgabe des beliebiger Definitionen aus der language file innerhalb des Templates hinzugefügt
-		-Slideshow wurde hinzugefügt Platzhalter [slideshow] (wurde ins Template Version 1.5 in der index.html nicht mit übernommen)
+	-Slideshow wurde hinzugefügt Platzhalter [slideshow] (wurde ins Template Version 1.5 in der index.html nicht mit übernommen)
         -Eigenes Newsbild kann als Alternative zum Kat.-Banner beim erstellen der News mit angegeben werden
         -Interne Galerie und Downloads
         -in mehrere Bereiche lassen sich die Inhalte Ordnen
+        -Xfire würde in der Userlist durch Steam ersetzt und Skype hinzugefügt
+        -Profil wurde um folgende Kontakte erweiter: Steam (Thanks an Nitro), Skype, Xbox Live, Playstation Network, Origin, Battlenet
 
 
         Bugfixes
@@ -121,8 +123,8 @@ Update von 1.5.3 zu 1.6
 
         Thanks
 	=======
-        Wir bedanken uns bei alle die an der Fertigstellung der v1.6 mitgearbeitet haben.
+        Wir bedanken uns bei allen die an der Fertigstellung der v1.6 mitgearbeitet haben.
         
-        Dragonfire, Godkiller_NT (Hammermaps.de), xDGeForcexD, hypernate, Koma, Lord Alpha (esport Design),  makke,
-        acecom, Sk!ller
+        Dragonfire, Godkiller_NT (Master Bee), xDGeForcexD, Hypernate, Koma, Lord Alpha (esport Design),  Makke,
+        Acecom, Sk!ller
         
