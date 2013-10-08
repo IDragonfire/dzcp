@@ -22,9 +22,9 @@ if(_adminMenu != 'true') exit;
                                                           "action" => "admin=server&amp;do=delete",
                                                           "title" => _button_title_del,
                                                           "del" => convSpace(_confirm_del_server)));
-                                                          
+
         $mapdl = '<a href="?admin=server&amp;do=mapdl&amp;id='.re($get['id']).'" onclick="return(DZCP.del(\''._mapdl_download.'\'))"><img src="../inc/images/download.gif" alt="" /></a>';
-                                                          
+
         $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
 
         if($get['navi'] == "0") $menu = show(_server_menu_icon_yes, array("id" => $get['id']));
@@ -84,18 +84,18 @@ if(_adminMenu != 'true') exit;
 
       if($_GET['do'] == "ts")
       {
-		switch (((int)$_POST['ts_version'])) {
+        switch (((int)$_POST['ts_version'])) {
         case "3": //TS3
-        	$tsport = 9987;
+            $tsport = 9987;
             $tsqport = 10011;
         break;
         default: //TS2
-        	$tsport = 8767;
-        	$tsqport = 51234;
+            $tsport = 8767;
+            $tsqport = 51234;
         break;
         }
-		$tsport = empty($_POST['ts_port']) ? $tsport : $_POST['ts_port'];
-		$tsqport = empty($_POST['ts_sport']) ? $tsqport : $_POST['ts_sport'];
+        $tsport = empty($_POST['ts_port']) ? $tsport : $_POST['ts_port'];
+        $tsqport = empty($_POST['ts_sport']) ? $tsqport : $_POST['ts_sport'];
         $qry = db("UPDATE ".$db['settings']."
                    SET `ts_port`    	= '".((int)$tsport)."',
                        `ts_sport`  		= '".((int)$tsqport)."',
@@ -137,7 +137,7 @@ if(_adminMenu != 'true') exit;
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
 
-        $files = get_files('../inc/images/gameicons/');
+        $files = get_files('../inc/images/gameicons/',false,true);
         for($i=0; $i<count($files); $i++)
         {
           if($files[$i] == $get['game']) $sel = "selected=\"selected\"";
@@ -219,7 +219,7 @@ if(_adminMenu != 'true') exit;
         $show = info(_server_admin_deleted, "?admin=server");
 
       } elseif($_GET['do'] == "new") {
-        $files = get_files('../inc/images/gameicons/');
+        $files = get_files('../inc/images/gameicons/',false,true);
         for($i=0; $i<count($files); $i++)
         {
           if(preg_match("=\.gif|.jpg|.png=Uis",$files[$i])!=FALSE)

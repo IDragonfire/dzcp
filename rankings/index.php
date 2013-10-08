@@ -16,11 +16,19 @@ else $action = $_GET['action'];
 
 switch ($action):
 default:
-  $qry = db("SELECT s1.id,s1.lastranking,s1.rank,s1.squad,s1.league,s1.url,s2.name
+   if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("name","rank","league"))) {
+	      $qry = db("SELECT s1.id,s1.lastranking,s1.rank,s1.squad,s1.league,s1.url,s2.name
+             FROM ".$db['rankings']." AS s1
+             LEFT JOIN ".$db['squads']." AS s2
+             ON s1.squad = s2.id
+             ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."");
+   }
+   else { $qry = db("SELECT s1.id,s1.lastranking,s1.rank,s1.squad,s1.league,s1.url,s2.name
              FROM ".$db['rankings']." AS s1
              LEFT JOIN ".$db['squads']." AS s2
              ON s1.squad = s2.id
              ORDER BY s1.postdate DESC");
+  }
   if(_rows($qry))
   {
     while($get = _fetch($qry))
@@ -42,6 +50,9 @@ default:
                                           "show" => $show,
                                           "squad" => _rankings_squad,
                                           "place" => _rankings_place,
+										  "order_squad" => orderby('name'),
+										  "order_place" => orderby('rank'),
+										  "order_league" => orderby('league'),
                                           "league" => _rankings_league));
 break;
 endswitch;

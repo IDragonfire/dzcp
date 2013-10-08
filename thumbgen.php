@@ -1,30 +1,47 @@
 <?php
-  $size   = getimagesize($_GET['img']); 
-  $breite = $size[0]; 
-  $hoehe  = $size[1]; 
+ob_start();
+	define('basePath', dirname(__FILE__));
 
-  $neueBreite = empty($_GET['width']) ? 100 : intval($_GET['width']); 
-  $neueHoehe = intval($hoehe*$neueBreite/$breite); 
+    if(!isset($_GET['img']) || empty($_GET['img']) || !extension_loaded('gd'))
+        die('"gd" extension not loaded or "img" is empty');
 
-  $neuesBild = imagecreatetruecolor($neueBreite,$neueHoehe); 
-  if($size[2] == 1) 
-  { 
-    header("Content-Type: image/gif");
-    $altesBild = imagecreatefromgif($_GET['img']); 
-    imagecopyresampled($neuesBild,$altesBild,0,0,0,0,$neueBreite,$neueHoehe,$breite,$hoehe); 
-    imagegif($neuesBild); 
-  } elseif($size[2] == 2) { 
-    header("Content-Type: image/jpeg");
-    $altesBild = imagecreatefromjpeg($_GET['img']); 
-    imagecopyresampled($neuesBild,$altesBild,0,0,0,0,$neueBreite,$neueHoehe,$breite,$hoehe); 
-    imagejpeg($neuesBild, '', 100); 
-  } elseif($size[2] == 3) {
-    header("Content-Type: image/png");
-    $altesBild = imagecreatefrompng($_GET['img']); 
-    imagecopyresampled($neuesBild,$altesBild,0,0,0,0,$neueBreite,$neueHoehe,$breite,$hoehe); 
-    imagepng($neuesBild); 
-  }
+    if(!file_exists(basePath.'/'.$_GET['img']))
+        die('"'.basePath.'/'.$_GET['img'].'" file is not exists');
+
+	$size   = getimagesize(basePath.'/'.$_GET['img']); 
+	$breite = $size[0];
+	$hoehe  = $size[1]; 
+
+	$neueBreite = empty($_GET['width']) ? 100 : intval($_GET['width']); 
+	$neueHoehe = intval($hoehe*$neueBreite/$breite);
+
+	$neuesBild = imagecreatetruecolor($neueBreite,$neueHoehe); 
+	switch($size[2])
+	{
+		case 1: ## GIF ##
+			header("Content-Type: image/gif");
+			$altesBild = imagecreatefromgif(basePath.'/'.$_GET['img']);
+			imagecopyresampled($neuesBild, $altesBild,0,0,0,0, $neueBreite, $neueHoehe, $breite, $hoehe);
+			imagegif($neuesBild);
+		break;
+		default:
+		case 2: ## JPEG ##
+			header("Content-Type: image/jpeg");
+			$altesBild = imagecreatefromjpeg(basePath.'/'.$_GET['img']);
+			imagecopyresampled($neuesBild, $altesBild,0,0,0,0, $neueBreite, $neueHoehe, $breite, $hoehe);
+			imagejpeg($neuesBild, null, 100);
+		break;
+		case 3: ## PNG ##
+			header("Content-Type: image/png");
+			$altesBild = imagecreatefrompng(basePath.'/'.$_GET['img']);
+			imagecopyresampled($neuesBild, $altesBild,0,0,0,0, $neueBreite, $neueHoehe, $breite, $hoehe);
+			imagepng($neuesBild);
+		break;
+    }
   
-  @imagedestroy($altesBild);
-  @imagedestroy($neuesBild);
-?>
+	if(is_resource($altesBild))
+		imagedestroy($altesBild);
+
+	if(is_resource($neuesBild))
+		imagedestroy($neuesBild);
+ob_end_flush();

@@ -3,7 +3,7 @@
     <script language="javascript" type="text/javascript">
       var prevURL = '../news/?action=preview';
     </script>
-    <form id="newsForm" name="newsForm" action="?admin=newsadmin&amp;do=[do]" method="post" onsubmit="return(DZCP.submitButton())">
+    <form enctype="multipart/form-data" id="newsForm" name="newsForm" action="?admin=newsadmin&amp;do=[do]" method="post" onsubmit="return(DZCP.submitButton())">
       <table class="hperc" cellspacing="1">
         <tr>
           <td class="contentHead" colspan="2" align="center"><span class="fontBold">[head]</span></td>
@@ -19,6 +19,13 @@
             <select name="kat" class="dropdown">
               [kat]
             </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="contentMainTop"><span class="fontBold">[nimage]:</span></td>
+          <td class="contentMainFirst" align="center">
+            [n_newspic][delnewspic]
+      	 	<input type="file" name="newspic">
           </td>
         </tr>
         <tr>

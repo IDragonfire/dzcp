@@ -2,15 +2,76 @@
 $charset = 'iso-8859-1';
 header("Content-type: text/html; charset=".$charset);
 
+
+## ADDED / REDEFINED FOR 1.6 Final
+define(_txt_navi_main, 'Main Navigation');
+define(_txt_navi_clan, 'Clan Navigation');
+define(_txt_navi_server, 'Server Navigation');
+define(_txt_navi_misc, 'Misc Navigation');
+define(_txt_userarea, 'Userarea');
+define(_txt_vote, 'Vote');
+define(_txt_partners, 'Partners');
+define(_txt_sponsors, 'Sponsors');
+define(_txt_counter, 'Counter');
+define(_txt_l_news, 'News');
+define(_txt_ftopics, 'Topics');
+define(_txt_l_wars, 'Last Wars');
+define(_txt_n_wars, 'Next Wars');
+define(_txt_teams, 'Teams');
+define(_txt_gallerie, 'Our Gallerys');
+define(_txt_top_match, 'Top Match');
+define(_txt_shout, 'Shoutbox');
+define(_txt_template_switch, 'Switch Template');
+define(_txt_events, 'Events');
+define(_txt_kalender, 'Calendar');
+define(_txt_l_artikel, 'Articles');
+define(_txt_l_reg, 'new Users');
+define(_txt_motm, 'Member of the Moment');
+define(_txt_random_gallery, 'random Gallerypic');
+define(_txt_server, 'Server');
+define(_txt_teamspeak, 'Teamspeak');
+define(_txt_top_dl, 'Top Downloads');
+define(_txt_uotm, 'User of the Moment');
+
+define(_gal_pics, 'Pics in Gallery');
+define(_config_slideshow, 'Slideshow');
+define(_perm_slideshow, 'Manage Slideshow Pics');
+define(_slider, 'Slideshow');
+define(_slider_admin_add, 'Add new Slideshowpicture');
+define(_slider_admin_add_done, 'Slideshowpicture successfully added');
+define(_slider_admin_del, 'Realy Delete this Slideshowpicture?');
+define(_slider_admin_del_done, 'Slideshowpicture successfully deleted');
+define(_slider_admin_edit, 'edit Slideshowpicture');
+define(_slider_admin_edit_done, 'Slideshowpicture successfully edited!');
+define(_slider_admin_error_empty_bezeichnung, 'you have to enter a title');
+define(_slider_admin_error_empty_url, 'you have to enter a link');
+define(_slider_admin_error_nopic, 'You have to upload a picture');
+define(_slider_bezeichnung, 'Title');
+define(_slider_new_window, 'new Window?');
+define(_slider_pic, 'Picture');
+define(_slider_desc, 'Description');
+define(_slider_position, 'Position');
+define(_slider_position_first, 'first');
+define(_slider_position_lazy, '<option value="lazy">- no change -</option>');
+define(_slider_url, 'URL');
+define(_slider_show_title, 'Show title');
+define(_news_userimage, 'Own Newspicture');
+define(_newspic_del, 'delete Newspicture?');
+define(_newspic_deleted, 'Newspicture deleted successfully');
+define('_max', 'max.');
+
+define('_perm_galleryintern','View internal Gallery');
+define('_perm_dlintern','View internal Downloads');
+
+define('_config_url_linked_head', "URLs linking");
+define('_ts_settings_customicon', 'custom icons downloading');
+define('_ts_settings_showchannels', 'Only show channels with user');
+define('_ts_settings_showchannels_desc', 'If this is on, they will only show channels there are users.');
 ## ADDED / REDEFINED FOR 1.5 Final
 define('_side_membermap', 'Membermap');
 define('_id_dont_exist', 'The requested ID does not exist!');
 define('_perm_editts', 'manage teamspeak server');
 define('_perm_receivecws', 'receive fight us form');
-define('_config_url_linked_head', "URLs linking");
-define('_ts_settings_customicon', 'custom icons downloading');
-define('_ts_settings_showchannels', 'Only show channels with user');
-define('_ts_settings_showchannels_desc', 'If this is on, they will only show channels there are users.');
 
 ## ADDED / REDEFINED FOR 1.5.2
 define('_button_title_del_account' , 'User-Account delete');
@@ -203,14 +264,14 @@ define('_msg_sendnews_user' , '
       <input type="hidden" name="action" value="msg" />
       <input type="hidden" name="do" value="sendnewsdone" />
       <input type="hidden" name="id" value="[id]" />
-	  <input type="hidden" name="datum" value="[datum]" />
+      <input type="hidden" name="datum" value="[datum]" />
       <input id="contentSubmit" type="submit" class="submit" value="Submit" />
     </form>
   </td>
 </tr>');
 define('_msg_sendnews_done' , '
 <tr>
-  <td align="center" class="contentMainTop"><span class="fontRed">	
+  <td align="center" class="contentMainTop"><span class="fontRed">
 This news is / was made from the [user] edited!!!</span></td>
 </tr>');
 define('_send_news_done' , 'Thank you for your news!');
@@ -523,7 +584,7 @@ define('_welcome_guest' , ' <img src="../inc/images/flaggen/nocountry.gif" alt="
 define('_online_head' , 'User online');
 define('_online_whereami' , 'Area');
 define('_back' , '<a href="javascript: history.go(-1)" class="files">back</a>');
-define('_contact_text_fightus' , '	
+define('_contact_text_fightus' , '
 Someone filled out the fightus contactform!<br />
 Each clanwar admin received this message!<br /><br />
 <span class="fontBold">Team:</span> [squad]<br /><br />
@@ -1386,7 +1447,7 @@ define('_user_delete_verify' , '
 <tr>
   <td class="contentMainFirst" align="center">
     Are you sure to delete the user [user]?<br />
-    <span class="fontUnder">Every</span> activities from this user will be deleted, too!<br /><br /> 
+    <span class="fontUnder">Every</span> activities from this user will be deleted, too!<br /><br />
     <a href="?action=admin&amp;do=delete&verify=yes&amp;id=[id]">Yes, delete [user]!</a>
   </td>
 </tr>');
@@ -1544,7 +1605,7 @@ or partly or completely deleted by the author without separate announcement.
 <br /><br />
 <h2><span class="fontBold">2. Referrals and links</span></h2>
 <br />
-The author is not responsible for any contents linked or referred to from his pages - unless he has full knowledge of illegal contents and would be able to prevent the visitors of his site fromviewing those pages. 
+The author is not responsible for any contents linked or referred to from his pages - unless he has full knowledge of illegal contents and would be able to prevent the visitors of his site fromviewing those pages.
 If any damage occurs by the use of information presented there, only the author of the respective pages might be liable, not the one who has linked to these pages. Furthermore the author is not liable for any postings or messages published by users of discussion boards, guestbooks or mailinglists provided on his page.
 <br /><br />
 <h2><span class="fontBold">3. Copyright</span></h2>
@@ -1552,7 +1613,7 @@ If any damage occurs by the use of information presented there, only the author 
 The author intended not to use any copyrighted material for the publication or, if not possible, to indicate the copyright of the respective object.
 <br />
 The copyright for any material created by the author is reserved. Any duplication or use of objects such as images, diagrams, sounds or texts in other
-electronic or printed publications is not permitted without the author\'s agreement. 
+electronic or printed publications is not permitted without the author\'s agreement.
 <br /><br />
 <h2><span class="fontBold">4. Privacy policy<</span></h2>
 <br />
@@ -1663,7 +1724,7 @@ define('_dl_admin_added' , 'The download category was successfully registered!')
 define('_dl_admin_deleted' , 'The download category was successfully deleted!');
 define('_dl_edit_head' , 'Edit download category');
 define('_dl_admin_edited' , 'The download category was successfully edited!');
-define('_config_global_head' , 'Configurationn');
+define('_config_global_head' , 'Configuration');
 define('_config_c_limits' , 'Limits');
 define('_config_c_limits_what' , 'Here you can adjust the amount of entrys which will be maximum shown');
 define('_config_c_usergb' , 'User guestbook');
@@ -2032,6 +2093,18 @@ define('_legende' , 'Legend');
 define('_hlswid' , 'XFire Name');
 define('_hlswstatus' , 'XFire');
 define('_steamid' , 'Steam-ID');
+define(_xboxid, 'Xbox Live');
+define(_xboxstatus, 'Xbox Live');
+define(_xboxuserpic, 'Xbox Live Avatar:');
+define(_psnid, 'Playstation Network');
+define(_psnstatus, 'Playstation Network');
+define(_skypeid, 'Skype Name');
+define(_skypestatus, 'Skype');
+define(_originid, 'Origin');
+define(_originstatus, 'Origin');
+define(_battlenetid, 'Battlenet');
+define(_battlenetstatus, 'Battlenet');
+define(_steamicon,  '<img src="../inc/images/steam.gif" alt="" class="icon" onmouseover="DZCP.showInfo(\'<tr><td><img src=../steamprofile/spimage.php?id=[steamid] alt= /></td></tr>\')" onmouseout="DZCP.hideInfo()" />');			
 define('_link' , 'Link');
 define('_linkname' , 'Linkname');
 define('_url' , 'URL');
