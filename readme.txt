@@ -13,7 +13,8 @@ Folge hier den Anweisungen, die dich durch die Installationsroutine begleiten.
 
 Anschließend bitte unbedingt den Ordner _installer/ vom webspace löschen.
 
-Update von 1.5.3 zu 1.6
+
+Update von 1.5.5.4 zu 1.6
 =============================
 
 	1. Info's
@@ -49,62 +50,63 @@ Update von 1.5.3 zu 1.6
         -Interne Galerie und Downloads
         -in mehrere Bereiche lassen sich die Inhalte Ordnen
         -Xfire würde in der Userlist durch Steam ersetzt und Skype hinzugefügt
-        -Profil wurde um folgende Kontakte erweiter: Steam (Thanks an Nitro), Skype, Xbox Live, Playstation Network, Origin, Battlenet
+        -Profil wurde um folgende Kontakte erweiter: Steam (Thanks Nitro), Skype, Xbox Live, Playstation Network, Origin, Battlenet
 
 
         Bugfixes
         --------
        
-       -unveröffentlichte Artikel kann man nicht ansehen #2 
-       -highlight in der Forum Suche wird nicht ressetet #5
-       -Man kann als Gast / unregistrierter User Kommentare abgeben #7 #23 #30
-       -Serverviewer für MOHAA, SH und BT Fix #8
-       -Loginname / Username mit Sonderzeichen nicht möglich #9
-       -Datum letzter Download wird nicht richtig aktualisiert #13
-       -gelöschte Forenposts werden nicht zurückgerechnet #14
-       -Nachtragsfunktion wird nicht in der Userlobby angezeigt #15
-       -JoinUs Benachrichtigung fehlerhaft #18
-       -Galerie Bilder wurden nicht richtig verkleinert und waren zu groß #32
-       -additional languages werden vor additional functions geladen #33
-       -Glossarwörter zerreißen Text (aus Interesse wird z.b. INT eresse) #34
-       -Newsletter interne Links werden nicht richtig kodiert #36
-       -Bug beim Ajax Vote
-       -Nick in der Shoutbox wird nicht gekürzt #55
-       -Gästebuch Homepage-Links werden gekürzt #57
-       -Großgeschriebener bbcode ohne Funktion #58
-       -Bilder wurden nicht immer verkleinert (auto resized) #60
-       -Server Passwort war sichtbar #53 #61 #62
-       -FightUs Benachrichtigung fehlerhaft #63
-       -interne Votes werden public nach einer Editierung #65
-       -inaktive Squads kann man keine Awards vergeben #66 #67
-       -Event Links werden nicht richtig erkannt #66
-       -Fehlende defines in Sprachdatei #75
-       -Menü für Banneradresse hat sich nicht geöffnet #85
-       -Adminmenü war nicht immer für alle Berechtigten sichtbar #90
-       -Infomeldungen werden 5 anstatt 2 Sekunden angezeigt #91
-       -Emailvorlagen hatten Probleme mit Sonderzeichen #92
-       -unveröffentliche Artikel / News können von unregistrierten Usern eingesehn werden #105
-       -Threadersteller wird nicht als Top Poster gezählt
-       -bestimmte Zeichen wurden in der Datenbank doppelt codiert #120
-       -editprofile BUG #121 #122
-       -Backslashes are not supported #125
-       -Fix Privatnachrichten (ErrorNo = 1364) #130
-       -Loginname wurde nicht richtig formatiert beim Editieren #139
-       -TS3 funktionieren keine Sonderzeichen #165
-       -Seitenaufteilung: 0 als Wert #166
-       -Newskatimage / Galeriebilder werden bei langen Filenamen nicht angezeigt # 198 # 205
-       -Forumsuche - internen Threads werden nicht in die suche mit einbezogen #212
-       -Schönheitsfehler in den Formularen #201 
-       -Navigation Interne Seiten waren über Link für jeden aufrufbar
-       -Glossarnavigation Alle ohne Funktion
-       -mit Autologin würden Pagebesuche nicht gezählt
-       -mehrere kleiner Optimierungen am Code
+        -unveröffentlichte Artikel kann man nicht ansehen #2 
+        -highlight in der Forum Suche wird nicht ressetet #5
+        -Man kann als Gast / unregistrierter User Kommentare abgeben #7 #23 #30
+        -Serverviewer für MOHAA, SH und BT Fix #8
+        -Loginname / Username mit Sonderzeichen nicht möglich #9
+        -Datum letzter Download wird nicht richtig aktualisiert #13
+        -gelöschte Forenposts werden nicht zurückgerechnet #14
+        -Nachtragsfunktion wird nicht in der Userlobby angezeigt #15
+        -JoinUs Benachrichtigung fehlerhaft #18
+        -Galerie Bilder wurden nicht richtig verkleinert und waren zu groß #32
+        -additional languages werden vor additional functions geladen #33
+        -Glossarwörter zerreißen Text (aus Interesse wird z.b. INT eresse) #34
+        -Newsletter interne Links werden nicht richtig kodiert #36
+        -Bug beim Ajax Vote
+        -Nick in der Shoutbox wird nicht gekürzt #55
+        -Gästebuch Homepage-Links werden gekürzt #57
+        -Großgeschriebener bbcode ohne Funktion #58
+        -Bilder wurden nicht immer verkleinert (auto resized) #60
+        -Server Passwort war sichtbar #53 #61 #62
+        -FightUs Benachrichtigung fehlerhaft #63
+        -interne Votes werden public nach einer Editierung #65
+        -inaktive Squads kann man keine Awards vergeben #66 #67
+        -Event Links werden nicht richtig erkannt #66
+        -Fehlende defines in Sprachdatei #75
+        -Menü für Banneradresse hat sich nicht geöffnet #85
+        -Adminmenü war nicht immer für alle Berechtigten sichtbar #90
+        -Infomeldungen werden 5 anstatt 2 Sekunden angezeigt #91
+        -Emailvorlagen hatten Probleme mit Sonderzeichen #92
+        -unveröffentliche Artikel / News können von unregistrierten Usern eingesehn werden #105
+        -Threadersteller wird nicht als Top Poster gezählt
+        -bestimmte Zeichen wurden in der Datenbank doppelt codiert #120
+        -editprofile BUG #121 #122
+        -Backslashes are not supported #125
+        -Fix Privatnachrichten (ErrorNo = 1364) #130
+        -Loginname wurde nicht richtig formatiert beim Editieren #139
+        -TS3 funktionieren keine Sonderzeichen #165
+        -Seitenaufteilung: 0 als Wert #166
+        -Newskatimage / Galeriebilder werden bei langen Filenamen nicht angezeigt # 198 # 205
+        -Forumsuche - internen Threads werden nicht in die suche mit einbezogen #212
+        -Schönheitsfehler in den Formularen #201 
+        -Navigation Interne Seiten waren über Link für jeden aufrufbar
+        -Glossarnavigation Alle ohne Funktion
+        -mit Autologin würden Pagebesuche nicht gezählt
+        -mehrere kleiner Optimierungen am Code
+        -User IPs werden auch bei vorgeschaltete Proxyserver oder Load Balancer richtig erkannt
 
 
 	2. Update automatisch
 	================================
 	
-	Eichfach alle Dateien austauschen.
+	Einfach alle Dateien austauschen.
 
         3. Update manuell
 	================================
@@ -125,6 +127,5 @@ Update von 1.5.3 zu 1.6
 	=======
         Wir bedanken uns bei allen die an der Fertigstellung der v1.6 mitgearbeitet haben.
         
-        Dragonfire, Godkiller_NT (Master Bee), xDGeForcexD, Hypernate, Koma, Lord Alpha (esport Design),  Makke,
+        Dragonfire, Godkiller_NT(Hammermaps), xDGeForcexD, Hypernate, Koma, Lord Alpha (esport Design),  Makke,
         Acecom, Sk!ller
-        

@@ -13,6 +13,8 @@ if(_adminMenu != 'true') exit;
     $support .= "# Allgemein\r\n";
     $support .= "#########\r\n";
     $support .= "   DZCP Version: "._version."\r\n";
+    $support .= "	DZCP Release: "._release."\r\n";
+    $support .= "	DZCP Build: "._build."\r\n";
     $support .= "   Domain: http://".$_SERVER['HTTP_HOST'].str_replace('/admin','/',dirname($_SERVER['PHP_SELF']))."\r\n";
     $support .= "   System/Browser: ".$_SERVER['HTTP_USER_AGENT']."\r\n";
     $support .= "#########\r\n";
@@ -40,9 +42,9 @@ if(_adminMenu != 'true') exit;
     $support .= "   magic_quotes_gpc: ".$m['PHP Core']['magic_quotes_gpc'][0]."\r\n";
     $support .= "   file_uploads: ".$m['PHP Core']['file_uploads'][0]."\r\n";
     $support .= "   upload_max_filesize: ".$m['PHP Core']['upload_max_filesize'][0]."\r\n";
-    $support .= "   sendmail_from: ".$m['PHP Core']['sendmail_from'][0]."\r\n";    
+    $support .= "   sendmail_from: ".$m['PHP Core']['sendmail_from'][0]."\r\n";
     $support .= "   sendmail_path: ".$m['PHP Core']['sendmail_path'][0];
-       
+
     $show = show($dir."/support", array("info" => _admin_support_info,
                                         "head" => _admin_support_head,
                                         "support" => txtArea($support)

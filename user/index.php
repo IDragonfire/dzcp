@@ -953,29 +953,29 @@ case 'user';
         else $hlsw = show(_hlswicon, array("id" => re($get['hlswid']),
                                                                           "img" => "1",
                                                                           "css" => ""));
-	  if(empty($get['xboxid'])) $xboxu = "-";
-	  else $xboxu = show(_xboxicon, array("id" => str_replace(" ","%20",trim(re($get['xboxid']))),													  
+    if(empty($get['xboxid'])) $xboxu = "-";
+    else $xboxu = show(_xboxicon, array("id" => str_replace(" ","%20",trim(re($get['xboxid']))),
                                                                           "img" => "1",
-							  											  "css" => ""));
-	  
-	  if(empty($get['xboxid'])) $xboxuser = ""._noxboxavatar;
-	  else $xboxuser = show(_xboxpic, array("id" => str_replace(" ","%20",trim(re($get['xboxid']))),
+                                        "css" => ""));
+
+    if(empty($get['xboxid'])) $xboxuser = ""._noxboxavatar;
+    else $xboxuser = show(_xboxpic, array("id" => str_replace(" ","%20",trim(re($get['xboxid']))),
                                                                           "img" => "1",
-							  											  "css" => ""));
-	  if(empty($get['psnid'])) $psnu = "-";
-	  else $psnu = show(_psnicon, array("id" => str_replace(" ","%20",trim(re($get['psnid']))),
-					   		                                              "img" => "1",
-		     				  										      "css" => ""));
-	  
-	  if(empty($get['originid'])) $origineu = "-";
-	  else $originu = show(_originicon, array("id" => str_replace(" ","%20",trim(re($get['originid']))),													  
+                                        "css" => ""));
+    if(empty($get['psnid'])) $psnu = "-";
+    else $psnu = show(_psnicon, array("id" => str_replace(" ","%20",trim(re($get['psnid']))),
+                                                               "img" => "1",
+                                             "css" => ""));
+
+    if(empty($get['originid'])) $origineu = "-";
+    else $originu = show(_originicon, array("id" => str_replace(" ","%20",trim(re($get['originid']))),
                                                                           "img" => "1",
-							  											  "css" => ""));
-	  
-	  if(empty($get['battlenetid'])) $battlenetu = "-";
-	  else $battlenetu = show(_battleneticon, array("id" => str_replace(" ","%20",trim(re($get['battlenetid']))),
+                                        "css" => ""));
+
+    if(empty($get['battlenetid'])) $battlenetu = "-";
+    else $battlenetu = show(_battleneticon, array("id" => str_replace(" ","%20",trim(re($get['battlenetid']))),
                                                                           "img" => "1",
-							  											  "css" => ""));
+                                        "css" => ""));
 
       if($get['bday'] == ".." || $get['bday'] == 0 || empty($get['bday'])) $bday = "-";
       else $bday = $get['bday'];
@@ -1307,9 +1307,9 @@ case 'user';
 
       if(empty($get['rlname'])) $rlname = '-';
       else $rlname = re($get['rlname']);
-	  if(empty($get['skypename'])) $skypename = '-';
+    if(empty($get['skypename'])) $skypename = '-';
       else $skypename = "<a href=\"skype:".$get['skypename']."?chat\"><img src=\"http://mystatus.skype.com/smallicon/".$get['skypename']."\" style=\"border: none;\" width=\"16\" height=\"16\" alt=\"".$get['skypename']."\"      /></a>";
-	  if(empty($get['steamid'])) $steam = '-';      
+    if(empty($get['steamid'])) $steam = '-';
       else $steam = show(_steamicon, array("steamid" => $get['steamid']))." ".re($get['steamid']);
 
       $city = re($get['city']); $beschreibung = bbcode($get['beschreibung']);
@@ -1344,12 +1344,12 @@ case 'user';
                                              "picq" => _icq,
                                              "phlsw" => _hlswstatus,
                                              "psteam" => _steamid,
-											 "xboxl" => _xboxstatus,
-										     "xboxavatarl" => _xboxuserpic,
-										     "psnl" => _psnstatus,
-											 "skypel" => _skypestatus,
-											 "originl" => _originstatus,
-											 "battlenetl" => _battlenetstatus,
+                       "xboxl" => _xboxstatus,
+                         "xboxavatarl" => _xboxuserpic,
+                         "psnl" => _psnstatus,
+                       "skypel" => _skypestatus,
+                       "originl" => _originstatus,
+                       "battlenetl" => _battlenetstatus,
                                              "php" => _hp,
                                              "hp" => $hp,
                                              "pnick" => _nick,
@@ -1358,10 +1358,10 @@ case 'user';
                                              "psex" => _profil_sex,
                                              "gamestuff" => _profil_gamestuff,
                                              "xfire" => re($get['hlswid']),
-											 "xboxx" => re($get['xboxid']),
-											 "psnn" => re($get['psnid']),
-											 "originn" => re($get['originid']),
-											 "battlenett" => re($get['battlenetid']),
+                       "xboxx" => re($get['xboxid']),
+                       "psnn" => re($get['psnid']),
+                       "originn" => re($get['originid']),
+                       "battlenett" => re($get['battlenetid']),
                                              "buddyadd" => $buddyadd,
                                              "userstats" => _profil_userstats,
                                              "pos" => _profil_os,
@@ -1378,16 +1378,16 @@ case 'user';
                                              "email" => $email,
                                              "icq" => $icq,
                                              "icqnr" => $icqnr,
-											 "skypename" => $skypename,
-											 "skype" => $get['skypename'],
+                       "skypename" => $skypename,
+                       "skype" => $get['skypename'],
                                              "pn" => $pn,
                                              "edituser" => $edituser,
                                              "hlswid" => $hlsw,
-											 "xboxid" => $xboxu,
-  										     "xboxavatar" => $xboxuser,
-   										     "psnid" => $psnu,
-											 "originid" => $originu,
-											 "battlenetid" => $battlenetu,
+                       "xboxid" => $xboxu,
+                           "xboxavatar" => $xboxuser,
+                            "psnid" => $psnu,
+                       "originid" => $originu,
+                       "battlenetid" => $battlenetu,
                                              "steamid" => $steamid,
                                              "steam" => $steam,
                                              "onoff" => onlinecheck($get['id']),
@@ -1725,9 +1725,9 @@ case 'editprofile';
               if($getcustom['type'] == 2) $customfields .= " ".$getcustom['feldname']." = '".links($_POST[$getcustom['feldname']])."', ";
               else $customfields .= " ".$getcustom['feldname']." = '".up($_POST[$getcustom['feldname']])."', ";
             }
-        if($_POST['steamid'] != "STEAM_") $steamid = up($_POST['steamid']);
+        if($_POST['steamid'] != "STEAM_") $steamid = up(trim($_POST['steamid']));
            else $steamid = "";
-		   
+
           $qry = db("UPDATE ".$db['users']."
                        SET	".$newpwd."
                         ".$customfields."
@@ -1745,13 +1745,13 @@ case 'editprofile';
                   `gmaps_koord`  = '".up($_POST['gmaps_koord'])."',
                   `hp`           = '".links($_POST['hp'])."',
                   `icq`          = '".((int)$icq)."',
-                  `hlswid`       = '".up($_POST['hlswid'])."',
-				  `xboxid`       = '".up($_POST['xboxid'])."',
-                  `psnid`        = '".up($_POST['psnid'])."',
-				  `originid`     = '".up($_POST['originid'])."',
-				  `battlenetid`  = '".up($_POST['battlenetid'])."',
+                  `hlswid`       = '".up(trim($_POST['hlswid']))."',
+          `xboxid`       = '".up(trim($_POST['xboxid']))."',
+                  `psnid`        = '".up(trim($_POST['psnid']))."',
+          `originid`     = '".up(trim($_POST['originid']))."',
+          `battlenetid`  = '".up(trim($_POST['battlenetid']))."',
                   `steamid`      = '".$steamid."',
-				  `skypename`    = '".up($_POST['skypename'])."',
+          `skypename`    = '".up(trim($_POST['skypename']))."',
                   `signatur`     = '".up($_POST['sig'],1)."',
                   `beschreibung` = '".up($_POST['ich'],1)."'
            WHERE id = ".$userid);
@@ -2004,16 +2004,16 @@ case 'editprofile';
                                                 "psig" => _profil_sig,
                                                 "ppic" => _profil_ppic,
                                                 "phlswid" => _hlswid,
-												"xboxidl" => _xboxid,
-												"psnidl" => _psnid,
-												"skypeidl" => _skypeid,
-												"originidl" => _originid,
-												"battlenetidl" => _battlenetid,
+                        "xboxidl" => _xboxid,
+                        "psnidl" => _psnid,
+                        "skypeidl" => _skypeid,
+                        "originidl" => _originid,
+                        "battlenetidl" => _battlenetid,
                                                 "pcity" => _profil_city,
                                                 "city" => re($get['city']),
                                                 "psteamid" => _steamid,
-												"v_steamid" => re($get['steamid']),
-												"skypename" => $get['skypename'],
+                        "v_steamid" => re($get['steamid']),
+                        "skypename" => $get['skypename'],
                                                 "nletter" => _profil_nletter,
                                                 "pnmail" => _profil_pnmail,
                                                 "pnl" => $pnl,
@@ -2035,10 +2035,10 @@ case 'editprofile';
                                                 "icqnr" => $icq,
                                                 "sig" => re_bbcode($get['signatur']),
                                                 "hlswid" => $get['hlswid'],
-												"xboxid" => $get['xboxid'],
-											    "psnid" => $get['psnid'],
-												"originid" => $get['originid'],
-												"battlenetid" => $get['battlenetid'],
+                        "xboxid" => $get['xboxid'],
+                          "psnid" => $get['psnid'],
+                        "originid" => $get['originid'],
+                        "battlenetid" => $get['battlenetid'],
                                                 "steamid1" => $steamid1,
                                                 "steamid2" => $steamid2,
                                                 "steamid3" => $steamid3,
@@ -2526,14 +2526,14 @@ if($_GET['show'] == "search")
                            ORDER BY nick
                LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
   } elseif(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("nick","bday"))) {
-	  $tmp_orderby = $_GET['orderby'];
-	  if($_GET['orderby'] == "bday") $_GET['orderby'] = "bday_order";
-	  $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,
+    $tmp_orderby = $_GET['orderby'];
+    if($_GET['orderby'] == "bday") $_GET['orderby'] = "bday_order";
+    $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,
                       xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,STR_TO_DATE(bday, '%d.%m.%Y') AS bday_order FROM ".$db['users']."
                WHERE level != '0'
                            ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."
                LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
-	  $_GET['orderby'] = $tmp_orderby;
+    $_GET['orderby'] = $tmp_orderby;
   } else {
       $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,
                icq,status,position FROM ".$db['users']."
@@ -2550,25 +2550,25 @@ if($_GET['show'] == "search")
         else $hlsw = show(_hlswicon, array("id" => re($get['hlswid']),
                                                                          "img" => "1",
                                                                          "css" => ""));
-		if(empty($get['xboxid'])) $xboxu = "-";
-		else $xboxu = show(_xboxicon, array("id" => re($get['xboxid']),
-					   													 "img" => "1",
-							  											 "css" => ""));
-		if(empty($get['psnid'])) $psnu = "-";
-		else $psnu = show(_psnicon, array("id" => re($get['psnid']),
-					   													 "img" => "1",
-							  											 "css" => ""));
-		if(empty($get['originid'])) $originu = "-";
-		else $originu = show(_originicon, array("id" => re($get['originid']),
-					   													 "img" => "1",
-							  											 "css" => ""));
-		if(empty($get['battlenetid'])) $battlenetu = "-";
-		else $battlenetu = show(_battleneticon, array("id" => re($get['battlenetid']),
-					   													 "img" => "1",
-							  											 "css" => ""));
-        if(empty($get['steamid'])) $steam = '-';      
+    if(empty($get['xboxid'])) $xboxu = "-";
+    else $xboxu = show(_xboxicon, array("id" => re($get['xboxid']),
+                                        "img" => "1",
+                                       "css" => ""));
+    if(empty($get['psnid'])) $psnu = "-";
+    else $psnu = show(_psnicon, array("id" => re($get['psnid']),
+                                        "img" => "1",
+                                       "css" => ""));
+    if(empty($get['originid'])) $originu = "-";
+    else $originu = show(_originicon, array("id" => re($get['originid']),
+                                        "img" => "1",
+                                       "css" => ""));
+    if(empty($get['battlenetid'])) $battlenetu = "-";
+    else $battlenetu = show(_battleneticon, array("id" => re($get['battlenetid']),
+                                        "img" => "1",
+                                       "css" => ""));
+        if(empty($get['steamid'])) $steam = '-';
         else $steam = show(_steamicon, array("steamid" => $get['steamid']));
-		
+
         if(empty($get['icq']))
         {
             $icq = "-";
@@ -2614,19 +2614,19 @@ if($_GET['show'] == "search")
                                                                                                          "email" => $email,
                                                                                                          "age" => getAge($get['bday']),
                                                                                                          "mf" => $sex,
-                                                													     "edit" => $edit,
-                                                  													     "delete" => $delete,
-                                             													         "class" => $class,
+                                                                               "edit" => $edit,
+                                                                                 "delete" => $delete,
+                                                                                "class" => $class,
                                                                                                          "icq" => $icq,
-																										 "skypename" => $skypename,
+                                                     "skypename" => $skypename,
                                                                                                          "icquin" => $get['icq'],
                                                                                                          "onoff" => onlinecheck($get['id']),
                                                                                                          "hp" => $hp,
-																										 "steam" => $steam,
-																										 "xboxu" => $xboxu,
- 																										 "psnu" => $psnu,
-																										 "originu" => $originu,
-																										 "battlenetu" => $battlenetu,
+                                                     "steam" => $steam,
+                                                     "xboxu" => $xboxu,
+                                                      "psnu" => $psnu,
+                                                     "originu" => $originu,
+                                                     "battlenetu" => $battlenetu,
                                                                                                          "hlsw" => $hlsw));
     }
   $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
@@ -2667,11 +2667,11 @@ if($_GET['show'] == "search")
                                          "icqicon" => _icqicon_blank,
                                          "pnicon" => _pnicon_blank,
                                          "hpicon" => _hpicon_blank,
-										 "xboxicon" => _xboxicon_blank,
-										 "psnicon" => _psnicon_blank,
-										 "originicon" => _originicon_blank,
-										 "battleneticon" => _battleneticon_blank,
-									     "steamicon" => _steamicon_blank,
+                     "xboxicon" => _xboxicon_blank,
+                     "psnicon" => _psnicon_blank,
+                     "originicon" => _originicon_blank,
+                     "battleneticon" => _battleneticon_blank,
+                       "steamicon" => _steamicon_blank,
                                          "hlswicon" => _hlswicon_blank,
                                          "order_nick" => orderby('nick'),
                                          "order_age" => orderby('bday'),
@@ -3112,21 +3112,21 @@ case 'admin';
                                                      "epwd" => ""));
 
                 if($chkMe == 4)	$elevel = show(_elevel_admin_select, array("selu" => $selu,
-                                                                                                                                     "selt" => $selt,
-                                                                                                                                     "selm" => $selm,
-                                                                                                                                     "sela" => $sela,
-                                                                                                                                     "ruser" => _status_user,
-                                                                                                                                     "banned" => _admin_level_banned,
-                                                                                                                                     "trial" => _status_trial,
-                                                                                                                                     "member" => _status_member,
-                                                                                                                                     "admin" => _status_admin));
+                                                                           "selt" => $selt,
+                                                                           "selm" => $selm,
+                                                                           "sela" => $sela,
+                                                                           "ruser" => _status_user,
+                                                                           "banned" => _admin_level_banned,
+                                                                           "trial" => _status_trial,
+                                                                           "member" => _status_member,
+                                                                           "admin" => _status_admin));
                 elseif(permission("editusers"))  $elevel = show(_elevel_perm_select, array("selu" => $selu,
-                                                                                                                                                                     "selt" => $selt,
-                                                                                                                                                                     "selm" => $selm,
-                                                                                                                                                                     "ruser" => _status_user,
-                                                                                                                                                                     "banned" => _admin_level_banned,
-                                                                                                                                                                     "trial" => _status_trial,
-                                                                                                                                                                     "member" => _status_member));
+                                                                                           "selt" => $selt,
+                                                                                           "selm" => $selm,
+                                                                                           "ruser" => _status_user,
+                                                                                           "banned" => _admin_level_banned,
+                                                                                           "trial" => _status_trial,
+                                                                                           "member" => _status_member));
 
         $index = show($dir."/admin", array("enick" => re($get['nick']),
                                            "user" => intval($_GET['edit']),
@@ -3146,13 +3146,12 @@ case 'admin';
                                            "clankasse" => _user_list_ck,
                                            "auth_info" => _admin_user_clanhead_info,
                                            "alvl" => $get['level'],
-                                                                                     "elevel" => $elevel,
+                                           "elevel" => $elevel,
                                            "level_info" => _level_info,
                                            "gallery" => _admin_user_gallery,
                                            "yes" => _yes,
                                            "no" => _no,
                                            "cw_info" => _cw_info,
-
                                            "edithead" => _admin_user_edithead,
                                            "personalhead" => _admin_user_personalhead,
                                            "squadhead" => _admin_user_squadhead,
@@ -3200,5 +3199,3 @@ $time = round($time_end - $time_start,4);
 page($index, $title, $where,$time);
 ## OUTPUT BUFFER END ##
 gz_output();
-?>
-

@@ -117,7 +117,7 @@ $lforumtopic = $c['l_forumtopic'];
 $lforumsubtopic = $c['l_forumsubtopic'];
 $maxawards = $c['m_awards'];
 $sdir = $settings['tmpdir'];
-$userip = $_SERVER['REMOTE_ADDR'];
+$userip = visitorIp();
 
 //-> Auslesen der Cookies und automatisch anmelden
 if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSION['id']) && checkme() == "unlogged")
@@ -136,7 +136,7 @@ if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSI
         $_SESSION['id']         = $get['id'];
         $_SESSION['pwd']        = $get['pwd'];
         $_SESSION['lastvisit']  = $get['time'];
-        $_SESSION['ip']         = $_SERVER['REMOTE_ADDR'];
+        $_SESSION['ip']         = visitorIp();
 
         if(data($get['id'], "ip") != $_SESSION['ip'])
             $_SESSION['lastvisit'] = data($get['id'], "time");
@@ -168,6 +168,29 @@ if($chkMe == "unlogged")
     $_SESSION['pwd']       = '';
     $_SESSION['ip']        = '';
     $_SESSION['lastvisit'] = '';
+}
+
+/**
+* Gibt die IP des Besuchers / Users zurück
+* Forwarded IP Support
+*/
+function visitorIp()
+{
+    $TheIp=$_SERVER['REMOTE_ADDR'];
+    if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR']))
+        $TheIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
+
+    if(isset($_SERVER['HTTP_CLIENT_IP']) && !empty($_SERVER['HTTP_CLIENT_IP']))
+        $TheIp = $_SERVER['HTTP_CLIENT_IP'];
+
+    if(isset($_SERVER['HTTP_FROM']) && !empty($_SERVER['HTTP_FROM']))
+        $TheIp = $_SERVER['HTTP_FROM'];
+
+    $TheIp_X = explode('.',$TheIp);
+    if(count($TheIp_X) == 4 && $TheIp_X[0]<=255 && $TheIp_X[1]<=255 && $TheIp_X[2]<=255 && $TheIp_X[3]<=255 && preg_match("!^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$!",$TheIp))
+        return trim($TheIp);
+
+    return '0.0.0.0';
 }
 
 //-> Auslesen der UserID
