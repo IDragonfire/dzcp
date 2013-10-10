@@ -967,7 +967,7 @@ case 'user';
                                                                "img" => "1",
                                              "css" => ""));
 
-    if(empty($get['originid'])) $origineu = "-";
+    if(empty($get['originid'])) $originu = "-";
     else $originu = show(_originicon, array("id" => str_replace(" ","%20",trim(re($get['originid']))),
                                                                           "img" => "1",
                                         "css" => ""));
