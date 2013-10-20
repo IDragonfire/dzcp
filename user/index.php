@@ -1161,7 +1161,7 @@ case 'user';
 
     if(!ipcheck("mgbid(".$_GET['id'].")", $flood_membergb))
     {
-      if(isset($userid))
+      if($userid >= 1)
         {
             $form = show("page/editor_regged", array("nick" => autor($userid),
                                                  "von" => _autor));
@@ -1487,13 +1487,13 @@ case 'usergb';
         if($_GET['do'] == "add")
         {
 
-            if(isset($userid)) $toCheck = empty($_POST['eintrag']);
+            if($userid >= 1) $toCheck = empty($_POST['eintrag']);
             else
                 $toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['eintrag']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
 
             if($toCheck)
             {
-                if(isset($userid))
+                if($userid >= 1)
                 {
                     if(empty($_POST['eintrag'])) $error = _empty_eintrag;
 

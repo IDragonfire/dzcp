@@ -736,7 +736,7 @@ case 'details';
   } else {
     if(!ipcheck("cwid(".$_GET['id'].")", $flood_cwcom))
     {
-      if(isset($userid))
+      if($userid >= 1)
 	    {
 	      $form = show("page/editor_regged", array("nick" => autor($userid),
                                                  "von" => _autor));
@@ -842,14 +842,14 @@ case 'details';
 			} else {
 				if(!ipcheck("cwid(".$_GET['id'].")", $flood_cwcom))
 				{
-					if(isset($userid))
+					if($userid >= 1)
 						$toCheck = empty($_POST['comment']);
 					else
 						$toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['comment']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
 						
 					if($toCheck)
 					{
-						if(isset($userid))
+						if($userid >= 1)
 						{
 							if(empty($_POST['comment'])) $error = _empty_eintrag;
 							$form = show("page/editor_regged", array("nick" => autor($userid),

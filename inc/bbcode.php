@@ -256,7 +256,7 @@ function languages()
 }
 
 //-> Userspezifiesche Dinge
-if(isset($userid) && $ajaxJob != true)
+if($userid >= 1 && $ajaxJob != true)
 {
     db("UPDATE ".$db['userstats']." SET `hits` = hits+1, `lastvisit` = '".((int)$_SESSION['lastvisit'])."' WHERE user = ".$userid);
     $u_b1 = "<!--";

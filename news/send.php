@@ -69,14 +69,14 @@ else
     case 'do';
       if($_GET['what'] == "sendnews")
       {
-           if((!isset($userid) && (empty($_POST['nick']))) || (!isset($userid) && empty($_POST['email']) || $_POST['email'] == "E-Mail") || empty($_POST['titel']) || empty($_POST['text']) || (($_POST['secure'] != $_SESSION['sec_sendnews'] || $_SESSION['sec_sendnews'] == NULL) && !isset($userid)))
+           if((!$userid && (empty($_POST['nick']))) || (!$userid && empty($_POST['email']) || $_POST['email'] == "E-Mail") || empty($_POST['titel']) || empty($_POST['text']) || (($_POST['secure'] != $_SESSION['sec_sendnews'] || $_SESSION['sec_sendnews'] == NULL) && !$userid))
         {
-          if(($_POST['secure'] != $_SESSION['sec_sendnews'] || $_SESSION['sec_sendnews'] == NULL) && !isset($userid)) $error = show("errors/errortable", array("error" => _error_invalid_regcode));
+          if(($_POST['secure'] != $_SESSION['sec_sendnews'] || $_SESSION['sec_sendnews'] == NULL) && !$userid) $error = show("errors/errortable", array("error" => _error_invalid_regcode));
           if(empty($_POST['text'])) $error = show("errors/errortable", array("error" => _error_empty_nachricht));
           if(empty($_POST['titel'])) $error = show("errors/errortable", array("error" => _empty_titel));
-          if(!isset($userid) && !check_email($_POST['email'])) $error = show("errors/errortable", array("error" => _error_invalid_email));
-          if(!isset($userid) && empty($_POST['email']) || $_POST['email'] == "E-Mail") $error = show("errors/errortable", array("error" => _empty_email));
-          if(!isset($userid) && (empty($_POST['nick']))) $error = show("errors/errortable", array("error" => _empty_nick));
+          if(!$userid && !check_email($_POST['email'])) $error = show("errors/errortable", array("error" => _error_invalid_email));
+          if(!$userid && empty($_POST['email']) || $_POST['email'] == "E-Mail") $error = show("errors/errortable", array("error" => _empty_email));
+          if(!$userid && (empty($_POST['nick']))) $error = show("errors/errortable", array("error" => _empty_nick));
 
             if($chkMe == 'unlogged')
             {
@@ -121,17 +121,17 @@ else
 
         } else {
           $hp = show(_contact_hp, array("hp" => links($_POST['hp'])));
-          if(!isset($userid)) $nick = $_POST['nick'];
+          if(!$userid) $nick = $_POST['nick'];
           else $nick = blank_autor($userid);
-          if(!isset($userid)) $von_nick = "0";
+          if(!$userid) $von_nick = "0";
           else $von_nick = $userid;
-          if(!isset($userid)) $titel = show(_news_send_titel, array("nick" => $_POST['nick']));
+          if(!$userid) $titel = show(_news_send_titel, array("nick" => $_POST['nick']));
           else $titel = show(_news_send_titel, array("nick" => blank_autor($userid)));
-          if(!isset($userid)) $email = show(_email_mailto, array("email" => $_POST['email']));
+          if(!$userid) $email = show(_email_mailto, array("email" => $_POST['email']));
           else $email = '--';
-          if(!isset($userid)) $sendnews = '1';
+          if(!$userid) $sendnews = '1';
           else $sendnews = '2';
-          if(!isset($userid)) $user = $_POST['nick'];
+          if(!$userid) $user = $_POST['nick'];
           else $user = $userid;
 
           $text = show(_contact_text_sendnews, array("hp" => $hp,

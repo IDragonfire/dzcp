@@ -1119,7 +1119,7 @@ case 'thread';
                 $intern = ''; $intern_kat = '';
                 if($fget['intern'] == "1") { $intern = 'checked="checked"'; $internVisible = 'style="display:none"'; };
 
-                if(isset($userid))
+                if($userid >= 1)
           {
               $form = show("page/editor_regged", array("nick" => autor($userid),
                                                    "von" => _autor));
@@ -1197,13 +1197,13 @@ case 'thread';
         {
             $index = error(_error_have_to_be_logged, 1);
         } else {
-            if(isset($userid))
+            if($userid >= 1)
                 $toCheck = empty($_POST['eintrag']) || empty($_POST['topic']);
             else
                 $toCheck = empty($_POST['topic']) || empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['eintrag']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
             if($toCheck)
             {
-                if(isset($userid))
+                if($userid >= 1)
                 {
                     if(empty($_POST['eintrag'])) $error = _empty_eintrag;
                     elseif(empty($_POST['topic'])) $error = _empty_topic;
@@ -1232,7 +1232,7 @@ case 'thread';
                     $admin = "";
                 }
 
-                if(isset($userid))
+                if($userid >= 1)
                 {
                     $form = show("page/editor_regged", array("nick" => autor($userid),
                                                                                                      "von" => _autor));
@@ -1499,7 +1499,7 @@ case 'post';
               $form = show("page/editor_regged", array("nick" => autor($userid),
                                                    "von" => _autor));
           } else {
-          if(($_POST['secure'] != $_SESSION['sec_'.$dir]) && !isset($userid)) $error = _error_invalid_regcode;
+          if(($_POST['secure'] != $_SESSION['sec_'.$dir]) && !$userid) $error = _error_invalid_regcode;
           elseif(empty($_POST['nick'])) $error = _empty_nick;
               elseif(empty($_POST['email'])) $error = _empty_email;
               elseif(!check_email($_POST['email'])) $error = _error_invalid_email;
@@ -1613,7 +1613,7 @@ case 'post';
         } elseif($checks['intern'] == 1 && !permission("intforum") && !fintern($checks['id'])) {
           $index = error(_error_no_access, 1);
         } else {
-          if(isset($userid))
+          if($userid >= 1)
           {
               $postnick = data($userid, "nick");
               $postemail = data($userid, "email");
@@ -1797,7 +1797,7 @@ case 'post';
                                                              "lp" => cnt($db['f_posts'], " WHERE sid = '".intval($_GET['id'])."'")+1));
           }
 
-          if(isset($userid))
+          if($userid >= 1)
             {
                 $form = show("page/editor_regged", array("nick" => autor($userid),
                                                      "von" => _autor));
@@ -1861,12 +1861,12 @@ case 'post';
                 if($checks['intern'] == 1 && !permission("intforum") && !fintern($checks['id']))
                 exit;
 
-                if(isset($userid)) $toCheck = empty($_POST['eintrag']);
+                if($userid >= 1) $toCheck = empty($_POST['eintrag']);
                 else $toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['eintrag']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
 
                 if($toCheck)
                 {
-                    if(isset($userid))
+                    if($userid >= 1)
                     {
                         if(empty($_POST['eintrag'])) $error = _empty_eintrag;
                         $form = show("page/editor_regged", array("nick" => autor($userid),
@@ -2081,7 +2081,7 @@ case 'post';
                     {
                         $getdp = _fetch($qrydp);
 
-                        if(isset($userid))
+                        if($userid >= 1)
                         {
                             if($userid == $getdp['reg'] && $double_post == 1) $spam = 1;
                             else $spam = 0;
@@ -2096,7 +2096,7 @@ case 'post';
                                     AND id = '".intval($_GET['id'])."'");
                         $gettdp = _fetch($qrytdp);
 
-                        if(isset($userid))
+                        if($userid >= 1)
                         {
                             if($userid == $gettdp['t_reg'] && $double_post == 1) $spam = 2;
                             else $spam = 0;
@@ -2108,7 +2108,7 @@ case 'post';
 
                     if($spam == 1)
                     {
-                        if(isset($userid)) $fautor = autor($userid);
+                        if($userid >= 1) $fautor = autor($userid);
                         else $fautor = autor('', '', $_POST['nick'], $_POST['email']);
 
                             $text = show(_forum_spam_text, array("autor" => $fautor,
@@ -2125,7 +2125,7 @@ case 'post';
                                                          `text`   = '".$text."'
                                                  WHERE id = '".$getdp['id']."'");
                     } elseif($spam == 2) {
-                        if(isset($userid)) $fautor = autor($userid);
+                        if($userid >= 1) $fautor = autor($userid);
                         else $fautor = autor('', '', $_POST['nick'], $_POST['email']);
 
                             $text = show(_forum_spam_text, array("autor" => $fautor,

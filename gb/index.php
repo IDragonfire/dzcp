@@ -112,7 +112,7 @@ default:
 
   if(!ipcheck("gb", $flood_gb))
   {    
-    if(isset($userid))
+    if($userid >= 1)
 	  {
 		  $form = show("page/editor_regged", array("nick" => autor($userid),
                                                "von" => _autor));
@@ -164,7 +164,7 @@ break;
 case 'do';
   if($_GET['what'] == "addgb")
   {
-    if(isset($userid))
+    if($userid >= 1)
     {
       $toCheck = empty($_POST['eintrag']); 
     } else {
@@ -172,7 +172,7 @@ case 'do';
     }
 	  if($toCheck)
 		{
-      if(isset($userid))
+      if($userid >= 1)
 	    {
         if(empty($_POST['eintrag'])) $error = _empty_eintrag;
 		    $form = show("page/editor_regged", array("nick" => autor($userid),

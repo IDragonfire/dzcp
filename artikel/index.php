@@ -203,7 +203,7 @@ case 'show';
     {
       $add = _error_unregistered_nc;
     } else {
-      if(isset($userid))
+      if($userid >= 1)
 	    {
 		    $form = show("page/editor_regged", array("nick" => autor($userid),
                                                  "von" => _autor));
@@ -272,14 +272,14 @@ case 'show';
 			} else {
 				if(!ipcheck("artid(".$_GET['id'].")", $flood_artikelcom))
 				{
-					if(isset($userid))
+					if($userid >= 1)
 						$toCheck = empty($_POST['comment']);
 					else
 						$toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['comment']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
 		
 					if($toCheck)
 					{
-						if(isset($userid))
+						if($userid >= 1)
 						{
 							if(empty($_POST['eintrag'])) $error = _empty_eintrag;
 							$form = show("page/editor_regged", array("nick" => autor($userid),

@@ -16,16 +16,16 @@ switch ($action):
 default:
   if(!ipcheck("shout", $flood_shout))
   {
-    if(($_POST['protect'] != 'nospam' || empty($_SESSION['sec_shout']) || $_POST['spam'] != $_SESSION['sec_shout'] || empty($_POST['spam'])) && !isset($userid))
+    if(($_POST['protect'] != 'nospam' || empty($_SESSION['sec_shout']) || $_POST['spam'] != $_SESSION['sec_shout'] || empty($_POST['spam'])) && !$userid)
                                                                                      $index = error(_error_invalid_regcode,1); 
-    elseif(!isset($userid) && (empty($_POST['name']) || trim($_POST['name']) == '') || $_POST['name'] == "Nick")
+    elseif(!$userid && (empty($_POST['name']) || trim($_POST['name']) == '') || $_POST['name'] == "Nick")
                                                                                      $index = error(_empty_nick, 1);
-    elseif(!isset($userid) && empty($_POST['email']) || $_POST['email'] == "E-Mail") $index = error(_empty_email, 1);
-    elseif(!isset($userid) && !check_email($_POST['email']))                         $index = error(_error_invalid_email, 1);
+    elseif(!$userid && empty($_POST['email']) || $_POST['email'] == "E-Mail") $index = error(_empty_email, 1);
+    elseif(!$userid && !check_email($_POST['email']))                         $index = error(_error_invalid_email, 1);
     elseif(empty($_POST['eintrag']))                                                 $index = error(_error_empty_shout, 1);
     elseif(settings('reg_shout') == 1 && $chkMe == 'unlogged')                       $index = error(_error_unregistered, 1);
     else {
-      if(!isset($userid)) $reg = $_POST['email'];
+      if(!$userid) $reg = $_POST['email'];
       else $reg = $userid;
  
       $qry = db("INSERT INTO ".$db['shout']."
