@@ -42,7 +42,7 @@ default:
       if($get['email']) $gbemail = show(_emailicon, array("email" => eMailAddr($get['email'])));
       else $gbemail = "";
       
-      if($get['reg'] == $userid || permission("gb"))
+      if(($get['reg'] == $userid && $userid >= 1) || permission("gb"))
       {
         $edit = show("page/button_edit_single", array("id" => $get['id'],
                                                       "action" => "action=do&amp;what=edit",
@@ -59,12 +59,13 @@ default:
         $edit = "";
         $comment = "";
       }
+      $public = "";
       if(permission("gb") && $gb_activ == 1)
       {
 	    $public = ($get['public'] == 1)
 		 	? '<a href="?action=do&amp;what=unset&amp;id='.$get['id'].'"><img src="../inc/images/public.gif" alt="" title="nicht ver&ouml;ffentlichen" align="top" style="padding-top:1px"/></a>'
 		 	: '<a href="?action=do&amp;what=set&amp;id='.$get['id'].'"><img src="../inc/images/nonpublic.gif" alt="" title="ver&ouml;ffentlichen" align="top" style="padding-top:1px"/></a>';	  } else {
-	    $public = "";
+	    
 	  }
 
 		  if($get['reg'] == "0")
