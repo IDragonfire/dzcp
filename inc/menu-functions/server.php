@@ -1,13 +1,14 @@
 <?php
 function server($serverID = 0)
 {
-  global $db, $servermenu, $language;
+    global $db, $servermenu, $language;
+    if(!fsockopen_support()) return _fopen;
 
-  if(empty($serverID))
-  {
-  $qry = db("SELECT id FROM ".$db['server']." WHERE navi = '1'");
-    while($get = _fetch($qry))
+    if(empty($serverID))
     {
+        $qry = db("SELECT id FROM ".$db['server']." WHERE navi = '1'");
+        while($get = _fetch($qry))
+        {
       $st++;
       $servernavi .= '
         <div class="navGameServer" id="navGameServer_'.$get['id'].'">
@@ -21,17 +22,27 @@ function server($serverID = 0)
       ';
     }
   } else {
-    $get = _fetch(db("SELECT * FROM ".$db['server']." WHERE navi = '1' AND `id` = '".intval($serverID)."'"));
-
+    $get = db("SELECT * FROM ".$db['server']." WHERE navi = '1' AND `id` = '".intval($serverID)."'",false,true);
     if(!function_exists('server_query_'.$get['status']) && file_exists(basePath.'/inc/server_query/'.strtolower($get['status']).'.php'))
     {
       include(basePath.'/inc/server_query/'.strtolower($get['status']).'.php');
     }
 
-    $server = @call_user_func('server_query_'.$get['status'], $get['ip'], $get['port'], $get['qport'], 'info');
-	
-	unset($player_list);
-    $player_list = call_user_func('server_query_'.$get['status'], $get['ip'], $get['port'], $get['qport'], 'players');
+    unset($player_list);
+    if(time() - @filemtime(basePath.'/__cache/'.md5('nav_server_'.$serverID).'.cache') > $config['cache_server'])
+    {
+    	$server = @call_user_func('server_query_'.$get['status'], $get['ip'], $get['port'], $get['qport'], 'info');
+    	$player_list = call_user_func('server_query_'.$get['status'], $get['ip'], $get['port'], $get['qport'], 'players');
+    	$fp = @fopen(basePath.'/__cache/'.md5('nav_server_'.$serverID).'.cache', 'w'); @fwrite($fp, serialize(array('server' => $server, 'players' => $player_list)));
+    	@fclose($fp);
+    }
+    else
+    {
+    	$server_cache = @file_get_contents(basePath.'/__cache/'.md5('nav_server_'.$serverID).'.cache');
+    	$server_cache = unserialize($server_cache);
+    	$server = $server_cache['server'];
+    	$player_list = $server_cache['players'];
+    }
 
     $server["mapname"] = preg_replace("/[^A-Za-z0-9 \&\_\-]/", "_", $server["mapname"]);
     $map_low = str_replace(' ','_', strtolower($server["mapname"]));
@@ -65,7 +76,7 @@ function server($serverID = 0)
 
     if(!empty($server_name_config[$server['gamemod']])) $server_name_short = $server_name_config[$server['gamemod']][1];
     if(!empty($server_link_config[$server['gamemod']])) $server_link = $server_link_config[$server['gamemod']];
-	
+
 	$players = ""; $count=0;
 	if(!empty($player_list))
 	{
@@ -75,14 +86,14 @@ function server($serverID = 0)
 			$count++;
 		}
 	}
-    
+
 	if($count == 0)
 		$players = 'Keine Spieler';
 		$servername = jsconvert(re(cut($server['hostname'],$servermenu)));
 		$servernameout = (!empty($servername)) ? $servername : "no name available";
-		
+
       $info = 'onmouseover="DZCP.showInfo(\''.$servernameout.'\', \'IP/Port;'.$pwd_info.';Game;Map;Players Online;On the Game\', \''.$get['ip'].':'.$get['port'].';'.$pwd_txt.';'.jsconvert(re($game_icon)).''.$server_name_short.';'.(empty($server['mapname']) ? '-' : re($server['mapname'])).';'.$server['players'].' / '.$server['maxplayers'].';'.$players.'\')" onmouseout="DZCP.hideInfo()"';
-    
+
 
     $servernavi .= show("menu/server", array("host" => re(cut($server['hostname'],$servermenu)),
                                             "ip" => $get['ip'],
@@ -103,4 +114,3 @@ function server($serverID = 0)
   return empty($servernavi) ? '<center style="margin:2px 0">'._no_server_navi.'</center>'
                             : (empty($st) ? '<table class="navContent" cellspacing="0">'.$servernavi.'</table>' : $servernavi);
 }
-?>

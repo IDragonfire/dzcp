@@ -11,10 +11,10 @@ $where = _site_teamspeak;
 $title = $pagetitle." - ".$where."";
 $dir = "teamspeak";
 ## SECTIONS ##
-  if(function_exists(fopen))
+  if(fsockopen_support())
   {
-    if(time() - @filemtime(basePath.'/__cache/teamspeak_'.$language.'.html') > $c['cache_teamspeak'] || isset($_GET['cID']))
-    {    
+    if(time() - @filemtime(basePath.'/__cache/'.md5('teamspeak_'.$language).'.cache') > $config['cache_teamspeak'] || isset($_GET['cID']))
+    {
     switch($settings['ts_version']):
     default; case '2';
     $uip 	 = $settings['ts_ip'];
@@ -28,7 +28,7 @@ $dir = "teamspeak";
       $index = error(_error_no_teamspeak, 1);
     } else {
 	    $out = "";
-      
+
 		    fputs($fp, "sel ".$port."\n");
 		    fputs($fp, "si\n");
 		    fputs($fp, "quit\n");
@@ -95,7 +95,7 @@ $dir = "teamspeak";
 	    $innerArray=$uArray[$i];
       $p = '<img src="../inc/images/tsicons/channel.gif" alt="" class="tsicon" /> '.setUserStatus($innerArray[12])."&nbsp;<span class=\"fontBold\">".removeChar($innerArray[14])."</span>
            &nbsp;(".setPPriv($innerArray[11])."".setCPriv($innerArray[10]).")";
-           
+
       $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
       $userstats .= show($dir."/userstats", array("player" => $p,
                                                   "channel" => getChannelName($innerArray[1],$uip,$port,$tPort),
@@ -229,7 +229,7 @@ $dir = "teamspeak";
     case '3';
       $tsstatus = new TSStatus($settings['ts_ip'], $settings['ts_port'], $settings['ts_sport'], $settings['ts_customicon'], $settings['ts_showchannel']);
       $tstree = $tsstatus->render(true);
-      
+
       $users = 0;
       foreach($tsstatus->_userDatas AS $user)
       {
@@ -243,14 +243,14 @@ $dir = "teamspeak";
   				else if($user["client_output_muted"] == 1)    $icon = "16x16_output_muted.png";
   				else if($user["client_input_hardware"] == 0)  $icon = "16x16_hardware_input_muted.png";
   				else if($user["client_input_muted"] == 1)     $icon = "16x16_input_muted.png";
-				
+
   				$flags = array();
   				if(isset($tsstatus->_channelGroupFlags[$user['client_channel_group_id']])) $flags[] = $tsstatus->_channelGroupFlags[$user['client_channel_group_id']];
   				$serverGroups = explode(",", $user['client_servergroups']);
   				foreach ($serverGroups as $serverGroup) if(isset($tsstatus->_serverGroupFlags[$serverGroup])) $flags[] = $tsstatus->_serverGroupFlags[$serverGroup];
-          
+
           $p = '<img src="../inc/images/tsicons/'.$icon.'" alt="" class="tsicon" />'.rep2($user['client_nickname']).'&nbsp;'.$tsstatus->renderFlags($flags);
-               
+
           $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
           $userstats .= show($dir."/userstats", array("player" => $p,
                                                       "channel" => rep2($tsstatus->getChannelInfos($user['cid'])),
@@ -261,7 +261,7 @@ $dir = "teamspeak";
                                                       "misc4" => time_convert($user['client_idle_time'],true)));
   	    }
       }
-  
+
       $index = show($dir."/teamspeak", array("name" => $tsstatus->_serverDatas['virtualserver_name'],
                                              "os" => $tsstatus->_serverDatas['virtualserver_platform'],
                                              "uptime" => time_convert($tsstatus->_serverDatas['virtualserver_uptime']),
@@ -286,12 +286,12 @@ $dir = "teamspeak";
                                              "userstats" => $userstats));
     break;
     endswitch;
-    
-      $fp = @fopen(basePath.'/__cache/teamspeak_'.$language.'.html', 'w');
+
+      $fp = @fopen(basePath.'/__cache/'.md5('teamspeak_'.$language).'.cache', 'w');
             @fwrite($fp, $index);
       @fclose($fp);
     } else {
-      $index = @file_get_contents(basePath.'/__cache/teamspeak_'.$language.'.html');
+      $index = @file_get_contents(basePath.'/__cache/'.md5('teamspeak_'.$language).'.cache');
     }
   } else {
     $index = error(_fopen,1);

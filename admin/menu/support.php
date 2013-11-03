@@ -28,7 +28,7 @@ if(_adminMenu != 'true') exit;
     $support .= "# Servereinstellungen\r\n";
     $support .= "#########\r\n";
     $support .= "   fopen(): ".(function_exists('fopen')==true?'On':'Off')."\r\n";
-    $support .= "   fsockopen(): ".(function_exists('fsockopen')==true?'On':'Off')."\r\n";
+    $support .= "   fsockopen(): ".(fsockopen_support() ? 'On':'Off')."\r\n";
     $support .= "   allow_url_fopen: ".$m['PHP Core']['allow_url_fopen'][0]."\r\n";
     $support .= "   register_globals: ".$m['PHP Core']['register_globals'][0]."\r\n";
     $support .= "   safe_mode: ".$m['PHP Core']['safe_mode'][0]."\r\n";

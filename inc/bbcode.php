@@ -1,6 +1,4 @@
 <?php
-error_reporting(0);
-
 ## INCLUDES/REQUIRES ##
 require_once(basePath.'/inc/secure.php');
 require_once(basePath.'/inc/_version.php');
@@ -17,8 +15,7 @@ $ajaxJob = (!isset($ajaxJob) ? false : $ajaxJob);
 $rootAdmin = 1;
 
 //-> Settingstabelle auslesen
-$qry = db("SELECT * FROM ".$db['settings']."");
-$settings = _fetch($qry);
+$settings = db("SELECT * FROM ".$db['settings'],false,true);
 $prev = $settings['prev'].'_';
 
 //-> Language auslesen
@@ -45,6 +42,7 @@ $balken_vote_menu = $settings["balken_vote_menu"];
 $i_domain = $settings["i_domain"];
 $i_autor = $settings["i_autor"];
 $counter_start = $settings["counter_start"];
+$sdir = $settings['tmpdir'];
 $useronline = 1800;
 $reload = 3600 * 24;
 $datum = time();
@@ -52,78 +50,77 @@ $today = date("j.n.Y");
 $picformat = array("jpg", "gif", "png");
 
 //-> Configtabelle auslesen
-$c = _fetch(db("SELECT * FROM ".$db['config'].""));
+$config = db("SELECT * FROM ".$db['config'],false,true);
 
 //-> Config
+$teamRow = $config['teamrow'];
+$allowHover = $config['allowhover'];
+$secureLogin = $config['securelogin'];
+$maxwidth = $config['maxwidth'];
+$gallery = $config['gallery'];
+$upicsize = $config['upicsize'];
+$maxgallerypics = $config['m_gallerypics'];
+$maxusergb = $config['m_usergb'];
+$maxclankasse = $config['m_clankasse'];
+$maxuserlist = $config['m_userlist'];
+$maxbanned = $config['m_banned'];
+$maxadminnews = $config['m_adminnews'];
+$maxadminartikel = $config["m_adminartikel"];
+$martikel = $config["m_artikel"];
+$maxshout = $config['m_shout'];
+$maxcomments = $config['m_comments'];
+$maxcwcomments = $config['m_cwcomments'];
+$maxarchivnews = $config['m_archivnews'];
+$maxgb = $config['m_gb'];
+$maxfthreads = $config['m_fthreads'];
+$maxcw = $config['m_clanwars'];
+$maxfposts = $config['m_fposts'];
+$maxnews = $config['m_news'];
+$maxftopics = $config['m_ftopics'];
+$maxevent = $config['m_events'];
+$maxlnews = $config['m_lnews'];
+$maxlartikel = $config['m_lartikel'];
+$maxtopdl = $config['m_topdl'];
+$maxlwars = $config['m_lwars'];
+$maxnwars = $config['m_nwars'];
+$maxlreg = $config['m_lreg'];
+$maxaway = $config['m_away'];
+$maxshoutarchiv = $config['maxshoutarchiv'];
+$shout_max_zeichen = $config['shout_max_zeichen'];
+$flood_forum = $config['f_forum'];
+$flood_gb = $config['f_gb'];
+$flood_membergb = $config['f_membergb'];
+$flood_shout = $config['f_shout'];
+$flood_newscom = $config['f_newscom'];
+$flood_artikelcom = $config['f_artikelcom'];
+$flood_cwcom = $config['f_cwcom'];
+$lnewsadmin = $config['l_newsadmin'];
+$lshouttext = $config['l_shouttext'];
+$lshoutnick = $config['l_shoutnick'];
+$lnews = $config['l_lnews'];
+$lartikel = $config['l_lartikel'];
+$ltopdl = $config['l_topdl'];
+$lftopics = $config['l_ftopics'];
+$llwars = $config['l_lwars'];
+$llreg = $config['l_lreg'];
+$servermenu = $config['l_servernavi'];
+$lnwars = $config['l_nwars'];
+$lnewsarchiv = $config['l_newsarchiv'];
+$lcwgegner = $config['l_clanwars'];
+$l_team = $config['l_team'];
+$lforumtopic = $config['l_forumtopic'];
+$lforumsubtopic = $config['l_forumsubtopic'];
+$maxawards = $config['m_awards'];
+$userip = visitorIp();
+$maxpicwidth = 90;
 $maxadmincw = 10;
 $maxfilesize = @ini_get('upload_max_filesize');
-$teamRow = $c['teamrow'];
-$allowHover = $c['allowhover'];
-$secureLogin = $c['securelogin'];
-$maxwidth = $c['maxwidth'];
-$gallery = $c['gallery'];
-$upicsize = $c['upicsize'];
-$maxgallerypics = $c['m_gallerypics'];
-$maxusergb = $c['m_usergb'];
-$maxclankasse = $c['m_clankasse'];
-$maxuserlist = $c['m_userlist'];
-$maxbanned = $c['m_banned'];
-$maxadminnews = $c['m_adminnews'];
-$maxadminartikel = $c["m_adminartikel"];
-$martikel = $c["m_artikel"];
-$maxshout = $c['m_shout'];
-$maxcomments = $c['m_comments'];
-$maxcwcomments = $c['m_cwcomments'];
-$maxarchivnews = $c['m_archivnews'];
-$maxgb = $c['m_gb'];
-$maxfthreads = $c['m_fthreads'];
-$maxcw = $c['m_clanwars'];
-$maxfposts = $c['m_fposts'];
-$maxnews = $c['m_news'];
-$maxftopics = $c['m_ftopics'];
-$maxevent = $c['m_events'];
-$maxlnews = $c['m_lnews'];
-$maxlartikel = $c['m_lartikel'];
-$maxtopdl = $c['m_topdl'];
-$maxlwars = $c['m_lwars'];
-$maxnwars = $c['m_nwars'];
-$maxlreg = $c['m_lreg'];
-$maxaway = $c['m_away'];
-$maxshoutarchiv = $c['maxshoutarchiv'];
-$shout_max_zeichen = $c['shout_max_zeichen'];
-$maxpicwidth = 90;
-$flood_forum = $c['f_forum'];
-$flood_gb = $c['f_gb'];
-$flood_membergb = $c['f_membergb'];
-$flood_shout = $c['f_shout'];
-$flood_newscom = $c['f_newscom'];
-$flood_artikelcom = $c['f_artikelcom'];
-$flood_cwcom = $c['f_cwcom'];
-$lnewsadmin = $c['l_newsadmin'];
-$lshouttext = $c['l_shouttext'];
-$lshoutnick = $c['l_shoutnick'];
-$lnews = $c['l_lnews'];
-$lartikel = $c['l_lartikel'];
-$ltopdl = $c['l_topdl'];
-$lftopics = $c['l_ftopics'];
-$llwars = $c['l_lwars'];
-$llreg = $c['l_lreg'];
-$servermenu = $c['l_servernavi'];
-$lnwars = $c['l_nwars'];
-$lnewsarchiv = $c['l_newsarchiv'];
-$lcwgegner = $c['l_clanwars'];
-$l_team = $c['l_team'];
-$lforumtopic = $c['l_forumtopic'];
-$lforumsubtopic = $c['l_forumsubtopic'];
-$maxawards = $c['m_awards'];
-$sdir = $settings['tmpdir'];
-$userip = visitorIp();
 
 //-> Auslesen der Cookies und automatisch anmelden
 if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSION['id']) && checkme() == "unlogged")
 {
     ## User aus der Datenbank suchen ##
-    $sql = db($sql="SELECT id,user,nick,pwd,email,level,time,pkey FROM ".$db['users']." WHERE id = '".$_COOKIE[$prev.'id']."' AND pkey = '".$_COOKIE[$prev.'pkey']."' AND level != '0'");
+    $sql = db("SELECT id,user,nick,pwd,email,level,time,pkey FROM ".$db['users']." WHERE id = '".$_COOKIE[$prev.'id']."' AND pkey = '".$_COOKIE[$prev.'pkey']."' AND level != '0'");
     if(_rows($sql))
     {
         $get = _fetch($sql);
@@ -149,6 +146,7 @@ if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSI
 
         ## Aktualisiere die User-Statistik ##
         db("UPDATE ".$db['userstats']." SET `logins` = logins+1 WHERE user = '".$get['id']."'");
+        unset($get,$permanent_key);
     }
     else
     {
@@ -158,6 +156,8 @@ if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSI
         $_SESSION['lastvisit'] = '';
         $_SESSION['pkey']      = '';
     }
+
+    unset($sql);
 }
 
 $userid = userid();
@@ -193,16 +193,30 @@ function visitorIp()
     return '0.0.0.0';
 }
 
+/**
+ * Funktion um notige Erweiterungen zu prufen
+ *
+ * @return boolean
+ **/
+function fsockopen_support()
+{
+    if(!function_exists('fsockopen')) return false;
+    if(!function_exists("fopen")) return false;
+    if(ini_get('allow_url_fopen') != 1) return false;
+    if(strpos(ini_get('disable_functions'),'fsockopen') || strpos(ini_get('disable_functions'),'file_get_contents') || strpos(ini_get('disable_functions'),'fopen')) return false;
+    return true;
+}
+
 //-> Auslesen der UserID
 function userid()
 {
     global $db;
+
     if(empty($_SESSION['id']) || empty($_SESSION['pwd'])) return 0;
-	$sql = db("SELECT id FROM ".$db['users']." WHERE id = '".$_SESSION['id']."' AND pwd = '".$_SESSION['pwd']."'");
-	if(!_rows($sql)) return 0;
-	$get = _fetch($sql);
-	return $get['id'];
-    return 0;
+    $sql = db("SELECT id FROM ".$db['users']." WHERE id = '".$_SESSION['id']."' AND pwd = '".$_SESSION['pwd']."'");
+    if(!_rows($sql)) return 0;
+    $get = _fetch($sql);
+    return $get['id'];
 }
 
 //-> Templateswitch
@@ -221,6 +235,7 @@ else
     else
         $tmpdir = $files[0];
 }
+unset($files);
 
 $designpath = '../inc/_templates_/'.$tmpdir;
 
@@ -247,7 +262,6 @@ function languages()
     {
         $file = str_replace('.php','',$files[$i]);
         $upFile = strtoupper(substr($file,0,1)).substr($file,1);
-
         if(file_exists('../inc/lang/flaggen/'.$file.'.gif'))
             $lang .= '<a href="../user/?action=language&amp;set='.$file.'"><img src="../inc/lang/flaggen/'.$file.'.gif" alt="'.$upFile.'" title="'.$upFile.'" class="icon" /></a> ';
     }
@@ -267,7 +281,7 @@ if($userid >= 1 && $ajaxJob != true)
 function settings($what)
 {
     global $db;
-	$get = _fetch(db("SELECT ".$what." FROM ".$db['settings'].""));
+    $get = db("SELECT ".$what." FROM ".$db['settings'],false,true);
     return $get[$what];
 }
 
@@ -336,6 +350,7 @@ while($getglossar = _fetch($qryglossar))
     $gl_words[] = re($getglossar['word']);
     $gl_desc[]  = $getglossar['glossar'];
 }
+unset($getglossar,$qryglossar);
 
 function regexChars($txt)
 {
@@ -562,9 +577,10 @@ function make_clickable($ret)
 /* END # from wordpress under GBU GPL license */
 
 //Diverse BB-Codefunktionen
-function bbcode($txt, $tinymce=0, $no_vid=0,$ts=0,$nolink=0)
+function bbcode($txt, $tinymce=0, $no_vid=0, $ts=0, $nolink=0)
 {
     global $settings,$charset;
+
     $txt = html_entity_decode($txt,ENT_COMPAT,$charset);
     if($no_vid == 0 && $settings['urls_linked'] == 1 && $nolink == 0)
         $txt = make_clickable($txt);
@@ -624,8 +640,7 @@ function bbcode_email($txt)
 {
     $txt = bbcode($txt);
     $txt = str_replace("&#91;","[",$txt);
-    $txt = str_replace("&#93;","]",$txt);
-    return $txt;
+    return str_replace("&#93;","]",$txt);
 }
 
 //-> Textteil in Zitat-Tags setzen
@@ -645,17 +660,15 @@ function zitat($nick,$zitat)
 //-> convert string for output
 function re($txt)
 {
-  $txt = stripslashes($txt);
-  $txt = str_replace("& ","&amp; ",$txt);
-  $txt = str_replace("[","&#91;",$txt);
-  $txt = str_replace("]","&#93;",$txt);
-  $txt = str_replace("\"","&#34;",$txt);
-  $txt = str_replace("<","&#60;",$txt);
-  $txt = str_replace(">","&#62;",$txt);
-  $txt = str_replace("(", "&#40;", $txt);
-  $txt = str_replace(")", "&#41;", $txt);
-
-  return $txt;
+    $txt = stripslashes($txt);
+    $txt = str_replace("& ","&amp; ",$txt);
+    $txt = str_replace("[","&#91;",$txt);
+    $txt = str_replace("]","&#93;",$txt);
+    $txt = str_replace("\"","&#34;",$txt);
+    $txt = str_replace("<","&#60;",$txt);
+    $txt = str_replace(">","&#62;",$txt);
+    $txt = str_replace("(", "&#40;", $txt);
+    return str_replace(")", "&#41;", $txt);
 }
 
 function re_entry($txt)
@@ -896,6 +909,7 @@ function fileExists($url)
     $host = $url_p['host'];
     $port = isset($url_p['port']) ? $url_p['port'] : 80;
 
+    if(!fsockopen_support()) return false;
     $fp = @fsockopen($url_p['host'], $port, $errno, $errstr, 5);
     if(!$fp) return false;
 
@@ -946,41 +960,27 @@ function spChars($txt)
   $txt = str_replace("Ö","&Ouml;",$txt);
   $txt = str_replace("ö","&ouml;",$txt);
   $txt = str_replace("ß","&szlig;",$txt);
-  $txt = str_replace("€","&euro;",$txt);
-
-  return $txt;
+  return str_replace("€","&euro;",$txt);
 }
 
 //-> Funktion um sauber in die DB einzutragen
 function up($txt, $bbcode=0, $charset_set='')
 {
-  global $charset;
+    global $charset;
 
-  if(!empty($charset_set))
-      $charset = $charset_set;
+    if(!empty($charset_set))
+        $charset = $charset_set;
 
-  $txt = str_replace("& ","&amp; ",$txt);
-  $txt = str_replace("\"","&#34;",$txt);
+    $txt = str_replace("& ","&amp; ",$txt);
+    $txt = str_replace("\"","&#34;",$txt);
 
-  if(empty($bbcode))
-  {
-    $txt = htmlentities(html_entity_decode($txt), ENT_QUOTES, $charset);
-    $txt = nl2br($txt);
-  }
-  $txt = spChars($txt);
+    if(empty($bbcode))
+    {
+        $txt = htmlentities(html_entity_decode($txt), ENT_QUOTES, $charset);
+        $txt = nl2br($txt);
+    }
 
-  return trim($txt);
-}
-
-//MySQL-Funktionen
-function _rows($rows)
-{
-    return mysql_num_rows($rows);
-}
-
-function _fetch($fetch)
-{
-    return mysql_fetch_array($fetch, MYSQL_ASSOC);
+    return trim(spChars($txt));
 }
 
 //-> Funktion um diverse Dinge aus Tabellen auszaehlen zu lassen
@@ -1009,12 +1009,15 @@ function sum($db, $where = "", $what)
     return 0;
 }
 
-function orderby($sort) {
+function orderby($sort)
+{
     $split = explode("&",$_SERVER['QUERY_STRING']);
     $url = "?";
 
-    foreach($split as $part) {
-        if(strpos($part,"orderby") === false && strpos($part,"order") === false && !empty($part)) {
+    foreach($split as $part)
+    {
+        if(strpos($part,"orderby") === false && strpos($part,"order") === false && !empty($part))
+        {
             $url .= $part;
             $url .= "&";
         }
@@ -1030,7 +1033,7 @@ function orderby($sort) {
 function nick_id($tid)
 {
     global $db;
-    $qry = _fetch(db("SELECT nick FROM ".$db['users']." WHERE id = '".$tid."'"));
+    $get = db("SELECT nick FROM ".$db['users']." WHERE id = '".$tid."'",false,true);
     return $get['nick'];
 }
 
@@ -1082,7 +1085,8 @@ function updateCounter()
 function update_maxonline()
 {
     global $db,$today;
-    $get = _fetch(db("SELECT maxonline FROM ".$db['counter']." WHERE today = '".$today."'"));
+
+    $get = db("SELECT maxonline FROM ".$db['counter']." WHERE today = '".$today."'",false,true);
     $count = cnt($db['c_who']);
 
     if($get['maxonline'] <= $count)
@@ -1118,18 +1122,18 @@ function online_reg()
 function checkme($userid_set=0)
 {
     global $db;
+
     if(!$userid = ($userid_set != 0 ? intval($userid_set) : userid()))
         return "unlogged";
 
-	$qry = db("SELECT level FROM ".$db['users']." WHERE id = ".$userid." AND pwd = '".$_SESSION['pwd']."' AND ip = '".$_SESSION['ip']."'");
-	if(_rows($qry))
-	{
-		$get = _fetch($qry);
-		return $get['level'];
-	}
-	else
-		return "unlogged";
-    
+    $qry = db("SELECT level FROM ".$db['users']." WHERE id = ".$userid." AND pwd = '".$_SESSION['pwd']."' AND ip = '".$_SESSION['ip']."'");
+    if(_rows($qry))
+    {
+      $get = _fetch($qry);
+        return $get['level'];
+    }
+    else
+        return "unlogged";
 }
 
 //-> Prueft, ob ein User diverse Rechte besitzt
@@ -1161,8 +1165,8 @@ function permission($check)
 function check_msg()
 {
     global $db;
-    $qry = db("SELECT page FROM ".$db['msg']." WHERE an = '".$_SESSION['id']."' AND page = 0");
 
+    $qry = db("SELECT page FROM ".$db['msg']." WHERE an = '".$_SESSION['id']."' AND page = 0");
     if(_rows($qry))
     {
         db("UPDATE ".$db['msg']." SET `page` = '1' WHERE an = '".$_SESSION['id']."'");
@@ -1336,8 +1340,8 @@ function checkpwd($user, $pwd)
 //-> Infomeldung ausgeben
 function info($msg, $url, $timeout = 5)
 {
-    global $c;
-    if($c['direct_refresh'])
+    global $config;
+    if($config['direct_refresh'])
         return header('Location: '.str_replace('&amp;', '&', $url));
 
     $u = parse_url($url); $parts = '';
@@ -1399,7 +1403,7 @@ function gallery_size($img="")
 //-> URL wird auf Richtigkeit ueberprueft
 function check_url($url)
 {
-    if($url && $fp = @fopen ($url, "r"))
+    if($url && $fp = @fopen($url, "r"))
     {
         return true;
         @fclose($fp);
@@ -1552,9 +1556,7 @@ function blank_autor($uid)
 //-> Rechte abfragen
 function jsconvert($txt)
 {
-    $search = array("'","&#039;","\"","\r","\n");
-    $replace = array("\'","\'","&quot;","","");
-    return str_replace($search,$replace,$txt);
+    return str_replace(array("'","&#039;","\"","\r","\n"),array("\'","\'","&quot;","",""),$txt);
 }
 
 //-> interner Forencheck
@@ -1570,7 +1572,7 @@ function fintern($id)
       $team = db("SELECT * FROM ".$db['f_access']." AS s1 LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi` WHERE s2.`user` = '".intval($userid)."' AND s2.`posi` != '0' AND s1.`forum` = '".intval($id)."'");
       $user = db("SELECT * FROM ".$db['f_access']." WHERE `user` = '".intval($userid)."' AND `forum` = '".intval($id)."'");
 
-      if(_rows($user) || _rows($team) || $chkMe == 4 || $fget['intern'] == 0)
+      if(_rows($user) || _rows($team) || $chkMe == 4 || !$fget['intern'])
           return true;
       else if($chkMe == "unlogged")
           return false;
@@ -1583,7 +1585,7 @@ function fintern($id)
 function data($tid, $what)
 {
     global $db;
-    $get = _fetch(db("SELECT ".$what." FROM ".$db['users']." WHERE id = '".intval($tid)."'"));
+    $get = db("SELECT ".$what." FROM ".$db['users']." WHERE id = '".intval($tid)."'",false,true);
     return re_entry($get[$what]);
 }
 
@@ -1591,7 +1593,7 @@ function data($tid, $what)
 function userstats($tid, $what)
 {
     global $db;
-    $get = _fetch(db("SELECT ".$what." FROM ".$db['userstats']." WHERE user = '".intval($tid)."'"));
+    $get = db("SELECT ".$what." FROM ".$db['userstats']." WHERE user = '".intval($tid)."'",false,true);
     return $get[$what];
 }
 
@@ -1647,7 +1649,7 @@ function check_new($datum,$new = "",$datum2 = "")
     global $db,$userid;
     if($userid)
     {
-        $get = _fetch(db("SELECT lastvisit FROM ".$db['userstats']." WHERE user = '".intval($userid)."'"));
+        $get = db("SELECT lastvisit FROM ".$db['userstats']." WHERE user = '".intval($userid)."'",false,true);
         if($datum >= $get['lastvisit'] || $datum2 >= $get['lastvisit'])
             return (empty($new) ? _newicon : $new);
     }
@@ -1790,16 +1792,14 @@ function sgames($game = '')
 function voteanswer($what, $vid)
 {
     global $db;
-    $get = _fetch(db("SELECT * FROM ".$db['vote_results']." WHERE what = '".up($what)."' AND vid = '".$vid."'"));
+    $get = db("SELECT * FROM ".$db['vote_results']." WHERE what = '".up($what)."' AND vid = '".$vid."'",false,true);
     return $get['sel'];
 }
 
 //Profilfelder konvertieren
 function conv($txt)
 {
-    $search = array("ä","ü","ö","Ä","Ü","Ö","ß");
-    $replace = array("ae","ue","oe","Ae","Ue","Oe","ss");
-    return str_replace($search, $replace, $txt);
+    return str_replace(array("ä","ü","ö","Ä","Ü","Ö","ß"), array("ae","ue","oe","Ae","Ue","Oe","ss"), $txt);
 }
 
 //PHPInfo in array lesen
@@ -1842,7 +1842,7 @@ function parsePHPInfo()
 function exist($tid)
 {
     global $db;
-    return (_rows(db("SELECT id FROM ".$db['users']." WHERE id = '".intval($tid)."'")) ? true : false);
+    return db("SELECT id FROM ".$db['users']." WHERE id = '".intval($tid)."'",true) ? true : false;
 }
 
 //-> Geburtstag errechnen
@@ -1879,7 +1879,7 @@ function getrank($tid, $squad="", $profil=0)
         {
             while($get = _fetch($qry))
             {
-                $getp = _fetch(db("SELECT * FROM ".$db['pos']." WHERE id = '".intval($get['posi'])."'"));
+                $getp = db("SELECT * FROM ".$db['pos']." WHERE id = '".intval($get['posi'])."'",false,true);
                 if(!empty($get['name'])) $squadname = '<b>'.$get['name'].':</b> ';
                 else $squadname = '';
                 return $squadname.$getp['position'];
@@ -1937,8 +1937,8 @@ function set_lastvisit()
 function onlinecheck($tid)
 {
     global $db,$useronline;
-    $qry = db("SELECT id FROM ".$db['users']." WHERE id = '".intval($tid)."' AND time+'".$useronline."'>'".time()."' AND online = 1");
-    return _rows($qry) ? "<img src=\"../inc/images/online.gif\" alt=\"\" class=\"icon\" />" : "<img src=\"../inc/images/offline.gif\" alt=\"\" class=\"icon\" />";
+    $row = db("SELECT id FROM ".$db['users']." WHERE id = '".intval($tid)."' AND time+'".$useronline."'>'".time()."' AND online = 1",true);
+    return $row ? "<img src=\"../inc/images/online.gif\" alt=\"\" class=\"icon\" />" : "<img src=\"../inc/images/offline.gif\" alt=\"\" class=\"icon\" />";
 }
 
 //Funktion fuer die Sprachdefinierung der Profilfelder
@@ -2011,9 +2011,7 @@ function navi_name($name)
 {
     $name = trim($name);
     if(preg_match("#^_(.*?)_$#Uis",$name))
-    {
         @eval("\$name = _".preg_replace("#_(.*?)_#Uis", "$1", $name).";");
-    }
 
     return $name;
 }
@@ -2048,6 +2046,7 @@ function convert_feed($txt)
 function feed()
 {
     global $db,$pagetitle,$clanname,$charset;
+
     $host = $_SERVER['HTTP_HOST'];
     $pfad = preg_replace("#^(.*?)\/(.*?)#Uis","$1",dirname($_SERVER['PHP_SELF']));
     $feed = '<?xml version="1.0" encoding="'.$charset.'" ?>';
@@ -2103,8 +2102,8 @@ function feed()
 //Userspezifische Informationen
 function infos($checkBrowser = "")
 {
-    global $userip;
-    if(settings("persinfo") == 1)
+    global $userip, $settings;
+    if($settings['persinfo'])
     {
         $data = $_SERVER['HTTP_USER_AGENT'];
         if(preg_match("/Android/i",$data)) 					$system = "Android";
@@ -2112,21 +2111,12 @@ function infos($checkBrowser = "")
         elseif(preg_match("/SunOS/i",$data))        		$system = "Sun OS";
         elseif(preg_match("/Macintosh/i",$data))    		$system = "Macintosh";
         elseif(preg_match("/Mac_PowerPC/i",$data))  		$system = "Macintosh";
-        elseif(preg_match("/Windows 2000/i",$data)) 		$system = "Windows 2000";
         elseif(preg_match("/Windows XP/i",$data))   		$system = "Windows XP";
         elseif(preg_match("/NT 5.2/i",$data))       		$system = "Windows XP x64";
         elseif(preg_match("/NT 5.1/i",$data))       		$system = "Windows XP";
-        elseif(preg_match("/NT 5.0/i",$data))      			$system = "Windows 2000";
-        elseif(preg_match("/NT 4.0/i",$data))       		$system = "Windows NT 4";
         elseif(preg_match("/NT 6.0/i",$data))       		$system = "Windows Vista";
         elseif(preg_match("/NT 6.1/i",$data))       		$system = "Windows 7";
         elseif(preg_match("/NT 6.2/i",$data))       		$system = "Windows 8";
-        elseif(preg_match("/Windows ME/i",$data))   		$system = "Windows 9x + ME";
-        elseif(preg_match("/Windows 98/i",$data))   		$system = "Windows 9x + ME";
-        elseif(preg_match("/Windows 95/i",$data))   		$system = "Windows 9x + ME";
-        elseif(preg_match("/Win 9x/i",$data))       		$system = "Windows 9x + ME";
-        elseif(preg_match("/Win95/i",$data))        		$system = "Windows 9x + ME";
-        elseif(preg_match("/Win98/i",$data))        		$system = "Windows 9x + ME";
         elseif(preg_match("/OS (.*?) like Mac OS X/i",$data)) $system = "iOS";
         else                                        $system = _unknown_system;
 
@@ -2141,6 +2131,7 @@ function infos($checkBrowser = "")
         elseif(preg_match("/MSIE 8/i",$data))     $browser = "Internet Explorer 8";
         elseif(preg_match("/MSIE 9/i",$data))     $browser = "Internet Explorer 9";
         elseif(preg_match("/MSIE 10/i",$data))    $browser = "Internet Explorer 10";
+        elseif(preg_match("/MSIE 11/i",$data))    $browser = "Internet Explorer 11";
         else                                      $browser = _unknown_browser;
 
         $res = "<script language=\"javascript\" type=\"text/javascript\">doc.write(screen.width + ' x ' + screen.height)</script>";
@@ -2317,6 +2308,7 @@ function check_internal_url()
     if(strpos($pfad, "?") === false && strpos($pfad, ".php") === false) {
         $pfad .= "/";
     }
+
     $qry_navi = db("SELECT * FROM ".$db['navi']." WHERE url = '".$pfad."'");
     if(_rows($qry_navi) == 0) {
         list($pfad,$rest) = split('\?',$pfad);
@@ -2398,17 +2390,19 @@ function getBoardPermissions($checkID = 0, $pos = 0)
 }
 
 //-> Neue Languages einbinden, sofern vorhanden
-if($l = get_files(basePath.'/inc/additional-languages/'.$language.'/',false,true,array('php')))
+if($language_files = get_files(basePath.'/inc/additional-languages/'.$language.'/',false,true,array('php')))
 {
-    foreach($l AS $languages)
+    foreach($language_files AS $languages)
     { include(basePath.'/inc/additional-languages/'.$language.'/'.$languages); }
+    unset($language_files,$languages);
 }
 
 //-> Neue Funktionen einbinden, sofern vorhanden
-if($f = get_files(basePath.'/inc/additional-functions/',false,true,array('php')))
+if($functions_files = get_files(basePath.'/inc/additional-functions/',false,true,array('php')))
 {
-    foreach($f AS $func)
+    foreach($functions_files AS $func)
     { include(basePath.'/inc/additional-functions/'.$func); }
+    unset($functions_files,$func);
 }
 
 //-> Navigation einbinden

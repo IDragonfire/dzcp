@@ -16,24 +16,23 @@ else $action = $_GET['action'];
 
 switch ($action):
 default:
-  if(function_exists("fopen"))
+  if(fsockopen_support())
   {
-    $qry = db("SELECT * FROM ".$db['server']."
-               ORDER BY game");
+    $qry = db("SELECT * FROM ".$db['server']." ORDER BY game");
     while($get = _fetch($qry))
     {
         $player_list = '';
         if($get['status'] != "nope" && file_exists(basePath.'/inc/server_query/'.$get['status'].'.php'))
         {
-          if(time() - @filemtime(basePath.'/__cache/gameserver_'.intval($get['id']).'_'.$language.'.html') > $c['cache_server'])
+          if(time() - @filemtime(basePath.'/__cache/'.md5('gameserver_'.intval($get['id']).'_'.$language).'.cache') > $config['cache_server'])
           {
           if(!function_exists('server_query_'.$get['status']))
           {
             include(basePath.'/inc/server_query/'.strtolower($get['status']).'.php');
           }
-  
+
           $server = call_user_func('server_query_'.$get['status'], $get['ip'], $get['port'], $get['qport'], 'info');
-  
+
           if(!$server)
           {
             $image_status         = "../inc/images/offline.gif";
@@ -47,13 +46,13 @@ default:
             $server["mapname"] = preg_replace("/[^A-Za-z0-9 \&\_\-]/", "_", $server["mapname"]);
             $map_low = str_replace(' ','_', strtolower($server["mapname"]));
             $image_map = "../inc/images/maps/".$get['status']."/".$server['gamemod']."/".$map_low.".jpg";
-  
+
             if(!file_exists($image_map))
             {
               if($chkMe == 4) $index .= '<span style="color:#000;background-color:#FFF"><b style="color:red">Admin:</b> <b>Mappath:</b> '.str_replace('../', basePath.'/', $image_map).'<br />';
               $image_map = "../inc/images/maps/no_map.gif";
             }
-  
+
             $image_status = "../inc/images/online.gif";
             $image_pwd = "";
             $server['gamemod'] = strtolower((empty($server['gamemod']) ? $get['status'] : $server['gamemod']));
@@ -63,14 +62,14 @@ default:
               $server['status'] = "ONLINE WITH PASSWORD";
             }
           }
-  
+
           $server['hostname'] = htmlentities($server['hostname'], ENT_QUOTES);
           $game_icon = file_exists(basePath.'/inc/images/gameicons/'.$get['status'].'/'.$server['gamemod'].'.gif')
                      ? '<img src="../inc/images/gameicons/'.$get['status'].'/'.$server['gamemod'].'.gif" alt="" />' : '';
-  
+
           unset($player_list);
           $player_list = call_user_func('server_query_'.$get['status'], $get['ip'], $get['port'], $get['qport'], 'players');
-  
+
           if(empty($player_list))
           {
             $playerstats = _server_noplayers;
@@ -84,7 +83,7 @@ default:
             if(isset($player_list[1]['ping']))   $ping   = 1; else $ping    = 0;
             if(isset($player_list[1]['stats']))  $stats  = 1; else $stats   = 0;
             if(isset($player_list[1]['time']))   $time   = 1; else $time    = 0;
-  
+
             if($score == 1)  $showscore   = '<td width="60" class="contentHead"><span class="fontBold">Score</span></td>';
             else             $showscore   = '';
             if($deaths == 1) $showdeaths  = '<td width="60" class="contentHead"><span class="fontBold">Deaths</span></td>';
@@ -103,13 +102,13 @@ default:
             else             $showstats   = '';
             if($time == 1)   $showtime    = '<td width="90" class="contentHead"><span class="fontBold">'._server_time.'</span></td>';
             else             $showtime   = '';
-  
+
             unset($playerstats);
             foreach($player_list as $key=>$player)
             {
               $player['name'] = htmlentities($player['name'], ENT_QUOTES);
               $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-  
+
               if($score == 1)  { $colspan++; $show_score   = '<td class="'.$class.'" align="center">'.$player['score'].'</td>'; }
               else             $show_score   = '';
               if($deaths == 1) { $colspan++; $show_deaths  = '<td class="'.$class.'" align="center">'.$player['deaths'].'</td>'; }
@@ -128,7 +127,7 @@ default:
               else             $show_stats   = '';
               if($time == 1)   { $colspan++; $show_time    = '<td class="'.$class.'" align="center">'.$player['time'].'</td>'; }
               else             $show_time    = '';
-  
+
               $playerstats .= show($dir."/playerstats", array("name" => $player['name'],
                                                               "class" => $class,
                                                               "id" => $get['id'],
@@ -145,16 +144,16 @@ default:
                                                               "show_skin" => $show_skin));
             }
           }
-  
+
           if(!empty($server_name_config[$server['gamemod']]))
             $server_name = $server_name_config[$server['gamemod']][0];
-  
+
           if(!empty($server_link_config[$server['gamemod']]))
             $server_link = $server_link_config[$server['gamemod']];
-  
+
           if(!empty($get['pwd']) && permission("gs_showpw")) $pwds = show(_server_pwd, array("pwd" => re($get['pwd'])));
           else $pwds = "";
-  
+
           if($_GET['show'] == $get['id'])
           {
             $display = "show";
@@ -163,11 +162,11 @@ default:
             $display = "none";
             $moreicon = "expand";
           }
-  
+
           $klapp = show(_klapptext_server_link, array("link" => _server_splayerstats,
                                                       "id" => $get['id'],
                                                       "moreicon" => $moreicon));
-  
+
           $index .= show($dir."/server_show", array("showscore" => $showscore,
                                                     "showdeaths" => $showdeaths,
                                                     "showskill" => $showskill,
@@ -211,11 +210,11 @@ default:
                                                     "name" => re($server['hostname']),
   									                            	  "image_map" => $image_map));
 
-          $fp = @fopen(basePath.'/__cache/gameserver_'.intval($get['id']).'_'.$language.'.html', 'w');
+          $fp = @fopen(basePath.'/__cache/'.md5('gameserver_'.intval($get['id']).'_'.$language).'.cache', 'w');
                 @fwrite($fp, $index);
           @fclose($fp);
         } else {
-          $index = @file_get_contents(basePath.'/__cache/gameserver_'.intval($get['id']).'_'.$language.'.html');
+          $index = @file_get_contents(basePath.'/__cache/'.md5('gameserver_'.intval($get['id']).'_'.$language).'.cache');
         }
       } else {
         if(!empty($get['pwd'])) $pwds = show(_server_pwd, array("pwd" => re($get['pwd'])));

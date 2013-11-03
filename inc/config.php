@@ -1,10 +1,12 @@
 <?php
+error_reporting(0);
+
 ## REQUIRES ##
 require_once(basePath."/inc/mysql.php");
 
 //DZCP-Install default variable
 if(!isset($installation))
-$installation = false;
+  $installation = false;
 
 function show($tpl="", $array=array(), $array_lang_constant=array(), $array_block=array())
 {
@@ -52,10 +54,11 @@ $db = array("host" =>           $sql_host,
             "user" =>           $sql_user,
             "pass" =>           $sql_pass,
             "db" =>             $sql_db,
+            "prefix" =>         $prefix,
             "artikel" =>        $prefix."artikel",
             "acomments" =>      $prefix."acomments",
             "awards" =>         $prefix."awards",
-              "away" =>           $prefix."away",
+            "away" =>           $prefix."away",
             "banned" =>         $prefix."banned",
             "buddys" =>         $prefix."userbuddys",
             "ipcheck" =>        $prefix."ipcheck",
@@ -73,7 +76,7 @@ $db = array("host" =>           $sql_host,
             "dl_kat" =>         $prefix."download_kat",
             "events" =>         $prefix."events",
             "f_access" =>       $prefix."f_access",
-              "f_abo" =>          $prefix."f_abo",
+            "f_abo" =>          $prefix."f_abo",
             "f_kats" =>         $prefix."forumkats",
             "f_posts" =>        $prefix."forumposts",
             "f_skats" =>        $prefix."forumsubkats",
@@ -112,6 +115,7 @@ $db = array("host" =>           $sql_host,
             "userstats" =>      $prefix."userstats",
             "votes" =>          $prefix."votes",
             "vote_results" =>   $prefix."vote_results");
+unset($prefix,$sql_host,$sql_user,$sql_pass,$sql_db);
 
 if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '')
 {
@@ -119,13 +123,37 @@ if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '
     if(!mysql_select_db($db['db'],$msql)) die("<b>Die angegebene Datenbank <i>".$db['db']."</i> existiert nicht!");
 }
 
-function db($db)
+//MySQL-Funktionen
+function _rows($rows)
 {
-  global $prefix;
-  if(!$qry = mysql_query($db)) die('<b>MySQL-Query failed:</b><br /><br /><ul>'.
-                                   '<li><b>ErrorNo</b> = '.str_replace($prefix,'',mysql_errno()).
-                                   '<li><b>Error</b>   = '.str_replace($prefix,'',mysql_error()).
-                                   '<li><b>Query</b>   = '.str_replace($prefix,'',$db).'</ul>');
-  return $qry;
+	return mysql_num_rows($rows);
 }
-?>
+
+function _fetch($fetch)
+{
+    return mysql_fetch_assoc($fetch);
+}
+
+function db($db='',$rows=false,$fetch=false)
+{
+    global $prefix;
+    if(!$qry = mysql_query($db)) die('<b>MySQL-Query failed:</b><br /><br /><ul>'.
+                                     '<li><b>ErrorNo</b> = '.!empty($prefix) ? str_replace($prefix,'',mysql_errno()) : mysql_errno().
+                                     '<li><b>Error</b>   = '.!empty($prefix) ? str_replace($prefix,'',mysql_error()) : mysql_error().
+                                     '<li><b>Query</b>   = '.!empty($prefix) ? str_replace($prefix,'',$db).'</ul>' : $db);
+
+    if($fetch && $rows)
+    {
+        $result = mysql_fetch_array($qry);
+        mysql_free_result($qry);
+        return $result;
+    }
+    else if($fetch && !$rows)
+    {
+        $result = mysql_fetch_assoc($qry);
+        mysql_free_result($qry);
+        return $result;
+    }
+
+    return $qry;
+}

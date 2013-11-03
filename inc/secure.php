@@ -73,7 +73,7 @@
       $end  = explode(".", $value['name']);
       $end  = strtolower($end[count($end)-1]);
       $info = getimagesize($value['tmp_name']);
-      
+
       if($end != 'rar' && $end != 'zip')
       {
         if(
@@ -90,7 +90,3 @@
       }
     }
   }
-  
-// won't needed any more, will get back empty return in case of incompatibility
-  function safe(){ return; }
-?>

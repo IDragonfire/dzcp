@@ -26,10 +26,7 @@ $dir = "admin";
     }
 
 //Site Permissions
-    $qry = db("SELECT * FROM ".$db['permissions']."
-               WHERE user = '".intval($userid)."'");
-    $check = _fetch($qry);
-
+    $check = db("SELECT * FROM ".$db['permissions']." WHERE user = '".intval($userid)."'",false,true);
     unset($amenu);
     $files = get_files(basePath.'/admin/menu/',false,true);
     foreach($files AS $file)
@@ -73,19 +70,40 @@ $dir = "admin";
       $adminc1 = '/*'; $adminc2 = '*/';
     }
 
-    if(function_exists('fsockopen'))
+    if(fsockopen_support())
     {
-      $dzcp_v = fileExists("http://www.dzcp.de/version.txt");
-      if($dzcp_v <= _version)
+      if(time() - @filemtime(basePath.'/__cache/'.md5('admin_version').'.cache') > 600)
       {
+	      $dzcp_v = fileExists("http://www.dzcp.de/version.txt");
+	      if(!empty($dzcp_v))
+	      {
+		      $fp = @fopen(basePath.'/__cache/'.md5('admin_version').'.cache', 'w');
+		      @fwrite($fp, $dzcp_v); @fclose($fp);
+	      }
+      }
+      else
+      	$dzcp_v = @file_get_contents(basePath.'/__cache/'.md5('admin_version').'.cache');
+
+      if($dzcp_v <= _version) {
         $version = '<b>'._akt_version.': <span class="fontGreen">'._version.'</span></b>';
         $old = "";
-      } else {
+      } else  {
         $version = "<a href=\"http://www.dzcp.de\" target=\"_blank\" title=\"external Link: www.dzcp.de\"><b>"._akt_version.":</b> <span class=\"fontRed\">"._version."</span></a>";
         $old = "_old";
       }
 
-      $dzcp_news = @file_get_contents('http://www.dzcp.de/dzcp_news.php');
+      if(time() - @filemtime(basePath.'/__cache/'.md5('admin_news').'.cache') > 600)
+      {
+      	$dzcp_news = @file_get_contents('http://www.dzcp.de/dzcp_news.php');
+      	if(!empty($dzcp_v))
+      	{
+      		$fp = @fopen(basePath.'/__cache/'.md5('admin_news').'.cache', 'w');
+      		@fwrite($fp, $dzcp_news); @fclose($fp);
+      	}
+      }
+      else
+      	$dzcp_news = @file_get_contents(basePath.'/__cache/'.md5('admin_news').'.cache');
+
     }
     if(@file_exists(basePath."/_installer") && $chkMe == 4)
         {

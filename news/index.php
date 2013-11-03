@@ -261,7 +261,7 @@ else
       $check = db("SELECT intern FROM ".$db['news']."
                    WHERE id = '".intval($_GET['id'])."'");
       $c = _fetch($check);
-      if($c['intern'] == 1 && !permission("intnews"))
+      if($config['intern'] == 1 && !permission("intnews"))
       {
         $index = error(_error_wrong_permissions, 1);
       } else {

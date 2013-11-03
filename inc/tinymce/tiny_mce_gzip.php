@@ -163,7 +163,7 @@ class TinyMCE_Compressor {
         $supportsGzip = $this->settings['compress'] && !empty($encoding) && !$zlibOn && function_exists('gzencode');
 
         // Set cache file name
-        $cacheFile = $this->settings["cache_dir"] . "/" . $hash . ($supportsGzip ? ".bin" : ".js");
+        $cacheFile = $this->settings["cache_dir"] . "/" . $hash . ($supportsGzip ? ".cache" : ".js");
 
          // Set headers
         header("Content-type: text/javascript");

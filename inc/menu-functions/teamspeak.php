@@ -2,7 +2,8 @@
 //-> Teamspeak statusscript
 function teamspeak($js = 0)
 {
-  global $db, $settings, $language, $c;
+  global $db, $settings, $language, $config;
+  if(!fsockopen_support()) return _fopen;
 
   header('Content-Type: text/html; charset=iso-8859-1');
   if(empty($js))
@@ -20,18 +21,16 @@ function teamspeak($js = 0)
 
   } else {
     if(!empty($settings['ts_ip']) && !empty($settings['ts_sport']) && !empty($settings['ts_port'])) {
-      if(time() - @filemtime(basePath.'/__cache/nav_teamspeak_'.$language.'.html') > $c['cache_teamspeak']) {
+      if(time() - @filemtime(basePath.'/__cache/'.md5('nav_teamspeak_'.$language).'.cache') > $config['cache_teamspeak']) {
         $teamspeak = teamspeakViewer($settings);
-        
-        $fp = @fopen(basePath.'/__cache/nav_teamspeak_'.$language.'.html', 'w');
-              @fwrite($fp, $teamspeak);
+
+        $fp = @fopen(basePath.'/__cache/'.md5('nav_teamspeak_'.$language).'.cache', 'w'); @fwrite($fp, $teamspeak);
         @fclose($fp);
-      } else {
-        $teamspeak = @file_get_contents(basePath.'/__cache/nav_teamspeak_'.$language.'.html');
       }
+      else
+		$teamspeak = @file_get_contents(basePath.'/__cache/'.md5('nav_teamspeak_'.$language).'.cache');
     } else $teamspeak = '<br /><center>'._no_ts.'</center><br />';
   }
 
   return $teamspeak;
 }
-?>

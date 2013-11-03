@@ -1026,6 +1026,7 @@ class Boundary
                 $port = $this->SMTP_PORT;
             }
 
+            if(!fsockopen_support()) return false;
             $this->smtp_conn = fsockopen($host,
                                          $port,
                                          $errno,
