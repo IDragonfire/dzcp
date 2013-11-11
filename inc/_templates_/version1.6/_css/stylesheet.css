@@ -323,15 +323,6 @@ div.slidetabs a.slidertabs {background:url(../images/slideshow/slidetabs.png); w
 div.slidetabs a.slidertabs:hover {background-position:0 17px}
 div.slidetabs a.slidertabs.current {background-position:0 17px; cursor:default}
 
-
-/* NEWS */
-table.news {margin-bottom:30px}
-/* Newsbild Positionierung */
-td.news img.newsImage {float:left;margin:0 15px 15px 0}
-/* Settings Newatitel */
-td.news h1 {height:30px;line-height:30px;font-size:13px;color:#676767}
-td.news p {padding-bottom:5px}
-
 /*---------------------------------------------
 Set attributes for the main-table
 ---------------------------------------------*/
@@ -777,9 +768,16 @@ news/comments_show.html
 news/archiv.html
 news/archiv_show.html
 ---------------------------------------------*/
-/*
-  Newsbox
-*/
+
+/* NEWS */
+table.news {margin-bottom:30px}
+/* Newsbild Positionierung */
+td.news img.newsImage {float:left;margin:0 15px 15px 0}
+/* Settings Newatitel */
+td.news h1 {height:30px;line-height:30px;font-size:13px;color:#676767}
+td.news p {padding-bottom:5px}
+
+/* Newsbox*/
 td.newsContent {
   padding: 3px;
 }
