@@ -210,7 +210,7 @@ td.loginLeft, td.loginRight {
 }
 
 input.loginName_dis,input.loginPwd_dis,input.loginName_en,input.loginPwd_en,input.loginSubmit {
-  width: 147px; color: #000;
+  width: 198px; color: #000;
   border: 1px solid #111;
   border-top: 1px solid #555;
   border-right: 1px solid #555;
@@ -319,7 +319,7 @@ input.shoutSubmit {
   background-color: #FFF;
   background-image: url(../images/submit.jpg);
   border: 1px solid #5F5F5F;
-  color: #000;
+  color: #FFF;
   cursor: pointer;
 }
 input.shoutSubmit:hover {
@@ -553,7 +553,7 @@ table.news {margin-bottom:30px}
 /* Newsbild Positionierung */
 td.news img.newsImage {float:left;margin:0 15px 15px 0}
 /* Settings Newatitel */
-td.news h1 {height:30px;line-height:30px;font-size:13px;color:#676767}
+td.news h1 {height:30px;line-height:30px;font-size:13px;color:#FFF}
 td.news p {padding-bottom:5px}
 
 /* Newsbox*/
