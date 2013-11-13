@@ -553,7 +553,7 @@ table.news {margin-bottom:30px}
 /* Newsbild Positionierung */
 td.news img.newsImage {float:left;margin:0 15px 15px 0}
 /* Settings Newatitel */
-td.news h1 {height:30px;line-height:30px;font-size:13px;color:#676767}
+td.news h1 {height:30px;line-height:30px;font-size:13px;color:#FFF}
 td.news p {padding-bottom:5px}
 
 /* Newsbox*/

@@ -433,7 +433,7 @@ td.loginLeft, td.loginRight {
 }
 
 input.loginName_dis,input.loginPwd_dis,input.loginName_en,input.loginPwd_en,input.loginSubmit {
-  width: 147px; color: #4e4e4e;
+  width: 198px; color: #4e4e4e;
   border: 1px solid #d4d4d4;
   background-color: #fbfbfb;
   padding: 2px;
@@ -519,7 +519,7 @@ Enabled input fields (clicked)
 input.shoutEmail_en,input.shoutNick_en,textarea.shoutTextfield_en {
   background-color:#fff;
   border:1px solid #4e4e4e;
-  color:#000;
+  color:#FFF;
 }
 /*---------------------------------------------
 Shoutbox-textfield
