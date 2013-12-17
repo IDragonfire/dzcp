@@ -519,8 +519,10 @@ Enabled input fields (clicked)
 input.shoutEmail_en,input.shoutNick_en,textarea.shoutTextfield_en {
   background-color:#fff;
   border:1px solid #4e4e4e;
-  color:#FFF;
+  color:#000;
 }
+
+
 /*---------------------------------------------
 Shoutbox-textfield
 ---------------------------------------------*/
