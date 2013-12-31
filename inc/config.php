@@ -54,6 +54,7 @@ $db = array("host" =>           $sql_host,
             "user" =>           $sql_user,
             "pass" =>           $sql_pass,
             "db" =>             $sql_db,
+            "char" =>           $sql_charset,
             "prefix" =>         $prefix,
             "artikel" =>        $prefix."artikel",
             "acomments" =>      $prefix."acomments",
@@ -119,21 +120,52 @@ unset($prefix,$sql_host,$sql_user,$sql_pass,$sql_db);
 
 if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '')
 {
+    try { $pdo_handler = new PDO(sprintf('mysql:host=%s;dbname=%s;charset=%s', $db['host'], $db['db'], $db['char']), $db['user'], $db['pass']); }
+    catch(PDOException $exception) { die($exception->getMessage()); }
+
+    //deprecated
     if(!$msql = mysql_connect($db['host'],$db['user'],$db['pass'])) die("<b>Fehler beim Zugriff auf die Datenbank!");
     if(!mysql_select_db($db['db'],$msql)) die("<b>Die angegebene Datenbank <i>".$db['db']."</i> existiert nicht!");
 }
 
-//MySQL-Funktionen
-function _rows($rows)
+function db_pdo($query='',$rows=false,$fetch=false)
 {
-	return mysql_num_rows($rows);
+    global $pdo_handler;
+    if(empty($query) || !$pdo_handler) return false;
+    $sql_exec = false; $stmt = null;
+    try {
+        $stmt = $pdo_handler->query($query);
+        if($fetch && $rows)
+            $sql_exec = $stmt->fetchAll();
+        else if($fetch && !$rows) {
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
+            $sql_exec = $stmt->fetch();
+        }
+        else if($rows && !$fetch)//Num of Rows
+            $sql_exec = $stmt->rowCount();
+        else
+            $sql_exec = $stmt;
+
+        $stmt = null;
+    } catch (PDOException $exception) { echo $exception->getMessage(); }
+
+    return $sql_exec;
 }
 
+//MySQL-Funktionen
+//deprecated
+function _rows($rows)
+{
+    return mysql_num_rows($rows);
+}
+
+//deprecated
 function _fetch($fetch)
 {
     return mysql_fetch_assoc($fetch);
 }
 
+//deprecated
 function db($db='',$rows=false,$fetch=false)
 {
     global $prefix;

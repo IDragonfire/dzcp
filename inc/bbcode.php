@@ -15,7 +15,7 @@ $ajaxJob = (!isset($ajaxJob) ? false : $ajaxJob);
 $rootAdmin = 1;
 
 //-> Settingstabelle auslesen
-$settings = db("SELECT * FROM ".$db['settings'],false,true);
+$settings = db_pdo("SELECT * FROM ".$db['settings'],false,true);
 $prev = $settings['prev'].'_';
 
 //-> Language auslesen
@@ -50,7 +50,7 @@ $today = date("j.n.Y");
 $picformat = array("jpg", "gif", "png");
 
 //-> Configtabelle auslesen
-$config = db("SELECT * FROM ".$db['config'],false,true);
+$config = db_pdo("SELECT * FROM ".$db['config'],false,true);
 
 //-> Config
 $teamRow = $config['teamrow'];
@@ -120,10 +120,11 @@ $maxfilesize = @ini_get('upload_max_filesize');
 if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSION['id']) && checkme() == "unlogged")
 {
     ## User aus der Datenbank suchen ##
-    $sql = db("SELECT id,user,nick,pwd,email,level,time,pkey FROM ".$db['users']." WHERE id = '".$_COOKIE[$prev.'id']."' AND pkey = '".$_COOKIE[$prev.'pkey']."' AND level != '0'");
-    if(_rows($sql))
+    $sth = $pdo_handler->prepare("SELECT id,user,nick,pwd,email,level,time,pkey FROM ".$db['users']." WHERE id = ? AND pkey = ? AND level != '0'");
+    $sth->execute(array(((int)$_COOKIE[$prev.'id']), $_COOKIE[$prev.'pkey']));
+    if($sth->rowCount())
     {
-        $get = _fetch($sql);
+        $get = $sth->fetch(PDO::FETCH_ASSOC);
 
         ## Generiere neuen permanent-key ##
         $permanent_key = md5(mkpwd(8));
@@ -142,10 +143,10 @@ if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSI
             $_SESSION['lastvisit'] = data($get['id'], "time");
 
         ## Aktualisiere Datenbank ##
-        db("UPDATE ".$db['users']." SET `online` = '1', `sessid` = '".session_id()."', `ip` = '".$_SESSION['ip']."', `pkey` = '".$permanent_key."' WHERE id = '".$get['id']."'");
+        db_pdo("UPDATE ".$db['users']." SET `online` = '1', `sessid` = '".session_id()."', `ip` = '".$_SESSION['ip']."', `pkey` = '".$permanent_key."' WHERE id = '".$get['id']."'");
 
         ## Aktualisiere die User-Statistik ##
-        db("UPDATE ".$db['userstats']." SET `logins` = logins+1 WHERE user = '".$get['id']."'");
+        db_pdo("UPDATE ".$db['userstats']." SET `logins` = logins+1 WHERE user = '".$get['id']."'");
         unset($get,$permanent_key);
     }
     else
@@ -157,7 +158,7 @@ if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSI
         $_SESSION['pkey']      = '';
     }
 
-    unset($sql);
+    unset($sth);
 }
 
 $userid = userid();
@@ -210,12 +211,17 @@ function fsockopen_support()
 //-> Auslesen der UserID
 function userid()
 {
-    global $db;
+    global $db,$pdo_handler;
 
     if(empty($_SESSION['id']) || empty($_SESSION['pwd'])) return 0;
-    $sql = db("SELECT id FROM ".$db['users']." WHERE id = '".$_SESSION['id']."' AND pwd = '".$_SESSION['pwd']."'");
-    if(!_rows($sql)) return 0;
-    $get = _fetch($sql);
+
+    $sth = $pdo_handler->prepare("SELECT id FROM ".$db['users']." WHERE id = ? AND pwd = ?");
+    $sth->execute(array(((int)$_SESSION['id']), $_SESSION['pwd']));
+
+    if(!$sth->rowCount())
+        return 0;
+
+    $get = $sth->fetch(PDO::FETCH_ASSOC);
     return $get['id'];
 }
 
@@ -243,6 +249,7 @@ $designpath = '../inc/_templates_/'.$tmpdir;
 function lang($lng,$pfad='')
 {
     global $charset;
+
     if(!file_exists(basePath."/inc/lang/languages/".$lng.".php"))
     {
         $files = get_files(basePath.'/inc/lang/languages/',false,true,array('php'));
@@ -272,7 +279,7 @@ function languages()
 //-> Userspezifiesche Dinge
 if($userid >= 1 && $ajaxJob != true)
 {
-    db("UPDATE ".$db['userstats']." SET `hits` = hits+1, `lastvisit` = '".((int)$_SESSION['lastvisit'])."' WHERE user = ".$userid);
+    db_pdo("UPDATE ".$db['userstats']." SET `hits` = hits+1, `lastvisit` = '".((int)$_SESSION['lastvisit'])."' WHERE user = ".((int)$userid));
     $u_b1 = "<!--";
     $u_b2 = "-->";
 }
@@ -281,7 +288,8 @@ if($userid >= 1 && $ajaxJob != true)
 function settings($what)
 {
     global $db;
-    $get = db("SELECT ".$what." FROM ".$db['settings'],false,true);
+
+    $get = db_pdo("SELECT ".$what." FROM ".$db['settings'],false,true);
     return $get[$what];
 }
 
@@ -344,13 +352,16 @@ function highlight_text($txt)
 }
 //-> Glossarfunktion
 $gl_words = array(); $gl_desc = array();
-$qryglossar = db("SELECT * FROM ".$db['glossar']);
-while($getglossar = _fetch($qryglossar))
+$sth = $pdo_handler->query("SELECT * FROM ".$db['glossar']);
+if($sth->rowCount())
 {
-    $gl_words[] = re($getglossar['word']);
-    $gl_desc[]  = $getglossar['glossar'];
+    while ($get = $sth->fetch(PDO::FETCH_ASSOC))
+    {
+        $gl_words[] = re($get['word']);
+        $gl_desc[]  = $get['glossar'];
+    }
 }
-unset($getglossar,$qryglossar);
+unset($get,$qryglossar,$sth);
 
 function regexChars($txt)
 {
@@ -799,8 +810,8 @@ function cut($str, $length = null, $dots = true)
         return substr($str, $real_start).$dots;
     else if($length > 0)
         return (($start+$length >= $html_length) ? substr($str, $real_start) : substr($str, $real_start, $chars[max($start,0)+$length][1] - $real_start)).$dots;
-    else
-        return substr($str, $real_start, $chars[$html_length+$length][1] - $real_start).$dots;
+
+    return substr($str, $real_start, $chars[$html_length+$length][1] - $real_start).$dots;
 }
 
 function wrap($str, $width = 75, $break = "\n", $cut = true)
@@ -881,8 +892,8 @@ function get_files($dir=null,$only_dir=false,$only_files=false,$file_ext=array()
 
         return $files;
     }
-    else
-        return false;
+
+    return false;
 }
 
 //-> Gibt einen Teil eines nummerischen Arrays wieder
@@ -930,19 +941,25 @@ function fileExists($url)
 //-> Informationen ueber die mySQL-Datenbank
 function dbinfo()
 {
+    global $pdo_handler;
     $info = array(); $entrys = 0;
-    $qry = db("Show table status");
-    while($data = _fetch($qry))
+    $sth = $pdo_handler->query("Show table status");
+    if($sth->rowCount())
     {
-        $allRows = $data["Rows"];
-        $dataLength  = $data["Data_length"];
-        $indexLength = $data["Index_length"];
-        $tableSum    = $dataLength + $indexLength;
+        while ($data = $sth->fetch(PDO::FETCH_ASSOC))
+        {
+            $allRows = $data["Rows"];
+            $dataLength  = $data["Data_length"];
+            $indexLength = $data["Index_length"];
+            $tableSum    = $dataLength + $indexLength;
 
-        $sum += $tableSum;
-        $rows += $allRows;
-        $entrys ++;
+            $sum += $tableSum;
+            $rows += $allRows;
+            $entrys ++;
+        }
     }
+    else
+        return false;
 
     $info["entrys"] = $entrys;
     $info["rows"] = $rows;
@@ -984,26 +1001,30 @@ function up($txt, $bbcode=0, $charset_set='')
 }
 
 //-> Funktion um diverse Dinge aus Tabellen auszaehlen zu lassen
-function cnt($count, $where = "", $what = "id")
+function cnt($db, $where = "", $what = "id")
 {
-    $cnt_sql = db("SELECT COUNT(".$what.") AS num FROM ".$count." ".$where.";");
-    if(_rows($cnt_sql))
+    global $pdo_handler;
+
+    $sth = $pdo_handler->query("SELECT COUNT(".$what.") AS num FROM ".$db." ".$where.";");
+    if($sth->rowCount())
     {
-        $cnt = _fetch($cnt_sql);
-        return $cnt['num'];
+        $cnt = $sth->fetch(PDO::FETCH_ASSOC);
+        return ((int)$cnt['num']);
     }
 
     return 0;
 }
 
 //-> Funktion um diverse Dinge aus Tabellen zusammenzaehlen zu lassen
-function sum($db, $where = "", $what)
+function sum($db, $where = "", $what = "id")
 {
-    $cnt_sql = db("SELECT SUM(".$what.") AS num FROM ".$db.$where.";");
-    if(_rows($cnt_sql))
+    global $pdo_handler;
+
+    $sth = $pdo_handler->query("SELECT SUM(".$what.") AS sum FROM ".$db." ".$where.";");
+    if($sth->rowCount())
     {
-        $cnt = _fetch($cnt_sql);
-        return $cnt['num'];
+        $sum = $sth->fetch(PDO::FETCH_ASSOC);
+        return ((int)$sum['sum']);
     }
 
     return 0;
@@ -1033,7 +1054,7 @@ function orderby($sort)
 function nick_id($tid)
 {
     global $db;
-    $get = db("SELECT nick FROM ".$db['users']." WHERE id = '".$tid."'",false,true);
+    $get = db_pdo("SELECT nick FROM ".$db['users']." WHERE id = '".((int)$tid)."'",false,true);
     return $get['nick'];
 }
 
@@ -1049,35 +1070,35 @@ function highlight($word)
 //-> Counter updaten
 function updateCounter()
 {
-    global $db,$reload,$today,$datum,$userip;
-    $ipcheck = db("SELECT id,ip,datum FROM ".$db['c_ips']." WHERE ip = '".$userip."' AND FROM_UNIXTIME(datum,'%d.%m.%Y') = '".date("d.m.Y")."'");
-    $get = _fetch($ipcheck);
+    global $db,$pdo_handler,$reload,$today,$datum,$userip;
 
-    db("DELETE FROM ".$db['c_ips']." WHERE datum+".$reload." <= ".time()." OR FROM_UNIXTIME(datum,'%d.%m.%Y') != '".date("d.m.Y")."'");
-    $count = db("SELECT id,visitors,today FROM ".$db['counter']." WHERE today = '".$today."'");
-    if(_rows($ipcheck)>=1)
+    $sth = $pdo_handler->query("SELECT id,ip,datum FROM ".$db['c_ips']." WHERE ip = '".$userip."' AND FROM_UNIXTIME(datum,'%d.%m.%Y') = '".date("d.m.Y")."'");
+    if($sth->rowCount())
     {
-        $sperrzeit = $get['datum']+$reload;
-        if($sperrzeit <= time())
+        $get = $sth->fetch(PDO::FETCH_ASSOC);
+        db_pdo("DELETE FROM ".$db['c_ips']." WHERE datum+".((int)$reload)." <= ".time()." OR FROM_UNIXTIME(datum,'%d.%m.%Y') != '".date("d.m.Y")."'");
+
+        $sth = $pdo_handler->query("SELECT id,visitors,today FROM ".$db['counter']." WHERE today = '".$today."'");
+        if($sth->rowCount() >= 1)
         {
-            db("DELETE FROM ".$db['c_ips']." WHERE ip = '".$userip."'");
+            $sperrzeit = $get['datum']+((int)$reload);
+            if($sperrzeit <= time())
+            {
+                db_pdo("DELETE FROM ".$db['c_ips']." WHERE ip = '".$userip."'");
 
-            if(_rows($count))
-                db("UPDATE ".$db['counter']." SET `visitors` = visitors+1 WHERE today = '".$today."'");
-            else
-                db("INSERT INTO ".$db['counter']." SET `visitors` = '1', `today` = '".$today."'");
+                if($sth->rowCount())
+                    db_pdo("UPDATE ".$db['counter']." SET `visitors` = visitors+1 WHERE today = '".$today."'");
+                else
+                    db_pdo("INSERT INTO ".$db['counter']." SET `visitors` = '1', `today` = '".$today."'");
 
-            db("INSERT INTO ".$db['c_ips']." SET `ip` = '".$userip."', `datum` = '".((int)$datum)."'");
+                db_pdo("INSERT INTO ".$db['c_ips']." SET `ip` = '".$userip."', `datum` = '".((int)$datum)."'");
+            }
         }
-    }
-    else
-    {
-        if(_rows($count))
-            db("UPDATE ".$db['counter']." SET `visitors` = visitors+1 WHERE today = '".$today."'");
-       else
-            db("INSERT INTO ".$db['counter']." SET `visitors` = '1', `today` = '".$today."'");
-
-        db("INSERT INTO ".$db['c_ips']." SET `ip` = '".$userip."', `datum` = '".((int)$datum)."'");
+        else
+        {
+            db_pdo("INSERT INTO ".$db['counter']." SET `visitors` = '1', `today` = '".$today."'");
+            db_pdo("INSERT INTO ".$db['c_ips']." SET `ip` = '".$userip."', `datum` = '".((int)$datum)."'");
+        }
     }
 }
 
@@ -1086,11 +1107,11 @@ function update_maxonline()
 {
     global $db,$today;
 
-    $get = db("SELECT maxonline FROM ".$db['counter']." WHERE today = '".$today."'",false,true);
+    $get = db_pdo("SELECT maxonline FROM ".$db['counter']." WHERE today = '".$today."'",false,true);
     $count = cnt($db['c_who']);
 
     if($get['maxonline'] <= $count)
-        db("UPDATE ".$db['counter']." SET `maxonline` = '".((int)$count)."' WHERE today = '".$today."'");
+        db_pdo("UPDATE ".$db['counter']." SET `maxonline` = '".$count."' WHERE today = '".$today."'");
 }
 
 //-> Prueft, wieviele Besucher gerade online sind
@@ -1100,13 +1121,13 @@ function online_guests($where='')
 
     if(!$isSpider)
     {
-        $logged = $chkMe == 'unlogged' ? 0 : 1;
-        db("DELETE FROM ".$db['c_who']." WHERE online < ".time());
-        db("REPLACE INTO ".$db['c_who']."
+        $logged = ($chkMe == 'unlogged' ? 0 : 1);
+        db_pdo("DELETE FROM ".$db['c_who']." WHERE online < ".time());
+        db_pdo("REPLACE INTO ".$db['c_who']."
                SET `ip`       = '".$userip."',
                    `online`   = '".((int)(time()+$useronline))."',
                    `whereami` = '".up($where)."',
-                   `login`    = '".((int)$logged)."'");
+                   `login`    = '".$logged."'");
 
         return cnt($db['c_who']);
     }
@@ -1121,75 +1142,70 @@ function online_reg()
 //-> Prueft, ob User eingeloggt ist und wenn ja welches Level er besitzt
 function checkme($userid_set=0)
 {
-    global $db;
+    global $db,$pdo_handler,$userid;
 
-    if(!$userid = ($userid_set != 0 ? intval($userid_set) : userid()))
-        return "unlogged";
-
-    $qry = db("SELECT level FROM ".$db['users']." WHERE id = ".$userid." AND pwd = '".$_SESSION['pwd']."' AND ip = '".$_SESSION['ip']."'");
-    if(_rows($qry))
+    if(!$userid = ($userid_set != 0 ? ((int)$userid_set) : $userid)) return "unlogged";
+    $sth = $pdo_handler->prepare("SELECT level FROM ".$db['users']." WHERE id = ? AND pwd = ? AND ip = ?");
+    $sth->execute(array(((int)$userid), $_SESSION['pwd'],$_SESSION['ip']));
+    if($sth->rowCount())
     {
-      $get = _fetch($qry);
+        $get = $sth->fetch(PDO::FETCH_ASSOC);
         return $get['level'];
     }
-    else
-        return "unlogged";
+
+    return "unlogged";
 }
 
 //-> Prueft, ob ein User diverse Rechte besitzt
 function permission($check)
 {
-    global $db,$userid,$chkMe;
+    global $db,$pdo_handler,$userid,$chkMe;
 
-    if($chkMe == 4)
-        return true;
-    else
+    if($chkMe == 4) return true;
+    if($userid >= 1)
     {
-        if($userid)
-        {
-            // check rank permission
-            $team = db("SELECT s1.`".$check."` FROM ".$db['permissions']." AS s1
-                        LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
-                        WHERE s2.`user` = '".intval($userid)."' AND s1.`".$check."` = '1' AND s2.`posi` != '0'");
+        // check rank permission
+        $sth_team = $pdo_handler->query("SELECT s1.`".$check."` FROM ".$db['permissions']." AS s1
+                                         LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
+                                         WHERE s2.`user` = '".((int)$userid)."' AND s1.`".$check."` = '1' AND s2.`posi` != '0'");
 
-            // check user permission
-            $user = db("SELECT id FROM ".$db['permissions']." WHERE user = '".intval($userid)."' AND `".$check."` = '1'");
-            return (_rows($user) || _rows($team) ? true : false);
-        }
-        else
-            return false;
+        // check user permission
+        $user = db_pdo("SELECT id FROM ".$db['permissions']." WHERE user = '".((int)$userid)."' AND `".$check."` = '1'",true);
+        return ($user || $sth_team->rowCount() ? true : false);
     }
+
+    return false;
 }
 
 //-> Checkt, ob neue Nachrichten vorhanden sind
 function check_msg()
 {
-    global $db;
+    global $db,$pdo_handler;
 
-    $qry = db("SELECT page FROM ".$db['msg']." WHERE an = '".$_SESSION['id']."' AND page = 0");
-    if(_rows($qry))
+    $sth = $pdo_handler->prepare("SELECT page FROM ".$db['msg']." WHERE an = ? AND page = 0");
+    $sth->execute(array(((int)$_SESSION['id'])));
+    if($sth->rowCount())
     {
-        db("UPDATE ".$db['msg']." SET `page` = '1' WHERE an = '".$_SESSION['id']."'");
+        $sth = $pdo_handler->prepare("UPDATE ".$db['msg']." SET `page` = '1' WHERE an = ?");
+        $sth->execute(array(((int)$_SESSION['id'])));
         return show("user/new_msg", array("new" => _site_msg_new));
     }
-    else
-        return '';
+
+    return '';
 }
 
 //-> Prueft sicherheitsrelevante Gegebenheiten im Forum
 function forumcheck($tid, $what)
 {
     global $db;
-    $qry = db("SELECT ".$what." FROM ".$db['f_threads']." WHERE id = '".intval($tid)."' AND ".$what." = '1'");
-    return(_rows($qry) ? true : false);
+    return db_pdo("SELECT ".$what." FROM ".$db['f_threads']." WHERE id = '".((int)$tid)."' AND ".$what." = '1'",true) ? true : false;
 }
 
 //-> Prueft ob ein User schon in der Buddyliste vorhanden ist
 function check_buddy($buddy)
 {
     global $db,$userid;
-    $qry = db("SELECT buddy FROM ".$db['buddys']." WHERE user = '".intval($userid)."' AND buddy = '".intval($buddy)."'");
-    return (!_rows($qry) ? true : false);
+    return !db_pdo("SELECT buddy FROM ".$db['buddys']." WHERE user = '".((int)$userid)."' AND buddy = '".((int)$buddy)."'") ? true : false;
 }
 
 //-> Funktion um bei Clanwars Endergebnisse auszuwerten
@@ -1199,8 +1215,8 @@ function cw_result($punkte, $gpunkte)
         return '<span class="CwWon">'.$punkte.':'.$gpunkte.'</span> <img src="../inc/images/won.gif" alt="" class="icon" />';
     else if($punkte < $gpunkte)
         return '<span class="CwLost">'.$punkte.':'.$gpunkte.'</span> <img src="../inc/images/lost.gif" alt="" class="icon" />';
-    else
-        return '<span class="CwDraw">'.$punkte.':'.$gpunkte.'</span> <img src="../inc/images/draw.gif" alt="" class="icon" />';
+
+    return '<span class="CwDraw">'.$punkte.':'.$gpunkte.'</span> <img src="../inc/images/draw.gif" alt="" class="icon" />';
 }
 
 function cw_result_pic($punkte, $gpunkte)
@@ -1209,8 +1225,8 @@ function cw_result_pic($punkte, $gpunkte)
         return '<img src="../inc/images/won.gif" alt="" class="icon" />';
     else if($punkte < $gpunkte)
         return '<img src="../inc/images/lost.gif" alt="" class="icon" />';
-    else
-        return '<img src="../inc/images/draw.gif" alt="" class="icon" />';
+
+    return '<img src="../inc/images/draw.gif" alt="" class="icon" />';
 }
 
 //-> Funktion um bei Clanwars Endergebnisse auszuwerten ohne bild
@@ -1220,8 +1236,8 @@ function cw_result_nopic($punkte, $gpunkte)
         return '<span class="CwWon">'.$punkte.':'.$gpunkte.'</span>';
     else if($punkte < $gpunkte)
         return '<span class="CwLost">'.$punkte.':'.$gpunkte.'</span>';
-    else
-        return '<span class="CwDraw">'.$punkte.':'.$gpunkte.'</span>';
+
+    return '<span class="CwDraw">'.$punkte.':'.$gpunkte.'</span>';
 }
 
 //-> Funktion um bei Clanwars Endergebnisse auszuwerten ohne bild und ohne farbe
@@ -1231,8 +1247,8 @@ function cw_result_nopic_nocolor($punkte, $gpunkte)
         return $punkte.':'.$gpunkte;
     else if($punkte < $gpunkte)
         return $punkte.':'.$gpunkte;
-    else
-        return $punkte.':'.$gpunkte;
+
+    return $punkte.':'.$gpunkte;
 }
 
 //-> Funktion um bei Clanwars Details Endergebnisse auszuwerten ohne bild
@@ -1242,8 +1258,8 @@ function cw_result_details($punkte, $gpunkte)
         return '<td class="contentMainFirst" align="center"><span class="CwWon">'.$punkte.'</span></td><td class="contentMainFirst" align="center"><span class="CwLost">'.$gpunkte.'</span></td>';
     else if($punkte < $gpunkte)
         return '<td class="contentMainFirst" align="center"><span class="CwLost">'.$punkte.'</span></td><td class="contentMainFirst" align="center"><span class="CwWon">'.$gpunkte.'</span></td>';
-    else
-        return '<td class="contentMainFirst" align="center"><span class="CwDraw">'.$punkte.'</span></td><td class="contentMainFirst" align="center"><span class="CwDraw">'.$gpunkte.'</span></td>';
+
+    return '<td class="contentMainFirst" align="center"><span class="CwDraw">'.$punkte.'</span></td><td class="contentMainFirst" align="center"><span class="CwDraw">'.$gpunkte.'</span></td>';
 }
 
 //-> Flaggen ausgeben
@@ -1251,16 +1267,16 @@ function flag($code)
 {
     if(!file_exists(basePath."/inc/images/flaggen/".$code.".gif"))
         return '<img src="../inc/images/flaggen/nocountry.gif" alt="" class="icon" />';
-    else
-        return'<img src="../inc/images/flaggen/'.$code.'.gif" alt="" class="icon" />';
+
+    return'<img src="../inc/images/flaggen/'.$code.'.gif" alt="" class="icon" />';
 }
 
 function rawflag($code)
 {
     if(!file_exists(basePath."/inc/images/flaggen/".$code.".gif"))
         return '<img src=../inc/images/flaggen/nocountry.gif alt= class=icon />';
-    else
-        return'<img src=../inc/images/flaggen/'.$code.'.gif alt= class=icon />';
+
+    return'<img src=../inc/images/flaggen/'.$code.'.gif alt= class=icon />';
 }
 
 //-> Liste der Laender ausgeben
@@ -1279,8 +1295,8 @@ function squad($code)
 {
     if(!isset($code))
         return '<img src="../inc/images/gameicons/nogame.gif" alt="" class="icon" />';
-    else
-        return '<img  src="../inc/images/gameicons/'.$code.'" alt="" class="icon" />';
+
+    return '<img  src="../inc/images/gameicons/'.$code.'" alt="" class="icon" />';
 }
 
 //-> Funktion um bei DB-Eintraegen URLs einem http:// zuzuweisen
@@ -1328,19 +1344,18 @@ function set_cookie($name, $value = '', $path = '/', $secure = false, $http_only
 //-> Passwortabfrage
 function checkpwd($user, $pwd)
 {
-    global $db;
-    $qry = db("SELECT id,user,nick,pwd
-               FROM ".$db['users']."
-               WHERE user = '".up($user)."'
-               AND pwd = '".up($pwd)."'
-               AND level != '0'");
-    return (_rows($qry) ? true : false);
+    global $db,$pdo_handler;
+
+    $sth = $pdo_handler->prepare("SELECT id,user,nick,pwd FROM ".$db['users']." WHERE user = ? AND pwd = ? AND level != '0'");
+    $sth->execute(array(up($user), up($pwd)));
+    return $sth->rowCount() ? true : false;
 }
 
 //-> Infomeldung ausgeben
 function info($msg, $url, $timeout = 5)
 {
     global $config;
+
     if($config['direct_refresh'])
         return header('Location: '.str_replace('&amp;', '&', $url));
 
@@ -1481,59 +1496,61 @@ function artikelSites($sites, $id)
 //-> Nickausgabe mit Profillink oder Emaillink (reg/nicht reg)
 function autor($uid, $class="", $nick="", $email="", $cut="",$add="")
 {
-    global $db;
-    $qry = db("SELECT nick,country FROM ".$db['users']." WHERE id = '".intval($uid)."'");
-    if(_rows($qry))
+    global $db,$pdo_handler;
+
+    $sth = $pdo_handler->query("SELECT nick,country FROM ".$db['users']." WHERE id = '".((int)$uid)."'");
+    if($sth->rowCount())
     {
-        $get = _fetch($qry);
+        $get = $sth->fetch(PDO::FETCH_ASSOC);
         $nickname = (!empty($cut)) ? cut(re($get['nick']), $cut) : re($get['nick']);
         return show(_user_link, array("id" => $uid,
-                                         "country" => flag($get['country']),
-                                         "class" => $class,
-                                         "get" => $add,
-                                         "nick" => $nickname));
+                                      "country" => flag($get['country']),
+                                      "class" => $class,
+                                      "get" => $add,
+                                      "nick" => $nickname));
     }
-    else
-    {
-        $nickname = (!empty($cut)) ? cut(re($nick), $cut) : re($nick);
-        return show(_user_link_noreg, array("nick" => $nickname, "class" => $class, "email" => eMailAddr($email)));
-    }
+
+    $nickname = (!empty($cut)) ? cut(re($nick), $cut) : re($nick);
+    return show(_user_link_noreg, array("nick" => $nickname, "class" => $class, "email" => eMailAddr($email)));
 }
 
 function cleanautor($uid, $class="", $nick="", $email="", $cut="")
 {
-    global $db;
-    $qry = db("SELECT nick,country FROM ".$db['users']." WHERE id = '".intval($uid)."'");
-    if(_rows($qry))
+    global $db,$pdo_handler;
+
+    $sth = $pdo_handler->query("SELECT nick,country FROM ".$db['users']." WHERE id = '".((int)$uid)."'");
+    if($sth->rowCount())
     {
-        $get = _fetch($qry);
+        $get = $sth->fetch(PDO::FETCH_ASSOC);
         return show(_user_link_preview, array("id" => $uid, "country" => flag($get['country']), "class" => $class, "nick" => re($get['nick'])));
     }
-    else
-        return show(_user_link_noreg, array("nick" => re($nick), "class" => $class, "email" => eMailAddr($email)));
+
+    return show(_user_link_noreg, array("nick" => re($nick), "class" => $class, "email" => eMailAddr($email)));
 }
 
 function rawautor($uid)
 {
-    global $db;
-    $qry = db("SELECT nick,country FROM ".$db['users']." WHERE id = '".intval($uid)."'");
-    if(_rows($qry))
+    global $db,$pdo_handler;
+
+    $sth = $pdo_handler->query("SELECT nick,country FROM ".$db['users']." WHERE id = '".((int)$uid)."'");
+    if($sth->rowCount())
     {
-        $get = _fetch($qry);
+        $get = $sth->fetch(PDO::FETCH_ASSOC);
         return rawflag($get['country'])." ".jsconvert(re($get['nick']));
     }
-    else
-        return rawflag('')." ".jsconvert(re($uid));
+
+    return rawflag('')." ".jsconvert(re($uid));
 }
 
 //-> Nickausgabe ohne Profillink oder Emaillink fr das ForenAbo
 function fabo_autor($uid)
 {
-    global $db;
-    $qry = db("SELECT nick FROM ".$db['users']." WHERE id = '".$uid."'");
-    if(_rows($qry))
+    global $db,$pdo_handler;
+
+    $sth = $pdo_handler->query("SELECT nick FROM ".$db['users']." WHERE id = '".((int)$uid)."'");
+    if($sth->rowCount())
     {
-        $get = _fetch($qry);
+        $get = $sth->fetch(PDO::FETCH_ASSOC);
         return show(_user_link_fabo, array("id" => $uid, "nick" => re($get['nick'])));
     }
 
@@ -1542,11 +1559,12 @@ function fabo_autor($uid)
 
 function blank_autor($uid)
 {
-    global $db;
-    $qry = db("SELECT nick FROM ".$db['users']." WHERE id = '".$uid."'");
-    if(_rows($qry))
+    global $db,$pdo_handler;
+
+    $sth = $pdo_handler->query("SELECT nick FROM ".$db['users']." WHERE id = '".((int)$uid)."'");
+    if($sth->rowCount())
     {
-        $get = _fetch($qry);
+        $get = $sth->fetch(PDO::FETCH_ASSOC);
         return show(_user_link_blank, array("id" => $uid, "nick" => re($get['nick'])));
     }
 
@@ -1562,45 +1580,43 @@ function jsconvert($txt)
 //-> interner Forencheck
 function fintern($id)
 {
-    global $db,$userid,$chkMe;
-    $fget = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1 LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id WHERE s2.`id` = '".intval($id)."'"));
+    global $db,$pdo_handler,$userid,$chkMe;
 
-    if($chkMe == "unlogged")
-        return empty($fget['intern']) ? true : false;
-    else
-    {
-      $team = db("SELECT * FROM ".$db['f_access']." AS s1 LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi` WHERE s2.`user` = '".intval($userid)."' AND s2.`posi` != '0' AND s1.`forum` = '".intval($id)."'");
-      $user = db("SELECT * FROM ".$db['f_access']." WHERE `user` = '".intval($userid)."' AND `forum` = '".intval($id)."'");
+    $sth = $pdo_handler->query("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1 LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id WHERE s2.`id` = '".((int)$id)."'");
+    if($chkMe == "unlogged" && !$sth->rowCount())
+        return true;
 
-      if(_rows($user) || _rows($team) || $chkMe == 4 || !$fget['intern'])
-          return true;
-      else if($chkMe == "unlogged")
-          return false;
-      else
-          return false;
-    }
+    $team = db_pdo("SELECT * FROM ".$db['f_access']." AS s1 LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi` WHERE s2.`user` = '".((int)$userid)."' AND s2.`posi` != '0' AND s1.`forum` = '".((int)$id)."'",true);
+    $user = db_pdo("SELECT * FROM ".$db['f_access']." WHERE `user` = '".((int)$userid)."' AND `forum` = '".((int)$id)."'",true);
+    $forum = $sth->fetch(PDO::FETCH_ASSOC);
+
+    if($user || $team || $chkMe == 4 || !$forum['intern'])
+        return true;
+
+    return false;
 }
 
 //-> einzelne Userdaten ermitteln
-function data($tid, $what)
+function data($tid, $what, $dbs='users', $whereID='id', $re_entry=true )
 {
     global $db;
-    $get = db("SELECT ".$what." FROM ".$db['users']." WHERE id = '".intval($tid)."'",false,true);
-    return re_entry($get[$what]);
+
+    if(empty($what) || empty($tid) || empty($dbs) || empty($whereID)) return false;
+    $get = db_pdo("SELECT ".$what." FROM ".$db[$dbs]." WHERE ".$whereID." = ".((int)$tid),false,true);
+    return $re_entry ? re_entry($get[$what]) : $get[$what];
 }
 
-//-> einzelne Userstatistiken ermitteln
+//-> einzelne Userstatistiken ermitteln * Alias data();
 function userstats($tid, $what)
 {
-    global $db;
-    $get = db("SELECT ".$what." FROM ".$db['userstats']." WHERE user = '".intval($tid)."'",false,true);
-    return $get[$what];
+    return data($tid,$what,'userstats','user',false);
 }
 
 //- Funktion zum versenden von Emails
 function sendMail($mailto,$subject,$content)
 {
     global $mailfrom;
+
     $mail = new Mailer();
     $mail->IsHTML(true);
     $mail->From = $mailfrom;
@@ -1614,43 +1630,49 @@ function sendMail($mailto,$subject,$content)
 
 function check_msg_emal()
 {
-    global $db,$clanname,$httphost;
-    $qry = db("SELECT s1.an,s1.page,s1.titel,s1.sendmail,s1.id AS mid,s2.id,s2.nick,s2.email,s2.pnmail FROM ".$db['msg']." AS s1 LEFT JOIN ".$db['users']." AS s2 ON s2.id = s1.an WHERE page = 0 AND sendmail = 0");
-    while($get = _fetch($qry))
+    global $db,$pdo_handler,$clanname,$httphost;
+
+    $sth = $pdo_handler->query("SELECT s1.an,s1.page,s1.titel,s1.sendmail,s1.id AS mid,s2.id,s2.nick,s2.email,s2.pnmail FROM ".$db['msg']." AS s1 LEFT JOIN ".$db['users']." AS s2 ON s2.id = s1.an WHERE page = 0 AND sendmail = 0");
+    if($sth->rowCount())
     {
-        if($get['pnmail'] == 1)
+        while ($get = $sth->fetch(PDO::FETCH_ASSOC))
         {
-            db("UPDATE ".$db['msg']." SET `sendmail` = '1' WHERE id = '".$get['mid']."'");
-            $subj = show(re(settings('eml_pn_subj')), array("domain" => $httphost));
-            $message = show(bbcode_email(settings('eml_pn')), array("nick" => re($get['nick']), "domain" => $httphost, "titel" => $get['titel'], "clan" => $clanname));
-            sendMail(re($get['email']), $subj, $message);
+            if($get['pnmail'])
+            {
+                db_pdo("UPDATE ".$db['msg']." SET sendmail = '1' WHERE id = '".$get['mid']."'");
+                $subj = show(re(settings('eml_pn_subj')), array("domain" => $httphost));
+                $message = show(bbcode_email(settings('eml_pn')), array("nick" => re($get['nick']), "domain" => $httphost, "titel" => $get['titel'], "clan" => $clanname));
+                sendMail(re($get['email']), $subj, $message);
+            }
         }
     }
 }
 
-check_msg_emal();
+check_msg_emal(); //Call
 
 function perm_sendnews($uID)
 {
     global $db;
+
     // check rank permission
-    $team = db("SELECT s1.`news` FROM ".$db['permissions']." AS s1
-                LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
-                WHERE s2.`user` = '".intval($uID)."' AND s1.`news` = '1' AND s2.`posi` != '0'");
+    $team = db_pdo("SELECT s1.news FROM ".$db['permissions']." AS s1
+                    LEFT JOIN ".$db['userpos']." AS s2 ON s1.pos = s2.posi
+                    WHERE s2.user = '".((int)$uID)."' AND s1.news = '1' AND s2.posi != '0'",true);
 
     // check user permission
-    $user = db("SELECT id FROM ".$db['permissions']." WHERE user = '".intval($uID)."' AND `news` = '1'");
-    return (_rows($user) || _rows($team) ? true : false);
+    $user = db_pdo("SELECT id FROM ".$db['permissions']." WHERE user = '".((int)$uID)."' AND `news` = '1'",true);
+    return ($user || $team ? true : false);
 }
 
 //-> Checkt ob ein Ereignis neu ist
-function check_new($datum,$new = "",$datum2 = "")
+function check_new($datum, $new = "", $datum2 = "")
 {
     global $db,$userid;
+
     if($userid)
     {
-        $get = db("SELECT lastvisit FROM ".$db['userstats']." WHERE user = '".intval($userid)."'",false,true);
-        if($datum >= $get['lastvisit'] || $datum2 >= $get['lastvisit'])
+        $lastvisit = userstats($userid, 'lastvisit');
+        if(((int)$datum) >= $lastvisit || ((int)$datum2) >= $lastvisit)
             return (empty($new) ? _newicon : $new);
     }
 
@@ -1791,9 +1813,17 @@ function sgames($game = '')
 //Umfrageantworten selektieren
 function voteanswer($what, $vid)
 {
-    global $db;
-    $get = db("SELECT * FROM ".$db['vote_results']." WHERE what = '".up($what)."' AND vid = '".$vid."'",false,true);
-    return $get['sel'];
+    global $db,$pdo_handler;
+
+    $sth = $pdo_handler->prepare("SELECT sel FROM ".$db['vote_results']." WHERE what = ? AND vid = ?");
+    $sth->execute(array(up($what), ((int)$vid)));
+    if($sth->rowCount())
+    {
+        $get = $sth->fetch(PDO::FETCH_ASSOC);
+        return $get['sel'];
+    }
+
+    return false;
 }
 
 //Profilfelder konvertieren
@@ -1842,7 +1872,8 @@ function parsePHPInfo()
 function exist($tid)
 {
     global $db;
-    return db("SELECT id FROM ".$db['users']." WHERE id = '".intval($tid)."'",true) ? true : false;
+
+    return db_pdo("SELECT id FROM ".$db['users']." WHERE id = '".((int)$tid)."'",true) ? true : false;
 }
 
 //-> Geburtstag errechnen
@@ -1857,64 +1888,75 @@ function getAge($bday)
 
         if(($iCurrentMonth>$iMonth) || (($iCurrentMonth==$iMonth) && ($iCurrentDay>=$tiday)))
             return $iCurrentYear - $iYear;
-        else
-            return $iCurrentYear - ($iYear + 1);
+
+        return $iCurrentYear - ($iYear + 1);
     }
-    else
-        return '-';
+
+    return '-';
 }
 
 //-> Ausgabe der Position des einzelnen Members
 function getrank($tid, $squad="", $profil=0)
 {
-    global $db;
-    if($squad)
-    {
-        if($profil == 1)
-            $qry = db("SELECT * FROM ".$db['userpos']." AS s1 LEFT JOIN ".$db['squads']." AS s2 ON s1.squad = s2.id WHERE s1.user = '".intval($tid)."' AND s1.squad = '".intval($squad)."' AND s1.posi != '0'");
-        else
-            $qry = db("SELECT * FROM ".$db['userpos']." WHERE user = '".intval($tid)."' AND squad = '".intval($squad)."' AND posi != '0'");
+    global $db,$pdo_handler;
 
-        if(_rows($qry))
+    if(((int)$squad))
+    {
+        if(((int)$profil))
         {
-            while($get = _fetch($qry))
+            $sth = $pdo_handler->prepare("SELECT * FROM ".$db['userpos']." AS s1 LEFT JOIN ".$db['squads']." AS s2 ON s1.squad = s2.id WHERE s1.user = ? AND s1.squad = ? AND s1.posi != '0'");
+            $sth->execute(array(((int)$tid), ((int)$squad)));
+        }
+        else
+        {
+            $sth = $pdo_handler->prepare("SELECT name,posi FROM ".$db['userpos']." WHERE user = '".((int)$tid)."' AND squad = '".((int)$squad)."' AND posi != '0'");
+            $sth->execute(array(((int)$tid), ((int)$squad)));
+        }
+
+        if($sth->rowCount())
+        {
+            while ($get = $sth->fetch(PDO::FETCH_ASSOC))
             {
-                $getp = db("SELECT * FROM ".$db['pos']." WHERE id = '".intval($get['posi'])."'",false,true);
-                if(!empty($get['name'])) $squadname = '<b>'.$get['name'].':</b> ';
-                else $squadname = '';
-                return $squadname.$getp['position'];
+                $squadname = !empty($get['name']) ? '<b>'.$get['name'].':</b> ' : '';
+                $getp = db_pdo("SELECT position FROM ".$db['pos']." WHERE id = '".((int)$get['posi'])."'",false,true);
+                return $squadname . $getp['position'];
             }
         }
         else
         {
-            $get = _fetch(db("SELECT level FROM ".$db['users']." WHERE id = '".intval($tid)."'"));
-            if($get['level'] == 0)             return _status_unregged;
-            else if($get['level'] == 1)        return _status_user;
-            else if($get['level'] == 2)        return _status_trial;
-            else if($get['level'] == 3)        return _status_member;
-            else if($get['level'] == 4)        return _status_admin;
-            else if($get['level'] == 'banned') return _status_banned;
-            else return _gast;
+            if(!$tid) return _gast;
+            $get = db_pdo("SELECT level FROM ".$db['users']." WHERE id = '".((int)$tid)."'",false,true);
+
+            switch ($get['level']) {
+                case 0: return _status_unregged; break;
+                case 1: return _status_user; break;
+                case 2: return _status_trial; break;
+                case 3: return _status_member; break;
+                case 4: return _status_admin; break;
+                default: return _gast; break;
+            }
         }
     }
     else
     {
-        $qry = db("SELECT s1.*,s2.position FROM ".$db['userpos']." AS s1 LEFT JOIN ".$db['pos']." AS s2 ON s1.posi = s2.id WHERE s1.user = '".intval($tid)."' AND s1.posi != '0' ORDER BY s2.pid ASC");
-        if(_rows($qry))
+        $sth = $pdo_handler->query("SELECT s1.*,s2.position FROM ".$db['userpos']." AS s1 LEFT JOIN ".$db['pos']." AS s2 ON s1.posi = s2.id WHERE s1.user = '".((int)$tid)."' AND s1.posi != '0' ORDER BY s2.pid ASC");
+        if($sth->rowCount())
         {
-            $get = _fetch($qry);
+            $get = $sth->fetch(PDO::FETCH_ASSOC);
             return $get['position'];
         }
         else
         {
-            $get = _fetch(db("SELECT level FROM ".$db['users']." WHERE id = '".intval($tid)."'"));
-            if($get['level'] == 0)            return _status_unregged;
-            elseif($get['level'] == 1)        return _status_user;
-            elseif($get['level'] == 2)        return _status_trial;
-            elseif($get['level'] == 3)        return _status_member;
-            elseif($get['level'] == 4)        return _status_admin;
-            elseif($get['level'] == 'banned') return _status_banned;
-            else return _gast;
+            if(!$tid) return _gast;
+            $get = db("SELECT level FROM ".$db['users']." WHERE id = '".((int)$tid)."'",false,true);
+            switch ($get['level']) {
+                case 0: return _status_unregged; break;
+                case 1: return _status_user; break;
+                case 2: return _status_trial; break;
+                case 3: return _status_member; break;
+                case 4: return _status_admin; break;
+                default: return _gast; break;
+            }
         }
     }
 }
@@ -1923,13 +1965,11 @@ function getrank($tid, $squad="", $profil=0)
 function set_lastvisit()
 {
     global $db,$useronline,$userid;
+
     if($userid)
     {
-        if(!_rows(db("SELECT id FROM ".$db['users']." WHERE id = ".intval($userid)." AND time+'".$useronline."'>'".time()."'")))
-        {
-            $time = data($userid, "time");
-            $_SESSION['lastvisit'] = $time;
-        }
+        if(!db_pdo("SELECT id FROM ".$db['users']." WHERE id = ".((int)$userid)." AND time+'".((int)$useronline)."'>'".time()."'",true))
+            $_SESSION['lastvisit'] = ((int)data($userid, "time"));
     }
 }
 
@@ -1937,7 +1977,8 @@ function set_lastvisit()
 function onlinecheck($tid)
 {
     global $db,$useronline;
-    $row = db("SELECT id FROM ".$db['users']." WHERE id = '".intval($tid)."' AND time+'".$useronline."'>'".time()."' AND online = 1",true);
+
+    $row = db_pdo("SELECT id FROM ".$db['users']." WHERE id = '".((int)$tid)."' AND time+'".((int)$useronline)."'>'".time()."' AND online = 1",true);
     return $row ? "<img src=\"../inc/images/online.gif\" alt=\"\" class=\"icon\" />" : "<img src=\"../inc/images/offline.gif\" alt=\"\" class=\"icon\" />";
 }
 
@@ -1960,20 +2001,27 @@ function pfields_name($name)
 //-> Checkt versch. Dinge anhand der Hostmaske eines Users
 function ipcheck($what,$time = "")
 {
-    global $db,$userip;
-    $get = _fetch(db("SELECT time,what FROM ".$db['ipcheck']." WHERE what = '".$what."' AND ip = '".$userip."' ORDER BY time DESC"));
-    if(preg_match("#vid#", $get['what']))
-        return true;
-    else
+    global $db,$pdo_handler,$userip;
+
+    $sth = $pdo_handler->prepare("SELECT time,what FROM ".$db['ipcheck']." WHERE what = ? AND ip = ? ORDER BY time DESC");
+    $sth->execute(array($what, $userip));
+    if($sth->rowCount())
     {
+        $get = $sth->fetch(PDO::FETCH_ASSOC);
+        if(preg_match("#vid#", $get['what']))
+            return true;
+
         if($get['time']+$time<time())
-            db("DELETE FROM ".$db['ipcheck']." WHERE what = '".$what."' AND ip = '".$userip."' AND time+'".$time."'<'".time()."'");
+        {
+            $sth = $pdo_handler->prepare("DELETE FROM ".$db['ipcheck']." WHERE what = ? AND ip = ? AND time+?");
+            $sth->execute(array($what, $userip, (((int)$time)."'<'".time())));
+        }
 
         if($get['time']+$time>time())
             return true;
-        else
-            return false;
     }
+
+    return false;
 }
 
 //-> Gibt die Tageszahl eines Monats aus
@@ -2045,7 +2093,7 @@ function convert_feed($txt)
 
 function feed()
 {
-    global $db,$pagetitle,$clanname,$charset;
+    global $db,$pdo_handler,$pagetitle,$clanname,$charset;
 
     $host = $_SERVER['HTTP_HOST'];
     $pfad = preg_replace("#^(.*?)\/(.*?)#Uis","$1",dirname($_SERVER['PHP_SELF']));
@@ -2068,28 +2116,30 @@ function feed()
 
     $data = @fopen("../rss.xml","w+");
     @fwrite($data, $feed);
-    $qry = db("SELECT * FROM ".$db['news']." WHERE intern = 0 AND public = 1 ORDER BY datum DESC LIMIT 15");
-    while($get = _fetch($qry))
+    $sth = $pdo_handler->query("SELECT * FROM ".$db['news']." WHERE intern = 0 AND public = 1 ORDER BY datum DESC LIMIT 15");
+    if($sth->rowCount())
     {
-        $get1 = _fetch(db("SELECT nick FROM ".$db['users']." WHERE id = '".$get['autor']."'"));
-        $feed .= '  <item>';
-        $feed .= "\r\n";
-        $feed .= '    <pubDate>'.date("r", $get['datum']).'</pubDate>';
-        $feed .= "\r\n";
-        $feed .= '    <author>'.convert_feed($get1['nick']).'</author>';
-        $feed .= "\r\n";
-        $feed .= '    <title>'.convert_feed($get['titel']).'</title>';
-        $feed .= "\r\n";
-        $feed .= '    <description>';
-        $feed .= convert_feed($get['text']);
-        $feed .= '    </description>';
-        $feed .= "\r\n";
-        $feed .= '    <link>http://'.$host.$pfad.'/news/?action=show&amp;id='.$get['id'].'</link>';
-        $feed .= "\r\n";
-        $feed .= '  </item>';
-        $feed .= "\r\n";
-        $data = @fopen("../rss.xml","w+");
-        @fwrite($data, $feed);
+        while ($get = $sth->fetch(PDO::FETCH_ASSOC))
+        {
+            $feed .= '  <item>';
+            $feed .= "\r\n";
+            $feed .= '    <pubDate>'.date("r", $get['datum']).'</pubDate>';
+            $feed .= "\r\n";
+            $feed .= '    <author>'.convert_feed(data($get['autor'], 'nick')).'</author>';
+            $feed .= "\r\n";
+            $feed .= '    <title>'.convert_feed($get['titel']).'</title>';
+            $feed .= "\r\n";
+            $feed .= '    <description>';
+            $feed .= convert_feed($get['text']);
+            $feed .= '    </description>';
+            $feed .= "\r\n";
+            $feed .= '    <link>http://'.$host.$pfad.'/news/?action=show&amp;id='.$get['id'].'</link>';
+            $feed .= "\r\n";
+            $feed .= '  </item>';
+            $feed .= "\r\n";
+            $data = @fopen("../rss.xml","w+");
+            @fwrite($data, $feed);
+        }
     }
 
     $feed .= '</channel>';
@@ -2106,17 +2156,17 @@ function infos($checkBrowser = "")
     if($settings['persinfo'])
     {
         $data = $_SERVER['HTTP_USER_AGENT'];
-        if(preg_match("/Android/i",$data)) 					$system = "Android";
-        elseif(preg_match ("/Linux/i",$data))           	$system = "Linux";
-        elseif(preg_match("/SunOS/i",$data))        		$system = "Sun OS";
-        elseif(preg_match("/Macintosh/i",$data))    		$system = "Macintosh";
-        elseif(preg_match("/Mac_PowerPC/i",$data))  		$system = "Macintosh";
-        elseif(preg_match("/Windows XP/i",$data))   		$system = "Windows XP";
-        elseif(preg_match("/NT 5.2/i",$data))       		$system = "Windows XP x64";
-        elseif(preg_match("/NT 5.1/i",$data))       		$system = "Windows XP";
-        elseif(preg_match("/NT 6.0/i",$data))       		$system = "Windows Vista";
-        elseif(preg_match("/NT 6.1/i",$data))       		$system = "Windows 7";
-        elseif(preg_match("/NT 6.2/i",$data))       		$system = "Windows 8";
+        if(preg_match("/Android/i",$data))                  $system = "Android";
+        elseif(preg_match ("/Linux/i",$data))               $system = "Linux";
+        elseif(preg_match("/SunOS/i",$data))                $system = "Sun OS";
+        elseif(preg_match("/Macintosh/i",$data))            $system = "Macintosh";
+        elseif(preg_match("/Mac_PowerPC/i",$data))          $system = "Macintosh";
+        elseif(preg_match("/Windows XP/i",$data))           $system = "Windows XP";
+        elseif(preg_match("/NT 5.2/i",$data))               $system = "Windows XP x64";
+        elseif(preg_match("/NT 5.1/i",$data))               $system = "Windows XP";
+        elseif(preg_match("/NT 6.0/i",$data))               $system = "Windows Vista";
+        elseif(preg_match("/NT 6.1/i",$data))               $system = "Windows 7";
+        elseif(preg_match("/NT 6.2/i",$data))               $system = "Windows 8";
         elseif(preg_match("/OS (.*?) like Mac OS X/i",$data)) $system = "iOS";
         else                                        $system = _unknown_system;
 
@@ -2155,69 +2205,66 @@ function infos($checkBrowser = "")
 function userpic($userid, $width=170,$height=210)
 {
     global $picformat;
-    foreach($picformat as $endung)
+
+    if($userid)
     {
-        if(file_exists(basePath."/inc/images/uploads/userpics/".$userid.".".$endung))
+        foreach($picformat as $endung)
         {
-            $pic = show(_userpic_link, array("id" => $userid, "endung" => $endung, "width" => $width, "height" => $height));
-            break;
+            if(file_exists(basePath."/inc/images/uploads/userpics/".$userid.".".$endung))
+                return show(_userpic_link, array("id" => $userid, "endung" => $endung, "width" => $width, "height" => $height));
         }
-        else
-            $pic = show(_no_userpic, array("width" => $width, "height" => $height));
     }
 
-    return $pic;
+    return show(_no_userpic, array("width" => $width, "height" => $height));;
 }
 
 // Useravatar ausgeben
 function useravatar($userid, $width=100,$height=100)
 {
     global $picformat;
-    foreach($picformat as $endung)
+
+    if($userid)
     {
-        if(file_exists(basePath."/inc/images/uploads/useravatare/".$userid.".".$endung))
+        foreach($picformat as $endung)
         {
-            $pic = show(_userava_link, array("id" => $userid, "endung" => $endung, "width" => $width, "height" => $height));
-            break;
+            if(file_exists(basePath."/inc/images/uploads/useravatare/".$userid.".".$endung))
+                return show(_userava_link, array("id" => $userid, "endung" => $endung, "width" => $width, "height" => $height));
         }
-        else
-            $pic = show(_no_userava, array("width" => $width, "height" => $height));
     }
 
-    return $pic;
+    return show(_no_userava, array("width" => $width, "height" => $height));
 }
 
 // Userpic für Hoverinformationen ausgeben
 function hoveruserpic($userid, $width=170,$height=210)
 {
     global $picformat;
-    foreach($picformat as $endung)
+
+    if($userid)
     {
-        if(file_exists(basePath."/inc/images/uploads/userpics/".$userid.".".$endung))
+        foreach($picformat as $endung)
         {
-            $pic = "../inc/images/uploads/userpics/".$userid.".".$endung."', '".$width."', '".$height."";
-            break;
+            if(file_exists(basePath."/inc/images/uploads/userpics/".$userid.".".$endung))
+                return "../inc/images/uploads/userpics/".$userid.".".$endung."', '".$width."', '".$height."";
         }
-        else
-            $pic = "../inc/images/nopic.gif".$userid.".".$endung."', '".$width."', '".$height."";
     }
 
-    return $pic;
+    return "../inc/images/nopic.gif".$userid.".".$endung."', '".$width."', '".$height."";
 }
 
 // Adminberechtigungen ueberpruefen
 function admin_perms($userid)
 {
-    global $db,$chkMe;
+    global $db,$pdo_handler,$chkMe;
 
     if(empty($userid))
         return false;
 
-   // no need for these admin areas
+       // no need for these admin areas
     $e = array('gb', 'shoutbox', 'editusers', 'votes', 'contact', 'joinus', 'intnews', 'forum', 'gs_showpw');
 
-   // check user permission
-    $c = _fetch(db("SELECT * FROM ".$db['permissions']." WHERE user = '".intval($userid)."'"));
+       // check user permission
+    $c = db_pdo("SELECT * FROM ".$db['permissions']." WHERE user = '".((int)$userid)."'",false,true);
     if(!empty($c))
     {
         foreach($c AS $v => $k)
@@ -2234,8 +2281,8 @@ function admin_perms($userid)
     }
 
    // check rank permission
-    $qry = db("SELECT s1.* FROM ".$db['permissions']." AS s1 LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi` WHERE s2.`user` = '".intval($userid)."' AND s2.`posi` != '0'");
-    while($r = _fetch($qry))
+    $sth = $pdo_handler->query("SELECT s1.* FROM ".$db['permissions']." AS s1 LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi` WHERE s2.`user` = '".((int)$userid)."' AND s2.`posi` != '0'");
+    while ($r = $sth->fetch(PDO::FETCH_ASSOC))
     {
         foreach($r AS $v => $k)
         {
@@ -2294,8 +2341,10 @@ function pholderreplace($pholder)
 //-> Zugriff auf die Seite
 function check_internal_url()
 {
-    global $db,$chkMe;
+    global $db,$pdo_handler,$chkMe;
+
     if($chkMe != "unlogged") return false;
+
     $install_pfad = explode("/",dirname(dirname($_SERVER['SCRIPT_NAME'])."../"));
     $now_pfad = explode("/",$_SERVER['REQUEST_URI']);
     foreach($now_pfad as $key => $value) {
@@ -2303,20 +2352,30 @@ function check_internal_url()
             $pfad .= "/".$value;
         }
     }
+
     list($pfad,$rest) = split('&',$pfad);
     $pfad = "..".$pfad;
     if(strpos($pfad, "?") === false && strpos($pfad, ".php") === false) {
         $pfad .= "/";
     }
 
-    $qry_navi = db("SELECT * FROM ".$db['navi']." WHERE url = '".$pfad."'");
-    if(_rows($qry_navi) == 0) {
+    $sth = $pdo_handler->query("SELECT internal FROM ".$db['navi']." WHERE url = '".$pfad."'");
+    if(!$sth->rowCount())
+    {
         list($pfad,$rest) = split('\?',$pfad);
-        $qry_navi = db("SELECT * FROM ".$db['navi']." WHERE url = '".$pfad."'");
-        if(_rows($qry_navi) == 0) $qry_navi = db("SELECT * FROM ".$db['navi']." WHERE url = '".str_replace("index.php","",$pfad)."'");
+        $sth = $pdo_handler->query("SELECT internal FROM ".$db['navi']." WHERE url = '".$pfad."'");
+
+        if(!$sth->rowCount())
+            $sth = $pdo_handler->query("SELECT internal FROM ".$db['navi']." WHERE url = '".str_replace("index.php","",$pfad)."'");
     }
-    $get_navi = _fetch($qry_navi);
-    if($get_navi['internal']) return true;
+
+    if($sth->rowCount())
+    {
+        $get = $sth->fetch(PDO::FETCH_ASSOC);
+        if($get['internal'])
+            return true;
+    }
+
     return false;
 }
 
@@ -2330,32 +2389,35 @@ function generatetime()
 //-> Rechte abfragen
 function getPermissions($checkID = 0, $pos = 0)
 {
-    global $db;
+    global $db,$pdo_handler;
 
     if(!empty($checkID))
     {
         $check = empty($pos) ? 'user' : 'pos'; $checked = array();
-        $qry = db("SELECT * FROM ".$db['permissions']." WHERE `".$check."` = '".intval($checkID)."'");
-        if(_rows($qry)) foreach(_fetch($qry) AS $k => $v) $checked[$k] = $v;
+        $sth = $pdo_handler->query("SELECT * FROM ".$db['permissions']." WHERE `".$check."` = '".((int)$checkID)."'");
+        if($sth->rowCount()) foreach($sth->fetch(PDO::FETCH_ASSOC) as $k => $v) $checked[$k] = $v;
     }
 
-    $permission = array();
-    $qry = db("SHOW COLUMNS FROM ".$db['permissions']."");
-    while($get = _fetch($qry))
+    $permission = array(); $p = '';
+    $sth = $pdo_handler->query("SHOW COLUMNS FROM ".$db['permissions']);
+    if($sth->rowCount())
     {
-        if($get['Field'] != 'id' && $get['Field'] != 'user' && $get['Field'] != 'pos' && $get['Field'] != 'intforum')
+        while ($get = $sth->fetch(PDO::FETCH_ASSOC))
         {
-            @eval("\$lang = _perm_".$get['Field'].";");
-            $chk = empty($checked[$get['Field']]) ? '' : ' checked="checked"';
-            $permission[$lang] = '<input type="checkbox" class="checkbox" id="'.$get['Field'].'" name="perm[p_'.$get['Field'].']" value="1"'.$chk.' /><label for="'.$get['Field'].'"> '.$lang.'</label> ';
+            if($get['Field'] != 'id' && $get['Field'] != 'user' && $get['Field'] != 'pos' && $get['Field'] != 'intforum')
+            {
+                @eval("\$lang = _perm_".$get['Field'].";");
+                $chk = empty($checked[$get['Field']]) ? '' : ' checked="checked"';
+                $permission[$lang] = '<input type="checkbox" class="checkbox" id="'.$get['Field'].'" name="perm[p_'.$get['Field'].']" value="1"'.$chk.' /><label for="'.$get['Field'].'"> '.$lang.'</label> ';
+            }
         }
-    }
 
-    natcasesort($permission); $break = 1; $p = '';
-    foreach($permission AS $perm)
-    {
-        $br = ($break % 2) ? '<br />' : ''; $break++;
-        $p .= $perm.$br;
+        natcasesort($permission); $break = 1;
+        foreach($permission AS $perm)
+        {
+            $br = ($break % 2) ? '<br />' : ''; $break++;
+            $p .= $perm.$br;
+        }
     }
 
     return $p;
@@ -2364,26 +2426,33 @@ function getPermissions($checkID = 0, $pos = 0)
 //-> interne Foren-Rechte abfragen
 function getBoardPermissions($checkID = 0, $pos = 0)
 {
-    global $db, $dir;
+    global $db, $pdo_handler, $dir;
 
-    $break = 0; $i_forum = ''; $fkats = '';
-    $qry = db("SELECT id,name FROM ".$db['f_kats']." WHERE intern = '1' ORDER BY `kid` ASC");
-    while($get = _fetch($qry))
+    $break = 0; $i_forum = ''; $fkats = ''; $katbreak = '';
+    $sth = $pdo_handler->query("SELECT id,name FROM ".$db['f_kats']." WHERE intern = '1' ORDER BY `kid` ASC");
+    if($sth->rowCount())
     {
-        unset($kats, $fkats, $break);
-        $kats = (empty($katbreak) ? '' : '<div style="clear:both">&nbsp;</div>').'<table class="hperc" cellspacing="1"><tr><td class="contentMainTop"><b>'.re($get["name"]).'</b></td></tr></table>';
-        $katbreak = 1;
-
-        $qry2 = db("SELECT kattopic,id FROM ".$db['f_skats']." WHERE `sid` = '".$get['id']."' ORDER BY `kattopic` ASC");
-        while($get2 = _fetch($qry2))
+        while ($get = $sth->fetch(PDO::FETCH_ASSOC))
         {
-            $br = ($break % 2) ? '<br />' : ''; $break++;
-            $check =  db("SELECT * FROM ".$db['f_access']." WHERE `".(empty($pos) ? 'user' : 'pos')."` = '".intval($checkID)."' AND ".(empty($pos) ? 'user' : 'pos')." != '0' AND `forum` = '".$get2['id']."'");
-            $chk = _rows($check) ? ' checked="checked"' : '';
-            $fkats .= '<input type="checkbox" class="checkbox" id="board_'.$get2['id'].'" name="board['.$get2['get2'].']" value="'.$get2['id'].'"'.$chk.' /><label for="board_'.$get2['id'].'"> '.re($get2['kattopic']).'</label> '.$br;
-        }
+            unset($kats, $fkats, $break);
+            $kats = (empty($katbreak) ? '' : '<div style="clear:both">&nbsp;</div>').'<table class="hperc" cellspacing="1"><tr><td class="contentMainTop"><b>'.re($get["name"]).'</b></td></tr></table>';
+            $katbreak = 1;
 
-        $i_forum .= $kats.$fkats;
+            $sth_skats = $pdo_handler->query("SELECT kattopic,id FROM ".$db['f_skats']." WHERE `sid` = '".$get['id']."' ORDER BY `kattopic` ASC");
+            if($sth_skats->rowCount())
+            {
+                $break = 0;
+                while ($get_skats = $sth_skats->fetch(PDO::FETCH_ASSOC))
+                {
+                    $br = ($break % 2) ? '<br />' : ''; $break++;
+                    $check =  db("SELECT * FROM ".$db['f_access']." WHERE `".(empty($pos) ? 'user' : 'pos')."` = '".intval($checkID)."' AND ".(empty($pos) ? 'user' : 'pos')." != '0' AND `forum` = '".$get_skats['id']."'");
+                    $chk = _rows($check) ? ' checked="checked"' : '';
+                    $fkats .= '<input type="checkbox" class="checkbox" id="board_'.$get_skats['id'].'" name="board['.$get_skats['get2'].']" value="'.$get_skats['id'].'"'.$chk.' /><label for="board_'.$get_skats['id'].'"> '.re($get_skats['kattopic']).'</label> '.$br;
+                }
+            }
+
+            $i_forum .= $kats . $fkats;
+        }
     }
 
     return $i_forum;
@@ -2411,7 +2480,7 @@ include_once(basePath.'/inc/menu-functions/navi.php');
 //-> Ausgabe des Indextemplates
 function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
 {
-    global $db,$userid,$userip,$tmpdir,$secureLogin,$chkMe,$charset;
+    global $db,$pdo_handler,$userid,$userip,$tmpdir,$secureLogin,$chkMe,$charset;
     global $u_b1,$u_b2,$designpath,$maxwidth,$language,$cp_color,$copyright;
 
     // user gebannt? Logge aus!
@@ -2452,7 +2521,8 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
         else
         {
             $check_msg = check_msg(); set_lastvisit(); $login = "";
-            db("UPDATE ".$db['users']." SET `time` = '".((int)time())."', `whereami` = '".up($where)."' WHERE id = '".intval($userid)."'");
+            $sth = $pdo_handler->prepare("UPDATE ".$db['users']." SET `time` = ?, `whereami` = ? WHERE id = ?");
+            $sth->execute(array(((int)time()), up($where),((int)$userid)));
         }
 
         //init templateswitch
