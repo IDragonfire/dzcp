@@ -6,7 +6,10 @@ require_once(basePath."/inc/mysql.php");
 
 //DZCP-Install default variable
 if(!isset($installation))
-  $installation = false;
+    $installation = false;
+
+if(!isset($sql_charset))
+    $sql_charset = 'utf8';
 
 function show($tpl="", $array=array(), $array_lang_constant=array(), $array_block=array())
 {
