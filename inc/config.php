@@ -2,7 +2,11 @@
 error_reporting(0);
 
 ## REQUIRES ##
-require_once(basePath."/inc/mysql.php");
+$sql_prefix = ''; $sql_host = '';
+$sql_user =  ''; $sql_pass = '';
+$sql_db = ''; $sql_charset = 'utf8';
+if(file_exists(basePath."/inc/mysql.php"))
+    require_once(basePath."/inc/mysql.php");
 
 //DZCP-Install default variable
 if(!isset($installation))

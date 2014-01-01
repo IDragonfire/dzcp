@@ -6,8 +6,8 @@ define('basePath', dirname(dirname(__FILE__).'../'));
 
 require_once(basePath.'/inc/mysql.php');
 require_once(basePath.'/inc/_version.php');
-require_once basePath.'/_installer/conf/conf.php';
-require_once basePath.'/_installer/conf/mysql.php';
+require_once(basePath.'/_installer/conf/conf.php');
+require_once(basePath.'/_installer/conf/mysql.php');
 
 include(basePath.'/_installer/html/header_u.php');
 
