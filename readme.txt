@@ -116,7 +116,7 @@ Update von 1.5.5.4 zu 1.6
 
 	Datenbank updaten:
 	
-	Bitte rufe nachdem du alle Dateien ausgetauscht und verändert hast einmal das Updatescript mittels 
+	Bitte rufe nachdem du alle Dateien ausgetauscht und verändert hast, AUSGENOMMEN der MYSQL.PHP (inc/mysql.php), einmal das Updatescript mittels 
 	folgender URL auf und folge den Anweisungen.
 	
 	http://www.Deine-Domain.de/_installer/update.php
@@ -128,4 +128,4 @@ Update von 1.5.5.4 zu 1.6
         Wir bedanken uns bei allen die an der Fertigstellung der v1.6 mitgearbeitet haben.
         
         Dragonfire, Godkiller_NT(Hammermaps), xDGeForcexD, Hypernate, Koma, Lord Alpha (esport Design),  Makke,
-        Acecom, Sk!ller
+        Acecom, Sk!ller ....

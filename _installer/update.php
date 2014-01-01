@@ -4,7 +4,7 @@ session_start();
 error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
 define('basePath', dirname(dirname(__FILE__).'../'));
 
-require_once basePath.'/inc/mysql.php';
+require_once(basePath.'/inc/mysql.php');
 require_once(basePath.'/inc/_version.php');
 require_once basePath.'/_installer/conf/conf.php';
 require_once basePath.'/_installer/conf/mysql.php';
