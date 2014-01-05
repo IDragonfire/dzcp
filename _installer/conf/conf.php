@@ -41,17 +41,17 @@ function _is ($var)
 function _i ($file, $var="0")
 {
   global $b;
-
+  
   if($var == 1) $what = "Dir:&nbsp;";
   else $what = "File:";
-
+    
   $_file = preg_replace("#\.\.#Uis", "", $file);
   $c = '';
   if(_is($file))
     $c .= _true."<font color='green'><b>".$what."</b>&nbsp;&nbsp;&nbsp; ".$_file."</font>".$b;
   else
     $c .= _false."<font color='red'><b>".$what."</b>&nbsp;&nbsp;&nbsp; ".$_file."</font>".$b;
-
+    
   return $c;
 }
 
@@ -59,7 +59,7 @@ function _c ($file,$pfad,$host,$user,$pwd)
 {
   $conn = @ftp_connect($host);
   @ftp_login($conn, $user, $pwd);
-
+  
   ftp_site($conn, 'CHMOD 0777 '.$pfad.'/'.$file);
 }
 
@@ -73,10 +73,9 @@ function _m ($prefix, $host, $user, $pwd, $db)
   @fwrite($fp,"<?php
                  \$sql_prefix = '".$prefix."';
                  \$sql_host = '".$host."';
-                 \$sql_user =  '".$user."';
-                 \$sql_pass = '".$pwd."';
+                 \$sql_user =  '".$user."'; 
+                 \$sql_pass = '".$pwd."'; 
                  \$sql_db = '".$db."';
-                 \$sql_charset = 'utf8';
                ?>");
   @fclose($fp);
 }
