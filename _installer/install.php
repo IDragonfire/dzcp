@@ -26,7 +26,7 @@ default:
              </tr>
            </table>';
   }
-  
+
   include(basePath.'/_installer/html/welcome.php');
 break;
 case 'prepare';
@@ -42,7 +42,7 @@ if(isset($_GET['agb']) && $_GET['agb'])
       $user = $_POST['user'];
       $pwd = $_POST['pwd'];
       $pfad = $_POST['pfad'];
-      
+
       $conn = @ftp_connect($host);
       if(!$conn)
       {
@@ -56,7 +56,7 @@ if(isset($_GET['agb']) && $_GET['agb'])
                 </tr>
               </table>';
 
-      } elseif(!@ftp_login($conn, $user, $pwd)) 
+      } elseif(!@ftp_login($conn, $user, $pwd))
       {
         echo '<table width="100%" cellpadding="1" cellspacing="1" class="error">
                 <tr>
@@ -68,8 +68,8 @@ if(isset($_GET['agb']) && $_GET['agb'])
                 </tr>
               </table>';
       } else {
-        _c('_installer',$pfad,$host,$user,$pwd);  
-        _c('_installer/update.php',$pfad,$host,$user,$pwd);  
+        _c('_installer',$pfad,$host,$user,$pwd);
+        _c('_installer/update.php',$pfad,$host,$user,$pwd);
         _c('_installer/install.php',$pfad,$host,$user,$pwd);
         _c('__cache',$pfad,$host,$user,$pwd);
         _c('rss.xml',$pfad,$host,$user,$pwd);
@@ -101,7 +101,6 @@ if(isset($_GET['agb']) && $_GET['agb'])
         _c('inc/tinymce_files',$pfad,$host,$user,$pwd);
         _c('inc/tinymce/plugins/ajaxfilemanager/session',$pfad,$host,$user,$pwd);
         _c('inc/tinymce/plugins/ajaxfilemanager/session/gc_counter.ajax.php',$pfad,$host,$user,$pwd);
-        _c('inc/mysql.php',$pfad,$host,$user,$pwd);
         _c('inc/config.php',$pfad,$host,$user,$pwd);
       }
     } else {
@@ -151,11 +150,10 @@ if(isset($_GET['agb']) && $_GET['agb'])
   $c .= _i('../inc/tinymce_files',1);
   $c .= _i('../inc/tinymce/plugins/ajaxfilemanager/session',1);
   $c .= _i('../inc/tinymce/plugins/ajaxfilemanager/session/gc_counter.ajax.php',1);
-  $c .= _i('../inc/mysql.php',1);
   $c .= _i('../inc/config.php',1);
-  
+
   $check = preg_match("#false#Uis",$c);
-  
+
   if($check == FALSE)
   {
     echo '<table width="100%" cellpadding="1" cellspacing="1" class="done">
@@ -181,9 +179,9 @@ if(isset($_GET['agb']) && $_GET['agb'])
             <td valign="top">'.$cm.'</td>
             <td>'.$c.'</td>
           </tr>';
-            
+
   include(basePath.'/_installer/html/prepare_ftp.php');
-  
+
   if($check == FALSE)
   {
     echo '<table width="100%" cellpadding="1" cellspacing="1">
@@ -200,17 +198,17 @@ break;
 case'install';
   if(isset($_GET['do']) && $_GET['do'] == "test_mysql")
   {
-	$sql=false;
-	
+    $sql=false;
+
 //-> zur Datenbank connecten
-	if(!empty($_POST['host']) && !empty($_POST['user']) && !empty($_POST['database']))
-	{
-		$con = @mysql_connect($_POST['host'], $_POST['user'], $_POST['pwd']);
-		$sel = @mysql_select_db($_POST['database'],$con);
-		$sql = true;
-	}
+    if(!empty($_POST['host']) && !empty($_POST['user']) && !empty($_POST['database']))
+    {
+        $con = @mysql_connect($_POST['host'], $_POST['user'], $_POST['pwd']);
+        $sel = @mysql_select_db($_POST['database'],$con);
+        $sql = true;
+    }
 //-> MySQL-Daten testen
-	if(!$sql)
+    if(!$sql)
     {
       echo '<table width="100%" cellpadding="1" cellspacing="1" class="error">
               <tr>
@@ -218,13 +216,13 @@ case'install';
               </tr>
               <tr>
                 <td class="error_text">MySQL Angaben unvollstndig!<br />
-                &Uuml;berpr&uuml;fen Sie die eingegebenen Verbindungsdaten! 
+                &Uuml;berpr&uuml;fen Sie die eingegebenen Verbindungsdaten!
                 </td>
               </tr>
             </table>';
-    }	
+    }
     else if(!$con)
-    { 
+    {
       echo '<table width="100%" cellpadding="1" cellspacing="1" class="error">
               <tr>
                 <td class="error_text"><b>Fehler:</b></td>
@@ -235,8 +233,8 @@ case'install';
                 </td>
               </tr>
             </table>';
-    } 
-	elseif(!$sel) 
+    }
+    elseif(!$sel)
     {
       echo '<table width="100%" cellpadding="1" cellspacing="1" class="error">
               <tr>
@@ -244,12 +242,12 @@ case'install';
               </tr>
               <tr>
                 <td class="error_text">Die angegebene Datenbank konnte nicht gefunden werden!<br />
-                &Uuml;berpr&uuml;fen Sie den eingegebenen Datenbanknamen! 
+                &Uuml;berpr&uuml;fen Sie den eingegebenen Datenbanknamen!
                 </td>
               </tr>
             </table>';
     }
-    
+
     if(!$sel || !$con || !$sql)
     {
       include(basePath.'/_installer/html/mysql.php');
@@ -258,11 +256,11 @@ case'install';
       $user = $_POST['user'];
       $pwd = $_POST['pwd'];
       $database = $_POST['database'];
-    
+
       include(basePath.'/_installer/html/mysql_data.php');
-    } 
-	else 
-	{
+    }
+    else
+    {
       echo '<table width="100%" cellpadding="1" cellspacing="1" class="done">
               <tr>
                 <td class="error_text"><b>Done!</b></td>
@@ -272,33 +270,33 @@ case'install';
                 Klicken Sie nun auf \'MySQL-Daten abspeichern\'.</td>
               </tr>
             </table>';
-            
+
       include(basePath.'/_installer/html/mysql.php');
-      
+
       echo '<table width="100%" cellpadding="1" cellspacing="1">
               <tr>
                 <td>&nbsp;</td>
               </tr>
             <form action="install.php?action=install&amp;do=write_mysql" method="POST">
-              <input type="hidden" name="prefix" value="'.$_POST['prefix'].'">  
-              <input type="hidden" name="host" value="'.$_POST['host'].'">  
-              <input type="hidden" name="user" value="'.$_POST['user'].'">  
+              <input type="hidden" name="prefix" value="'.$_POST['prefix'].'">
+              <input type="hidden" name="host" value="'.$_POST['host'].'">
+              <input type="hidden" name="user" value="'.$_POST['user'].'">
               <input type="hidden" name="pwd" value="'.$_POST['pwd'].'">
-              <input type="hidden" name="database" value="'.$_POST['database'].'">    
+              <input type="hidden" name="database" value="'.$_POST['database'].'">
               <tr>
                 <td align="center"><input style="width:210px;" type="submit" value="MySQL-Daten abspeichern!"></td>
               </tr>
             </form>
             </table>';
     }
-  } 
+  }
   elseif(isset($_GET['do']) && $_GET['do'] == "write_mysql")
   {
 //-> MySQL-Daten in mysql.php schreiben
-    if(_ex("fopen")) 
+    if(_ex("fopen"))
     {
       _m ($_POST['prefix'], $_POST['host'], $_POST['user'], $_POST['pwd'], $_POST['database']);
-      
+
       echo '<table width="100%" cellpadding="1" cellspacing="1" class="done">
               <tr>
                 <td class="error_text"><b>Done!</b></td>
@@ -308,8 +306,8 @@ case'install';
                 Klicken Sie auf weiter um mit der Datenbankinstallation zu beginnen!.</td>
               </tr>
             </table>';
-            
-      
+
+
       include (basePath.'/_installer/html/mysql.php');
       echo '<table width="100%" cellpadding="3" cellspacing="1">
               <tr>
@@ -330,9 +328,9 @@ case'install';
                 </td>
               </tr>
             </table>';
-            
+
       include (basePath.'/_installer/html/mysql.php');
-      
+
       echo '<table width="100%" cellpadding="3" cellspacing="1">
               <tr>
                 <td>&nbsp;</td>
@@ -345,7 +343,7 @@ case'install';
                 Ersetzen Sie nun die den dort befindlichen Code mit folgenden:</td>
               </tr>
             </table>';
-            
+
       echo '<table width="100%" cellpadding="3" cellspacing="1" class="emph">
               <tr>
                 <td height="20"></td>
@@ -360,14 +358,14 @@ case'install';
   $sql_user =  \''.$_POST['user'].'\';
   $sql_pass = \''.$_POST['pwd'].'\';
   $sql_db = \''.$_POST['database'].'\';
-?></textarea>  
+?></textarea>
                 </td>
               </tr>
               <tr>
                 <td height="20"></td>
               </tr>
             </table>';
-            
+
       echo '<table width="100%" cellpadding="3" cellspacing="1">
               <tr>
                 <td>&nbsp;</td>
@@ -376,7 +374,7 @@ case'install';
                 <td>Speichere anschlie&szlig;end die Datei ab und klicke <u>erst dann</u> auf Weiter um die Datenbankinstallation zu bgeinnen!</td>
               </tr>
             </table>';
-            
+
       echo '<table width="100%" cellpadding="3" cellspacing="1">
               <tr>
                 <td height="25"></td>
@@ -386,8 +384,8 @@ case'install';
               </tr>
             </table>';
     }
-  } 
-  else 
+  }
+  else
   {
     include(basePath.'/_installer/html/mysql.php');
     include(basePath.'/_installer/html/mysql_data.php');
@@ -405,7 +403,7 @@ case 'database';
         update_mysql_1_5_2();
         update_mysql_1_5_4();
         update_mysql_1_6();
-      
+
       header("Location: install.php?action=done");
     } else {
       echo '<table width="100%" cellpadding="1" cellspacing="1" class="error">
@@ -417,7 +415,7 @@ case 'database';
                 </td>
               </tr>
             </table>';
-            
+
       include(basePath.'/_installer/html/installation.php');
       include(basePath.'/_installer/html/installation_admin.php');
     }

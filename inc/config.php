@@ -2,7 +2,9 @@
 error_reporting(0);
 
 ## REQUIRES ##
-require_once(basePath."/inc/mysql.php");
+$sql_prefix = ''; $sql_host = ''; $sql_user =  ''; $sql_pass = ''; $sql_db = '';
+if(file_exists(basePath."/inc/mysql.php"))
+    require_once(basePath."/inc/mysql.php");
 
 //DZCP-Install default variable
 if(!isset($installation))
@@ -119,14 +121,16 @@ unset($prefix,$sql_host,$sql_user,$sql_pass,$sql_db);
 
 if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '')
 {
-    if(!$msql = mysql_connect($db['host'],$db['user'],$db['pass'])) die("<b>Fehler beim Zugriff auf die Datenbank!");
-    if(!mysql_select_db($db['db'],$msql)) die("<b>Die angegebene Datenbank <i>".$db['db']."</i> existiert nicht!");
+    if(!$mysql = mysql_connect($db['host'],$db['user'],$db['pass'])) die("<b>Fehler beim Zugriff auf die Datenbank!");
+    if(!mysql_select_db($db['db'],$mysql)) die("<b>Die angegebene Datenbank <i>".$db['db']."</i> existiert nicht!");
 }
+else if(!$installation)
+    header('Location: ../_installer/index.php');
 
 //MySQL-Funktionen
 function _rows($rows)
 {
-	return mysql_num_rows($rows);
+    return mysql_num_rows($rows);
 }
 
 function _fetch($fetch)
@@ -136,8 +140,8 @@ function _fetch($fetch)
 
 function db($db='',$rows=false,$fetch=false)
 {
-    global $prefix;
-    if(!$qry = mysql_query($db)) die('<b>MySQL-Query failed:</b><br /><br /><ul>'.
+    global $prefix,$mysql;
+    if(!$qry = mysql_query($db,$mysql)) die('<b>MySQL-Query failed:</b><br /><br /><ul>'.
                                      '<li><b>ErrorNo</b> = '.!empty($prefix) ? str_replace($prefix,'',mysql_errno()) : mysql_errno().
                                      '<li><b>Error</b>   = '.!empty($prefix) ? str_replace($prefix,'',mysql_error()) : mysql_error().
                                      '<li><b>Query</b>   = '.!empty($prefix) ? str_replace($prefix,'',$db).'</ul>' : $db);
