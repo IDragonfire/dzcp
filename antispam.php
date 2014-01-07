@@ -76,10 +76,10 @@ ob_start();
     }
 // Zahlencode einfuegen
     $code = '';
-    $z = array("1","2","3","4","5","6","7","8","9","0");
+    $z = array("1","2","3","4","5","6","7","8","9","0","A","C","D","E","F","G","H","J","K","M","N","P","R","S","T","U","V","W","X","Y","Z");
     for($f=0; $f<$num; $f++)
     {
-      $spamcode = $z[rand(0,8)];
+      $spamcode = $z[rand(0,30)];
       $w = (16 * $f) + $space;
 
       if(function_exists('imagettftext'))
