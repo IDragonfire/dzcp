@@ -20,14 +20,14 @@ function up($txt,$bbcode=0)
 
 function spChars($txt)
 {
-  $txt = str_replace("Ã„","&Auml;",$txt);
-  $txt = str_replace("Ã¤","&auml;",$txt);
-  $txt = str_replace("Ãœ","&Uuml;",$txt);
-  $txt = str_replace("Ã¼","&uuml;",$txt);
-  $txt = str_replace("Ã–","&Ouml;",$txt);
-  $txt = str_replace("Ã¶","&ouml;",$txt);
-  $txt = str_replace("ÃŸ","&szlig;",$txt);
-  $txt = str_replace("â‚¬","&euro;",$txt);
+  $txt = str_replace("Ä","&Auml;",$txt);
+  $txt = str_replace("ä","&auml;",$txt);
+  $txt = str_replace("Ü","&Uuml;",$txt);
+  $txt = str_replace("ü","&uuml;",$txt);
+  $txt = str_replace("Ö","&Ouml;",$txt);
+  $txt = str_replace("ö","&ouml;",$txt);
+  $txt = str_replace("ß","&szlig;",$txt);
+  $txt = str_replace("€","&euro;",$txt);
 
   return $txt;
 }
@@ -1520,8 +1520,7 @@ function update_mysql_1_6()
     $qry = db("SELECT id FROM ".$db['users']." WHERE level = 4");
     if(mysql_num_rows($qry)>= 1)
     while($get = mysql_fetch_assoc($qry)) {
-        db($sql="UPDATE ".$db['permissions']." SET slideshow = 1, gs_showpw = 1 WHERE id = '".$get['id']."'");
-        echo $sql.'<p>';
+        db("UPDATE ".$db['permissions']." SET slideshow = 1, gs_showpw = 1 WHERE id = '".$get['id']."'");
     }
 }
 ?>
