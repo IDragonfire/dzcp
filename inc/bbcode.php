@@ -200,10 +200,12 @@ function visitorIp()
  **/
 function fsockopen_support()
 {
-    if(!function_exists('fsockopen')) return false;
-    if(!function_exists("fopen")) return false;
-    if(ini_get('allow_url_fopen') != 1) return false;
-    if(strpos(ini_get('disable_functions'),'fsockopen') || strpos(ini_get('disable_functions'),'file_get_contents') || strpos(ini_get('disable_functions'),'fopen')) return false;
+    if(!function_exists('fsockopen') || !function_exists("fopen"))
+        return false;
+
+    if(strpos(ini_get('disable_functions'),'fsockopen') || strpos(ini_get('disable_functions'),'file_get_contents') || strpos(ini_get('disable_functions'),'fopen'))
+        return false;
+
     return true;
 }
 
@@ -2106,17 +2108,17 @@ function infos($checkBrowser = "")
     if($settings['persinfo'])
     {
         $data = $_SERVER['HTTP_USER_AGENT'];
-        if(preg_match("/Android/i",$data)) 					$system = "Android";
-        elseif(preg_match ("/Linux/i",$data))           	$system = "Linux";
-        elseif(preg_match("/SunOS/i",$data))        		$system = "Sun OS";
-        elseif(preg_match("/Macintosh/i",$data))    		$system = "Macintosh";
-        elseif(preg_match("/Mac_PowerPC/i",$data))  		$system = "Macintosh";
-        elseif(preg_match("/Windows XP/i",$data))   		$system = "Windows XP";
-        elseif(preg_match("/NT 5.2/i",$data))       		$system = "Windows XP x64";
-        elseif(preg_match("/NT 5.1/i",$data))       		$system = "Windows XP";
-        elseif(preg_match("/NT 6.0/i",$data))       		$system = "Windows Vista";
-        elseif(preg_match("/NT 6.1/i",$data))       		$system = "Windows 7";
-        elseif(preg_match("/NT 6.2/i",$data))       		$system = "Windows 8";
+        if(preg_match("/Android/i",$data))                     $system = "Android";
+        elseif(preg_match ("/Linux/i",$data))               $system = "Linux";
+        elseif(preg_match("/SunOS/i",$data))                $system = "Sun OS";
+        elseif(preg_match("/Macintosh/i",$data))            $system = "Macintosh";
+        elseif(preg_match("/Mac_PowerPC/i",$data))          $system = "Macintosh";
+        elseif(preg_match("/Windows XP/i",$data))           $system = "Windows XP";
+        elseif(preg_match("/NT 5.2/i",$data))               $system = "Windows XP x64";
+        elseif(preg_match("/NT 5.1/i",$data))               $system = "Windows XP";
+        elseif(preg_match("/NT 6.0/i",$data))               $system = "Windows Vista";
+        elseif(preg_match("/NT 6.1/i",$data))               $system = "Windows 7";
+        elseif(preg_match("/NT 6.2/i",$data))               $system = "Windows 8";
         elseif(preg_match("/OS (.*?) like Mac OS X/i",$data)) $system = "iOS";
         else                                        $system = _unknown_system;
 
