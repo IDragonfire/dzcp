@@ -52,7 +52,7 @@ function visitorIp()
 }
 
 //MySQL-Daten einlesen
-$installation = false;
+$installation = true;
 include(basePath.'/inc/config.php');
 
 function install_mysql($login, $nick, $pwd, $email)
@@ -867,7 +867,7 @@ function install_mysql($login, $nick, $pwd, $email)
              `whereami` varchar(20) NOT NULL default '',
              PRIMARY KEY  (`id`)
              ) ");
-  $qry = db("ALTER TABLE ".$db['users']."	ADD `drink` varchar(249) NOT NULL default '',
+  $qry = db("ALTER TABLE ".$db['users']."    ADD `drink` varchar(249) NOT NULL default '',
                                                                   ADD `essen` varchar(249) NOT NULL default '',
                                                                  ADD `film` varchar(249) NOT NULL default '',
                                                                  ADD `musik` varchar(249) NOT NULL default '',
@@ -1317,7 +1317,7 @@ function update_mysql_1_5()
   $eml_fabo_tedit_subj = 'Thread auf abonniertes Thema im [titel] wurde editiert';
   $eml_fabo_pedit_subj = 'Beitrag auf abonniertes Thema im [titel] wurde editiert';
   $eml_fabo_npost = "Hallo [nick],\r\n\r\n[postuser] hat auf das Thema: [topic] auf der Website: \"[titel]\" geantwortet.\r\n\r\nDen neuen Beitrag erreichst Du ber folgenden Link:\r\n<a href=\"http://[domain]/forum/?action=showthread&id=[id]&page=[page]#p[entrys]\">http://[domain]/forum/?action=showthread&id=[id]&page=[page]#p[entrys]</a>\r\n\r\n[postuser] hat folgenden Text geschrieben:\r\n---------------------------------\r\n[text]\r\n---------------------------------\r\n\r\nViele Gre,\r\n\r\nDein [clan]\r\n\r\n[ Diese Email wurde automatisch generiert, bitte nicht antworten! ]";
-  $eml_fabo_tedit = "Hallo [nick],\r\n		 \r\nDer Thread mit dem Titel: [topic] auf der Website: \"[titel]\" wurde soeben von [postuser] editiert.\r\n\r\nDen editierten Beitrag erreichst Du ber folgenden Link:\r\n<a href=\"http://[domain]/forum/?action=showthread&id=[id]\">http://[domain]/forum/?action=showthread&id=[id]</a>\r\n		 \r\n[postuser] hat folgenden neuen Text geschrieben:\r\n---------------------------------\r\n[text]\r\n---------------------------------\r\n		 \r\nViele Gre,\r\n\r\nDein [clan]\r\n\r\n[ Diese Email wurde automatisch generiert, bitte nicht antworten! ]";
+  $eml_fabo_tedit = "Hallo [nick],\r\n         \r\nDer Thread mit dem Titel: [topic] auf der Website: \"[titel]\" wurde soeben von [postuser] editiert.\r\n\r\nDen editierten Beitrag erreichst Du ber folgenden Link:\r\n<a href=\"http://[domain]/forum/?action=showthread&id=[id]\">http://[domain]/forum/?action=showthread&id=[id]</a>\r\n         \r\n[postuser] hat folgenden neuen Text geschrieben:\r\n---------------------------------\r\n[text]\r\n---------------------------------\r\n         \r\nViele Gre,\r\n\r\nDein [clan]\r\n\r\n[ Diese Email wurde automatisch generiert, bitte nicht antworten! ]";
   $eml_fabo_pedit = "Hallo [nick],\r\n\r\nEin Beitrag im Thread mit dem Titel: [topic] auf der Website: \"[titel]\" wurde soeben von [postuser] editiert.\r\n\r\nDen editierten Beitrag erreichst Du ber folgenden Link:\r\n<a href=\"http://[domain]/forum/?action=showthread&id=[id]&page=[page]#p[entrys]\">http://[domain]/forum/?action=showthread&id=[id]&page=[page]#p[entrys]</a>\r\n\r\n[postuser] hat folgenden neuen Text geschrieben:\r\n---------------------------------\r\n[text]\r\n---------------------------------\r\n\r\nViele Gre,\r\n\r\nDein [clan]\r\n\r\n[ Diese Email wurde automatisch generiert, bitte nicht antworten! ]";
   $eml_pn_subj = "Neue PN auf [domain]";
   $eml_pn = "---------------------------------\r\n\r\nHallo [nick],\r\n\r\nDu hast eine neue Nachricht in deinem Postfach.\r\n\r\nTitel: [titel]\r\n\r\n<a href=\"http://[domain]/user/index.php?action=msg\">Zum Nachrichten-Center</a>\r\n\r\nVG\r\n\r\n[clan]\r\n\r\n---------------------------------";
@@ -1326,11 +1326,11 @@ function update_mysql_1_5()
         SET `eml_fabo_npost_subj` = '".up($eml_fabo_npost_subj)."',
             `eml_fabo_tedit_subj`   = '".up($eml_fabo_tedit_subj)."',
             `eml_fabo_pedit_subj`   = '".up($eml_fabo_pedit_subj)."',
-            `eml_pn_subj`   		    = '".up($eml_pn_subj)."',
+            `eml_pn_subj`               = '".up($eml_pn_subj)."',
             `eml_fabo_npost`        = '".up($eml_fabo_npost)."',
             `eml_fabo_tedit`        = '".up($eml_fabo_tedit)."',
             `eml_fabo_pedit`        = '".up($eml_fabo_pedit)."',
-            `eml_pn`		            = '".up($eml_pn)."'
+            `eml_pn`                    = '".up($eml_pn)."'
         WHERE `id` = '1'");
 
   db("ALTER TABLE ".$db['users']." ADD `pnmail` int(1) NOT NULL default '1'");
@@ -1490,11 +1490,11 @@ function update_mysql_1_6()
     db("ALTER TABLE `".$db['users']."` CHANGE `gmaps_koord` `gmaps_koord` VARCHAR( 249 ) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
     db("ALTER TABLE `".$db['permissions']."` CHANGE `pos` `pos` INT( 1 ) NOT NULL DEFAULT '0';");
     db("ALTER TABLE `".$db['rankings']."` CHANGE `lastranking` `lastranking` INT( 10 ) NOT NULL DEFAULT '0';");
-	db("ALTER TABLE `".$db['users']."` ADD `xboxid` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
-	db("ALTER TABLE `".$db['users']."` ADD `psnid` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
-	db("ALTER TABLE `".$db['users']."` ADD `skypename` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
-	db("ALTER TABLE `".$db['users']."` ADD `originid` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
-	db("ALTER TABLE `".$db['users']."` ADD `battlenetid` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
+    db("ALTER TABLE `".$db['users']."` ADD `xboxid` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
+    db("ALTER TABLE `".$db['users']."` ADD `psnid` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
+    db("ALTER TABLE `".$db['users']."` ADD `skypename` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
+    db("ALTER TABLE `".$db['users']."` ADD `originid` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
+    db("ALTER TABLE `".$db['users']."` ADD `battlenetid` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
 
     //-> Forum Sortieren
     db("ALTER TABLE ".$db['f_skats']." ADD `pos` int(5) NOT NULL");
