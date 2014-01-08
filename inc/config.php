@@ -2,7 +2,11 @@
 error_reporting(0);
 
 ## REQUIRES ##
+//DZCP-Install default variable
+if(!isset($sql_host) || !isset($sql_user) || !isset($sql_pass) || !isset($sql_db)) {
 $sql_prefix = ''; $sql_host = ''; $sql_user =  ''; $sql_pass = ''; $sql_db = '';
+}
+
 if(file_exists(basePath."/inc/mysql.php"))
     require_once(basePath."/inc/mysql.php");
 
