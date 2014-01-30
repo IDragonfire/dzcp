@@ -3189,6 +3189,47 @@ case 'admin';
     }
   }
 break;
+
+case 'get_steam_image';
+	$data=strtolower(trim($_GET['steam_id']));
+	if ($data!='') 
+	{
+		if (ereg('7656119', $data))
+		{
+			$ret = $data;
+		}
+		else if (substr($data,0,7)=='steam_0') 
+		{
+			$tmp=explode(':',$data);
+			if ((count($tmp)==3) && is_numeric($tmp[1]) && is_numeric($tmp[2]))
+			{							
+				$friendid=($tmp[2]*2)+$tmp[1]+1197960265728;
+				$friendid='7656'.$friendid;
+				$ret = $friendid;
+			}
+		}
+		if ($ret!= null)
+		{
+			$steam_profile = simplexml_load_file("http://steamcommunity.com/profiles/".$ret."/?xml=1");
+		}
+		else
+		{
+			$steam_profile = simplexml_load_file("http://steamcommunity.com/id/".str_replace('steam_','ERROR_POFILE_FIXED',$data)."/?xml=1");
+			$ret = $steam_profile->steamID64;
+		}					
+		if (empty($steam_profile->error) && $ret != "") 
+		{
+			$file = 'http://steamsignature.com/profile/english/'.$ret.'.png';
+		}
+		else {
+			$file = 'http://steamsignature.com/profile/english/error_not_found.png';
+		}
+		$image_cache = file_get_contents($file);
+		header('Content-Type: image/png');
+		echo $image_cache;
+	}
+break;
+
 endswitch;
 ## SETTINGS ##
 $whereami = preg_replace_callback("#autor_(.*?)$#",create_function('$id', 'return data("$id[1]","nick");'),$where);

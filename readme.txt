@@ -67,7 +67,7 @@ Aufgrund der vielzahl an Änderungen, wird kein manuelles Update für diese Versio
         -Interne Galerie und Downloads
         -in mehrere Bereiche lassen sich die Inhalte Ordnen
         -Xfire-Icon würde in der Userlist durch Steam ersetzt und Skype hinzugefügt
-        -Profil wurde um folgende Kontakte erweiter: Steam (Thanks Nitro), Skype, Xbox Live, Playstation Network, Origin, Battlenet
+        -Profil wurde um folgende Kontakte erweiter: Steam (Thanks Tune389 & Nitro), Skype, Xbox Live, Playstation Network, Origin, Battlenet
         -Antispam Fix
 
         Bugfixes
