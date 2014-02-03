@@ -7,7 +7,6 @@ ob_start();
         require_once(basePath."/inc/mysql.php");
 
     if(empty($sql_user) && empty($sql_pass) && empty($sql_db)) {
-        die();
         header('Location: _installer/index.php');
     }    else {
         include(basePath."/inc/config.php");
