@@ -28,7 +28,7 @@ if(_adminMenu != 'true') exit;
         $show = show($dir."/form_gallery_step2", array("head" => _gallery_admin_head,
                                                  "what" => re($_POST['gallery']),
                                                  "addfile" => $addfile,
-                                                 "id" => mysql_insert_id(),
+                                                 "id" => mysqli_insert_id($mysql),
                                                  "do" => "add",
                                                  "dowhat" => _button_value_add,
                                                  "anzahl" => $_POST['anzahl'],

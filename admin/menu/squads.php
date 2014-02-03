@@ -124,7 +124,7 @@ if(_adminMenu != 'true') exit;
                          `status`       = '".((int)$_POST['status'])."',
                          `pos`          = '".((int)$_POST['position'])."'");
 
-                    $insert_id = mysql_insert_id();
+                    $insert_id = mysqli_insert_id($mysql);
 
                     if($_POST['navi'] != "lazy") {
                         if($_POST['navi'] == "1" || "2") $signnav = ">= ";

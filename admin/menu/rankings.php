@@ -109,7 +109,7 @@ if(_adminMenu != 'true') exit;
 	    $qry = db("SELECT s1.*,s2.name,s2.id AS sqid FROM ".$db['rankings']." AS s1
                    LEFT JOIN ".$db['squads']." AS s2
                    ON s1.squad = s2.id
-                   ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."");
+                   ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."");
 	   }
 
        else{$qry = db("SELECT s1.*,s2.name,s2.id AS sqid FROM ".$db['rankings']." AS s1

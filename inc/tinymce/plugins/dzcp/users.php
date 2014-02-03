@@ -46,7 +46,7 @@
     $qry = db("SELECT id,nick,country FROM ".$db['users']."
                ".$order."
                ORDER BY nick");
-    while($get = mysql_fetch_array($qry))
+    while($get = mysqli_fetch_array($qry))
     {
       echo "<tr>\n";
       echo "  <td>".flag($get['country'])." ".$get['nick']."</td>\n";

@@ -28,7 +28,7 @@ $where = $where.' - '._away_list;
 	$tmp_orderby = $_GET['orderby'];
 	if($_GET['orderby'] == "start") $_GET['orderby'] = "start ".$_GET['order'].", end";
 	$qry = db("SELECT * FROM ".$db['away']." 
-               ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."
+               ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
                LIMIT ".($page - 1)*$maxaway.",".$maxaway."");
 	$_GET['orderby'] = $tmp_orderby; 
 	}

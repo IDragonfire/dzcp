@@ -281,7 +281,7 @@ case 'register';
                      `time`     = '".time()."',
                      `status`   = '1'");
 
-      $insert_id = mysql_insert_id();
+      $insert_id = mysqli_insert_id($mysql);
 
       $qry = db("INSERT INTO ".$db['permissions']."
                  SET `user` = '".((int)$insert_id)."'");
@@ -2531,7 +2531,7 @@ if($_GET['show'] == "search")
     $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,
                       xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,STR_TO_DATE(bday, '%d.%m.%Y') AS bday_order FROM ".$db['users']."
                WHERE level != '0'
-                           ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."
+                           ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
                LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
     $_GET['orderby'] = $tmp_orderby;
   } else {

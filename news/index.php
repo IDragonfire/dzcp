@@ -843,7 +843,7 @@ else
 	    $qry = db("SELECT id,titel,autor,datum,kat,text FROM ".$db['news']."
                    ".$intern2."
                    ".$n_kat."
-                   ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."
+                   ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
                    LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
 	    $entrys = cnt($db['news'], " ".$intern2." ".$n_kat);
       } else {

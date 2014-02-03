@@ -128,7 +128,7 @@ if(!permission("slideshow")) {
                        `target` = '".up($_POST['target'])."'");
 
         $tmpname = $_FILES['bild']['tmp_name'];
-            @copy($tmpname, basePath."/inc/images/slideshow/".mysql_insert_id().".jpg");
+            @copy($tmpname, basePath."/inc/images/slideshow/".mysqli_insert_id($mysql).".jpg");
             @unlink($tmpname);
 
         $show = info(_slider_admin_add_done, "?admin=slideshow");

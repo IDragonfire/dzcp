@@ -90,7 +90,7 @@ if(_adminMenu != 'true') exit;
     } else {
       if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("titel","datum"))) {
 	        $qry = db("SELECT * FROM ".$db['events']."
-                   ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."");
+                   ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."");
 	  }
       else {$qry = db("SELECT * FROM ".$db['events']."
                  ORDER BY datum DESC");

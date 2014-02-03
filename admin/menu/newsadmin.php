@@ -194,7 +194,7 @@ if(_adminMenu != 'true') exit;
 												 `sticky`     = '".((int)$stickytime)."'");
 
           $tmpname = $_FILES['newspic']['tmp_name'];
-		  @copy($tmpname, basePath."/inc/images/uploads/news/".mysql_insert_id().".jpg");
+		  @copy($tmpname, basePath."/inc/images/uploads/news/".mysqli_insert_id($mysql).".jpg");
 		  @unlink($tmpname);
 		  
 		  $show = info(_news_sended, "?admin=newsadmin");
@@ -400,7 +400,7 @@ if(_adminMenu != 'true') exit;
         $entrys = cnt($db['news']);
 		if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("titel","datum","autor"))) {
 	    $qry = db("SELECT * FROM ".$db['news']."
-                   ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."
+                   ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
                    LIMIT ".($page - 1)*$maxadminnews.",".$maxadminnews."");
 		}
         else{

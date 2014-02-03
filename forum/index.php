@@ -486,6 +486,7 @@ case 'showthread';
       if(data($get['t_reg'], "signatur")) $sig = _sig.bbcode(data($get['t_reg'], "signatur"));
       else $sig = "";
 
+      $editt = '';
       if($get['t_reg'] == $userid || permission("forum"))
         $editt = show("page/button_edit_single", array("id" => $get['id'],
                                                       "action" => "action=thread&amp;do=edit",
@@ -965,7 +966,7 @@ case 'thread';
                                      `forum`  = 1,
                          `von`    = '".((int)$userid)."'");
 
-          $vid = mysql_insert_id();
+          $vid = mysqli_insert_id($mysql);
 
           $qry = db("INSERT INTO ".$db['vote_results']."
                     SET `vid`   = '".((int)$vid)."',
@@ -1326,7 +1327,7 @@ case 'thread';
                                                      `forum`  = 1,
                                                      `von`    = '".((int)$userid)."'");
 
-                        $vid = mysql_insert_id();
+                        $vid = mysqli_insert_id($mysql);
 
                         $qry = db("INSERT INTO ".$db['vote_results']."
                                             SET `vid`   = '".((int)$vid)."',
@@ -1397,7 +1398,7 @@ case 'thread';
             } else { $vid = ""; }
 
             $qry = db("INSERT INTO ".$db['f_threads']."
-                                 SET 	`kid`      = '".((int)$_GET['kid'])."',
+                                 SET     `kid`      = '".((int)$_GET['kid'])."',
                                                 `t_date`   = '".((int)time())."',
                                                 `topic`    = '".up($_POST['topic'])."',
                                                 `subtopic` = '".up($_POST['subtopic'])."',
@@ -1411,8 +1412,8 @@ case 'thread';
                                                 `ip`       = '".$userip."',
                                                 `lp`       = '".((int)time())."',
                                                 `vote`     = '".$vid."',
-                                                `first`	= '1'");
-                $thisFID = mysql_insert_id();
+                                                `first`    = '1'");
+                $thisFID = mysqli_insert_id($mysql);
                 $fid = "fid(".$_GET['kid'].")";
                 $qry = db("INSERT INTO ".$db['ipcheck']."
                                      SET `ip`   = '".$userip."',

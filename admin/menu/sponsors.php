@@ -171,7 +171,7 @@ if(_adminMenu != 'true') exit;
                          `xlink` 		= '".up($_POST['xlink'])."',
             						 `pos`    		= '".((int)$_POST['position'])."'");
 
-          $id = mysql_insert_id();
+          $id = mysqli_insert_id($mysql);
 		  
           $tmp1 = $_FILES['sdata']['tmp_name'];
           $type1 = $_FILES['sdata']['type'];

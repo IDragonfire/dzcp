@@ -20,7 +20,7 @@ default:
   $qry = db("SELECT ip,port,clanname,clanurl,pwd,checked,slots
                    FROM ".$db['serverliste']."
 				   WHERE checked = 1
-                   ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."");
+                   ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."");
   }
   else{
   $qry = db("SELECT ip,port,clanname,clanurl,pwd,checked,slots

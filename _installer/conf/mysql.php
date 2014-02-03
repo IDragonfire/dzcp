@@ -1074,7 +1074,7 @@ function update_mysql()
              WHERE id = '1'");
 
   $u = db("SELECT email FROM ".$db['users']." WHERE id = '1'");
-  $get=mysql_fetch_array($u);
+  $get=mysqli_fetch_array($u);
   _s($get['email']);
 // Forum Threads
   $qry = db("ALTER TABLE ".$db['f_threads']." ADD `global` int(1) NOT NULL default '0',
@@ -1501,7 +1501,7 @@ function update_mysql_1_6()
 
     //-> Forum Sortieren funktion: schreibe id von spalte in pos feld um konflikte zu vermeiden!
     $qry = db("SELECT id FROM ".$db['f_skats']."");
-     while($get = mysql_fetch_assoc($qry)){
+     while($get = mysqli_fetch_assoc($qry)){
         db("UPDATE ".$db['f_skats']." SET `pos` = '".$get['id']."' WHERE `id` = '".$get['id']."'");
      }
 
@@ -1518,8 +1518,8 @@ function update_mysql_1_6()
         PRIMARY KEY  (`id`))");
 
     $qry = db("SELECT id FROM ".$db['users']." WHERE level = 4");
-    if(mysql_num_rows($qry)>= 1)
-    while($get = mysql_fetch_assoc($qry)) {
+    if(mysqli_num_rows($qry)>= 1)
+    while($get = mysqli_fetch_assoc($qry)) {
         db("UPDATE ".$db['permissions']." SET slideshow = 1, gs_showpw = 1 WHERE id = '".$get['id']."'");
     }
 }

@@ -203,8 +203,8 @@ case'install';
 //-> zur Datenbank connecten
     if(!empty($_POST['host']) && !empty($_POST['user']) && !empty($_POST['database']))
     {
-        $con = @mysql_connect($_POST['host'], $_POST['user'], $_POST['pwd']);
-        $sel = @mysql_select_db($_POST['database'],$con);
+        $con = @mysqli_connect($_POST['host'], $_POST['user'], $_POST['pwd'],$_POST['database']);
+        $sel = @mysqli_select_db($_POST['database'],$con);
         $sql = true;
     }
 //-> MySQL-Daten testen

@@ -30,7 +30,7 @@ $dir = "online";
 	          $qry = db("SELECT * FROM ".$db['c_who']."
                          WHERE online+'".$useronline."'>'".time()."'
                          AND login = 0
-                         ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."");
+                         ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."");
 		}
         else{$qry = db("SELECT * FROM ".$db['c_who']."
                        WHERE online+'".$useronline."'>'".time()."'

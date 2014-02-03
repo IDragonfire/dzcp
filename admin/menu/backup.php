@@ -4,7 +4,9 @@
 // Rechte:    $chkMe == 4
 ///////////////////////////////
 if(_adminMenu != 'true') exit;
+die('IN DEV');
 
+/*
     $where = $where.': '._backup_head;
     if($chkMe == 4)
     {
@@ -36,7 +38,7 @@ if(_adminMenu != 'true') exit;
         $txt .= "# Host: ".$db['host']."\r\n";
         $txt .= "# Erstellt am: ".date("d.m.Y")." um ".date("H:i")."\r\n";
         $txt .= "# Server Betriebssystem: ".@php_uname()."\r\n";
-        $txt .= "# MySQL-Version: ".mysql_get_server_info()."\r\n";
+        $txt .= "# MySQL-Version: ".mysqli_get_server_info()."\r\n";
         $txt .= "# PHP-Version: ".phpversion()."\r\n";
         $txt .= "# Datenbank: `".$db['db']."`\r\n";
         $txt .= "# --------------------------------------------------------\r\n\r\n";
@@ -106,7 +108,7 @@ if(_adminMenu != 'true') exit;
             $spaltenzahl = mysql_num_fields($qry_i);
             for($i = 0; $i < $anzahl; $i++)
             {
-              $zeile = mysql_fetch_array($qry_i);
+              $zeile = mysqli_fetch_array($qry_i);
               $data .= "INSERT INTO $tabelle (";
               for($spalte = 0; $spalte < $spaltenzahl; $spalte++)
               {
@@ -135,4 +137,5 @@ if(_adminMenu != 'true') exit;
     } else {
       $show = error(_error_wrong_permissions, 1);
     }
+    */
 ?>

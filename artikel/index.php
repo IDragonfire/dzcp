@@ -22,7 +22,7 @@ default:
   if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("artikel","titel","datum","kat"))) {
   $qry = db("SELECT * FROM ".$db['artikel']."
                WHERE public = 1
-               ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."
+               ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
                LIMIT ".($page - 1)*$martikel.",".$martikel."");
   }
 			   

@@ -21,7 +21,7 @@ default:
              FROM ".$db['rankings']." AS s1
              LEFT JOIN ".$db['squads']." AS s2
              ON s1.squad = s2.id
-             ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."");
+             ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."");
    }
    else { $qry = db("SELECT s1.id,s1.lastranking,s1.rank,s1.squad,s1.league,s1.url,s2.name
              FROM ".$db['rankings']." AS s1

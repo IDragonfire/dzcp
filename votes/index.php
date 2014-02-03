@@ -27,18 +27,18 @@ default:
     if($forum_vote == 0)
         $fvote = empty($whereIntern) ? ' AND forum = 0' : ' AND forum = 0';
     if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array('titel','datum','von','ges_stimmen'))) {
-		  $order = mysql_real_escape_string($_GET['orderby'].' '.$_GET['order']);
-	}
+          $order = mysqli_real_escape_string($mysql, $_GET['orderby'].' '.$_GET['order']);
+    }
     $qry = db('SELECT votes.*,sum(votes_result.stimmen) as ges_stimmen FROM '.$db['votes'].' votes,'.$db['vote_results'].' votes_result WHERE votes.id = votes_result.vid '.$whereIntern.$fvote.' GROUP by votes.id ORDER BY ' . $order);
 
   while($get = _fetch($qry)) {
-		$qryv = db('SELECT * FROM ' . $db['vote_results'] .
+        $qryv = db('SELECT * FROM ' . $db['vote_results'] .
                 ' WHERE vid = ' . (int) $get['id'] .
                 ' ORDER BY id');
-	$results = '';
+    $results = '';
     $check = '';
     $stimmen = $get['ges_stimmen'];
-	//$stimmen = sum($db['vote_results']," WHERE vid = '".$get['id']."'","stimmen");
+    //$stimmen = sum($db['vote_results']," WHERE vid = '".$get['id']."'","stimmen");
     $vid = 'vid_' . (int) $get['id'];
     if($get['intern'] == 1) {
       $showVoted = '';
@@ -125,10 +125,10 @@ default:
                                      "titel" => _titel,
                                      "autor" => _autor,
                                      "datum" => _datum,
-									 "order_titel" => orderby('titel'),
-									 "order_autor" => orderby('von'),
-									 "order_datum" => orderby('datum'),
-									 "order_stimmen" => orderby('ges_stimmen'),
+                                     "order_titel" => orderby('titel'),
+                                     "order_autor" => orderby('von'),
+                                     "order_datum" => orderby('datum'),
+                                     "order_stimmen" => orderby('ges_stimmen'),
                                      "stimmen" => _votes_stimmen));
 break;
 case 'showvote';

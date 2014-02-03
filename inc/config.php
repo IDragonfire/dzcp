@@ -124,44 +124,31 @@ $db = array("host" =>           $sql_host,
 unset($prefix,$sql_host,$sql_user,$sql_pass,$sql_db);
 
 if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '')
-{
-    if(!$mysql = mysql_connect($db['host'],$db['user'],$db['pass'])) die("<b>Fehler beim Zugriff auf die Datenbank!");
-    if(!mysql_select_db($db['db'],$mysql)) die("<b>Die angegebene Datenbank <i>".$db['db']."</i> existiert nicht!");
-}
-else if(!$installation)
-    header('Location: ../_installer/index.php');
+    if(!$mysql = mysqli_connect($db['host'],$db['user'],$db['pass'],$db['db'])) die("<b>Fehler beim Zugriff auf die Datenbank!");
 
 //MySQL-Funktionen
 function _rows($rows)
 {
-    return mysql_num_rows($rows);
+    return mysqli_num_rows($rows);
 }
 
 function _fetch($fetch)
 {
-    return mysql_fetch_assoc($fetch);
+    return mysqli_fetch_assoc($fetch);
 }
 
 function db($db='',$rows=false,$fetch=false)
 {
     global $prefix,$mysql;
-    if(!$qry = mysql_query($db,$mysql)) die('<b>MySQL-Query failed:</b><br /><br /><ul>'.
-                                     '<li><b>ErrorNo</b> = '.!empty($prefix) ? str_replace($prefix,'',mysql_errno()) : mysql_errno().
-                                     '<li><b>Error</b>   = '.!empty($prefix) ? str_replace($prefix,'',mysql_error()) : mysql_error().
+    if(!$qry = mysqli_query($mysql,$db)) die('<b>MySQL-Query failed:</b><br /><br /><ul>'.
+                                     '<li><b>ErrorNo</b> = '.!empty($prefix) ? str_replace($prefix,'',mysqli_errno()) : mysqli_errno().
+                                     '<li><b>Error</b>   = '.!empty($prefix) ? str_replace($prefix,'',mysqli_error()) : mysqli_error().
                                      '<li><b>Query</b>   = '.!empty($prefix) ? str_replace($prefix,'',$db).'</ul>' : $db);
 
     if($fetch && $rows)
-    {
-        $result = mysql_fetch_array($qry);
-        mysql_free_result($qry);
-        return $result;
-    }
+        return mysqli_fetch_array($qry);
     else if($fetch && !$rows)
-    {
-        $result = mysql_fetch_assoc($qry);
-        mysql_free_result($qry);
-        return $result;
-    }
+        return mysqli_fetch_assoc($qry);
 
     return $qry;
 }

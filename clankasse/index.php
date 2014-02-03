@@ -30,7 +30,7 @@ default:
 			$sub_orderby = "";
 			if($_GET['orderby'] == "betrag") $sub_orderby = "pm ".$_GET['order'].",";
 	       $qry = db("SELECT * FROM ".$db['clankasse']."
-                       ORDER BY ".$sub_orderby.mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."
+                       ORDER BY ".$sub_orderby.mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
                        LIMIT ".($page - 1)*$maxclankasse.",".$maxclankasse."");
 
 	}
@@ -104,7 +104,7 @@ default:
                LEFT JOIN ".$db['c_payed']." AS tbl2 ON tbl2.user = tbl1.id
                WHERE tbl1.listck = '1'
                OR tbl1.level = '4'
-               ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."");
+               ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."");
 
 	}
     else { 

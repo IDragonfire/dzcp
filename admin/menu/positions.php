@@ -152,7 +152,7 @@ if(_adminMenu != 'true') exit;
           $qry = db("INSERT INTO ".$db['pos']."
                      SET `pid`        = '".((int)$_POST['pos'])."',
                          `position`  = '".up($_POST['kat'])."'");
-          $posID = mysql_insert_id();
+          $posID = mysqli_insert_id($mysql);
     // permissions
           foreach($_POST['perm'] AS $v => $k) $p .= "`".substr($v, 2)."` = '".intval($k)."',";
                                 if(!empty($p))$p = ', '.substr($p, 0, strlen($p) - 1);

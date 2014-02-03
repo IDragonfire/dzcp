@@ -23,7 +23,7 @@ default:
       if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("map","autor"))) {
       $qry = db("SELECT id,datum,map,spart,sparct,standardt,standardct,autor
                  FROM ".$db['taktik']."
-                 ORDER BY ".mysql_real_escape_string($_GET['orderby']." ".$_GET['order'])."");
+                 ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."");
       }
       else {
       $qry = db("SELECT id,datum,map,spart,sparct,standardt,standardct,autor

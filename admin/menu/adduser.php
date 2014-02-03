@@ -136,7 +136,7 @@ if(_adminMenu != 'true') exit;
 								 `gmaps_koord`  = '".up($_POST['gmaps_koord'])."',
 								 `status`   = '1'");
 
-      $insert_id = mysql_insert_id();
+      $insert_id = mysqli_insert_id($mysql);
 
       $protocol = "createuser(".$_SESSION['id']."_".$insert_id.")";
       $upd = db("INSERT INTO ".$db['ipcheck']."
