@@ -56,6 +56,7 @@ default:
 break;
 endswitch;
 ## SETTINGS ##
+$title = $pagetitle." - ".$where."";
 $time_end = generatetime();
 $time = round($time_end - $time_start,4);
 page($index, $title, $where,$time);
