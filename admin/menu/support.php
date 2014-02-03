@@ -5,7 +5,7 @@
 ///////////////////////////////
 if(_adminMenu != 'true') exit;
 
-    $m = parsePHPInfo();
+$m = parsePHPInfo();
 
 $support = "#####################\r\n";
 $support .= "# Support Informationen\r\n";
@@ -23,7 +23,7 @@ $support .= "#########\r\n";
 $support .= " Server OS: ".@php_uname()."\r\n";
 $support .= " Apache Version: ".$m['apache2handler']['Apache Version']."\r\n";
 $support .= " PHP-Version: ".phpversion()."\r\n";
-$support .= " MySQL-Version: ".mysql_get_server_info()."\r\n";
+$support .= " MySQL-Version: ".mysqli_get_server_info($mysql)."\r\n";
 $support .= "#########\r\n";
 $support .= "# Servereinstellungen\r\n";
 $support .= "#########\r\n";
