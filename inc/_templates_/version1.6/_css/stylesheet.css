@@ -261,7 +261,7 @@ div#index {
 	color:#fff;
  	background:url(../images/headMainNavigation.jpg) bottom repeat-x
 }
-/* Szyling der ul liste */
+/* Styling der ul liste */
 .mainNavigation ul,
 .mainNavigation ul li {
 	list-style:none;
