@@ -152,3 +152,74 @@ function db($db='',$rows=false,$fetch=false)
 
     return $qry;
 }
+
+function sql_backup()
+{
+    global $mysql,$db;
+    $backup_table_data = array();
+
+    //Table Drop
+    $sqlqry = db('SHOW TABLE STATUS');
+    while($table = _fetch($sqlqry))
+    { $backup_table_data[$table['Name']]['drop'] = 'DROP TABLE IF EXISTS `'.$table['Name'].'`;'; }
+    unset($table);
+
+    //Table Create
+    foreach($backup_table_data as $table => $null)
+    {
+        unset($null);
+        $sqlqry = db('SHOW CREATE TABLE '.$table.';');
+        while($table = _fetch($sqlqry))
+        { $backup_table_data[$table['Table']]['create'] = $table['Create Table'].';'; }
+    }
+    unset($table);
+
+    //Insert Create
+    foreach($backup_table_data as $table => $null)
+    {
+        unset($null); $backup = '';
+        $sqlqry = db('SELECT * FROM '.$table.' ;');
+        while($dt = _fetch($sqlqry))
+        {
+            if(!empty($dt))
+            {
+                $backup_data = '';
+                foreach ($dt as $key => $var)
+                { $backup_data .= "`".$key."` = '".((string)(str_replace("'", "`", $var)))."',"; }
+
+                $backup .= "INSERT INTO `".$table."` SET ".substr($backup_data, 0, -1).";\r\n";
+                unset($backup_data);
+            }
+        }
+
+        $backup_table_data[$table]['insert'] = $backup;
+        unset($backup);
+    }
+    unset($table);
+
+    $sql_backup =  "-- -------------------------------------------------------------------\r\n";
+    $sql_backup .= "-- Datenbank Backup von deV!L`z Clanportal v."._version."\r\n";
+    $sql_backup .= "-- Build: "._release." * "._build."\r\n";
+    $sql_backup .= "-- Host: ".$db['host']."\r\n";
+    $sql_backup .= "-- Erstellt am: ".date("d.m.Y")." um ".date("H:i")."\r\n";
+    $sql_backup .= "-- MySQL-Version: ".mysqli_get_server_info($mysql)."\r\n";
+    $sql_backup .= "-- PHP Version: ".phpversion()."\r\n";
+    $sql_backup .= "-- -------------------------------------------------------------------\r\n\r\n";
+    $sql_backup .= "--\r\n-- Datenbank: `".$db['db']."`\r\n--\n\n";
+    $sql_backup .= "-- -------------------------------------------------------------------\r\n";
+    foreach($backup_table_data as $table => $data)
+    {
+        $sql_backup .= "\r\n--\r\n-- Tabellenstruktur: `".$table."`\r\n--\r\n\r\n";
+        $sql_backup .= $data['drop']."\r\n";
+        $sql_backup .= $data['create']."\r\n";
+
+        if(!empty($data['insert']))
+        {
+            $sql_backup .= "\r\n--\r\n-- Datenstruktur: `".$table."`\r\n--\r\n\r\n";
+            $sql_backup .= $data['insert']."\r\n";
+        }
+    }
+
+    unset($data);
+    return $sql_backup;
+}
