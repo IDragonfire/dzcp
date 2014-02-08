@@ -1238,27 +1238,27 @@ function update_mysql_1_4()
 //UPDATE DB
 $eml_reg =
 'Du hast dich erfolgreich auf unserer Seite registriert!
-Deine Logindaten lauten:
+Deine Logindaten lauten:\r\n\r\n
 
-##########
-Loginname: [user]
-Passwort: [pwd]
-##########
+##########\r\n
+Loginname: [user]\r\n
+Passwort: [pwd]\r\n
+##########\r\n\r\n
 
 [ Diese Email wurde automatisch generiert, bitte nicht antworten! ]';
 
 $eml_pwd =
-'Ein neues Passwort wurde f&uuml;r deinen Account generiert!
+'Ein neues Passwort wurde f&uuml;r deinen Account generiert!\r\n\r\n
 
-#########
-Login-Name: [user]
-Passwort: [pwd]
-#########
+#########\r\n
+Login-Name: [user]\r\n
+Passwort: [pwd]\r\n
+#########\r\n\r\n
 
 [ Diese Email wurde automatisch generiert, bitte nicht antworten! ]';
 
 $eml_nletter =
-'[text]
+'[text]\r\n\r\n
 
 
 [ Diese Email wurde automatisch generiert, bitte nicht antworten! ]';
@@ -1495,7 +1495,7 @@ function update_mysql_1_6()
     db("ALTER TABLE `".$db['users']."` ADD `skypename` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
     db("ALTER TABLE `".$db['users']."` ADD `originid` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
     db("ALTER TABLE `".$db['users']."` ADD `battlenetid` VARCHAR( 100 ) NOT NULL DEFAULT '' AFTER `steamid`;");
-	db("ALTER TABLE `".$db['users']."` ADD `perm_gb`INT(1) NOT NULL DEFAULT '1' AFTER `pnmail`;");
+    db("ALTER TABLE `".$db['users']."` ADD `perm_gb`INT(1) NOT NULL DEFAULT '1' AFTER `pnmail`;");
     db("ALTER TABLE `".$db['users']."` ADD `perm_gallery`INT(1) NOT NULL DEFAULT '0' AFTER `pnmail`;");
 
     //-> Forum Sortieren
