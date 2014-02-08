@@ -1,8 +1,11 @@
 <?php
+
 ## INCLUDES/REQUIRES ##
 require_once(basePath.'/inc/secure.php');
 require_once(basePath.'/inc/_version.php');
-require_once(basePath.'/inc/sendmail.php');
+require_once(basePath.'/inc/pop3.php');
+require_once(basePath.'/inc/smtp.php');
+require_once(basePath.'/inc/phpmailer.php');
 require_once(basePath.'/inc/server_query/_functions.php');
 require_once(basePath."/inc/teamspeak_query.php");
 
@@ -1602,15 +1605,17 @@ function userstats($tid, $what)
 //- Funktion zum versenden von Emails
 function sendMail($mailto,$subject,$content)
 {
-    global $mailfrom;
-    $mail = new Mailer();
-    $mail->IsHTML(true);
+    global $mailfrom,$language;
+    $mail = new PHPMailer;
+    $mail->isHTML(true);
     $mail->From = $mailfrom;
     $mail->FromName = $mailfrom;
     $mail->AddAddress(preg_replace('/(\\n+|\\r+|%0A|%0D)/i', '',$mailto));
     $mail->Subject = $subject;
-    $mail->Body = bbcode_nletter($content);
+    $mail->WordWrap = 50;
+    $mail->Body = $content;
     $mail->AltBody = bbcode_nletter_plain($content);
+    $mail->setLanguage(($language=='deutsch')?'de':'en', basePath.'/inc/lang/sendmail/');
     return $mail->Send();
 }
 
