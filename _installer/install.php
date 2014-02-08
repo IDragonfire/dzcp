@@ -203,8 +203,7 @@ case'install';
 //-> zur Datenbank connecten
     if(!empty($_POST['host']) && !empty($_POST['user']) && !empty($_POST['database']))
     {
-        $con = @mysqli_connect($_POST['host'], $_POST['user'], $_POST['pwd'],$_POST['database']);
-        $sel = @mysqli_select_db($_POST['database'],$con);
+        $con = mysqli_connect($_POST['host'], $_POST['user'], $_POST['pwd'], $_POST['database']);
         $sql = true;
     }
 //-> MySQL-Daten testen
@@ -229,26 +228,13 @@ case'install';
               </tr>
               <tr>
                 <td class="error_text">Es konnte keine Verbindung zur Datenbank aufgebaut werden! <br />
-                &Uuml;berpr&uuml;fen Sie die eingegeben Daten von Host, User und dem Passwort!
-                </td>
-              </tr>
-            </table>';
-    }
-    elseif(!$sel)
-    {
-      echo '<table width="100%" cellpadding="1" cellspacing="1" class="error">
-              <tr>
-                <td class="error_text"><b>Fehler:</b></td>
-              </tr>
-              <tr>
-                <td class="error_text">Die angegebene Datenbank konnte nicht gefunden werden!<br />
-                &Uuml;berpr&uuml;fen Sie den eingegebenen Datenbanknamen!
+                &Uuml;berpr&uuml;fen Sie die eingegeben Daten von Host, User, Passwort und die Datenbank existiert!
                 </td>
               </tr>
             </table>';
     }
 
-    if(!$sel || !$con || !$sql)
+    if(!$con || !$sql)
     {
       include(basePath.'/_installer/html/mysql.php');
       $prefix = $_POST['prefix'];
