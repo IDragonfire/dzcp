@@ -1628,7 +1628,7 @@ function check_msg_emal()
         if($get['pnmail'] == 1)
         {
             db("UPDATE ".$db['msg']." SET `sendmail` = '1' WHERE id = '".$get['mid']."'");
-            $subj = show(re(settings('eml_pn_subj')), array("domain" => $httphost));
+            $subj = show(settings('eml_pn_subj'), array("domain" => $httphost));
             $message = show(bbcode_email(settings('eml_pn')), array("nick" => re($get['nick']), "domain" => $httphost, "titel" => $get['titel'], "clan" => $clanname));
             sendMail(re($get['email']), $subj, $message);
         }
