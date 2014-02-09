@@ -76,7 +76,7 @@ case 'joinus';
 
 	while($getsquads = _fetch($qrysquads)) 
 	{
-		$squads = show(_select_field_fightus, array("id" => $getsquads['id'],
+		$squads .= show(_select_field_fightus, array("id" => $getsquads['id'],
 													 "squad" => re($getsquads['name']),
 													 "game" => re($getsquads['game'])));			
 	}
