@@ -706,9 +706,9 @@ else
                                                "ndatum" => _datum,
                                                "ncomments" => _news_kommentare.":",
                                                "klapp" => $klapp,
-                                               "more" => bbcode($_POST['morenews'],1),
+                                               "more" => bbcode(re($_POST['morenews']),1),
                                                "viewed" => $viewed,
-                                               "text" => bbcode($_POST['newstext'],1),
+                                               "text" => bbcode(re($_POST['newstext']),1),
                                                "datum" => date("d.m.y H:i", time())._uhr,
                                                "links" => $links,
                                                "autor" => autor($_SESSION['id'])));
@@ -774,7 +774,7 @@ else
                                           "delete" => $delete));
 
       $index = show("page/comments_show", array("titel" => $titel,
-                                                                                        "comment" => bbcode($_POST['comment'],1),
+                                                                                        "comment" => bbcode(re($_POST['comment']),1),
                                                 "nick" => $nick,
                                                 "editby" => bbcode($editedby,1),
                                                 "email" => $email,

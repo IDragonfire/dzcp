@@ -38,8 +38,8 @@ default:
 break;
 case 'preview';
   header("Content-type: text/html; charset=utf-8");
-  if($_POST['html'] == "1") $inhalt = bbcode_html($_POST['inhalt'],1);
-  else $inhalt = bbcode($_POST['inhalt'],1);
+  if($_POST['html'] == "1") $inhalt = bbcode_html(re($_POST['inhalt']),1);
+  else $inhalt = bbcode(re($_POST['inhalt']),1);
 
   $index = show($dir."/sites", array("titel" => re($_POST['titel']),
                                      "inhalt" => $inhalt));

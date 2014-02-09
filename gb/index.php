@@ -477,7 +477,7 @@ case 'preview';
 	}
   
   $index = show($dir."/gb_show", array("gbtitel" => $gbtitel,
-	  														    	 "nachricht" => bbcode($_POST['eintrag'],1),
+	  														    	 "nachricht" => bbcode(re($_POST['eintrag']),1),
                                        "editby" => bbcode($editby,1),
                                        "ip" => $userip._only_for_admins));
                                            

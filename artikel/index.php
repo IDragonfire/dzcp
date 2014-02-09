@@ -483,7 +483,7 @@ case 'preview';
                                            "ndatum" => _datum,
                                            "showmore" => $showmore,
                                            "icq" => "",
-                                           "text" => bbcode($_POST['artikel'],1),
+                                           "text" => bbcode(re($_POST['artikel']),1),
                                            "datum" => date("j.m.y H:i")._uhr,
                                            "links" => $links,
                                            "autor" => autor($userid)));
@@ -547,7 +547,7 @@ case 'compreview';
                                       "delete" => $delete));
                                         
   $index = show("page/comments_show", array("titel" => $titel,
-	  																			  "comment" => bbcode($_POST['comment'],1),
+	  																			  "comment" => bbcode(re($_POST['comment']),1),
                                             "nick" => $nick,
                                             "editby" => bbcode($editedby,1),
                                             "email" => $email,

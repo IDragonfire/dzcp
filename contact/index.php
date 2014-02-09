@@ -70,7 +70,26 @@ case 'fightus';
                                        "icq" => _icq));
 break;
 case 'joinus';
+	$qrysquads = db("SELECT id,name,game FROM ".$db['squads']."
+					WHERE status = 1 AND team_joinus = 1
+					ORDER BY name");
+
+	while($getsquads = _fetch($qrysquads)) 
+	{
+		$squads = show(_select_field_fightus, array("id" => $getsquads['id'],
+													 "squad" => re($getsquads['name']),
+													 "game" => re($getsquads['game'])));			
+	}
+	if (!mysqli_num_rows($qrysquads))
+	{
+		$squads = show(_select_field_fightus, array("id" => "0",
+											 "squad" => _contact_joinus_no_squad_aviable,
+											 "game" => "?"));
+	}
+	
   $joinus = show($dir."/joinus", array("age" => _age,
+									   "squad" => _squad,
+									   "squads" => $squads,
                                        "years" => _years));
 
   $index = show($dir."/contact", array("head" => _site_joinus,
@@ -150,12 +169,20 @@ case 'do';
     elseif(empty($_POST['nick']))
       $index = error(_empty_nick, 1);
     else {
+	  if ($_POST['squad'] != 0)
+	  {
+		  $qrysquads = _fetch(db("SELECT name FROM ".$db['squads']."
+					WHERE id = ".$_POST['squad']));
+	  }
+	  else $qrysquads['name'] = _contact_joinus_no_squad_aviable;
+
       $icq = preg_replace("=-=Uis","",$_POST['icq']);
       $email = show(_email_mailto, array("email" => $_POST['email']));
       $text = show(_contact_text_joinus, array("icq" => $icq,
                                                "email" => $email,
                                                "age" => $_POST['age'],
                                                "text" => $_POST['text'],
+											   "squad" => re($qrysquads['name']),
                                                "nick" => $_POST['nick']));
 
       $qry = db("SELECT s1.id FROM ".$db['users']." AS s1

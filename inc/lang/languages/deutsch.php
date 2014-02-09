@@ -464,6 +464,7 @@ define('_subject', 'Betreff');
 define('_server_admin_qport', 'Optional: Queryport');
 define('_admin_server_nostatus', 'Keine Live-Abfrage');
 define('_nletter_head', 'Newsletter verfassen');
+define('_squad', 'Team');
 define('_confirm_del_cw', 'Soll dieser Clanwar wirklich geloescht werden');
 define('_confirm_del_vote', 'Soll diese Umfrage wirklich geloescht werden');
 define('_confirm_del_dl', 'Soll dieser Download wirklich geloescht werden');
@@ -1201,7 +1202,9 @@ Jemand hat das Joinus-Kontaktformular ausgef&uuml;llt!<br /><br />
 <span class="fontBold">Alter:</span> [age]<br />
 <span class="fontBold">Email:</span> [email]<br />
 <span class="fontBold">ICQ-Nr.:</span> [icq]<br /><br />
+<span class="fontBold">Team:</span> [squad]<br /><br />
 <span class="fontUnder"><span class="fontBold">Nachricht:</span></span><br />[text]');
+define('_contact_joinus_no_squad_aviable', 'Kein Team verfügbar');
 define('_contact_joinus_sended', 'Dein Joinus-Anfrage wurde erfolgreich an den zust&auml;ndigen Seitenadmin weitergeleitet!');
 define('_contact_fightus', 'Kommentar');
 define('_contact_title_fightus', 'FightUs-Kontaktformular');
@@ -1839,6 +1842,8 @@ define('_editor_name', 'Seitenbezeichnung');
 define('_editor_add', '<a href="?admin=editor&amp;do=add">Neue Seite erstellen</a>');
 define('_editor_add_head', 'Neue Seite hinzuf&uuml;gen');
 define('_inhalt', 'Inhalt');
+define('_allow', 'Erlauben');
+define('_deny', 'Verbieten');
 define('_editor_allow_html', 'HTML erlauben?');
 define('_empty_editor_inhalt', 'Du musst einen Text schreiben!');
 define('_site_added', 'Die Seite wurde erfolgreich eingetragen!');
@@ -2074,6 +2079,7 @@ define('_votes', 'Umfragen');
 define('_forum', 'Forum');
 define('_gb', 'G&auml;stebuch');
 define('_squads', 'Teams');
+define('_squads_joinus', 'Team-JoinUs');
 define('_server', 'Server');
 define('_editprofil', 'Profil editieren');
 define('_logout', 'Logout');

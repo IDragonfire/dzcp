@@ -1652,7 +1652,7 @@ case 'preview';
   else            $posted_ip = _logged;
 
     $index .= show("page/comments_show", array("titel" => $titel,
-                                                                                "comment" => bbcode($_POST['eintrag']),
+                                                                                "comment" => bbcode(re($_POST['eintrag']),1),
                                              "nick" => $get_nick,
                                              "hp" => $gbhp,
                                              "editby" => $editby,

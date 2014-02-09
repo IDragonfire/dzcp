@@ -1059,7 +1059,7 @@ case 'compreview';
                                       "delete" => $delete));
                                         
   $index = show("page/comments_show", array("titel" => $titel,
-	  																			  "comment" => bbcode($_POST['comment'],1),
+	  																			  "comment" => bbcode(re($_POST['comment']),1),
                                             "nick" => $nick,
                                             "editby" => bbcode($editedby,1),
                                             "email" => $email,
@@ -1096,7 +1096,7 @@ case 'preview';
 
  $editcw = "";
 
-  if($_POST['bericht']) $bericht = bbcode($_POST['bericht'],1);
+  if($_POST['bericht']) $bericht = bbcode(re($_POST['bericht']),1);
   else $bericht = "&nbsp;";
 
   if(!empty($_POST['s1']))     $screen1 = '<img src="../inc/images/admin/cwscreen.jpg" alt="" />';

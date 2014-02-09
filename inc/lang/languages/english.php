@@ -467,6 +467,7 @@ define('_subject' , 'Subject');
 define('_server_admin_qport' , 'Optionally: queryport');
 define('_admin_server_nostatus' , 'No live status');
 define('_nletter_head' , 'Write newsletter');
+define('_squad', 'Team');
 define('_confirm_del_cw' , 'You really want to delete this clanwar');
 define('_confirm_del_vote' , 'You really want to delete this vote');
 define('_confirm_del_dl' , 'You really want to deletethis download');
@@ -1208,7 +1209,9 @@ Somebody filled out the joinus form!<br /><br />
 <span class="fontBold">Age:</span> [age]<br />
 <span class="fontBold">Email:</span> [email]<br />
 <span class="fontBold">ICQ-Nr.:</span> [icq]<br /><br />
+<span class="fontBold">Team:</span> [squad]<br /><br />
 <span class="fontUnder"><span class="fontBold">Message:</span></span><br />[text]');
+define('_contact_joinus_no_squad_aviable', 'No team aviable');
 define('_contact_joinus_sended' , 'Your inquiry was successfully sent to the site`s admin!');
 define('_contact_fightus' , 'Comment');
 define('_contact_title_fightus' , 'Fightus form');
@@ -1827,6 +1830,8 @@ define('_editor_head' , 'Insert site');
 define('_editor_name' , 'Site description');
 define('_editor_add_head' , 'Insert site');
 define('_inhalt' , 'Content');
+define('_allow', 'Allow');
+define('_deny', 'Deny');
 define('_editor_allow_html' , 'allow HTML?');
 define('_empty_editor_inhalt' , 'You have to indicate a text!');
 define('_site_added' , 'The site was successfully registered!');
@@ -2057,6 +2062,7 @@ define('_votes' , 'Votes');
 define('_forum' , 'Board');
 define('_gb' , 'Guestbook');
 define('_squads' , 'Teams');
+define('_squads_joinus', 'Team-JoinUs');
 define('_server' , 'Server');
 define('_editprofil' , 'Edit profile');
 define('_logout' , 'Logout');

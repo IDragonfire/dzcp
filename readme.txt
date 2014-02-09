@@ -63,12 +63,18 @@ Aufgrund der vielzahl an Änderungen, wird kein manuelles Update für diese Versio
         -Platzhalter [where] für die Ausgabe des Seitentitels innerhalb des Templates hinzugefügt
         -Dynamische Platzhalter [lang_xxxx] für die Ausgabe beliebiger Definitionen aus der language file innerhalb des Templates hinzugefügt
 	-Slideshow wurde hinzugefügt - Platzhalter [slideshow] (Template Version 1.5 wurde der Platzhalter Sildeshow nicht in die index.html übernommen)
-        -Eigenes Newsbild kann als Alternative zum Kat.-Banner beim erstellen der News mit angegeben werden
+        -eigenes Newsbild kann als Alternative zum Kat.-Banner beim erstellen der News mit angegeben werden
         -Interne Galerie und Downloads
         -in mehrere Bereiche lassen sich die Inhalte Ordnen
         -Xfire-Icon würde in der Userlist durch Steam ersetzt und Skype hinzugefügt
         -Profil wurde um folgende Kontakte erweiter: Steam (Thanks Tune389 & Nitro), Skype, Xbox Live, Playstation Network, Origin, Battlenet
-        -Antispam Fix
+        -Antispam Update
+        -neuer Platzhalter [avatars] (siehe Template v1.6) dieser zeigt nach dem User-Login den zugehörige Avatar an
+        -Option Anzeige Usergalerie im Profil wurde hinzugefügt (öffentlich / nur User / nur Member)   
+        -Option Usergästebuch Posts Speeren / zulassen wurde hinzugefügt 
+        -JoinUs Formular werden alle Teams angezeigt, diese können selber entscheiden ob Sie im Formular mit aufgeführt werden
+        -Backupfunktion wurde überarbeitet
+          
 
         Bugfixes
         --------
@@ -118,6 +124,8 @@ Aufgrund der vielzahl an Änderungen, wird kein manuelles Update für diese Versio
         -mit Autologin wurden Pagebesuche nicht gezählt
         -mehrere kleiner Optimierungen am Code
         -User IPs werden auch bei vorgeschaltete Proxyserver oder Load Balancer richtig erkannt
+        -Smile Bug Fix TinyMC
+        -E-Mail Fix HTML-Bug
 
 
 	
@@ -127,5 +135,5 @@ Aufgrund der vielzahl an Änderungen, wird kein manuelles Update für diese Versio
 
 Wir bedanken uns bei allen die an der Fertigstellung der v1.6 mitgearbeitet haben.
         
-Dragonfire, Godkiller_NT(Hammermaps), xDGeForcexD, Hypernate, Koma, Lord Alpha (esport Design),  Makke,
-Acecom, Sk!ller
+Dragonfire, Godkiller_NT(Hammermaps), xDGeForcexD, Hypernate, Koma, Lord Alpha (esport Design),  Makke, 
+Tune389, Acecom, Sk!ller
