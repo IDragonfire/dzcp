@@ -39,7 +39,7 @@ case 'fightus';
                                                  "squad" => re($get['name']),
                                                  "game" => re($get['game'])));
   }
-  if (!mysqli_num_rows($qrysquads))
+  if (!mysqli_num_rows($qry))
   {
 	$squads = show(_select_field_fightus, array("id" => "0",
 	"squad" => _contact_joinus_no_squad_aviable,
