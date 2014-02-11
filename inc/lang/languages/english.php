@@ -2063,6 +2063,7 @@ define('_forum' , 'Board');
 define('_gb' , 'Guestbook');
 define('_squads' , 'Teams');
 define('_squads_joinus', 'Team-JoinUs');
+define('_squads_fightus', 'Team-FightUs');
 define('_server' , 'Server');
 define('_editprofil' , 'Edit profile');
 define('_logout' , 'Logout');

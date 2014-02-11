@@ -2080,6 +2080,7 @@ define('_forum', 'Forum');
 define('_gb', 'G&auml;stebuch');
 define('_squads', 'Teams');
 define('_squads_joinus', 'Team-JoinUs');
+define('_squads_fightus', 'Team-FightUs');
 define('_server', 'Server');
 define('_editprofil', 'Profil editieren');
 define('_logout', 'Logout');

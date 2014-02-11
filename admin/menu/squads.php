@@ -72,33 +72,35 @@ if(_adminMenu != 'true') exit;
                                                     "sel" => ""));
         }
 
-        $show = show($dir."/squads_add", array("memberadminaddheader" => _member_admin_add_header,
-                                               "squad" => _member_admin_squad,
-                                               "pos" => _position,
-                                               "value" => _button_value_add,
-                                               "icon" => _member_admin_icon,
-                                               "info" => _admin_squad_show_info,
-                                               "status" => _status,
-                                               "aktiv"  => _sq_aktiv,
-                                               "inaktiv" => _sq_inaktiv,
-                                               "logo" => _team_logo,
-                                               "banner" => _sq_banner,
-                                               "desc" => _dl_besch,
-                                               "sstatus" => _sq_sstatus,
-                                               "cstatus" => "",
-                                               "navi" => _admin_squads_nav,
-                                               "first" => _admin_first,
-                                               "show" => _show,
-                                               "dontshow" => _dont_show,
-                                               "upload" => _member_admin_icon_upload,
-                                               "gameicons" => $gameicons,
-                                               "positions" => $positions,
-                                               "check_show" => _button_value_show,
-                                               "roster" => _admin_sqauds_roster,
-											   	"selj" => 1,
+        $show = show($dir."/squads_add", array(	"memberadminaddheader" => _member_admin_add_header,
+												"squad" => _member_admin_squad,
+												"pos" => _position,
+												"value" => _button_value_add,
+												"icon" => _member_admin_icon,
+												"info" => _admin_squad_show_info,
+												"status" => _status,
+												"aktiv"  => _sq_aktiv,
+												"inaktiv" => _sq_inaktiv,
+												"logo" => _team_logo,
+												"banner" => _sq_banner,
+												"desc" => _dl_besch,
+												"sstatus" => _sq_sstatus,
+												"cstatus" => "",
+												"navi" => _admin_squads_nav,
+												"first" => _admin_first,
+												"show" => _show,
+												"dontshow" => _dont_show,
+												"upload" => _member_admin_icon_upload,
+												"gameicons" => $gameicons,
+												"positions" => $positions,
+												"check_show" => _button_value_show,
+												"roster" => _admin_sqauds_roster,
+												"selj" => 1,
+												"self" => 1,
 												"allow" => _allow,
-											    "deny" => _deny,
-											    "squads_joinus" => _squads_joinus,
+												"deny" => _deny,
+												"squads_joinus" => _squads_joinus,
+												"squads_fightus" => _squads_fightus,
 												"navigation" => $navigation,
 												"nav_info" => _admin_squads_nav_info,
 												"no_navi" => _admin_squads_no_navi,
@@ -125,7 +127,8 @@ if(_adminMenu != 'true') exit;
                          `shown`        = '".((int)$_POST['show'])."',
                          `navi`       	= '".((int)$_POST['roster'])."',
                          `team_show`	= '".((int)$_POST['team_show'])."',			
-						 `team_joinus`	= '".((int)$_POST['team_joinus'])."',								 
+						 `team_joinus`	= '".((int)$_POST['team_joinus'])."',		
+						 `team_fightus` = '".((int)$_POST['team_fightus'])."',						 
                          `status`       = '".((int)$_POST['status'])."',
                          `pos`          = '".((int)$_POST['position'])."'");
 
@@ -230,6 +233,7 @@ if(_adminMenu != 'true') exit;
         if($get['status'] == 1) 		$status = "selected=\"selected\"";
         if($get['team_show'] == 1) 	$team_show = "selected=\"selected\"";
 		if($get['team_joinus'] == 1) 	$team_joinus = "selected=\"selected\"";
+		if($get['team_fightus'] == 1) $team_fightus= "selected=\"selected\"";
 
         $files = get_files('../inc/images/gameicons/',false,true);
         for($i=0; $i<count($files); $i++)
@@ -297,9 +301,11 @@ if(_adminMenu != 'true') exit;
                                                 "dontshow" => _dont_show,
                                                 "ssquad" => re($get['name']),
 												"selj" => $team_joinus,
+												"self" => $team_fightus,
 												"allow" => _allow,
 											    "deny" => _deny,
 											    "squads_joinus" => _squads_joinus,
+												"squads_fightus" => _squads_fightus,
                                                 "sgame" => re($get['game']),
                                                 "positions" => $positions,
                                                 "check_show" => _button_value_show,
@@ -340,7 +346,8 @@ if(_adminMenu != 'true') exit;
                          `shown`        = '".((int)$_POST['show'])."',
                          `navi`         = '".((int)$_POST['roster'])."',
                          `team_show`		= '".((int)$_POST['team_show'])."',
-						 `team_joinus`		= '".((int)$_POST['team_joinus'])."',												 
+						 `team_joinus`		= '".((int)$_POST['team_joinus'])."',	
+						 `team_fightus` = '".((int)$_POST['team_fightus'])."',						 
                          `status`       = '".((int)$_POST['status'])."'
                      WHERE id = '".intval($_GET['id'])."'");
 
