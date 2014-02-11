@@ -31,12 +31,19 @@ break;
 case 'fightus';
   $qry = db("SELECT id,name,game FROM ".$db['squads']."
              WHERE status = 1
+			 AND team_fightus = 1
              ORDER BY name");
   while($get = _fetch($qry))
   {
     $squads .= show(_select_field_fightus, array("id" => $get['id'],
                                                  "squad" => re($get['name']),
                                                  "game" => re($get['game'])));
+  }
+  if (!mysqli_num_rows($qrysquads))
+  {
+	$squads = show(_select_field_fightus, array("id" => "0",
+	"squad" => _contact_joinus_no_squad_aviable,
+	"game" => "?"));
   }
   
   $dropdown_date = show(_dropdown_date, array("day" => dropdown("day",date("d",time())),
