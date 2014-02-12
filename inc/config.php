@@ -144,11 +144,12 @@ function db($db='',$rows=false,$fetch=false)
                                      '<li><b>ErrorNo</b> = '.!empty($prefix) ? str_replace($prefix,'',mysqli_errno()) : mysqli_errno().
                                      '<li><b>Error</b>   = '.!empty($prefix) ? str_replace($prefix,'',mysqli_error()) : mysqli_error().
                                      '<li><b>Query</b>   = '.!empty($prefix) ? str_replace($prefix,'',$db).'</ul>' : $db);
-
-    if($fetch && $rows)
-        return mysqli_fetch_array($qry);
-    else if($fetch && !$rows)
-        return mysqli_fetch_assoc($qry);
+	if ($rows && !$fetch)
+		return mysqli_num_rows($qry);
+	else if($fetch && $rows)
+		return mysqli_fetch_array($qry);
+	else if($fetch && !$rows)
+		return mysqli_fetch_assoc($qry);
 
     return $qry;
 }
