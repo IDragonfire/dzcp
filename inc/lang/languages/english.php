@@ -1198,7 +1198,9 @@ define('_contact_text' , '
 Somebody filled out the contact form!<br /><br />
 <span class="fontBold">Nick:</span> [nick]<br />
 <span class="fontBold">Email:</span> [email]<br />
-<span class="fontBold">ICQ-Nr.:</span> [icq]<br /><br />
+<span class="fontBold">ICQ-Nr.:</span> [icq]<br />
+<span class="fontBold">Skype:</span> [skype]<br />
+<span class="fontBold">Steam:</span> [steam]<br /><br />
 <span class="fontUnder"><span class="fontBold">Message:</span></span><br />[text]');
 define('_contact_joinus' , 'Joinus-Text');
 define('_contact_joinus_why' , 'Describe shortly, why you want to join our clan.');
@@ -1208,7 +1210,9 @@ Somebody filled out the joinus form!<br /><br />
 <span class="fontBold">Nick:</span> [nick]<br />
 <span class="fontBold">Age:</span> [age]<br />
 <span class="fontBold">Email:</span> [email]<br />
-<span class="fontBold">ICQ-Nr.:</span> [icq]<br /><br />
+<span class="fontBold">ICQ-Nr.:</span> [icq]<br />
+<span class="fontBold">Skype:</span> [skype]<br />
+<span class="fontBold">Steam:</span> [steam]<br /><br />
 <span class="fontBold">Team:</span> [squad]<br /><br />
 <span class="fontUnder"><span class="fontBold">Message:</span></span><br />[text]');
 define('_contact_joinus_no_squad_aviable', 'No team aviable');

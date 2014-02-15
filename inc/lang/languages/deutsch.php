@@ -1191,7 +1191,9 @@ define('_contact_text', '
 Jemand hat das Kontaktformular ausgef&uuml;llt!<br /><br />
 <span class="fontBold">Nick:</span> [nick]<br />
 <span class="fontBold">Email:</span> [email]<br />
-<span class="fontBold">ICQ-Nr.:</span> [icq]<br /><br />
+<span class="fontBold">ICQ-Nr.:</span> [icq]<br />
+<span class="fontBold">Skype:</span> [skype]<br />
+<span class="fontBold">Steam:</span> [steam]<br /><br />
 <span class="fontUnder"><span class="fontBold">Nachricht:</span></span><br />[text]');
 define('_contact_joinus', 'JoinUs-Text');
 define('_contact_joinus_why', 'Beschreibe kurz, warum du bei uns aufgenommen werden willst.');
@@ -1201,7 +1203,9 @@ Jemand hat das Joinus-Kontaktformular ausgef&uuml;llt!<br /><br />
 <span class="fontBold">Nick:</span> [nick]<br />
 <span class="fontBold">Alter:</span> [age]<br />
 <span class="fontBold">Email:</span> [email]<br />
-<span class="fontBold">ICQ-Nr.:</span> [icq]<br /><br />
+<span class="fontBold">ICQ-Nr.:</span> [icq]<br />
+<span class="fontBold">Skype:</span> [skype]<br />
+<span class="fontBold">Steam:</span> [steam]<br /><br />
 <span class="fontBold">Team:</span> [squad]<br /><br />
 <span class="fontUnder"><span class="fontBold">Nachricht:</span></span><br />[text]');
 define('_contact_joinus_no_squad_aviable', 'Kein Team verfügbar');
