@@ -56,7 +56,7 @@ function kalender($month="",$year="")
             while($get = _fetch($qry))
             {
               $bdays = "set";
-              $titlebd .= jsconvert(_kal_birthday.rawautor($get['id']));
+              $titlebd .= '&lt;img src=../inc/images/bday.gif class=icon alt= /&gt;'.jsconvert(_kal_birthday.rawautor($get['id']));
             }
           } else {
             $bdays = "";
@@ -69,7 +69,7 @@ function kalender($month="",$year="")
             while($get = _fetch($qry))
             {
               $cws = "set";
-              $titlecw .= jsconvert(_kal_cw.re($get['gegner']));
+              $titlecw .='&lt;img src=../inc/images/cw.gif class=icon alt= /&gt;'.jsconvert(_kal_cw.re($get['gegner']));
             }
           } else {
             $cws = "";
@@ -82,7 +82,7 @@ function kalender($month="",$year="")
             while($get = _fetch($qry))
             {
               $event = "set";
-              $titleev .= jsconvert(_kal_event.re($get['title']));
+              $titleev .='&lt;img src=../inc/images/event.gif class=icon alt= /&gt;'.jsconvert(_kal_event.re($get['title']));
             }
           } else {
             $event = "";
