@@ -26,6 +26,8 @@ default:
                                        "why" => "",
                                        "pflicht" => _contact_pflichtfeld,
                                        "email" => _email,
+									   "skype" => _skypeid,
+									   "steam" => _steamid,
                                        "icq" => _icq));
 break;
 case 'fightus';
@@ -74,6 +76,8 @@ case 'fightus';
                                        "hp" => _hp,
                                        "pflicht" => _contact_pflichtfeld,
                                        "email" => _email,
+									   "skype" => _skypeid,
+									   "steam" => _steamid,
                                        "icq" => _icq));
 break;
 case 'joinus';
@@ -109,6 +113,8 @@ case 'joinus';
                                        "why" => _contact_joinus_why,
                                        "pflicht" => _contact_pflichtfeld,
                                        "email" => _email,
+									   "skype" => _skypeid,
+									   "steam" => _steamid,
                                        "icq" => _icq));
 break;
 case 'do';
@@ -128,6 +134,8 @@ case 'do';
       $icq = preg_replace("=-=Uis","",$_POST['icq']);
       $email = show(_email_mailto, array("email" => $_POST['email']));
       $text = show(_contact_text, array("icq" => $icq,
+										"skype" => $_POST['skype'],
+										"steam" => $_POST['steam'],
                                         "email" => $email,
                                         "text" => $_POST['text'],
                                         "nick" => $_POST['nick']));
@@ -186,6 +194,8 @@ case 'do';
       $icq = preg_replace("=-=Uis","",$_POST['icq']);
       $email = show(_email_mailto, array("email" => $_POST['email']));
       $text = show(_contact_text_joinus, array("icq" => $icq,
+											   "skype" => $_POST['skype'],
+											   "steam" => $_POST['steam'],
                                                "email" => $email,
                                                "age" => $_POST['age'],
                                                "text" => $_POST['text'],
@@ -251,6 +261,8 @@ case 'do';
       $getsq = _fetch($qrysq);
       
       $msg = show(_contact_text_fightus, array("icq" => $icq,
+											   "skype" => $_POST['skype'],
+											   "steam" => $_POST['steam'],
                                                "email" => $email,
                                                "text" => $_POST['text'],
                                                "clan" => $_POST['clan'],
