@@ -2180,7 +2180,7 @@ case 'post';
                             if($entrys == "0") $pagenr = "1";
                             else $pagenr = ceil($entrys/$maxfposts);
 
-                            $subj = show(re(settings('eml_fabo_npost_subj')), array("titel" => $title));
+                            $subj = show(settings('eml_fabo_npost_subj'), array("titel" => $title));
 
                             $message = show(bbcode_email(settings('eml_fabo_npost')), array("nick" => re($getabo['nick']),
                                                                             "postuser" => fabo_autor($userid),
