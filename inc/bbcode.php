@@ -1263,9 +1263,9 @@ function flag($code)
 function rawflag($code)
 {
     if(!file_exists(basePath."/inc/images/flaggen/".$code.".gif"))
-        return '&lt;img src=../inc/images/flaggen/nocountry.gif alt= class=icon /&gt;';
+        return '<img src=../inc/images/flaggen/nocountry.gif alt= class=icon />';
     else
-        return'&lt;img src=../inc/images/flaggen/'.$code.'.gif alt= class=icon /&gt;';
+        return'<img src=../inc/images/flaggen/'.$code.'.gif alt= class=icon />';
 }
 
 //-> Liste der Laender ausgeben
