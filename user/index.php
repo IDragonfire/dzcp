@@ -1717,10 +1717,16 @@ case 'editprofile';
         } else {
             if ($_POST['pwd'])
             {
-                $newpwd = "pwd = '".md5($_POST['pwd'])."',";
-
-          $index = info(_info_edit_profile_done, "?action=user&amp;id=".$userid."");
-          $_SESSION['pwd'] = md5($_POST['pwd']);
+				if ($_POST['pwd'] == $_POST['cpwd'])
+				{
+					$newpwd = "pwd = '".md5($_POST['pwd'])."',";
+					$index = info(_info_edit_profile_done, "?action=user&amp;id=".$userid."");
+					$_SESSION['pwd'] = md5($_POST['pwd']);
+				}
+				else
+				{
+					$index = error(_error_passwords_dont_match, 1);
+				}
             } else {
                 $newpwd = "";
           $index = info(_info_edit_profile_done, "?action=user&amp;id=".$userid."");
@@ -2030,6 +2036,7 @@ case 'editprofile';
                                                 "psex" => _profil_sex,
                                                 "pname" => _loginname,
                                                 "ppwd" => _new_pwd,
+												"cppwd" => _pwd2,
                                                 "picq" => _icq,
                                                 "psig" => _profil_sig,
                                                 "ppic" => _profil_ppic,

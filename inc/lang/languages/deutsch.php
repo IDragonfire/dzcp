@@ -2005,6 +2005,7 @@ define('_error_invalid_email', 'Du hast eine ung&uuml;ltige Emailadresse angegeb
 define('_error_invalid_url', 'Die angegebene Homepage ist nicht erreichbar!');
 define('_error_nick_exists', 'Der Nickname ist leider schon vergeben!');
 define('_error_user_exists', 'Der Loginname ist leider schon vergeben!');
+define('_error_passwords_dont_match', 'Die eingegebenen Passw&ouml;rter stimmen nicht überein!');
 define('_error_email_exists', 'Die von dir angegebene EMailadresse wird schon von jemandem verwendet!');
 define('_info_edit_profile_done_pwd', 'Du hast dein Profil erfolgreich editiert!');
 define('_error_select_buddy', 'Du hast keinen User angegeben!');
