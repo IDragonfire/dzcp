@@ -1988,6 +1988,7 @@ define('_error_invalid_email' , 'The indicated email address is invalid!');
 define('_error_invalid_url' , 'The indicated homepage isn`t reachable!');
 define('_error_nick_exists' , 'The indicated nickname is already in use!');
 define('_error_user_exists' , 'The indicated loginname is already in use!');
+define('_error_passwords_dont_match', "Passwords don't match!");
 define('_error_email_exists' , 'The indicated email address is already in use!');
 define('_info_edit_profile_done_pwd' , 'Your profile was successfully edited!');
 define('_error_select_buddy' , 'You didn`t selected an user!');
