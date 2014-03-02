@@ -3,7 +3,6 @@ ob_start();
 session_start();
 define('basePath', dirname(dirname(__FILE__).'../'));
 
-require_once(basePath.'/inc/config.php');
 require_once(basePath.'/inc/_version.php');
 require_once(basePath.'/_installer/conf/conf.php');
 require_once(basePath.'/_installer/conf/mysql.php');
