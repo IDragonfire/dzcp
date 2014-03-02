@@ -74,15 +74,15 @@ $dir = "admin";
     {
       if(time() - @filemtime(basePath.'/__cache/'.md5('admin_version').'.cache') > 600)
       {
-	      $dzcp_v = fileExists("http://www.dzcp.de/version.txt");
-	      if(!empty($dzcp_v))
-	      {
-		      $fp = @fopen(basePath.'/__cache/'.md5('admin_version').'.cache', 'w');
-		      @fwrite($fp, $dzcp_v); @fclose($fp);
-	      }
+          $dzcp_v = fileExists("http://www.dzcp.de/version.txt");
+          if(!empty($dzcp_v))
+          {
+              $fp = @fopen(basePath.'/__cache/'.md5('admin_version').'.cache', 'w');
+              @fwrite($fp, $dzcp_v); @fclose($fp);
+          }
       }
       else
-      	$dzcp_v = @file_get_contents(basePath.'/__cache/'.md5('admin_version').'.cache');
+          $dzcp_v = @file_get_contents(basePath.'/__cache/'.md5('admin_version').'.cache');
 
       if($dzcp_v <= _version) {
         $version = '<b>'._akt_version.': <span class="fontGreen">'._version.'</span></b>';
@@ -94,18 +94,18 @@ $dir = "admin";
 
       if(time() - @filemtime(basePath.'/__cache/'.md5('admin_news').'.cache') > 600)
       {
-      	$dzcp_news = @file_get_contents('http://www.dzcp.de/dzcp_news.php');
-      	if(!empty($dzcp_v))
-      	{
-      		$fp = @fopen(basePath.'/__cache/'.md5('admin_news').'.cache', 'w');
-      		@fwrite($fp, $dzcp_news); @fclose($fp);
-      	}
+          $dzcp_news = @file_get_contents('http://www.dzcp.de/dzcp_news.php');
+          if(!empty($dzcp_v))
+          {
+              $fp = @fopen(basePath.'/__cache/'.md5('admin_news').'.cache', 'w');
+              @fwrite($fp, $dzcp_news); @fclose($fp);
+          }
       }
       else
-      	$dzcp_news = @file_get_contents(basePath.'/__cache/'.md5('admin_news').'.cache');
+          $dzcp_news = @file_get_contents(basePath.'/__cache/'.md5('admin_news').'.cache');
 
     }
-    if(@file_exists(basePath."/_installer") && $chkMe == 4)
+    if(@file_exists(basePath."/_installer") && $chkMe == 4 && !view_error_reporting)
         {
             $index = _installdir;
         } else {

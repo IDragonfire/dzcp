@@ -1,8 +1,17 @@
 <?php
-define('view_error_reporting', false); // Zeigt alle Fehler und Notices etc.
+#########################################
+//-> DZCP Settings Start
+#########################################
 
-if(view_error_reporting)
-{
+define('view_error_reporting', true); // Zeigt alle Fehler und Notices etc.
+define('use_default_timezone', true); // Verwendende die Zeitzone vom Server
+define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selbst einstellen * 'use_default_timezone' auf false stellen *
+
+#########################################
+//-> DZCP Settings End
+#########################################
+
+if(view_error_reporting) {
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
 }
@@ -22,11 +31,14 @@ if(file_exists(basePath."/inc/mysql.php"))
 if(!isset($installation))
   $installation = false;
 
-function show($tpl="", $array=array(), $array_lang_constant=array(), $array_block=array())
-{
+if(function_exists("date_default_timezone_set") && function_exists("date_default_timezone_get") && use_default_timezone)
+    date_default_timezone_set(date_default_timezone_get());
+else if(!use_default_timezone) date_default_timezone_set(default_timezone);
+else date_default_timezone_set("Europe/Berlin");
+
+function show($tpl="", $array=array(), $array_lang_constant=array(), $array_block=array()) {
     global $tmpdir;
-    if(!empty($tpl) && $tpl != null)
-    {
+    if(!empty($tpl) && $tpl != null) {
         $template = basePath."/inc/_templates_/".$tmpdir."/".$tpl;
         $array['dir'] = '../inc/_templates_/'.$tmpdir;
 
@@ -35,8 +47,7 @@ function show($tpl="", $array=array(), $array_lang_constant=array(), $array_bloc
 
         //put placeholders in array
         $pholder = explode("^",pholderreplace($tpl));
-        for($i=0;$i<=count($pholder)-1;$i++)
-        {
+        for($i=0;$i<=count($pholder)-1;$i++) {
             if(in_array($pholder[$i],$array_block))
                 continue;
 
@@ -52,8 +63,7 @@ function show($tpl="", $array=array(), $array_lang_constant=array(), $array_bloc
 
         unset($pholder);
 
-        if(count($array) >= 1)
-        {
+        if(count($array) >= 1) {
             foreach($array as $value => $code)
             { $tpl = str_replace('['.$value.']', $code, $tpl); }
         }
@@ -136,17 +146,12 @@ if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '
 
 //MySQL-Funktionen
 function _rows($rows)
-{
-    return mysqli_num_rows($rows);
-}
+{ return mysqli_num_rows($rows); }
 
 function _fetch($fetch)
-{
-    return mysqli_fetch_assoc($fetch);
-}
+{ return mysqli_fetch_assoc($fetch); }
 
-function db($db='',$rows=false,$fetch=false)
-{
+function db($db='',$rows=false,$fetch=false) {
     global $prefix,$mysql;
     if(!$qry = mysqli_query($mysql,$db)) die('<b>MySQL-Query failed:</b><br /><br /><ul>'.
                                      '<li><b>ErrorNo</b> = '.!empty($prefix) ? str_replace($prefix,'',mysqli_errno()) : mysqli_errno().
@@ -162,8 +167,7 @@ function db($db='',$rows=false,$fetch=false)
     return $qry;
 }
 
-function sql_backup()
-{
+function sql_backup() {
     global $mysql,$db;
     $backup_table_data = array();
 
@@ -174,8 +178,7 @@ function sql_backup()
     unset($table);
 
     //Table Create
-    foreach($backup_table_data as $table => $null)
-    {
+    foreach($backup_table_data as $table => $null) {
         unset($null);
         $sqlqry = db('SHOW CREATE TABLE '.$table.';');
         while($table = _fetch($sqlqry))
@@ -184,14 +187,11 @@ function sql_backup()
     unset($table);
 
     //Insert Create
-    foreach($backup_table_data as $table => $null)
-    {
+    foreach($backup_table_data as $table => $null) {
         unset($null); $backup = '';
         $sqlqry = db('SELECT * FROM '.$table.' ;');
-        while($dt = _fetch($sqlqry))
-        {
-            if(!empty($dt))
-            {
+        while($dt = _fetch($sqlqry)) {
+            if(!empty($dt)) {
                 $backup_data = '';
                 foreach ($dt as $key => $var)
                 { $backup_data .= "`".$key."` = '".((string)(str_replace("'", "`", $var)))."',"; }
@@ -216,14 +216,12 @@ function sql_backup()
     $sql_backup .= "-- -------------------------------------------------------------------\r\n\r\n";
     $sql_backup .= "--\r\n-- Datenbank: `".$db['db']."`\r\n--\n\n";
     $sql_backup .= "-- -------------------------------------------------------------------\r\n";
-    foreach($backup_table_data as $table => $data)
-    {
+    foreach($backup_table_data as $table => $data) {
         $sql_backup .= "\r\n--\r\n-- Tabellenstruktur: `".$table."`\r\n--\r\n\r\n";
         $sql_backup .= $data['drop']."\r\n";
         $sql_backup .= $data['create']."\r\n";
 
-        if(!empty($data['insert']))
-        {
+        if(!empty($data['insert'])) {
             $sql_backup .= "\r\n--\r\n-- Datenstruktur: `".$table."`\r\n--\r\n\r\n";
             $sql_backup .= $data['insert']."\r\n";
         }
