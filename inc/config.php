@@ -1,5 +1,13 @@
 <?php
-error_reporting(0);
+define('view_error_reporting', false); // zeigt alle Fehler und Notices etc. an
+
+if(view_error_reporting)
+{
+    error_reporting(E_ALL ^ E_DEPRECATED);
+    ini_set('display_errors', 1);
+}
+else
+    error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
 
 ## REQUIRES ##
 //DZCP-Install default variable
@@ -144,12 +152,12 @@ function db($db='',$rows=false,$fetch=false)
                                      '<li><b>ErrorNo</b> = '.!empty($prefix) ? str_replace($prefix,'',mysqli_errno()) : mysqli_errno().
                                      '<li><b>Error</b>   = '.!empty($prefix) ? str_replace($prefix,'',mysqli_error()) : mysqli_error().
                                      '<li><b>Query</b>   = '.!empty($prefix) ? str_replace($prefix,'',$db).'</ul>' : $db);
-	if ($rows && !$fetch)
-		return mysqli_num_rows($qry);
-	else if($fetch && $rows)
-		return mysqli_fetch_array($qry);
-	else if($fetch && !$rows)
-		return mysqli_fetch_assoc($qry);
+    if ($rows && !$fetch)
+        return mysqli_num_rows($qry);
+    else if($fetch && $rows)
+        return mysqli_fetch_array($qry);
+    else if($fetch && !$rows)
+        return mysqli_fetch_assoc($qry);
 
     return $qry;
 }

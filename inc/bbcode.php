@@ -1,5 +1,4 @@
 <?php
-
 ## INCLUDES/REQUIRES ##
 require_once(basePath.'/inc/secure.php');
 require_once(basePath.'/inc/_version.php');
@@ -2124,7 +2123,7 @@ function infos($checkBrowser = "")
         elseif(preg_match("/NT 6.0/i",$data))               $system = "Windows Vista";
         elseif(preg_match("/NT 6.1/i",$data))               $system = "Windows 7";
         elseif(preg_match("/NT 6.2/i",$data))               $system = "Windows 8";
-		elseif(preg_match("/NT 6.3/i",$data))               $system = "Windows 8.1";
+        elseif(preg_match("/NT 6.3/i",$data))               $system = "Windows 8.1";
         elseif(preg_match("/OS (.*?) like Mac OS X/i",$data)) $system = "iOS";
         else                                        $system = _unknown_system;
 
