@@ -1,9 +1,9 @@
 <?php
-define('view_error_reporting', false); // zeigt alle Fehler und Notices etc. an
+define('view_error_reporting', false); // Zeigt alle Fehler und Notices etc.
 
 if(view_error_reporting)
 {
-    error_reporting(E_ALL ^ E_DEPRECATED);
+    error_reporting(E_ALL);
     ini_set('display_errors', 1);
 }
 else
