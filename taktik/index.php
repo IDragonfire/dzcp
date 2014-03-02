@@ -11,15 +11,12 @@ $where = _site_taktiken;
 $title = $pagetitle." - ".$where."";
 $dir = "taktik";
 ## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
 switch ($action):
 default:
   if($chkMe == "unlogged" || $chkMe < 2)
   {
     $index = error(_error_wrong_permissions, 1);
-  } 
+  }
       if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("map","autor"))) {
       $qry = db("SELECT id,datum,map,spart,sparct,standardt,standardct,autor
                  FROM ".$db['taktik']."
@@ -29,9 +26,9 @@ default:
       $qry = db("SELECT id,datum,map,spart,sparct,standardt,standardct,autor
                  FROM ".$db['taktik']."
                  ORDER BY id DESC");
-	  }
+      }
   {
-	  while ($get = _fetch($qry))
+      while ($get = _fetch($qry))
       {
         if($get['sparct'] != "") $sparct = show(_taktik_spar_ct, array("id" => $get['id']));
         else $sparct = "";
@@ -75,8 +72,8 @@ default:
                                            "delete" => _deleteicon_blank,
                                            "t" => _taktik_t,
                                            "ct" => _taktik_ct,
-										   "order_map" => orderby('map'),
-										   "order_autor" => orderby('autor'),
+                                           "order_map" => orderby('map'),
+                                           "order_autor" => orderby('autor'),
                                            "autor" => _autor));
   }
 break;

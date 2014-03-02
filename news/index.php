@@ -1,9 +1,16 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
@@ -11,20 +18,14 @@ feed();
 $where = _site_news;
 $title = $pagetitle." - ".$where."";
 $dir = "news";
+
 ## SECTIONS ##
 if(check_internal_url())
     $index = error(_error_have_to_be_logged, 1);
 else
 {
-    if(!isset($_GET['action'])) $action = "";
-    else $action = $_GET['action'];
-
-    if(isset($_GET['page'])) $page = $_GET['page'];
-    else $page = 1;
     switch ($action):
     default:
-
-
       $kat = intval($_GET['kat']);
       if($kat == "lazy" || empty($kat) || $kat == NULL)
       {
@@ -43,6 +44,8 @@ else
                              ".$n_kat."
                  ORDER BY datum DESC
                        LIMIT ".($page - 1)*$maxnews.",".$maxnews."");
+
+      $show_sticky = '';
       while($get = _fetch($qry))
       {
         $qrykat = db("SELECT katimg FROM ".$db['newskat']."
@@ -143,10 +146,10 @@ else
                  ".$n_kat."
                              ORDER BY datum DESC
                        LIMIT ".($page - 1)*$maxnews.",".$maxnews."");
+      $show = '';
       while($get = _fetch($qry))
       {
-        $qrykat = db("SELECT katimg FROM ".$db['newskat']."
-                      WHERE id = '".$get['kat']."'");
+        $qrykat = db("SELECT katimg FROM ".$db['newskat']." WHERE id = '".$get['kat']."'");
         $getkat = _fetch($qrykat);
 
         $c = cnt($db['newscomments'], " WHERE news = '".$get['id']."'");
@@ -247,7 +250,6 @@ else
 
       $index = show($dir."/news", array("show" => $show,
                                         "show_sticky" => $show_sticky,
-                                        "stats" => $stats,
                                         "nav" => nav(cnt($db['news'],$navWhere),$maxnews,"?kat=".$navKat,false),
                                         "kategorien" => $kategorien,
                                         "choose" => _news_kat_choose,
@@ -808,9 +810,6 @@ else
         $pmonth = $_POST['month'];
       }
 
-      if(isset($_GET['page'])) $page = $_GET['page'];
-      else $page = 1;
-
       $kat = intval($_GET['kat']);
       if($kat == "lazy" || $kat == "" || $kat == "NULL") $n_kat = "";
       else $n_kat = "AND kat = '".$kat."'";
@@ -840,12 +839,12 @@ else
                    LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
         $entrys = cnt($db['news'], " WHERE datum BETWEEN ".$from." AND ".$til." ".$intern."");
       } elseif(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("date","autor","titel","kat"))) {
-	    $qry = db("SELECT id,titel,autor,datum,kat,text FROM ".$db['news']."
+        $qry = db("SELECT id,titel,autor,datum,kat,text FROM ".$db['news']."
                    ".$intern2."
                    ".$n_kat."
                    ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
                    LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
-	    $entrys = cnt($db['news'], " ".$intern2." ".$n_kat);
+        $entrys = cnt($db['news'], " ".$intern2." ".$n_kat);
       } else {
         $qry = db("SELECT id,titel,autor,datum,kat,text
                    FROM ".$db['news']."
@@ -940,10 +939,10 @@ else
                                           "btn_search" => _button_value_search,
                                           "thisyear" => $ty,
                                           "kat" => _news_admin_kat,
-										  "order_date" => orderby('datum'),
-										  "order_titel" => orderby('titel'),
-										  "order_autor" => orderby('autor'),
-										  "order_kat" => orderby('kat'),
+                                          "order_date" => orderby('datum'),
+                                          "order_titel" => orderby('titel'),
+                                          "order_autor" => orderby('autor'),
+                                          "order_kat" => orderby('kat'),
                                           "show" => $show,
                                           "stats" => $stats,
                                           "stichwort" => _stichwort,
@@ -976,10 +975,11 @@ else
     break;
     endswitch;
 }
+
 ## SETTINGS ##
 $time_end = generatetime();
 $time = round($time_end - $time_start,4);
 page($index, $title, $where, $time);
+
 ## OUTPUT BUFFER END ##
 gz_output();
-?>

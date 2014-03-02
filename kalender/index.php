@@ -11,9 +11,6 @@ $where = _site_kalender;
 $title = $pagetitle." - ".$where."";
 $dir = "kalender";
 ## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
 switch ($action):
 default:
   if(isset($_POST['monat'])) $monat = $_POST['monat'];
@@ -23,7 +20,7 @@ default:
   if(isset($_POST['jahr'])) $jahr = $_POST['jahr'];
   elseif(isset($_GET['y'])) $jahr = $_GET['y'];
   else $jahr = date("Y");
-    
+
   for($i = 1; $i <= 12; $i++)
   {
     if($monat == $i) $sel = "selected=\"selected\"";
@@ -80,13 +77,13 @@ default:
         if(_rows($qry))
         {
           while($get = _fetch($qry)) $infoBday .='&lt;img src=../inc/images/bday.gif class=icon alt= /&gt;'.jsconvert(_kal_birthday.rawautor($get['id']));
-          
+
           $info = ' onmouseover="DZCP.showInfo(\''.$infoBday.'\')" onmouseout="DZCP.hideInfo()"';
           $bdays = '<a href="../user/?action=userlist&amp;show=bday&amp;time='.$datum.'"'.$info.'><img src="../inc/images/bday.gif" alt="" /></a>';
         } else {
           $bdays = "";
         }
-        
+
           $qry = db("SELECT datum,gegner FROM ".$db['cw']."
                      WHERE DATE_FORMAT(FROM_UNIXTIME(datum), '%d.%m.%Y') = '".cal($i).".".$monat.".".$jahr."'");
         if(_rows($qry))
@@ -98,21 +95,21 @@ default:
         } else {
           $cws = "";
         }
-        
+
         $qry = db("SELECT datum,title FROM ".$db['events']."
                    WHERE DATE_FORMAT(FROM_UNIXTIME(datum), '%d.%m.%Y') = '".cal($i).".".$monat.".".$jahr."'");
         if(_rows($qry))
         {
           while($get = _fetch($qry)) $infoEvent .='&lt;img src=../inc/images/event.gif class=icon alt= /&gt;'. jsconvert(_kal_event.re($get['title']));
-          
+
           $info = ' onmouseover="DZCP.showInfo(\''.$infoEvent.'\')" onmouseout="DZCP.hideInfo()"';
           $event = '<a href="?action=show&amp;time='.$datum.'"'.$info.'><img src="../inc/images/event.gif" alt="" /></a>';
         } else {
           $event = "";
         }
-        
+
         $events = $bdays." ".$cws." ".$event;
-        
+
 
         if($_GET['hl'] == $i) $day = '<span class="fontMarked">'.cal($i).'</span>';
         else $day = cal($i);

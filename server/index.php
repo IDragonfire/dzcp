@@ -11,9 +11,6 @@ $where = _site_server;
 $title = $pagetitle." - ".$where."";
 $dir = "server";
 ## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
 switch ($action):
 default:
   if(fsockopen_support())
@@ -181,11 +178,11 @@ default:
                                                     "status_img" => $image_status,
                                                     "pwd_img" => $image_pwd,
                                                     "colspan" => (empty($colspan) ? '' : ' colspan="'.$colspan.'"'),
-  						    		                        		  "data_status" => $server['status'],
-  								                            		  "data_gametype" => $server['gametype'],
-  								                            		  "data_gamemod" => re($server_name),
-  								                            		  "launch" => strtr($server_link, array('{IP}' => $get['ip'], '{S_PORT}' => $get['port'])),
-  									                            	  "port" => $get['port'],
+                                                                        "data_status" => $server['status'],
+                                                                        "data_gametype" => $server['gametype'],
+                                                                        "data_gamemod" => re($server_name),
+                                                                        "launch" => strtr($server_link, array('{IP}' => $get['ip'], '{S_PORT}' => $get['port'])),
+                                                                        "port" => $get['port'],
                                                     "aktplayers" => $server['players'],
                                                     "maxplayers" => $server['maxplayers'],
                                                     "map" => (empty($server['mapname']) ? '-' : re($server['mapname'])),
@@ -208,7 +205,7 @@ default:
                                                     "ip" => $get['ip'],
                                                     "playerstats" => $playerstats,
                                                     "name" => re($server['hostname']),
-  									                            	  "image_map" => $image_map));
+                                                                        "image_map" => $image_map));
 
           $fp = @fopen(basePath.'/__cache/'.md5('gameserver_'.intval($get['id']).'_'.$language).'.cache', 'w');
                 @fwrite($fp, $index);

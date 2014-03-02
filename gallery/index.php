@@ -11,13 +11,10 @@ $where = _site_gallery;
 $title = $pagetitle." - ".$where."";
 $dir = "gallery";
 ## SECTIONS ##
-    if(!isset($_GET['action'])) $action = "";
-    else $action = $_GET['action'];
-
     switch ($action):
     default:
-	  $intern = "";
-	  if(!permission('galleryintern')) $intern = " WHERE intern = '0'";
+      $intern = "";
+      if(!permission('galleryintern')) $intern = " WHERE intern = '0'";
       $qry = db("SELECT * FROM ".$db['gallery'].$intern." ORDER BY id DESC");
       if(_rows($qry))
       {
@@ -62,10 +59,10 @@ $dir = "gallery";
       $qry = db("SELECT * FROM ".$db['gallery']."
                  WHERE id = '".intval($_GET['id'])."'");
       $get = _fetch($qry);
-	  if(!permission('galleryintern') && $get['intern']) {
-		$index = error(_error_no_access);
-	  	break;
-	  }
+      if(!permission('galleryintern') && $get['intern']) {
+        $index = error(_error_no_access);
+          break;
+      }
       $files = get_files("images/",false,true);
       $t = 1;
       $cnt = 0;

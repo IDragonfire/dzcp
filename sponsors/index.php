@@ -10,20 +10,17 @@ lang($language);
 $dir = "sponsors";
 $where = _site_sponsor;
 ## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
 switch ($action):
 default:
 
   $qry = db("SELECT * FROM ".$db['sponsoren']."
-  			 WHERE site = 1
+               WHERE site = 1
              ORDER BY pos");
   while($get = _fetch($qry))
   {
     if(empty($get['slink']))
-    {  
-  	  $banner = show(_sponsors_bannerlink, array("id" => $get['id'],
+    {
+        $banner = show(_sponsors_bannerlink, array("id" => $get['id'],
                                                  "title" => str_replace('http://', '', re($get['link'])),
                                                  "banner" => "../banner/sponsors/site_".$get['id'].".".re($get['send'])));
     } else {
@@ -33,10 +30,10 @@ default:
     }
 
      $show .= show($dir."/sponsors_show", array("class" => $class,
-												"beschreibung" => bbcode($get['beschreibung']),
-												"hits" => $get['hits'],
-												"hit" => _hits,
-												"banner" => $banner));
+                                                "beschreibung" => bbcode($get['beschreibung']),
+                                                "hits" => $get['hits'],
+                                                "hit" => _hits,
+                                                "banner" => $banner));
   }
 
   $index = show($dir."/sponsors", array("head" => _sponsor_head,

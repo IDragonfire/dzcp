@@ -15,9 +15,6 @@ if(check_internal_url())
     $index = error(_error_have_to_be_logged, 1);
 else
 {
-    if(!isset($_GET['action'])) $action = "";
-    else $action = $_GET['action'];
-
     switch ($action):
     default:
 

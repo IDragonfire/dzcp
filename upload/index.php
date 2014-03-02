@@ -11,9 +11,6 @@ $where = _site_upload;
 $title = $pagetitle." - ".$where."";
 $dir = "upload";
 ## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
 switch ($action):
 default:
   if(!permission("editsquads"))
@@ -39,7 +36,7 @@ case 'partners';
       $index = error(_error_wrong_permissions, 1);
     } else {
       $infos = show(_upload_partners_info, array("userpicsize" => $upicsize));
-  
+
       $index = show($dir."/upload", array("uploadhead" => _upload_partners_head,
                                           "file" => _upload_file,
                                           "name" => "file",
@@ -53,15 +50,15 @@ case 'partners';
         $name = $_FILES['file']['name'];
         $type = $_FILES['file']['type'];
         $size = $_FILES['file']['size'];
-        
-  
+
+
         if(!$tmpname)
         {
           $index = error(_upload_no_data, 1);
         } else {
           copy($tmpname, basePath."/banner/partners/".$_FILES['file']['name']."");
           @unlink($_FILES['file']['tmp_name']);
-  
+
           $index = info(_info_upload_success, "../admin/?admin=partners&amp;do=add");
         }
       }
@@ -79,8 +76,8 @@ case 'upload';
     $name = $_FILES['file']['name'];
     $type = $_FILES['file']['type'];
     $size = $_FILES['file']['size'];
-    
-  
+
+
     if(!$tmpname)
     {
       $index = error(_upload_no_data, 1);
@@ -89,7 +86,7 @@ case 'upload';
     } else {
       copy($tmpname, basePath."/inc/images/gameicons/".$_FILES['file']['name']."");
       @unlink($_FILES['file']['tmp_name']);
-  
+
       $index = info(_info_upload_success, "../admin/?admin=squads&amp;do=add");
     }
   }
@@ -132,7 +129,7 @@ case 'newskats';
     }
   } else {
     $index = error(_error_wrong_permissions, 1);
-  }  
+  }
 break;
 case 'taktiken';
   if(!permission("edittactics"))
@@ -140,7 +137,7 @@ case 'taktiken';
     $index = error(_error_wrong_permissions, 1);
   } else {
     $infos = show(_upload_usergallery_info, array("userpicsize" => 100));
-  
+
     $index = show($dir."/upload", array("uploadhead" => _upload_taktiken_head,
                                         "file" => _upload_file,
                                         "name" => "file",
@@ -148,15 +145,15 @@ case 'taktiken';
                                         "upload" => _button_value_upload,
                                         "info" => _upload_info,
                                         "infos" => $infos));
-  
+
     if($_GET['do'] == "upload")
     {
       $tmpname = $_FILES['file']['tmp_name'];
       $name = $_FILES['file']['name'];
       $type = $_FILES['file']['type'];
       $size = $_FILES['file']['size'];
-      
-  
+
+
       if(!$tmpname)
       {
         $index = error(_upload_no_data, 1);
@@ -165,7 +162,7 @@ case 'taktiken';
       } else {
         copy($tmpname, basePath."/inc/images/uploads/taktiken/".$_FILES['file']['name']."");
         @unlink($_FILES['file']['tmp_name']);
-  
+
         $index = info(_info_upload_success, "../taktik/");
       }
     }
@@ -175,7 +172,7 @@ case 'userpic';
   if($chkMe != 'unlogged')
   {
     $infos = show(_upload_userpic_info, array("userpicsize" => $upicsize));
-  
+
     $index = show($dir."/upload", array("uploadhead" => _upload_head,
                                         "file" => _upload_file,
                                         "name" => "file",
@@ -189,11 +186,11 @@ case 'userpic';
       $name = $_FILES['file']['name'];
       $type = $_FILES['file']['type'];
       $size = $_FILES['file']['size'];
-      
-  
+
+
       $endung = explode(".", $_FILES['file']['name']);
       $endung = strtolower($endung[count($endung)-1]);
-  
+
       if(!$tmpname)
       {
         $index = error(_upload_no_data, 1);
@@ -209,7 +206,7 @@ case 'userpic';
         }
         copy($tmpname, basePath."/inc/images/uploads/userpics/".$userid.".".strtolower($endung)."");
         @unlink($_FILES['file']['tmp_name']);
-  
+
         $index = info(_info_upload_success, "../user/?action=editprofile");
       }
     } elseif($_GET['do'] == "deletepic") {
@@ -230,7 +227,7 @@ case 'avatar';
   if($chkMe != 'unlogged')
   {
     $infos = show(_upload_userava_info, array("userpicsize" => $upicsize));
-  
+
     $index = show($dir."/upload", array("uploadhead" => _upload_ava_head,
                                         "file" => _upload_file,
                                         "name" => "file",
@@ -244,11 +241,11 @@ case 'avatar';
       $name = $_FILES['file']['name'];
       $type = $_FILES['file']['type'];
       $size = $_FILES['file']['size'];
-      
-  
+
+
       $endung = explode(".", $_FILES['file']['name']);
       $endung = strtolower($endung[count($endung)-1]);
-  
+
       if(!$tmpname)
       {
         $index = error(_upload_no_data, 1);
@@ -264,7 +261,7 @@ case 'avatar';
         }
         copy($tmpname, basePath."/inc/images/uploads/useravatare/".$userid.".".strtolower($endung));
         @unlink($_FILES['file']['tmp_name']);
-  
+
         $index = info(_info_upload_success, "../user/?action=editprofile");
       }
     } elseif($_GET['do'] == "delete") {
@@ -285,7 +282,7 @@ case 'usergallery';
   if($chkMe != 'unlogged')
   {
     $infos = show(_upload_usergallery_info, array("userpicsize" => $upicsize));
-  
+
     $index = show($dir."/usergallery", array("uploadhead" => _upload_head_usergallery,
                                              "file" => _upload_file,
                                              "name" => "file",
@@ -293,15 +290,15 @@ case 'usergallery';
                                              "beschreibung" => _upload_beschreibung,
                                              "info" => _upload_info,
                                              "infos" => $infos));
-  
+
     if($_GET['do'] == "upload")
     {
       $tmpname = $_FILES['file']['tmp_name'];
       $name = $_FILES['file']['name'];
       $type = $_FILES['file']['type'];
       $size = $_FILES['file']['size'];
-      
-  
+
+
       if(!$tmpname)
       {
         $index = error(_upload_no_data, 1);
@@ -314,23 +311,23 @@ case 'usergallery';
       } else {
         copy($tmpname, basePath."/inc/images/uploads/usergallery/".$userid."_".$_FILES['file']['name']);
         @unlink($_FILES['file']['tmp_name']);
-  
+
         $qry = db("INSERT INTO ".$db['usergallery']."
                    SET `user`         = '".((int)$userid)."',
                        `beschreibung` = '".up($_POST['beschreibung'],1)."',
                        `pic`          = '".up($_FILES['file']['name'])."'");
-  
+
         $index = info(_info_upload_success, "../user/?action=editprofile&show=gallery");
       }
     } elseif($_GET['do'] == "edit") {
       $qry = db("SELECT * FROM ".$db['usergallery']."
                  WHERE id = '".intval($_GET['gid'])."'");
       $get = _fetch($qry);
-      
+
       if($get['user'] == $userid)
       {
         $infos = show(_upload_usergallery_info, array("userpicsize" => $upicsize));
-  
+
         $index = show($dir."/usergallery_edit", array("uploadhead" => _upload_head_usergallery,
                                                       "file" => _upload_file,
                                                       "showpic" => img_size("inc/images/uploads/usergallery/".$get['user']."_".$get['pic']),
@@ -349,32 +346,32 @@ case 'usergallery';
       $name = $_FILES['file']['name'];
       $type = $_FILES['file']['type'];
       $size = $_FILES['file']['size'];
-  
+
       $endung = explode(".", $_FILES['file']['name']);
       $endung = strtolower($endung[count($endung)-1]);
-  
+
       $qry = db("SELECT pic FROM ".$db['usergallery']."
                  WHERE id = '".intval($_POST['id'])."'");
       $get = _fetch($qry);
-  
+
       if(!empty($_FILES['file']['size']))
       {
         $unlinkgallery = show(_gallery_edit_unlink, array("img" => $get['pic'],
                                                           "user" => $userid));
         @unlink($unlinkgallery);
-  
+
         copy($tmpname, basePath."/inc/images/uploads/usergallery/".$userid."_".$_FILES['file']['name']);
         @unlink($_FILES['file']['tmp_name']);
-  
+
         $pic = "`pic` = '".$_FILES['file']['name']."',";
       }
-  
+
       $qry = db("UPDATE ".$db['usergallery']."
                  SET ".$pic."
                      `beschreibung` = '".up($_POST['beschreibung'],1)."'
                  WHERE id = '".intval($_POST['id'])."'
                  AND `user` = '".((int)$userid)."'");
-  
+
       $index = info(_edit_gallery_done, "../user/?action=editprofile&show=gallery");
     }
   } else {

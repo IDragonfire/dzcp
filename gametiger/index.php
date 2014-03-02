@@ -11,9 +11,6 @@ $where = _site_gametiger;
 $title = $pagetitle." - ".$where."";
 $dir = "gametiger";
 ## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
 if($gametiger_game == "lazy") $gametiger_game = "all";
 elseif($gametiger_game == "bf1942") $gametiger_game = "bf";
 
@@ -25,7 +22,7 @@ default:
   {
     $player .= $line;
   }
-  
+
   $player = preg_replace("#<html>.*<!-- cstiger results -->\n#miUs","",$player);
   $player = preg_replace("#</table>\n<!-- /cstiger results -->.*</html>#miUs","",$player);
 

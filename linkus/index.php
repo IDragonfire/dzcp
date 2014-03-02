@@ -11,9 +11,6 @@ $dir = "linkus";
 $where = _linkus;
 $title = $pagetitle." - ".$where."";
 ## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
 switch ($action):
 default:
   $qry = db("SELECT * FROM ".$db['linkus']."
@@ -46,7 +43,7 @@ default:
                                                "cnt" => $cnt,
                                                "banner" => $banner,
                                                "besch" => re($get['beschreibung']),
-									  		                       "url" => $get['url']));
+                                                                     "url" => $get['url']));
       $cnt++;
     }
   } else {

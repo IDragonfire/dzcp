@@ -10,9 +10,6 @@ lang($language);
 $dir = "user";
 $where = _site_user;
 ## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
 switch ($action):
 case 'login';
   $where = _site_user_login;
@@ -65,7 +62,7 @@ case 'login';
                        `time` = '".((int)time())."'");
 
           header("Location: ?action=userlobby");
-      }	else {
+      }    else {
         $qry = db("SELECT id FROM ".$db['users']."
                            WHERE user = '".up($_POST['user'])."'");
           if(_rows($qry))
@@ -288,7 +285,7 @@ case 'register';
 
             $qry = db("INSERT INTO ".$db['userstats']."
                                  SET `user`       = '".((int)$insert_id)."',
-                     `lastvisit`	= '".((int)time())."'");
+                     `lastvisit`    = '".((int)time())."'");
 
       $protocol = "reg(".$insert_id.")";
       $qry = db("INSERT INTO ".$db['ipcheck']."
@@ -1067,28 +1064,25 @@ case 'user';
     $qrygl = db("SELECT * FROM ".$db['usergallery']."
                  WHERE user = '".intval($_GET['id'])."'
                  ORDER BY id DESC");
-	$qryperm = _fetch(db("SELECT perm_gallery FROM ".$db['users']." WHERE id = ".$_GET['id']));
-	$qryuser = _fetch(db("SELECT level FROM ".$db['users']." WHERE id = ".$userid));
-	if ($qryperm['perm_gallery'] < $qryuser['level'] || $_GET['id'] == $userid)
-	{
-		  while($getgl = _fetch($qrygl))
-		  {
-		  $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-		  $gal .= show($dir."/profil_gallery_show", array("picture" => img_size("inc/images/uploads/usergallery"."/".$_GET['id']."_".$getgl['pic']),
-														  "beschreibung" => bbcode($getgl['beschreibung']),
-														  "class" => $class));
-		}
-		  $show = show($dir."/profil_gallery", array("galleryhead" => _gallery_head,
-													 "pic" => _gallery_pic,
-													 "beschr" => _gallery_beschr,
-													 "showgallery" => $gal));
-	}
-	else $show = _gallery_no_perm;
+    $qryperm = _fetch(db("SELECT perm_gallery FROM ".$db['users']." WHERE id = ".$_GET['id']));
+    $qryuser = _fetch(db("SELECT level FROM ".$db['users']." WHERE id = ".$userid));
+    if ($qryperm['perm_gallery'] < $qryuser['level'] || $_GET['id'] == $userid)
+    {
+          while($getgl = _fetch($qrygl))
+          {
+          $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+          $gal .= show($dir."/profil_gallery_show", array("picture" => img_size("inc/images/uploads/usergallery"."/".$_GET['id']."_".$getgl['pic']),
+                                                          "beschreibung" => bbcode($getgl['beschreibung']),
+                                                          "class" => $class));
+        }
+          $show = show($dir."/profil_gallery", array("galleryhead" => _gallery_head,
+                                                     "pic" => _gallery_pic,
+                                                     "beschr" => _gallery_beschr,
+                                                     "showgallery" => $gal));
+    }
+    else $show = _gallery_no_perm;
   } elseif($_GET['show'] == "gb") {
       $addgb = show(_usergb_eintragen, array("id" => $_GET['id']));
-
-    if(isset($_GET['page'])) $page = $_GET['page'];
-    else $page = 1;
 
       $qrygb = db("SELECT * FROM ".$db['usergb']."
                                WHERE user = ".intval($_GET['id'])."
@@ -1207,12 +1201,12 @@ case 'user';
 
     $seiten = nav($entrys,$maxusergb,"?action=user&amp;id=".$_GET['id']."&show=gb");
 
-	$qryperm = _fetch(db("SELECT perm_gb FROM ".$db['users']." WHERE id = ".$_GET['id']));
-	if ($qryperm['perm_gb'] != 1) $add = "";
+    $qryperm = _fetch(db("SELECT perm_gb FROM ".$db['users']." WHERE id = ".$_GET['id']));
+    if ($qryperm['perm_gb'] != 1) $add = "";
     $show = show($dir."/profil_gb",array("gbhead" => _membergb,
                                            "show" => $membergb,
                                          "seiten" => $seiten,
-										 "entry" => $add));
+                                         "entry" => $add));
     } else {
       $qrycustom = db("SELECT * FROM ".$db['profile']."
                                 WHERE kid = '1' AND shown = '1'
@@ -1402,7 +1396,7 @@ case 'user';
                                              "clan" => $clan,
                                              "picture" => userpic($get['id']),
                                              "favos_head" => $favos_head,
-                                             "sonst" =>	_profil_sonst,
+                                             "sonst" =>    _profil_sonst,
                                              "pich" => _profil_ich,
                                              "pposition" => _profil_position,
                                              "pstatus" => _profil_status,
@@ -1545,27 +1539,27 @@ case 'usergb';
                                                                                                 "ip" => _iplog_info,
                                                                                                 "eintraghead" => _eintrag));
             } else {
-				$qryperm = _fetch(db("SELECT perm_gb FROM ".$db['users']." WHERE id = ".$_GET['id']));	
-				if ($qryperm['perm_gb'] == 1)
-				{
-					$qry = db("INSERT INTO ".$db['usergb']."
-										 SET `user`       = '".((int)$_GET['id'])."',
-												 `datum`      = '".((int)time())."',
-												 `nick`       = '".up($_POST['nick'])."',
-												 `email`      = '".up($_POST['email'])."',
-												 `hp`         = '".links($_POST['hp'])."',
-												 `reg`        = '".((int)$userid)."',
-												 `nachricht`  = '".up($_POST['eintrag'],1)."',
-												 `ip`         = '".$userip."'");
+                $qryperm = _fetch(db("SELECT perm_gb FROM ".$db['users']." WHERE id = ".$_GET['id']));
+                if ($qryperm['perm_gb'] == 1)
+                {
+                    $qry = db("INSERT INTO ".$db['usergb']."
+                                         SET `user`       = '".((int)$_GET['id'])."',
+                                                 `datum`      = '".((int)time())."',
+                                                 `nick`       = '".up($_POST['nick'])."',
+                                                 `email`      = '".up($_POST['email'])."',
+                                                 `hp`         = '".links($_POST['hp'])."',
+                                                 `reg`        = '".((int)$userid)."',
+                                                 `nachricht`  = '".up($_POST['eintrag'],1)."',
+                                                 `ip`         = '".$userip."'");
 
-					$mgbid = "mgbid(".$_GET['id'].")";
-					$qry = db("INSERT INTO ".$db['ipcheck']."
-										 SET `ip`   = '".$userip."',
-												 `what` = '".$mgbid."',
-												 `time` = '".((int)time())."'");
+                    $mgbid = "mgbid(".$_GET['id'].")";
+                    $qry = db("INSERT INTO ".$db['ipcheck']."
+                                         SET `ip`   = '".$userip."',
+                                                 `what` = '".$mgbid."',
+                                                 `time` = '".((int)time())."'");
 
-					$index = info(_usergb_entry_successful, "?action=user&amp;id=".$_GET['id']."&show=gb");
-				} 
+                    $index = info(_usergb_entry_successful, "?action=user&amp;id=".$_GET['id']."&show=gb");
+                }
             }
         } elseif($_GET['do'] == 'edit') {
                 if($_POST['reg'] == $userid || permission('editusers'))
@@ -1688,7 +1682,7 @@ case 'editprofile';
 
       $index = info(_info_edit_gallery_done, "?action=editprofile&show=gallery");
 
-    } elseif($_GET['do'] == "edit")	{
+    } elseif($_GET['do'] == "edit")    {
             $check_user = db("SELECT id FROM ".$db['users']."
                                               WHERE user = '".intval($_POST['user'])."'
                                               AND id != '".$userid."'");
@@ -1717,16 +1711,16 @@ case 'editprofile';
         } else {
             if ($_POST['pwd'])
             {
-				if ($_POST['pwd'] == $_POST['cpwd'])
-				{
-					$newpwd = "pwd = '".md5($_POST['pwd'])."',";
-					$index = info(_info_edit_profile_done, "?action=user&amp;id=".$userid."");
-					$_SESSION['pwd'] = md5($_POST['pwd']);
-				}
-				else
-				{
-					$index = error(_error_passwords_dont_match, 1);
-				}
+                if ($_POST['pwd'] == $_POST['cpwd'])
+                {
+                    $newpwd = "pwd = '".md5($_POST['pwd'])."',";
+                    $index = info(_info_edit_profile_done, "?action=user&amp;id=".$userid."");
+                    $_SESSION['pwd'] = md5($_POST['pwd']);
+                }
+                else
+                {
+                    $index = error(_error_passwords_dont_match, 1);
+                }
             } else {
                 $newpwd = "";
           $index = info(_info_edit_profile_done, "?action=user&amp;id=".$userid."");
@@ -1747,7 +1741,7 @@ case 'editprofile';
            else $steamid = "";
 
           $qry = db("UPDATE ".$db['users']."
-                       SET	".$newpwd."
+                       SET    ".$newpwd."
                         ".$customfields."
                   `country`      = '".$_POST['land']."',
                   `user`         = '".up($_POST['user'])."',
@@ -1772,8 +1766,8 @@ case 'editprofile';
           `skypename`    = '".up(trim($_POST['skypename']))."',
                   `signatur`     = '".up($_POST['sig'],1)."',
                   `beschreibung` = '".up($_POST['ich'],1)."',
-				  `perm_gb`      = '".up($_POST['visibility_gb'])."',
-				  `perm_gallery` = '".up($_POST['visibility_gallery'])."'
+                  `perm_gb`      = '".up($_POST['visibility_gb'])."',
+                  `perm_gallery` = '".up($_POST['visibility_gallery'])."'
            WHERE id = ".$userid);
           }
       } elseif($_GET['do'] == "delete") {
@@ -1784,29 +1778,29 @@ case 'editprofile';
                 $qry = db("UPDATE ".$db['f_threads']."
                                      SET `t_nick`   = '".up($getdel['nick'])."',
                                              `t_email`  = '".up($getdel['email'])."',
-                                             `t_hp`			= '".links($getdel['hp'])."',
-                                             `t_reg`		= '0'
+                                             `t_hp`            = '".links($getdel['hp'])."',
+                                             `t_reg`        = '0'
                                      WHERE t_reg = '".intval($getdel['id'])."'");
 
                 $qry = db("UPDATE ".$db['f_posts']."
                                      SET `nick`   = '".up($getdel['nick'])."',
                                              `email`  = '".up($getdel['email'])."',
-                                             `hp`			= '".links($getdel['hp'])."',
-                                             `reg`		= '0'
+                                             `hp`            = '".links($getdel['hp'])."',
+                                             `reg`        = '0'
                                      WHERE reg = '".intval($getdel['id'])."'");
 
                 $qry = db("UPDATE ".$db['newscomments']."
                                      SET `nick`     = '".up($getdel['nick'])."',
                                              `email`    = '".up($getdel['email'])."',
                                              `hp`       = '".links($getdel['hp'])."',
-                                             `reg`			= '0'
+                                             `reg`            = '0'
                                      WHERE reg = '".intval($getdel['id'])."'");
 
                 $qry = db("UPDATE ".$db['acomments']."
                                      SET `nick`     = '".up($getdel['nick'])."',
                                              `email`    = '".up($getdel['email'])."',
                                              `hp`       = '".links($getdel['hp'])."',
-                                             `reg`			= '0'
+                                             `reg`            = '0'
                                      WHERE reg = '".intval($getdel['id'])."'");
 
                 $del = db("DELETE FROM ".$db['msg']."
@@ -1860,22 +1854,22 @@ case 'editprofile';
         if($get['sex'] == "1") $sex = _pedit_male;
         elseif($get['sex'] == "2") $sex = _pedit_female;
         else $sex = _pedit_sex_ka;
-		
-		if($get['perm_gb'] == 1) $perm_gb = _pedit_perm_allow;
+
+        if($get['perm_gb'] == 1) $perm_gb = _pedit_perm_allow;
         else $perm_gb = _pedit_perm_deny;
-		
-		switch($get['perm_gallery'])
-		{
-			case 0: $perm_gallery = _pedit_perm_public;
-			break;
-			case 1: $perm_gallery = _pedit_perm_user;
-			break; 
-			case 2: $perm_gallery = _pedit_perm_member;
-			break;
-		}
-		
+
+        switch($get['perm_gallery'])
+        {
+            case 0: $perm_gallery = _pedit_perm_public;
+            break;
+            case 1: $perm_gallery = _pedit_perm_user;
+            break;
+            case 2: $perm_gallery = _pedit_perm_member;
+            break;
+        }
+
         if($get['status'] == 1) $status = _pedit_aktiv;
-		else $status = _pedit_inaktiv;
+        else $status = _pedit_inaktiv;
 
         $qryl = db("SELECT * FROM ".$db['users']."
                                 WHERE id = '".$userid."'");
@@ -2019,9 +2013,9 @@ case 'editprofile';
 
         $show = show($dir."/edit_profil", array("hardware" => _profil_hardware,
                                                 "hphead" => _profil_hp,
-												"visibility" => _pedit_visibility,
-												"pvisibility_gb" => _pedit_visibility_gb,
-												"pvisibility_gallery" => _pedit_visibility_gallery,
+                                                "visibility" => _pedit_visibility,
+                                                "pvisibility_gb" => _pedit_visibility_gb,
+                                                "pvisibility_gallery" => _pedit_visibility_gallery,
                                                 "country" => show_countrys($get['country']),
                                                 "pcountry" => _profil_country,
                                                 "about" => _profil_about,
@@ -2036,7 +2030,7 @@ case 'editprofile';
                                                 "psex" => _profil_sex,
                                                 "pname" => _loginname,
                                                 "ppwd" => _new_pwd,
-												"cppwd" => _pwd2,
+                                                "cppwd" => _pwd2,
                                                 "picq" => _icq,
                                                 "psig" => _profil_sig,
                                                 "ppic" => _profil_ppic,
@@ -2069,8 +2063,8 @@ case 'editprofile';
                                                 "bdayyear" =>$bdayyear,
                                                 "sex" => $sex,
                                                 "email" => re($get['email']),
-												"visibility_gb" => $perm_gb,
-												"visibility_gallery" => $perm_gallery,
+                                                "visibility_gb" => $perm_gb,
+                                                "visibility_gallery" => $perm_gallery,
                                                 "icqnr" => $icq,
                                                 "sig" => re_bbcode($get['signatur']),
                                                 "hlswid" => $get['hlswid'],
@@ -2501,9 +2495,6 @@ case 'msg';
 break;
 case 'userlist';
   $where = _site_ulist;
-  if(isset($_GET['page'])) $page = $_GET['page'];
-  else $page = 1;
-
   $entrys = cnt($db['users']," WHERE level != 0");
 
 if($_GET['show'] == "search")
@@ -3150,7 +3141,7 @@ case 'admin';
         $editpwd = show($dir."/admin_editpwd", array("pwd" => _new_pwd,
                                                      "epwd" => ""));
 
-                if($chkMe == 4)	$elevel = show(_elevel_admin_select, array("selu" => $selu,
+                if($chkMe == 4)    $elevel = show(_elevel_admin_select, array("selu" => $selu,
                                                                            "selt" => $selt,
                                                                            "selm" => $selm,
                                                                            "sela" => $sela,
@@ -3230,43 +3221,43 @@ case 'admin';
 break;
 
 case 'get_steam_image';
-	$data=strtolower(trim($_GET['steam_id']));
-	if ($data!='') 
-	{
-		if (ereg('7656119', $data))
-		{
-			$ret = $data;
-		}
-		else if (substr($data,0,7)=='steam_0') 
-		{
-			$tmp=explode(':',$data);
-			if ((count($tmp)==3) && is_numeric($tmp[1]) && is_numeric($tmp[2]))
-			{							
-				$friendid=($tmp[2]*2)+$tmp[1]+1197960265728;
-				$friendid='7656'.$friendid;
-				$ret = $friendid;
-			}
-		}
-		if ($ret!= null)
-		{
-			$steam_profile = simplexml_load_file("http://steamcommunity.com/profiles/".$ret."/?xml=1");
-		}
-		else
-		{
-			$steam_profile = simplexml_load_file("http://steamcommunity.com/id/".str_replace('steam_','ERROR_POFILE_FIXED',$data)."/?xml=1");
-			$ret = $steam_profile->steamID64;
-		}					
-		if (empty($steam_profile->error) && $ret != "") 
-		{
-			$file = 'http://steamsignature.com/profile/english/'.$ret.'.png';
-		}
-		else {
-			$file = 'http://steamsignature.com/profile/english/error_not_found.png';
-		}
-		$image_cache = file_get_contents($file);
-		header('Content-Type: image/png');
-		echo $image_cache;
-	}
+    $data=strtolower(trim($_GET['steam_id']));
+    if ($data!='')
+    {
+        if (ereg('7656119', $data))
+        {
+            $ret = $data;
+        }
+        else if (substr($data,0,7)=='steam_0')
+        {
+            $tmp=explode(':',$data);
+            if ((count($tmp)==3) && is_numeric($tmp[1]) && is_numeric($tmp[2]))
+            {
+                $friendid=($tmp[2]*2)+$tmp[1]+1197960265728;
+                $friendid='7656'.$friendid;
+                $ret = $friendid;
+            }
+        }
+        if ($ret!= null)
+        {
+            $steam_profile = simplexml_load_file("http://steamcommunity.com/profiles/".$ret."/?xml=1");
+        }
+        else
+        {
+            $steam_profile = simplexml_load_file("http://steamcommunity.com/id/".str_replace('steam_','ERROR_POFILE_FIXED',$data)."/?xml=1");
+            $ret = $steam_profile->steamID64;
+        }
+        if (empty($steam_profile->error) && $ret != "")
+        {
+            $file = 'http://steamsignature.com/profile/english/'.$ret.'.png';
+        }
+        else {
+            $file = 'http://steamsignature.com/profile/english/error_not_found.png';
+        }
+        $image_cache = file_get_contents($file);
+        header('Content-Type: image/png');
+        echo $image_cache;
+    }
 break;
 
 endswitch;

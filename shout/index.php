@@ -9,15 +9,12 @@ $time_start = generatetime();
 lang($language);
 $dir = "shout";
 ## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
 switch ($action):
 default:
   if(!ipcheck("shout", $flood_shout))
   {
     if(($_POST['protect'] != 'nospam' || empty($_SESSION['sec_shout']) || $_POST['spam'] != $_SESSION['sec_shout'] || empty($_POST['spam'])) && !$userid)
-                                                                                     $index = error(_error_invalid_regcode,1); 
+                                                                                     $index = error(_error_invalid_regcode,1);
     elseif(!$userid && (empty($_POST['name']) || trim($_POST['name']) == '') || $_POST['name'] == "Nick")
                                                                                      $index = error(_empty_nick, 1);
     elseif(!$userid && empty($_POST['email']) || $_POST['email'] == "E-Mail") $index = error(_empty_email, 1);
@@ -27,7 +24,7 @@ default:
     else {
       if(!$userid) $reg = $_POST['email'];
       else $reg = $userid;
- 
+
       $qry = db("INSERT INTO ".$db['shout']."
                  SET `datum`  = '".((int)time())."',
                      `nick`   = '".up($_POST['name'],'','UTF-8')."',
@@ -45,7 +42,7 @@ default:
   } else {
     $index = error(show(_error_flood_post, array("sek" => $flood_shout)), 1);
   }
-  
+
   if(isset($_GET['ajax'])) {
     echo str_replace("\n", '', html_entity_decode(strip_tags($index))); exit;
   }
@@ -67,9 +64,6 @@ break;
 case 'archiv';
   $where = _site_shoutbox;
   $title = $pagetitle." - ".$where."";
-  
-  if(isset($_GET['page']))  $page = $_GET['page'];
-  else $page = 1;
 
   $entrys = cnt($db['shout']);
   $i = $entrys-($page - 1)*$maxshoutarchiv;
@@ -80,7 +74,7 @@ case 'archiv';
   while($get = _fetch($qry))
   {
     $is_num = preg_match("#\d#", $get['email']);
-            
+
     if($is_num && !check_email($get['email'])) $nick = autor($get['email']);
     else $nick = '<a href="mailto:'.$get['email'].'" title="'.$get['nick'].'">'.cut($get['nick'], $lshoutnick).'</a>';
 

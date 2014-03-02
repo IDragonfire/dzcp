@@ -30,14 +30,14 @@ if(_adminMenu != 'true') exit;
           $ins = db("INSERT INTO ".$db['glossar']."
                      SET `word`    = '".up($_POST['link'])."',
                          `glossar` = '".up($_POST['beschreibung'],1)."'");
-          
+
           $show = info(_admin_glossar_added,'?admin=glossar');
         }
       } elseif($_GET['do'] == 'edit') {
         $qry = db("SELECT * FROM ".$db['glossar']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
-        
+
         $show = show($dir."/form_glossar", array("head" => _admin_glossar_add,
                                                  "link" => _glossar_bez,
                                                  "beschreibung" => _glossar_erkl,
@@ -57,25 +57,23 @@ if(_adminMenu != 'true') exit;
                      SET `word`    = '".up($_POST['link'])."',
                          `glossar` = '".up($_POST['beschreibung'],1)."'
                      WHERE id = '".intval($_GET['id'])."'");
-          
+
           $show = info(_admin_glossar_edited,'?admin=glossar');
         }
       } elseif($_GET['do'] == 'delete') {
         $del = db("DELETE FROM ".$db['glossar']."
                    WHERE id = '".intval($_GET['id'])."'");
-                   
+
         $show = info(_admin_glossar_deleted,'?admin=glossar');
       } else {
         $maxglossar = 20;
-        if(isset($_GET['page']))  $page = $_GET['page'];
-        else $page = 1;
         $entrys = cnt($db['glossar']);
-        
+
         $qry = db("SELECT * FROM ".$db['glossar']."
                    ORDER BY word
                    LIMIT ".($page - 1)*$maxglossar.",".$maxglossar."");
         while($get = _fetch($qry))
-        {            
+        {
           $edit = show("page/button_edit_single", array("id" => $get['id'],
                                                         "action" => "admin=glossar&amp;do=edit",
                                                         "title" => _button_title_edit));
@@ -83,16 +81,16 @@ if(_adminMenu != 'true') exit;
                                                             "action" => "admin=glossar&amp;do=delete",
                                                             "title" => _button_title_del,
                                                             "del" => convSpace(_confirm_del_entry)));
-                                                            
+
           $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-          
+
           $show_ .= show($dir."/glossar_show", array("word" => re($get['word']),
                                                      "class" => $class,
                                                      "edit" => $edit,
                                                      "delete" => $delete,
                                                      "glossar" => bbcode($get['glossar'])));
         }
-        
+
         $show = show($dir."/glossar", array("head" => _glossar_head,
                                             "word" => _glossar_bez,
                                             "bez" => _glossar_erkl,

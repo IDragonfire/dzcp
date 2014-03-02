@@ -56,6 +56,10 @@ $datum = time();
 $today = date("j.n.Y");
 $picformat = array("jpg", "gif", "png");
 
+//-> Global
+$action = isset($_GET['action']) ? $_GET['action'] : '';
+$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+
 //-> Configtabelle auslesen
 $config = db("SELECT * FROM ".$db['config'],false,true);
 

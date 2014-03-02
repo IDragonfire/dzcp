@@ -11,11 +11,8 @@ $where = _site_dl;
 $title = $pagetitle." - ".$where."";
 $dir = "downloads";
 ## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
 switch ($action):
-default:  
+default:
   $intern = "";
   if(!permission('dlintern')) $intern = " AND intern = '0'";
   $qry = db("SELECT * FROM ".$db['dl_kat']."
@@ -26,7 +23,7 @@ default:
   {
     if(isset($_GET['kat'])) $kid = " WHERE id = '".intval($_GET['kat'])."'";
     else                    $kid = "";
-      
+
     $qrydl = db("SELECT * FROM ".$db['downloads']."
                  WHERE kat = '".$get['id']."'".$intern."
                  ORDER BY download");
@@ -43,36 +40,36 @@ default:
           $img = "collapse";
           $download = highlight(re($getdl['download']));
         } else $download = re($getdl['download']);
-      
+
         $link = show(_downloads_link, array("id" => $getdl['id'],
                                             "download" => $download,
-																						"titel" => re($getdl['download']),
+                                                                                        "titel" => re($getdl['download']),
                                             "target" => $target));
-                                            
+
         $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-  
+
         $show .= show($dir."/downloads_show", array("class" => $class,
                                                     "link" => $link,
                                                     "kid" => $get['id'],
                                                     "display" => $display,
                                                     "beschreibung" => bbcode($getdl['beschreibung']),
-                                                    "hits" => $getdl['hits'])); 
+                                                    "hits" => $getdl['hits']));
       }
-    
+
       $cntKat = cnt($db['downloads'], " WHERE kat = '".$get['id']."'");
-    
+
       if(cnt($db['downloads'], "WHERE kat = '".$get['id']."'") == 1)  $dltitel = _dl_file;
       else $dltitel = _site_stats_files;
-    
-    
+
+
       $kat = show(_dl_titel, array("id" => $get['id'],
                                    "icon" => $moreicon,
                                    "file" => $dltitel,
                                    "cnt" => $cntKat,
                                    "name" => re($get['name'])));
-                                 
+
       $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-      
+
       $kats .= show($dir."/download_kats", array("kat" => $kat,
                                                  "class" => $class,
                                                  "kid" => $get['id'],
@@ -81,11 +78,11 @@ default:
                                                  "hits" => _hits,
                                                  "show" => $show,
                                                  "display" => $display));
-  
-  
+
+
     }
   }
-  
+
   $index = show($dir."/downloads", array("kats" => $kats,
                                          "head" => _downloads_head));
 break;
@@ -97,34 +94,34 @@ case 'download';
     $qry = db("SELECT * FROM ".$db['downloads']."
                WHERE id = '".intval($_GET['id'])."'");
     $get = _fetch($qry);
-	if(!permission('dlintern') && $get['intern']) {
-		$index = error(_error_no_access);
-	  	break;
-	}
+    if(!permission('dlintern') && $get['intern']) {
+        $index = error(_error_no_access);
+          break;
+    }
     $file = preg_replace("#added...#Uis", "files/", $get['url']);
     if(strpos($get['url'],"../") != 0) $rawfile = @basename($file);
     else                                   $rawfile = re($get['download']);
 
     $size = @filesize($file);
-    $size_mb = @round($size/1048576,2); 
-    $size_kb = @round($size/1024,2); 
-    
-    $speed_modem = @round(($size/1024)/(56/8)/60,2); 
-    $speed_isdn = @round(($size/1024)/(128/8)/60,2); 
-    $speed_dsl256 = @round(($size/1024)/(256/8)/60,2); 
-    $speed_dsl512 = @round(($size/1024)/(512/8)/60,2); 
-    $speed_dsl1024 = @round(($size/1024)/(1024/8)/60,2); 
-    $speed_dsl2048 = @round(($size/1024)/(2048/8)/60,2); 
-    $speed_dsl3072 = @round(($size/1024)/(3072/8)/60,2); 
+    $size_mb = @round($size/1048576,2);
+    $size_kb = @round($size/1024,2);
+
+    $speed_modem = @round(($size/1024)/(56/8)/60,2);
+    $speed_isdn = @round(($size/1024)/(128/8)/60,2);
+    $speed_dsl256 = @round(($size/1024)/(256/8)/60,2);
+    $speed_dsl512 = @round(($size/1024)/(512/8)/60,2);
+    $speed_dsl1024 = @round(($size/1024)/(1024/8)/60,2);
+    $speed_dsl2048 = @round(($size/1024)/(2048/8)/60,2);
+    $speed_dsl3072 = @round(($size/1024)/(3072/8)/60,2);
     $speed_dsl6016 = @round(($size/1024)/(6016/8)/60,2);
     $speed_dsl16128 = @round(($size/1024)/(16128/8)/60,2);
-    
+
     if(strlen(@round(($size/1048576)*$get['hits'],0)) >= 4)
       $traffic = @round(($size/1073741824)*$get['hits'],2).' GB';
     else $traffic = @round(($size/1048576)*$get['hits'],2).' MB';
-    
+
     $getfile = show(_dl_getfile, array("file" => $rawfile));
-    
+
     if($size == false)
     {
       $dlsize = $traffic = 'n/a';
@@ -140,7 +137,7 @@ case 'download';
       if($size == false) $date = 'n/a';
       else $date = date("d.m.Y H:i",@filemtime($file))._uhr;
     } else $date = date("d.m.Y H:i",$get['date'])._uhr;
-    
+
     $lastdate = date("d.m.Y H:i",$get['last_dl'])._uhr;
     $index = show($dir."/info", array("head" => _dl_info,
                                       "headd" => _dl_info2,
@@ -185,21 +182,21 @@ case 'getfile';
     $get = _fetch($qry);
 
     $file = preg_replace("#added...#Uis", "", $get['url']);
-  
+
     if(preg_match("=added...=Uis",$get['url']) != FALSE)
       $dlFile = "files/".$file;
     else $dlFile = $get['url'];
 
-    $upd = db("UPDATE ".$db['downloads']." SET `hits` = hits+1, `last_dl` = '".time()."' WHERE id = '".intval($_GET['id'])."'"); 
+    $upd = db("UPDATE ".$db['downloads']." SET `hits` = hits+1, `last_dl` = '".time()."' WHERE id = '".intval($_GET['id'])."'");
 //download file
     header("Location: ".$dlFile);
   }
 break;
 endswitch;
 ## SETTINGS ##
-$time_end = generatetime(); 
+$time_end = generatetime();
 $time = round($time_end - $time_start,4);
 page($index, $title, $where,$time);
 ## OUTPUT BUFFER END ##
 gz_output();
-?> 
+?>

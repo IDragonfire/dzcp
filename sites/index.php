@@ -9,9 +9,6 @@ $time_start = generatetime();
 lang($language);
 $dir = "sites";
 ## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
 switch ($action):
 default:
   $qry = db("SELECT s1.*,s2.internal FROM ".$db['sites']." AS s1
@@ -27,10 +24,10 @@ default:
     else {
       $where = re($get['titel']);
       $title = $pagetitle." - ".$where."";
-  
+
       if($get['html'] == "1") $inhalt = bbcode_html($get['text']);
       else $inhalt = bbcode($get['text']);
-  
+
       $index = show($dir."/sites", array("titel" => re($get['titel']),
                                          "inhalt" => $inhalt));
     }
@@ -43,7 +40,7 @@ case 'preview';
 
   $index = show($dir."/sites", array("titel" => re($_POST['titel']),
                                      "inhalt" => $inhalt));
-                                     
+
   echo '<table class="mainContent" cellspacing="1"'.$index.'</table>';
   exit;
 break;

@@ -11,7 +11,7 @@ $where = _site_stats;
 $title = $pagetitle." - ".$where."";
 $dir = "stats";
 ## SECTIONS ##
-  if($_GET['action'] == "gb")
+  if($action == "gb")
   {
     $qry = db("SELECT email,reg,nick,datum FROM ".$db['gb']."
                ORDER BY datum ASC LIMIT 1");
@@ -37,7 +37,7 @@ $dir = "stats";
                                     "nfirst" => $first,
                                     "last" => _stats_gb_last,
                                     "nlast" => $last));
-  } elseif($_GET['action'] == "forum") {
+  } elseif($action == "forum") {
     $allthreads = cnt($db['f_threads']);
     $allposts = cnt($db['f_posts']);
     if($allthreads > 0 && $allposts >= 0)
@@ -72,7 +72,7 @@ $dir = "stats";
                                        "npperd" => $pperd,
                                        "topposter" => _stats_forum_top,
                                        "ntopposter" => $topposter));
-  } elseif($_GET['action'] == "user") {
+  } elseif($action == "user") {
     $stats = show($dir."/user", array("head" => _site_user,
                                       "users" => _stats_users_regged,
                                       "member" => _stats_users_regged_member,
@@ -88,7 +88,7 @@ $dir = "stats";
                                       "buddys" => _stats_users_buddys,
                                       "nbuddys" => cnt($db['buddys']),
                                       "nusers" => cnt($db['users'])));
-  } elseif($_GET['action'] == "cw") {
+  } elseif($action == "cw") {
     if(cnt($db['cw'], " WHERE datum < ".time()."") != "0")
     {
       $won = cnt($db['cw'], " WHERE punkte > gpunkte");
@@ -100,10 +100,10 @@ $dir = "stats";
       $lo_p = @round($lost*100/$ges, 1);
       $dr_p = @round($draw*100/$ges, 1);
     }
-    
+
     $allp = '<span class="CwWon">'.sum($db['cw'],'',"punkte").'</span>'.' : '.'
              <span class="CwLost">'.sum($db['cw'],'',"gpunkte").'</span>';
-    
+
     $stats = show($dir."/cw", array("head" => _site_clanwars,
                                     "played" => _stats_cw_played,
                                     "nplayed" => $ges,
@@ -115,11 +115,11 @@ $dir = "stats";
                                     "nlost" => $lost." (".$lo_p."%)",
                                     "points" => _stats_cw_points,
                                     "npoints" => $allp));
-  } elseif($_GET['action'] == "awards") {
+  } elseif($action == "awards") {
     $ges = cnt($db['awards']);
-	  $place_1 = cnt($db['awards'], " WHERE place = 1 ");
-	  $place_2 = cnt($db['awards'], " WHERE place = 2 ");
-	  $place_3 = cnt($db['awards'], " WHERE place = 3 ");
+      $place_1 = cnt($db['awards'], " WHERE place = 1 ");
+      $place_2 = cnt($db['awards'], " WHERE place = 2 ");
+      $place_3 = cnt($db['awards'], " WHERE place = 3 ");
 
 
     $stats = show($dir."/awards", array("head" => _site_awards,
@@ -133,7 +133,7 @@ $dir = "stats";
                                         "np2" => $place_2,
                                         "np3" => $place_3,
                                         "np" => $ges-$place_1-$place_2-$place_3));
-  } elseif($_GET['action'] == "mysql") {
+  } elseif($action == "mysql") {
     $dbinfo = dbinfo();
     $stats = show($dir."/mysql", array("head" => _stats_mysql,
                                        "size" => _stats_mysql_size,
@@ -142,28 +142,28 @@ $dir = "stats";
                                        "nentrys" => $dbinfo["entrys"],
                                        "rows" => _stats_mysql_rows,
                                        "nrows" => $dbinfo["rows"]));
-  } elseif($_GET['action'] == "downloads") {
+  } elseif($action == "downloads") {
     $qry = db("SELECT * FROM ".$db['downloads']."");
     while($get = _fetch($qry))
     {
       $file = preg_replace("#added...#Uis", "../downloads/files/", $get['url']);
       if(strpos($get['url'],"http://") != 0) $rawfile = @basename($file);
       else                                   $rawfile = re($get['download']);
-    
+
       $size = @filesize($file);
       $hits = $get['hits'];
       $allhits += $hits;
       $allsize += $size;
     }
 
-    if(strlen(@round(($allsize/1048576)*$allhits,0)) >= 4) 
+    if(strlen(@round(($allsize/1048576)*$allhits,0)) >= 4)
       $alltraffic = @round(($allsize/1073741824)*$allhits,2).' GB';
     else $alltraffic = @round(($allsize/1048576)*$allhits,2).' MB';
-    
-    if(strlen(@round(($allsize/1048576),0)) >= 4) 
+
+    if(strlen(@round(($allsize/1048576),0)) >= 4)
       $allsize = @round(($allsize/1073741824),2).' GB';
     else $allsize = @round(($allsize/1048576),2).' MB';
-    
+
     $stats = show($dir."/downloads", array("head" => _site_dl,
                                            "files" => _site_stats_files,
                                            "nfiles" => cnt($db['downloads']),
@@ -178,7 +178,7 @@ $dir = "stats";
     $allcomments = cnt($db['newscomments']);
     $allnews = cnt($db['news']);
     $allkats = cnt($db['newskat']);
-    
+
     $qry = db("SELECT * FROM ".$db['newskat']."");
     $i = 1;
     while($get = _fetch($qry))
@@ -197,8 +197,8 @@ $dir = "stats";
     $days = @round($time/86400);
 
     $cpern = @round($allcomments/$allnews,2);
-    $npert = @round($allnews/$days,2); 
-    
+    $npert = @round($allnews/$days,2);
+
     $stats = show($dir."/news", array("head" => _site_news,
                                       "kats" => _stats_nkats,
                                       "nkats" => $kats,

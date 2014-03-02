@@ -11,9 +11,6 @@ $where = _site_forum;
 $title = $pagetitle." - ".$where."";
 $dir = "forum";
 ## SECTIONS
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
 switch ($action):
 default:
   $qry = db("SELECT * FROM ".$db['f_kats']." ORDER BY kid");
@@ -158,9 +155,6 @@ case 'show';
   {
     $index = error(_error_no_access, 1);
   } else {
-    if(isset($_GET['page']))  $page = $_GET['page'];
-    else $page = 1;
-
     if(empty($_POST['suche']))
     {
       $qry = db("SELECT * FROM ".$db['f_threads']."
@@ -321,9 +315,6 @@ case 'showthread';
                     SET `hits` = hits+1
                     WHERE id = '".intval($_GET['id'])."'");
 
-      if(isset($_GET['page'])) $page = $_GET['page'];
-      else $page = 1;
-
       $qryp = db("SELECT * FROM ".$db['f_posts']."
                   WHERE sid = '".intval($_GET['id'])."'
                   ORDER BY id
@@ -382,7 +373,7 @@ case 'showthread';
         $titel = show(_eintrag_titel_forum, array("postid" => $i+($page-1)*$maxfposts,
                                                                                     "datum" => date("d.m.Y", $getp['date']),
                                                                                     "zeit" => date("H:i", $getp['date'])._uhr,
-                                            "url" => '?action=showthread&amp;id='.intval($_GET['id']).'&amp;page='.intval(empty($_GET['page']) ? 1 : $_GET['page']).'#p'.($i+($page-1)*$maxfposts),
+                                            "url" => '?action=showthread&amp;id='.intval($_GET['id']).'&amp;page='.$page.'#p'.($i+($page-1)*$maxfposts),
                                             "edit" => $edit,
                                             "delete" => $delete));
 

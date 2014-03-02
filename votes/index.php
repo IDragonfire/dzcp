@@ -11,9 +11,6 @@ $where = _site_votes;
 $title = $pagetitle." - ".$where."";
 $dir = "votes";
 ## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
 switch ($action):
 default:
     $whereIntern .= ' AND intern = 0';
@@ -84,7 +81,7 @@ default:
                      _show_who_voted . '" class="icon" /></a>';
     }
 
-    if(($_GET['action'] == "show" && $get['id'] == $_GET['id']) || isset($_GET['show']) && $get['id'] == $_GET['show'])
+    if(($action == "show" && $get['id'] == $_GET['id']) || isset($_GET['show']) && $get['id'] == $_GET['show'])
     {
       $moreicon = "collapse";
       $display = "";

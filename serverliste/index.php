@@ -11,15 +11,12 @@ $where = _site_serverlist;
 $title = $pagetitle." - ".$where."";
 $dir = "serverliste";
 ## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
 switch ($action):
 default:
   if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("clanname","slots"))) {
   $qry = db("SELECT ip,port,clanname,clanurl,pwd,checked,slots
                    FROM ".$db['serverliste']."
-				   WHERE checked = 1
+                   WHERE checked = 1
                    ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."");
   }
   else{
@@ -58,8 +55,8 @@ default:
                                            "slots" => _slist_slots,
                                            "pwd" => _pwd,
                                            "eintragen" => _slist_add,
-										   "order_clan" => orderby('clanname'),
-										   "order_slots" => orderby('slots'),
+                                           "order_clan" => orderby('clanname'),
+                                           "order_slots" => orderby('slots'),
                                            "hlswip" => _gt_addip));
 break;
 case 'add':

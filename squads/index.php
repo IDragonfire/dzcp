@@ -14,7 +14,7 @@ $dir = "squads";
   if(!empty($_GET['showsquad'])) header('Location: ?action=shows&id='.intval($_GET['showsquad']));
   else if(!empty($_GET['show'])) header('Location: ?action=shows&id='.intval($_GET['show']));
 
-  switch(strtolower($_GET['action'])):
+  switch(strtolower($action)):
     case 'shows';
       $get = _fetch(db("SELECT * FROM ".$db['squads']." WHERE `id` = '".intval($_GET['id'])."'"));
       $qrym = db("SELECT s1.user,s1.squad,s2.id,s2.nick,s2.icq,s2.email,s2.hlswid,s2.rlname,
@@ -28,7 +28,7 @@ $dir = "squads";
                   ON s4.id=s3.posi
                   WHERE s1.squad='".intval($_GET['id'])."'
                   ORDER BY s4.pid, s2.nick");
-  
+
       $member = "";
       $t = 1;
       $c = 1;
@@ -36,34 +36,34 @@ $dir = "squads";
       {
         $cntall = cnt($db['squaduser'], " WHERE squad= '".$get['id']."'");
 
-        if($getm['icq'] == 0) 
-        { 
+        if($getm['icq'] == 0)
+        {
           $icq = "-";
           $icqnr = "&nbsp;";
-  	    } else {
+          } else {
           $icq = show(_icqstatus, array("uin" => $getm['icq']));
           $icqnr = $getm['icq'];
         }
-        
+
         if(empty($getm['steamid']))
         {
           $steamid = "-";
           $steam = _steamid;
-        } else { 
+        } else {
           $steamid = show(_steamicon, array("steamid" => re($getm['steamid'])))." ".re($getm['steamid']);
-          $steam = _steamid; 
-        } 
-  
+          $steam = _steamid;
+        }
+
         $class = ($color % 2) ? "contentMainFirst" : "contentMainSecond"; $color++;
         $nick = autor($getm['user'],'','','','','&amp;sq='.$getm['squad']);
-          
+
         if(!empty($getm['rlname']))
         {
           $real = explode(" ", re($getm['rlname']));
           $nick = '<b>'.$real[0].' &#x93;</b> '.$nick.' <b>&#x94; '.$real[1].'</b>';
         }
-          
-          
+
+
         $member .= show($dir."/squads_member", array("icqs" => $icq,
                                                      "icq" => $icqnr,
                                                      "email" => $email,
@@ -71,7 +71,7 @@ $dir = "squads";
                                                      "emails" => eMailAddr($getm['email']),
                                                      "id" => $getm['user'],
                                                      "steamid" => $steamid,
-  			  	  		    											         "steam" => $steam,
+                                                                                       "steam" => $steam,
                                                      "class" => $class,
                                                      "nick" => $nick,
                                                      "onoff" => onlinecheck($getm['id']),
@@ -97,13 +97,13 @@ $dir = "squads";
                                                "back" => _error_back,
                                                "id"   => intval($_GET['id'])));
     break;
-    default;  
+    default;
       $qry = db("SELECT * FROM ".$db['squads']." WHERE team_show = 1 ORDER BY pos");
       while($get = _fetch($qry))
       {
         $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
         $squad = show(_gameicon, array("icon" => $get['icon'])).' '.re($get['name']); $style = '';
-        
+
         foreach($picformat AS $end)
         {
           if(file_exists(basePath.'/inc/images/squads/'.intval($get['id']).'.'.$end))
@@ -113,7 +113,7 @@ $dir = "squads";
             break;
           }
         }
-    
+
         $show .= show($dir."/squads_show", array("id" => $get['id'],
                                                  "squad" => $squad,
                                                  "style" => $style,
@@ -122,11 +122,11 @@ $dir = "squads";
                                                  "squadname" => re($get['name'])
                                                  ));
       }
-      
+
       $cntm = db("SELECT * FROM ".$db['squaduser']." GROUP BY user");
       $weare = show(_member_squad_weare, array("cm" => _rows($cntm),
                                                "cs" => cnt($db['squads'], "WHERE team_show = 1")));
-    
+
       $index = show($dir."/squads", array("squadhead" => _member_squad_head,
                                           "weare" => $weare,
                                           "show" => $show));

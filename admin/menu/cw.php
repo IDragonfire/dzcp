@@ -224,7 +224,7 @@ SET ".$kid."
           $type = $_FILES['logo']['type'];
           $end = explode(".", $_FILES['logo']['name']);
           $end = strtolower($end[count($end)-1]);
-          
+
           if(!empty($tmp))
           {
             $img = @getimagesize($tmp);
@@ -239,7 +239,7 @@ if($img1[0])
           $type1 = $_FILES['screen1']['type'];
           $end1 = explode(".", $_FILES['screen1']['name']);
           $end1 = strtolower($end1[count($end1)-1]);
-          
+
           if(!empty($tmp1))
           {
             $img1 = @getimagesize($tmp1);
@@ -248,13 +248,13 @@ if($img1[0])
               @copy($tmp1, basePath."/inc/images/clanwars/".mysqli_insert_id($mysql)."_1.".strtolower($end1));
               @unlink($tmp1);
             }
-          }	
+          }
 
           $tmp2 = $_FILES['screen2']['tmp_name'];
           $type2 = $_FILES['screen2']['type'];
           $end2 = explode(".", $_FILES['screen2']['name']);
           $end2 = strtolower($end2[count($end2)-1]);
-          
+
           if(!empty($tmp2))
           {
             $img2 = @getimagesize($tmp2);
@@ -269,7 +269,7 @@ if($img2[0])
           $type3 = $_FILES['screen3']['type'];
           $end3 = explode(".", $_FILES['screen3']['name']);
           $end3 = strtolower($end3[count($end3)-1]);
-          
+
           if(!empty($tmp3))
           {
             $img3 = @getimagesize($tmp3);
@@ -284,7 +284,7 @@ if($img3[0])
           $type4 = $_FILES['screen4']['type'];
           $end4 = explode(".", $_FILES['screen4']['name']);
           $end4 = strtolower($end4[count($end4)-1]);
-          
+
           if(!empty($tmp4))
           {
             $img4 = @getimagesize($tmp4);
@@ -293,7 +293,7 @@ if($img4[0])
               @copy($tmp4, basePath."/inc/images/clanwars/".mysqli_insert_id($mysql)."_4.".strtolower($end4));
               @unlink($tmp4);
             }
-          }	
+          }
 
           $show = info(_cw_admin_added, "?admin=cw");
         }
@@ -341,7 +341,7 @@ WHERE id = '".intval($_GET['id'])."'");
           $type = $_FILES['logo']['type'];
           $end = explode(".", $_FILES['logo']['name']);
           $end = strtolower($end[count($end)-1]);
-          
+
           if(!empty($tmp))
           {
             $img = @getimagesize($tmp);
@@ -364,7 +364,7 @@ foreach($picformat AS $end1)
           $type1 = $_FILES['screen1']['type'];
           $end1 = explode(".", $_FILES['screen1']['name']);
           $end1 = strtolower($end1[count($end1)-1]);
-          
+
           if(!empty($tmp1))
           {
             $img1 = @getimagesize($tmp1);
@@ -388,7 +388,7 @@ $tmp2 = $_FILES['screen2']['tmp_name'];
           $type2 = $_FILES['screen2']['type'];
           $end2 = explode(".", $_FILES['screen2']['name']);
           $end2 = strtolower($end2[count($end2)-1]);
-          
+
           if(!empty($tmp2))
           {
             $img2 = @getimagesize($tmp2);
@@ -411,7 +411,7 @@ $tmp3 = $_FILES['screen3']['tmp_name'];
           $type3 = $_FILES['screen3']['type'];
           $end3 = explode(".", $_FILES['screen3']['name']);
           $end3 = strtolower($end3[count($end3)-1]);
-          
+
           if(!empty($tmp3))
           {
             $img3 = @getimagesize($tmp3);
@@ -434,7 +434,7 @@ $tmp4 = $_FILES['screen4']['tmp_name'];
           $type4 = $_FILES['screen4']['type'];
           $end4 = explode(".", $_FILES['screen4']['name']);
           $end4 = strtolower($end4[count($end4)-1]);
-          
+
           if(!empty($tmp4))
           {
             $img4 = @getimagesize($tmp4);
@@ -467,13 +467,11 @@ WHERE cw = '".intval($_GET['id'])."'");
         $qry = db("UPDATE ".$db['cw']."
 SET `top` = '".intval($_GET['set'])."'
 WHERE id = '".intval($_GET['id'])."'");
-                   
+
         $show = info((empty($_GET['set']) ? _cw_admin_top_unsetted : _cw_admin_top_setted), "?admin=cw");
       } else {
-        if(isset($_GET['page'])) $page = $_GET['page'];
-        else $page = 1;
 
-if(is_numeric($_GET['squad']))	{
+if(is_numeric($_GET['squad']))    {
 $whereqry = ' WHERE squad_id = '.$_GET['squad'].' ';
 }
 

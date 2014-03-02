@@ -10,9 +10,6 @@ lang($language);
 $dir = "links";
 $where = _site_links;
 ## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
 switch ($action):
 default:
   if(permission("links")) $admin = _links_admin;

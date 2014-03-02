@@ -10,9 +10,6 @@ lang($language);
 $dir = "glossar";
 $where = _glossar;
 ## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
-
 switch ($action):
 default:
   if(!empty($_GET['word']))
