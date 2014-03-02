@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ## INCLUDES/REQUIRES ##
 require_once(basePath.'/inc/secure.php');
 require_once(basePath.'/inc/_version.php');
@@ -119,12 +124,10 @@ $maxadmincw = 10;
 $maxfilesize = @ini_get('upload_max_filesize');
 
 //-> Auslesen der Cookies und automatisch anmelden
-if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSION['id']) && checkme() == "unlogged")
-{
+if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSION['id']) && checkme() == "unlogged") {
     ## User aus der Datenbank suchen ##
     $sql = db("SELECT id,user,nick,pwd,email,level,time,pkey FROM ".$db['users']." WHERE id = '".$_COOKIE[$prev.'id']."' AND pkey = '".$_COOKIE[$prev.'pkey']."' AND level != '0'");
-    if(_rows($sql))
-    {
+    if(_rows($sql)) {
         $get = _fetch($sql);
 
         ## Generiere neuen permanent-key ##
@@ -149,9 +152,7 @@ if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSI
         ## Aktualisiere die User-Statistik ##
         db("UPDATE ".$db['userstats']." SET `logins` = logins+1 WHERE user = '".$get['id']."'");
         unset($get,$permanent_key);
-    }
-    else
-    {
+    } else {
         $_SESSION['id']        = '';
         $_SESSION['pwd']       = '';
         $_SESSION['ip']        = '';
@@ -164,8 +165,7 @@ if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSI
 
 $userid = userid();
 $chkMe = checkme();
-if($chkMe == "unlogged")
-{
+if($chkMe == "unlogged") {
     $_SESSION['id']        = '';
     $_SESSION['pwd']       = '';
     $_SESSION['ip']        = '';
@@ -176,8 +176,7 @@ if($chkMe == "unlogged")
 * Gibt die IP des Besuchers / Users zurück
 * Forwarded IP Support
 */
-function visitorIp()
-{
+function visitorIp() {
     $TheIp=$_SERVER['REMOTE_ADDR'];
     if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR']))
         $TheIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
@@ -200,8 +199,7 @@ function visitorIp()
  *
  * @return boolean
  **/
-function fsockopen_support()
-{
+function fsockopen_support() {
     if(!function_exists('fsockopen') || !function_exists("fopen"))
         return false;
 
@@ -212,8 +210,7 @@ function fsockopen_support()
 }
 
 //-> Auslesen der UserID
-function userid()
-{
+function userid() {
     global $db;
 
     if(empty($_SESSION['id']) || empty($_SESSION['pwd'])) return 0;
@@ -225,15 +222,12 @@ function userid()
 
 //-> Templateswitch
 $files = get_files(basePath.'/inc/_templates_/',true);
-if(isset($_COOKIE[$prev.'tmpdir']) && $_COOKIE[$prev.'tmpdir'] != NULL)
-{
+if(isset($_COOKIE[$prev.'tmpdir']) && $_COOKIE[$prev.'tmpdir'] != NULL) {
     if(file_exists(basePath."/inc/_templates_/".$_COOKIE[$prev.'tmpdir']))
         $tmpdir = $_COOKIE[$prev.'tmpdir'];
     else
         $tmpdir = $files[0];
-}
-else
-{
+} else {
     if(file_exists(basePath."/inc/_templates_/".$sdir))
         $tmpdir = $sdir;
     else
@@ -244,8 +238,7 @@ unset($files);
 $designpath = '../inc/_templates_/'.$tmpdir;
 
 //-> Languagefiles einlesen
-function lang($lng,$pfad='')
-{
+function lang($lng,$pfad='') {
     global $charset;
     if(!file_exists(basePath."/inc/lang/languages/".$lng.".php"))
     {
@@ -258,12 +251,10 @@ function lang($lng,$pfad='')
 }
 
 //-> Sprachdateien auflisten
-function languages()
-{
+function languages() {
     $lang="";
     $files = get_files('../inc/lang/languages/',false,true,array('php'));
-    for($i=0;$i<=count($files)-1;$i++)
-    {
+    for($i=0;$i<=count($files)-1;$i++) {
         $file = str_replace('.php','',$files[$i]);
         $upFile = strtoupper(substr($file,0,1)).substr($file,1);
         if(file_exists('../inc/lang/flaggen/'.$file.'.gif'))
@@ -274,26 +265,22 @@ function languages()
 }
 
 //-> Userspezifiesche Dinge
-if($userid >= 1 && $ajaxJob != true)
-{
+if($userid >= 1 && $ajaxJob != true) {
     db("UPDATE ".$db['userstats']." SET `hits` = hits+1, `lastvisit` = '".((int)$_SESSION['lastvisit'])."' WHERE user = ".$userid);
     $u_b1 = "<!--";
     $u_b2 = "-->";
 }
 
 //-> Settings auslesen (=> Adminmenu)
-function settings($what)
-{
+function settings($what) {
     global $db;
     $get = db("SELECT ".$what." FROM ".$db['settings'],false,true);
     return $get[$what];
 }
 
 //-> PHP-Code farbig anzeigen
-function highlight_text($txt)
-{
-    while(preg_match("=\[php\](.*)\[/php\]=Uis",$txt)!=FALSE)
-    {
+function highlight_text($txt) {
+    while(preg_match("=\[php\](.*)\[/php\]=Uis",$txt)!=FALSE) {
         $res = preg_match("=\[php\](.*)\[/php\]=Uis",$txt,$matches);
         $src = $matches[1];
         $src = str_replace('<?php','',$src);
@@ -348,16 +335,14 @@ function highlight_text($txt)
 }
 //-> Glossarfunktion
 $gl_words = array(); $gl_desc = array();
-$qryglossar = db("SELECT * FROM ".$db['glossar']);
-while($getglossar = _fetch($qryglossar))
-{
+$qryglossar = db("SELECT `word`,`glossar` FROM ".$db['glossar']);
+while($getglossar = _fetch($qryglossar)) {
     $gl_words[] = re($getglossar['word']);
     $gl_desc[]  = $getglossar['glossar'];
 }
 unset($getglossar,$qryglossar);
 
-function regexChars($txt)
-{
+function regexChars($txt) {
     $txt = strip_tags($txt);
     $txt = str_replace('"','&quot;',$txt);
     $txt = str_replace('\\','\\\\',$txt);
@@ -383,8 +368,7 @@ function regexChars($txt)
     return str_replace("\n",'',$txt);
 }
 
-function glossar($txt)
-{
+function glossar($txt) {
     global $db,$gl_words,$gl_desc;
     $txt = str_replace('&#93;',']',$txt);
     $txt = str_replace('&#91;','[',$txt);
@@ -413,14 +397,12 @@ function glossar($txt)
     return str_replace('[','&#91;',$txt);
 }
 
-function bbcodetolow($founds)
-{
+function bbcodetolow($founds) {
     return "[".strtolower($founds[1])."]".trim($founds[2])."[/".strtolower($founds[3])."]";
 }
 
 //-> Replaces
-function replace($txt,$type=0,$no_vid_tag=0)
-{
+function replace($txt,$type=0,$no_vid_tag=0) {
     $txt = str_replace("&#34;","\"",$txt);
 
     if($type == 1)
@@ -454,8 +436,7 @@ function replace($txt,$type=0,$no_vid_tag=0)
 }
 
 //-> Badword Filter
-function BadwordFilter($txt)
-{
+function BadwordFilter($txt) {
     global $badwords;
     $words = explode(",",trim($badwords));
     foreach($words as $word)
@@ -464,12 +445,9 @@ function BadwordFilter($txt)
 }
 
 //-> Funktion um Bestimmte Textstellen zu markieren
-function hl($text, $word)
-{
-    if(!empty($_GET['hl']) && $_SESSION['search_type'] == 'text')
-    {
-        if($_SESSION['search_con'] == 'or')
-        {
+function hl($text, $word) {
+    if(!empty($_GET['hl']) && $_SESSION['search_type'] == 'text') {
+        if($_SESSION['search_con'] == 'or') {
             $words = explode(" ",$word);
             for($x=0;$x<count($words);$x++)
                 $ret['text'] = preg_replace("#".$words[$x]."#i",'<span class="fontRed" title="'.$words[$x].'">'.$words[$x].'</span>',$text);
@@ -481,9 +459,7 @@ function hl($text, $word)
             $ret['class'] = 'class="commentsRight"';
         else
             $ret['class'] = 'class="highlightSearchTarget"';
-    }
-    else
-    {
+    } else {
         $ret['text'] = $text;
         $ret['class'] = 'class="commentsRight"';
     }
@@ -492,8 +468,7 @@ function hl($text, $word)
 }
 
 //-> Emailadressen in Unicode umwandeln
-function eMailAddr($email)
-{
+function eMailAddr($email) {
     $address = trim($email);
     $output = "";
 
@@ -504,14 +479,12 @@ function eMailAddr($email)
 }
 
 //-> Leerzeichen mit + ersetzen (w3c)
-function convSpace($string)
-{
+function convSpace($string) {
     return str_replace(" ","+",$string);
 }
 
 //-> BBCode
-function re_bbcode($txt)
-{
+function re_bbcode($txt) {
     $txt = spChars($txt);
     $txt = str_replace("'", "&#39;", $txt);
     $txt = str_replace("[","&#91;",$txt);
@@ -531,8 +504,7 @@ function _make_url_clickable_cb($matches)
     if ( empty($url) )
         return $matches[0];
     // removed trailing [.,;:] from URL
-    if ( in_array(substr($url, -1), array('.', ',', ';', ':')) === true )
-    {
+    if ( in_array(substr($url, -1), array('.', ',', ';', ':')) === true ) {
         $ret = substr($url, -1);
         $url = substr($url, 0, strlen($url)-1);
     }
@@ -540,8 +512,7 @@ function _make_url_clickable_cb($matches)
     return $matches[1] . "<a href=\"$url\" rel=\"nofollow\">$url</a>" . $ret;
 }
 
-function _make_web_ftp_clickable_cb($matches)
-{
+function _make_web_ftp_clickable_cb($matches) {
     $ret = '';
     $dest = $matches[2];
     $dest = 'http://' . $dest;
@@ -550,8 +521,7 @@ function _make_web_ftp_clickable_cb($matches)
         return $matches[0];
 
     // removed trailing [,;:] from URL
-    if ( in_array(substr($dest, -1), array('.', ',', ';', ':')) === true )
-    {
+    if ( in_array(substr($dest, -1), array('.', ',', ';', ':')) === true ) {
         $ret = substr($dest, -1);
         $dest = substr($dest, 0, strlen($dest)-1);
     }
@@ -559,14 +529,12 @@ function _make_web_ftp_clickable_cb($matches)
     return $matches[1] . "<a href=\"$dest\" rel=\"nofollow\">$dest</a>" . $ret;
 }
 
-function _make_email_clickable_cb($matches)
-{
+function _make_email_clickable_cb($matches) {
     $email = $matches[2] . '@' . $matches[3];
     return $matches[1] . "<a href=\"mailto:$email\">$email</a>";
 }
 
-function make_clickable($ret)
-{
+function make_clickable($ret) {
     $ret = ' ' . $ret;
     // in testing, using arrays here was found to be faster
     $ret = preg_replace_callback('#([\s>])([\w]+?://[\w\\x80-\\xff\#$%&~/.\-;:=,?@\[\]+]*)#is', '_make_url_clickable_cb', $ret);
@@ -581,8 +549,7 @@ function make_clickable($ret)
 /* END # from wordpress under GBU GPL license */
 
 //Diverse BB-Codefunktionen
-function bbcode($txt, $tinymce=0, $no_vid=0, $ts=0, $nolink=0)
-{
+function bbcode($txt, $tinymce=0, $no_vid=0, $ts=0, $nolink=0) {
     global $settings,$charset;
 
     $txt = html_entity_decode($txt,ENT_COMPAT,$charset);
@@ -608,15 +575,13 @@ function bbcode($txt, $tinymce=0, $no_vid=0, $ts=0, $nolink=0)
     return str_replace('<p></p>', '<p>&nbsp;</p>', $txt);
 }
 
-function bbcode_nletter($txt)
-{
+function bbcode_nletter($txt) {
     $txt = stripslashes($txt);
     $txt = nl2br(trim($txt));
     return '<style type="text/css">p { margin: 0px; padding: 0px; }</style>'.$txt;
 }
 
-function bbcode_nletter_plain($txt)
-{
+function bbcode_nletter_plain($txt) {
     $txt = preg_replace("#\<\/p\>#Uis","\r\n",$txt);
     $txt = preg_replace("#\<br(.*?)\>#Uis","\r\n",$txt);
     $txt = str_replace("p { margin: 0px; padding: 0px; }","",$txt);
@@ -626,8 +591,7 @@ function bbcode_nletter_plain($txt)
     return strip_tags($txt);
 }
 
-function bbcode_html($txt,$tinymce=0)
-{
+function bbcode_html($txt,$tinymce=0) {
     $txt = str_replace("&lt;","<",$txt);
     $txt = str_replace("&gt;",">",$txt);
     $txt = str_replace("&quot;","\"",$txt);
@@ -640,16 +604,14 @@ function bbcode_html($txt,$tinymce=0)
     return str_replace("&#34;","\"",$txt);
 }
 
-function bbcode_email($txt)
-{
+function bbcode_email($txt) {
     $txt = bbcode($txt);
     $txt = str_replace("&#91;","[",$txt);
     return str_replace("&#93;","]",$txt);
 }
 
 //-> Textteil in Zitat-Tags setzen
-function zitat($nick,$zitat)
-{
+function zitat($nick,$zitat) {
     $zitat = str_replace(chr(145), chr(39), $zitat);
     $zitat = str_replace(chr(146), chr(39), $zitat);
     $zitat = str_replace("'", "&#39;", $zitat);
@@ -662,8 +624,7 @@ function zitat($nick,$zitat)
 }
 
 //-> convert string for output
-function re($txt)
-{
+function re($txt) {
     $txt = stripslashes($txt);
     $txt = str_replace("& ","&amp; ",$txt);
     $txt = str_replace("[","&#91;",$txt);
@@ -675,17 +636,14 @@ function re($txt)
     return str_replace(")", "&#41;", $txt);
 }
 
-function re_entry($txt)
-{
+function re_entry($txt) {
     return stripslashes($txt);
 }
 
 //-> Smileys ausgeben
-function smileys($txt)
-{
+function smileys($txt) {
     $files = get_files('../inc/images/smileys',false,true);
-    for($i=0; $i<count($files); $i++)
-    {
+    for($i=0; $i<count($files); $i++) {
         $smileys = $files[$i];
         $bbc = preg_replace("=.gif=Uis","",$smileys);
 
@@ -716,8 +674,7 @@ function smileys($txt)
 }
 
 //-> Flaggen ausgeben
-function flagge($txt)
-{
+function flagge($txt) {
     $var = array("/\:de:/",
                  "/\:ch:/",
                  "/\:at:/",
@@ -774,8 +731,7 @@ function flagge($txt)
 }
 
 //-> Funktion um Ausgaben zu kuerzen
-function cut($str, $length = null, $dots = true)
-{
+function cut($str, $length = null, $dots = true) {
     if($length === 0)
         return '';
 
@@ -793,8 +749,7 @@ function cut($str, $length = null, $dots = true)
 
     if($start >= 0)
         $real_start = $chars[$start][1];
-    else
-    {
+    else {
         $start = max($start,-$html_length);
         $real_start = $chars[$html_length+$start][1];
     }
@@ -807,44 +762,32 @@ function cut($str, $length = null, $dots = true)
         return substr($str, $real_start, $chars[$html_length+$length][1] - $real_start).$dots;
 }
 
-function wrap($str, $width = 75, $break = "\n", $cut = true)
-{
+function wrap($str, $width = 75, $break = "\n", $cut = true) {
     return strtr(str_replace(htmlentities($break), $break, htmlentities(wordwrap(html_entity_decode($str), $width, $break, $cut), ENT_QUOTES)), array_flip(get_html_translation_table(HTML_SPECIALCHARS, ENT_COMPAT)));
 }
 
 //-> Funktion um Dateien aus einem Verzeichnis auszulesen
-function get_files($dir=null,$only_dir=false,$only_files=false,$file_ext=array(),$preg_match=false,$blacklist=array())
-{
+function get_files($dir=null,$only_dir=false,$only_files=false,$file_ext=array(),$preg_match=false,$blacklist=array()) {
     $files = array();
     if(!file_exists($dir) && !is_dir($dir)) return $files;
-    if($handle = @opendir($dir))
-    {
-        if($only_dir) ## Ordner ##
-        {
-            while(false !== ($file = readdir($handle)))
-            {
-                if($file != '.' && $file != '..' && !is_file($dir.'/'.$file))
-                {
+    if($handle = @opendir($dir)) {
+        if($only_dir) {
+            while(false !== ($file = readdir($handle))) {
+                if($file != '.' && $file != '..' && !is_file($dir.'/'.$file)) {
                     if(!count($blacklist) && ($preg_match ? preg_match($preg_match,$file) : true))
                         $files[] = $file;
-                    else
-                    {
+                    else {
                         if(!in_array($file, $blacklist) && ($preg_match ? preg_match($preg_match,$file) : true))
                             $files[] = $file;
                     }
                 }
             } //while end
-        }
-        else if($only_files) ## Dateien ##
-        {
-            while(false !== ($file = readdir($handle)))
-            {
-                if($file != '.' && $file != '..' && is_file($dir.'/'.$file))
-                {
+        } else if($only_files) {
+            while(false !== ($file = readdir($handle))) {
+                if($file != '.' && $file != '..' && is_file($dir.'/'.$file)) {
                     if(!in_array($file, $blacklist) && !count($file_ext) && ($preg_match ? preg_match($preg_match,$file) : true))
                         $files[] = $file;
-                    else
-                    {
+                    else {
                         ## Extension Filter ##
                         $exp_string = array_reverse(explode(".", $file));
                         if(!in_array($file, $blacklist) && in_array(strtolower($exp_string[0]), $file_ext) && ($preg_match ? preg_match($preg_match,$file) : true))
@@ -852,25 +795,18 @@ function get_files($dir=null,$only_dir=false,$only_files=false,$file_ext=array()
                     }
                 }
             } //while end
-        }
-        else ## Ordner & Dateien ##
-        {
-            while(false !== ($file = readdir($handle)))
-            {
-                if($file != '.' && $file != '..' && is_file($dir.'/'.$file))
-                {
+        } else {
+            while(false !== ($file = readdir($handle))) {
+                if($file != '.' && $file != '..' && is_file($dir.'/'.$file)) {
                     if(!in_array($file, $blacklist) && !count($file_ext) && ($preg_match ? preg_match($preg_match,$file) : true))
                         $files[] = $file;
-                    else
-                    {
+                    else {
                         ## Extension Filter ##
                         $exp_string = array_reverse(explode(".", $file));
                         if(!in_array($file, $blacklist) && in_array(strtolower($exp_string[0]), $file_ext) && ($preg_match ? preg_match($preg_match,$file) : true))
                             $files[] = $file;
                     }
-                }
-                else
-                {
+                } else {
                     if(!in_array($file, $blacklist) && $file != '.' && $file != '..' && ($preg_match ? preg_match($preg_match,$file) : true))
                         $files[] = $file;
                 }
@@ -890,12 +826,10 @@ function get_files($dir=null,$only_dir=false,$only_files=false,$file_ext=array()
 }
 
 //-> Gibt einen Teil eines nummerischen Arrays wieder
-function limited_array($array=array(),$begin,$max)
-{
+function limited_array($array=array(),$begin,$max) {
     $array_exp = array();
     $range=range($begin=($begin-1), ($begin+$max-1));
-    foreach($array as $key => $wert)
-    {
+    foreach($array as $key => $wert) {
         if(array_var_exists($key, $range))
             $array_exp[$key] = $wert;
     }
@@ -907,8 +841,7 @@ function array_var_exists($var,$search)
 { foreach($search as $key => $var_) { if($var_==$var) return true; } return false; }
 
 //-> Funktion um eine Datei im Web auf Existenz zu prfen
-function fileExists($url)
-{
+function fileExists($url) {
     $url_p = @parse_url($url);
     $host = $url_p['host'];
     $port = isset($url_p['port']) ? $url_p['port'] : 80;
@@ -936,8 +869,7 @@ function dbinfo()
 {
     $info = array(); $entrys = 0;
     $qry = db("Show table status");
-    while($data = _fetch($qry))
-    {
+    while($data = _fetch($qry)) {
         $allRows = $data["Rows"];
         $dataLength  = $data["Data_length"];
         $indexLength = $data["Index_length"];
@@ -955,8 +887,7 @@ function dbinfo()
 }
 
 //-> Funktion um Sonderzeichen zu konvertieren
-function spChars($txt)
-{
+function spChars($txt) {
   $txt = str_replace("Ä","&Auml;",$txt);
   $txt = str_replace("ä","&auml;",$txt);
   $txt = str_replace("Ü","&Uuml;",$txt);
@@ -968,8 +899,7 @@ function spChars($txt)
 }
 
 //-> Funktion um sauber in die DB einzutragen
-function up($txt, $bbcode=0, $charset_set='')
-{
+function up($txt, $bbcode=0, $charset_set='') {
     global $charset;
 
     if(!empty($charset_set))
@@ -978,8 +908,7 @@ function up($txt, $bbcode=0, $charset_set='')
     $txt = str_replace("& ","&amp; ",$txt);
     $txt = str_replace("\"","&#34;",$txt);
 
-    if(empty($bbcode))
-    {
+    if(empty($bbcode)) {
         $txt = htmlentities(html_entity_decode($txt), ENT_QUOTES, $charset);
         $txt = nl2br($txt);
     }
@@ -988,11 +917,9 @@ function up($txt, $bbcode=0, $charset_set='')
 }
 
 //-> Funktion um diverse Dinge aus Tabellen auszaehlen zu lassen
-function cnt($count, $where = "", $what = "id")
-{
+function cnt($count, $where = "", $what = "id") {
     $cnt_sql = db("SELECT COUNT(".$what.") AS num FROM ".$count." ".$where.";");
-    if(_rows($cnt_sql))
-    {
+    if(_rows($cnt_sql)) {
         $cnt = _fetch($cnt_sql);
         return $cnt['num'];
     }
@@ -1001,11 +928,9 @@ function cnt($count, $where = "", $what = "id")
 }
 
 //-> Funktion um diverse Dinge aus Tabellen zusammenzaehlen zu lassen
-function sum($db, $where = "", $what)
-{
+function sum($db, $where = "", $what) {
     $cnt_sql = db("SELECT SUM(".$what.") AS num FROM ".$db.$where.";");
-    if(_rows($cnt_sql))
-    {
+    if(_rows($cnt_sql)) {
         $cnt = _fetch($cnt_sql);
         return $cnt['num'];
     }
@@ -1013,13 +938,11 @@ function sum($db, $where = "", $what)
     return 0;
 }
 
-function orderby($sort)
-{
+function orderby($sort) {
     $split = explode("&",$_SERVER['QUERY_STRING']);
     $url = "?";
 
-    foreach($split as $part)
-    {
+    foreach($split as $part) {
         if(strpos($part,"orderby") === false && strpos($part,"order") === false && !empty($part))
         {
             $url .= $part;
@@ -1034,16 +957,14 @@ function orderby($sort)
 }
 
 //-> Funktion um einer id einen Nick zuzuweisen
-function nick_id($tid)
-{
+function nick_id($tid) {
     global $db;
     $get = db("SELECT nick FROM ".$db['users']." WHERE id = '".$tid."'",false,true);
     return $get['nick'];
 }
 
 //-> Funktion um ein Datenbankinhalt zu highlighten
-function highlight($word)
-{
+function highlight($word) {
     if(substr(phpversion(),0,1) == 5)
         return str_ireplace($word,'<span class="fontRed">'.$word.'</span>',$word);
     else
@@ -1051,19 +972,16 @@ function highlight($word)
 }
 
 //-> Counter updaten
-function updateCounter()
-{
+function updateCounter() {
     global $db,$reload,$today,$datum,$userip;
     $ipcheck = db("SELECT id,ip,datum FROM ".$db['c_ips']." WHERE ip = '".$userip."' AND FROM_UNIXTIME(datum,'%d.%m.%Y') = '".date("d.m.Y")."'");
     $get = _fetch($ipcheck);
 
     db("DELETE FROM ".$db['c_ips']." WHERE datum+".$reload." <= ".time()." OR FROM_UNIXTIME(datum,'%d.%m.%Y') != '".date("d.m.Y")."'");
     $count = db("SELECT id,visitors,today FROM ".$db['counter']." WHERE today = '".$today."'");
-    if(_rows($ipcheck)>=1)
-    {
+    if(_rows($ipcheck)>=1) {
         $sperrzeit = $get['datum']+$reload;
-        if($sperrzeit <= time())
-        {
+        if($sperrzeit <= time()) {
             db("DELETE FROM ".$db['c_ips']." WHERE ip = '".$userip."'");
 
             if(_rows($count))
@@ -1073,9 +991,7 @@ function updateCounter()
 
             db("INSERT INTO ".$db['c_ips']." SET `ip` = '".$userip."', `datum` = '".((int)$datum)."'");
         }
-    }
-    else
-    {
+    } else {
         if(_rows($count))
             db("UPDATE ".$db['counter']." SET `visitors` = visitors+1 WHERE today = '".$today."'");
        else
@@ -1086,8 +1002,7 @@ function updateCounter()
 }
 
 //-> Updatet die Maximalen User die gleichzeitig online sind
-function update_maxonline()
-{
+function update_maxonline() {
     global $db,$today;
 
     $get = db("SELECT maxonline FROM ".$db['counter']." WHERE today = '".$today."'",false,true);
@@ -1098,12 +1013,10 @@ function update_maxonline()
 }
 
 //-> Prueft, wieviele Besucher gerade online sind
-function online_guests($where='')
-{
+function online_guests($where='') {
     global $db,$useronline,$userip,$chkMe,$isSpider;
 
-    if(!$isSpider)
-    {
+    if(!$isSpider) {
         $logged = $chkMe == 'unlogged' ? 0 : 1;
         db("DELETE FROM ".$db['c_who']." WHERE online < ".time());
         db("REPLACE INTO ".$db['c_who']."
@@ -1116,24 +1029,21 @@ function online_guests($where='')
     }
 }
 //-> Prueft, wieviele registrierte User gerade online sind
-function online_reg()
-{
+function online_reg() {
     global $db,$useronline;
     return cnt($db['users'], " WHERE time+'".$useronline."'>'".time()."' AND online = '1'");
 }
 
 //-> Prueft, ob User eingeloggt ist und wenn ja welches Level er besitzt
-function checkme($userid_set=0)
-{
+function checkme($userid_set=0) {
     global $db;
 
     if(!$userid = ($userid_set != 0 ? intval($userid_set) : userid()))
         return "unlogged";
 
     $qry = db("SELECT level FROM ".$db['users']." WHERE id = ".$userid." AND pwd = '".$_SESSION['pwd']."' AND ip = '".$_SESSION['ip']."'");
-    if(_rows($qry))
-    {
-      $get = _fetch($qry);
+    if(_rows($qry)) {
+        $get = _fetch($qry);
         return $get['level'];
     }
     else
@@ -1141,16 +1051,13 @@ function checkme($userid_set=0)
 }
 
 //-> Prueft, ob ein User diverse Rechte besitzt
-function permission($check)
-{
+function permission($check) {
     global $db,$userid,$chkMe;
 
     if($chkMe == 4)
         return true;
-    else
-    {
-        if($userid)
-        {
+    else {
+        if($userid) {
             // check rank permission
             $team = db("SELECT s1.`".$check."` FROM ".$db['permissions']." AS s1
                         LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
@@ -1166,13 +1073,11 @@ function permission($check)
 }
 
 //-> Checkt, ob neue Nachrichten vorhanden sind
-function check_msg()
-{
+function check_msg() {
     global $db;
 
     $qry = db("SELECT page FROM ".$db['msg']." WHERE an = '".$_SESSION['id']."' AND page = 0");
-    if(_rows($qry))
-    {
+    if(_rows($qry)) {
         db("UPDATE ".$db['msg']." SET `page` = '1' WHERE an = '".$_SESSION['id']."'");
         return show("user/new_msg", array("new" => _site_msg_new));
     }
@@ -1181,24 +1086,21 @@ function check_msg()
 }
 
 //-> Prueft sicherheitsrelevante Gegebenheiten im Forum
-function forumcheck($tid, $what)
-{
+function forumcheck($tid, $what) {
     global $db;
     $qry = db("SELECT ".$what." FROM ".$db['f_threads']." WHERE id = '".intval($tid)."' AND ".$what." = '1'");
     return(_rows($qry) ? true : false);
 }
 
 //-> Prueft ob ein User schon in der Buddyliste vorhanden ist
-function check_buddy($buddy)
-{
+function check_buddy($buddy) {
     global $db,$userid;
     $qry = db("SELECT buddy FROM ".$db['buddys']." WHERE user = '".intval($userid)."' AND buddy = '".intval($buddy)."'");
     return (!_rows($qry) ? true : false);
 }
 
 //-> Funktion um bei Clanwars Endergebnisse auszuwerten
-function cw_result($punkte, $gpunkte)
-{
+function cw_result($punkte, $gpunkte) {
     if($punkte > $gpunkte)
         return '<span class="CwWon">'.$punkte.':'.$gpunkte.'</span> <img src="../inc/images/won.gif" alt="" class="icon" />';
     else if($punkte < $gpunkte)
@@ -1207,8 +1109,7 @@ function cw_result($punkte, $gpunkte)
         return '<span class="CwDraw">'.$punkte.':'.$gpunkte.'</span> <img src="../inc/images/draw.gif" alt="" class="icon" />';
 }
 
-function cw_result_pic($punkte, $gpunkte)
-{
+function cw_result_pic($punkte, $gpunkte) {
     if($punkte > $gpunkte)
         return '<img src="../inc/images/won.gif" alt="" class="icon" />';
     else if($punkte < $gpunkte)
@@ -1218,8 +1119,7 @@ function cw_result_pic($punkte, $gpunkte)
 }
 
 //-> Funktion um bei Clanwars Endergebnisse auszuwerten ohne bild
-function cw_result_nopic($punkte, $gpunkte)
-{
+function cw_result_nopic($punkte, $gpunkte) {
     if($punkte > $gpunkte)
         return '<span class="CwWon">'.$punkte.':'.$gpunkte.'</span>';
     else if($punkte < $gpunkte)
@@ -1229,8 +1129,7 @@ function cw_result_nopic($punkte, $gpunkte)
 }
 
 //-> Funktion um bei Clanwars Endergebnisse auszuwerten ohne bild und ohne farbe
-function cw_result_nopic_nocolor($punkte, $gpunkte)
-{
+function cw_result_nopic_nocolor($punkte, $gpunkte) {
     if($punkte > $gpunkte)
         return $punkte.':'.$gpunkte;
     else if($punkte < $gpunkte)
@@ -1240,8 +1139,7 @@ function cw_result_nopic_nocolor($punkte, $gpunkte)
 }
 
 //-> Funktion um bei Clanwars Details Endergebnisse auszuwerten ohne bild
-function cw_result_details($punkte, $gpunkte)
-{
+function cw_result_details($punkte, $gpunkte) {
     if($punkte > $gpunkte)
         return '<td class="contentMainFirst" align="center"><span class="CwWon">'.$punkte.'</span></td><td class="contentMainFirst" align="center"><span class="CwLost">'.$gpunkte.'</span></td>';
     else if($punkte < $gpunkte)
@@ -1251,16 +1149,14 @@ function cw_result_details($punkte, $gpunkte)
 }
 
 //-> Flaggen ausgeben
-function flag($code)
-{
+function flag($code) {
     if(!file_exists(basePath."/inc/images/flaggen/".$code.".gif"))
         return '<img src="../inc/images/flaggen/nocountry.gif" alt="" class="icon" />';
     else
         return'<img src="../inc/images/flaggen/'.$code.'.gif" alt="" class="icon" />';
 }
 
-function rawflag($code)
-{
+function rawflag($code) {
     if(!file_exists(basePath."/inc/images/flaggen/".$code.".gif"))
         return '<img src=../inc/images/flaggen/nocountry.gif alt= class=icon />';
     else
@@ -1268,8 +1164,7 @@ function rawflag($code)
 }
 
 //-> Liste der Laender ausgeben
-function show_countrys($i="")
-{
+function show_countrys($i="") {
     if($i != "")
         $options = preg_replace('#<option value="'.$i.'">(.*?)</option>#', '<option value="'.$i.'" selected="selected"> \\1</option>', _country_list);
     else
@@ -1279,8 +1174,7 @@ function show_countrys($i="")
 }
 
 //-> Gameicon ausgeben
-function squad($code)
-{
+function squad($code) {
     if(!isset($code))
         return '<img src="../inc/images/gameicons/nogame.gif" alt="" class="icon" />';
     else
@@ -1288,8 +1182,7 @@ function squad($code)
 }
 
 //-> Funktion um bei DB-Eintraegen URLs einem http:// zuzuweisen
-function links($hp)
-{
+function links($hp) {
     if(!empty($hp))
         return 'http://'.str_replace("http://","",$hp);
 
@@ -1297,8 +1190,7 @@ function links($hp)
 }
 
 //-> Funktion um Passwoerter generieren zu lassen
-function mkpwd()
-{
+function mkpwd() {
     $chars = '1234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $len = strlen($chars) - 1; $pw = '';
     for($i = 0; $i < 10; $i++)
@@ -1307,8 +1199,7 @@ function mkpwd()
 }
 
 //-> set cookies
-function set_cookie($name, $value = '', $path = '/', $secure = false, $http_only = true)
-{
+function set_cookie($name, $value = '', $path = '/', $secure = false, $http_only = true) {
     if($value == '')
         $expires = time() - 6000;
     else
@@ -1330,8 +1221,7 @@ function set_cookie($name, $value = '', $path = '/', $secure = false, $http_only
 }
 
 //-> Passwortabfrage
-function checkpwd($user, $pwd)
-{
+function checkpwd($user, $pwd) {
     global $db;
     $qry = db("SELECT id,user,nick,pwd
                FROM ".$db['users']."
@@ -1342,16 +1232,14 @@ function checkpwd($user, $pwd)
 }
 
 //-> Infomeldung ausgeben
-function info($msg, $url, $timeout = 5)
-{
+function info($msg, $url, $timeout = 5) {
     global $config;
     if($config['direct_refresh'])
         return header('Location: '.str_replace('&amp;', '&', $url));
 
     $u = parse_url($url); $parts = '';
     $u['query'] = str_replace('&amp;', '&', $u['query']);
-    foreach(explode('&', $u['query']) as $p)
-    {
+    foreach(explode('&', $u['query']) as $p) {
         $p = explode('=', $p);
         if(count($p) == 2)
             $parts .= '<input type="hidden" name="'.$p[0].'" value="'.$p[1].'" />'."\r\n";
@@ -1368,45 +1256,38 @@ function info($msg, $url, $timeout = 5)
 }
 
 //-> Errormmeldung ausgeben
-function error($error, $back=1)
-{
+function error($error, $back=1) {
     return show("errors/error", array("error" => $error, "back" => $back, "fehler" => _error, "backtopage" => _error_back));
 }
 
 //-> Errormmeldung ohne "zurueck" ausgeben
-function error2($error)
-{
+function error2($error) {
     return show("errors/error2", array("error" => $error, "fehler" => _error));
 }
 
 //-> Email wird auf korrekten Syntax & Erreichbarkeit ueberprueft
-function check_email($email)
-{
+function check_email($email) {
     return (!preg_match("#^([a-zA-Z0-9\.\_\-]+)@([a-zA-Z0-9\.\-]+\.[A-Za-z][A-Za-z]+)$#", $email) ? false : true);
 }
 
 //-> Bilder verkleinern
-function img_size($img)
-{
+function img_size($img) {
     $s = getimagesize("../".$img);
     return "<a href=\"../".$img."\" rel=\"lightbox[l_".intval($img)."]\"><img src=\"../thumbgen.php?img=".$img."\" alt=\"\" /></a>";
 }
 
-function img_cw($folder="", $img="")
-{
+function img_cw($folder="", $img="") {
     $s = getimagesize("../".$folder."_".$img);
     return "<a href=\"../".$folder."_".$img."\" rel=\"lightbox[cw_".intval($folder)."]\"><img src=\"../thumbgen.php?img=".$folder."_".$img."\" alt=\"\" /></a>";
 }
 
-function gallery_size($img="")
-{
+function gallery_size($img="") {
     $s = getimagesize("../gallery/images/".$img);
     return "<a href=\"../gallery/images/".$img."\" rel=\"lightbox[gallery_".intval($img)."]\"><img src=\"../thumbgen.php?img=gallery/images/".$img."\" alt=\"\" /></a>";
 }
 
 //-> URL wird auf Richtigkeit ueberprueft
-function check_url($url)
-{
+function check_url($url) {
     if($url && $fp = @fopen($url, "r"))
     {
         return true;
@@ -1417,8 +1298,7 @@ function check_url($url)
 }
 
 //-> Blaetterfunktion
-function nav($entrys, $perpage, $urlpart, $icon=true)
-{
+function nav($entrys, $perpage, $urlpart, $icon=true) {
     global $page;
     if($perpage == 0)
         return "&#xAB; <span class=\"fontSites\">0</span> &#xBB;";
@@ -1449,16 +1329,14 @@ function nav($entrys, $perpage, $urlpart, $icon=true)
         $last = '...<a class="sites" href="'.$urlpart.'&amp;page='.($pages).'">'.$pages.'</a>&#xA0;<a class="sites" href="'.$urlpart.'&amp;page='.($page+1).'">&#xBB;</a>';
 
     $result = ''; $resultm = '';
-    for($i = $page;$i<=($page+5) && $i<=($pages-1);$i++)
-    {
+    for($i = $page;$i<=($page+5) && $i<=($pages-1);$i++) {
         if($i == $page)
             $result .= '<span class="fontSites">'.$i.'</span><span class="fontSitesMisc">&#xA0;</span>';
         else
             $result .= '<a class="sites" href="'.$urlpart.'&amp;page='.$i.'">'.$i.'</a><span class="fontSitesMisc">&#xA0;</span>';
     }
 
-    for($i=($page-5);$i<=($page-1);$i++)
-    {
+    for($i=($page-5);$i<=($page-1);$i++) {
         if($i >= 2)
             $resultm .= '<a class="sites" href="'.$urlpart.'&amp;page='.$i.'">'.$i.'</a> ';
     }
@@ -1467,12 +1345,10 @@ function nav($entrys, $perpage, $urlpart, $icon=true)
 }
 
 //-> Funktion um Seiten-Anzahl der Artikel zu erhalten
-function artikelSites($sites, $id)
-{
+function artikelSites($sites, $id) {
     global $part;
     $i = 0; $seiten = '';
-    for($i=0;$i<$sites;$i++)
-    {
+    for($i=0;$i<$sites;$i++) {
         if ($i == $part)
             $seiten .= show(_page, array("num" => ($i+1)));
         else
@@ -1483,12 +1359,10 @@ function artikelSites($sites, $id)
 }
 
 //-> Nickausgabe mit Profillink oder Emaillink (reg/nicht reg)
-function autor($uid, $class="", $nick="", $email="", $cut="",$add="")
-{
+function autor($uid, $class="", $nick="", $email="", $cut="",$add="") {
     global $db;
     $qry = db("SELECT nick,country FROM ".$db['users']." WHERE id = '".intval($uid)."'");
-    if(_rows($qry))
-    {
+    if(_rows($qry)) {
         $get = _fetch($qry);
         $nickname = (!empty($cut)) ? cut(re($get['nick']), $cut) : re($get['nick']);
         return show(_user_link, array("id" => $uid,
@@ -1496,20 +1370,16 @@ function autor($uid, $class="", $nick="", $email="", $cut="",$add="")
                                          "class" => $class,
                                          "get" => $add,
                                          "nick" => $nickname));
-    }
-    else
-    {
+    } else {
         $nickname = (!empty($cut)) ? cut(re($nick), $cut) : re($nick);
         return show(_user_link_noreg, array("nick" => $nickname, "class" => $class, "email" => eMailAddr($email)));
     }
 }
 
-function cleanautor($uid, $class="", $nick="", $email="", $cut="")
-{
+function cleanautor($uid, $class="", $nick="", $email="", $cut="") {
     global $db;
     $qry = db("SELECT nick,country FROM ".$db['users']." WHERE id = '".intval($uid)."'");
-    if(_rows($qry))
-    {
+    if(_rows($qry)) {
         $get = _fetch($qry);
         return show(_user_link_preview, array("id" => $uid, "country" => flag($get['country']), "class" => $class, "nick" => re($get['nick'])));
     }
@@ -1517,12 +1387,10 @@ function cleanautor($uid, $class="", $nick="", $email="", $cut="")
         return show(_user_link_noreg, array("nick" => re($nick), "class" => $class, "email" => eMailAddr($email)));
 }
 
-function rawautor($uid)
-{
+function rawautor($uid) {
     global $db;
     $qry = db("SELECT nick,country FROM ".$db['users']." WHERE id = '".intval($uid)."'");
-    if(_rows($qry))
-    {
+    if(_rows($qry)) {
         $get = _fetch($qry);
         return rawflag($get['country'])." ".jsconvert(re($get['nick']));
     }
@@ -1531,12 +1399,10 @@ function rawautor($uid)
 }
 
 //-> Nickausgabe ohne Profillink oder Emaillink fr das ForenAbo
-function fabo_autor($uid)
-{
+function fabo_autor($uid) {
     global $db;
     $qry = db("SELECT nick FROM ".$db['users']." WHERE id = '".$uid."'");
-    if(_rows($qry))
-    {
+    if(_rows($qry)) {
         $get = _fetch($qry);
         return show(_user_link_fabo, array("id" => $uid, "nick" => re($get['nick'])));
     }
@@ -1544,12 +1410,10 @@ function fabo_autor($uid)
     return '';
 }
 
-function blank_autor($uid)
-{
+function blank_autor($uid) {
     global $db;
     $qry = db("SELECT nick FROM ".$db['users']." WHERE id = '".$uid."'");
-    if(_rows($qry))
-    {
+    if(_rows($qry)) {
         $get = _fetch($qry);
         return show(_user_link_blank, array("id" => $uid, "nick" => re($get['nick'])));
     }
@@ -1559,13 +1423,10 @@ function blank_autor($uid)
 
 //-> Rechte abfragen
 function jsconvert($txt)
-{
-    return str_replace(array("'","&#039;","\"","\r","\n"),array("\'","\'","&quot;","",""),$txt);
-}
+{ return str_replace(array("'","&#039;","\"","\r","\n"),array("\'","\'","&quot;","",""),$txt); }
 
 //-> interner Forencheck
-function fintern($id)
-{
+function fintern($id) {
     global $db,$userid,$chkMe;
     $fget = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1 LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id WHERE s2.`id` = '".intval($id)."'"));
 
@@ -1586,24 +1447,21 @@ function fintern($id)
 }
 
 //-> einzelne Userdaten ermitteln
-function data($tid, $what)
-{
+function data($tid, $what) {
     global $db;
     $get = db("SELECT ".$what." FROM ".$db['users']." WHERE id = '".intval($tid)."'",false,true);
     return re_entry($get[$what]);
 }
 
 //-> einzelne Userstatistiken ermitteln
-function userstats($tid, $what)
-{
+function userstats($tid, $what) {
     global $db;
     $get = db("SELECT ".$what." FROM ".$db['userstats']." WHERE user = '".intval($tid)."'",false,true);
     return $get[$what];
 }
 
 //- Funktion zum versenden von Emails
-function sendMail($mailto,$subject,$content)
-{
+function sendMail($mailto,$subject,$content) {
     global $mailfrom,$language;
     $mail = new PHPMailer;
     $mail->isHTML(true);
@@ -1618,14 +1476,11 @@ function sendMail($mailto,$subject,$content)
     return $mail->Send();
 }
 
-function check_msg_emal()
-{
+function check_msg_emal() {
     global $db,$clanname,$httphost;
     $qry = db("SELECT s1.an,s1.page,s1.titel,s1.sendmail,s1.id AS mid,s2.id,s2.nick,s2.email,s2.pnmail FROM ".$db['msg']." AS s1 LEFT JOIN ".$db['users']." AS s2 ON s2.id = s1.an WHERE page = 0 AND sendmail = 0");
-    while($get = _fetch($qry))
-    {
-        if($get['pnmail'] == 1)
-        {
+    while($get = _fetch($qry)) {
+        if($get['pnmail'] == 1) {
             db("UPDATE ".$db['msg']." SET `sendmail` = '1' WHERE id = '".$get['mid']."'");
             $subj = show(settings('eml_pn_subj'), array("domain" => $httphost));
             $message = show(bbcode_email(settings('eml_pn')), array("nick" => re($get['nick']), "domain" => $httphost, "titel" => $get['titel'], "clan" => $clanname));
@@ -1636,8 +1491,7 @@ function check_msg_emal()
 
 check_msg_emal();
 
-function perm_sendnews($uID)
-{
+function perm_sendnews($uID) {
     global $db;
     // check rank permission
     $team = db("SELECT s1.`news` FROM ".$db['permissions']." AS s1
@@ -1650,11 +1504,9 @@ function perm_sendnews($uID)
 }
 
 //-> Checkt ob ein Ereignis neu ist
-function check_new($datum,$new = "",$datum2 = "")
-{
+function check_new($datum,$new = "",$datum2 = "") {
     global $db,$userid;
-    if($userid)
-    {
+    if($userid) {
         $get = db("SELECT lastvisit FROM ".$db['userstats']." WHERE user = '".intval($userid)."'",false,true);
         if($datum >= $get['lastvisit'] || $datum2 >= $get['lastvisit'])
             return (empty($new) ? _newicon : $new);
@@ -1664,38 +1516,29 @@ function check_new($datum,$new = "",$datum2 = "")
 }
 
 //-> DropDown Mens Date/Time
-function dropdown($what, $wert, $age = 0)
-{
-    if($what == "day")
-    {
+function dropdown($what, $wert, $age = 0) {
+    if($what == "day") {
         if($age == 1)
             $return ='<option value="" class="dropdownKat">'._day.'</option>'."\n";
 
-        for($i=1; $i<32; $i++)
-        {
+        for($i=1; $i<32; $i++) {
             if($i==$wert)
                 $return .= "<option value=\"".$i."\" selected=\"selected\">".$i."</option>\n";
             else
                 $return .= "<option value=\"".$i."\">".$i."</option>\n";
         }
-    }
-    else if($what == "month")
-    {
+    } else if($what == "month") {
         if($age == 1)
             $return .='<option value="" class="dropdownKat">'._month.'</option>'."\n";
 
-        for($i=1; $i<13; $i++)
-        {
+        for($i=1; $i<13; $i++) {
             if($i==$wert)
                 $return .= "<option value=\"".$i."\" selected=\"selected\">".$i."</option>\n";
             else
                 $return .= "<option value=\"".$i."\">".$i."</option>\n";
         }
-    }
-    else if($what == "year")
-    {
-        if($age == 1)
-        {
+    } else if($what == "year") {
+        if($age == 1) {
             $return .='<option value="" class="dropdownKat">'._year.'</option>'."\n";
             for($i=date("Y",time())-80; $i<date("Y",time())-10; $i++)
             {
@@ -1704,34 +1547,24 @@ function dropdown($what, $wert, $age = 0)
                 else
                     $return .= "<option value=\"".$i."\">".$i."</option>\n";
             }
-        }
-        else
-        {
-            for($i=date("Y",time())-3; $i<date("Y",time())+3; $i++)
-            {
+        } else {
+            for($i=date("Y",time())-3; $i<date("Y",time())+3; $i++) {
                 if($i==$wert)
                     $return .= "<option value=\"".$i."\" selected=\"selected\">".$i."</option>\n";
                 else
                     $return .= "<option value=\"".$i."\">".$i."</option>\n";
             }
         }
-    }
-    else if($what == "hour")
-    {
-        for($i=0; $i<24; $i++)
-        {
+    } else if($what == "hour") {
+        for($i=0; $i<24; $i++) {
             if($i==$wert)
                 $return .= "<option value=\"".$i."\" selected=\"selected\">".$i."</option>\n";
             else
                 $return .= "<option value=\"".$i."\">".$i."</option>\n";
         }
-    }
-    else if($what == "minute")
-    {
-        for($i="00"; $i<60; $i++)
-        {
-            if($i == 0 || $i == 15 || $i == 30 || $i == 45)
-            {
+    } else if($what == "minute") {
+        for($i="00"; $i<60; $i++) {
+            if($i == 0 || $i == 15 || $i == 30 || $i == 45) {
                 if($i==$wert)
                     $return .= "<option value=\"".$i."\" selected=\"selected\">".$i."</option>\n";
                 else
@@ -1744,21 +1577,17 @@ function dropdown($what, $wert, $age = 0)
 }
 
 //Games fuer den Livestatus
-function sgames($game = '')
-{
+function sgames($game = '') {
     $protocols = get_files(basePath.'/inc/server_query/',false,true,array('php')); $games = '';
-    foreach($protocols AS $protocol)
-    {
+    foreach($protocols AS $protocol) {
         unset($gamemods, $server_name_config);
         $protocol = str_replace('.php', '', $protocol);
-        if(substr($protocol, 0, 1) != '_')
-        {
+        if(substr($protocol, 0, 1) != '_') {
             $explode = '##############################################################################################################################';
             $protocol_config = explode($explode, file_get_contents(basePath.'/inc/server_query/'.$protocol.'.php'));
             eval(str_replace('<?php', '', $protocol_config[0]));
 
-            if(!empty($server_name_config) && count($server_name_config) > 2)
-            {
+            if(!empty($server_name_config) && count($server_name_config) > 2) {
                 $gamemods = '';
                 foreach($server_name_config AS $slabel => $sconfig)
                     $gamemods .= $sconfig[1].', ';
@@ -1795,22 +1624,19 @@ function sgames($game = '')
 }
 
 //Umfrageantworten selektieren
-function voteanswer($what, $vid)
-{
+function voteanswer($what, $vid) {
     global $db;
     $get = db("SELECT * FROM ".$db['vote_results']." WHERE what = '".up($what)."' AND vid = '".$vid."'",false,true);
     return $get['sel'];
 }
 
 //Profilfelder konvertieren
-function conv($txt)
-{
+function conv($txt) {
     return str_replace(array("ä","ü","ö","Ä","Ü","Ö","ß"), array("ae","ue","oe","Ae","Ue","Oe","ss"), $txt);
 }
 
 //PHPInfo in array lesen
-function parsePHPInfo()
-{
+function parsePHPInfo() {
     ob_start();
         phpinfo();
         $s = ob_get_contents();
@@ -1821,14 +1647,11 @@ function parsePHPInfo()
     $s = preg_replace('/<td[^>]*>([^<]+)<\/td>/',"<info>\\1</info>",$s);
     $vTmp = preg_split('/(<h2[^>]*>[^<]+<\/h2>)/',$s,-1,PREG_SPLIT_DELIM_CAPTURE);
     $vModules = array();
-    for ($i=1;$i<count($vTmp);$i++)
-    {
-        if(preg_match('/<h2[^>]*>([^<]+)<\/h2>/',$vTmp[$i],$vMat))
-        {
+    for ($i=1;$i<count($vTmp);$i++) {
+        if(preg_match('/<h2[^>]*>([^<]+)<\/h2>/',$vTmp[$i],$vMat)) {
             $vName = trim($vMat[1]);
             $vTmp2 = explode("\n",$vTmp[$i+1]);
-            foreach ($vTmp2 AS $vOne)
-            {
+            foreach ($vTmp2 AS $vOne) {
                 $vPat = '<info>([^<]+)<\/info>';
                 $vPat3 = "/$vPat\s*$vPat\s*$vPat/";
                 $vPat2 = "/$vPat\s*$vPat/";
@@ -1845,17 +1668,14 @@ function parsePHPInfo()
 }
 
 //-> Prueft, ob eine Userid existiert
-function exist($tid)
-{
+function exist($tid) {
     global $db;
     return db("SELECT id FROM ".$db['users']." WHERE id = '".intval($tid)."'",true) ? true : false;
 }
 
 //-> Geburtstag errechnen
-function getAge($bday)
-{
-    if(!empty($bday) || $bday == '..')
-    {
+function getAge($bday) {
+    if(!empty($bday) || $bday == '..') {
         list($tiday,$iMonth,$iYear) = explode(".",$bday);
         $iCurrentDay = date('j');
         $iCurrentMonth = date('n');
@@ -1871,28 +1691,22 @@ function getAge($bday)
 }
 
 //-> Ausgabe der Position des einzelnen Members
-function getrank($tid, $squad="", $profil=0)
-{
+function getrank($tid, $squad="", $profil=0) {
     global $db;
-    if($squad)
-    {
+    if($squad) {
         if($profil == 1)
             $qry = db("SELECT * FROM ".$db['userpos']." AS s1 LEFT JOIN ".$db['squads']." AS s2 ON s1.squad = s2.id WHERE s1.user = '".intval($tid)."' AND s1.squad = '".intval($squad)."' AND s1.posi != '0'");
         else
             $qry = db("SELECT * FROM ".$db['userpos']." WHERE user = '".intval($tid)."' AND squad = '".intval($squad)."' AND posi != '0'");
 
-        if(_rows($qry))
-        {
-            while($get = _fetch($qry))
-            {
+        if(_rows($qry)) {
+            while($get = _fetch($qry)) {
                 $getp = db("SELECT * FROM ".$db['pos']." WHERE id = '".intval($get['posi'])."'",false,true);
                 if(!empty($get['name'])) $squadname = '<b>'.$get['name'].':</b> ';
                 else $squadname = '';
                 return $squadname.$getp['position'];
             }
-        }
-        else
-        {
+        } else {
             $get = _fetch(db("SELECT level FROM ".$db['users']." WHERE id = '".intval($tid)."'"));
             if($get['level'] == 0)             return _status_unregged;
             else if($get['level'] == 1)        return _status_user;
@@ -1902,17 +1716,12 @@ function getrank($tid, $squad="", $profil=0)
             else if($get['level'] == 'banned') return _status_banned;
             else return _gast;
         }
-    }
-    else
-    {
+    } else {
         $qry = db("SELECT s1.*,s2.position FROM ".$db['userpos']." AS s1 LEFT JOIN ".$db['pos']." AS s2 ON s1.posi = s2.id WHERE s1.user = '".intval($tid)."' AND s1.posi != '0' ORDER BY s2.pid ASC");
-        if(_rows($qry))
-        {
+        if(_rows($qry)) {
             $get = _fetch($qry);
             return $get['position'];
-        }
-        else
-        {
+        } else {
             $get = _fetch(db("SELECT level FROM ".$db['users']." WHERE id = '".intval($tid)."'"));
             if($get['level'] == 0)            return _status_unregged;
             elseif($get['level'] == 1)        return _status_user;
@@ -1926,13 +1735,10 @@ function getrank($tid, $squad="", $profil=0)
 }
 
 //-> Session fuer den letzten Besuch setzen
-function set_lastvisit()
-{
+function set_lastvisit() {
     global $db,$useronline,$userid;
-    if($userid)
-    {
-        if(!_rows(db("SELECT id FROM ".$db['users']." WHERE id = ".intval($userid)." AND time+'".$useronline."'>'".time()."'")))
-        {
+    if($userid) {
+        if(!_rows(db("SELECT id FROM ".$db['users']." WHERE id = ".intval($userid)." AND time+'".$useronline."'>'".time()."'"))) {
             $time = data($userid, "time");
             $_SESSION['lastvisit'] = $time;
         }
@@ -1940,16 +1746,14 @@ function set_lastvisit()
 }
 
 //-> Checkt welcher User gerade noch online ist
-function onlinecheck($tid)
-{
+function onlinecheck($tid) {
     global $db,$useronline;
     $row = db("SELECT id FROM ".$db['users']." WHERE id = '".intval($tid)."' AND time+'".$useronline."'>'".time()."' AND online = 1",true);
     return $row ? "<img src=\"../inc/images/online.gif\" alt=\"\" class=\"icon\" />" : "<img src=\"../inc/images/offline.gif\" alt=\"\" class=\"icon\" />";
 }
 
 //Funktion fuer die Sprachdefinierung der Profilfelder
-function pfields_name($name)
-{
+function pfields_name($name) {
     $pattern = array("=_city_=Uis","=_hobbys_=Uis","=_motto_=Uis","=_job_=Uis","=_exclans_=Uis","=_email2_=Uis","=_email3_=Uis","=_autor_=Uis","=_auto_=Uis","=_buch_=Uis",
     "=_drink_=Uis","=_essen_=Uis","=_favoclan_=Uis","=_film_=Uis","=_game_=Uis","=_map_=Uis","=_musik_=Uis","=_person_=Uis","=_song_=Uis","=_spieler_=Uis","=_sportler_=Uis",
     "=_sport_=Uis","=_waffe_=Uis","=_board_=Uis","=_cpu_=Uis","=_graka_=Uis","=_hdd_=Uis","=_headset_=Uis","=_inet_=Uis","=_maus_=Uis","=_mauspad_=Uis","=_monitor_=Uis",
@@ -1964,14 +1768,12 @@ function pfields_name($name)
 }
 
 //-> Checkt versch. Dinge anhand der Hostmaske eines Users
-function ipcheck($what,$time = "")
-{
+function ipcheck($what,$time = "") {
     global $db,$userip;
     $get = _fetch(db("SELECT time,what FROM ".$db['ipcheck']." WHERE what = '".$what."' AND ip = '".$userip."' ORDER BY time DESC"));
     if(preg_match("#vid#", $get['what']))
         return true;
-    else
-    {
+    else {
         if($get['time']+$time<time())
             db("DELETE FROM ".$db['ipcheck']." WHERE what = '".$what."' AND ip = '".$userip."' AND time+'".$time."'<'".time()."'");
 
@@ -1984,13 +1786,10 @@ function ipcheck($what,$time = "")
 
 //-> Gibt die Tageszahl eines Monats aus
 function days_in_month($month, $year)
-{
-  return $month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31);
-}
+{ return $month == 2 ? ($year % 4 ? 28 : ($year % 100 ? 29 : ($year % 400 ? 28 : 29))) : (($month - 1) % 7 % 2 ? 30 : 31); }
 
 //-> Setzt bei einem Tag >10 eine 0 vorran (Kalender)
-function cal($i)
-{
+function cal($i) {
     if(preg_match("=10|20|30=Uis",$i) == FALSE) $i = preg_replace("=0=", "", $i);
     if($i < 10) $tag_nr = "0".$i;
     else $tag_nr = $i;
@@ -1998,8 +1797,7 @@ function cal($i)
 }
 
 //-> Entfernt fuehrende Nullen bei Monatsangaben
-function nonum($i)
-{
+function nonum($i) {
     if(preg_match("=10=Uis",$i) == false)
         return preg_replace("=0=", "", $i);
 
@@ -2008,13 +1806,10 @@ function nonum($i)
 
 //-> maskiert Zeilenumbrueche fuer <textarea>
 function txtArea($txt)
-{
-    return $txt;
-}
+{ return $txt; }
 
 //-> Konvertiert Platzhalter in die jeweiligen bersetzungen
-function navi_name($name)
-{
+function navi_name($name) {
     $name = trim($name);
     if(preg_match("#^_(.*?)_$#Uis",$name))
         @eval("\$name = _".preg_replace("#_(.*?)_#Uis", "$1", $name).";");
@@ -2023,8 +1818,7 @@ function navi_name($name)
 }
 
 //RSS News Feed erzeugen
-function convert_feed($txt)
-{
+function convert_feed($txt) {
     global $charset;
     $txt = stripslashes($txt);
     $txt = str_replace("&Auml;","Ae",$txt);
@@ -2049,8 +1843,7 @@ function convert_feed($txt)
     return strip_tags($txt);
 }
 
-function feed()
-{
+function feed() {
     global $db,$pagetitle,$clanname,$charset;
 
     $host = $_SERVER['HTTP_HOST'];
@@ -2075,8 +1868,7 @@ function feed()
     $data = @fopen("../rss.xml","w+");
     @fwrite($data, $feed);
     $qry = db("SELECT * FROM ".$db['news']." WHERE intern = 0 AND public = 1 ORDER BY datum DESC LIMIT 15");
-    while($get = _fetch($qry))
-    {
+    while($get = _fetch($qry)) {
         $get1 = _fetch(db("SELECT nick FROM ".$db['users']." WHERE id = '".$get['autor']."'"));
         $feed .= '  <item>';
         $feed .= "\r\n";
@@ -2106,11 +1898,9 @@ function feed()
 }
 
 //Userspezifische Informationen
-function infos($checkBrowser = "")
-{
+function infos($checkBrowser = "") {
     global $userip, $settings;
-    if($settings['persinfo'])
-    {
+    if($settings['persinfo']) {
         $data = $_SERVER['HTTP_USER_AGENT'];
         if(preg_match("/Android/i",$data))                     $system = "Android";
         elseif(preg_match ("/Linux/i",$data))               $system = "Linux";
@@ -2159,13 +1949,10 @@ function infos($checkBrowser = "")
 }
 
 // Userpic ausgeben
-function userpic($userid, $width=170,$height=210)
-{
+function userpic($userid, $width=170,$height=210) {
     global $picformat;
-    foreach($picformat as $endung)
-    {
-        if(file_exists(basePath."/inc/images/uploads/userpics/".$userid.".".$endung))
-        {
+    foreach($picformat as $endung) {
+        if(file_exists(basePath."/inc/images/uploads/userpics/".$userid.".".$endung)) {
             $pic = show(_userpic_link, array("id" => $userid, "endung" => $endung, "width" => $width, "height" => $height));
             break;
         }
@@ -2177,11 +1964,9 @@ function userpic($userid, $width=170,$height=210)
 }
 
 // Useravatar ausgeben
-function useravatar($userid, $width=100,$height=100)
-{
+function useravatar($userid, $width=100,$height=100) {
     global $picformat;
-    foreach($picformat as $endung)
-    {
+    foreach($picformat as $endung) {
         if(file_exists(basePath."/inc/images/uploads/useravatare/".$userid.".".$endung))
         {
             $pic = show(_userava_link, array("id" => $userid, "endung" => $endung, "width" => $width, "height" => $height));
@@ -2194,14 +1979,11 @@ function useravatar($userid, $width=100,$height=100)
     return $pic;
 }
 
-// Userpic fÃ¼r Hoverinformationen ausgeben
-function hoveruserpic($userid, $width=170,$height=210)
-{
+// Userpic fuer Hoverinformationen ausgeben
+function hoveruserpic($userid, $width=170,$height=210) {
     global $picformat;
-    foreach($picformat as $endung)
-    {
-        if(file_exists(basePath."/inc/images/uploads/userpics/".$userid.".".$endung))
-        {
+    foreach($picformat as $endung) {
+        if(file_exists(basePath."/inc/images/uploads/userpics/".$userid.".".$endung)) {
             $pic = "../inc/images/uploads/userpics/".$userid.".".$endung."', '".$width."', '".$height."";
             break;
         }
@@ -2213,8 +1995,7 @@ function hoveruserpic($userid, $width=170,$height=210)
 }
 
 // Adminberechtigungen ueberpruefen
-function admin_perms($userid)
-{
+function admin_perms($userid) {
     global $db,$chkMe;
 
     if(empty($userid))
@@ -2225,14 +2006,10 @@ function admin_perms($userid)
 
    // check user permission
     $c = _fetch(db("SELECT * FROM ".$db['permissions']." WHERE user = '".intval($userid)."'"));
-    if(!empty($c))
-    {
-        foreach($c AS $v => $k)
-        {
-            if($v != 'id' && $v != 'user' && $v != 'pos' && !in_array($v, $e))
-            {
-                if($k == 1)
-                {
+    if(!empty($c)) {
+        foreach($c AS $v => $k) {
+            if($v != 'id' && $v != 'user' && $v != 'pos' && !in_array($v, $e)) {
+                if($k == 1) {
                     return true;
                     break;
                 }
@@ -2242,14 +2019,10 @@ function admin_perms($userid)
 
    // check rank permission
     $qry = db("SELECT s1.* FROM ".$db['permissions']." AS s1 LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi` WHERE s2.`user` = '".intval($userid)."' AND s2.`posi` != '0'");
-    while($r = _fetch($qry))
-    {
-        foreach($r AS $v => $k)
-        {
-            if($v != 'id' && $v != 'user' && $v != 'pos' && !in_array($v, $e))
-            {
-                if($k == 1)
-                {
+    while($r = _fetch($qry)) {
+        foreach($r AS $v => $k) {
+            if($v != 'id' && $v != 'user' && $v != 'pos' && !in_array($v, $e)) {
+                if($k == 1) {
                     return true;
                     break;
                 }
@@ -2261,12 +2034,10 @@ function admin_perms($userid)
 }
 
 //-> blacklist um spider/crawler von der Besucherstatistik auszuschliessen
-function isSpider()
-{
+function isSpider() {
     $uagent = $_SERVER['HTTP_USER_AGENT'];
     $ex = explode("\n", file_get_contents(basePath.'/inc/_spiders.txt'));
-    for($i=0;$i<=count($ex)-1;$i++)
-    {
+    for($i=0;$i<=count($ex)-1;$i++) {
         if(stristr($uagent, trim($ex[$i])))
             return true;
     }
@@ -2275,8 +2046,7 @@ function isSpider()
 }
 
 //-> filter placeholders
-function pholderreplace($pholder)
-{
+function pholderreplace($pholder) {
     $search = array('@<script[^>]*?>.*?</script>@si',
                     '@<style[^>]*?>.*?</style>@siU',
                     '@<[\/\!]*?[^<>]*?>@si',
@@ -2299,8 +2069,7 @@ function pholderreplace($pholder)
 }
 
 //-> Zugriff auf die Seite
-function check_internal_url()
-{
+function check_internal_url() {
     global $db,$chkMe;
     if($chkMe != "unlogged") return false;
     $install_pfad = explode("/",dirname(dirname($_SERVER['SCRIPT_NAME'])."../"));
@@ -2328,19 +2097,16 @@ function check_internal_url()
 }
 
 //-> Ladezeit
-function generatetime()
-{
+function generatetime() {
     list($usec, $sec) = explode(" ",microtime());
     return ((float)$usec + (float)$sec);
 }
 
 //-> Rechte abfragen
-function getPermissions($checkID = 0, $pos = 0)
-{
+function getPermissions($checkID = 0, $pos = 0) {
     global $db;
 
-    if(!empty($checkID))
-    {
+    if(!empty($checkID)) {
         $check = empty($pos) ? 'user' : 'pos'; $checked = array();
         $qry = db("SELECT * FROM ".$db['permissions']." WHERE `".$check."` = '".intval($checkID)."'");
         if(_rows($qry)) foreach(_fetch($qry) AS $k => $v) $checked[$k] = $v;
@@ -2348,10 +2114,8 @@ function getPermissions($checkID = 0, $pos = 0)
 
     $permission = array();
     $qry = db("SHOW COLUMNS FROM ".$db['permissions']."");
-    while($get = _fetch($qry))
-    {
-        if($get['Field'] != 'id' && $get['Field'] != 'user' && $get['Field'] != 'pos' && $get['Field'] != 'intforum')
-        {
+    while($get = _fetch($qry)) {
+        if($get['Field'] != 'id' && $get['Field'] != 'user' && $get['Field'] != 'pos' && $get['Field'] != 'intforum') {
             @eval("\$lang = _perm_".$get['Field'].";");
             $chk = empty($checked[$get['Field']]) ? '' : ' checked="checked"';
             $permission[$lang] = '<input type="checkbox" class="checkbox" id="'.$get['Field'].'" name="perm[p_'.$get['Field'].']" value="1"'.$chk.' /><label for="'.$get['Field'].'"> '.$lang.'</label> ';
@@ -2359,8 +2123,7 @@ function getPermissions($checkID = 0, $pos = 0)
     }
 
     natcasesort($permission); $break = 1; $p = '';
-    foreach($permission AS $perm)
-    {
+    foreach($permission AS $perm) {
         $br = ($break % 2) ? '<br />' : ''; $break++;
         $p .= $perm.$br;
     }
@@ -2369,21 +2132,18 @@ function getPermissions($checkID = 0, $pos = 0)
 }
 
 //-> interne Foren-Rechte abfragen
-function getBoardPermissions($checkID = 0, $pos = 0)
-{
+function getBoardPermissions($checkID = 0, $pos = 0) {
     global $db, $dir;
 
     $break = 0; $i_forum = ''; $fkats = '';
     $qry = db("SELECT id,name FROM ".$db['f_kats']." WHERE intern = '1' ORDER BY `kid` ASC");
-    while($get = _fetch($qry))
-    {
+    while($get = _fetch($qry)) {
         unset($kats, $fkats, $break);
         $kats = (empty($katbreak) ? '' : '<div style="clear:both">&nbsp;</div>').'<table class="hperc" cellspacing="1"><tr><td class="contentMainTop"><b>'.re($get["name"]).'</b></td></tr></table>';
         $katbreak = 1;
 
         $qry2 = db("SELECT kattopic,id FROM ".$db['f_skats']." WHERE `sid` = '".$get['id']."' ORDER BY `kattopic` ASC");
-        while($get2 = _fetch($qry2))
-        {
+        while($get2 = _fetch($qry2)) {
             $br = ($break % 2) ? '<br />' : ''; $break++;
             $check =  db("SELECT * FROM ".$db['f_access']." WHERE `".(empty($pos) ? 'user' : 'pos')."` = '".intval($checkID)."' AND ".(empty($pos) ? 'user' : 'pos')." != '0' AND `forum` = '".$get2['id']."'");
             $chk = _rows($check) ? ' checked="checked"' : '';
@@ -2397,16 +2157,14 @@ function getBoardPermissions($checkID = 0, $pos = 0)
 }
 
 //-> Neue Languages einbinden, sofern vorhanden
-if($language_files = get_files(basePath.'/inc/additional-languages/'.$language.'/',false,true,array('php')))
-{
+if($language_files = get_files(basePath.'/inc/additional-languages/'.$language.'/',false,true,array('php'))) {
     foreach($language_files AS $languages)
     { include(basePath.'/inc/additional-languages/'.$language.'/'.$languages); }
     unset($language_files,$languages);
 }
 
 //-> Neue Funktionen einbinden, sofern vorhanden
-if($functions_files = get_files(basePath.'/inc/additional-functions/',false,true,array('php')))
-{
+if($functions_files = get_files(basePath.'/inc/additional-functions/',false,true,array('php'))) {
     foreach($functions_files AS $func)
     { include(basePath.'/inc/additional-functions/'.$func); }
     unset($functions_files,$func);
@@ -2434,8 +2192,7 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
     if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') && !strstr($_SERVER['HTTP_USER_AGENT'],'webOS'))
         $java_vars .= '<script language="javascript" type="text/javascript" src="'.$designpath.'/_js/wysiwyg.js"></script>'."\n";;
 
-    if(settings("wmodus") && $chkMe != 4)
-    {
+    if(settings("wmodus") && $chkMe != 4) {
         if($secureLogin == 1)
             $secure = show("menu/secure", array("help" => _login_secure_help, "security" => _register_confirm));
 
@@ -2447,25 +2204,21 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
                                          "dir" => $designpath,
                                          "title" => re(strip_tags($title)),
                                          "login" => $login));
-    }
-    else
-    {
+    } else {
         updateCounter();
         update_maxonline();
 
         //check permissions
         if($chkMe == "unlogged")
             include_once(basePath.'/inc/menu-functions/login.php');
-        else
-        {
+        else {
             $check_msg = check_msg(); set_lastvisit(); $login = "";
             db("UPDATE ".$db['users']." SET `time` = '".((int)time())."', `whereami` = '".up($where)."' WHERE id = '".intval($userid)."'");
         }
 
         //init templateswitch
         $tmpldir=""; $tmps = get_files('../inc/_templates_/',true);
-        for($i=0; $i<count($tmps); $i++)
-        {
+        for($i=0; $i<count($tmps); $i++) {
             $selt = ($tmpdir == $tmps[$i] ? 'selected="selected"' : '');
             $tmpldir .= show(_select_field, array("value" => "../user/?action=switch&amp;set=".$tmps[$i],  "what" => $tmps[$i],  "sel" => $selt));
         }
@@ -2495,8 +2248,7 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
         //filter placeholders
         $blArr = array("[title]","[copyright]","[java_vars]","[login]", "[template_switch]","[headtitle]","[index]", "[time]","[rss]","[dir]","[charset]","[where]");
         $pholdervars = '';
-        for($i=0;$i<=count($blArr)-1;$i++)
-        {
+        for($i=0;$i<=count($blArr)-1;$i++) {
             if(preg_match("#".$blArr[$i]."#",$pholder))
                 $pholdervars .= $blArr[$i];
         }
@@ -2509,12 +2261,10 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
 
         //put placeholders in array
         $pholder = explode("^",$pholder);
-        for($i=0;$i<=count($pholder)-1;$i++)
-        {
+        for($i=0;$i<=count($pholder)-1;$i++) {
             if(strstr($pholder[$i], 'nav_'))
                 $arr[$pholder[$i]] = navi($pholder[$i]);
-            else
-            {
+            else {
                 if(@file_exists(basePath.'/inc/menu-functions/'.$pholder[$i].'.php'))
                     include_once(basePath.'/inc/menu-functions/'.$pholder[$i].'.php');
 
