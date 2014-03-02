@@ -1,14 +1,16 @@
 <?php
-//-> Menu: Gameserver
-function server($serverID = 0)
-{
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ * Menu: Gameserver
+ */
+function server($serverID = 0) {
     global $db, $servermenu, $language, $config;
 
     if(!fsockopen_support()) return _fopen;
     $servernavi = '';
-    if(empty($serverID))
-    {
-        $qry = db("SELECT id FROM ".$db['server']." WHERE navi = '1'"); $st = 0;
+    if(empty($serverID)) {
+        $qry = db("SELECT `id` FROM ".$db['server']." WHERE `navi` = '1'"); $st = 0;
         while($get = _fetch($qry)) {
           $st++;
           $servernavi .= '
@@ -22,24 +24,19 @@ function server($serverID = 0)
             </div>
           ';
         }
-    }
-    else
-    {
-        $get = db("SELECT * FROM ".$db['server']." WHERE navi = '1' AND `id` = '".intval($serverID)."'",false,true);
+    } else {
+        $get = db("SELECT `id`,`ip`,`port`,`qport`,`status` FROM ".$db['server']." WHERE `navi` = '1' AND `id` = '".intval($serverID)."'",false,true);
         if(!function_exists('server_query_'.$get['status']) && file_exists(basePath.'/inc/server_query/'.strtolower($get['status']).'.php')) {
             include(basePath.'/inc/server_query/'.strtolower($get['status']).'.php');
         }
 
         unset($player_list);
-        if(time() - @filemtime(basePath.'/__cache/'.md5('nav_server_'.$serverID).'.cache') > $config['cache_server'])
-        {
+        if(time() - @filemtime(basePath.'/__cache/'.md5('nav_server_'.$serverID).'.cache') > $config['cache_server']) {
             $server = gs_normalise(@call_user_func('server_query_'.$get['status'], $get['ip'], $get['port'], $get['qport'], 'info'));
             $player_list = call_user_func('server_query_'.$get['status'], $get['ip'], $get['port'], $get['qport'], 'players');
             $fp = @fopen(basePath.'/__cache/'.md5('nav_server_'.$serverID).'.cache', 'w'); @fwrite($fp, serialize(array('server' => $server, 'players' => $player_list)));
             @fclose($fp);
-        }
-        else
-        {
+        } else {
             $server_cache = @file_get_contents(basePath.'/__cache/'.md5('nav_server_'.$serverID).'.cache');
             $server_cache = unserialize($server_cache);
             $server = gs_normalise($server_cache['server']);

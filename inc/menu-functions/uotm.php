@@ -1,28 +1,30 @@
 <?php
-//-> Menu: User of the Moment
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ * Menu: User of the Moment
+ */
 function uotm() {
     global $db, $allowHover;
 
-    $imgFiles = array();
-    $folder = get_files('../inc/images/uploads/userpics',false,true);
-    foreach($folder AS $file) array_push($imgFiles, $file);
+    $files = get_files('../inc/images/uploads/userpics',false,true);
+    shuffle($files);
 
-    if(count($imgFiles) != 0)
-    {
-      $userid = intval($imgFiles[rand(0, count($imgFiles) - 1)]);
-      $get = _fetch(db("SELECT id,nick,country,bday FROM ".$db['users']." WHERE id = '".$userid."'"));
-
-      if(!empty($get))
-      {
-        if($allowHover == 1)
-          $info = 'onmouseover="DZCP.showInfo(\''.fabo_autor($get['id']).'\', \''._age.'\', \''.getAge($get['bday']).'\', \''.hoveruserpic($get['id']).'\')" onmouseout="DZCP.hideInfo()"';
+    $uotm = '';
+    if(count($files) != 0) {
+        $userid = intval($files[rand(0, count($files) - 1)]);
+        $qry = db("SELECT `id`,`bday` FROM ".$db['users']." WHERE `id` = '".$userid."'");
+        if(_rows($qry)) {
+            $get = _fetch($qry);
+            if($allowHover == 1)
+                $info = 'onmouseover="DZCP.showInfo(\''.fabo_autor($get['id']).'\', \''._age.'\', \''.getAge($get['bday']).'\', \''.hoveruserpic($get['id']).'\')" onmouseout="DZCP.hideInfo()"';
 
 
-        $uotm = show("menu/uotm", array("uid" => $userid,
-                                        "upic" => userpic($get['id'], 130, 161),
-                                        "info" => $info));
-      }
+            $uotm = show("menu/uotm", array("uid" => $userid,
+                                            "upic" => userpic($get['id'], 130, 161),
+                                            "info" => $info));
+        }
     }
 
-  return empty($uotm) ? '' : '<table class="navContent" cellspacing="0">'.$uotm.'</table>';
+    return empty($uotm) ? '' : '<table class="navContent" cellspacing="0">'.$uotm.'</table>';
 }

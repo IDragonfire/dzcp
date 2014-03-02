@@ -1,5 +1,9 @@
 <?php
-//-> Menu: next Wars
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ * Menu: next Wars
+ */
 function n_wars() {
     global $db,$maxnwars,$lnwars,$allowHover;
 
@@ -7,7 +11,7 @@ function n_wars() {
                LEFT JOIN ".$db['squads']." AS s2 ON s1.squad_id = s2.id
                WHERE s1.datum > ".time()."
                ORDER BY s1.datum
-               LIMIT ".$maxnwars."");
+               LIMIT ".intval($maxnwars));
 
     $nwars = '';
     if(_rows($qry)) {

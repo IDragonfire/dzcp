@@ -1,14 +1,15 @@
 <?php
-//-> Menu: Slideshow
-function slideshow()
-{
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ * Menu: Slideshow
+ */
+function slideshow() {
     global $db;
-    $qry = db("SELECT * FROM ".$db['slideshow']." ORDER BY `pos` ASC LIMIT 4");
-    if(_rows($qry) >= 1)
-    {
+    $qry = db("SELECT `id`,`desc`,`showbez`,`bez`,`url` FROM ".$db['slideshow']." ORDER BY `pos` ASC LIMIT 4");
+    if(_rows($qry) >= 1) {
         $pic = ''; $tabs = '';
-        while($get = _fetch($qry))
-        {
+        while($get = _fetch($qry)) {
             if(empty($get['desc']) && !$get['showbez'])
                 $slideroverlay = '';
             else if(!empty($get['desc']) && !$get['showbez'])

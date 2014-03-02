@@ -1,17 +1,20 @@
 <?php
-//-> Menu: Votes
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ * Menu: Votes
+ */
 function vote($ajax = false) {
     global $db,$balken_vote_menu,$prev;
 
-    $qry = db("SELECT * FROM ".$db['votes']." WHERE menu = '1' AND forum = 0"); $vote = '';
+    $qry = db("SELECT `id`,`closed`,`titel` FROM ".$db['votes']." WHERE `menu` = '1' AND `forum` = 0"); $vote = '';
     if(_rows($qry)) {
         $get = _fetch($qry);
-        $qryv = db("SELECT * FROM ".$db['vote_results']." WHERE vid = '".$get['id']."' ORDER BY what");
 
+        $qryv = db("SELECT `id`,`stimmen`,`sel` FROM ".$db['vote_results']." WHERE `vid` = '".$get['id']."' ORDER BY what");
         $results = '';
         while ($getv = _fetch($qryv)) {
-            $stimmen = sum($db['vote_results'], " WHERE vid = '".$get['id']."'", "stimmen");
-
+            $stimmen = sum($db['vote_results'], " WHERE `vid` = '".$get['id']."'", "stimmen");
             if($stimmen != 0) {
                 if(ipcheck("vid_".$get['id']) || isset($_COOKIE[$prev."vid_".$get['id']]) || $get['closed'] == 1) {
                     $percent = round($getv['stimmen']/$stimmen*100,1);

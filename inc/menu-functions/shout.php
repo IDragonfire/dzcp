@@ -1,9 +1,13 @@
 <?php
-//-> Menu: Shoutbox
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ * Menu: Shoutbox
+ */
 function shout($ajax = 0) {
     global $db,$maxshout,$lshouttext,$lshoutnick,$shout_max_zeichen,$userid,$chkMe;
 
-    $qry = db("SELECT * FROM ".$db['shout']." ORDER BY id DESC LIMIT ".$maxshout."");
+    $qry = db("SELECT `id`,`text`,`datum`,`nick`,`email` FROM ".$db['shout']." ORDER BY id DESC LIMIT ".intval($maxshout));
     $i = 1; $color = 0; $show = '';
     while ($get = _fetch($qry)) {
         $class = ($color % 2) ? "navShoutContentFirst" : "navShoutContentSecond"; $color++;
@@ -27,7 +31,7 @@ function shout($ajax = 0) {
         $i++;
     }
 
-    $dis = ''; $dis1 = ''; $only4reg = ''; $sec = '';
+    $dis = ''; $dis1 = ''; $only4reg = ''; $sec = ''; $form = '';
     if(settings('reg_shout') == 1 && $chkMe == 'unlogged') {
         $dis = ' style="text-align:center;cursor:wait" disabled="disabled"';
         $dis1 = ' style="cursor:wait;color:#888" disabled="disabled"';

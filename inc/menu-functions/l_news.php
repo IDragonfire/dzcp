@@ -1,20 +1,23 @@
 <?php
-//-> Menu: Last News
-function l_news()
-{
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ * Menu: Last News
+ */
+function l_news() {
     global $db,$maxlnews,$lnews,$allowHover;
 
-    $qry = db("SELECT id,titel,autor,datum,kat,public,timeshift FROM ".$db['news']."
-               WHERE public = 1
+    $qry = db("SELECT `id`,`titel`,`autor`,`datum`,`kat`,`public`,`timeshift` FROM ".$db['news']."
+               WHERE `public` = 1
                AND datum <= ".time()."
-               ".(permission("intnews") ? "" : "AND intern = 0")."
+               ".(permission("intnews") ? "" : "AND `intern` = 0")."
                ORDER BY id DESC
-               LIMIT ".$maxlnews."");
+               LIMIT ".intval($maxlnews));
 
     $l_news = '';
     if(_rows($qry)) {
         while($get = _fetch($qry)) {
-          $getkat = db("SELECT kategorie FROM ".$db['newskat']." WHERE id = '".$get['kat']."'",false,true);
+          $getkat = db("SELECT `kategorie` FROM ".$db['newskat']." WHERE `id` = '".$get['kat']."'",false,true);
 
           if($allowHover == 1)
               $info = 'onmouseover="DZCP.showInfo(\''.jsconvert(re($get['titel'])).'\', \''._datum.';'._autor.';'._news_admin_kat.';'._comments_head.'\', \''.date("d.m.Y H:i", $get['datum'])._uhr.';'.fabo_autor($get['autor']).';'.jsconvert(re($getkat['kategorie'])).';'.cnt($db['newscomments'],"WHERE news = '".$get['id']."'").'\')" onmouseout="DZCP.hideInfo()"';

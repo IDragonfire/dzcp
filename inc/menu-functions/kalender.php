@@ -1,7 +1,10 @@
 <?php
-//-> Menu: Kalender
-function kalender($month="",$year="")
-{
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ * Menu: Kalender
+ */
+function kalender($month="",$year="") {
     global $db;
 
     if(!empty($month) && !empty($year)) {
@@ -33,8 +36,7 @@ function kalender($month="",$year="")
     $i = 1; $show = '';
     while($i <= 31 && checkdate($monat, $i, $jahr)) {
         $data = ''; $event = ''; $bdays = ''; $cws = '';
-        for($iw = 1; $iw <= 7; $iw++)
-        {
+        for($iw = 1; $iw <= 7; $iw++) {
             unset($titlecw);  unset($titlebd); unset($titleev);
 
             $datum = mktime(0,0,0,$monat,$i,$jahr);

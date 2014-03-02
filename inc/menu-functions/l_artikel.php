@@ -1,17 +1,21 @@
 <?php
-//-> Menu: Last Articles
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ * Menu: Last Articles
+ */
 function l_artikel() {
     global $db,$maxlartikel,$lartikel,$allowHover;
 
-    $qry = db("SELECT id,titel,text,autor,datum,kat,public FROM ".$db['artikel']."
-               WHERE public = 1
+    $qry = db("SELECT `id`,`titel`,`text`,`autor`,`datum`,`kat`,`public` FROM ".$db['artikel']."
+               WHERE `public` = 1
                ORDER BY id DESC
-               LIMIT ".$maxlartikel."");
+               LIMIT ".intval($maxlartikel));
 
     $l_articles = '';
     if(_rows($qry)) {
         while ($get = _fetch($qry)) {
-            $getkat = db("SELECT kategorie FROM ".$db['newskat']." WHERE id = '".$get['kat']."'",false,true);
+            $getkat = db("SELECT `kategorie` FROM ".$db['newskat']." WHERE `id` = '".$get['kat']."'",false,true);
             $text = strip_tags($get['text']);
 
             if($allowHover == 1)

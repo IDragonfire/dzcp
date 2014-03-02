@@ -1,13 +1,16 @@
 <?php
-//-> Menu: Teamausgabe
-function team($tID = '')
-{
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ * Menu: Teamausgabe
+ */
+function team($tID = '') {
     global $db,$teamRow,$l_team;
 
-    if(!empty($tID)) $where = "WHERE id = '".intval($tID)."' AND navi = 1";
-    else             $where = "WHERE navi = '1' ORDER BY RAND()";
+    if(!empty($tID)) $where = "WHERE `id` = '".intval($tID)."' AND `navi` = 1";
+    else             $where = "WHERE `navi` = '1' ORDER BY RAND()";
 
-    $get = db("SELECT * FROM ".$db['squads']." ".$where."",false,true);
+    $get = db("SELECT `id`,`name` FROM ".$db['squads']." ".$where."",false,true);
 
     //Members
     $qrym = db("SELECT s1.squad,s2.id,s2.level,s2.nick,s2.status,s2.rlname,s2.bday,s4.position
@@ -21,6 +24,7 @@ function team($tID = '')
                 WHERE s1.squad='".$get['id']."'
                 AND s2.level != 0
                 ORDER BY s4.pid");
+
     $i=1; $cnt=0; $member = '';
     while($getm = _fetch($qrym)) {
         $tr1 = ''; $tr2 = '';
@@ -55,10 +59,15 @@ function team($tID = '')
 
     // Next / last ID
     $all = cnt($db['squads'], "WHERE `navi` = '1'");
-    $next = db("SELECT id FROM ".$db['squads']." WHERE `navi` = '1' AND `id` > '".$get['id']."' ORDER BY `id` ASC LIMIT 1",false,true);
-    if(empty($next)) $next = db("SELECT id FROM ".$db['squads']." WHERE `navi` = '1' ORDER BY `id` ASC LIMIT 1",false,true);
-    $last = db("SELECT id FROM ".$db['squads']." WHERE `navi` = '1' AND `id` < '".$get['id']."' ORDER BY `id` DESC LIMIT 1",false,true);
-    if(empty($last)) $last = db("SELECT id FROM ".$db['squads']." WHERE `navi` = '1' ORDER BY `id` DESC LIMIT 1",false,true);
+    $next = db("SELECT `id` FROM ".$db['squads']." WHERE `navi` = '1' AND `id` > '".$get['id']."' ORDER BY `id` ASC LIMIT 1",false,true);
+
+    if(empty($next))
+        $next = db("SELECT `id` FROM ".$db['squads']." WHERE `navi` = '1' ORDER BY `id` ASC LIMIT 1",false,true);
+
+    $last = db("SELECT `id` FROM ".$db['squads']." WHERE `navi` = '1' AND `id` < '".$get['id']."' ORDER BY `id` DESC LIMIT 1",false,true);
+
+    if(empty($last))
+        $last = db("SELECT `id` FROM ".$db['squads']." WHERE `navi` = '1' ORDER BY `id` DESC LIMIT 1",false,true);
 
     //Output
     $team = show("menu/team", array("row" => $teamRow,

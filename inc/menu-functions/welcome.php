@@ -1,5 +1,9 @@
 <?php
-//-> Menu: Begrüßung nach Tageszeit
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ * Menu: Begrüßung nach Tageszeit
+ */
 function welcome() {
     global $chkMe,$userid;
 

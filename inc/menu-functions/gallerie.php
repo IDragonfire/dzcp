@@ -1,14 +1,18 @@
 <?php
-//-> Menu: Image Gallerie
-function gallerie()
-{
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ * Menu: Image Gallerie
+ */
+function gallerie() {
     global $db,$picformat;
-    $intern = "";
-    if(!permission('galleryintern')) $intern = " WHERE intern = '0'";
-    $get = _fetch(db("SELECT id,kat FROM ".$db['gallery'].$intern." ORDER BY RAND()")); $gallery = '';
+
+    $get = db("SELECT `id`,`kat` FROM ".$db['gallery']." ".(permission('galleryintern') ? "" : " WHERE `intern` = 0")." ORDER BY RAND()",false,true);
     $files = get_files(basePath.'/gallery/images/',false,true,$picformat,"#^".$get['id']."_(.*)#");
     $cnt = count($files);
-    if($files && count($files) >= 1)
+
+    $gallery = '';
+    if($files && $cnt >= 1)
     {
         shuffle($files); $files = limited_array($files,1,4);
         foreach($files as $file)

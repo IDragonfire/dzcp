@@ -1,7 +1,10 @@
 <?php
-//-> Menu: Teamspeak
-function teamspeak($js = 0)
-{
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ * Menu: Teamspeak
+ */
+function teamspeak($js = 0) {
     global $db, $settings, $language, $config;
 
     header('Content-Type: text/html; charset=iso-8859-1');
