@@ -3,7 +3,7 @@
 //-> DZCP Settings Start
 #########################################
 
-define('view_error_reporting', true); // Zeigt alle Fehler und Notices etc.
+define('view_error_reporting', false); // Zeigt alle Fehler und Notices etc.
 define('use_default_timezone', true); // Verwendende die Zeitzone vom Server
 define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selbst einstellen * 'use_default_timezone' auf false stellen *
 
