@@ -51,6 +51,7 @@ else
                     $getkat = db("SELECT katimg FROM ".$db['newskat']." WHERE id = '".$get['kat']."'",false,true);
                     $count = cnt($db['newscomments'], " WHERE news = '".$get['id']."'");
 
+                    $comments = show(_news_comments, array("comments" => '0', "id" => $get['id']));
                     if($count >= 2)
                         $comments = show(_news_comments, array("comments" => $c, "id" => $get['id']));
                     else if($count == 1)
@@ -134,6 +135,7 @@ else
                     $getkat = db("SELECT katimg FROM ".$db['newskat']." WHERE id = '".$get['kat']."'",false,true);
                     $count = cnt($db['newscomments'], " WHERE news = '".$get['id']."'");
 
+                    $comments = show(_news_comments, array("comments" => '0', "id" => $get['id']));
                     if($count >= 2)
                         $comments = show(_news_comments, array("comments" => $c, "id" => $get['id']));
                     else if($count == 1)
