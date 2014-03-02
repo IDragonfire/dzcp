@@ -223,279 +223,240 @@ else
                                           "archiv" => _news_archiv));
     break;
     case 'show';
-      $update = db("UPDATE ".$db['news']."
-                    SET `viewed` = viewed+1
-                    WHERE id = '".intval($_GET['id'])."'");
+        db("UPDATE ".$db['news']." SET `viewed` = viewed+1 WHERE id = '".intval($_GET['id'])."'");
+        $check = db("SELECT intern FROM ".$db['news']." WHERE id = '".intval($_GET['id'])."'",false,true);
 
-      $check = db("SELECT intern FROM ".$db['news']."
-                   WHERE id = '".intval($_GET['id'])."'");
-      $c = _fetch($check);
-      if($config['intern'] == 1 && !permission("intnews"))
-      {
-        $index = error(_error_wrong_permissions, 1);
-      } else {
-        if(!permission("news")) {
-            $shownews = " AND public = 1";
-        }
-        $qry = db("SELECT * FROM ".$db['news']."
-                   WHERE id = '".intval($_GET['id'])."'".$shownews);
-        if(_rows($qry) == 0) {
-            $index = error(_id_dont_exist,1);
-        } else {
-        $get = _fetch($qry);
-
-        $qrykat = db("SELECT katimg FROM ".$db['newskat']."
-                      WHERE id = '".$get['kat']."'");
-        $getkat = _fetch($qrykat);
-
-        if($get['klapptext'])
+        if($check['intern'] && !permission("intnews"))
+            $index = error(_error_wrong_permissions, 1);
+        else
         {
-          $klapp = show(_news_klapplink, array("klapplink" => re($get['klapplink']),
-                                               "which" => "collapse",
-                                               "id" => $get['id']));
-        } else {
-          $klapp = "";
-        }
-
-        $viewed = show(_news_viewed, array("viewed" => $get['viewed']));
-
-        if(!empty($get['url1']))
-        {
-          $rel = _related_links;
-          $links1 = show(_news_link, array("link" => re($get['link1']),
-                                           "url" => $get['url1']));
-        } else {
-          $links1 = "";
-        }
-        if(!empty($get['url2']))
-        {
-          $rel = _related_links;
-          $links2 = show(_news_link, array("link" => re($get['link2']),
-                                           "url" => $get['url2']));
-        } else {
-          $links2 = "";
-        }
-        if(!empty($get['url3']))
-        {
-          $rel = _related_links;
-          $links3 = show(_news_link, array("link" => re($get['link3']),
-                                           "url" => $get['url3']));
-        } else {
-          $links3 = "";
-        }
-
-        if(!empty($links1) || !empty($links2) || !empty($links3))
-        {
-          $links = show(_news_links, array("link1" => $links1,
-                                           "link2" => $links2,
-                                           "link3" => $links3,
-                                           "rel" => $rel));
-        } else {
-          $links = "";
-        }
-
-          $qryc = db("SELECT * FROM ".$db['newscomments']."
-                                     WHERE news = ".intval($_GET['id'])."
-                                    ORDER BY datum DESC
-                    LIMIT ".($page - 1)*$maxcomments.",".$maxcomments."");
-
-        $entrys = cnt($db['newscomments'], " WHERE news = ".intval($_GET['id']));
-        $i = $entrys-($page - 1)*$maxcomments;
-
-          while($getc = _fetch($qryc))
-          {
-          if(($chkMe != 'unlogged' && $getc['reg'] == $userid) || permission("news"))
-          {
-            $edit = show("page/button_edit_single", array("id" => $get['id'],
-                                                          "action" => "action=show&amp;do=edit&amp;cid=".$getc['id'],
-                                                          "title" => _button_title_edit));
-            $delete = show("page/button_delete_single", array("id" => $get['id'],
-                                                             "action" => "action=show&amp;do=delete&amp;cid=".$getc['id'],
-                                                             "title" => _button_title_del,
-                                                             "del" => convSpace(_confirm_del_entry)));
-          } else {
-            $edit = "";
-            $delete = "";
-          }
-
-              if($getc['reg'] == "0")
-              {
-            if($getc['hp']) $hp = show(_hpicon_forum, array("hp" => $getc['hp']));
-            else $hp = "";
-            if($getc['email']) $email = '<br />'.show(_emailicon_forum, array("email" => eMailAddr($getc['email'])));
-            else $email = "";
-            $onoff = "";
-            $avatar = "";
-            $nick = show(_link_mailto, array("nick" => re($getc['nick']),
-                                             "email" => eMailAddr($getc['email'])));
-              } else {
-            $hp = "";
-            $email = "";
-            $onoff = onlinecheck($getc['reg']);
-            $nick = autor($getc['reg']);
-              }
-
-          $titel = show(_eintrag_titel, array("postid" => $i,
-                                                                                      "datum" => date("d.m.Y", $getc['datum']),
-                                                                                      "zeit" => date("H:i", $getc['datum'])._uhr,
-                                              "edit" => $edit,
-                                              "delete" => $delete));
-
-          if($chkMe == 4) $posted_ip = $getc['ip'];
-          else            $posted_ip = _logged;
-
-              $comments .= show("page/comments_show", array("titel" => $titel,
-                                                                                                    "comment" => bbcode($getc['comment']),
-                                                        "nick" => $nick,
-                                                        "hp" => $hp,
-                                                        "editby" => bbcode($getc['editby']),
-                                                        "email" => $email,
-                                                        "avatar" => useravatar($getc['reg']),
-                                                        "onoff" => $onoff,
-                                                        "rank" => getrank($getc['reg']),
-                                                        "ip" => $posted_ip));
-              $i--;
-          }
-
-        if(settings("reg_newscomments") == "1" && $chkMe == "unlogged")
-        {
-          $add = _error_unregistered_nc;
-        } else {
-          if($userid >= 1)
+            $qry = db("SELECT * FROM ".$db['news']." WHERE id = '".intval($_GET['id'])."'".(permission("news") ? "" : " AND public = 1") );
+            if(_rows($qry) == 0)
+                $index = error(_id_dont_exist,1);
+            else
             {
-                $form = show("page/editor_regged", array("nick" => autor($userid),
-                                                     "von" => _autor));
-            } else {
-            $form = show("page/editor_notregged", array("nickhead" => _nick,
-                                                        "emailhead" => _email,
-                                                        "hphead" => _hp));
-          }
+                $get = _fetch($qry);
+                $getkat = db("SELECT katimg FROM ".$db['newskat']." WHERE id = '".$get['kat']."'",false,true);
 
+                $klapp = "";
+                if($get['klapptext'])
+                    $klapp = show(_news_klapplink, array("klapplink" => re($get['klapplink']),
+                            "which" => "expand",
+                            "id" => $get['id']));
 
-          if(!ipcheck("ncid(".$_GET['id'].")", $flood_newscom))
-          {
-              $add = show("page/comments_add", array("titel" => _news_comments_write_head,
-                                                                                              "bbcodehead" => _bbcode,
-                                                    "form" => $form,
-                                                    "show" => "none",
-                                                    "what" => _button_value_add,
-                                                    "ip" => _iplog_info,
-                                                    "preview" => _preview,
-                                                    "sec" => $dir,
-                                                    "b1" => $u_b1,
-                                                    "b2" => $u_b2,
-                                                    "security" => _register_confirm,
-                                                    "action" => '?action=show&amp;do=add&amp;id='.$_GET['id'],
-                                                    "prevurl" => '../news/?action=compreview&amp;id='.$_GET['id'],
-                                                    "lang" => $language,
-                                                                                              "id" => $_GET['id'],
-                                                                                              "postemail" => "",
-                                                                                              "posthp" => "",
-                                                                                              "postnick" => "",
-                                                                                              "posteintrag" => "",
-                                                                                              "error" => "",
-                                                                                              "eintraghead" => _eintrag));
-          } else {
-            $add = "";
-          }
-        }
-        $seiten = nav($entrys,$maxcomments,"?action=show&amp;id=".$_GET['id']."");
+                $viewed = show(_news_viewed, array("viewed" => $get['viewed']));
 
-        $showmore = show($dir."/comments",array("head" => _comments_head,
-                                                                                     "show" => $comments,
-                                                "seiten" => $seiten,
-                                                "add" => $add));
+                $links1 = "";
+                if(!empty($get['url1'])) {
+                    $rel = _related_links;
+                    $links1 = show(_news_link, array("link" => re($get['link1']),
+                            "url" => $get['url1']));
+                }
 
-        if($get['intern'] == "1") $intern = _votes_intern;
-        else $intern = "";
+                $links2 = "";
+                if(!empty($get['url2'])) {
+                    $rel = _related_links;
+                    $links2 = show(_news_link, array("link" => re($get['link2']),
+                            "url" => $get['url2']));
+                }
 
-        if(file_exists('../inc/images/uploads/news/'.$get['id'].'.jpg')){
-            $newsimage = '../inc/images/uploads/news/'.$get['id'].'.jpg';
-        }else{
-            $newsimage = '../inc/images/newskat/'.$getkat['katimg'];
-        }
+                $links3 = "";
+                if(!empty($get['url3'])) {
+                    $rel = _related_links;
+                    $links3 = show(_news_link, array("link" => re($get['link3']),
+                            "url" => $get['url3']));
+                }
 
-        $title = re($get['titel']).' - '.$title;
-        $index = show($dir."/news_show_full", array("titel" => re($get['titel']),
-                                               "kat" => $newsimage,
-                                               "id" => $get['id'],
-                                               "comments" => "",
-                                               "dp" => "compact",
-                                               "nautor" => _autor,
-                                               "dir" => $designpath,
-                                               "ndatum" => _datum,
-                                               "rel" => $rel,
-                                               "sticky" => "",
-                                               "intern" => $intern,
-                                               "ncomments" => "",
-                                               "showmore" => $showmore,
-                                               "klapp" => $klapp,
-                                               "more" => bbcode($get['klapptext']),
-                                               "viewed" => "",
-                                               "text" => bbcode($get['text']),
-                                               "datum" => date("j.m.y H:i", (empty($get['datum']) ? time() : $get['datum']))._uhr,
-                                               "links" => $links,
-                                               "autor" => autor($get['autor'])));
+                $links = "";
+                if(!empty($links1) || !empty($links2) || !empty($links3))
+                    $links = show(_news_links, array("link1" => $links1,
+                            "link2" => $links2,
+                            "link3" => $links3,
+                            "rel" => $rel));
 
-        if($_GET['do'] == "add")
-        {
-                if(_rows(db("SELECT `id` FROM ".$db['news']." WHERE `id` = '".(int)$_GET['id']."'")) != 0)
+                $qryc = db("SELECT * FROM ".$db['newscomments']."
+                            WHERE news = ".intval($_GET['id'])."
+                            ORDER BY datum DESC
+                            LIMIT ".($page - 1)*intval($maxcomments).",".intval($maxcomments)."");
+
+                $entrys = cnt($db['newscomments'], " WHERE news = ".intval($_GET['id']));
+                $i = $entrys-($page - 1)*intval($maxcomments);
+
+                $comments = ''; $i = 0;
+                while($getc = _fetch($qryc)) {
+                    $edit = ""; $delete = "";
+                    if(($chkMe != 'unlogged' && $getc['reg'] == $userid) || permission("news")) {
+                        $edit = show("page/button_edit_single", array("id" => $get['id'],
+                                                                      "action" => "action=show&amp;do=edit&amp;cid=".$getc['id'],
+                                                                      "title" => _button_title_edit));
+
+                        $delete = show("page/button_delete_single", array("id" => $get['id'],
+                                                                         "action" => "action=show&amp;do=delete&amp;cid=".$getc['id'],
+                                                                         "title" => _button_title_del,
+                                                                         "del" => convSpace(_confirm_del_entry)));
+                    }
+
+                    $email = ""; $hp = ""; $onoff = onlinecheck($getc['reg']); $nick = autor($getc['reg']); $avatar = ""; $onoff = "";
+                    if($getc['reg'] == "0") {
+                        if($getc['hp'])
+                            $hp = show(_hpicon_forum, array("hp" => $getc['hp']));
+
+                        if($getc['email'])
+                            $email = '<br />'.show(_emailicon_forum, array("email" => eMailAddr($getc['email'])));
+
+                        $nick = show(_link_mailto, array("nick" => re($getc['nick']), "email" => eMailAddr($getc['email'])));
+                    }
+
+                    $titel = show(_eintrag_titel, array("postid" => $i,
+                                                        "datum" => date("d.m.Y", $getc['datum']),
+                                                        "zeit" => date("H:i", $getc['datum'])._uhr,
+                                                        "edit" => $edit,
+                                                        "delete" => $delete));
+
+                    $posted_ip = $chkMe == 4 ? $getc['ip'] : _logged;
+                    $comments .= show("page/comments_show", array("titel" => $titel,
+                                                                  "comment" => bbcode($getc['comment']),
+                                                                  "nick" => $nick,
+                                                                  "hp" => $hp,
+                                                                  "editby" => bbcode($getc['editby']),
+                                                                  "email" => $email,
+                                                                  "avatar" => useravatar($getc['reg']),
+                                                                  "onoff" => $onoff,
+                                                                  "rank" => getrank($getc['reg']),
+                                                                  "ip" => $posted_ip));
+                $i--;
+            }
+
+            if(settings("reg_newscomments") == "1" && $chkMe == "unlogged")
+                $add = _error_unregistered_nc;
+            else
+            {
+                if($userid >= 1)
+                    $form = show("page/editor_regged", array("nick" => autor($userid), "von" => _autor));
+                else
+                    $form = show("page/editor_notregged", array("nickhead" => _nick, "emailhead" => _email, "hphead" => _hp));
+
+                $add = '';
+                if(!ipcheck("ncid(".$_GET['id'].")", $flood_newscom))
                 {
-                    if(settings("reg_newscomments") == "1" && $chkMe == "unlogged")
+                    $add = show("page/comments_add", array("titel" => _news_comments_write_head,
+                                                           "bbcodehead" => _bbcode,
+                                                           "form" => $form,
+                                                           "show" => "none",
+                                                           "what" => _button_value_add,
+                                                           "ip" => _iplog_info,
+                                                           "preview" => _preview,
+                                                           "sec" => $dir,
+                                                           "b1" => $u_b1,
+                                                           "b2" => $u_b2,
+                                                           "security" => _register_confirm,
+                                                           "action" => '?action=show&amp;do=add&amp;id='.$_GET['id'],
+                                                           "prevurl" => '../news/?action=compreview&amp;id='.$_GET['id'],
+                                                           "lang" => $language,
+                                                           "id" => $_GET['id'],
+                                                           "postemail" => "",
+                                                           "posthp" => "",
+                                                           "postnick" => "",
+                                                           "posteintrag" => "",
+                                                           "error" => "",
+                                                           "eintraghead" => _eintrag));
+                }
+            }
+
+            $seiten = nav($entrys,$maxcomments,"?action=show&amp;id=".$_GET['id']."");
+            $showmore = show($dir."/comments",array("head" => _comments_head,
+                                                    "show" => $comments,
+                                                    "seiten" => $seiten,
+                                                    "add" => $add));
+
+            $intern = $get['intern'] ? _votes_intern : "";
+            if(file_exists(basePath.'/inc/images/uploads/news/'.$get['id'].'.jpg'))
+                $newsimage = '../inc/images/uploads/news/'.$get['id'].'.jpg';
+            else
+                $newsimage = '../inc/images/newskat/'.$getkat['katimg'];
+
+            $title = re($get['titel']).' - '.$title;
+            $index = show($dir."/news_show_full", array("titel" => re($get['titel']),
+                                                   "kat" => $newsimage,
+                                                   "id" => $get['id'],
+                                                   "comments" => "",
+                                                   "dp" => "compact",
+                                                   "nautor" => _autor,
+                                                   "dir" => $designpath,
+                                                   "ndatum" => _datum,
+                                                   "rel" => $rel,
+                                                   "sticky" => "",
+                                                   "intern" => $intern,
+                                                   "ncomments" => "",
+                                                   "showmore" => $showmore,
+                                                   "klapp" => $klapp,
+                                                   "more" => bbcode($get['klapptext']),
+                                                   "viewed" => "",
+                                                   "text" => bbcode($get['text']),
+                                                   "datum" => date("j.m.y H:i", (empty($get['datum']) ? time() : $get['datum']))._uhr,
+                                                   "links" => $links,
+                                                   "autor" => autor($get['autor'])));
+
+            switch($do)
+            {
+                case 'add':
+                    if(_rows(db("SELECT `id` FROM ".$db['news']." WHERE `id` = '".(int)$_GET['id']."'")) != 0)
                     {
-                        $index = error(_error_have_to_be_logged, 1);
-                    } else {
-                        if(!ipcheck("ncid(".$_GET['id'].")", $flood_newscom))
+                        if(settings("reg_newscomments") == "1" && $chkMe == "unlogged")
                         {
-                            if($userid >= 1) $toCheck = empty($_POST['comment']);
-                            else
-                                $toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['comment']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
-
-                            if($toCheck)
+                            $index = error(_error_have_to_be_logged, 1);
+                        } else {
+                            if(!ipcheck("ncid(".$_GET['id'].")", $flood_newscom))
                             {
-                                if($userid >= 1)
-                                {
-                                    if(empty($_POST['eintrag'])) $error = _empty_eintrag;
-                                    $form = show("page/editor_regged", array("nick" => autor($userid),
-                                                                                                                     "von" => _autor));
-                                } else {
-                                    if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir])) $error = _error_invalid_regcode;
-                                    elseif(empty($_POST['nick'])) $error = _empty_nick;
-                                    elseif(empty($_POST['email'])) $error = _empty_email;
-                                    elseif(!check_email($_POST['email'])) $error = _error_invalid_email;
-                                    elseif(empty($_POST['eintrag'])) $error = _empty_eintrag;
-                                    $form = show("page/editor_notregged", array("nickhead" => _nick,
-                                                                                                                            "emailhead" => _email,
-                                                                                                                            "hphead" => _hp));
-                                }
+                                if($userid >= 1) $toCheck = empty($_POST['comment']);
+                                else
+                                    $toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['comment']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
 
-                                $error = show("errors/errortable", array("error" => $error));
-                                $index = show("page/comments_add", array("titel" => _news_comments_write_head,
-                                                                                                                 "nickhead" => _nick,
-                                                                                                                 "bbcodehead" => _bbcode,
-                                                                                                                 "emailhead" => _email,
-                                                                                                                 "security" => _register_confirm,
-                                                                                                                 "hphead" => _hp,
-                                                                                                                 "b1" => $u_b1,
-                                                                                                                 "b2" => $u_b2,
-                                                                                                                 "sec" => $dir,
-                                                                                                                 "form" => $form,
-                                                                                                                 "preview" => _preview,
-                                                                                                                 "prevurl" => '../news/?action=compreview&amp;id='.$_GET['id'],
-                                                                                                                 "action" => '?action=show&amp;do=add&amp;id='.$_GET['id'],
-                                                                                                                 "ip" => _iplog_info,
-                                                                                                                 "lang" => $language,
-                                                                                                                 "id" => $_GET['id'],
-                                                                                                                 "what" => _button_value_add,
-                                                                                                                 "show" => "",
-                                                                                                                 "postemail" => $_POST['email'],
-                                                                                                                 "posthp" => links($_POST['hp']),
-                                                                                                                 "postnick" => re($_POST['nick']),
-                                                                                                                 "posteintrag" => re_bbcode($_POST['comment']),
-                                                                                                                 "error" => $error,
-                                                                                                                 "eintraghead" => _eintrag));
-                            } else {
-                                $qry = db("INSERT INTO ".$db['newscomments']."
+                                if($toCheck)
+                                {
+                                    if($userid >= 1)
+                                    {
+                                        if(empty($_POST['eintrag'])) $error = _empty_eintrag;
+                                        $form = show("page/editor_regged", array("nick" => autor($userid),
+                                                "von" => _autor));
+                                    } else {
+                                        if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir])) $error = _error_invalid_regcode;
+                                        elseif(empty($_POST['nick'])) $error = _empty_nick;
+                                        elseif(empty($_POST['email'])) $error = _empty_email;
+                                        elseif(!check_email($_POST['email'])) $error = _error_invalid_email;
+                                        elseif(empty($_POST['eintrag'])) $error = _empty_eintrag;
+                                        $form = show("page/editor_notregged", array("nickhead" => _nick,
+                                                "emailhead" => _email,
+                                                "hphead" => _hp));
+                                    }
+
+                                    $error = show("errors/errortable", array("error" => $error));
+                                    $index = show("page/comments_add", array("titel" => _news_comments_write_head,
+                                            "nickhead" => _nick,
+                                            "bbcodehead" => _bbcode,
+                                            "emailhead" => _email,
+                                            "security" => _register_confirm,
+                                            "hphead" => _hp,
+                                            "b1" => $u_b1,
+                                            "b2" => $u_b2,
+                                            "sec" => $dir,
+                                            "form" => $form,
+                                            "preview" => _preview,
+                                            "prevurl" => '../news/?action=compreview&amp;id='.$_GET['id'],
+                                            "action" => '?action=show&amp;do=add&amp;id='.$_GET['id'],
+                                            "ip" => _iplog_info,
+                                            "lang" => $language,
+                                            "id" => $_GET['id'],
+                                            "what" => _button_value_add,
+                                            "show" => "",
+                                            "postemail" => $_POST['email'],
+                                            "posthp" => links($_POST['hp']),
+                                            "postnick" => re($_POST['nick']),
+                                            "posteintrag" => re_bbcode($_POST['comment']),
+                                            "error" => $error,
+                                            "eintraghead" => _eintrag));
+                                } else {
+                                    $qry = db("INSERT INTO ".$db['newscomments']."
                                                      SET `news`     = '".((int)$_GET['id'])."',
                                                              `datum`    = '".((int)time())."',
                                                              `nick`     = '".up($_POST['nick'])."',
@@ -505,48 +466,47 @@ else
                                                              `comment`  = '".up($_POST['comment'],1)."',
                                                              `ip`       = '".$userip."'");
 
-                                $ncid = "ncid(".$_GET['id'].")";
-                                $qry = db("INSERT INTO ".$db['ipcheck']."
+                                    $ncid = "ncid(".$_GET['id'].")";
+                                    $qry = db("INSERT INTO ".$db['ipcheck']."
                                                      SET `ip`   = '".$userip."',
                                                              `what` = '".$ncid."',
                                                              `time` = '".((int)time())."'");
 
-                                $index = info(_comment_added, "?action=show&amp;id=".$_GET['id']."");
+                                    $index = info(_comment_added, "?action=show&amp;id=".$_GET['id']."");
+                                }
+                            } else {
+                                $index = error(show(_error_flood_post, array("sek" => $flood_newscom)), 1);
                             }
-                        } else {
-                            $index = error(show(_error_flood_post, array("sek" => $flood_newscom)), 1);
                         }
-                    }
-                } else{
+                    } else{
                         $index = error(_id_dont_exist,1);
-                }
-        }
-
-        if($_GET['do'] == "delete")
-        {
-          $qry = db("SELECT * FROM ".$db['newscomments']."
+                    }
+                break;
+                case 'delete':
+                    $qry = db("SELECT * FROM ".$db['newscomments']."
                      WHERE id = '".intval($_GET['cid'])."'");
-          $get = _fetch($qry);
+                    $get = _fetch($qry);
 
-          if($get['reg'] == $userid || permission('news'))
-          {
-            $qry = db("DELETE FROM ".$db['newscomments']."
+                    if($get['reg'] == $userid || permission('news'))
+                    {
+                        $qry = db("DELETE FROM ".$db['newscomments']."
                        WHERE id = '".intval($_GET['cid'])."'");
 
-            $index = info(_comment_deleted, "?action=show&amp;id=".$_GET['id']."");
-          } else {
-            $index = error(_error_wrong_permissions, 1);
-          }
-        } elseif($_GET['do'] == "editcom") {
-          $qry = db("SELECT * FROM ".$db['newscomments']."
+                        $index = info(_comment_deleted, "?action=show&amp;id=".$_GET['id']."");
+                    } else {
+                        $index = error(_error_wrong_permissions, 1);
+                    }
+                break;
+                case 'editcom':
+                    $qry = db("SELECT * FROM ".$db['newscomments']."
                      WHERE id = '".intval($_GET['cid'])."'");
-          $get = _fetch($qry);
+                    $get = _fetch($qry);
 
-          if($get['reg'] == $userid || permission('news'))
-          {
-            $editedby = show(_edited_by, array("autor" => autor($userid),
-                                               "time" => date("d.m.Y H:i", time())._uhr));
-            $qry = db("UPDATE ".$db['newscomments']."
+                    if($get['reg'] == $userid || permission('news'))
+                    {
+                        $editedby = show(_edited_by, array("autor" => autor($userid),
+                                "time" => date("d.m.Y H:i", time())._uhr));
+                        $qry = db("UPDATE ".$db['newscomments']."
                        SET `nick`     = '".up($_POST['nick'])."',
                            `email`    = '".up($_POST['email'])."',
                            `hp`       = '".links($_POST['hp'])."',
@@ -554,58 +514,55 @@ else
                            `editby`   = '".addslashes($editedby)."'
                        WHERE id = '".intval($_GET['cid'])."'");
 
-            $index = info(_comment_edited, "?action=show&amp;id=".$_GET['id']."");
-          } else {
-            $index = error(_error_edit_post,1);
-          }
-        } elseif($_GET['do'] == "edit") {
-          $qry = db("SELECT * FROM ".$db['newscomments']."
-                     WHERE id = '".intval($_GET['cid'])."'");
-          $get = _fetch($qry);
+                        $index = info(_comment_edited, "?action=show&amp;id=".$_GET['id']."");
+                    } else {
+                        $index = error(_error_edit_post,1);
+                    }
+                break;
+                case 'edit':
+                    $get = db("SELECT * FROM ".$db['newscomments']." WHERE id = '".intval($_GET['cid'])."'",false,true);
+                    if($get['reg'] == $userid || permission('news'))
+                    {
+                        if($get['reg'] != 0)
+                            $form = show("page/editor_regged", array("nick" => autor($get['reg']), "von" => _autor));
+                        else
+                        {
+                            $form = show("page/editor_notregged", array("nickhead" => _nick,
+                                    "emailhead" => _email,
+                                    "hphead" => _hp,
+                                    "postemail" => $get['email'],
+                                    "posthp" => links($get['hp']),
+                                    "postnick" => re($get['nick'])));
+                        }
 
-          if($get['reg'] == $userid || permission('news'))
-          {
-            if($get['reg'] != 0)
-              {
-                  $form = show("page/editor_regged", array("nick" => autor($get['reg']),
-                                                       "von" => _autor));
-              } else {
-              $form = show("page/editor_notregged", array("nickhead" => _nick,
-                                                          "emailhead" => _email,
-                                                          "hphead" => _hp,
-                                                          "postemail" => $get['email'],
-                                                                                                  "posthp" => links($get['hp']),
-                                                                                                      "postnick" => re($get['nick']),
-                                                          ));
+                        $index = show("page/comments_add", array("titel" => _comments_edit,
+                                "nickhead" => _nick,
+                                "security" => _register_confirm,
+                                "bbcodehead" => _bbcode,
+                                "emailhead" => _email,
+                                "b1" => $u_b1,
+                                "b2" => $u_b2,
+                                "hphead" => _hp,
+                                "form" => $form,
+                                "sec" => $dir,
+                                "preview" => _preview,
+                                "prevurl" => '../news/?action=compreview&amp;do=edit&amp;id='.$_GET['id'].'&amp;cid='.$_GET['cid'],
+                                "action" => '?action=show&amp;do=editcom&amp;id='.$_GET['id'].'&amp;cid='.$_GET['cid'],
+                                "ip" => _iplog_info,
+                                "lang" => $language,
+                                "id" => $_GET['id'],
+                                "what" => _button_value_edit,
+                                "show" => "",
+                                "posteintrag" => re_bbcode($get['comment']),
+                                "error" => "",
+                                "eintraghead" => _eintrag));
+                    }
+                    else
+                        $index = error(_error_edit_post,1);
+                break;
             }
-
-                $index = show("page/comments_add", array("titel" => _comments_edit,
-                                                                                               "nickhead" => _nick,
-                                                     "security" => _register_confirm,
-                                                                                             "bbcodehead" => _bbcode,
-                                                                                             "emailhead" => _email,
-                                                     "b1" => $u_b1,
-                                                     "b2" => $u_b2,
-                                                                                             "hphead" => _hp,
-                                                     "form" => $form,
-                                                     "sec" => $dir,
-                                                     "preview" => _preview,
-                                                     "prevurl" => '../news/?action=compreview&amp;do=edit&amp;id='.$_GET['id'].'&amp;cid='.$_GET['cid'],
-                                                     "action" => '?action=show&amp;do=editcom&amp;id='.$_GET['id'].'&amp;cid='.$_GET['cid'],
-                                                     "ip" => _iplog_info,
-                                                     "lang" => $language,
-                                                                                             "id" => $_GET['id'],
-                                                     "what" => _button_value_edit,
-                                                     "show" => "",
-                                                                                             "posteintrag" => re_bbcode($get['comment']),
-                                                                                             "error" => "",
-                                                                                             "eintraghead" => _eintrag));
-          } else {
-            $index = error(_error_edit_post,1);
-          }
         }
-      }
-      }
+    }
     break;
     case 'preview';
         header("Content-type: text/html; charset=utf-8");
