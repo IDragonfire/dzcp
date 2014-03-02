@@ -64,13 +64,13 @@ label {
 Set global style of the horizontal line
 ---------------------------------------------*/
 hr {
-	color : #000;
-	height : 1px;
-	padding : 0;
-	border-color : #000;
-	border-width : 1px 0 0 0;
-	border-style : solid;
-	margin: 3px 0 6px 0;
+    color : #000;
+    height : 1px;
+    padding : 0;
+    border-color : #000;
+    border-width : 1px 0 0 0;
+    border-style : solid;
+    margin: 3px 0 6px 0;
 }
 
 *+html hr { margin: 0 }
@@ -80,7 +80,7 @@ hr {
 Set a square as in front of an unordered list
 ---------------------------------------------*/
 ul li {
-	list-style: square;
+    list-style: square;
 }
 
 /*---------------------------------------------
@@ -105,10 +105,10 @@ Set attributes for the Main View (index.html)
 /*###### Global defines ######*/
 /* Cursors */
 .pointer {
-	cursor:pointer
+    cursor:pointer
 }
 .default {
-	cursor:default
+    cursor:default
 }
 /* Rounded Corners */
 .corner,
@@ -118,19 +118,19 @@ textarea,
 .mceEditor,
 .mceLayout,
 table.mainContent td {
-	-moz-border-radius: 3px;
-	-webkit-border-radius: 3px;
-	border-radius: 3px;
-	behavior: url(border-radius.htc);
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
+    behavior: url(border-radius.htc);
 }
 /* Clear Fix */
 .clearFix {
-	clear:both;
-	height:0px; 
-	width:0px;
-	line-height:0px;
-	margin:0px;
-	padding:0px;
+    clear:both;
+    height:0px;
+    width:0px;
+    line-height:0px;
+    margin:0px;
+    padding:0px;
 }
 /* Let and Right Float */
 .leftFloat {float:left}
@@ -138,67 +138,67 @@ table.mainContent td {
 
 /* Displaying Website */
 div#wrapper {
-	margin:0 auto;
-	width: 1241px
+    margin:0 auto;
+    width: 1241px
 }
 div#header {
-	height:145px;
-	position:relative
+    height:145px;
+    position:relative
 }
-div#footer 	{
-	background:#d3d3d3;
-	border-top:1px solid #c4c4c4;
-	border-bottom:1px solid #c4c4c4;
-	margin-top:7px
+div#footer     {
+    background:#d3d3d3;
+    border-top:1px solid #c4c4c4;
+    border-bottom:1px solid #c4c4c4;
+    margin-top:7px
 }
 
 /* Rotationsbanner im Header */
 div#rotationsbanner {
-	position:absolute;
-	right:0px;top:40px;
-	background:#fff;
-	padding:5px
+    position:absolute;
+    right:0px;top:40px;
+    background:#fff;
+    padding:5px
 }
 
 /* Wo bin ich und Suchfeld */
 div#brackets {
-	background:url(../images/brackets.jpg);
-	height:52px;line-height:48px;
-	color:#a9a9a9;
-	padding-left:20px;
-	margin:4px 0;
-	position:relative; 
-	font-size:13px
+    background:url(../images/brackets.jpg);
+    height:52px;line-height:48px;
+    color:#a9a9a9;
+    padding-left:20px;
+    margin:4px 0;
+    position:relative;
+    font-size:13px
 }
 div#brackets div#search {
-	position:absolute;
-	right:20px;top:10px
+    position:absolute;
+    right:20px;top:10px
 }
 
 /* Zeige Footer in der Mitte an */
 div#footwrapper {
-	margin:0 auto;
-	width:785px;
-	padding-bottom:10px
+    margin:0 auto;
+    width:785px;
+    padding-bottom:10px
 }
 
 /* Navigation um Footer */
 div.footNavigation {
-	width:180px;
-	max-width:180px
+    width:180px;
+    max-width:180px
 }
 
 div.footNavigation h2 {
-	height:48px;
-	line-height:48px;
-	font-size:14px;
-	font-weight:normal;
+    height:48px;
+    line-height:48px;
+    font-size:14px;
+    font-weight:normal;
 }
 div.footNavigation ul,
 div.footNavigation ul li {
-	list-style: none;
-	padding:0px;
-	margin:0px
+    list-style: none;
+    padding:0px;
+    margin:0px
 }
 
 /* Box Stylings */
@@ -206,108 +206,108 @@ div.footNavigation ul li {
 /* linke und rechte Spalte */
 div.sideContent,
 div#middleContent {
-	float:left;
+    float:left;
 }
 
 div#middleContent {
-	width:799px;
+    width:799px;
 }
 
 div.sideContent {
-	width:221px
+    width:221px
 }
 
 /* Index Bereich (Mainframe) */
 div#index {
-	padding:14px
+    padding:14px
 }
 .index {
-	margin:	0 7px;
-	background: #fff;
-	padding:4px;
-	color:#7d7d7d
+    margin:    0 7px;
+    background: #fff;
+    padding:4px;
+    color:#7d7d7d
 }
 
 /* Boxen linke und rechte Seite */
 .box {
-	background:#fff;
-	margin-bottom:7px;
-	padding:0 7px 7px 7px
+    background:#fff;
+    margin-bottom:7px;
+    padding:0 7px 7px 7px
 }
 /* Globale Überschriftendefinierung */
 .headline {
-	line-height:41px;
-	font-size:13px;
-	padding:0 18px;
-	display:block;
-	font-weight:normal;
+    line-height:41px;
+    font-size:13px;
+    padding:0 18px;
+    display:block;
+    font-weight:normal;
 }
 /* Überschrift normale Boxen */
 .box .headline {
-	height:49px;
-	background:url(../images/headBox.jpg) bottom repeat-x;
-	margin:0 -7px
+    height:49px;
+    background:url(../images/headBox.jpg) bottom repeat-x;
+    margin:0 -7px
 }
 
 /* Main Navigation (linke Seite) */
 .mainNavigation {
-	background:#2f2f2f;
-	padding-bottom:5px;
-	margin-bottom:10px
+    background:#2f2f2f;
+    padding-bottom:5px;
+    margin-bottom:10px
 }
 /* Überschrift Main Navigation */
 .mainNavigation h2.headline {
-	height: 45px;
-	color:#fff;
- 	background:url(../images/headMainNavigation.jpg) bottom repeat-x
+    height: 45px;
+    color:#fff;
+     background:url(../images/headMainNavigation.jpg) bottom repeat-x
 }
 /* Styling der ul liste */
 .mainNavigation ul,
 .mainNavigation ul li {
-	list-style:none;
-	padding:0px;
-	margin:0px
+    list-style:none;
+    padding:0px;
+    margin:0px
 }
 
 /* Anzeige der Galleriebox */
 div#galleriebox {
-	border:1px solid #e5e5e5;
-	padding:11px 12px 11px 12px;
-	margin:0 14px
+    border:1px solid #e5e5e5;
+    padding:11px 12px 11px 12px;
+    margin:0 14px
 }
 /* Überschrift Galleriebox */
 #galleriebox span.headline {
-	background:#f0f0f0;
-	height:37px;
-	line-height:37px;
-	margin:-10px -11px 10px -11px
+    background:#f0f0f0;
+    height:37px;
+    line-height:37px;
+    margin:-10px -11px 10px -11px
 }
 /* Einzelne Bilder */
 #galleriebox div.gallerie {
-	float:left;
-	margin:0 4px
+    float:left;
+    margin:0 4px
 }
 
 /* Tabswitch Plugin */
 .tabright {
-	width:50%;
-	text-align:left;
-	display:block;
-	float:left
+    width:50%;
+    text-align:left;
+    display:block;
+    float:left
 }
 .tableft {
-	width:50%;
-	text-align:right;
-	display:block;
-	float:right
+    width:50%;
+    text-align:right;
+    display:block;
+    float:right
 }
 .tabs span {
-	cursor:pointer;
-	color:#CCC
+    cursor:pointer;
+    color:#CCC
 }
 .tabs span.current {
-	cursor:default;
-	color:#000
+    cursor:default;
+    color:#000
 }
 
 /* Slideshow Plugin */
@@ -762,6 +762,10 @@ td.contentBottomLeft {
   text-align: left;
 }
 
+td.gray {
+  color:#ccc;
+}
+
 /*---------------------------------------------
 Attributes of the Newsarea
 -----------------------------------------------
@@ -956,12 +960,12 @@ a.navMain:hover,a.navMain:active {
 a.navClan:link,a.navClan:visited,
 a.navServer:link,a.navServer:visited,
 a.navMisc:link,a.navMisc:visited {
-	font-weight:normal;
-	color:#7d7d7d;
-	margin:0 1px;
-	width:140px;
-	padding:2px 4px;
-	display:block;
+    font-weight:normal;
+    color:#7d7d7d;
+    margin:0 1px;
+    width:140px;
+    padding:2px 4px;
+    display:block;
 }
 
 a.navClan:hover,a.navClan:active,
@@ -1450,27 +1454,27 @@ Adminmenu
 ---------------------------------------------*/
 .adminBarInner,.adminBarInnerOver {
   text-align: center;
-	text-decoration: none;
+    text-decoration: none;
   margin: 0px;
-	padding: 3px;
+    padding: 3px;
 }
 .adminBarInnerOver {
 
 }
 
 .adminBarOuter,.adminBarOuterOver {
-	text-decoration : none;
-	border: 1px solid #353535;
+    text-decoration : none;
+    border: 1px solid #353535;
 }
 
 .adminMenuInner,.adminMenuInnerOver {
-	margin: 3px 0 0 22px;
+    margin: 3px 0 0 22px;
 }
 
 .adminMenuOuter,.adminMenuOuterOver {
-	text-decoration : none;
-	border: 1px solid #353535;
-	padding: 0;
+    text-decoration : none;
+    border: 1px solid #353535;
+    padding: 0;
   background-repeat: no-repeat;
   background-position: 2px 50%;
 }
@@ -1602,92 +1606,92 @@ div.permissions br {
   Lightbox
 **************/
 #jquery-overlay {
-	position: absolute;
-	top: 0;
-	left: 0;
-	z-index: 90;
-	width: 100%;
-	height: 500px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 90;
+    width: 100%;
+    height: 500px;
 }
 #jquery-lightbox {
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	z-index: 100;
-	text-align: center;
-	line-height: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    text-align: center;
+    line-height: 0;
 }
 #jquery-lightbox a img { border: none; }
 #lightbox-container-image-box {
-	position: relative;
-	background-color: #FFF;
-	width: 250px;
-	height: 250px;
-	margin: 0 auto;
+    position: relative;
+    background-color: #FFF;
+    width: 250px;
+    height: 250px;
+    margin: 0 auto;
 }
 #lightbox-container-image { padding: 10px; }
 #lightbox-loading {
-	position: absolute;
-	top: 40%;
-	left: 0%;
-	height: 25%;
-	width: 100%;
-	text-align: center;
-	line-height: 0;
+    position: absolute;
+    top: 40%;
+    left: 0%;
+    height: 25%;
+    width: 100%;
+    text-align: center;
+    line-height: 0;
 }
 #lightbox-nav {
-	position: absolute;
-	top: 0;
-	left: 0;
-	height: 100%;
-	width: 100%;
-	z-index: 10;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 10;
 }
 #lightbox-container-image-box > #lightbox-nav { left: 0; }
 #lightbox-nav a { outline: none;}
 #lightbox-nav-btnPrev, #lightbox-nav-btnNext {
-	width: 49%;
-	height: 100%;
-	zoom: 1;
-	display: block;
+    width: 49%;
+    height: 100%;
+    zoom: 1;
+    display: block;
 }
-#lightbox-nav-btnPrev { 
-	left: 0; 
-	float: left;
+#lightbox-nav-btnPrev {
+    left: 0;
+    float: left;
 }
-#lightbox-nav-btnNext { 
-	right: 0; 
-	float: right;
+#lightbox-nav-btnNext {
+    right: 0;
+    float: right;
 }
 #lightbox-container-image-data-box {
-	font: 10px Verdana, Helvetica, sans-serif;
-	background-color: #fff;
-	margin: 0 auto;
-	line-height: 1.4em;
-	overflow: auto;
-	width: 100%;
-	padding: 0 10px 0;
+    font: 10px Verdana, Helvetica, sans-serif;
+    background-color: #fff;
+    margin: 0 auto;
+    line-height: 1.4em;
+    overflow: auto;
+    width: 100%;
+    padding: 0 10px 0;
 }
 #lightbox-container-image-data {
-	padding: 0 10px; 
-	color: #666; 
+    padding: 0 10px;
+    color: #666;
 }
-#lightbox-container-image-data #lightbox-image-details { 
-	width: 70%; 
-	float: left; 
-	text-align: left; 
-}	
+#lightbox-container-image-data #lightbox-image-details {
+    width: 70%;
+    float: left;
+    text-align: left;
+}
 #lightbox-image-details-caption { font-weight: bold; }
 #lightbox-image-details-currentNumber {
-	display: block; 
-	clear: left; 
-	padding-bottom: 1.0em;	
-}			
+    display: block;
+    clear: left;
+    padding-bottom: 1.0em;
+}
 #lightbox-secNav-btnClose {
-	width: 26px; 
-	float: right;
-	padding-bottom: 15px;	
+    width: 26px;
+    float: right;
+    padding-bottom: 15px;
 }
 
 /**************
@@ -1729,24 +1733,24 @@ div#ticker a:active {
   globale Suche
 **************/
 #searchpanel {
-	background:url(../images/searchpanel/searchpanel.png);
-	width:232px;
-	height:30px;
-	border: none;
-	color:#7d7d7d;
-	padding:0 8px;
+    background:url(../images/searchpanel/searchpanel.png);
+    width:232px;
+    height:30px;
+    border: none;
+    color:#7d7d7d;
+    padding:0 8px;
 }
 * html #searchpanel { margin: -1px 0 }
 *+html #searchpanel { margin: -1px 0 }
 
-input.searchSubmit { 
-	background:url(../images/searchpanel/search.png);
-	width:31px; 
-	height:30px;
-	border:none;
-	cursor:pointer;
-	padding:0px;
-	margin:0px;
+input.searchSubmit {
+    background:url(../images/searchpanel/search.png);
+    width:31px;
+    height:30px;
+    border:none;
+    cursor:pointer;
+    padding:0px;
+    margin:0px;
 }
 input.searchSubmit:hover {
   background-position: 0 30px;
@@ -1762,14 +1766,14 @@ img.border {
 }
 /*TeamSpeak Channeltree*/
 .tstree_left {
-	float:left;
-	width:80%;
+    float:left;
+    width:80%;
 }
 .tstree_right {
-	float:right;
-	text-align:right;
-	width:20%;
+    float:right;
+    text-align:right;
+    width:20%;
 }
 .tstree_clear {
-	clear:both;
+    clear:both;
 }
