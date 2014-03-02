@@ -32,7 +32,7 @@ if(!isset($installation))
   $installation = false;
 
 if(function_exists("date_default_timezone_set") && function_exists("date_default_timezone_get") && use_default_timezone)
-    date_default_timezone_set(date_default_timezone_get());
+    @date_default_timezone_set(@date_default_timezone_get());
 else if(!use_default_timezone) date_default_timezone_set(default_timezone);
 else date_default_timezone_set("Europe/Berlin");
 

@@ -5,7 +5,7 @@ define('_dropdown_time_ts', '<select id="h_[nr]" name="h_[nr]" class="dropdown">
 define('_cw_details_gegner', '<a href="[url]" title="[gegner]">[gegner]</a>');
 define('_cw_details_gegner_blank', '<a href="[url]" title="[gegner]" target="_blank">[gegner]</a>');
 ## ADDED / REDEFINED FOR 1.5.1
-define('_elevel_admin_select', '      
+define('_elevel_admin_select', '
 <option value="banned">[banned]</option>
 <option value="1" [selu]>[ruser]</option>
 <option value="2" [selt]>[trial]</option>
@@ -409,23 +409,23 @@ define('_klapptext_show', '<a href="javascript:DZCP.toggle(\'[id]\')"><img id="i
 define('_klapptext_dont_show', '<a href="javascript:DZCP.toggle(\'[id]\')"><img id="img[id]" src="../inc/images/expand.gif" alt="" class="icon" /></a>');
 define('_klapptext_show_link', '<a href="javascript:DZCP.toggle(\'[id]\')"><img id="img[id]" src="../inc/images/expand.gif" alt="" class="icon" />[link]</a>');
 define('_select_field_fightus', '<option value="[id]">[squad] ([game])</option>');
-## Xbox Live ##		
-define(_xboxicon, '<img src="../inc/images/xbox.gif" alt="" class="icon" onmouseover="DZCP.showInfo(\'<tr><td><img src=http://www.xboxlc.com/cards/sig/newblack/[id].jpg /></td></tr>\')" onmouseout="DZCP.hideInfo()" />');	
-define(_xboxicon_blank, '<img src="../inc/images/xbox.gif" alt="" class="icon" />');	
+## Xbox Live ##
+define('_xboxicon', '<img src="../inc/images/xbox.gif" alt="" class="icon" onmouseover="DZCP.showInfo(\'<tr><td><img src=http://www.xboxlc.com/cards/sig/newblack/[id].jpg /></td></tr>\')" onmouseout="DZCP.hideInfo()" />');
+define('_xboxicon_blank', '<img src="../inc/images/xbox.gif" alt="" class="icon" />');
 ## Xboxavatar ##
-define(_noxboxavatar, '<img src="../inc/images/noxboxavatar.gif" alt="" class="icon" />');	
-## Playstation Network ##	
-define(_psnicon, '<img src="../inc/images/psn.gif" alt="" class="icon" onmouseover="DZCP.showInfo(\'<tr><td><img src=http://mypsn.eu.playstation.com/psn/profile/[id].png /></td></tr>\')" onmouseout="DZCP.hideInfo()" />');	
-define(_psnicon_blank, '<img src="../inc/images/psn.gif" alt="" class="icon" />');			  
+define('_noxboxavatar', '<img src="../inc/images/noxboxavatar.gif" alt="" class="icon" />');
+## Playstation Network ##
+define('_psnicon', '<img src="../inc/images/psn.gif" alt="" class="icon" onmouseover="DZCP.showInfo(\'<tr><td><img src=http://mypsn.eu.playstation.com/psn/profile/[id].png /></td></tr>\')" onmouseout="DZCP.hideInfo()" />');
+define('_psnicon_blank', '<img src="../inc/images/psn.gif" alt="" class="icon" />');
 ## Xboxavatar##
-define(_xboxpic, '<img src="http://avatar.xboxlive.com/avatar/[id]/avatar-body.png" alt="" class="icon" onmouseover="DZCP.showInfo(\'<tr><td><img src=http://www.xboxlc.com/cards/newblack/[id].jpg /></td></tr>\')" onmouseout="DZCP.hideInfo()" />');	
+define('_xboxpic', '<img src="http://avatar.xboxlive.com/avatar/[id]/avatar-body.png" alt="" class="icon" onmouseover="DZCP.showInfo(\'<tr><td><img src=http://www.xboxlc.com/cards/newblack/[id].jpg /></td></tr>\')" onmouseout="DZCP.hideInfo()" />');
 ## Playstation Network & Xbox live Banneronly ##
-#define(_xboxicon, '<img src="http://www.xboxlc.com/cards/newblack/[id].jpg" alt="" class="icon"');
-#define(_psnicon, '<img src="http://mypsn.eu.playstation.com/psn/profile/[id].png" alt="" class="icon"<tr>');  
-## Origin ##	
-define(_originicon, '<img src="../inc/images/origin.png" alt="" class="icon" />');	
-define(_originicon_blank, '<img src="../inc/images/origin.png" alt="" class="icon" />');	
-## Battlenet ##	
-define(_battleneticon, '<img src="../inc/images/battlenet.gif" alt="" class="icon" />');	
-define(_battleneticon_blank, '<img src="../inc/images/battlenet.gif" alt="" class="icon" />');	
+#define(_xboxicon', '<img src="http://www.xboxlc.com/cards/newblack/[id].jpg" alt="" class="icon"');
+#define(_psnicon', '<img src="http://mypsn.eu.playstation.com/psn/profile/[id].png" alt="" class="icon"<tr>');
+## Origin ##
+define('_originicon', '<img src="../inc/images/origin.png" alt="" class="icon" />');
+define('_originicon_blank', '<img src="../inc/images/origin.png" alt="" class="icon" />');
+## Battlenet ##
+define('_battleneticon', '<img src="../inc/images/battlenet.gif" alt="" class="icon" />');
+define('_battleneticon_blank', '<img src="../inc/images/battlenet.gif" alt="" class="icon" />');
 ?>
