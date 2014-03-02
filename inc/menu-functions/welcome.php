@@ -19,4 +19,3 @@ function welcome()
   if($chkMe == 'unlogged') return $return.' '._welcome_guest;
   else                     return $return.' '.autor($userid, "welcome");
 }
-?>

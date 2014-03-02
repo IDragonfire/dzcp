@@ -27,4 +27,3 @@ function uotm()
 
   return empty($uotm) ? '' : '<table class="navContent" cellspacing="0">'.$uotm.'</table>';
 }
-?>

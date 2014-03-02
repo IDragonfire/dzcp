@@ -40,4 +40,3 @@ function navi($kat)
 
   return empty($navi) ? '' : ($table ? '<table class="navContent" cellspacing="0">'.$navi.'</table>' : $navi);
 }
-?>

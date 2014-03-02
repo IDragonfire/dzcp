@@ -20,4 +20,3 @@ function newsticker()
 
   return show("menu/newsticker", array("news" => $news));
 }
-?>

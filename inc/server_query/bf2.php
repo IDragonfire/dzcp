@@ -7,11 +7,11 @@
 
 ##############################################################################################################################
 
-  function server_query_bf2($ip, $port, $q_port, $request)
+  function server_query_bf2($ip, $port, $q_port, $request, $challenge_code='')
   {
     global $server_timeout;
     $q_port = empty($q_port) ? ($q_port + 3) : $q_port;
-      
+
     @set_time_limit(2);
     $fp = @fsockopen("udp://$ip", $q_port, $errno, $errstr, $server_timeout);
 
@@ -96,7 +96,7 @@
     if ($request == "info")
     {
       unset($data);
-      
+
       $gamemod = ($setting['gamename']=='stella'||$setting['gamename']=='stellad')
                  ?'bf2142':$setting['gamename'];
       $data['gamemod']    = $gamemod;

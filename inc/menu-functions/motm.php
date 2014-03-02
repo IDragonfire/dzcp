@@ -37,4 +37,3 @@ function motm()
 
   return empty($member) ? '' : '<table class="navContent" cellspacing="0">'.$member.'</table>';
 }
-?>

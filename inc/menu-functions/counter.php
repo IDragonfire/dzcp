@@ -1,5 +1,5 @@
 <?php
-//-> counter output
+//-> Menu: Counter
 function counter()
 {
   global $db,$today,$counter_start,$useronline,$where,$isSpider;
@@ -47,10 +47,12 @@ function counter()
                   WHERE time+'".$useronline."'>'".time()."'
                   AND online = 1
                   ORDER BY nick");
+
+      $kats = ''; $text = '';
       while($geto = _fetch($qryo))
       {
         $kats .= fabo_autor($geto['id']).';';
-		$text .= jsconvert(getrank($geto['id'])).';';
+        $text .= jsconvert(getrank($geto['id'])).';';
       }
 
       $info = 'onmouseover="DZCP.showInfo(\''._online_head.'\', \''.$kats.'\', \''.$text.'\')" onmouseout="DZCP.hideInfo()"';
@@ -80,4 +82,3 @@ function counter()
     return '<table class="navContent" cellspacing="0">'.$counter.'</table>';
   }
 }
-?>

@@ -16,4 +16,3 @@ function l_reg()
 
   return empty($lreg) ? '' : '<table class="navContent" cellspacing="0">'.$lreg.'</table>';
 }
-?>

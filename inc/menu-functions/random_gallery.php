@@ -21,4 +21,3 @@ function random_gallery()
 
   return empty($gallery) ? '' : '<table class="navContent" cellspacing="0">'.$gallery.'</table>';
 }
-?>
