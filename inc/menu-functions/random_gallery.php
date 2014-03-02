@@ -1,4 +1,5 @@
 <?php
+//-> Menu: Zufallsgalerie
 function random_gallery()
 {
   global $db;

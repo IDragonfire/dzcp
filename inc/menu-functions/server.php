@@ -1,4 +1,5 @@
 <?php
+//-> Menu: Gameserver
 function server($serverID = 0)
 {
     global $db, $servermenu, $language, $config;

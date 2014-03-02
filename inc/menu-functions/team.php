@@ -1,5 +1,5 @@
 <?php
-//-> Teamausgabe
+//-> Menu: Teamausgabe
 function team($tID = '')
 {
     global $db,$teamRow,$l_team;

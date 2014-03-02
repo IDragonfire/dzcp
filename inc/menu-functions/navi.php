@@ -1,4 +1,5 @@
 <?php
+//-> Menu: Navigation
 function navi($kat)
 {
     global $db,$chkMe,$userid,$designpath;

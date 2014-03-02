@@ -1,10 +1,9 @@
 <?php
-//-> Begrüßung nach Tageszeit
-function welcome()
-{
-  global $chkMe,$userid;
+//-> Menu: Begrüßung nach Tageszeit
+function welcome() {
+    global $chkMe,$userid;
 
-  $return = "<script language=\"javascript\" type=\"text/javascript\">
+    $return = "<script language=\"javascript\" type=\"text/javascript\">
                <!--
                  date = new Date();
                  hour = date.getHours();
@@ -16,6 +15,8 @@ function welcome()
                //-->
              </script>";
 
-  if($chkMe == 'unlogged') return $return.' '._welcome_guest;
-  else                     return $return.' '.autor($userid, "welcome");
+    if($chkMe == 'unlogged')
+        return $return.' '._welcome_guest;
+
+    return $return.' '.autor($userid, "welcome");
 }

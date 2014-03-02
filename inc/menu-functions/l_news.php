@@ -1,5 +1,5 @@
 <?php
-//-> Last News
+//-> Menu: Last News
 function l_news()
 {
     global $db,$maxlnews,$lnews,$allowHover;

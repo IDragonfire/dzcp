@@ -1,4 +1,5 @@
 <?php
+//-> Menu: Login Box
       if($secureLogin == 1) $secure = show("menu/secure", array("help" => _login_secure_help));
 
       $login = show("menu/login", array("register" => _register,

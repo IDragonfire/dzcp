@@ -1,5 +1,5 @@
 <?php
-//-> Shoutbox
+//-> Menu: Shoutbox
 function shout($ajax = 0) {
     global $db,$maxshout,$lshouttext,$lshoutnick,$shout_max_zeichen,$userid,$chkMe;
 

@@ -1,5 +1,5 @@
 <?php
-//-> Forum Vote
+//-> Menu: Forum Vote
 function fvote($id, $ajax=false)
 {
   global $db,$balken_vote_menu,$prev;;

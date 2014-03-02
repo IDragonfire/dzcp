@@ -1,5 +1,5 @@
 <?php
-//zuletzt registrierte User
+//-> Menu: zuletzt registrierte User
 function l_reg()
 {
   global $db,$llreg,$maxlreg;

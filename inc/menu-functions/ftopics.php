@@ -1,5 +1,5 @@
 <?php
-//-> Menu:
+//-> Menu: Forum topics
 function ftopics()
 {
     global $db,$maxftopics,$lftopics,$maxfposts,$allowHover;

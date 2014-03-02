@@ -1,5 +1,5 @@
 <?php
-//-> next Wars Menu
+//-> Menu: next Wars
 function n_wars() {
     global $db,$maxnwars,$lnwars,$allowHover;
 

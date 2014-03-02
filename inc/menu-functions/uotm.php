@@ -1,8 +1,7 @@
 <?php
-//User of the Moment
-function uotm()
-{
-  global $db, $allowHover;
+//-> Menu: User of the Moment
+function uotm() {
+    global $db, $allowHover;
 
     $imgFiles = array();
     $folder = get_files('../inc/images/uploads/userpics',false,true);

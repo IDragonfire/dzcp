@@ -1,5 +1,5 @@
 <?php
-//-> Rotationsbanner
+//-> Menu: Rotationsbanner
 function rotationsbanner() {
     global $db;
 

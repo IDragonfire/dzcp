@@ -1,5 +1,5 @@
 <?php
-//-> globale Suche
+//-> Menu: Globale Suche
 function search()
 {
   return show("menu/search", array("submit" => _button_value_search,

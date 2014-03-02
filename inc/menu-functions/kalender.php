@@ -1,5 +1,5 @@
 <?php
-//-> Kalender
+//-> Menu: Kalender
 function kalender($month="",$year="")
 {
     global $db;

@@ -1,5 +1,5 @@
 <?php
-//-> Teamspeak statusscript
+//-> Menu: Teamspeak
 function teamspeak($js = 0)
 {
     global $db, $settings, $language, $config;
