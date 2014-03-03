@@ -12,6 +12,7 @@ require_once(basePath.'/inc/smtp.php');
 require_once(basePath.'/inc/phpmailer.php');
 require_once(basePath.'/inc/server_query/_functions.php');
 require_once(basePath."/inc/teamspeak_query.php");
+require_once(basePath."/inc/phpfastcache/phpfastcache.php");
 
 ## Is AjaxJob ##
 $ajaxJob = (!isset($ajaxJob) ? false : $ajaxJob);
@@ -127,6 +128,14 @@ $userip = visitorIp();
 $maxpicwidth = 90;
 $maxadmincw = 10;
 $maxfilesize = @ini_get('upload_max_filesize');
+
+//Cache
+$config_cache['htaccess'] = true;
+$config_cache['fallback'] = array( "memcache" => "apc", "memcached" =>  "apc", "apc" =>  "sqlite", "sqlite" => "files");
+$config_cache['path'] = basePath."/inc/_cache_";
+$config_cache['securityKey'] = sha1($prev);
+phpFastCache::setup($config_cache);
+$cache = phpFastCache();
 
 //-> Auslesen der Cookies und automatisch anmelden
 if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSION['id']) && checkme() == "unlogged") {
@@ -2183,6 +2192,24 @@ function getBoardPermissions($checkID = 0, $pos = 0) {
 function setIpcheck($what = '') {
     global $db, $userip;
     db("INSERT INTO ".$db['ipcheck']." SET `ip` = '".$userip."', `what` = '".$what."', `time` = '".time()."'");
+}
+
+function hextobin($hexstr) {
+    if(is_php('5.4.0'))
+        return hex2bin($hexstr);
+    // < PHP 5.4
+    $n = strlen($hexstr);
+    $sbin="";
+    $i=0;
+    while($i<$n) {
+        $a =substr($hexstr,$i,2);
+        $c = pack("H*",$a);
+        if ($i==0){$sbin=$c;}
+        else {$sbin.=$c;}
+        $i+=2;
+    }
+
+    return $sbin;
 }
 
 //-> Neue Languages einbinden, sofern vorhanden

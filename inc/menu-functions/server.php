@@ -5,7 +5,7 @@
  * Menu: Gameserver
  */
 function server($serverID = 0) {
-    global $db, $servermenu, $language, $config;
+    global $db, $servermenu, $language, $config, $cache;
 
     if(!fsockopen_support()) return _fopen;
     $servernavi = '';
@@ -31,13 +31,13 @@ function server($serverID = 0) {
         }
 
         unset($player_list);
-        if(time() - @filemtime(basePath.'/__cache/'.md5('nav_server_'.$serverID).'.cache') > $config['cache_server']) {
+
+        if(empty($cache->get('nav_server_'.$serverID))) {
             $server = gs_normalise(@call_user_func('server_query_'.$get['status'], $get['ip'], $get['port'], $get['qport'], 'info'));
             $player_list = call_user_func('server_query_'.$get['status'], $get['ip'], $get['port'], $get['qport'], 'players');
-            $fp = @fopen(basePath.'/__cache/'.md5('nav_server_'.$serverID).'.cache', 'w'); @fwrite($fp, serialize(array('server' => $server, 'players' => $player_list)));
-            @fclose($fp);
+            $cache->set('nav_server_'.$serverID, serialize(array('server' => $server, 'players' => $player_list)), $config['cache_server']);
         } else {
-            $server_cache = @file_get_contents(basePath.'/__cache/'.md5('nav_server_'.$serverID).'.cache');
+            $server_cache = $cache->get('nav_server_'.$serverID);
             $server_cache = unserialize($server_cache);
             $server = gs_normalise($server_cache['server']);
             $player_list = $server_cache['players'];

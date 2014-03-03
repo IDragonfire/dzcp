@@ -12,6 +12,10 @@ define('view_error_reporting', true); // Zeigt alle Fehler und Notices etc.
 define('use_default_timezone', true); // Verwendende die Zeitzone vom Server
 define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selbst einstellen * 'use_default_timezone' auf false stellen *
 
+$config_cache = array();
+$config_cache['storage'] = "auto"; //memcache
+$config_cache['server'] = array(array("127.0.0.1",11211,1));
+
 #########################################
 //-> DZCP Settings End
 #########################################
@@ -154,10 +158,20 @@ if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '
 
 //MySQL-Funktionen
 function _rows($rows)
-{ return $rows->num_rows; }
+{
+    if(array_key_exists('_stmt_rows_', $rows))
+        return $rows['_stmt_rows_'];
+    else
+        return $rows->num_rows;
+}
 
 function _fetch($fetch)
-{ return $fetch->fetch_assoc(); }
+{
+    if(array_key_exists('_stmt_rows_', $fetch))
+        return $fetch[0];
+    else
+        return $fetch->fetch_assoc();
+}
 
 function db($query='',$rows=false,$fetch=false) {
     global $prefix,$mysql;
@@ -195,17 +209,32 @@ function db_stmt($query,$params=array('si', 'hallo', '4'),$rows=false,$fetch=fal
                                      '<li><b>Error</b>   = '.!empty($prefix) ? str_replace($prefix,'',$mysql->connect_error) : $mysql->connect_error.
                                      '<li><b>Query</b>   = '.!empty($prefix) ? str_replace($prefix,'',$query).'</ul>' : $query);
 
-    $qry = $statement->get_result();
-    $statement->close();
+    $meta = mysqli_stmt_result_metadata($statement);
+    if(!$meta || empty($meta)) { mysqli_stmt_close($statement); return; }
+    $row = array(); $parameters = array(); $results = array();
+    while ( $field = mysqli_fetch_field($meta) ) {
+        $parameters[] = &$row[$field->name];
+    }
+
+    mysqli_stmt_store_result($statement);
+    $results['_stmt_rows_'] = mysqli_stmt_num_rows($statement);
+    call_user_func_array(array($statement, 'bind_result'), refValues($parameters));
+
+    while ( mysqli_stmt_fetch($statement) ) {
+        $x = array();
+        foreach( $row as $key => $val ) {
+            $x[$key] = $val;
+        }
+
+        $results[] = $x;
+    }
 
     if ($rows && !$fetch)
-        return _rows($qry);
-    else if($fetch && $rows)
-        return $qry->fetch_array(MYSQLI_NUM);
+        return _rows($results);
     else if($fetch && !$rows)
-        return _fetch($qry);
+        return _fetch($results);
 
-    return $qry;
+    return $results;
 }
 
 function refValues($arr) {

@@ -70,7 +70,6 @@ if(isset($_GET['agb']) && $_GET['agb'])
         _c('_installer',$pfad,$host,$user,$pwd);
         _c('_installer/update.php',$pfad,$host,$user,$pwd);
         _c('_installer/install.php',$pfad,$host,$user,$pwd);
-        _c('__cache',$pfad,$host,$user,$pwd);
         _c('rss.xml',$pfad,$host,$user,$pwd);
         _c('admin',$pfad,$host,$user,$pwd);
         _c('banner',$pfad,$host,$user,$pwd);
@@ -83,6 +82,7 @@ if(isset($_GET['agb']) && $_GET['agb'])
         _c('upload',$pfad,$host,$user,$pwd);
         _c('upload/',$pfad,$host,$user,$pwd);
         _c('inc',$pfad,$host,$user,$pwd);
+        _c('inc/_cache_',$pfad,$host,$user,$pwd);
         _c('inc/images',$pfad,$host,$user,$pwd);
         _c('inc/images/tsicons/',$pfad,$host,$user,$pwd);
         _c('inc/images/tsicons/server/',$pfad,$host,$user,$pwd);
@@ -121,7 +121,6 @@ if(isset($_GET['agb']) && $_GET['agb'])
   $cm .= _i('../_installer/install.php');
   $cm .= _i('../_installer/update.php');
 //Check Scriptfiles
-  $c = _i('../__cache',1);
   $c .= _i('../rss.xml');
   $c .= _i('../admin',1);
   $c .= _i('../banner',1);
@@ -133,6 +132,7 @@ if(isset($_GET['agb']) && $_GET['agb'])
   $c .= _i('../upload',1);
   $c .= _i('../upload/index.php');
   $c .= _i('../inc',1);
+  $c =  _i('../inc/_cache_',1);
   $c .= _i('../inc/images',1);
   $c .= _i('../inc/images/tsicons',1);
   $c .= _i('../inc/images/tsicons/server',1);

@@ -21,7 +21,7 @@ default:
         $player_list = '';
         if($get['status'] != "nope" && file_exists(basePath.'/inc/server_query/'.$get['status'].'.php'))
         {
-          if(time() - @filemtime(basePath.'/__cache/'.md5('gameserver_'.intval($get['id']).'_'.$language).'.cache') > $config['cache_server'])
+          if(empty($cache->get('gameserver_'.intval($get['id']).'_'.$language)))
           {
           if(!function_exists('server_query_'.$get['status']))
           {
@@ -207,11 +207,9 @@ default:
                                                     "name" => re($server['hostname']),
                                                                         "image_map" => $image_map));
 
-          $fp = @fopen(basePath.'/__cache/'.md5('gameserver_'.intval($get['id']).'_'.$language).'.cache', 'w');
-                @fwrite($fp, $index);
-          @fclose($fp);
+          $cache->set('gameserver_'.intval($get['id']).'_'.$language, $index, $config['cache_server']);
         } else {
-          $index = @file_get_contents(basePath.'/__cache/'.md5('gameserver_'.intval($get['id']).'_'.$language).'.cache');
+            $index = $cache->get('gameserver_'.intval($get['id']).'_'.$language);
         }
       } else {
         if(!empty($get['pwd'])) $pwds = show(_server_pwd, array("pwd" => re($get['pwd'])));
@@ -236,4 +234,3 @@ $time = round($time_end - $time_start,4);
 page($index, $title, $where,$time);
 ## OUTPUT BUFFER END ##
 gz_output();
-?>

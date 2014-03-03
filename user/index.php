@@ -21,7 +21,7 @@ case 'login';
     } else {
       if(checkpwd($_POST['user'], md5($_POST['pwd'])))
       {
-          $get = db_stmt("SELECT id,user,nick,pwd,email,level,time FROM ".$db['users']." WHERE user = ? AND pwd = ? AND level != '0'", array('ss', up($_POST['user']), md5($_POST['pwd'])),false,true);
+        $get = db_stmt("SELECT id,user,nick,pwd,email,level,time FROM ".$db['users']." WHERE user = ? AND pwd = ? AND level != '0'", array('ss', up($_POST['user']), md5($_POST['pwd'])),false,true);
         $permanent_key = '';
         if(isset($_POST['permanent']))
         {
@@ -3167,42 +3167,62 @@ case 'admin';
   }
 break;
 case 'get_steam_image';
+    if(!fsockopen_support()) die(_fopen);
     $data=strtolower(trim($_GET['steam_id']));
-    if ($data!='')
-    {
-        if (ereg('7656119', $data))
-        {
+    if ($data!='') {
+        if (ereg('7656119', $data)) {
             $ret = $data;
         }
-        else if (substr($data,0,7)=='steam_0')
-        {
+        else if (substr($data,0,7)=='steam_0') {
             $tmp=explode(':',$data);
-            if ((count($tmp)==3) && is_numeric($tmp[1]) && is_numeric($tmp[2]))
-            {
+            if ((count($tmp)==3) && is_numeric($tmp[1]) && is_numeric($tmp[2])) {
                 $friendid=($tmp[2]*2)+$tmp[1]+1197960265728;
                 $friendid='7656'.$friendid;
                 $ret = $friendid;
             }
         }
-        if ($ret!= null)
-        {
-            $steam_profile = simplexml_load_file("http://steamcommunity.com/profiles/".$ret."/?xml=1");
+
+        if ($ret!= null) {
+            if(empty($cache->get('xml_'.$ret))) {
+                $steam_profile = simplexml_load_file("http://steamcommunity.com/profiles/".$ret."/?xml=1");
+                $cache->set('xml_'.$ret, $steam_profile, 3600);
+            }
+            else
+                $steam_profile = $cache->get('xml_'.$ret);
         }
         else
         {
-            $steam_profile = simplexml_load_file("http://steamcommunity.com/id/".str_replace('steam_','ERROR_POFILE_FIXED',$data)."/?xml=1");
+            if(empty($cache->get('xml_'.$data))) {
+                $steam_profile = simplexml_load_file("http://steamcommunity.com/id/".str_replace('steam_','ERROR_POFILE_FIXED',$data)."/?xml=1");
+                $cache->set('xml_'.$data, $steam_profile, 3600);
+            }
+            else
+                $steam_profile = $cache->get('xml_'.$data);
+
             $ret = $steam_profile->steamID64;
         }
-        if (empty($steam_profile->error) && $ret != "")
-        {
-            $file = 'http://steamsignature.com/profile/english/'.$ret.'.png';
+
+        if (empty($steam_profile->error) && $ret != "") {
+            if(empty($cache->get("steamsignature_".$ret))) {
+            $image_cache = fileExists('http://steamsignature.com/profile/english/'.$ret.'.png');
+            if($image_cache && !empty($image_cache))
+                $cache->set("steamsignature_".$ret, bin2hex($image_cache), 3600);
+            }
+            else
+                $image_cache = hextobin($cache->get("steamsignature_".$ret));
         }
         else {
-            $file = 'http://steamsignature.com/profile/english/error_not_found.png';
+            if(empty($cache->get("steamsignature_error_pic"))) {
+                $image_cache = fileExists('http://steamsignature.com/profile/english/error_not_found.png');
+                if($image_cache && !empty($image_cache))
+                    $cache->set("steamsignature_error_pic", bin2hex($image_cache), 3600);
+            }
+            else
+                $image_cache = hextobin($cache->get("steamsignature_error_pic"));
         }
-        $image_cache = file_get_contents($file);
+
         header('Content-Type: image/png');
-        echo $image_cache;
+        die($image_cache);
     }
 break;
 

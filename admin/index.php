@@ -70,46 +70,41 @@ $dir = "admin";
       $adminc1 = '/*'; $adminc2 = '*/';
     }
 
-    if(fsockopen_support())
-    {
-      if(time() - @filemtime(basePath.'/__cache/'.md5('admin_version').'.cache') > 600)
-      {
-          $dzcp_v = fileExists("http://www.dzcp.de/version.txt");
-          if(!empty($dzcp_v))
-          {
-              $fp = @fopen(basePath.'/__cache/'.md5('admin_version').'.cache', 'w');
-              @fwrite($fp, $dzcp_v); @fclose($fp);
-          }
-      }
-      else
-          $dzcp_v = @file_get_contents(basePath.'/__cache/'.md5('admin_version').'.cache');
+    $version = '<b>'._akt_version.': '._version.'</b>'; $dzcp_news = '';
+    if(fsockopen_support()) {
+        if(empty($cache->get("admin_version"))) {
+            $dzcp_v = fileExists("http://www.dzcp.de/version.txt");
+            if(!empty($dzcp_v))
+                $cache->set("admin_version", $dzcp_v, 600);
+            else
+                $dzcp_v = false;
+        }
+        else
+            $dzcp_v = $cache->get("admin_version");
 
-      if($dzcp_v <= _version) {
-        $version = '<b>'._akt_version.': <span class="fontGreen">'._version.'</span></b>';
-        $old = "";
-      } else  {
-        $version = "<a href=\"http://www.dzcp.de\" target=\"_blank\" title=\"external Link: www.dzcp.de\"><b>"._akt_version.":</b> <span class=\"fontRed\">"._version."</span></a>";
-        $old = "_old";
-      }
+        if($dzcp_v && $dzcp_v <= _version) {
+            $version = '<b>'._akt_version.': <span class="fontGreen">'._version.'</span></b>';
+            $old = "";
+        } else {
+            $version = "<a href=\"http://www.dzcp.de\" target=\"_blank\" title=\"external Link: www.dzcp.de\"><b>"._akt_version.":</b> <span class=\"fontRed\">"._version."</span></a>";
+            $old = "_old";
+        }
 
-      if(time() - @filemtime(basePath.'/__cache/'.md5('admin_news').'.cache') > 600)
-      {
-          $dzcp_news = @file_get_contents('http://www.dzcp.de/dzcp_news.php');
-          if(!empty($dzcp_v))
-          {
-              $fp = @fopen(basePath.'/__cache/'.md5('admin_news').'.cache', 'w');
-              @fwrite($fp, $dzcp_news); @fclose($fp);
-          }
-      }
-      else
-          $dzcp_news = @file_get_contents(basePath.'/__cache/'.md5('admin_news').'.cache');
+        if(empty($cache->get("admin_news"))) {
+            $dzcp_news = fileExists("http://www.dzcp.de/dzcp_news.php");
+            if(!empty($dzcp_news))
+                $cache->set("admin_news", $dzcp_news, 600);
+            else
+                $dzcp_news = false;
+        }
+        else
+            $dzcp_news = $cache->get("admin_news");
 
     }
-    if(@file_exists(basePath."/_installer") && $chkMe == 4 && !view_error_reporting)
-        {
-            $index = _installdir;
-        } else {
 
+    if(@file_exists(basePath."/_installer") && $chkMe == 4 && !view_error_reporting) {
+        $index = _installdir;
+    } else {
     $index = show($dir."/admin", array("head" => _config_head,
                                        "forumkats" => $fkats,
                                        "newskats" => $nkats,

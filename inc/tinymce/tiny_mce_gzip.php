@@ -12,7 +12,7 @@
 // Handle incoming request if it's a script call
 if (TinyMCE_Compressor::getParam("js")) {
     // Default settings
-    $tinyMCECompressor = new TinyMCE_Compressor(array("cache_dir" => realpath(dirname(__FILE__) . "/../../__cache")));
+    $tinyMCECompressor = new TinyMCE_Compressor(array("cache_dir" => realpath(dirname(__FILE__) . "/../_cache_")));
 
     // Handle request, compress and stream to client
     $tinyMCECompressor->handleRequest();
@@ -187,7 +187,7 @@ class TinyMCE_Compressor {
         foreach ($allFiles as $file) {
             if ($file) {
                 $fileContents = $this->getFileContents($tinymceDir . "/" . $file);
-//				$buffer .= "\n//-FILE-$tinymceDir/$file (". strlen($fileContents) . " bytes)\n";
+//                $buffer .= "\n//-FILE-$tinymceDir/$file (". strlen($fileContents) . " bytes)\n";
                 $buffer .= $fileContents;
             }
         }
