@@ -2083,31 +2083,36 @@ function pholderreplace($pholder) {
     return str_replace("]","",$pholder);
 }
 
-//-> Zugriff auf die Seite
+//-> Zugriffsberechtigung auf die Seite
 function check_internal_url() {
     global $db,$chkMe;
     if($chkMe != "unlogged") return false;
     $install_pfad = explode("/",dirname(dirname($_SERVER['SCRIPT_NAME'])."../"));
-    $now_pfad = explode("/",$_SERVER['REQUEST_URI']);
+    $now_pfad = explode("/",$_SERVER['REQUEST_URI']); $pfad = '';
     foreach($now_pfad as $key => $value) {
-        if($value != $install_pfad[$key]) {
-            $pfad .= "/".$value;
+        if(!empty($value)) {
+            if(!isset($install_pfad[$key]) || $value != $install_pfad[$key]) {
+                $pfad .= "/".$value;
+            }
         }
     }
-    list($pfad,$rest) = split('&',$pfad);
+
+    list($pfad) = explode('&',$pfad);
     $pfad = "..".$pfad;
-    if(strpos($pfad, "?") === false && strpos($pfad, ".php") === false) {
+
+    if(strpos($pfad, "?") === false && strpos($pfad, ".php") === false)
         $pfad .= "/";
+
+    if(strpos($pfad, "index.php") !== false)
+        $pfad = str_replace('index.php','',$pfad);
+
+    $qry_navi = db("SELECT internal FROM ".$db['navi']." WHERE url = '".$pfad."' OR url = '".$pfad.'index.php'."'");
+    if(_rows($qry_navi)) {
+        $get_navi = _fetch($qry_navi);
+        if($get_navi['internal'])
+            return true;
     }
 
-    $qry_navi = db("SELECT * FROM ".$db['navi']." WHERE url = '".$pfad."'");
-    if(_rows($qry_navi) == 0) {
-        list($pfad,$rest) = split('\?',$pfad);
-        $qry_navi = db("SELECT * FROM ".$db['navi']." WHERE url = '".$pfad."'");
-        if(_rows($qry_navi) == 0) $qry_navi = db("SELECT * FROM ".$db['navi']." WHERE url = '".str_replace("index.php","",$pfad)."'");
-    }
-    $get_navi = _fetch($qry_navi);
-    if($get_navi['internal']) return true;
     return false;
 }
 
