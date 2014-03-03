@@ -147,29 +147,77 @@ $db = array("host" =>           $sql_host,
 unset($prefix,$sql_host,$sql_user,$sql_pass,$sql_db);
 
 if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '')
-    if(!$mysql = mysqli_connect($db['host'],$db['user'],$db['pass'],$db['db'])) die("<b>Fehler beim Zugriff auf die Datenbank!");
+{
+    $mysql = new mysqli($db['host'],$db['user'],$db['pass'],$db['db']);
+    if ($mysql->connect_error) { die("<b>Fehler beim Zugriff auf die Datenbank!"); }
+}
 
 //MySQL-Funktionen
 function _rows($rows)
-{ return mysqli_num_rows($rows); }
+{ return $rows->num_rows; }
 
 function _fetch($fetch)
-{ return mysqli_fetch_assoc($fetch); }
+{ return $fetch->fetch_assoc(); }
 
-function db($db='',$rows=false,$fetch=false) {
+function db($query='',$rows=false,$fetch=false) {
     global $prefix,$mysql;
-    if(!$qry = mysqli_query($mysql,$db)) die('<b>MySQL-Query failed:</b><br /><br /><ul>'.
-                                     '<li><b>ErrorNo</b> = '.!empty($prefix) ? str_replace($prefix,'',mysqli_errno()) : mysqli_errno().
-                                     '<li><b>Error</b>   = '.!empty($prefix) ? str_replace($prefix,'',mysqli_error()) : mysqli_error().
-                                     '<li><b>Query</b>   = '.!empty($prefix) ? str_replace($prefix,'',$db).'</ul>' : $db);
+    if(!$qry = $mysql->query($query)) die('<b>MySQL-Query failed:</b><br /><br /><ul>'.
+                                     '<li><b>ErrorNo</b> = '.!empty($prefix) ? str_replace($prefix,'',$mysql->connect_errno) : $mysql->connect_errno.
+                                     '<li><b>Error</b>   = '.!empty($prefix) ? str_replace($prefix,'',$mysql->connect_error) : $mysql->connect_error.
+                                     '<li><b>Query</b>   = '.!empty($prefix) ? str_replace($prefix,'',$query).'</ul>' : $query);
     if ($rows && !$fetch)
-        return mysqli_num_rows($qry);
+        return _rows($qry);
     else if($fetch && $rows)
-        return mysqli_fetch_array($qry);
+        return $qry->fetch_array(MYSQLI_NUM);
     else if($fetch && !$rows)
-        return mysqli_fetch_assoc($qry);
+        return _fetch($qry);
 
     return $qry;
+}
+
+/**
+ *  i     corresponding variable has type integer
+ *  d     corresponding variable has type double
+ *  s     corresponding variable has type string
+ *  b     corresponding variable is a blob and will be sent in packets
+ */
+function db_stmt($query,$params=array('si', 'hallo', '4'),$rows=false,$fetch=false)
+{
+    global $prefix,$mysql;
+    if(!$statement = $mysql->prepare($query)) die('<b>MySQL-Query failed:</b><br /><br /><ul>'.
+                                     '<li><b>ErrorNo</b> = '.!empty($prefix) ? str_replace($prefix,'',$mysql->connect_errno) : $mysql->connect_errno.
+                                     '<li><b>Error</b>   = '.!empty($prefix) ? str_replace($prefix,'',$mysql->connect_error) : $mysql->connect_error.
+                                     '<li><b>Query</b>   = '.!empty($prefix) ? str_replace($prefix,'',$query).'</ul>' : $query);
+
+    call_user_func_array(array($statement, 'bind_param'), refValues($params));
+    if(!$statement->execute()) die('<b>MySQL-Query failed:</b><br /><br /><ul>'.
+                                     '<li><b>ErrorNo</b> = '.!empty($prefix) ? str_replace($prefix,'',$mysql->connect_errno) : $mysql->connect_errno.
+                                     '<li><b>Error</b>   = '.!empty($prefix) ? str_replace($prefix,'',$mysql->connect_error) : $mysql->connect_error.
+                                     '<li><b>Query</b>   = '.!empty($prefix) ? str_replace($prefix,'',$query).'</ul>' : $query);
+
+    $qry = $statement->get_result();
+    $statement->close();
+
+    if ($rows && !$fetch)
+        return _rows($qry);
+    else if($fetch && $rows)
+        return $qry->fetch_array(MYSQLI_NUM);
+    else if($fetch && !$rows)
+        return _fetch($qry);
+
+    return $qry;
+}
+
+function refValues($arr) {
+    if (strnatcmp(phpversion(),'5.3') >= 0) {
+        $refs = array();
+        foreach($arr as $key => $value)
+            $refs[$key] = &$arr[$key];
+
+        return $refs;
+    }
+
+    return $arr;
 }
 
 function sql_backup() {

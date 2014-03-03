@@ -53,7 +53,7 @@ else
 
                     $comments = show(_news_comments, array("comments" => '0', "id" => $get['id']));
                     if($count >= 2)
-                        $comments = show(_news_comments, array("comments" => $c, "id" => $get['id']));
+                        $comments = show(_news_comments, array("comments" => $count, "id" => $get['id']));
                     else if($count == 1)
                         $comments = show(_news_comment, array("comments" => "1", "id" => $get['id']));
 
@@ -351,7 +351,7 @@ else
                                                            "b2" => $u_b2,
                                                            "security" => _register_confirm,
                                                            "action" => '?action=show&amp;do=add&amp;id='.$_GET['id'],
-                                                           "prevurl" => '../news/?action=compreview&amp;id='.$_GET['id'],
+                                                           "prevurl" => '../news/?action=compreview&id='.$_GET['id'],
                                                            "lang" => $language,
                                                            "id" => $_GET['id'],
                                                            "postemail" => "",
@@ -400,7 +400,7 @@ else
             switch($do)
             {
                 case 'add':
-                    if(db("SELECT `id` FROM ".$db['news']." WHERE `id` = '".(int)$_GET['id']."'",true,false) != 0)
+                    if(db("SELECT `id` FROM ".$db['news']." WHERE `id` = ".intval($_GET['id']),true,false) != 0)
                     {
                         if(settings("reg_newscomments") == "1" && $chkMe == "unlogged")
                             $index = error(_error_have_to_be_logged, 1);
@@ -411,8 +411,7 @@ else
                                 else
                                     $toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['comment']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
 
-                                if($toCheck)
-                                {
+                                if($toCheck) {
                                     if($userid >= 1) {
                                         if(empty($_POST['eintrag'])) $error = _empty_eintrag;
                                         $form = show("page/editor_regged", array("nick" => autor($userid), "von" => _autor));
@@ -453,100 +452,87 @@ else
                                                                              "error" => $error,
                                                                              "eintraghead" => _eintrag));
                                 } else {
-                                    db("INSERT INTO ".$db['newscomments']." SET `news`     = '".((int)$_GET['id'])."',
-                                                                                `datum`    = '".((int)time())."',
+                                    db("INSERT INTO ".$db['newscomments']." SET `news`     = '".intval($_GET['id'])."',
+                                                                                `datum`    = '".time()."',
                                                                                 `nick`     = '".up($_POST['nick'])."',
                                                                                 `email`    = '".up($_POST['email'])."',
                                                                                 `hp`       = '".links($_POST['hp'])."',
-                                                                                `reg`      = '".((int)$userid)."',
+                                                                                `reg`      = '".intval($userid)."',
                                                                                 `comment`  = '".up($_POST['comment'],1)."',
                                                                                 `ip`       = '".$userip."'");
 
                                     setIpcheck("ncid(".intval($_GET['id']).")");
                                     $index = info(_comment_added, "?action=show&amp;id=".$_GET['id']."");
                                 }
-                            } else {
-                                $index = error(show(_error_flood_post, array("sek" => $flood_newscom)), 1);
                             }
+                            else
+                                $index = error(show(_error_flood_post, array("sek" => $flood_newscom)), 1);
                         }
-                    } else{
-                        $index = error(_id_dont_exist,1);
                     }
+                    else
+                        $index = error(_id_dont_exist,1);
                 break;
                 case 'delete':
-                    $qry = db("SELECT * FROM ".$db['newscomments']."
-                     WHERE id = '".intval($_GET['cid'])."'");
-                    $get = _fetch($qry);
-
-                    if($get['reg'] == $userid || permission('news'))
-                    {
-                        $qry = db("DELETE FROM ".$db['newscomments']."
-                       WHERE id = '".intval($_GET['cid'])."'");
-
+                    $get = db("SELECT `reg` FROM ".$db['newscomments']." WHERE `id` = '".($cid=intval($_GET['cid']))."'",false,true);
+                    if($get['reg'] == $userid || permission('news')) {
+                        db("DELETE FROM ".$db['newscomments']." WHERE `id` = '".$cid."'");
                         $index = info(_comment_deleted, "?action=show&amp;id=".$_GET['id']."");
-                    } else {
-                        $index = error(_error_wrong_permissions, 1);
                     }
+                    else
+                        $index = error(_error_wrong_permissions, 1);
                 break;
                 case 'editcom':
-                    $qry = db("SELECT * FROM ".$db['newscomments']."
-                     WHERE id = '".intval($_GET['cid'])."'");
-                    $get = _fetch($qry);
-
-                    if($get['reg'] == $userid || permission('news'))
-                    {
-                        $editedby = show(_edited_by, array("autor" => autor($userid),
-                                "time" => date("d.m.Y H:i", time())._uhr));
+                    $get = db("SELECT `reg` FROM ".$db['newscomments']." WHERE `id` = '".($cid=intval($_GET['cid']))."'",false,true);
+                    if($get['reg'] == $userid || permission('news')) {
+                        $editedby = show(_edited_by, array("autor" => autor($userid), "time" => date("d.m.Y H:i", time())._uhr));
                         $qry = db("UPDATE ".$db['newscomments']."
-                       SET `nick`     = '".up($_POST['nick'])."',
-                           `email`    = '".up($_POST['email'])."',
-                           `hp`       = '".links($_POST['hp'])."',
-                           `comment`  = '".up($_POST['comment'],1)."',
-                           `editby`   = '".addslashes($editedby)."'
-                       WHERE id = '".intval($_GET['cid'])."'");
+                                   SET `nick`     = '".(isset($_POST['nick']) ? up($_POST['nick']) : '')."',
+                                       `email`    = '".(isset($_POST['email']) ? up($_POST['email']) : '')."',
+                                       `hp`       = '".(isset($_POST['hp']) ? links($_POST['hp']) : '')."',
+                                       `comment`  = '".(isset($_POST['comment']) ? up($_POST['comment'],1) : '')."',
+                                       `editby`   = '".addslashes($editedby)."'
+                                   WHERE id = ".$cid);
 
                         $index = info(_comment_edited, "?action=show&amp;id=".$_GET['id']."");
-                    } else {
-                        $index = error(_error_edit_post,1);
                     }
+                    else
+                        $index = error(_error_edit_post,1);
                 break;
                 case 'edit':
-                    $get = db("SELECT * FROM ".$db['newscomments']." WHERE id = '".intval($_GET['cid'])."'",false,true);
-                    if($get['reg'] == $userid || permission('news'))
-                    {
+                    $get = db("SELECT `reg`,`comment` FROM ".$db['newscomments']." WHERE `id` = '".intval($_GET['cid'])."'",false,true);
+                    if($get['reg'] == $userid || permission('news')) {
                         if($get['reg'] != 0)
                             $form = show("page/editor_regged", array("nick" => autor($get['reg']), "von" => _autor));
-                        else
-                        {
+                        else {
                             $form = show("page/editor_notregged", array("nickhead" => _nick,
-                                    "emailhead" => _email,
-                                    "hphead" => _hp,
-                                    "postemail" => $get['email'],
-                                    "posthp" => links($get['hp']),
-                                    "postnick" => re($get['nick'])));
+                                                                        "emailhead" => _email,
+                                                                        "hphead" => _hp,
+                                                                        "postemail" => $get['email'],
+                                                                        "posthp" => links($get['hp']),
+                                                                        "postnick" => re($get['nick'])));
                         }
 
                         $index = show("page/comments_add", array("titel" => _comments_edit,
-                                "nickhead" => _nick,
-                                "security" => _register_confirm,
-                                "bbcodehead" => _bbcode,
-                                "emailhead" => _email,
-                                "b1" => $u_b1,
-                                "b2" => $u_b2,
-                                "hphead" => _hp,
-                                "form" => $form,
-                                "sec" => $dir,
-                                "preview" => _preview,
-                                "prevurl" => '../news/?action=compreview&amp;do=edit&amp;id='.$_GET['id'].'&amp;cid='.$_GET['cid'],
-                                "action" => '?action=show&amp;do=editcom&amp;id='.$_GET['id'].'&amp;cid='.$_GET['cid'],
-                                "ip" => _iplog_info,
-                                "lang" => $language,
-                                "id" => $_GET['id'],
-                                "what" => _button_value_edit,
-                                "show" => "",
-                                "posteintrag" => re_bbcode($get['comment']),
-                                "error" => "",
-                                "eintraghead" => _eintrag));
+                                                                 "nickhead" => _nick,
+                                                                 "security" => _register_confirm,
+                                                                 "bbcodehead" => _bbcode,
+                                                                 "emailhead" => _email,
+                                                                 "b1" => $u_b1,
+                                                                 "b2" => $u_b2,
+                                                                 "hphead" => _hp,
+                                                                 "form" => $form,
+                                                                 "sec" => $dir,
+                                                                 "preview" => _preview,
+                                                                 "prevurl" => '../news/?action=compreview&do=edit&id='.$_GET['id'].'&cid='.$_GET['cid'],
+                                                                 "action" => '?action=show&amp;do=editcom&amp;id='.$_GET['id'].'&amp;cid='.$_GET['cid'],
+                                                                 "ip" => _iplog_info,
+                                                                 "lang" => $language,
+                                                                 "id" => $_GET['id'],
+                                                                 "what" => _button_value_edit,
+                                                                 "show" => "",
+                                                                 "posteintrag" => re_bbcode($get['comment']),
+                                                                 "error" => "",
+                                                                 "eintraghead" => _eintrag));
                     }
                     else
                         $index = error(_error_edit_post,1);
@@ -557,68 +543,59 @@ else
     break;
     case 'preview';
         header("Content-type: text/html; charset=utf-8");
-        $qrykat = db("SELECT katimg FROM ".$db['newskat']."
-                      WHERE id = '".intval($_POST['kat'])."'");
-        $getkat = _fetch($qrykat);
+        $getkat = db("SELECT katimg FROM ".$db['newskat']." WHERE id = '".intval($_POST['kat'])."'",false,true);
 
-        if($_POST['klapptitel'])
-        {
-          $klapp = show(_news_klapplink, array("klapplink" => re($_POST['klapptitel']),
-                                               "which" => "collapse",
-                                               "id" => 0));
-        } else {
-          $klapp = "";
+        $klapp = "";
+        if($_POST['klapptitel']) {
+            $klapp = show(_news_klapplink, array("klapplink" => re($_POST['klapptitel']),
+                                                 "which" => "collapse",
+                                                 "id" => 0));
         }
 
+        $links1 = ""; $rel = "";
+        if(!empty($_POST['url1'])) {
+            $rel = _related_links;
+            $links1 = show(_news_link, array("link" => re($_POST['link1']),
+                                             "url" => links($_POST['url1'])));
+        }
+
+        $links2 = "";
+        if(!empty($_POST['url2'])) {
+            $rel = _related_links;
+            $links2 = show(_news_link, array("link" => re($_POST['link2']),
+                                             "url" => links($_POST['url2'])));
+        }
+
+        $links3 = "";
+        if(!empty($_POST['url3'])) {
+            $rel = _related_links;
+            $links3 = show(_news_link, array("link" => re($_POST['link3']),
+                                             "url" => links($_POST['url3'])));
+        }
+
+        $links = '';
+        if(!empty($links1) || !empty($links2) || !empty($links3)) {
+            $links = show(_news_links, array("link1" => $links1,
+                                             "link2" => $links2,
+                                             "link3" => $links3,
+                                             "rel" => $rel));
+        }
+
+        $intern = ''; $sticky = '';
+        if(isset($_POST['intern']) && $_POST['intern'] == 1) $intern = _votes_intern;
+        if(isset($_POST['sticky']) && $_POST['sticky'] == 1) $sticky = _news_sticky;
+
+        $newsimage = '../inc/images/newskat/'.re($getkat['katimg']);
         $viewed = show(_news_viewed, array("viewed" => '0'));
-
-        if(!empty($_POST['url1']))
-        {
-          $rel = _related_links;
-          $links1 = show(_news_link, array("link" => re($_POST['link1']),
-                                           "url" => links($_POST['url1'])));
-        } else {
-          $links1 = "";
-        }
-        if(!empty($_POST['url2']))
-        {
-          $rel = _related_links;
-          $links2 = show(_news_link, array("link" => re($_POST['link2']),
-                                           "url" => links($_POST['url2'])));
-        } else {
-          $links2 = "";
-        }
-        if(!empty($_POST['url3']))
-        {
-          $rel = _related_links;
-          $links3 = show(_news_link, array("link" => re($_POST['link3']),
-                                           "url" => links($_POST['url3'])));
-        } else {
-          $links3 = "";
-        }
-
-        if(!empty($links1) || !empty($links2) || !empty($links3))
-        {
-          $links = show(_news_links, array("link1" => $links1,
-                                           "link2" => $links2,
-                                           "link3" => $links3,
-                                           "rel" => $rel));
-        } else {
-          $links = "";
-        }
-
-        if($_POST['intern'] == 1) $intern = _intern;
-        if($_POST['sticky'] == 1) $sticky = _news_sticky;
-
-        $index = show($dir."/news_show", array("titel" => re($_POST['titel']),
-                                               "kat" => re($getkat['katimg']),
+        $index = show($dir."/news_show_full", array("titel" => re($_POST['titel']),
+                                               "kat" => $newsimage,
                                                "id" => '_prev',
                                                "comments" => _news_comments_prev,
                                                "showmore" => "",
                                                "dp" => "",
                                                "dir" => $designpath,
                                                "nautor" => _autor,
-                                                     "intern" => $intern,
+                                               "intern" => $intern,
                                                "sticky" => $sticky,
                                                "ndatum" => _datum,
                                                "ncomments" => _news_kommentare.":",
@@ -634,259 +611,227 @@ else
         exit;
     break;
     case 'compreview';
-      header("Content-type: text/html; charset=utf-8");
-      if($_GET['do'] == 'edit')
-      {
-        $qry = db("SELECT * FROM ".$db['newscomments']."
-                   WHERE id = '".intval($_GET['cid'])."'");
-        $get = _fetch($qry);
-
-        $get_id = '?';
-        $get_userid = $get['reg'];
-        $get_date = $get['datum'];
-
-        if($get['reg'] == 0) $regCheck = false;
-        else {
-          $regCheck = true;
-          $pUId = $get['reg'];
+        header("Content-type: text/html; charset=utf-8");
+        if($do == 'edit') {
+            $get = db("SELECT * FROM ".$db['newscomments']." WHERE `id` = '".intval($_GET['cid'])."'",false,true);
+            $get_id = '?';
+            $get_userid = $get['reg'];
+            $get_date = $get['datum'];
+            $regCheck = !$get['reg'] ? false : true;
+            $editedby = show(_edited_by, array("autor" => cleanautor($userid),
+                                               "time" => date("d.m.Y H:i", time())._uhr));
+        } else {
+            $get_id = cnt($db['newscomments'], " WHERE news = ".intval($_GET['id']))+1;
+            $get_userid = $userid;
+            $get_date = time();
+            $regCheck = $chkMe != "unlogged" ? true : false;
+            $editedby = '';
         }
 
-        $editedby = show(_edited_by, array("autor" => cleanautor($userid),
-                                           "time" => date("d.m.Y H:i", time())._uhr));
-      } else {
-        $get_id = cnt($db['newscomments'], " WHERE news = ".intval($_GET['id'])."")+1;
-        $get_userid = $userid;
-        $get_date = time();
+        $email = ""; $hp = "";
+        if(!$regCheck) {
+            $get_hp = isset($_POST['hp']) ? $_POST['hp'] : '';
+            $get_email = isset($_POST['email']) ? $_POST['email'] : '';
+            $get_nick = isset($_POST['nick']) ? $_POST['nick'] : '';
 
-        if($chkMe == 'unlogged') $regCheck = false;
-        else {
-          $regCheck = true;
-          $pUId = $userid;
+            if(!empty($get_hp))
+                $hp = show(_hpicon_forum, array("hp" => links($get_hp)));
+
+            if(!empty($get_email))
+                $email = '<br />'.show(_emailicon_forum, array("email" => eMailAddr($get_email)));
+
+            $onoff = "";
+            $avatar = "";
+            $nick = show(_link_mailto, array("nick" => re($get_nick),
+                                             "email" => $get_email));
+        } else {
+            $onoff = onlinecheck($get_userid);
+            $nick = cleanautor($get_userid);
         }
-      }
 
-      $get_hp = $_POST['hp'];
-      $get_email = $_POST['email'];
-      $get_nick = $_POST['nick'];
+        $titel = show(_eintrag_titel, array("postid" => $get_id,
+                                              "datum" => date("d.m.Y", $get_date),
+                                              "zeit" => date("H:i", $get_date)._uhr,
+                                              "edit" => '',
+                                              "delete" => ''));
 
-      if(!$regCheck)
-        {
-        if($get_hp) $hp = show(_hpicon_forum, array("hp" => links($get_hp)));
-        if($get_email) $email = '<br />'.show(_emailicon_forum, array("email" => eMailAddr($get_email)));
-        $onoff = "";
-        $avatar = "";
-        $nick = show(_link_mailto, array("nick" => re($get_nick),
-                                         "email" => $get_email));
-      } else {
-        $hp = "";
-        $email = "";
-        $onoff = onlinecheck($get_userid);
-        $nick = cleanautor($get_userid);
-      }
+        $index = show("page/comments_show", array("titel" => $titel,
+                                                  "comment" => bbcode(re($_POST['comment']),1),
+                                                  "nick" => $nick,
+                                                  "editby" => bbcode($editedby,1),
+                                                  "email" => $email,
+                                                  "hp" => $hp,
+                                                  "avatar" => useravatar($get_userid),
+                                                  "onoff" => $onoff,
+                                                  "rank" => getrank($get_userid),
+                                                  "ip" => $userip._only_for_admins));
 
-      $titel = show(_eintrag_titel, array("postid" => $get_id,
-                                                                              "datum" => date("d.m.Y", $get_date),
-                                                                              "zeit" => date("H:i", $get_date)._uhr,
-                                          "edit" => $edit,
-                                          "delete" => $delete));
-
-      $index = show("page/comments_show", array("titel" => $titel,
-                                                                                        "comment" => bbcode(re($_POST['comment']),1),
-                                                "nick" => $nick,
-                                                "editby" => bbcode($editedby,1),
-                                                "email" => $email,
-                                                "hp" => $hp,
-                                                "avatar" => useravatar($get_userid),
-                                                "onoff" => $onoff,
-                                                "rank" => getrank($get_userid),
-                                                "ip" => $userip._only_for_admins));
-
-      echo '<table class="mainContent" cellspacing="1">'.$index.'</table>';
-      exit;
+        echo '<table class="mainContent" cellspacing="1">'.$index.'</table>';
+        exit;
     break;
     case 'archiv':
-      if(permission("intnews"))
-      {
-        $intern = "WHERE public = 1";
-        $intern2 = "WHERE intern = 1 OR intern = 0 AND datum <= ".time()." AND public = 1";
-      } else {
-        $intern = "AND intern = 0 AND public = 1";
-        $intern2 = "WHERE intern = 0 AND datum <= ".time()." AND public = 1";
-      }
-
-      if(isset($_GET['page']))
-      {
-        $psearch = $_GET['search'];
-        $pyear = $_GET['year'];
-        $pmonth = $_GET['month'];
-      } else {
-        $psearch = $_POST['search'];
-        $pyear = $_POST['year'];
-        $pmonth = $_POST['month'];
-      }
-
-      $kat = intval($_GET['kat']);
-      if($kat == "lazy" || $kat == "" || $kat == "NULL") $n_kat = "";
-      else $n_kat = "AND kat = '".$kat."'";
-
-      if($search)
-      {
-        $qry = db("SELECT id,titel,autor,datum,kat,text
-                      FROM ".$db['news']."
-                      WHERE text LIKE '%".$search."%'
-                      ".$intern."
-                                        AND datum <= ".time()."
-                      OR klapptext LIKE '%".$search."%'
-                      ".$intern."
-                                        AND datum <= ".time()."
-                      ORDER BY datum DESC
-                      LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
-        $entrys = cnt($db['news'], " WHERE text LIKE '%".$search."%' OR klapptext LIKE '%".$search."%' ".$intern."");
-
-      } elseif($pyear) {
-        $from = mktime(0,0,0,$pmonth,1,$pyear);
-        $til = mktime(0,0,0,$pmonth+1,1,$pyear);
-
-        $qry = db("SELECT id,titel,autor,datum,kat,text FROM ".$db['news']."
-                   WHERE datum BETWEEN ".$from ." AND ".$til."
-                   ".$intern."
-                   ORDER BY datum DESC
-                   LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
-        $entrys = cnt($db['news'], " WHERE datum BETWEEN ".$from." AND ".$til." ".$intern."");
-      } elseif(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("date","autor","titel","kat"))) {
-        $qry = db("SELECT id,titel,autor,datum,kat,text FROM ".$db['news']."
-                   ".$intern2."
-                   ".$n_kat."
-                   ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
-                   LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
-        $entrys = cnt($db['news'], " ".$intern2." ".$n_kat);
-      } else {
-        $qry = db("SELECT id,titel,autor,datum,kat,text
-                   FROM ".$db['news']."
-                   ".$intern2."
-                   ".$n_kat."
-                   ORDER BY datum DESC
-                   LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
-        $entrys = cnt($db['news'], " ".$intern2." ".$n_kat);
-      }
-
-      while($get = _fetch($qry))
-      {
-        $qryk = db("SELECT kategorie FROM ".$db['newskat']."
-                    WHERE id = '".$get['kat']."'");
-        $getk = _fetch($qryk);
-
-        $comments = cnt($db['newscomments'], " WHERE news = ".$get['id']."");
-        $titel = show(_news_show_link, array("titel" => cut(re($get['titel']),$lnewsarchiv),
-                                             "id" => $get['id']));
-        $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-
-        $show .= show($dir."/archiv_show", array("autor" => autor($get['autor']),
-                                                 "date" => date("d.m.y", $get['datum']),
-                                                 "titel" => $titel,
-                                                 "class" => $class,
-                                                 "kat" => re($getk['kategorie']),
-                                                 "comments" => $comments));
-      }
-
-      $y = db("SELECT datum FROM ".$db['news']."
-               ".$intern2."
-               ORDER BY datum
-               LIMIT 1");
-      $sy = _fetch($y);
-      $min = date("Y",$sy['datum']);
-      $ty = date("Y", time());
-
-      for($x=$min;$x<=$ty-1;$x++)
-      {
-        if($x == date("Y", time())) $sel = "selected=\"selected\"";
-        else $sel = "";
-
-        $years .= show(_select_field, array("value" => $x,
-                                            "sel" => $sel,
-                                            "what" => $x));
-      }
-
-      if($language == "deutsch") $endc = "n";
-      else $endc = "";
-
-      $c = cnt($db['newscomments']);
-      if($c == "1") $com = _news_kommentar;
-      else $com = _news_kommentare.$endc;
-
-      $stats = show(_news_stats, array("news" => $entrys,
-                                       "comments" => cnt($db['newscomments']),
-                                       "com" => $com));
-
-      $qrykat = db("SELECT * FROM ".$db['newskat']."");
-      while($getkat = _fetch($qrykat))
-      {
-        $kategorien .= '<option value="'.$getkat['id'].'">-> '.$getkat['kategorie'].'</option>';
-      }
-
-      for($i=1;$i<=12;$i++)
-      {
-        if(!$pyear)
-        {
-          if($i == date("n", time())) $sel[$i] = "selected=\"selected\"";
-          else $sel[$i] = "";
+        if(permission("intnews")) {
+            $intern = "WHERE `public` = 1";
+            $intern2 = "WHERE `intern` = 1 OR `intern` = 0 AND `datum` <= ".time()." AND `public` = 1";
         } else {
-          if($i == nonum($pmonth)) $sel[$i] = "selected=\"selected\"";
-          else $sel[$i] = "";
+            $intern = "AND `intern` = 0 AND `public` = 1";
+            $intern2 = "WHERE `intern` = 0 AND `datum` <= ".time()." AND `public` = 1";
         }
 
-      }
+        if(isset($_GET['page'])) {
+            $psearch = isset($_GET['search']) ? $_GET['search'] : '';
+            $pyear = isset($_GET['year']) ? $_GET['year'] : '';
+            $pmonth = isset($_GET['month']) ? $_GET['month'] : '';
+        } else {
+            $psearch = isset($_POST['search']) ? $_POST['search'] : '';
+            $pyear = isset($_POST['year']) ? $_POST['year'] : '';
+            $pmonth = isset($_POST['month']) ? $_POST['month'] : '';
+        }
 
-      $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
-      $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
-      $nav = nav($entrys,$maxarchivnews,"?action=archiv&year=".$pyear."&month=".$pmonth."&search=".$psearch."".$orderby);
+        $kat = isset($_GET['kat']) ? intval($_GET['kat']) : 0;
+        $n_kat = !$kat ? "" : "AND kat = '".$kat."'";
 
-      $index = show($dir."/archiv", array("head" => _news_archiv_head,
-                                          "head_sort" => _news_archiv_sort,
-                                          "date" => _datum,
-                                          "titel" => _titel,
-                                          "years" => $years,
-                                          "nav" => $nav,
-                                          "or" => _or,
-                                          "kategorien" => $kategorien,
-                                          "choose" => _news_kat_choose,
-                                          "search" => re($_POST['search']),
-                                          "btn_search" => _button_value_search,
-                                          "thisyear" => $ty,
-                                          "kat" => _news_admin_kat,
-                                          "order_date" => orderby('datum'),
-                                          "order_titel" => orderby('titel'),
-                                          "order_autor" => orderby('autor'),
-                                          "order_kat" => orderby('kat'),
-                                          "show" => $show,
-                                          "stats" => $stats,
-                                          "stichwort" => _stichwort,
-                                          "autor" => _autor,
-                                          "com" => _news_com,
-                                          "jan" => _jan,
-                                          "feb" => _feb,
-                                          "mar" => _mar,
-                                          "apr" => _apr,
-                                          "mai" => _mai,
-                                          "jun" => _jun,
-                                          "jul" => _jul,
-                                          "aug" => _aug,
-                                          "sep" => _sep,
-                                          "okt" => _okt,
-                                          "nov" => _nov,
-                                          "dez" => _dez,
-                                          "sel01" => $sel[1],
-                                          "sel02" => $sel[2],
-                                          "sel03" => $sel[3],
-                                          "sel04" => $sel[4],
-                                          "sel05" => $sel[5],
-                                          "sel06" => $sel[6],
-                                          "sel07" => $sel[7],
-                                          "sel08" => $sel[8],
-                                          "sel09" => $sel[9],
-                                          "sel10" => $sel[10],
-                                          "sel11" => $sel[11],
-                                          "sel12" => $sel[12]));
+        if(($search = isset($_GET['search']) && !empty($_GET['search']) ? $_GET['search'] : false)) {
+            $qry = db("SELECT `id`,`titel`,`autor`,`datum`,`kat`,`text`
+                      FROM ".$db['news']."
+                      WHERE `text` LIKE '%".$search."%'
+                      ".$intern."
+                      AND `datum` <= ".time()."
+                      OR `klapptext` LIKE '%".$search."%'
+                      ".$intern."
+                      AND `datum` <= ".time()."
+                      ORDER BY `datum` DESC
+                      LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
+
+            $entrys = cnt($db['news'], " WHERE text LIKE '%".$search."%' OR klapptext LIKE '%".$search."%' ".$intern."");
+
+        } else if($pyear) {
+            $from = mktime(0,0,0,$pmonth,1,$pyear);
+            $til = mktime(0,0,0,$pmonth+1,1,$pyear);
+
+            $qry = db("SELECT id,titel,autor,datum,kat,text FROM ".$db['news']."
+                       WHERE datum BETWEEN ".$from ." AND ".$til."
+                       ".$intern."
+                       ORDER BY datum DESC
+                       LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
+            $entrys = cnt($db['news'], " WHERE datum BETWEEN ".$from." AND ".$til." ".$intern."");
+        } else if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("date","autor","titel","kat"))) {
+            $qry = db("SELECT id,titel,autor,datum,kat,text FROM ".$db['news']."
+                       ".$intern2."
+                       ".$n_kat."
+                       ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
+                       LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
+            $entrys = cnt($db['news'], " ".$intern2." ".$n_kat);
+        } else {
+            $qry = db("SELECT id,titel,autor,datum,kat,text
+                       FROM ".$db['news']."
+                       ".$intern2."
+                       ".$n_kat."
+                       ORDER BY datum DESC
+                       LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
+            $entrys = cnt($db['news'], " ".$intern2." ".$n_kat);
+        }
+
+        $color = 0; $show = '';
+        while($get = _fetch($qry)) {
+            $getk = db("SELECT kategorie FROM ".$db['newskat']." WHERE id = '".$get['kat']."'",false,true);
+            $comments = cnt($db['newscomments'], " WHERE news = ".$get['id']."");
+            $titel = show(_news_show_link, array("titel" => cut(re($get['titel']),$lnewsarchiv), "id" => $get['id']));
+            $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+            $show .= show($dir."/archiv_show", array("autor" => autor($get['autor']),
+                                                     "date" => date("d.m.y", $get['datum']),
+                                                     "titel" => $titel,
+                                                     "class" => $class,
+                                                     "kat" => re($getk['kategorie']),
+                                                     "comments" => $comments));
+        }
+
+        $y = db("SELECT datum FROM ".$db['news']." ".$intern2." ORDER BY datum LIMIT 1");
+        $sy = _fetch($y);
+        $min = date("Y",$sy['datum']);
+        $ty = date("Y", time());
+
+        $years = '';
+        for($x=$min;$x<=$ty-1;$x++) {
+            $sel = ($x == date("Y", time()) ? 'selected="selected"' : "");
+            $years .= show(_select_field, array("value" => $x,
+                                                "sel" => $sel,
+                                                "what" => $x));
+        }
+
+        $endc = $language == "deutsch" ? 'n' : '';
+        $ccount = cnt($db['newscomments']);
+        $com = ($ccount == "1" ? _news_kommentar : _news_kommentare.$endc);
+
+        $stats = show(_news_stats, array("news" => $entrys,
+                                         "comments" => cnt($db['newscomments']),
+                                         "com" => $com));
+
+        $qrykat = db("SELECT * FROM ".$db['newskat'].""); $kategorien = '';
+        while($getkat = _fetch($qrykat)) {
+            $kategorien .= '<option value="'.$getkat['id'].'">-> '.$getkat['kategorie'].'</option>';
+        }
+
+        for($i=1;$i<=12;$i++) {
+            if(!$pyear) {
+                  if($i == date("n", time())) $sel[$i] = "selected=\"selected\"";
+                  else $sel[$i] = "";
+            } else {
+                  if($i == nonum($pmonth)) $sel[$i] = "selected=\"selected\"";
+                  else $sel[$i] = "";
+            }
+        }
+
+        $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
+        $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
+        $nav = nav($entrys,$maxarchivnews,"?action=archiv&year=".$pyear."&month=".$pmonth."&search=".$psearch."".$orderby);
+
+        $index = show($dir."/archiv", array("head" => _news_archiv_head,
+                                            "head_sort" => _news_archiv_sort,
+                                            "date" => _datum,
+                                            "titel" => _titel,
+                                            "years" => $years,
+                                            "nav" => $nav,
+                                            "or" => _or,
+                                            "kategorien" => $kategorien,
+                                            "choose" => _news_kat_choose,
+                                            "search" => re($search),
+                                            "btn_search" => _button_value_search,
+                                            "thisyear" => $ty,
+                                            "kat" => _news_admin_kat,
+                                            "order_date" => orderby('datum'),
+                                            "order_titel" => orderby('titel'),
+                                            "order_autor" => orderby('autor'),
+                                            "order_kat" => orderby('kat'),
+                                            "show" => $show,
+                                            "stats" => $stats,
+                                            "stichwort" => _stichwort,
+                                            "autor" => _autor,
+                                            "com" => _news_com,
+                                            "jan" => _jan,
+                                            "feb" => _feb,
+                                            "mar" => _mar,
+                                            "apr" => _apr,
+                                            "mai" => _mai,
+                                            "jun" => _jun,
+                                            "jul" => _jul,
+                                            "aug" => _aug,
+                                            "sep" => _sep,
+                                            "okt" => _okt,
+                                            "nov" => _nov,
+                                            "dez" => _dez,
+                                            "sel01" => $sel[1],
+                                            "sel02" => $sel[2],
+                                            "sel03" => $sel[3],
+                                            "sel04" => $sel[4],
+                                            "sel05" => $sel[5],
+                                            "sel06" => $sel[6],
+                                            "sel07" => $sel[7],
+                                            "sel08" => $sel[8],
+                                            "sel09" => $sel[9],
+                                            "sel10" => $sel[10],
+                                            "sel11" => $sel[11],
+                                            "sel12" => $sel[12]));
     break;
     endswitch;
 }

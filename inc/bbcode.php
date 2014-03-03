@@ -131,7 +131,7 @@ $maxfilesize = @ini_get('upload_max_filesize');
 //-> Auslesen der Cookies und automatisch anmelden
 if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSION['id']) && checkme() == "unlogged") {
     ## User aus der Datenbank suchen ##
-    $sql = db("SELECT id,user,nick,pwd,email,level,time,pkey FROM ".$db['users']." WHERE id = '".$_COOKIE[$prev.'id']."' AND pkey = '".$_COOKIE[$prev.'pkey']."' AND level != '0'");
+    $sql = db_stmt("SELECT id,user,nick,pwd,email,level,time,pkey FROM ".$db['users']." WHERE id = ? AND pkey = ? AND level != '0'",array('is', $_COOKIE[$prev.'id'], $_COOKIE[$prev.'pkey']));
     if(_rows($sql)) {
         $get = _fetch($sql);
 
@@ -280,6 +280,7 @@ function languages() {
 }
 
 //-> Userspezifiesche Dinge
+$u_b1 = ""; $u_b2 = "";
 if($userid >= 1 && $ajaxJob != true) {
     db("UPDATE ".$db['userstats']." SET `hits` = hits+1, `lastvisit` = '".((int)$_SESSION['lastvisit'])."' WHERE user = ".$userid);
     $u_b1 = "<!--";
@@ -958,15 +959,16 @@ function orderby($sort) {
     $url = "?";
 
     foreach($split as $part) {
-        if(strpos($part,"orderby") === false && strpos($part,"order") === false && !empty($part))
-        {
+        if(strpos($part,"orderby") === false && strpos($part,"order") === false && !empty($part)) {
             $url .= $part;
             $url .= "&";
         }
     }
 
-    if($_GET['orderby'] == $sort && $_GET['order'] == "ASC")
-        return $url."orderby=".$sort."&order=DESC";
+    if(isset($_GET['orderby']) && $_GET['order']) {
+        if($_GET['orderby'] == $sort && $_GET['order'] == "ASC")
+            return $url."orderby=".$sort."&order=DESC";
+    }
 
     return $url."orderby=".$sort."&order=ASC";
 }
@@ -1260,6 +1262,7 @@ function info($msg, $url, $timeout = 5) {
             $parts .= '<input type="hidden" name="'.$p[0].'" value="'.$p[1].'" />'."\r\n";
     }
 
+    if(!array_key_exists('path',$u)) $u['path'] = '';
     return show("errors/info", array("msg" => $msg,
                                      "url" => $u['path'],
                                      "rawurl" => html_entity_decode($url),
@@ -2106,7 +2109,7 @@ function check_internal_url() {
     if(strpos($pfad, "index.php") !== false)
         $pfad = str_replace('index.php','',$pfad);
 
-    $qry_navi = db("SELECT internal FROM ".$db['navi']." WHERE url = '".$pfad."' OR url = '".$pfad.'index.php'."'");
+    $qry_navi = db("SELECT `internal` FROM ".$db['navi']." WHERE `url` = '".$pfad."' OR `url` = '".$pfad.'index.php'."'");
     if(_rows($qry_navi)) {
         $get_navi = _fetch($qry_navi);
         if($get_navi['internal'])
@@ -2202,7 +2205,7 @@ include_once(basePath.'/inc/menu-functions/navi.php');
 //-> Ausgabe des Indextemplates
 function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
 {
-    global $db,$userid,$userip,$tmpdir,$secureLogin,$chkMe,$charset;
+    global $db,$userid,$userip,$tmpdir,$secureLogin,$chkMe,$charset,$mysql;
     global $u_b1,$u_b2,$designpath,$maxwidth,$language,$cp_color,$copyright;
 
     // user gebannt? Logge aus!
@@ -2305,5 +2308,6 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
 
         //index output
         echo (file_exists("../inc/_templates_/".$tmpdir."/".$index_templ.".html") ? show($index_templ, $arr) : show("index", $arr));
+        $mysql->close();
     }
 }

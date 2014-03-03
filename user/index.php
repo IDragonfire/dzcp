@@ -21,12 +21,7 @@ case 'login';
     } else {
       if(checkpwd($_POST['user'], md5($_POST['pwd'])))
       {
-        $qry = db("SELECT id,user,nick,pwd,email,level,time FROM ".$db['users']."
-                           WHERE user = '".up($_POST['user'])."'
-                   AND pwd = '".md5($_POST['pwd'])."'
-                   AND level != '0'");
-          $get = _fetch($qry);
-
+          $get = db_stmt("SELECT id,user,nick,pwd,email,level,time FROM ".$db['users']." WHERE user = ? AND pwd = ? AND level != '0'", array('ss', up($_POST['user']), md5($_POST['pwd'])),false,true);
         $permanent_key = '';
         if(isset($_POST['permanent']))
         {
@@ -826,7 +821,6 @@ case 'userlobby';
     elseif($lvl == 4) $mylevel = _status_admin;
 
     $index = show($dir."/userlobby", array("userlobbyhead" => _userlobby,
-                                           "userstats" => _lobby_stats,
                                            "erase" => $erase,
                                            "pic" => useravatar($userid),
                                            "mynick" => autor($userid),
