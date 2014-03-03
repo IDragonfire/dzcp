@@ -2814,10 +2814,6 @@ case 'language';
 
   header("Location: ".$_SERVER['HTTP_REFERER']);
 break;
-case 'switch';
-  $index = set_cookie($prev.'tmpdir',$_GET['set']);
-  header("Location: ".$_SERVER['HTTP_REFERER']);
-break;
 case 'admin';
   if(!permission("editusers"))
   {
@@ -3176,7 +3172,6 @@ case 'admin';
     }
   }
 break;
-
 case 'get_steam_image';
     $data=strtolower(trim($_GET['steam_id']));
     if ($data!='')

@@ -227,6 +227,16 @@ function userid() {
 
 //-> Templateswitch
 $files = get_files(basePath.'/inc/_templates_/',true);
+if(isset($_GET['tmpl_set'])) {
+    foreach ($files as $templ) {
+        if($templ == $_GET['tmpl_set']) {
+            set_cookie($prev.'tmpdir',$templ);
+            header("Location: ".$_SERVER['HTTP_REFERER']);
+            exit;
+        }
+    }
+}
+
 if(isset($_COOKIE[$prev.'tmpdir']) && $_COOKIE[$prev.'tmpdir'] != NULL) {
     if(file_exists(basePath."/inc/_templates_/".$_COOKIE[$prev.'tmpdir']))
         $tmpdir = $_COOKIE[$prev.'tmpdir'];
@@ -2229,9 +2239,9 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
 
         //init templateswitch
         $tmpldir=""; $tmps = get_files('../inc/_templates_/',true);
-        for($i=0; $i<count($tmps); $i++) {
-            $selt = ($tmpdir == $tmps[$i] ? 'selected="selected"' : '');
-            $tmpldir .= show(_select_field, array("value" => "../user/?action=switch&amp;set=".$tmps[$i],  "what" => $tmps[$i],  "sel" => $selt));
+        foreach ($tmps as $tmp) {
+            $selt = ($tmpdir == $tmp ? 'selected="selected"' : '');
+            $tmpldir .= show(_select_field, array("value" => "?tmpl_set=".$tmp,  "what" => $tmp,  "sel" => $selt));
         }
 
         //misc vars
