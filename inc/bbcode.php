@@ -2161,6 +2161,12 @@ function getBoardPermissions($checkID = 0, $pos = 0) {
     return $i_forum;
 }
 
+//-> schreibe in dei IPCheck Tabelle
+function setIpcheck($what = '') {
+    global $db, $userip;
+    db("INSERT INTO ".$db['ipcheck']." SET `ip` = '".$userip."', `what` = '".$what."', `time` = '".time()."'");
+}
+
 //-> Neue Languages einbinden, sofern vorhanden
 if($language_files = get_files(basePath.'/inc/additional-languages/'.$language.'/',false,true,array('php'))) {
     foreach($language_files AS $languages)

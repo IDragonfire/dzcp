@@ -888,11 +888,7 @@ case 'details';
                                                      `comment`  = '".up($_POST['comment'],1)."',
                                                      `ip`       = '".$userip."'");
 
-                        $cwid = "cwid(".$_GET['id'].")";
-                        $qry = db("INSERT INTO ".$db['ipcheck']."
-                                             SET `ip`   = '".$userip."',
-                                                     `what` = '".$cwid."',
-                                                     `time` = '".((int)time())."'");
+                        setIpcheck("cwid(".$_GET['id'].")");
 
                         $index = info(_comment_added, "?action=details&amp;id=".$_GET['id']."");
                     }

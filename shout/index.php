@@ -32,11 +32,7 @@ default:
                      `text`   = '".up(substr(str_replace("\n", ' ', $_POST['eintrag']),0,$shout_max_zeichen),'','UTF-8')."',
                      `ip`     = '".$userip."'");
 
-      $qry = db("INSERT INTO ".$db['ipcheck']."
-                 SET `ip`   = '".$userip."',
-                     `what` = 'shout',
-                     `time` = '".((int)time())."'");
-
+      setIpcheck("shout");
       if(!isset($_GET['ajax'])) header("Location: ".$_SERVER['HTTP_REFERER'].'#shoutbox');
     }
   } else {

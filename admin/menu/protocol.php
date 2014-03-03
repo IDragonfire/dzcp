@@ -10,13 +10,11 @@ if(_adminMenu != 'true') exit;
     {
       if($_GET['do'] == 'deletesingle')
       {
-        $del = db("DELETE FROM ".$db['ipcheck']."
-                   WHERE id = '".$_GET['id']."'");
+        db("DELETE FROM ".$db['ipcheck']." WHERE id = '".$_GET['id']."'");
 
         header("Location: ".$_SERVER['HTTP_REFERER']);
       } elseif($_GET['do'] == 'delete') {
-        $del = db("DELETE FROM ".$db['ipcheck']."
-                   WHERE time != 0");
+        db("DELETE FROM ".$db['ipcheck']." WHERE time != 0");
 
         $show = info(_protocol_deleted,'?admin=protocol');
       } else {

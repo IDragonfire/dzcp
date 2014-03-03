@@ -55,11 +55,7 @@ case 'login';
                        `pkey` = '".$permanent_key."'
                                WHERE id = ".$get['id']);
 
-        $protocol = "login(".$get['id'].")";
-        $upd = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".$userip."',
-                       `what` = '".$protocol."',
-                       `time` = '".((int)time())."'");
+        setIpcheck("login(".$get['id'].")");
 
           header("Location: ?action=userlobby");
       }    else {
@@ -68,12 +64,7 @@ case 'login';
           if(_rows($qry))
         {
           $get = _fetch($qry);
-
-          $protocol = "trylogin(".$get['id'].")";
-          $upd = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".$userip."',
-                       `what` = '".$protocol."',
-                       `time` = '".((int)time())."'");
+          setIpcheck("trylogin(".$get['id'].")");
         }
         set_cookie($prev."id","");
         set_cookie($prev."pkey","");
@@ -129,28 +120,18 @@ case 'lostpwd';
                    WHERE user = '".$_POST['user']."'
                    AND email = '".$_POST['email']."'");
 
-        $protocol = "pwd(".$get['id'].")";
-        $upd = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".$userip."',
-                       `what` = '".$protocol."',
-                       `time` = '".((int)time())."'");
+        setIpcheck("pwd(".$get['id'].")");
 
-                $message = show(bbcode_email(settings('eml_pwd')), array("user" => $_POST['user'],
-                                                                                                     "pwd" => $pwd));
-                $subject = re(settings('eml_pwd_subj'));
-
-          sendMail($_POST['email'],$subject,$message);
+        $message = show(bbcode_email(settings('eml_pwd')), array("user" => $_POST['user'],"pwd" => $pwd));
+        $subject = re(settings('eml_pwd_subj'));
+        sendMail($_POST['email'],$subject,$message);
 
               $index = info(_lostpwd_valid, "../user/?action=login");
             } else {
-        $protocol = "trypwd(".$get['id'].")";
-        $upd = db("INSERT INTO ".$db['ipcheck']."
-                 SET `ip`   = '".$userip."',
-                     `what` = '".$protocol."',
-                     `time` = '".((int)time())."'");
+                setIpcheck("trypwd(".$get['id'].")");
 
-        if($_POST['secure'] != $_SESSION['sec_lostpwd'] || empty($_SESSION['sec_lostpwd']))
-          $index = error(_error_invalid_regcode,1);
+                if($_POST['secure'] != $_SESSION['sec_lostpwd'] || empty($_SESSION['sec_lostpwd']))
+                  $index = error(_error_invalid_regcode,1);
                 else $index = error(_lostpwd_failed, 1);
             }
         }
@@ -165,11 +146,7 @@ case 'logout';
                sessid = ''
                      WHERE id = '".$userid."'");
 
-  $protocol = "logout(".$userid.")";
-  $upd = db("INSERT INTO ".$db['ipcheck']."
-             SET `ip`   = '".$userip."',
-                 `what` = '".$protocol."',
-                 `time` = '".((int)time())."'");
+    setIpcheck("logout(".$userid.")");
 
   set_cookie($prev.'id', '');
   set_cookie($prev.'pkey',"");
@@ -287,11 +264,7 @@ case 'register';
                                  SET `user`       = '".((int)$insert_id)."',
                      `lastvisit`    = '".((int)time())."'");
 
-      $protocol = "reg(".$insert_id.")";
-      $qry = db("INSERT INTO ".$db['ipcheck']."
-                 SET `ip`   = '".$userip."',
-                     `what` = '".$protocol."',
-                     `time` = '".((int)time())."'");
+            setIpcheck("reg(".$insert_id.")");
 
           $message = show(bbcode_email(settings('eml_reg')), array("user" => up($_POST['user']),
                                                    "pwd" => $mkpwd));
@@ -1552,11 +1525,7 @@ case 'usergb';
                                                  `nachricht`  = '".up($_POST['eintrag'],1)."',
                                                  `ip`         = '".$userip."'");
 
-                    $mgbid = "mgbid(".$_GET['id'].")";
-                    $qry = db("INSERT INTO ".$db['ipcheck']."
-                                         SET `ip`   = '".$userip."',
-                                                 `what` = '".$mgbid."',
-                                                 `time` = '".((int)time())."'");
+                    setIpcheck("mgbid(".intval($_GET['id']).")");
 
                     $index = info(_usergb_entry_successful, "?action=user&amp;id=".$_GET['id']."&show=gb");
                 }
@@ -2926,11 +2895,7 @@ case 'admin';
                        `ip`     = '".$userip."'
                                 WHERE id = ".intval($_GET['id']));
 
-        $protocol = "ident(".$userid."_".intval($_GET['id']).")";
-        $upd = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".$userip."',
-                       `what` = '".$protocol."',
-                       `time` = '".((int)time())."'");
+        setIpcheck("ident(".$userid."_".intval($_GET['id']).")");
       }
     } elseif($_GET['do'] == "update") {
       if($_POST)
@@ -2990,11 +2955,7 @@ case 'admin';
                        `level`  = '".((int)$_POST['level'])."'
                    WHERE id = '".intval($_GET['user'])."'");
 
-        $protocol = "upduser(".$userid."_".intval($_GET['user']).")";
-        $upd = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".$userip."',
-                       `what` = '".$protocol."',
-                       `time` = '".((int)time())."'");
+        setIpcheck("upduser(".$userid."_".intval($_GET['user']).")");
       }
       $index = info(_admin_user_edited, "?action=userlist");
     } elseif($_GET['do'] == "updateme") {
@@ -3033,11 +2994,7 @@ case 'admin';
         {
           $index = error(_user_cant_delete_admin, 2);
         } else {
-          $protocol = "deluser(".$userid."_".intval($_GET['id']).")";
-          $upd = db("INSERT INTO ".$db['ipcheck']."
-                     SET `ip`   = '".$userip."',
-                         `what` = '".$protocol."',
-                         `time` = '".((int)time())."'");
+          setIpcheck("deluser(".$userid."_".intval($_GET['id']).")");
 
           $upd = db("UPDATE ".$db['f_posts']."
                      SET `reg` = 0

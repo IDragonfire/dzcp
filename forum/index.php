@@ -1034,9 +1034,7 @@ case 'thread';
         $qry = db("DELETE FROM ".$db['vote_results']."
                    WHERE vid = '".$gett['vote']."'");
 
-        $voteid = "vid_".$gett['vote'];
-        $qry = db("DELETE FROM ".$db['ipcheck']."
-                   WHERE what = '".$voteid."'");
+        setIpcheck("vid_".$gett['vote']);
         $vid = "";
         }
 
@@ -1405,11 +1403,7 @@ case 'thread';
                                                 `vote`     = '".$vid."',
                                                 `first`    = '1'");
                 $thisFID = mysqli_insert_id($mysql);
-                $fid = "fid(".$_GET['kid'].")";
-                $qry = db("INSERT INTO ".$db['ipcheck']."
-                                     SET `ip`   = '".$userip."',
-                                             `what` = '".$fid."',
-                                             `time` = '".((int)time())."'");
+                setIpcheck("fid(".$_GET['kid'].")");
 
                 $update = db("UPDATE ".$db['userstats']."
                                             SET `forumposts` = forumposts+1
@@ -2146,11 +2140,7 @@ case 'post';
                                                 WHERE id    = '".intval($_GET['id'])."'");
                 }
 
-                    $fid = "fid(".$get_threadkid['kid'].")";
-                    $qry = db("INSERT INTO ".$db['ipcheck']."
-                                         SET `ip`   = '".$userip."',
-                                                 `what` = '".$fid."',
-                                                 `time` = '".((int)time())."'");
+                setIpcheck("fid(".$get_threadkid['kid'].")");
 
                     $update = db("UPDATE ".$db['userstats']."
                                                 SET `forumposts` = forumposts+1
@@ -2271,9 +2261,8 @@ case 'admin';
 
         $delvr = db("DELETE FROM ".$db['vote_results']."
                      WHERE vid = '".$getv['vote']."'");
-        $voteid = "vid_".$getv['vote'];
-        $delip = db("DELETE FROM ".$db['ipcheck']."
-                     WHERE what = '".$voteid."'");
+
+        setIpcheck("vid_".$getv['vote']);
         }
         $del = db("DELETE FROM ".$db['f_threads']."
                    WHERE id = '".intval($_GET['id'])."'");

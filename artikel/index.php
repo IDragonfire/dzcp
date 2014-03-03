@@ -324,11 +324,7 @@ case 'show';
                                                      `comment`  = '".up($_POST['comment'],1)."',
                                                      `ip`       = '".$userip."'");
 
-                        $ncid = "artid(".$_GET['id'].")";
-                        $qry = db("INSERT INTO ".$db['ipcheck']."
-                                             SET ip   = '".$userip."',
-                                                     what = '".$ncid."',
-                                                     time = '".((int)time())."'");
+                        setIpcheck("artid(".$_GET['id'].")");
 
                         $index = info(_comment_added, "?action=show&amp;id=".$_GET['id']."");
                     }

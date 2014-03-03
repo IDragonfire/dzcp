@@ -170,9 +170,7 @@ case 'do';
       if($get['intern'] == 1)
       {
         $vid = "vid_".$_GET['id'];
-        $check = db("SELECT * FROM ".$db['ipcheck']."
-                     WHERE what = '".$vid."' ");
-        $ipcheck = _fetch($check);
+        $ipcheck = db("SELECT * FROM ".$db['ipcheck']." WHERE what = '".$vid."'",false,true);
 
         if($ipcheck['ip'] == $userid)
         {
@@ -189,16 +187,8 @@ case 'do';
                      SET `stimmen` = stimmen+1
                      WHERE id = '".intval($_POST['vote'])."'");
 
-          $qry = db("INSERT INTO ".$db['ipcheck']."
-                     SET `ip`   = '".$userid."',
-                         `what` = '".$vid."',
-                         `time` = '".time()."'");
-
-          $vid2 = "vid(".$_GET['id'].")";
-          $ins2 = db("INSERT INTO ".$db['ipcheck']."
-                      SET `ip`   = '".$userip."',
-                          `what` = '".$vid2."',
-                          `time` = '".time()."'");
+          setIpcheck("vid_".intval($_GET['id']));
+          setIpcheck("vid(".intval($_GET['id']).")");
 
           if(!isset($_GET['ajax'])) $index = info(_vote_successful, "?action=show&amp;id=".$_GET['id']."");
         }
@@ -218,17 +208,8 @@ case 'do';
                      SET `stimmen` = stimmen+1
                      WHERE id = '".intval($_POST['vote'])."'");
 
-          $vid = "vid_".$_GET['id']."";
-          $ins = db("INSERT INTO ".$db['ipcheck']."
-                     SET `ip`   = '".$userip."',
-                         `what` = '".$vid."',
-                         `time` = '".time()."'");
-
-          $vid2 = "vid(".$_GET['id'].")";
-          $ins2 = db("INSERT INTO ".$db['ipcheck']."
-                      SET `ip`   = '".$userip."',
-                          `what` = '".$vid2."',
-                          `time` = '".time()."'");
+          setIpcheck("vid_".intval($_GET['id']));
+          setIpcheck("vid(".intval($_GET['id']).")");
 
           if(!isset($_GET['ajax'])) $index = info(_vote_successful, "?action=show&amp;id=".$_GET['id']."");
         }
@@ -272,17 +253,8 @@ case 'do';
                    SET `stimmen` = stimmen+1
                    WHERE id = '".intval($_POST['vote'])."'");
 
-        $vid = "vid_".$_GET['id']."";
-        $ins = db("INSERT INTO ".$db['ipcheck']."
-                   SET `ip`   = '".$userip."',
-                       `what` = '".$vid."',
-                       `time` = '".time()."'");
-
-        $vid2 = "vid(".$_GET['id'].")";
-        $ins2 = db("INSERT INTO ".$db['ipcheck']."
-                    SET `ip`   = '".$userip."',
-                        `what` = '".$vid2."',
-                        `time` = '".time()."'");
+        setIpcheck("vid_".intval($_GET['id']));
+        setIpcheck("vid(".intval($_GET['id']).")");
 
         if(!isset($_GET['fajax'])) $index = info(_vote_successful, "forum/?action=showthread&amp;kid=".$_POST['kid']."&amp;id=".$_POST['fid']."");
       }

@@ -36,13 +36,13 @@ if(_adminMenu != 'true') exit;
                                               "question" => _votes_admin_question,
                                               "answer" => _votes_admin_answer));
       } elseif($_GET['do'] == "add") {
-    	  if(empty($_POST['question']) || empty($_POST['a1']) || empty($_POST['a2']))
-  		  {
-  		    if(empty($_POST['question'])) $error = _empty_votes_question;
-  		    elseif(empty($_POST['a1']))   $error = _empty_votes_answer;
-  		    elseif(empty($_POST['a2']))   $error = _empty_votes_answer;
+          if(empty($_POST['question']) || empty($_POST['a1']) || empty($_POST['a2']))
+            {
+              if(empty($_POST['question'])) $error = _empty_votes_question;
+              elseif(empty($_POST['a1']))   $error = _empty_votes_answer;
+              elseif(empty($_POST['a2']))   $error = _empty_votes_answer;
 
-  	  	  $error = show("errors/errortable", array("error" => $error));
+              $error = show("errors/errortable", array("error" => $error));
 
           if($_POST['intern']) $intern = "checked=\"checked\"";
 
@@ -153,9 +153,7 @@ if(_adminMenu != 'true') exit;
         $qry = db("DELETE FROM ".$db['vote_results']."
                    WHERE vid = '".intval($_GET['id'])."'");
 
-        $vid = "vid_".$_GET['id'];
-        $qry = db("DELETE FROM ".$db['ipcheck']."
-                   WHERE what = '".$vid."'");
+        db("DELETE FROM ".$db['ipcheck']." WHERE what = 'vid_".$_GET['id']."'");
 
         $show = info(_vote_admin_delete_successful, "?admin=votes");
       } elseif($_GET['do'] == "edit") {
@@ -167,7 +165,7 @@ if(_adminMenu != 'true') exit;
         if($get['closed'] == "1") $isclosed = "checked=\"checked\"";
 
         $what = "&amp;do=editvote&amp;id=".$_GET['id']."";
-        
+
         $show = show($dir."/form_vote", array("head" => _votes_admin_edit_head,
                                               "value" => "edit",
                                               "id" => $_GET['id'],
@@ -272,7 +270,7 @@ if(_adminMenu != 'true') exit;
         }
       } else {
         $qry = db("SELECT * FROM ".$db['votes']."
-		           WHERE forum = 0
+                   WHERE forum = 0
                    ORDER BY datum DESC");
         while($get = _fetch($qry))
         {

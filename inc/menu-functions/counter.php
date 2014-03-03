@@ -35,6 +35,7 @@ function counter() {
                         SUM(visitors) AS allvisitors
                         FROM ".$db['counter'],false,true);
 
+        $info = '';
         if(abs(online_reg()) != 0) {
             $qryo = db("SELECT `id` FROM ".$db['users']."
                 WHERE time+'".$useronline."'>'".time()."'

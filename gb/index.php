@@ -219,11 +219,7 @@ case 'do';
                      `nachricht`  = '".up($_POST['eintrag'], 1)."',
                      `ip`         = '".$userip."'");
 
-      $qry = db("INSERT INTO ".$db['ipcheck']."
-                 SET `ip`   = '".$userip."',
-                     `what` = 'gb',
-                     `time` = '".((int)time())."'");
-
+        setIpcheck("gb");
         $index = info(_gb_entry_successful, "../gb/");
       }
   }
