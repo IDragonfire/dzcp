@@ -25,10 +25,7 @@ if(view_error_reporting) {
     ini_set('display_errors', 1);
 }
 else
-{
-    error_reporting(0);
-    ini_set('display_errors', 0);
-}
+    error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
 
 ## REQUIRES ##
 //DZCP-Install default variable
