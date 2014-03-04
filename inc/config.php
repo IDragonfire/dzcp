@@ -8,7 +8,7 @@
 //-> DZCP Settings Start
 #########################################
 
-define('view_error_reporting', true); // Zeigt alle Fehler und Notices etc.
+define('view_error_reporting', false); // Zeigt alle Fehler und Notices etc.
 define('use_default_timezone', true); // Verwendende die Zeitzone vom Server
 define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selbst einstellen * 'use_default_timezone' auf false stellen *
 
@@ -25,7 +25,10 @@ if(view_error_reporting) {
     ini_set('display_errors', 1);
 }
 else
-    error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+{
+    error_reporting(0);
+    ini_set('display_errors', 0);
+}
 
 ## REQUIRES ##
 //DZCP-Install default variable
