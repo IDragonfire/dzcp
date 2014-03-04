@@ -32,7 +32,7 @@ function server($serverID = 0) {
 
         unset($player_list);
 
-        if(empty($cache->get('nav_server_'.$serverID))) {
+        if($cache->check('nav_server_'.$serverID)) {
             $server = gs_normalise(@call_user_func('server_query_'.$get['status'], $get['ip'], $get['port'], $get['qport'], 'info'));
             $player_list = call_user_func('server_query_'.$get['status'], $get['ip'], $get['port'], $get['qport'], 'players');
             $cache->set('nav_server_'.$serverID, serialize(array('server' => $server, 'players' => $player_list)), $config['cache_server']);

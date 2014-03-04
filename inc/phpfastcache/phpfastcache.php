@@ -90,6 +90,20 @@ class phpFastCache {
 
     }
 
+    function check($keyword) {
+        if($this->is_driver == true) {
+            $object = $this->driver_get($keyword,array());
+        } else {
+            $object = $this->driver->driver_get($keyword,array());
+        }
+
+        if($object == null) {
+            return true;
+        }
+
+        return empty($object['value']) ? true : false;
+    }
+
     function get($keyword, $option = array()) {
         if($this->is_driver == true) {
             $object = $this->driver_get($keyword,$option);

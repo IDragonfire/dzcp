@@ -21,7 +21,7 @@ default:
         $player_list = '';
         if($get['status'] != "nope" && file_exists(basePath.'/inc/server_query/'.$get['status'].'.php'))
         {
-          if(empty($cache->get('gameserver_'.intval($get['id']).'_'.$language)))
+          if($cache->check('gameserver_'.intval($get['id']).'_'.$language))
           {
           if(!function_exists('server_query_'.$get['status']))
           {

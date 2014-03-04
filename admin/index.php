@@ -72,7 +72,7 @@ $dir = "admin";
 
     $version = '<b>'._akt_version.': '._version.'</b>'; $dzcp_news = '';
     if(fsockopen_support()) {
-        if(empty($cache->get("admin_version"))) {
+        if($cache->check("admin_version")) {
             $dzcp_v = fileExists("http://www.dzcp.de/version.txt");
             if(!empty($dzcp_v))
                 $cache->set("admin_version", $dzcp_v, 600);
@@ -90,7 +90,7 @@ $dir = "admin";
             $old = "_old";
         }
 
-        if(empty($cache->get("admin_news"))) {
+        if($cache->check("admin_news")) {
             $dzcp_news = fileExists("http://www.dzcp.de/dzcp_news.php");
             if(!empty($dzcp_news))
                 $cache->set("admin_news", $dzcp_news, 600);

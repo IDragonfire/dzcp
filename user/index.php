@@ -3183,7 +3183,7 @@ case 'get_steam_image';
         }
 
         if ($ret!= null) {
-            if(empty($cache->get('xml_'.$ret))) {
+            if($cache->check('xml_'.$ret)) {
                 $steam_profile = simplexml_load_file("http://steamcommunity.com/profiles/".$ret."/?xml=1");
                 $cache->set('xml_'.$ret, $steam_profile, 3600);
             }
@@ -3192,7 +3192,7 @@ case 'get_steam_image';
         }
         else
         {
-            if(empty($cache->get('xml_'.$data))) {
+            if($cache->check('xml_'.$data)) {
                 $steam_profile = simplexml_load_file("http://steamcommunity.com/id/".str_replace('steam_','ERROR_POFILE_FIXED',$data)."/?xml=1");
                 $cache->set('xml_'.$data, $steam_profile, 3600);
             }
@@ -3203,7 +3203,7 @@ case 'get_steam_image';
         }
 
         if (empty($steam_profile->error) && $ret != "") {
-            if(empty($cache->get("steamsignature_".$ret))) {
+            if($cache->check("steamsignature_".$ret)) {
             $image_cache = fileExists('http://steamsignature.com/profile/english/'.$ret.'.png');
             if($image_cache && !empty($image_cache))
                 $cache->set("steamsignature_".$ret, bin2hex($image_cache), 3600);
@@ -3212,7 +3212,7 @@ case 'get_steam_image';
                 $image_cache = hextobin($cache->get("steamsignature_".$ret));
         }
         else {
-            if(empty($cache->get("steamsignature_error_pic"))) {
+            if($cache->check("steamsignature_error_pic")) {
                 $image_cache = fileExists('http://steamsignature.com/profile/english/error_not_found.png');
                 if($image_cache && !empty($image_cache))
                     $cache->set("steamsignature_error_pic", bin2hex($image_cache), 3600);
