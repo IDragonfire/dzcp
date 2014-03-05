@@ -9,10 +9,11 @@
  * Contributing: http://tinymce.moxiecode.com/contributing
  */
 
+define('basePath', dirname(dirname(__FILE__).'../../'));
 // Handle incoming request if it's a script call
 if (TinyMCE_Compressor::getParam("js")) {
     // Default settings
-    $tinyMCECompressor = new TinyMCE_Compressor(array("cache_dir" => realpath(dirname(__FILE__) . "/../_cache_")));
+    $tinyMCECompressor = new TinyMCE_Compressor(array("cache_dir" => basePath."/inc/_cache_"));
 
     // Handle request, compress and stream to client
     $tinyMCECompressor->handleRequest();
