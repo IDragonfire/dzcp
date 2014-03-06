@@ -1,9 +1,11 @@
 <?php
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
@@ -13,64 +15,55 @@ $dir = "artikel";
 ## SECTIONS ##
 switch ($action):
 default:
-  if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("artikel","titel","datum","kat"))) {
-  $qry = db("SELECT * FROM ".$db['artikel']."
-               WHERE public = 1
-               ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
-               LIMIT ".($page - 1)*$martikel.",".$martikel."");
-  }
-
-  else {$qry = db("SELECT * FROM ".$db['artikel']."
-             WHERE public = 1
-             ORDER BY datum DESC
-             LIMIT ".($page - 1)*$martikel.",".$martikel."");
-  }
-  $entrys = cnt($db['artikel']);
-
-  if(_rows($qry))
-  {
-    while($get = _fetch($qry))
-    {
-      $qryk = db("SELECT kategorie FROM ".$db['newskat']."
-                  WHERE id = '".$get['kat']."'");
-      $getk = _fetch($qryk);
-      $titel = '<a style="display:block" href="?action=show&amp;id='.$get['id'].'">'.$get['titel'].'</a>';
-
-      $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-
-      $show .= show($dir."/artikel_show", array("titel" => $titel,
-                                                "kat" => re($getk['kategorie']),
-                                                "id" => $get['id'],
-                                                "display" => "none",
-                                                "nautor" => _autor,
-                                                "ndatum" => _datum,
-                                                "class" => $class,
-                                                "ncomments" => _news_kommentare.":",
-                                                "viewed" => $viewed,
-                                                "text" => bbcode($get['text']),
-                                                "datum" => date("d.m.Y", $get['datum']),
-                                                "links" => $links,
-                                                "autor" => autor($get['autor'])));
+    if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("artikel","titel","datum","kat"))) {
+        $qry = db("SELECT * FROM ".$db['artikel']."
+                   WHERE public = 1
+                   ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
+                   LIMIT ".($page - 1)*$martikel.",".$martikel."");
+    } else {
+        $qry = db("SELECT * FROM ".$db['artikel']."
+                   WHERE public = 1
+                   ORDER BY datum DESC
+                   LIMIT ".($page - 1)*$martikel.",".$martikel."");
     }
-  } else {
-    $show = show(_no_entrys_yet, array("colspan" => "4"));
-  }
+    $entrys = cnt($db['artikel']);
 
-  $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
-  $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
-  $seiten = nav($entrys,$martikel,"?page".$_GET['show']."".$orderby);
-  $index = show($dir."/artikel", array("show" => $show,
-                                       "stats" => $stats,
-                                       "nav" => $seiten,
-                                       "artikel" => _artikel,
-                                       "kat" => _news_admin_kat,
-                                       "datum" => _datum,
-                                       "autor" => _autor,
-                                       "order_autor" => orderby('autor'),
-                                       "order_datum" => orderby('datum'),
-                                       "order_titel" => orderby('titel'),
-                                       "order_kat" => orderby('kat'),
-                                       "archiv" => _news_archiv));
+    if(_rows($qry)) {
+        $color = 0; $show = '';
+        while($get = _fetch($qry)) {
+            $getk = db("SELECT kategorie FROM ".$db['newskat']." WHERE id = '".$get['kat']."'",false,true);
+            $titel = '<a style="display:block" href="?action=show&amp;id='.$get['id'].'">'.$get['titel'].'</a>';
+            $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+            $show .= show($dir."/artikel_show", array("titel" => $titel,
+                                                      "kat" => re($getk['kategorie']),
+                                                      "id" => $get['id'],
+                                                      "display" => "none",
+                                                      "nautor" => _autor,
+                                                      "ndatum" => _datum,
+                                                      "class" => $class,
+                                                      "ncomments" => _news_kommentare.":",
+                                                      "text" => bbcode($get['text']),
+                                                      "datum" => date("d.m.Y", $get['datum']),
+                                                      "autor" => autor($get['autor'])));
+        }
+    } else {
+        $show = show(_no_entrys_yet, array("colspan" => "4"));
+    }
+
+    $orderby = isset($_GET['orderby']) ? "&orderby".$_GET['orderby'] : "";
+    $orderby .= isset($_GET['order']) ? "&order=".$_GET['order'] : "";
+    $seiten = nav($entrys,$martikel,"?page".(isset($_GET['show']) ? $_GET['show'] : 0)."".$orderby);
+    $index = show($dir."/artikel", array("show" => $show,
+                                         "nav" => $seiten,
+                                         "artikel" => _artikel,
+                                         "kat" => _news_admin_kat,
+                                         "datum" => _datum,
+                                         "autor" => _autor,
+                                         "order_autor" => orderby('autor'),
+                                         "order_datum" => orderby('datum'),
+                                         "order_titel" => orderby('titel'),
+                                         "order_kat" => orderby('kat'),
+                                         "archiv" => _news_archiv));
 break;
 case 'show';
   if(!permission("artikel")) {
@@ -548,10 +541,11 @@ case 'compreview';
 exit;
 break;
 endswitch;
+
 ## SETTINGS ##
 $time_end = generatetime();
 $time = round($time_end - $time_start,4);
 page($index, $title, $where,$time);
+
 ## OUTPUT BUFFER END ##
 gz_output();
-?>
