@@ -223,7 +223,6 @@ else
                                           "archiv" => _news_archiv));
     break;
     case 'show';
-        db("UPDATE ".$db['news']." SET `viewed` = viewed+1 WHERE id = '".intval($_GET['id'])."'");
         $check = db("SELECT intern FROM ".$db['news']." WHERE id = '".intval($_GET['id'])."'",false,true);
 
         if($check['intern'] && !permission("intnews"))
@@ -235,6 +234,8 @@ else
                 $index = error(_id_dont_exist,1);
             else
             {
+                db("UPDATE ".$db['news']." SET `viewed` = viewed+1 WHERE id = '".intval($_GET['id'])."'");
+
                 $get = _fetch($qry);
                 $getkat = db("SELECT katimg FROM ".$db['newskat']." WHERE id = '".$get['kat']."'",false,true);
 
@@ -327,7 +328,7 @@ else
                 $i--;
             }
 
-            if(settings("reg_newscomments") == "1" && $chkMe == "unlogged")
+            if(settings("reg_newscomments") && $chkMe == "unlogged")
                 $add = _error_unregistered_nc;
             else
             {
