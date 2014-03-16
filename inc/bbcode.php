@@ -134,6 +134,10 @@ $maxfilesize = @ini_get('upload_max_filesize');
 $config_cache['htaccess'] = true;
 $config_cache['fallback'] = array( "memcache" => "apc", "memcached" =>  "apc", "apc" =>  "sqlite", "sqlite" => "files");
 $config_cache['path'] = basePath."/inc/_cache_";
+
+if(!is_dir($config_cache['path'])) //Check cache dir
+    mkdir($config_cache['path'], 0777, true);
+
 $config_cache['securityKey'] = sha1($prev);
 phpFastCache::setup($config_cache);
 $cache = phpFastCache();
