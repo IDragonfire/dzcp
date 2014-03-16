@@ -1,15 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('editserver')
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._server_admin_head;
-    if(!permission("editserver"))
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
       $qry = db("SELECT * FROM ".$db['server']."
                  ORDER BY id");
       while($get = _fetch($qry))
@@ -268,5 +260,3 @@ if(_adminMenu != 'true') exit;
           $show = info(_server_admin_added, "?admin=server");
         }
       }
-    }
-?>

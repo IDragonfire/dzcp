@@ -1,15 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       settingsmenu
-// Rechte:    $chkMe == 4
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._admin_pos;
-    if($chkMe != 4)
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
       $qry = db("SELECT * FROM ".$db['pos']."
                  ORDER BY pid");
       while($get = _fetch($qry))
@@ -171,5 +163,3 @@ if(_adminMenu != 'true') exit;
           $show = info(_pos_admin_added, "?admin=positions");
         }
       }
-    }
-?>

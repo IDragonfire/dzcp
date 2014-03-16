@@ -1,13 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       settingsmenu
-// Rechte:    $chkMe == 4
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
       $where = $where.': '._config_forum_head;
-      if($chkMe == 4)
-      {
         if($_GET['show'] == "subkats")
         {
           $qryk = db("SELECT s1.name,s2.id,s2.kattopic,s2.subtopic,s2.pos
@@ -182,13 +176,13 @@ if(_adminMenu != 'true') exit;
             $show = error(_config_empty_katname, 1);
           } else {
             if($_POST['kid'] == "lazy"){
-			  $kid = "";
+              $kid = "";
             }else{
-			  $kid = "`kid` = '".((int)$_POST['kid'])."',";
+              $kid = "`kid` = '".((int)$_POST['kid'])."',";
 
-			  if($_POST['kid'] == "1" || "2") $sign = ">= ";
+              if($_POST['kid'] == "1" || "2") $sign = ">= ";
               else  $sign = "> ";
-			  $posi = db("UPDATE ".$db['f_kats']."
+              $posi = db("UPDATE ".$db['f_kats']."
                         SET `kid` = kid+1
                         WHERE `kid` ".$sign." '".intval($_POST['kid'])."'");
             }
@@ -210,7 +204,7 @@ if(_adminMenu != 'true') exit;
             $positions .= show(_select_field, array("value" => $get['pos']+1,
                                                     "what" => _nach.' '.re($get['kattopic']),
                                                     "sel" => ""));
-		  }
+          }
           $show = show($dir."/skatform", array("head" => _config_forum_add_skat,
                                                "fkat" => _config_forum_skatname,
                                                "fstopic" => _config_forum_stopic,
@@ -270,7 +264,7 @@ if(_adminMenu != 'true') exit;
                                                "tposition" => _position,
                                                "position" => $positions,
                                                "value" => _button_value_edit));
-        	} //--> End while subkat sort
+            } //--> End while subkat sort
         } elseif($_GET['do'] == "editskat") {
           if(empty($_POST['skat']))
           {
@@ -278,13 +272,13 @@ if(_adminMenu != 'true') exit;
           } else {
 
             if($_POST['order'] == "lazy"){
-			  $order = "";
+              $order = "";
             }else{
-			  $order = "`pos` = '".((int)$_POST['order'])."',";
+              $order = "`pos` = '".((int)$_POST['order'])."',";
 
-			  if($_POST['order'] == "1" || "2") $sign = ">= ";
+              if($_POST['order'] == "1" || "2") $sign = ">= ";
               else  $sign = "> ";
-			  $posi = db("UPDATE ".$db['f_skats']."
+              $posi = db("UPDATE ".$db['f_skats']."
                         SET `pos` = pos+1
                         WHERE `pos` ".$sign." '".intval($_POST['order'])."'");
             }
@@ -314,7 +308,3 @@ if(_adminMenu != 'true') exit;
           $show = info(_config_forum_skat_deleted, "?admin=forum&show=subkats&amp;id=".$get['sid']."");
         }
       }
-    } else {
-      $show = error(_error_wrong_permissions, 1);
-    }
-?>

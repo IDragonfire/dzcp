@@ -1,15 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       settingsmenu
-// Rechte:    permission('downloads')
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._admin_dlkat;
-    if(!permission("downloads"))
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
       $qry = db("SELECT * FROM ".$db['dl_kat']."
                  ORDER BY name");
       while($get = _fetch($qry))
@@ -83,5 +75,3 @@ if(_adminMenu != 'true') exit;
           $show = info(_dl_admin_added, "?admin=dl");
         }
       }
-    }
-?>

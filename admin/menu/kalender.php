@@ -1,15 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('editkalender')
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
   $where = $where.': '._kalender_head;
-  if(!permission("editkalender"))
-  {
-    $show = error(_error_wrong_permissions, 1);
-  } else {
     if($_GET['do'] == "add")
     {
       $dropdown_date = show(_dropdown_date, array("day" => dropdown("day",date("d",time())),
@@ -125,5 +117,3 @@ if(_adminMenu != 'true') exit;
                                              "add" => _kalender_admin_head_add
                                              ));
     }
-  }
-?>

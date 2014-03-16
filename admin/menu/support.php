@@ -1,8 +1,4 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ: rootmenu
-// Rechte: $chkMe == 4
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
 $m = parsePHPInfo();

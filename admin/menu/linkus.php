@@ -1,12 +1,6 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('links')
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
-    if(permission('links'))
-    {
       if($_GET['do'] == "new")
       {
         $show = show($dir."/form_linkus", array("head" => _linkus_admin_head,
@@ -109,7 +103,3 @@ if(_adminMenu != 'true') exit;
                                            "show" => $show_,
                                            "add" => _linkus_admin_head));
       }
-    } else {
-      $show = error(_error_wrong_permissions, 1);
-    }
-?>

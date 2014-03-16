@@ -1,15 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('links')
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_links;
-    if(!permission("links"))
-    {
-      $index = error(_error_wrong_permissions, 1);
-    } else {
       if($_GET['do'] == "new")
       {
         $linktyp = '
@@ -142,5 +134,3 @@ if(_adminMenu != 'true') exit;
                                           "add" => _links_admin_head
                                           ));
       }
-    }
-?>

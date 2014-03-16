@@ -1,15 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       settingsmenu
-// Rechte:    permission('news') || permission('artikel')
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_newskats_edit_head;
-    if(!permission("news") && !permission('artikel'))
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
       $qry = db("SELECT * FROM ".$db['newskat']."
                  ORDER BY `kategorie`");
       while($get = _fetch($qry))
@@ -124,5 +116,3 @@ if(_adminMenu != 'true') exit;
           $show = info(_config_newskats_edited, "?admin=news");
         }
       }
-    }
-?>

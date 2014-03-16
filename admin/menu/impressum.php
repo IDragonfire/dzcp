@@ -1,15 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       settingsmenu
-// Rechte:    $chkMe == 4
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_impressum_head;
-    if($chkMe != 4)
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
       $wysiwyg = '_word';
 
       $qry = db("SELECT i_domain,i_autor FROM ".$db['settings']."");
@@ -35,5 +27,3 @@ if(_adminMenu != 'true') exit;
 
         $show = info(_config_set, "?admin=impressum");
       }
-    }
- ?>

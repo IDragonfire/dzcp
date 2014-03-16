@@ -1,15 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       settingsmenu
-// Rechte:    $chkMe == 4
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._smileys_head;
-    if($chkMe != 4)
-    {
-      $show = error(_error_wrong_permissions,1);
-    } else {
       if($_GET['do'] == "add")
       {
         $show = show($dir."/form_smileys", array("head" => _smileys_head_add,
@@ -100,5 +92,3 @@ if(_adminMenu != 'true') exit;
                                             "add" => _smileys_head_add,
                                             "smiley" => _smileys_smiley));
       }
-    }
-?>

@@ -1,15 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('awards')
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._awards_head;
-    if(!permission("awards"))
-    {
-        $show = error(_error_wrong_permissions, 1);
-    } else {
         if($_GET['do'] == "new")
       {
           $qry = db("SELECT * FROM ".$db['squads']."
@@ -180,5 +172,3 @@ if(_adminMenu != 'true') exit;
                                            "add" => _awards_admin_head_add
                                            ));
       }
-    }
-?>

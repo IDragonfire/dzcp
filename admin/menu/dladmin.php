@@ -1,15 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('downloads')
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._dl;
-    if(!permission("downloads"))
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
       if($_GET['do'] == "new")
       {
         $qry = db("SELECT * FROM ".$db['dl_kat']."
@@ -158,5 +150,3 @@ if(_adminMenu != 'true') exit;
                                               "show" => $show_
                                               ));
       }
-    }
-?>

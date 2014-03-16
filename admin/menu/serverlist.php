@@ -6,10 +6,6 @@
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._slist_head_admin;
-    if(!permission("serverliste"))
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
       $qry = db("SELECT id,ip,port,clanname,clanurl,pwd,checked
                  FROM ".$db['serverliste']."");
 
@@ -65,5 +61,3 @@ if(_adminMenu != 'true') exit;
                  WHERE id = '".intval($_GET['id'])."'");
 
       $show = info(_slist_server_deleted, "?admin=serverlist");
-    }
-?>

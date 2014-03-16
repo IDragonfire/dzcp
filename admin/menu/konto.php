@@ -1,15 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('clankasse')
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_clankasse_head;
-    if(!permission("clankasse"))
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
       $qry = db("SELECT k_inhaber,k_nr,k_blz,k_bank,iban,bic,k_waehrung,k_vwz FROM ".$db['settings']."");
       $get = _fetch($qry);
 
@@ -122,5 +114,3 @@ if(_adminMenu != 'true') exit;
 
         $show = info(_clankasse_kat_deleted, "?admin=konto");
       }
-    }
-?>

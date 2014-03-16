@@ -1,15 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('editsquads')
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._member_admin_header;
-    if(!permission("editsquads"))
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
       $qry = db("SELECT * FROM ".$db['squads']." ORDER BY pos");
       while($get = _fetch($qry))
       {
@@ -448,5 +440,3 @@ if(_adminMenu != 'true') exit;
                 db("DELETE FROM ".$db['navi']." WHERE url = '../squads/?action=shows&amp;id=".intval($_GET['id'])."'");
         $show = info(_admin_squad_deleted, "?admin=squads");
       }
-    }
-?>

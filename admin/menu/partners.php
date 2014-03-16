@@ -1,15 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    $chkMe == 4
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._partners_head;
-    if($chkMe != 4)
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
       if($_GET['do'] == "add")
       {
         $files = get_files('../banner/partners/',false,true);
@@ -116,5 +108,3 @@ if(_adminMenu != 'true') exit;
                                              "link" => _link,
                                              "button" => _partners_button));
       }
-    }
-?>

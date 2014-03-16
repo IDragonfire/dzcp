@@ -1,16 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('votesadmin')
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._votes_head;
-    if(!permission("votesadmin"))
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
-
       if($_GET['do'] == 'new')
       {
         $show = show($dir."/form_vote", array("head" => _votes_admin_head,
@@ -307,5 +298,3 @@ if(_adminMenu != 'true') exit;
                                           "legendemenu" => _vote_legendemenu,
                                           "show" => $show_));
       }
-    }
-?>

@@ -1,13 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       rootmenu
-// Rechte:    $chkMe == 4
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._protocol;
-    if($chkMe == 4)
-    {
       if($_GET['do'] == 'deletesingle')
       {
         db("DELETE FROM ".$db['ipcheck']." WHERE id = '".$_GET['id']."'");
@@ -114,7 +108,3 @@ if(_adminMenu != 'true') exit;
                                              "nav" => nav($entrys,$maxprot,"?admin=protocol".$sip)
                                              ));
       }
-    } else {
-      $show = error(_error_wrong_permissions, 1);
-    }
-?>

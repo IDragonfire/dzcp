@@ -1,15 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('rankings')
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_rankings;
-    if(!permission("rankings"))
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
       if($_GET['do'] == "add")
       {
         $qrys = db("SELECT * FROM ".$db['squads']."
@@ -146,5 +138,3 @@ if(_adminMenu != 'true') exit;
                                              "add" => _rankings_add_head
                                              ));
       }
-    }
-?>

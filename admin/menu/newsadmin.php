@@ -1,13 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('news')
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._news_admin_head;
-    if(permission("news"))
-    {
       $wysiwyg = '_word';
       if($_GET['do'] == "add")
       {
@@ -457,7 +451,3 @@ if(_adminMenu != 'true') exit;
                                                "delete" => _deleteicon_blank,
                                                "add" => _admin_news_head));
       }
-    } else {
-      $show = error(_error_wrong_permissions, 1);
-    }
-?>

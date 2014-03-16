@@ -1,15 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('editor')
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._navi_head;
-    if(!permission("editor"))
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
       if($_GET['do'] == "add")
       {
         $qry = db("SELECT s2.*, s1.name AS katname, s1.placeholder FROM ".$db['navi_kats']." AS s1 LEFT JOIN ".$db['navi']." AS s2 ON s1.`placeholder` = s2.`kat`
@@ -338,5 +330,3 @@ if(_adminMenu != 'true') exit;
                                          "edit" => _editicon_blank,
                                          "del" => _deleteicon_blank));
       }
-    }
-?>

@@ -6,10 +6,6 @@
 if(_adminMenu != 'true') exit;
 
 $where = $where.': '._slider;
-if(!permission("slideshow")) {
-  $show = error(_error_wrong_permissions, 1);
-} else {
-
     $qry = db("SELECT * FROM ".$db['slideshow']." ORDER BY `pos` ASC");
     while($get = _fetch($qry)) {
         $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
@@ -244,5 +240,3 @@ if(!permission("slideshow")) {
 
     $show = info(_slider_admin_del_done, "?admin=slideshow");
 }
-}
-?>

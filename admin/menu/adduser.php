@@ -1,16 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       settingsmenu
-// Rechte:    permission('editusers')
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_useradd_head;
-    if(!permission("editusers"))
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
-
       $dropdown_age = show(_dropdown_date, array("day" => dropdown("day",$bdayday,1),
                                                             "month" => dropdown("month",$bdaymonth,1),
                                                    "year" => dropdown("year",$bdayyear,1)));
@@ -235,5 +226,3 @@ if(_adminMenu != 'true') exit;
 
       }
     }
-  }
-?>

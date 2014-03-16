@@ -1,15 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       rootmenu
-// Rechte:    $chkMe == 4
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_global_head;
-    if($chkMe != 4)
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
       if($_GET['do'] == "update")
       {
         if($_POST)
@@ -460,5 +452,3 @@ if(_adminMenu != 'true') exit;
                                          "value" => _button_value_config,
                                          "show" => $show_));
       }
-    }
-?>

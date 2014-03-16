@@ -1,12 +1,6 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('gallery')
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
-    if(permission('gallery'))
-    {
       if($_GET['do'] == "step2")
     {
       if(empty($_POST['gallery']))
@@ -234,7 +228,3 @@ if(_adminMenu != 'true') exit;
                                            "head" => _gallery_head,
                                            "add" => _gallery_show_admin));
       }
-    } else {
-      $show = error(_error_wrong_permissions, 1);
-    }
-?>

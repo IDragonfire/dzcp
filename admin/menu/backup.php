@@ -1,13 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       rootmenu
-// Rechte:    $chkMe == 4
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._backup_head;
-    if($chkMe == 4)
-    {
       $v = str_replace(" ","_",_version);
       $file_name = 'backup_dzcp_v.'.$v.'_'.date("d.m.y").'.sql';
       if(file_exists($file_name))
@@ -33,7 +27,3 @@ if(_adminMenu != 'true') exit;
         file_put_contents($file_name,sql_backup());
         header("Location: ?admin=backup");
       }
-    } else {
-      $show = error(_error_wrong_permissions, 1);
-    }
-?>

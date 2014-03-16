@@ -1,15 +1,7 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    $chkMe == 4
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_sponsors;
-    if(!permission("links"))
-    {
-      $index = error(_error_wrong_permissions, 1);
-    } else {
       if($_GET['do'] == "new")
       {
 
@@ -598,5 +590,3 @@ if(_adminMenu != 'true') exit;
 											 "slink" => _links_link,
                                           	 "add" => _sponsors_admin_add));
       }
-    }
-?>

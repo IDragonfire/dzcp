@@ -1,8 +1,4 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       settingsmenu
-// Rechte:    $chkMe == 4
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._profile_head;
@@ -266,5 +262,3 @@ if(_adminMenu != 'true') exit;
                                            "del" => _deleteicon_blank,
 									                         "shown" => _profile_shown));
       }
-    }
-?>
