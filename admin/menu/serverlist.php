@@ -1,8 +1,4 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('serverliste')
-///////////////////////////////
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._slist_head_admin;
@@ -29,6 +25,7 @@ if(_adminMenu != 'true') exit;
           $clanname = show(_slist_clanname_with_url, array("name" => re($get['clanname']),
                                                            "url" => re($get['clanurl'])));
         }
+
         $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
         $show_ .= show($dir."/slist_show", array("id" => $get['id'],
                                                  "clanname" => $clanname,
@@ -46,7 +43,7 @@ if(_adminMenu != 'true') exit;
                                         "clan" => _profil_clan,
                                         "delete" => _deleteicon_blank,
                                         "serverip" => _slist_serverip));
-    }
+
     if($_GET['do'] == "accept")
     {
       $qry = db("UPDATE ".$db['serverliste']."
@@ -61,3 +58,4 @@ if(_adminMenu != 'true') exit;
                  WHERE id = '".intval($_GET['id'])."'");
 
       $show = info(_slist_server_deleted, "?admin=serverlist");
+    }
