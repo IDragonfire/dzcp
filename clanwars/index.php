@@ -543,7 +543,7 @@ case 'details';
            WHERE s1.id = '".intval($_GET['id'])."'");
   $get = _fetch($qry);
 
-  if($chkMe != "1" && $chkMe != "unlogged" && $get['punkte'] == "0" && $get['gpunkte'] == "0")
+  if($chkMe != 1 && $chkMe >= 2 && $get['punkte'] == "0" && $get['gpunkte'] == "0")
   {
     if($get['datum'] > time())
     {
@@ -664,7 +664,7 @@ case 'details';
     if($getc['hp']) $hp = show(_hpicon, array("hp" => $getc['hp']));
     else $hp = "";
 
-    if(($chkMe != 'unlogged' && $getc['reg'] == $userid) || permission("clanwars"))
+    if(($chkMe >= 1 && $getc['reg'] == $userid) || permission("clanwars"))
     {
       $edit = show("page/button_edit_single", array("id" => $get['id'],
                                                     "action" => "action=details&amp;do=edit&amp;cid=".$getc['id'],
@@ -718,7 +718,7 @@ case 'details';
       $i--;
     }
 
-  if(settings("reg_cwcomments") == "1" && $chkMe == "unlogged")
+  if(settings("reg_cwcomments") && !$chkMe)
   {
     $add = _error_unregistered_nc;
   } else {
@@ -824,7 +824,7 @@ case 'details';
   {
         if(_rows(db("SELECT `id` FROM ".$db['cw']." WHERE `id` = '".(int)$_GET['id']."'")) != 0)
         {
-            if(settings("reg_cwcomments") == "1" && $chkMe == "unlogged")
+            if(settings("reg_cwcomments") && !$chkMe )
             {
                 $index = error(_error_have_to_be_logged, 1);
             } else {
@@ -1010,7 +1010,7 @@ case 'compreview';
     $get_userid = $userid;
     $get_date = time();
 
-    if($chkMe == 'unlogged') $regCheck = false;
+    if(!$chkMe) $regCheck = false;
     else {
       $regCheck = true;
       $pUId = $userid;
@@ -1154,7 +1154,7 @@ case 'preview';
   exit;
 break;
 case 'update';
-  if($chkMe == "unlogged")
+  if(!$chkMe)
   {
     $index = error(_error_have_to_be_logged, 1);
   } else {

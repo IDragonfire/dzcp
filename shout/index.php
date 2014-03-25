@@ -20,7 +20,7 @@ default:
     elseif(!$userid && empty($_POST['email']) || $_POST['email'] == "E-Mail") $index = error(_empty_email, 1);
     elseif(!$userid && !check_email($_POST['email']))                         $index = error(_error_invalid_email, 1);
     elseif(empty($_POST['eintrag']))                                                 $index = error(_error_empty_shout, 1);
-    elseif(settings('reg_shout') == 1 && $chkMe == 'unlogged')                       $index = error(_error_unregistered, 1);
+    elseif(settings('reg_shout') && !$chkMe)                       $index = error(_error_unregistered, 1);
     else {
       if(!$userid) $reg = $_POST['email'];
       else $reg = $userid;

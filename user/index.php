@@ -12,87 +12,71 @@ $where = _site_user;
 ## SECTIONS ##
 switch ($action):
 case 'login';
-  $where = _site_user_login;
-  if($_GET['do'] == "yes")
-  {
-    if($secureLogin == 1 && ($_POST['secure'] != $_SESSION['sec_login'] || empty($_SESSION['sec_login'])))
-    {
-      $index = error(_error_invalid_regcode, 1);
+    $where = _site_user_login;
+    if($do == "yes") {
+        if($secureLogin == 1 && ($_POST['secure'] != $_SESSION['sec_login'] || empty($_SESSION['sec_login'])))
+            $index = error(_error_invalid_regcode, 1);
+        else {
+            if(checkpwd($_POST['user'], md5($_POST['pwd']))) {
+                $get = db_stmt("SELECT id,user,nick,pwd,email,level,time FROM ".$db['users']." WHERE user = ? AND pwd = ? AND level != '0'", array('ss', up($_POST['user']), md5($_POST['pwd'])),false,true);
+                if(!isBanned($get['id'])) {
+                    $permanent_key = '';
+                    if(isset($_POST['permanent'])) {
+                        set_cookie($prev."id",$get['id']);
+                        $permanent_key = md5(mkpwd(8));
+                        set_cookie($prev."pkey",$permanent_key);
+                    }
+
+                    ## Aktualisiere Datenbank ##
+                    db("UPDATE ".$db['users']." SET `online` = '1', `sessid` = '".session_id()."', `ip` = '".$_SESSION['ip']."', `pkey` = '".$permanent_key."' WHERE id = '".$get['id']."'");
+
+                    $_SESSION['id']         = $get['id'];
+                    $_SESSION['pwd']        = $get['pwd'];
+                    $_SESSION['lastvisit']  = $get['time'];
+                    $_SESSION['ip']         = $userip;
+
+                    db("UPDATE ".$db['userstats']." SET `logins` = logins+1 WHERE user = ".$get['id']);
+                    db("UPDATE ".$db['users']." SET `online` = '1', `sessid` = '".session_id()."', `ip` = '".$userip."', `pkey` = '".$permanent_key."' WHERE id = ".$get['id']);
+                    setIpcheck("login(".$get['id'].")");
+
+                    header("Location: ?action=userlobby");
+                }
+                else
+                    $index = error(_login_banned);
+            } else {
+                $qry = db("SELECT id FROM ".$db['users']." WHERE user = '".up($_POST['user'])."'");
+                if(_rows($qry)) {
+                      $get = _fetch($qry);
+                      setIpcheck("trylogin(".$get['id'].")");
+                }
+
+                set_cookie($prev."id","");
+                set_cookie($prev."pkey","");
+
+                $index = error(_login_pwd_dont_match);
+            }
+        }
     } else {
-      if(checkpwd($_POST['user'], md5($_POST['pwd'])))
-      {
-        $get = db_stmt("SELECT id,user,nick,pwd,email,level,time FROM ".$db['users']." WHERE user = ? AND pwd = ? AND level != '0'", array('ss', up($_POST['user']), md5($_POST['pwd'])),false,true);
-        $permanent_key = '';
-        if(isset($_POST['permanent']))
+        if(!$chkMe)
         {
-              set_cookie($prev."id",$get['id']);
-              $permanent_key = md5(mkpwd(8));
-              set_cookie($prev."pkey",$permanent_key);
+            $secure = $secureLogin ? show($dir."/secure", array("help" => _login_secure_help, "security" => _register_confirm)) : '';
+            $index = show($dir."/login", array("loginhead" => _login_head,
+                                               "loginname" => _loginname,
+                                                "dis" => $dis,
+                                               "secure" => $secure,
+                                               "lostpwd" => _login_lostpwd,
+                                               "permanent" => _login_permanent,
+                                               "pwd" => _pwd));
+        } else {
+            $index = error(_error_user_already_in, 1);
+            set_cookie($prev."id","");
+            set_cookie($prev."pkey","");
         }
-
-        ## Aktualisiere Datenbank ##
-        db("UPDATE ".$db['users']." SET `online` = '1', `sessid` = '".session_id()."', `ip` = '".$_SESSION['ip']."', `pkey` = '".$permanent_key."' WHERE id = '".$get['id']."'");
-
-
-        $_SESSION['id']         = $get['id'];
-        $_SESSION['pwd']        = $get['pwd'];
-        $_SESSION['lastvisit']  = $get['time'];
-        $_SESSION['ip']         = $userip;
-
-            $upd = db("UPDATE ".$db['userstats']."
-                               SET `logins` = logins+1
-                                  WHERE user = ".$get['id']);
-
-        $upd = db("UPDATE ".$db['users']."
-                                  SET `online` = '1',
-                       `sessid` = '".session_id()."',
-                       `ip`     = '".$userip."',
-                       `pkey` = '".$permanent_key."'
-                               WHERE id = ".$get['id']);
-
-        setIpcheck("login(".$get['id'].")");
-
-          header("Location: ?action=userlobby");
-      }    else {
-        $qry = db("SELECT id FROM ".$db['users']."
-                           WHERE user = '".up($_POST['user'])."'");
-          if(_rows($qry))
-        {
-          $get = _fetch($qry);
-          setIpcheck("trylogin(".$get['id'].")");
-        }
-        set_cookie($prev."id","");
-        set_cookie($prev."pkey","");
-
-        $index = error(_login_pwd_dont_match);
-      }
     }
-  } else {
-    if($chkMe == "unlogged")
-      {
-      if($secureLogin == 1)
-      {
-        $secure = show($dir."/secure", array("help" => _login_secure_help,
-                                             "security" => _register_confirm));
-      }
-
-        $index = show($dir."/login", array("loginhead" => _login_head,
-                                                                                "loginname" => _loginname,
-                                         "dis" => $dis,
-                                         "secure" => $secure,
-                                                                               "lostpwd" => _login_lostpwd,
-                                         "permanent" => _login_permanent,
-                                                                               "pwd" => _pwd));
-      } else {
-          $index = error(_error_user_already_in, 1);
-      set_cookie($prev."id","");
-      set_cookie($prev."pkey","");
-      }
-  }
 break;
 case 'lostpwd';
   $where = _site_user_lostpwd;
-  if($chkMe == "unlogged")
+  if(!$chkMe)
     {
         $index = show($dir."/lostpwd", array("head" => _lostpwd_head,
                                                                                  "name" => _loginname,
@@ -156,7 +140,7 @@ break;
 case 'register';
   $where = _site_reg;
   $check_regcode = settings("regcode");
-  if($chkMe == "unlogged")
+  if(!$chkMe)
     {
     if($check_regcode == 1)
     {
@@ -273,7 +257,7 @@ case 'register';
 break;
 case 'userlobby';
   $where = _site_user_lobby;
-  if($chkMe == "unlogged")
+  if(!$chkMe)
   {
       $index = error(_error_have_to_be_logged, 1);
   } else {
@@ -1573,7 +1557,7 @@ case 'preview';
     $get_userid = $userid;
     $get_date = time();
 
-    if($chkMe == 'unlogged') $regCheck = true;
+    if(!$chkMe) $regCheck = true;
   }
 
   if($regCheck)
@@ -1624,7 +1608,7 @@ case 'preview';
 break;
 case 'editprofile';
   $where = _site_user_editprofil;
-  if($chkMe == "unlogged")
+  if(!$chkMe)
   {
       $index = error(_error_have_to_be_logged, 1);
   } else {
@@ -2072,7 +2056,7 @@ case 'editprofile';
 break;
 case 'msg';
   $where = _site_msg;
-  if($chkMe == "unlogged")
+  if(!$chkMe)
     {
         $index = error(_error_have_to_be_logged, 1);
     } else {
@@ -2167,7 +2151,7 @@ case 'msg';
                                               "zitat" => zitat(autor($get['von']),$get['nachricht'])));
       }
       } elseif($_GET['do'] == "pn") {
-          if($chkMe == "unlogged")       $index = error(_error_have_to_be_logged);
+          if(!$chkMe)       $index = error(_error_have_to_be_logged);
           elseif($_GET['id'] == $userid) $index = error(_error_msg_self, 1);
           else {
 
@@ -2672,7 +2656,7 @@ if($_GET['show'] == "search")
 break;
 case 'buddys';
   $where = _site_user_buddys;
-  if($chkMe == "unlogged")
+  if(!$chkMe)
   {
       $index = error(_error_have_to_be_logged, 1);
   } else {
@@ -2936,13 +2920,16 @@ case 'admin';
 
         if($_POST['passwd']) $newpwd = "`pwd` = '".md5($_POST['passwd'])."',";
 
+        $update_level = $_POST['level'] == 'banned' ? 0 : $_POST['level'];
+        $update_banned = $_POST['level'] == 'banned' ? 1 : 0;
         $qry = db("UPDATE ".$db['users']."
                    SET ".$newpwd."
                        `nick`   = '".up($_POST['nick'])."',
                        `email`  = '".$_POST['email']."',
                        `user`   = '".up($_POST['loginname'])."',
                        `listck` = '".((int)$_POST['listck'])."',
-                       `level`  = '".((int)$_POST['level'])."'
+                       `level`  = '".((int)$update_level)."',
+                       `banned`  = '".((int)$update_banned)."'
                    WHERE id = '".intval($_GET['user'])."'");
 
         setIpcheck("upduser(".$userid."_".intval($_GET['user']).")");

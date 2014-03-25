@@ -67,6 +67,10 @@ define('_config_url_linked_head', "URLs linking");
 define('_ts_settings_customicon', 'custom icons downloading');
 define('_ts_settings_showchannels', 'Only show channels with user');
 define('_ts_settings_showchannels_desc', 'If this is on, they will only show channels there are users.');
+
+define('_upload_error', 'Failed to upload the file!');
+define('_login_banned', 'Your account has been banned by administrator!');
+
 ## ADDED / REDEFINED FOR 1.5 Final
 define('_side_membermap', 'Membermap');
 define('_id_dont_exist', 'The requested ID does not exist!');

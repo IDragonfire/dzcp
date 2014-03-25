@@ -13,7 +13,7 @@ $where = _site_away;
 switch ($action):
 default:
 $where = $where.' - '._away_list;
-  if($chkMe == "unlogged" || $chkMe < 2)
+  if(!$chkMe || $chkMe < 2)
   {
     $index = error(_error_wrong_permissions, 1);
   } else {
@@ -92,7 +92,7 @@ $where = $where.' - '._away_list;
 break;
 case 'new';
 $where = $where.' - '._away_new;
-  if($chkMe == "unlogged" || $chkMe < "2")
+  if(!$chkMe || $chkMe < 2)
   {
     $index = error(_error_wrong_permissions, 1);
   } else {
@@ -171,7 +171,7 @@ $where = $where.' - '._away_new;
 break;
 case 'info';
 $where = $where.' - '._info;
-  if($chkMe == "unlogged" || $chkMe < "2")
+  if(!$chkMe || $chkMe < 2)
   {
     $index = error(_error_wrong_permissions, 1);
   } else {
@@ -204,7 +204,7 @@ $where = $where.' - '._info;
   }
 break;
 case 'del';
-  if($chkMe == "unlogged" || $chkMe < "2")
+  if(!$chkMe || $chkMe < 2)
   {
     $index = error(_error_wrong_permissions, 1);
   } else {
@@ -214,7 +214,7 @@ case 'del';
   }
 break;
 case 'edit';
-  if($chkMe == "unlogged" || $chkMe < "2")
+  if(!$chkMe || $chkMe < 2)
   {
     $index = error(_error_wrong_permissions, 1);
   } else {

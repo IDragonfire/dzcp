@@ -143,7 +143,7 @@ phpFastCache::setup($config_cache);
 $cache = phpFastCache();
 
 //-> Auslesen der Cookies und automatisch anmelden
-if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSION['id']) && checkme() == "unlogged") {
+if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSION['id']) && !checkme()) {
     ## User aus der Datenbank suchen ##
     $sql = db_stmt("SELECT id,user,nick,pwd,email,level,time,pkey FROM ".$db['users']." WHERE id = ? AND pkey = ? AND level != '0'",array('is', $_COOKIE[$prev.'id'], $_COOKIE[$prev.'pkey']));
     if(_rows($sql)) {
@@ -184,7 +184,7 @@ if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSI
 
 $userid = userid();
 $chkMe = checkme();
-if($chkMe == "unlogged") {
+if(!$chkMe) {
     $_SESSION['id']        = '';
     $_SESSION['pwd']       = '';
     $_SESSION['ip']        = '';
@@ -363,6 +363,7 @@ function highlight_text($txt) {
 
     return $txt;
 }
+
 //-> Glossarfunktion
 $gl_words = array(); $gl_desc = array();
 $qryglossar = db("SELECT `word`,`glossar` FROM ".$db['glossar']);
@@ -398,8 +399,13 @@ function regexChars($txt) {
     return str_replace("\n",'',$txt);
 }
 
+$use_glossar = true; //Global
 function glossar($txt) {
-    global $db,$gl_words,$gl_desc;
+    global $db,$gl_words,$gl_desc,$use_glossar;
+
+    if(!$use_glossar)
+        return $txt;
+
     $txt = str_replace('&#93;',']',$txt);
     $txt = str_replace('&#91;','[',$txt);
 
@@ -1048,7 +1054,7 @@ function online_guests($where='') {
     global $db,$useronline,$userip,$chkMe,$isSpider;
 
     if(!$isSpider) {
-        $logged = $chkMe == 'unlogged' ? 0 : 1;
+        $logged = !$chkMe ? 0 : 1;
         db("DELETE FROM ".$db['c_who']." WHERE online < ".time());
         db("REPLACE INTO ".$db['c_who']."
                SET `ip`       = '".$userip."',
@@ -1065,12 +1071,12 @@ function online_reg() {
     return cnt($db['users'], " WHERE time+'".$useronline."'>'".time()."' AND online = '1'");
 }
 
-//-> Prueft, ob User eingeloggt ist und wenn ja welches Level er besitzt
+//-> Prueft, ob der User eingeloggt ist und wenn ja welches Level besitzt er
 function checkme($userid_set=0) {
     global $db;
 
     if(!$userid = ($userid_set != 0 ? intval($userid_set) : userid()))
-        return "unlogged";
+        return 0;
 
     $qry = db("SELECT level FROM ".$db['users']." WHERE id = ".$userid." AND pwd = '".$_SESSION['pwd']."' AND ip = '".$_SESSION['ip']."'");
     if(_rows($qry)) {
@@ -1078,7 +1084,35 @@ function checkme($userid_set=0) {
         return $get['level'];
     }
     else
-        return "unlogged";
+        return 0;
+}
+
+//-> Prueft, ob der User gesperrt ist und meldet ihn ab
+function isBanned($userid_set=0,$logout=true) {
+    global $db,$userid,$chkMe,$prev;
+    $userid_set = $userid_set ? $userid_set : $userid;
+    if(checkme($userid_set) >= 1 || $userid_set) {
+        $get = db("SELECT banned FROM ".$db['users']." WHERE `id` = ".intval($userid_set)." LIMIT 1",false,true);
+        if($get['banned']) {
+            if($logout) {
+                $_SESSION['id']        = '';
+                $_SESSION['pwd']       = '';
+                $_SESSION['ip']        = '';
+                $_SESSION['lastvisit'] = '';
+                session_unset();
+                session_destroy();
+                session_regenerate_id();
+                set_cookie($prev.'id', '');
+                set_cookie($prev.'pkey',"");
+                set_cookie(session_name(), '');
+                $userid = 0; $chkMe = 0;
+            }
+
+            return true;
+        }
+    }
+
+    return false;
 }
 
 //-> Prueft, ob ein User diverse Rechte besitzt
@@ -1462,7 +1496,7 @@ function fintern($id) {
     global $db,$userid,$chkMe;
     $fget = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1 LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id WHERE s2.`id` = '".intval($id)."'"));
 
-    if($chkMe == "unlogged")
+    if(!$chkMe)
         return empty($fget['intern']) ? true : false;
     else
     {
@@ -1471,7 +1505,7 @@ function fintern($id) {
 
       if(_rows($user) || _rows($team) || $chkMe == 4 || !$fget['intern'])
           return true;
-      else if($chkMe == "unlogged")
+      else if(!$chkMe)
           return false;
       else
           return false;
@@ -1739,13 +1773,13 @@ function getrank($tid, $squad="", $profil=0) {
                 return $squadname.$getp['position'];
             }
         } else {
-            $get = _fetch(db("SELECT level FROM ".$db['users']." WHERE id = '".intval($tid)."'"));
-            if($get['level'] == 0)             return _status_unregged;
-            else if($get['level'] == 1)        return _status_user;
-            else if($get['level'] == 2)        return _status_trial;
-            else if($get['level'] == 3)        return _status_member;
-            else if($get['level'] == 4)        return _status_admin;
-            else if($get['level'] == 'banned') return _status_banned;
+            $get = _fetch(db("SELECT level,banned FROM ".$db['users']." WHERE id = '".intval($tid)."'"));
+            if(!$get['level'] && !$get['banned'])     return _status_unregged;
+            else if($get['level'] == 1)               return _status_user;
+            else if($get['level'] == 2)               return _status_trial;
+            else if($get['level'] == 3)               return _status_member;
+            else if($get['level'] == 4)               return _status_admin;
+            else if(!$get['level'] && $get['banned']) return _status_banned;
             else return _gast;
         }
     } else {
@@ -1754,13 +1788,13 @@ function getrank($tid, $squad="", $profil=0) {
             $get = _fetch($qry);
             return $get['position'];
         } else {
-            $get = _fetch(db("SELECT level FROM ".$db['users']." WHERE id = '".intval($tid)."'"));
-            if($get['level'] == 0)            return _status_unregged;
-            elseif($get['level'] == 1)        return _status_user;
-            elseif($get['level'] == 2)        return _status_trial;
-            elseif($get['level'] == 3)        return _status_member;
-            elseif($get['level'] == 4)        return _status_admin;
-            elseif($get['level'] == 'banned') return _status_banned;
+            $get = _fetch(db("SELECT level,banned FROM ".$db['users']." WHERE id = '".intval($tid)."'"));
+            if(!$get['level'] && !$get['banned'])    return _status_unregged;
+            elseif($get['level'] == 1)               return _status_user;
+            elseif($get['level'] == 2)               return _status_trial;
+            elseif($get['level'] == 3)               return _status_member;
+            elseif($get['level'] == 4)               return _status_admin;
+            elseif(!$get['level'] && $get['banned']) return _status_banned;
             else return _gast;
         }
     }
@@ -2103,7 +2137,7 @@ function pholderreplace($pholder) {
 //-> Zugriffsberechtigung auf die Seite
 function check_internal_url() {
     global $db,$chkMe;
-    if($chkMe != "unlogged") return false;
+    if($chkMe >= 1) return false;
     $install_pfad = explode("/",dirname(dirname($_SERVER['SCRIPT_NAME'])."../"));
     $now_pfad = explode("/",$_SERVER['REQUEST_URI']); $pfad = '';
     foreach($now_pfad as $key => $value) {
@@ -2241,8 +2275,7 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
     global $u_b1,$u_b2,$designpath,$maxwidth,$language,$cp_color,$copyright;
 
     // user gebannt? Logge aus!
-    if($chkMe == 'banned')
-        header("Location: ../user/?action=logout");
+    if(isBanned()) header("Location: ../news/");
 
     // JS-Dateine einbinden
     $lng = ($language=='deutsch')?'de':'en';
@@ -2270,7 +2303,7 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
         update_maxonline();
 
         //check permissions
-        if($chkMe == "unlogged")
+        if(!$chkMe)
             include_once(basePath.'/inc/menu-functions/login.php');
         else {
             $check_msg = check_msg(); set_lastvisit(); $login = "";

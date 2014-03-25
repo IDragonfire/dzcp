@@ -19,7 +19,7 @@ function welcome() {
                //-->
              </script>";
 
-    if($chkMe == 'unlogged')
+    if(!$chkMe)
         return $return.' '._welcome_guest;
 
     return $return.' '.autor($userid, "welcome");

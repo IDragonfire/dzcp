@@ -32,12 +32,12 @@ function shout($ajax = 0) {
     }
 
     $dis = ''; $dis1 = ''; $only4reg = ''; $sec = ''; $form = '';
-    if(settings('reg_shout') == 1 && $chkMe == 'unlogged') {
+    if(settings('reg_shout') == 1 && !$chkMe) {
         $dis = ' style="text-align:center;cursor:wait" disabled="disabled"';
         $dis1 = ' style="cursor:wait;color:#888" disabled="disabled"';
         $only4reg = _shout_must_reg;
     } else {
-        if($chkMe == "unlogged") {
+        if(!$chkMe) {
             $form = show("menu/shout_form", array("dis" => $dis));
             $sec = show("menu/shout_antispam", array("help" => _login_secure_help, "dis" => $dis));
         } else

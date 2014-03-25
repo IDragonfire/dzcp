@@ -286,7 +286,7 @@ else
                 $comments = ''; $i = 0;
                 while($getc = _fetch($qryc)) {
                     $edit = ""; $delete = "";
-                    if(($chkMe != 'unlogged' && $getc['reg'] == $userid) || permission("news")) {
+                    if(($chkMe >= 1 && $getc['reg'] == $userid) || permission("news")) {
                         $edit = show("page/button_edit_single", array("id" => $get['id'],
                                                                       "action" => "action=show&amp;do=edit&amp;cid=".$getc['id'],
                                                                       "title" => _button_title_edit));
@@ -328,7 +328,7 @@ else
                 $i--;
             }
 
-            if(settings("reg_newscomments") && $chkMe == "unlogged")
+            if(settings("reg_newscomments") && !$chkMe)
                 $add = _error_unregistered_nc;
             else
             {
@@ -403,7 +403,7 @@ else
                 case 'add':
                     if(db("SELECT `id` FROM ".$db['news']." WHERE `id` = ".intval($_GET['id']),true,false) != 0)
                     {
-                        if(settings("reg_newscomments") == "1" && $chkMe == "unlogged")
+                        if(settings("reg_newscomments") && !$chkMe)
                             $index = error(_error_have_to_be_logged, 1);
                         else {
                             if(!ipcheck("ncid(".$_GET['id'].")", $flood_newscom)) {
@@ -625,7 +625,7 @@ else
             $get_id = cnt($db['newscomments'], " WHERE news = ".intval($_GET['id']))+1;
             $get_userid = $userid;
             $get_date = time();
-            $regCheck = $chkMe != "unlogged" ? true : false;
+            $regCheck = $chkMe >= 1 ? true : false;
             $editedby = '';
         }
 

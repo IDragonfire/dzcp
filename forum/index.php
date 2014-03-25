@@ -129,7 +129,7 @@ default:
       $check++;
     }
   } else {
-    if($chkMe == "unlogged") $nick = "<center>"._forum_nobody_is_online."</center>";
+    if(!$chkMe) $nick = "<center>"._forum_nobody_is_online."</center>";
     else                        $nick = "<center>"._forum_nobody_is_online2."</center>";
   }
 
@@ -583,7 +583,7 @@ case 'showthread';
       $getabo = _fetch($qryabo);
       if(_rows($qryabo)) $abo = 'checked="checked"';
 
-      if($chkMe == "unlogged")
+      if(!$chkMe)
       {
           $f_abo = '';
       } else {
@@ -1086,7 +1086,7 @@ case 'thread';
       }
     } else $index = error(_error_wrong_permissions, 1);
   } elseif($_GET['do'] == "add") {
-    if(settings("reg_forum") == "1" && $chkMe == "unlogged")
+    if(settings("reg_forum") && !$chkMe)
     {
       $index = error(_error_unregistered,1);
     } else {
@@ -1183,7 +1183,7 @@ case 'thread';
       if(_rows(db("SELECT id FROM ".$db['f_skats']." WHERE id = '".intval($_GET['kid'])."'")) == 0) {
           $index = error(_id_dont_exist, 1);
       } else {
-        if(settings("reg_forum") == "1" && $chkMe == "unlogged")
+        if(settings("reg_forum") && !$chkMe)
         {
             $index = error(_error_have_to_be_logged, 1);
         } else {
@@ -1582,7 +1582,7 @@ case 'post';
       $index = error(_error_wrong_permissions, 1);
     }
   } elseif($_GET['do'] == "add") {
-    if(settings("reg_forum") == "1" && $chkMe == "unlogged")
+    if(settings("reg_forum") && !$chkMe)
     {
       $index = error(_error_unregistered,1);
     } else {
@@ -1833,7 +1833,7 @@ case 'post';
         {
             $index = error(_id_dont_exist,1);
         } else {
-            if(settings("reg_forum") == "1" && $chkMe == "unlogged")
+            if(settings("reg_forum") && !$chkMe)
             {
                 $index = error(_error_unregistered,1);
             } else {
@@ -2372,7 +2372,7 @@ case 'preview';
     } else {
       $get_datum = time();
 
-      if($chkMe == 'unlogged') $guestCheck = false;
+      if(!$chkMe) $guestCheck = false;
       else {
         $guestCheck = true;
         $pUId = $userid;
@@ -2492,7 +2492,7 @@ case 'preview';
     } else {
       $get_datum = time();
 
-      if($chkMe == 'unlogged') $guestCheck = false;
+      if(!$chkMe) $guestCheck = false;
       else {
         $guestCheck = true;
         $pUId = $userid;

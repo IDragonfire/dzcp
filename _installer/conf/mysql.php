@@ -1499,6 +1499,17 @@ function update_mysql_1_6()
     db("ALTER TABLE `".$db['users']."` ADD `perm_gallery`INT(1) NOT NULL DEFAULT '0' AFTER `pnmail`;");
     db("ALTER TABLE `".$db['squads']."` ADD `team_joinus`INT(1) NOT NULL DEFAULT '1';");
     db("ALTER TABLE `".$db['squads']."` ADD `team_fightus`INT(1) NOT NULL DEFAULT '1';");
+    db("ALTER TABLE `".$db['users']."` ADD `banned`INT(1) NOT NULL DEFAULT '0' AFTER `level`;");
+
+    $qry = db("SELECT id,level FROM ".$db['users']);
+    if(mysqli_num_rows($qry)>= 1)
+        while($get = mysqli_fetch_assoc($qry)) {
+        $banned = $get['level'] == 'banned' ? 1 : 0;
+        $level = $get['level'] == 'banned' ? 0 : $get['level'];
+        db("UPDATE ".$db['users']." SET level = ".$level.", banned = ".$banned." WHERE id = ".$get['id']);
+    }
+    unset($level,$banned);
+    db("ALTER TABLE ".$db['users']." CHANGE `level` `level` INT( 2 ) NOT NULL DEFAULT '0';"); //Set level to int
 
     //-> Forum Sortieren
     db("ALTER TABLE ".$db['f_skats']." ADD `pos` int(5) NOT NULL");
@@ -1527,4 +1538,3 @@ function update_mysql_1_6()
         db("UPDATE ".$db['permissions']." SET slideshow = 1, gs_showpw = 1 WHERE id = '".$get['id']."'");
     }
 }
-?>

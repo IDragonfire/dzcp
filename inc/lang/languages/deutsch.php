@@ -67,6 +67,10 @@ define('_config_url_linked_head', 'URLs verlinken');
 define('_ts_settings_customicon', 'Eigene Icons runterladen');
 define('_ts_settings_showchannels', 'Nur Channels mit Usern anzeigen');
 define('_ts_settings_showchannels_desc', 'Wenn dies eingeschaltet ist werden nur Channels angezeigt in denen auch User sind.');
+
+define('_upload_error', 'Fehler beim hochladen der Datei!');
+define('_login_banned', 'Dein Account wurde vom Administrator gesperrt!');
+
 ## ADDED / REDEFINED FOR 1.5 Final
 define('_id_dont_exist', 'Die von dir angegebene ID existiert nicht!');
 define('_perm_editts', 'Teamspeak Server verwalten');

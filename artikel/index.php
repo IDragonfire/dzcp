@@ -114,7 +114,7 @@ case 'show';
                 $hp = ($getc['hp'] ? show(_hpicon, array("hp" => $getc['hp'])) : "");
 
                 $edit = ""; $delete = "";
-                if(($chkMe != 'unlogged' && $getc['reg'] == $userid) || permission("artikel")) {
+                if(($chkMe >= 1 && $getc['reg'] == $userid) || permission("artikel")) {
                     $edit = show("page/button_edit_single", array("id" => $get['id'],
                                                                   "action" => "action=show&amp;do=edit&amp;cid=".$getc['id'],
                                                                   "title" => _button_title_edit));
@@ -159,7 +159,7 @@ case 'show';
             }
 
             $add = "";
-            if(settings("reg_artikel") && $chkMe == "unlogged") {
+            if(settings("reg_artikel") && !$chkMe) {
                 $add = _error_unregistered_nc;
             } else {
                 if($userid >= 1)
@@ -227,7 +227,7 @@ case 'show';
   {
         if(_rows(db("SELECT `id` FROM ".$db['artikel']." WHERE `id` = '".(int)$_GET['id']."'")) != 0)
         {
-            if(settings("reg_artikel") == "1" && $chkMe == "unlogged")
+            if(settings("reg_artikel") && !$chkMe)
             {
                 $index = error(_error_have_to_be_logged, 1);
             } else {
@@ -470,7 +470,7 @@ break;
             $regCheck = false;
             $editedby = '';
 
-            if($chkMe == 'unlogged') {
+            if(!$chkMe) {
                 $regCheck = true;
                 $pUId = $userid;
             }

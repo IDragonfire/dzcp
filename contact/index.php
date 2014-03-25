@@ -12,162 +12,170 @@ $title = $pagetitle." - ".$where."";
 $dir = "contact";
 ## SECTIONS ##
 switch ($action):
-default:
-  $index = show($dir."/contact", array("head" => _site_contact,
-                                       "nachricht" => _contact_nachricht,
-                                       "nick" => _nick,
-                                       "what" => "contact",
-                                       "security" => _register_confirm,
-                                       "joinus" => "",
-                                       "value" => _button_value_send,
-                                       "why" => "",
-                                       "pflicht" => _contact_pflichtfeld,
-                                       "email" => _email,
-                                       "skype" => _skypeid,
-                                       "steam" => _steamid,
-                                       "icq" => _icq));
-break;
-case 'fightus';
-  $qry = db("SELECT id,name,game FROM ".$db['squads']."
-             WHERE status = 1
-             AND team_fightus = 1
-             ORDER BY name");
-  while($get = _fetch($qry))
-  {
-    $squads .= show(_select_field_fightus, array("id" => $get['id'],
-                                                 "squad" => re($get['name']),
-                                                 "game" => re($get['game'])));
-  }
-  if (!mysqli_num_rows($qry))
-  {
-    $squads = show(_select_field_fightus, array("id" => "0",
-    "squad" => _contact_joinus_no_squad_aviable,
-    "game" => "?"));
-  }
+    default:
+        $index = show($dir."/contact", array("head" => _site_contact,
+                                             "nachricht" => _contact_nachricht,
+                                             "nick" => _nick,
+                                             "what" => "contact",
+                                             "security" => _register_confirm,
+                                             "joinus" => "",
+                                             "value" => _button_value_send,
+                                             "why" => "",
+                                             "pflicht" => _contact_pflichtfeld,
+                                             "email" => _email,
+                                             "skype" => _skypeid,
+                                             "steam" => _steamid,
+                                             "icq" => _icq));
+    break;
+    case 'fightus';
+        $qry = db("SELECT id,name,game FROM ".$db['squads']."
+                   WHERE status = 1
+                   AND team_fightus = 1
+                   ORDER BY name");
 
-  $dropdown_date = show(_dropdown_date, array("day" => dropdown("day",date("d",time())),
+        $squads = '';
+        while($get = _fetch($qry))
+        {
+            $squads .= show(_select_field_fightus, array("id" => $get['id'],
+                                                         "squad" => re($get['name']),
+                                                         "game" => re($get['game'])));
+        }
+
+        if (!_rows($qry))
+        {
+            $squads = show(_select_field_fightus, array("id" => "0",
+            "squad" => _contact_joinus_no_squad_aviable,
+            "game" => "?"));
+        }
+
+        $dropdown_date = show(_dropdown_date, array("day" => dropdown("day",date("d",time())),
                                                     "month" => dropdown("month",date("m",time())),
-                                                 "year" => dropdown("year",date("Y",time()))));
+                                                    "year" => dropdown("year",date("Y",time()))));
 
-  $dropdown_time = show(_dropdown_time, array("hour" => dropdown("hour",date("H",time())),
-                                                 "minute" => dropdown("minute",date("i",time())),
-                                              "uhr" => _uhr));
+        $dropdown_time = show(_dropdown_time, array("hour" => dropdown("hour",date("H",time())),
+                                                    "minute" => dropdown("minute",date("i",time())),
+                                                    "uhr" => _uhr));
 
-  $index = show($dir."/fightus", array("head" => _site_fightus,
-                                       "nachricht" => _contact_fightus,
-                                       "partner" => _contact_fightus_partner,
-                                       "clandaten" => _contact_fightus_clandata,
-                                       "nick" => _nick,
-                                       "datum" => $dropdown_date,
-                                       "squad" => _fightus_squad,
-                                       "squads" => $squads,
-                                       "zeit" => $dropdown_time,
-                                       "security" => _register_confirm,
-                                       "clan" => _contact_fightus_clanname,
-                                       "date" => _datum,
-                                       "value" => _button_value_send,
-                                       "year" => date("Y", time()),
-                                       "maps" => _fightus_maps,
-                                       "vs" => _cw_xonx,
-                                       "game" => _game,
-                                       "hp" => _hp,
-                                       "pflicht" => _contact_pflichtfeld,
-                                       "email" => _email,
-                                       "skype" => _skypeid,
-                                       "steam" => _steamid,
-                                       "icq" => _icq));
-break;
-case 'joinus';
-    $qrysquads = db("SELECT id,name,game FROM ".$db['squads']."
-                    WHERE status = 1 AND team_joinus = 1
-                    ORDER BY name");
+        $index = show($dir."/fightus", array("head" => _site_fightus,
+                                             "nachricht" => _contact_fightus,
+                                             "partner" => _contact_fightus_partner,
+                                             "clandaten" => _contact_fightus_clandata,
+                                             "nick" => _nick,
+                                             "datum" => $dropdown_date,
+                                             "squad" => _fightus_squad,
+                                             "squads" => $squads,
+                                             "zeit" => $dropdown_time,
+                                             "security" => _register_confirm,
+                                             "clan" => _contact_fightus_clanname,
+                                             "date" => _datum,
+                                             "value" => _button_value_send,
+                                             "year" => date("Y", time()),
+                                             "maps" => _fightus_maps,
+                                             "vs" => _cw_xonx,
+                                             "game" => _game,
+                                             "hp" => _hp,
+                                             "pflicht" => _contact_pflichtfeld,
+                                             "email" => _email,
+                                             "skype" => _skypeid,
+                                             "steam" => _steamid,
+                                             "icq" => _icq));
+    break;
+    case 'joinus';
+        $qrysquads = db("SELECT id,name,game FROM ".$db['squads']."
+                        WHERE status = 1 AND team_joinus = 1
+                        ORDER BY name");
 
-    while($getsquads = _fetch($qrysquads))
-    {
-        $squads .= show(_select_field_fightus, array("id" => $getsquads['id'],
-                                                     "squad" => re($getsquads['name']),
-                                                     "game" => re($getsquads['game'])));
-    }
-    if (!mysqli_num_rows($qrysquads))
-    {
-        $squads = show(_select_field_fightus, array("id" => "0",
-                                             "squad" => _contact_joinus_no_squad_aviable,
-                                             "game" => "?"));
-    }
+        $squads = '';
+        while($getsquads = _fetch($qrysquads))
+        {
+            $squads .= show(_select_field_fightus, array("id" => $getsquads['id'],
+                                                         "squad" => re($getsquads['name']),
+                                                         "game" => re($getsquads['game'])));
+        }
 
-  $joinus = show($dir."/joinus", array("age" => _age,
-                                       "squad" => _squad,
-                                       "squads" => $squads,
-                                       "years" => _years));
+        if (!_rows($qrysquads))
+        {
+            $squads = show(_select_field_fightus, array("id" => "0",
+                                                 "squad" => _contact_joinus_no_squad_aviable,
+                                                 "game" => "?"));
+        }
 
-  $index = show($dir."/contact", array("head" => _site_joinus,
-                                       "nachricht" => _contact_joinus,
-                                       "nick" => _nick,
-                                       "value" => _button_value_send,
-                                       "joinus" => $joinus,
-                                       "what" => "joinus",
-                                       "security" => _register_confirm,
-                                       "why" => _contact_joinus_why,
-                                       "pflicht" => _contact_pflichtfeld,
-                                       "email" => _email,
-                                       "skype" => _skypeid,
-                                       "steam" => _steamid,
-                                       "icq" => _icq));
-break;
+        $joinus = show($dir."/joinus", array("age" => _age,
+                                             "squad" => _squad,
+                                             "squads" => $squads,
+                                             "years" => _years));
+
+        $index = show($dir."/contact", array("head" => _site_joinus,
+                                             "nachricht" => _contact_joinus,
+                                             "nick" => _nick,
+                                             "value" => _button_value_send,
+                                             "joinus" => $joinus,
+                                             "what" => "joinus",
+                                             "security" => _register_confirm,
+                                             "why" => _contact_joinus_why,
+                                             "pflicht" => _contact_pflichtfeld,
+                                             "email" => _email,
+                                             "skype" => _skypeid,
+                                             "steam" => _steamid,
+                                             "icq" => _icq));
+    break;
 case 'do';
-  if($_GET['what'] == "contact")
-  {
-    if($_POST['secure'] != $_SESSION['sec_contact'] || empty($_SESSION['sec_contact']))
-      $index = error(_error_invalid_regcode,1);
-    elseif(empty($_POST['text']))
-      $index = error(_error_empty_nachricht, 1);
-    elseif(empty($_POST['email']))
-      $index = error(_empty_email, 1);
-    elseif(!check_email($_POST['email']))
-      $index = error(_error_invalid_email, 1);
-    elseif(empty($_POST['nick']))
-      $index = error(_empty_nick, 1);
-    else {
-      $icq = preg_replace("=-=Uis","",$_POST['icq']);
-      $email = show(_email_mailto, array("email" => $_POST['email']));
-      $text = show(_contact_text, array("icq" => $icq,
-                                        "skype" => $_POST['skype'],
-                                        "steam" => $_POST['steam'],
-                                        "email" => $email,
-                                        "text" => $_POST['text'],
-                                        "nick" => $_POST['nick']));
+    if($_GET['what'] == "contact")
+    {
+        if($_POST['secure'] != $_SESSION['sec_contact'] || empty($_SESSION['sec_contact']))
+            $index = error(_error_invalid_regcode,1);
+        elseif(empty($_POST['text']))
+            $index = error(_error_empty_nachricht, 1);
+        elseif(empty($_POST['email']))
+            $index = error(_empty_email, 1);
+        elseif(!check_email($_POST['email']))
+            $index = error(_error_invalid_email, 1);
+        elseif(empty($_POST['nick']))
+            $index = error(_empty_nick, 1);
+        else {
+            $icq = preg_replace("=-=Uis","",$_POST['icq']);
+            $email = show(_email_mailto, array("email" => $_POST['email']));
+            $text = show(_contact_text, array("icq" => $icq,
+                                              "skype" => $_POST['skype'],
+                                              "steam" => $_POST['steam'],
+                                              "email" => $email,
+                                              "text" => $_POST['text'],
+                                              "nick" => $_POST['nick']));
 
-      $qry = db("SELECT s1.id FROM ".$db['users']." AS s1
-                 LEFT JOIN ".$db['permissions']." AS s2
-                 ON s1.id = s2.user
-                 WHERE s2.contact = '1' AND s1.`user` != '0 GROUP BY s1.`id`'");
-      $sqlAnd = '';
-      while($get = _fetch($qry))
-      {
-        $sqlAnd .= " AND s2.`user` != '".intval($get['id'])."'";
-        $qrys = db("INSERT INTO ".$db['msg']."
-                    SET `datum`     = '".((int)time())."',
-                        `von`       = '0',
-                        `an`        = '".((int)$get['id'])."',
-                        `titel`     = '"._contact_title."',
-                        `nachricht` = '".up($text, 1)."'");
-      }
+            $qry = db("SELECT s1.id FROM ".$db['users']." AS s1
+                       LEFT JOIN ".$db['permissions']." AS s2
+                       ON s1.id = s2.user
+                       WHERE s2.contact = '1' AND s1.`user` != '0 GROUP BY s1.`id`'");
 
-      $qry = db("SELECT s2.`user` FROM ".$db['permissions']." AS s1
-                 LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
-                 WHERE s1.`contact` = '1' AND s2.`posi` != '0'".$sqlAnd." GROUP BY s2.`user`");
-      while($get = _fetch($qry))
-      {
-        $qrys = db("INSERT INTO ".$db['msg']."
-                    SET `datum`     = '".((int)time())."',
-                        `von`       = '0',
-                        `an`        = '".((int)$get['user'])."',
-                        `titel`     = '"._contact_title."',
-                        `nachricht` = '".up($text, 1)."'");
-      }
-      $index = info(_contact_sended, "../news/");
-    }
-  } elseif($_GET['what'] == "joinus") {
+            $sqlAnd = '';
+            while($get = _fetch($qry))
+            {
+                $sqlAnd .= " AND s2.`user` != '".intval($get['id'])."'";
+                $qrys = db("INSERT INTO ".$db['msg']."
+                            SET `datum`     = '".((int)time())."',
+                                `von`       = '0',
+                                `an`        = '".((int)$get['id'])."',
+                                `titel`     = '"._contact_title."',
+                                `nachricht` = '".up($text, 1)."'");
+            }
+
+            $qry = db("SELECT s2.`user` FROM ".$db['permissions']." AS s1
+                       LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
+                       WHERE s1.`contact` = '1' AND s2.`posi` != '0'".$sqlAnd." GROUP BY s2.`user`");
+
+            while($get = _fetch($qry))
+            {
+                $qrys = db("INSERT INTO ".$db['msg']."
+                            SET `datum`     = '".((int)time())."',
+                                `von`       = '0',
+                                `an`        = '".((int)$get['user'])."',
+                                `titel`     = '"._contact_title."',
+                                `nachricht` = '".up($text, 1)."'");
+            }
+
+            $index = info(_contact_sended, "../news/");
+        }
+    } elseif($_GET['what'] == "joinus") {
     if($_POST['secure'] != $_SESSION['sec_joinus'] || empty($_SESSION['sec_joinus']))
       $index = error(_error_invalid_regcode,1);
     elseif(empty($_POST['text']))

@@ -74,7 +74,7 @@ switch ($action):
                                                "head" => _downloads_head));
     break;
     case 'download';
-        if(settings("reg_dl") && $chkMe == "unlogged")
+        if(settings("reg_dl") && !$chkMe)
             $index = error(_error_unregistered);
         else {
             $qry = db("SELECT * FROM ".$db['downloads']."
@@ -174,7 +174,7 @@ switch ($action):
         }
     break;
     case 'getfile';
-        if(settings("reg_dl") && $chkMe == "unlogged")
+        if(settings("reg_dl") && !$chkMe)
             $index = error(_error_unregistered,1);
         else {
             $get = db("SELECT url FROM ".$db['downloads']."

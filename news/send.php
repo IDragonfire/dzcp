@@ -18,7 +18,7 @@ else
     switch ($action):
     default:
 
-            if($chkMe == 'unlogged')
+            if(!$chkMe)
             {
                 $form = show($dir."/send_form1", array("nachricht" => _site_news,
                                                        "nick" => _nick,
@@ -75,7 +75,7 @@ else
           if(!$userid && empty($_POST['email']) || $_POST['email'] == "E-Mail") $error = show("errors/errortable", array("error" => _empty_email));
           if(!$userid && (empty($_POST['nick']))) $error = show("errors/errortable", array("error" => _empty_nick));
 
-            if($chkMe == 'unlogged')
+            if(!$chkMe)
             {
                 $form = show($dir."/send_form1", array("nachricht" => _site_news,
                                                        "nick" => _nick,

@@ -249,7 +249,7 @@ case 'do';
         $qry = db("SELECT * FROM ".$db['gb']." WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
 
-    if($get['reg'] == $userid && $chkMe != "unlogged" or permission('gb'))
+    if($get['reg'] == $userid && $chkMe >= 1 or permission('gb'))
     {
       db("DELETE FROM ".$db['gb']." WHERE id = '".intval($_GET['id'])."'");
       $index = info(_gb_delete_successful, "../gb/");
@@ -263,7 +263,7 @@ case 'do';
     $qry = db("SELECT * FROM ".$db['gb']."  WHERE id = '".intval($_GET['id'])."'");
     $get = _fetch($qry);
 
-    if($get['reg'] == $userid && $chkMe != "unlogged" or permission('gb'))
+    if($get['reg'] == $userid && $chkMe >= 1 or permission('gb'))
     //FIX END
     {
       if($get['reg'] != 0)
@@ -425,7 +425,7 @@ case 'preview';
     $get_userid = $userid;
     $get_date = time();
 
-    if($chkMe == 'unlogged') $regCheck = true;
+    if(!$chkMe) $regCheck = true;
   }
 
   $get_hp = $_POST['hp'];

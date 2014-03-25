@@ -14,7 +14,7 @@ $dir = "clankasse";
 $w = settings("k_waehrung");
 switch ($action):
 default:
-  if($chkMe == "unlogged" || $chkMe < "2")
+  if(!$chkMe || $chkMe < 2)
   {
     $index = error(_error_wrong_permissions, 1);
   } else {

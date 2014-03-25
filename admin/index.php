@@ -21,6 +21,7 @@ $settingsmenu = null;
 $contentmenu = null;
 $amenu = array();
 $wysiwyg = false;
+$use_glossar = false;
 
 ## SECTIONS ##
 $check = db("SELECT s1.user FROM ".$db['permissions']." s1, ".$db['users']." s2

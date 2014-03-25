@@ -19,7 +19,7 @@ default:
 
   if(_rows($qry))
   {
-    if($get['internal'] == 1 && ($chkMe == 1 || $chkMe == "unlogged"))
+    if($get['internal'] == 1 && ($chkMe == 1 || !$chkMe))
       $index = error(_error_wrong_permissions, 1);
     else {
       $where = re($get['titel']);
