@@ -6,9 +6,9 @@
       var dowhat = '[dowhat]', prevURL = '../forum/?action=preview&amp;what=post&amp;do='+dowhat.replace(/&amp;/g,'&');
     </script>
     <form id="fpostForm" name="fpostForm" action="?action=post&amp;do=[dowhat]" method="post" onsubmit="return(DZCP.submitButton())">
-    <table class="hperc" cellspacing="1">     
+    <table class="hperc" cellspacing="1">
       <tr>
-        <td class="contentHead" colspan="2" align="center"><span class="fontBold">[titel]</span></td> 
+        <td class="contentHead" colspan="2" align="center"><span class="fontBold">[titel]</span></td>
       </tr>
       [error]
       [form]
@@ -17,8 +17,8 @@
           <textarea id="eintrag" name="eintrag" cols="0" rows="0" class="editorStyle" >[zitat][posteintrag]</textarea>
         </td>
       </tr>
-      [b1]
-      <tr> 
+      <logged_out>
+      <tr>
         <td class="contentMainTop" style="vertical-align:middle"><span class="fontBold">[security]:</span></td>
         <td class="contentMainFirst" align="center">
           <table class="hperc" cellspacing="0">
@@ -26,7 +26,7 @@
               <td style="text-align:right;vertical-align:middle"><img src="../antispam.php?secure=forum&amp;num=5" alt="" class="icon" /></td>
               <td style="width:2%">&nbsp;</td>
               <td style="width:50%;vertical-align:middle">
-                <input class="inputField_dis_mid" type="text" name="secure" 
+                <input class="inputField_dis_mid" type="text" name="secure"
                 onfocus="this.className='inputField_en_mid'"
                 onblur="this.className='inputField_dis_mid'" style="text-align:center" />
               </td>
@@ -34,7 +34,7 @@
           </table>
         </td>
       </tr>
-      [b2]
+      </logged_out>
       <tr>
         <td class="contentMainTop" colspan="2" align="center">[ip]</td>
       </tr>

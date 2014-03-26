@@ -294,12 +294,8 @@ function languages() {
 }
 
 //-> Userspezifiesche Dinge
-$u_b1 = ""; $u_b2 = "";
-if($userid >= 1 && $ajaxJob != true) {
+if($userid >= 1 && $ajaxJob != true)
     db("UPDATE ".$db['userstats']." SET `hits` = hits+1, `lastvisit` = '".((int)$_SESSION['lastvisit'])."' WHERE user = ".$userid);
-    $u_b1 = "<!--";
-    $u_b2 = "-->";
-}
 
 //-> Settings auslesen (=> Adminmenu)
 function settings($what) {
@@ -2272,7 +2268,7 @@ include_once(basePath.'/inc/menu-functions/navi.php');
 function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
 {
     global $db,$userid,$userip,$tmpdir,$secureLogin,$chkMe,$charset,$mysql;
-    global $u_b1,$u_b2,$designpath,$maxwidth,$language,$cp_color,$copyright;
+    global $designpath,$maxwidth,$language,$cp_color,$copyright;
 
     // user gebannt? Logge aus!
     if(isBanned()) header("Location: ../news/");

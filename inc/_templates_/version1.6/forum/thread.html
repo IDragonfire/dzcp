@@ -9,10 +9,10 @@
     <input type="hidden" name="reg" value="[reg]" />
     <table class="hperc" cellspacing="1">
       <tr>
-        <td class="contentHead" colspan="2" align="center"><span class="fontBold">[titel]</span></td> 
+        <td class="contentHead" colspan="2" align="center"><span class="fontBold">[titel]</span></td>
       </tr>
       [error]
-      <tr> 
+      <tr>
         <td class="contentMainTop"><span class="fontBold">[topichead]:</span></td>
         <td class="contentMainFirst" align="center">
           <input type="text" name="topic" value="[posttopic]" class="inputField_dis"
@@ -20,7 +20,7 @@
           onblur="this.className='inputField_dis';" />
         </td>
       </tr>
-      <tr> 
+      <tr>
         <td class="contentMainTop"><span class="fontBold">[subtopichead]:</span></td>
         <td class="contentMainFirst" align="center">
           <input type="text" name="subtopic" value="[postsubtopic]" class="inputField_dis"
@@ -33,8 +33,8 @@
           <textarea id="eintrag" name="eintrag" cols="0" rows="0" class="editorStyle">[posteintrag]</textarea>
         </td>
       </tr>
-      [b1]
-      <tr> 
+      <logged_out>
+      <tr>
         <td class="contentMainTop" style="vertical-align:middle"><span class="fontBold">[security]:</span></td>
         <td class="contentMainFirst" align="center">
           <table class="hperc" cellspacing="0">
@@ -42,7 +42,7 @@
               <td style="text-align:right;vertical-align:middle"><img src="../antispam.php?secure=forum&amp;num=5" alt="" class="icon" /></td>
               <td style="width:2%">&nbsp;</td>
               <td style="width:50%;vertical-align:middle">
-                <input class="inputField_dis_mid" type="text" name="secure" 
+                <input class="inputField_dis_mid" type="text" name="secure"
                 onfocus="this.className='inputField_en_mid'"
                 onblur="this.className='inputField_dis_mid'" style="text-align:center" />
               </td>
@@ -50,12 +50,12 @@
           </table>
         </td>
       </tr>
-      [b2]
+      </logged_out>
       <tr>
         <td class="contentMainTop" colspan="2" align="center">[ip]</td>
       </tr>
       [admin]
-  	  [vote]
+        [vote]
       <tr>
         <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[what]" class="submit" name="send" />  <input type="button"  value="[preview]" class="submit" onclick="DZCP.ajaxPreview('forumForm')" /></td>
       </tr>

@@ -8,7 +8,7 @@
     <form id="comForm" name="comForm" action="[action]" method="post" onsubmit="return(DZCP.submitButton('contentSubmit'))">
     <table class="hperc" cellspacing="1">
       <tr>
-        <td class="contentHead" colspan="2" align="center"><a name="eintragen"></a><span class="fontBold">[titel]</span></td> 
+        <td class="contentHead" colspan="2" align="center"><a name="eintragen"></a><span class="fontBold">[titel]</span></td>
       </tr>
       [error]
       [form]
@@ -17,8 +17,8 @@
           <textarea id="comment" name="comment" cols="0" rows="0" class="editorStyle">[posteintrag]</textarea>
         </td>
       </tr>
-      [b1]
-      <tr> 
+      <logged_out>
+      <tr>
         <td class="contentMainTop" style="vertical-align:middle"><span class="fontBold">[security]:</span></td>
         <td class="contentMainFirst" align="center">
           <table class="hperc" cellspacing="0">
@@ -26,7 +26,7 @@
               <td style="text-align:right"><img src="../antispam.php?secure=[sec]&amp;num=5" alt="" class="icon" /></td>
               <td style="width:2%">&nbsp;</td>
               <td style="width:50%;vertical-align:middle">
-                <input class="inputField_dis_mid" type="text" name="secure" 
+                <input class="inputField_dis_mid" type="text" name="secure"
                 onfocus="this.className='inputField_en_mid'"
                 onblur="this.className='inputField_dis_mid'" style="text-align:center" />
               </td>
@@ -34,7 +34,7 @@
           </table>
         </td>
       </tr>
-      [b2]
+      </logged_out>
       <tr>
         <td class="contentMainTop" colspan="2" align="center">[ip]</td>
       </tr>

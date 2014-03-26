@@ -131,8 +131,6 @@ default:
                                      "whaturl" => "addgb",
                                                                      "hphead" => _hp,
                                      "preview" => _preview,
-                                     "b1" => $u_b1,
-                                     "b2" => $u_b2,
                                                                      "id" => $_GET['id'],
                                      "form" => $form,
                                                                      "posthp" => "",
@@ -141,18 +139,12 @@ default:
                                      "ip" => _iplog_info,
                                                                      "error" => "",
                                                                  "eintraghead" => _eintrag));
-  } else {
-    $entry = "";
-    $b1 = "<!--";
-    $b2 = "-->";
   }
 
   $index = show($dir."/gb",array("gbhead" => _gb_head,
                                                                "show" => $show,
                                  "add" => $add,
                                  "entry" => $entry,
-                                 "b1" => $b1,
-                                 "b2" => $b2,
                                  "addgb" => $addgb,
                                  "seiten" => $seiten));
 break;
@@ -197,8 +189,6 @@ case 'do';
                                        "whaturl" => "addgb",
                                        "what" => _button_value_add,
                                        "form" => $form,
-                                       "b1" => $u_b1,
-                                       "b2" => $u_b2,
                                        "lang" => $language,
                                        "reg" => "",
                                        "ip" => _iplog_info,
@@ -292,8 +282,6 @@ case 'do';
                                                                        "hphead" => _hp,
                                        "ed" => "&edit=".$get['id'],
                                        "preview" => _preview,
-                                       "b1" => "<!--",
-                                       "b2" => "-->",
                                                                        "id" => $get['id'],
                                        "form" => $form,
                                                                        "posteintrag" => re_bbcode($get['nachricht']),
