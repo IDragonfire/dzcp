@@ -17,6 +17,7 @@ lang($language);
 $where = _site_upload;
 $title = $pagetitle." - ".$where."";
 $dir = "upload";
+$index = '';
 
 ## SECTIONS ##
 switch ($action):
@@ -331,18 +332,24 @@ switch ($action):
                             @unlink(basePath."/inc/images/uploads/usergallery/".$userid."_".$get['pic']);
 
                         @unlink(show(_gallery_edit_unlink, array("img" => $get['pic'], "user" => $userid)));
-                        if(!move_uploaded_file($tmpname, basePath."/inc/images/uploads/usergallery/".$userid."_".$_FILES['file']['name']))
+                        if(!move_uploaded_file($tmpname, basePath."/inc/images/uploads/usergallery/".$userid."_".$_FILES['file']['name'])) {
                             $index = error(_upload_error, 1);
+                            break;
+                        }
 
-                        $pic = "`pic` = '".$_FILES['file']['name']."',";
+                        if(empty($index))
+                            $pic = "`pic` = '".$_FILES['file']['name']."',";
                     }
 
-                    db("UPDATE ".$db['usergallery']."
-                        SET ".$pic."`beschreibung` = '".up($_POST['beschreibung'],1)."'
-                        WHERE id = '".intval($_POST['id'])."'
-                        AND `user` = '".((int)$userid)."'");
+                    if(empty($index))
+                    {
+                        db("UPDATE ".$db['usergallery']."
+                            SET ".$pic."`beschreibung` = '".up($_POST['beschreibung'],1)."'
+                            WHERE id = '".intval($_POST['id'])."'
+                            AND `user` = '".((int)$userid)."'");
 
-                    $index = info(_edit_gallery_done, "../user/?action=editprofile&show=gallery");
+                        $index = info(_edit_gallery_done, "../user/?action=editprofile&show=gallery");
+                    }
                 break;
             }
         }
