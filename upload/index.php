@@ -288,11 +288,11 @@ switch ($action):
                     elseif(file_exists(basePath."/inc/images/uploads/usergallery/".$userid."_".$_FILES['file']['name']))
                         $index = error(_upload_file_exists, 1);
                     else {
-                        if(move_uploaded_file($tmpname, basePath."/inc/images/uploads/useravatare/".$userid.".".strtolower($endung))) {
+                        if(move_uploaded_file($tmpname, basePath."/inc/images/uploads/usergallery/".$userid."_".strtolower($_FILES['file']['name']))) {
                             db("INSERT INTO ".$db['usergallery']."
                                SET `user`         = '".((int)$userid)."',
                                    `beschreibung` = '".up($_POST['beschreibung'],1)."',
-                                   `pic`          = '".up($_FILES['file']['name'])."'");
+                                   `pic`          = '".up(strtolower($_FILES['file']['name']))."'");
 
                             $index = info(_info_upload_success, "../user/?action=editprofile&show=gallery");
                         } else
