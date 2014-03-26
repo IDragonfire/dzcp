@@ -46,7 +46,7 @@ else if(!use_default_timezone) date_default_timezone_set(default_timezone);
 else date_default_timezone_set("Europe/Berlin");
 
 function show($tpl="", $array=array(), $array_lang_constant=array(), $array_block=array()) {
-    global $tmpdir;
+    global $tmpdir,$chkMe;
     if(!empty($tpl) && $tpl != null) {
         $template = basePath."/inc/_templates_/".$tmpdir."/".$tpl;
         $array['dir'] = '../inc/_templates_/'.$tmpdir;
@@ -71,6 +71,9 @@ function show($tpl="", $array=array(), $array_lang_constant=array(), $array_bloc
         }
 
         unset($pholder);
+
+        $tpl = (!$chkMe ? preg_replace("|<logged_in>.*?</logged_in>|is", "", $tpl) : preg_replace("|<logged_out>.*?</logged_out>|is", "", $tpl));
+        $tpl = str_ireplace(array("<logged_in>","</logged_in>","<logged_out>","</logged_out>"), '', $tpl);
 
         if(count($array) >= 1) {
             foreach($array as $value => $code)
