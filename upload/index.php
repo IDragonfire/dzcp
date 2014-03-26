@@ -170,8 +170,7 @@ switch ($action):
                                                 "info" => _upload_info,
                                                 "infos" => $infos));
 
-            switch($do)
-            {
+            switch($do) {
                 case 'upload':
                     $tmpname = $_FILES['file']['tmp_name'];
                     $name = $_FILES['file']['name'];
@@ -212,8 +211,7 @@ switch ($action):
             $index = error(_error_wrong_permissions, 1);
     break;
     case 'avatar';
-        if($chkMe >= 1)
-        {
+        if($chkMe >= 1) {
             $infos = show(_upload_userava_info, array("userpicsize" => $upicsize));
             $index = show($dir."/upload", array("uploadhead" => _upload_ava_head,
                                                 "file" => _upload_file,
@@ -250,8 +248,7 @@ switch ($action):
                     }
                 break;
                 case 'delete':
-                    foreach($picformat as $tmpendung)
-                    {
+                    foreach($picformat as $tmpendung) {
                         if(file_exists(basePath."/inc/images/uploads/useravatare/".$userid.".".$tmpendung))
                             @unlink(basePath."/inc/images/uploads/useravatare/".$userid.".".$tmpendung);
                     }
@@ -264,8 +261,7 @@ switch ($action):
             $index = error(_error_wrong_permissions, 1);
     break;
     case 'usergallery';
-        if($chkMe >= 1)
-        {
+        if($chkMe >= 1) {
             $infos = show(_upload_usergallery_info, array("userpicsize" => $upicsize));
             $index = show($dir."/usergallery", array("uploadhead" => _upload_head_usergallery,
                                                      "file" => _upload_file,
@@ -304,8 +300,7 @@ switch ($action):
                 break;
                 case 'edit':
                     $get = db("SELECT id,user,pic,beschreibung FROM ".$db['usergallery']." WHERE id = '".intval($_GET['gid'])."'",false,true);
-                    if($get['user'] == $userid)
-                    {
+                    if($get['user'] == $userid) {
                         $infos = show(_upload_usergallery_info, array("userpicsize" => $upicsize));
                         $index = show($dir."/usergallery_edit", array("uploadhead" => _upload_head_usergallery,
                                                                       "file" => _upload_file,
@@ -331,8 +326,7 @@ switch ($action):
                     $endung = strtolower($endung[count($endung)-1]);
 
                     $get = db("SELECT pic FROM ".$db['usergallery']." WHERE id = ".intval($_POST['id']),false,true); $pic = '';
-                    if(!empty($_FILES['file']['size']))
-                    {
+                    if(!empty($_FILES['file']['size'])) {
                         if(file_exists(basePath."/inc/images/uploads/usergallery/".$userid."_".$get['pic']))
                             @unlink(basePath."/inc/images/uploads/usergallery/".$userid."_".$get['pic']);
 
