@@ -281,9 +281,9 @@ case 'userlobby';
                                     ORDER BY lp DESC
                                     LIMIT 150");
                     if(_rows($qrytopic) >= 1) {
+                        $forumposts_show = '';
                         while($gettopic = _fetch($qrytopic)) {
-                            $lp = "";
-                            $cnt = "";
+                            $lp = ""; $cnt = "";
                             $count = cnt($db['f_posts'], " WHERE date > ".$lastvisit." AND sid = '".$gettopic['id']."'");
                             $lp = cnt($db['f_posts'], " WHERE sid = '".$gettopic['id']."'");
 
@@ -304,11 +304,8 @@ case 'userlobby';
                             $nthread = $gettopic['first'] == 1 ? _no_new_thread : _new_thread;
 
                             if(check_new($gettopic['lp'],1)) {
-                                if($getkat['intern'] != 1) $intern = "";
-                                else $intern = '<span class="fontWichtig">'._internal.':</span>&nbsp;&nbsp;&nbsp;';
-
-                                if($gettopic['sticky'] != 1) $wichtig = "";
-                                else $wichtig = '<span class="fontWichtig">'._sticky.':</span> ';
+                                $intern = ($getkat['intern'] != 1 ? '' : '<span class="fontWichtig">'._internal.':</span>&nbsp;&nbsp;&nbsp;');
+                                $wichtig = ($gettopic['sticky'] != 1 ? '' : '<span class="fontWichtig">'._sticky.':</span> ');
 
                                 $date = (date("d.m.")==date("d.m.",$gettopic['lp']))
                                   ? '['.date("H:i",$gettopic['lp']).']'

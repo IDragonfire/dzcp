@@ -69,7 +69,12 @@ $do = isset($_GET['do']) ? $_GET['do'] : '';
 $index = ''; $show = '';
 
 //-> Configtabelle auslesen
-$config = db("SELECT * FROM ".$db['config'],false,true);
+if(!dbc_index::issetIndex('config')) {
+    $config = db("SELECT * FROM ".$db['config'],false,true);
+    dbc_index::setIndex('config', $config);
+}
+
+$config = dbc_index::getIndex('config');
 
 //-> Config
 $teamRow = $config['teamrow'];
@@ -302,7 +307,7 @@ function languages() {
 if($userid >= 1 && $ajaxJob != true)
     db("UPDATE ".$db['userstats']." SET `hits` = hits+1, `lastvisit` = '".((int)$_SESSION['lastvisit'])."' WHERE user = ".$userid);
 
-//-> Settings auslesen (=> Adminmenu)
+//-> Settings auslesen
 function settings($what,$use_dbc=true) {
     global $db;
 
@@ -310,6 +315,17 @@ function settings($what,$use_dbc=true) {
         return dbc_index::getIndexKey('settings', $what);
 
     $get = db("SELECT `".$what."` FROM ".$db['settings'],false,true);
+    return $get[$what];
+}
+
+//-> Config auslesen
+function config($what,$use_dbc=true) {
+    global $db;
+
+    if($use_dbc)
+        return dbc_index::getIndexKey('config', $what);
+
+    $get = db("SELECT `".$what."` FROM ".$db['config'],false,true);
     return $get[$what];
 }
 
