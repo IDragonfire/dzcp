@@ -90,20 +90,6 @@ class phpFastCache {
 
     }
 
-    function check($keyword) {
-        if($this->is_driver == true) {
-            $object = $this->driver_get($keyword,array());
-        } else {
-            $object = $this->driver->driver_get($keyword,array());
-        }
-
-        if($object == null) {
-            return true;
-        }
-
-        return empty($object['value']) ? true : false;
-    }
-
     function get($keyword, $option = array()) {
         if($this->is_driver == true) {
             $object = $this->driver_get($keyword,$option);
@@ -159,22 +145,16 @@ class phpFastCache {
 
     function isExisting($keyword) {
         if($this->is_driver == true) {
-            if(method_exists($this,"driver_isExisting")) {
-                return $this->driver_isExisting($keyword);
-            }
+            $object = $this->driver_get($keyword);
         } else {
-            if(method_exists($this->driver,"driver_isExisting")) {
-                return $this->driver->driver_isExisting($keyword);
-            }
+            $object = $this->driver->driver_get($keyword);
         }
 
-        $data = $this->get($keyword);
-        if($data == null) {
+        if($object == null || empty($object['value'])) {
             return false;
         } else {
             return true;
         }
-
     }
 
     function increment($keyword, $step = 1 , $option = array()) {
@@ -337,6 +317,9 @@ class phpFastCache {
             $this->option['securityKey'] = "cache.storage.".$suffix;
         }
 
+        $this->option['securityKey_mcrypt'] = $this->option['securityKey'];
+        $this->option['securityKey'] = sha1($this->option['securityKey']);
+
         $this->driver = new $driver($this->option);
         $this->driver->is_driver = true;
 
@@ -495,16 +478,21 @@ class phpFastCache {
         return $os;
     }
 
-    /*
-     * Object for Files & SQLite
-     */
-    public function encode($data) {
-        return serialize($data);
+    function encode($data='')
+    {
+        $data = serialize($data);
+        $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
+        $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+        return mcrypt_encrypt(MCRYPT_RIJNDAEL_256, 'mcr_'.$this->option['securityKey_mcrypt'], $data, MCRYPT_MODE_ECB, $iv);
     }
 
-    public function decode($value) {
-        $x = @unserialize($value);
-        if($x == false) {
+    function decode($value)
+    {
+       $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
+       $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+       $decrypttext = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, 'mcr_'.$this->option['securityKey_mcrypt'], $value, MCRYPT_MODE_ECB, $iv);
+       $x = @unserialize(trim($decrypttext));
+       if($x == false) {
             return $value;
         } else {
             return $x;

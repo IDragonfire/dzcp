@@ -94,7 +94,7 @@ else {
 
     $version = '<b>'._akt_version.': '._version.'</b>'; $dzcp_news = '';
     if(fsockopen_support()) {
-        if($cache->check("admin_version")) {
+        if(!$cache->isExisting("admin_version")) {
             $dzcp_v = fileExists("http://www.dzcp.de/version.txt");
 
             if(!empty($dzcp_v))
@@ -113,7 +113,7 @@ else {
             $old = "_old";
         }
 
-        if($cache->check("admin_news")) {
+        if(!$cache->isExisting("admin_news")) {
             $dzcp_news = fileExists("http://www.dzcp.de/dzcp_news.php");
             if(!empty($dzcp_news))
                 $cache->set("admin_news", $dzcp_news, 1200);

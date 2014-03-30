@@ -22,6 +22,18 @@ $ajaxJob = (!isset($ajaxJob) ? false : $ajaxJob);
 //-> (dieser darf bestimmte Dinge, den normale Admins nicht duerfen, z.B. andere Admins editieren)
 $rootAdmin = 1;
 
+//Cache
+$config_cache['htaccess'] = true;
+$config_cache['fallback'] = array( "memcache" => "apc", "memcached" =>  "apc", "apc" =>  "sqlite", "sqlite" => "files");
+$config_cache['path'] = basePath."/inc/_cache_";
+
+if(!is_dir($config_cache['path'])) //Check cache dir
+    mkdir($config_cache['path'], 0777, true);
+
+$config_cache['securityKey'] = settings('prev',false);
+phpFastCache::setup($config_cache);
+$cache = phpFastCache();
+
 //-> Settingstabelle auslesen
 if(!dbc_index::issetIndex('settings')) {
     $get = db("SELECT * FROM ".$db['settings'],false,true);
@@ -139,18 +151,6 @@ $userip = visitorIp();
 $maxpicwidth = 90;
 $maxadmincw = 10;
 $maxfilesize = @ini_get('upload_max_filesize');
-
-//Cache
-$config_cache['htaccess'] = true;
-$config_cache['fallback'] = array( "memcache" => "apc", "memcached" =>  "apc", "apc" =>  "sqlite", "sqlite" => "files");
-$config_cache['path'] = basePath."/inc/_cache_";
-
-if(!is_dir($config_cache['path'])) //Check cache dir
-    mkdir($config_cache['path'], 0777, true);
-
-$config_cache['securityKey'] = sha1($prev);
-phpFastCache::setup($config_cache);
-$cache = phpFastCache();
 
 //-> Auslesen der Cookies und automatisch anmelden
 if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSION['id']) && !checkme()) {
@@ -2227,8 +2227,14 @@ final class dbc_index
 {
     private static $index = array();
 
-    public static final function setIndex($key,$data) {
-        self::$index[$key] = $data;
+    public static final function setIndex($index_key,$data) {
+        global $cache;
+
+        if(self::MemSetIndex()) {
+            $cache->set('dbc_'.$index_key, serialize($data), 2);
+        }
+
+        self::$index[$index_key] = $data;
     }
 
     public static final function getIndex($index_key) {
@@ -2250,7 +2256,34 @@ final class dbc_index
     }
 
     public static final function issetIndex($index_key) {
+        global $cache;
+
+        if(self::MemSetIndex() && $cache->isExisting('dbc_'.$index_key)) {
+            self::$index[$index_key] = unserialize($cache->get('dbc_'.$index_key));
+            return true;
+        }
+
         return array_key_exists($index_key,self::$index);
+    }
+
+    private static final function MemSetIndex() {
+        global $config_cache;
+        if(!$config_cache['dbc']) return false;
+        switch ($config_cache['storage']) {
+            case 'apc': return extension_loaded('apc') && ini_get('apc.enabled') && strpos(PHP_SAPI,"CGI") === false; break;
+            case 'memcached': return ping_port($config_cache['server'][0][0],$config_cache['server'][0][1],0.2) && class_exists("memcached"); break;
+            case 'memcache': return ping_port($config_cache['server'][0][0],$config_cache['server'][0][1],0.2) && function_exists("memcache_connect"); break;
+            case 'xcache': return extension_loaded('xcache') && function_exists("xcache_get"); break;
+            case 'wincache': return extension_loaded('wincache') && function_exists("wincache_ucache_set"); break;
+            case 'auto':
+                return (extension_loaded('apc') && ini_get('apc.enabled') && strpos(PHP_SAPI,"CGI") === false) ||
+                       (ping_port($config_cache['server'][0][0],$config_cache['server'][0][1],0.2) && class_exists("memcached")) ||
+                       (ping_port($config_cache['server'][0][0],$config_cache['server'][0][1],0.2) && function_exists("memcache_connect")) ||
+                       (extension_loaded('xcache') && function_exists("xcache_get")) ||
+                       (extension_loaded('wincache') && function_exists("wincache_ucache_set"));
+            break;
+            default: return false; break;
+        }
     }
 }
 

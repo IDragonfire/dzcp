@@ -69,3 +69,38 @@ function gs_normalise($server) {
 
     return $server;
 }
+
+function ping_port($address='',$port=0000,$timeout=2,$udp=false)
+{
+    if(!fsockopen_support())
+        return false;
+
+    $errstr = NULL; $errno = NULL;
+    if(!$ip = DNSToIp($address))
+        return false;
+
+    if($fp = @fsockopen(($udp ? "udp://".$ip : $ip), $port, $errno, $errstr, $timeout))
+    {
+        unset($ip,$port,$errno,$errstr,$timeout);
+        @fclose($fp);
+        return true;
+    }
+
+    return false;
+}
+
+function DNSToIp($address='')
+{
+    if(!preg_match('#^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$#', $address))
+    {
+        if(!($result = gethostbyname($address)))
+            return false;
+
+        if ($result === $address)
+            $result = false;
+    }
+    else
+        $result = $address;
+
+    return $result;
+}

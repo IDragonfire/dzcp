@@ -13,7 +13,7 @@ $dir = "teamspeak";
 ## SECTIONS ##
   if(fsockopen_support())
   {
-    if($cache->check('teamspeak_'.$language) || isset($_GET['cID']))
+    if(!$cache->isExisting('teamspeak_'.$language) || isset($_GET['cID']))
     {
     switch($settings['ts_version']):
     default; case '2';

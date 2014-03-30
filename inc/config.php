@@ -15,6 +15,7 @@ define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selb
 $config_cache = array();
 $config_cache['storage'] = "auto"; //memcache
 $config_cache['server'] = array(array("127.0.0.1",11211,1));
+$config_cache['dbc'] = true; //use database querie caching * only use with memory cache
 
 #########################################
 //-> DZCP Settings End
