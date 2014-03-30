@@ -23,7 +23,12 @@ $ajaxJob = (!isset($ajaxJob) ? false : $ajaxJob);
 $rootAdmin = 1;
 
 //-> Settingstabelle auslesen
-$settings = db("SELECT * FROM ".$db['settings'],false,true);
+if(!dbc_index::issetIndex('settings')) {
+    $get = db("SELECT * FROM ".$db['settings'],false,true);
+    dbc_index::setIndex('settings', $get);
+}
+
+$settings = dbc_index::getIndex('settings');
 $prev = $settings['prev'].'_';
 
 //-> Language auslesen
@@ -159,11 +164,11 @@ if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSI
         $_SESSION['lastvisit']  = $get['time'];
         $_SESSION['ip']         = visitorIp();
 
-        if(data($get['id'], "ip") != $_SESSION['ip'])
-            $_SESSION['lastvisit'] = data($get['id'], "time");
+        if(data("ip",$get['id']) != $_SESSION['ip'])
+            $_SESSION['lastvisit'] = data("time",$get['id']);
 
         if(empty($_SESSION['lastvisit']))
-            $_SESSION['lastvisit'] = data($get['id'], "time");
+            $_SESSION['lastvisit'] = data("time",$get['id']);
 
         ## Aktualisiere Datenbank ##
         db("UPDATE ".$db['users']." SET `online` = '1', `sessid` = '".session_id()."', `ip` = '".$_SESSION['ip']."', `pkey` = '".$permanent_key."' WHERE id = '".$get['id']."'");
@@ -298,9 +303,13 @@ if($userid >= 1 && $ajaxJob != true)
     db("UPDATE ".$db['userstats']." SET `hits` = hits+1, `lastvisit` = '".((int)$_SESSION['lastvisit'])."' WHERE user = ".$userid);
 
 //-> Settings auslesen (=> Adminmenu)
-function settings($what) {
+function settings($what,$use_dbc=true) {
     global $db;
-    $get = db("SELECT ".$what." FROM ".$db['settings'],false,true);
+
+    if($use_dbc)
+        return dbc_index::getIndexKey('settings', $what);
+
+    $get = db("SELECT `".$what."` FROM ".$db['settings'],false,true);
     return $get[$what];
 }
 
@@ -362,12 +371,14 @@ function highlight_text($txt) {
 
 //-> Glossarfunktion
 $gl_words = array(); $gl_desc = array();
-$qryglossar = db("SELECT `word`,`glossar` FROM ".$db['glossar']);
-while($getglossar = _fetch($qryglossar)) {
-    $gl_words[] = re($getglossar['word']);
-    $gl_desc[]  = $getglossar['glossar'];
+if(!$ajaxJob) {
+    $qryglossar = db("SELECT `word`,`glossar` FROM ".$db['glossar']);
+    while($getglossar = _fetch($qryglossar)) {
+        $gl_words[] = re($getglossar['word']);
+        $gl_desc[]  = $getglossar['glossar'];
+    }
+    unset($getglossar,$qryglossar);
 }
-unset($getglossar,$qryglossar);
 
 function regexChars($txt) {
     $txt = strip_tags($txt);
@@ -1085,7 +1096,7 @@ function checkme($userid_set=0) {
 
 //-> Prueft, ob der User gesperrt ist und meldet ihn ab
 function isBanned($userid_set=0,$logout=true) {
-    global $db,$userid,$chkMe,$prev;
+    global $db,$userid,$prev;
     $userid_set = $userid_set ? $userid_set : $userid;
     if(checkme($userid_set) >= 1 || $userid_set) {
         $get = db("SELECT banned FROM ".$db['users']." WHERE `id` = ".intval($userid_set)." LIMIT 1",false,true);
@@ -1112,21 +1123,27 @@ function isBanned($userid_set=0,$logout=true) {
 }
 
 //-> Prueft, ob ein User diverse Rechte besitzt
-function permission($check) {
+function permission($check,$uid=0) {
     global $db,$userid,$chkMe;
+    if(!$uid) $uid = $userid;
 
     if($chkMe == 4)
         return true;
     else {
         if($userid) {
             // check rank permission
-            $team = db("SELECT s1.`".$check."` FROM ".$db['permissions']." AS s1
-                        LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
-                        WHERE s2.`user` = '".intval($userid)."' AND s1.`".$check."` = '1' AND s2.`posi` != '0'");
+            if(db("SELECT s1.`".$check."` FROM ".$db['permissions']." AS s1
+                   LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
+                   WHERE s2.`user` = '".intval($uid)."' AND s1.`".$check."` = '1' AND s2.`posi` != '0'",true))
+                return true;
 
             // check user permission
-            $user = db("SELECT id FROM ".$db['permissions']." WHERE user = '".intval($userid)."' AND `".$check."` = '1'");
-            return (_rows($user) || _rows($team) ? true : false);
+            if(!dbc_index::issetIndex('user_permission_'.$uid)) {
+                $permissions = db("SELECT * FROM ".$db['permissions']." WHERE user = '".intval($uid)."'",false,true);
+                dbc_index::setIndex('user_permission_'.$uid, $permissions);
+            }
+
+            return dbc_index::getIndexKey('user_permission_'.$uid, $check) ? true : false;
         }
         else
             return false;
@@ -1136,28 +1153,24 @@ function permission($check) {
 //-> Checkt, ob neue Nachrichten vorhanden sind
 function check_msg() {
     global $db;
-
-    $qry = db("SELECT page FROM ".$db['msg']." WHERE an = '".$_SESSION['id']."' AND page = 0");
-    if(_rows($qry)) {
+    if(db("SELECT page FROM ".$db['msg']." WHERE an = '".$_SESSION['id']."' AND page = 0",true)) {
         db("UPDATE ".$db['msg']." SET `page` = '1' WHERE an = '".$_SESSION['id']."'");
         return show("user/new_msg", array("new" => _site_msg_new));
     }
-    else
-        return '';
+
+    return '';
 }
 
 //-> Prueft sicherheitsrelevante Gegebenheiten im Forum
 function forumcheck($tid, $what) {
     global $db;
-    $qry = db("SELECT ".$what." FROM ".$db['f_threads']." WHERE id = '".intval($tid)."' AND ".$what." = '1'");
-    return(_rows($qry) ? true : false);
+    return db("SELECT ".$what." FROM ".$db['f_threads']." WHERE id = '".intval($tid)."' AND ".$what." = '1'",true) ? true : false;
 }
 
 //-> Prueft ob ein User schon in der Buddyliste vorhanden ist
 function check_buddy($buddy) {
     global $db,$userid;
-    $qry = db("SELECT buddy FROM ".$db['buddys']." WHERE user = '".intval($userid)."' AND buddy = '".intval($buddy)."'");
-    return (!_rows($qry) ? true : false);
+    return !db("SELECT buddy FROM ".$db['buddys']." WHERE user = '".intval($userid)."' AND buddy = '".intval($buddy)."'",true) ? true : false;
 }
 
 //-> Funktion um bei Clanwars Endergebnisse auszuwerten
@@ -1284,12 +1297,11 @@ function set_cookie($name, $value = '', $path = '/', $secure = false, $http_only
 //-> Passwortabfrage
 function checkpwd($user, $pwd) {
     global $db;
-    $qry = db("SELECT id,user,nick,pwd
+    return db("SELECT id,user,nick,pwd
                FROM ".$db['users']."
                WHERE user = '".up($user)."'
                AND pwd = '".up($pwd)."'
-               AND level != '0'");
-    return (_rows($qry) ? true : false);
+               AND level != '0'",true) ? true : false;
 }
 
 //-> Infomeldung ausgeben
@@ -1508,18 +1520,28 @@ function fintern($id) {
     }
 }
 
-//-> einzelne Userdaten ermitteln
-function data($tid, $what) {
-    global $db;
-    $get = db("SELECT ".$what." FROM ".$db['users']." WHERE id = '".intval($tid)."'",false,true);
-    return re_entry($get[$what]);
+//-> Einzelne Userdaten ermitteln
+function data($what,$tid=0) {
+    global $db,$userid;
+    if(!$tid) $tid = $userid;
+    if(!dbc_index::issetIndex('user_'.$tid)) {
+        $get = db("SELECT * FROM ".$db['users']." WHERE id = '".intval($tid)."'",false,true);
+        dbc_index::setIndex('user_'.$tid, $get);
+    }
+
+    return re_entry(dbc_index::getIndexKey('user_'.$tid, $what));
 }
 
-//-> einzelne Userstatistiken ermitteln
-function userstats($tid, $what) {
-    global $db;
-    $get = db("SELECT ".$what." FROM ".$db['userstats']." WHERE user = '".intval($tid)."'",false,true);
-    return $get[$what];
+//-> Einzelne Userstatistiken ermitteln
+function userstats($what,$tid=0) {
+    global $db,$userid;
+    if(!$tid) $tid = $userid;
+    if(!dbc_index::issetIndex('userstats_'.$tid)) {
+        $get = db("SELECT * FROM ".$db['userstats']." WHERE user = '".intval($tid)."'",false,true);
+        dbc_index::setIndex('userstats_'.$tid, $get);
+    }
+
+    return re_entry(dbc_index::getIndexKey('userstats_'.$tid, $what));
 }
 
 //- Funktion zum versenden von Emails
@@ -1542,7 +1564,7 @@ function check_msg_emal() {
     global $db,$clanname,$httphost;
     $qry = db("SELECT s1.an,s1.page,s1.titel,s1.sendmail,s1.id AS mid,s2.id,s2.nick,s2.email,s2.pnmail FROM ".$db['msg']." AS s1 LEFT JOIN ".$db['users']." AS s2 ON s2.id = s1.an WHERE page = 0 AND sendmail = 0");
     while($get = _fetch($qry)) {
-        if($get['pnmail'] == 1) {
+        if($get['pnmail']) {
             db("UPDATE ".$db['msg']." SET `sendmail` = '1' WHERE id = '".$get['mid']."'");
             $subj = show(settings('eml_pn_subj'), array("domain" => $httphost));
             $message = show(bbcode_email(settings('eml_pn')), array("nick" => re($get['nick']), "domain" => $httphost, "titel" => $get['titel'], "clan" => $clanname));
@@ -1551,26 +1573,14 @@ function check_msg_emal() {
     }
 }
 
-check_msg_emal();
-
-function perm_sendnews($uID) {
-    global $db;
-    // check rank permission
-    $team = db("SELECT s1.`news` FROM ".$db['permissions']." AS s1
-                LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
-                WHERE s2.`user` = '".intval($uID)."' AND s1.`news` = '1' AND s2.`posi` != '0'");
-
-    // check user permission
-    $user = db("SELECT id FROM ".$db['permissions']." WHERE user = '".intval($uID)."' AND `news` = '1'");
-    return (_rows($user) || _rows($team) ? true : false);
-}
+if(!$ajaxJob)
+    check_msg_emal();
 
 //-> Checkt ob ein Ereignis neu ist
 function check_new($datum,$new = "",$datum2 = "") {
     global $db,$userid;
     if($userid) {
-        $get = db("SELECT lastvisit FROM ".$db['userstats']." WHERE user = '".intval($userid)."'",false,true);
-        if($datum >= $get['lastvisit'] || $datum2 >= $get['lastvisit'])
+        if($datum >= userstats('lastvisit') || $datum2 >= userstats('lastvisit'))
             return (empty($new) ? _newicon : $new);
     }
 
@@ -1800,9 +1810,8 @@ function getrank($tid, $squad="", $profil=0) {
 function set_lastvisit() {
     global $db,$useronline,$userid;
     if($userid) {
-        if(!_rows(db("SELECT id FROM ".$db['users']." WHERE id = ".intval($userid)." AND time+'".$useronline."'>'".time()."'"))) {
-            $time = data($userid, "time");
-            $_SESSION['lastvisit'] = $time;
+        if(!db("SELECT id FROM ".$db['users']." WHERE id = ".intval($userid)." AND time+'".$useronline."'>'".time()."'",true)) {
+            $_SESSION['lastvisit'] = data("time");
         }
     }
 }
@@ -1959,57 +1968,6 @@ function feed() {
     @fwrite($data, $feed);
 }
 
-//Userspezifische Informationen
-function infos($checkBrowser = "") {
-    global $userip, $settings;
-    if($settings['persinfo']) {
-        $data = $_SERVER['HTTP_USER_AGENT'];
-        if(preg_match("/Android/i",$data))                     $system = "Android";
-        elseif(preg_match ("/Linux/i",$data))               $system = "Linux";
-        elseif(preg_match("/SunOS/i",$data))                $system = "Sun OS";
-        elseif(preg_match("/Macintosh/i",$data))            $system = "Macintosh";
-        elseif(preg_match("/Mac_PowerPC/i",$data))          $system = "Macintosh";
-        elseif(preg_match("/Windows XP/i",$data))           $system = "Windows XP";
-        elseif(preg_match("/NT 5.2/i",$data))               $system = "Windows XP x64";
-        elseif(preg_match("/NT 5.1/i",$data))               $system = "Windows XP";
-        elseif(preg_match("/NT 6.0/i",$data))               $system = "Windows Vista";
-        elseif(preg_match("/NT 6.1/i",$data))               $system = "Windows 7";
-        elseif(preg_match("/NT 6.2/i",$data))               $system = "Windows 8";
-        elseif(preg_match("/NT 6.3/i",$data))               $system = "Windows 8.1";
-        elseif(preg_match("/OS (.*?) like Mac OS X/i",$data)) $system = "iOS";
-        else                                        $system = _unknown_system;
-
-        if(preg_match("/Opera/i",$data))          $browser = "Opera";
-        elseif(preg_match("/Konqueror/i",$data))  $browser = "Konqueror";
-        elseif(preg_match("/Firefox/i",$data))    $browser = "Mozilla Firefox";
-        elseif(preg_match("/chrome/i",$data))     $browser = "Google Chrome";
-        elseif(preg_match("/Safari/i",$data))     $browser = "Safari";
-        elseif(preg_match("/MSIE 5/i",$data))     $browser = "Internet Explorer 5";
-        elseif(preg_match("/MSIE 6/i",$data))     $browser = "Internet Explorer 6";
-        elseif(preg_match("/MSIE 7/i",$data))     $browser = "Internet Explorer 7";
-        elseif(preg_match("/MSIE 8/i",$data))     $browser = "Internet Explorer 8";
-        elseif(preg_match("/MSIE 9/i",$data))     $browser = "Internet Explorer 9";
-        elseif(preg_match("/MSIE 10/i",$data))    $browser = "Internet Explorer 10";
-        elseif(preg_match("/MSIE 11/i",$data))    $browser = "Internet Explorer 11";
-        else                                      $browser = _unknown_browser;
-
-        $res = "<script language=\"javascript\" type=\"text/javascript\">doc.write(screen.width + ' x ' + screen.height)</script>";
-        $infos = show("menu/pers.infos", array("ip" => $userip,
-                                               "info_ip" => _info_ip,
-                                               "host" => gethostbyaddr($userip),
-                                               "info_browser" => _info_browser,
-                                               "browser" => $browser,
-                                               "info_res" => _info_res,
-                                               "res" => $res,
-                                               "info_sys" => _info_sys,
-                                               "sys" => $system));
-    }
-    else
-        $infos = "";
-
-    return ($checkBrowser == "true" ? $browser : $infos);
-}
-
 // Userpic ausgeben
 function userpic($userid, $width=170,$height=210) {
     global $picformat;
@@ -2026,12 +1984,13 @@ function userpic($userid, $width=170,$height=210) {
 }
 
 // Useravatar ausgeben
-function useravatar($userid, $width=100,$height=100) {
-    global $picformat;
+function useravatar($uid=0, $width=100,$height=100) {
+    global $picformat,$userid;
+    $uid = $uid == 0 ? $userid : $uid;
     foreach($picformat as $endung) {
-        if(file_exists(basePath."/inc/images/uploads/useravatare/".$userid.".".$endung))
+        if(file_exists(basePath."/inc/images/uploads/useravatare/".$uid.".".$endung))
         {
-            $pic = show(_userava_link, array("id" => $userid, "endung" => $endung, "width" => $width, "height" => $height));
+            $pic = show(_userava_link, array("id" => $uid, "endung" => $endung, "width" => $width, "height" => $height));
             break;
         }
         else
@@ -2067,7 +2026,7 @@ function admin_perms($userid) {
     $e = array('gb', 'shoutbox', 'editusers', 'votes', 'contact', 'joinus', 'intnews', 'forum', 'gs_showpw');
 
    // check user permission
-    $c = _fetch(db("SELECT * FROM ".$db['permissions']." WHERE user = '".intval($userid)."'"));
+    $c = db("SELECT * FROM ".$db['permissions']." WHERE user = '".intval($userid)."'",false,true);
     if(!empty($c)) {
         foreach($c AS $v => $k) {
             if($v != 'id' && $v != 'user' && $v != 'pos' && !in_array($v, $e)) {
@@ -2247,6 +2206,39 @@ function hextobin($hexstr) {
     return $sbin;
 }
 
+//-> Speichert Rückgaben der MySQL Datenbank zwischen um SQL-Queries einzusparen
+final class dbc_index
+{
+    private static $index = array();
+
+    public static final function setIndex($key,$data) {
+        self::$index[$key] = $data;
+    }
+
+    public static final function getIndex($index_key) {
+        if(!array_key_exists($index_key,self::$index))
+            return false;
+
+        return self::$index[$index_key];
+    }
+
+    public static final function getIndexKey($index_key,$key) {
+        if(!array_key_exists($index_key,self::$index))
+            return false;
+
+        $data = self::$index[$index_key];
+
+        if(!array_key_exists($key,$data))
+            return false;
+
+        return $data[$key];
+    }
+
+    public static final function issetIndex($index_key) {
+        return array_key_exists($index_key,self::$index);
+    }
+}
+
 //-> Neue Languages einbinden, sofern vorhanden
 if($language_files = get_files(basePath.'/inc/additional-languages/'.$language.'/',false,true,array('php'))) {
     foreach($language_files AS $languages)
@@ -2325,7 +2317,7 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
         if(check_internal_url())
             $index = error(_error_have_to_be_logged, 1);
 
-        $where = preg_replace_callback("#autor_(.*?)$#",create_function('$id', 'return data("$id[1]","nick");'),$where);
+        $where = preg_replace_callback("#autor_(.*?)$#",create_function('$id', 'return data("nick","$id[1]");'),$where);
         $index = empty($index) ? '' : (empty($check_msg) ? '' : $check_msg).'<table class="mainContent" cellspacing="1" style="margin-top:0">'.$index.'</table>';
 
         //-> Sort & filter placeholders

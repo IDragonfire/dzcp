@@ -335,10 +335,10 @@ case 'showthread';
 
       while($getp = _fetch($qryp))
       {
-        if(data($getp['reg'], "signatur")) $sig = _sig.bbcode(data($getp['reg'], "signatur"));
+        if(data("signatur",$getp['reg'])) $sig = _sig.bbcode(data("signatur",$getp['reg']));
         else                               $sig = "";
 
-        if($getp['reg'] != 0) $userposts = show(_forum_user_posts, array("posts" => userstats($getp['reg'], "forumposts")));
+        if($getp['reg'] != 0) $userposts = show(_forum_user_posts, array("posts" => userstats("forumposts",$getp['reg'])));
         else                  $userposts = "";
 
         if($getp['reg'] == 0) $onoff = "";
@@ -458,7 +458,7 @@ case 'showthread';
         $onoff = "";
       } else {
         $onoff = onlinecheck($get['t_reg']);
-        $userposts = show(_forum_user_posts, array("posts" => userstats($get['t_reg'], "forumposts")));
+        $userposts = show(_forum_user_posts, array("posts" => userstats("forumposts",$get['t_reg'])));
       }
 
       $zitat = show("page/button_zitat", array("id" => $_GET['id'],
@@ -474,7 +474,7 @@ case 'showthread';
 
       $nav = nav($entrys,$maxfposts,"?action=showthread&amp;id=".$_GET['id'].$hL);
 
-      if(data($get['t_reg'], "signatur")) $sig = _sig.bbcode(data($get['t_reg'], "signatur"));
+      if(data("signatur",$get['t_reg'])) $sig = _sig.bbcode(data("signatur",$get['t_reg']));
       else $sig = "";
 
       $editt = '';
@@ -1589,8 +1589,8 @@ case 'post';
         } else {
           if($userid >= 1)
           {
-              $postnick = data($userid, "nick");
-              $postemail = data($userid, "email");
+              $postnick = data("nick");
+              $postemail = data("email");
           } else {
               $postnick = "";
               $postemail = "";
@@ -1611,7 +1611,7 @@ case 'post';
             $getzitat = _fetch($qryzitat);
 
             if($getzitat['t_reg'] == "0") $nick = $getzitat['t_nick'];
-            else                          $nick = data($getzitat['t_reg'], "nick");
+            else                          $nick = data("nick",$getzitat['t_reg']);
 
             $zitat = zitat($nick, $getzitat['t_text']);
           } else {
@@ -1629,10 +1629,10 @@ case 'post';
           {
             $getl = _fetch($qryl);
 
-            if(data($getl['reg'], "signatur")) $sig = _sig.bbcode(data($getl['reg'], "signatur"));
+            if(data("signatur",$getl['reg'])) $sig = _sig.bbcode(data("signatur",$getl['reg']));
             else                               $sig = "";
 
-            if($getl['reg'] != "0") $userposts = show(_forum_user_posts, array("posts" => userstats($getl['reg'], "forumposts")));
+            if($getl['reg'] != "0") $userposts = show(_forum_user_posts, array("posts" => userstats("forumposts",$getl['reg'])));
             else                    $userposts = "";
 
             if($getl['reg'] == "0") $onoff = "";
@@ -1700,11 +1700,11 @@ case 'post';
                         AND id = '".intval($_GET['id'])."'");
             $gett = _fetch($qryt);
 
-            if(data($gett['t_reg'], "signatur")) $sig = _sig.bbcode(data($gett['t_reg'], "signatur"));
+            if(data("signatur",$gett['t_reg'])) $sig = _sig.bbcode(data("signatur",$gett['t_reg']));
             else $sig = "";
 
             if($gett['t_reg'] != "0")
-              $userposts = show(_forum_user_posts, array("posts" => userstats($gett['t_reg'], "forumposts")));
+              $userposts = show(_forum_user_posts, array("posts" => userstats("forumposts",$gett['t_reg'])));
             else $userposts = "";
 
             if($gett['t_reg'] == "0") $onoff = "";
@@ -1865,10 +1865,10 @@ case 'post';
                     {
                         $getl = _fetch($qryl);
 
-                        if(data($getl['reg'], "signatur")) $sig = _sig.bbcode(data($getl['reg'], "signatur"));
+                        if(data("signatur",$getl['reg'])) $sig = _sig.bbcode(data("signatur",$getl['reg']));
                         else $sig = "";
 
-                        if($getl['reg'] != "0") $userposts = show(_forum_user_posts, array("posts" => userstats($getl['reg'], "forumposts")));
+                        if($getl['reg'] != "0") $userposts = show(_forum_user_posts, array("posts" => userstats("forumposts",$getl['reg'])));
                         else $userposts = "";
 
                         if($getl['reg'] == "0") $onoff = "";
@@ -1945,10 +1945,10 @@ case 'post';
                                                 AND id = '".intval($_GET['id'])."'");
                         $gett = _fetch($qryt);
 
-                        if(data($gett['t_reg'], "signatur")) $sig = _sig.bbcode(data($gett['t_reg'], "signatur"));
+                        if(data("signatur",$gett['t_reg'])) $sig = _sig.bbcode(data("signatur",$gett['t_reg']));
                         else $sig = "";
 
-                        if($gett['t_reg'] != "0") $userposts = show(_forum_user_posts, array("posts" => userstats($gett['t_reg'], "forumposts")));
+                        if($gett['t_reg'] != "0") $userposts = show(_forum_user_posts, array("posts" => userstats("forumposts",$gett['t_reg'])));
                         else $userposts = "";
 
                         if($gett['t_reg'] == "0") $onoff = "";
@@ -2185,7 +2185,7 @@ case 'post';
       $del = db("DELETE FROM ".$db['f_posts']."
                  WHERE id = '".intval($_GET['id'])."'");
 
-      $fposts = userstats($get['reg'], "forumposts")-1;
+      $fposts = userstats("forumposts",$get['reg'])-1;
       $upd = db("UPDATE ".$db['userstats']."
                  SET `forumposts` = '".((int)$fposts)."'
                  WHERE user = '".$get['reg']."'");
@@ -2386,10 +2386,10 @@ case 'preview';
 
       if(empty($getu['hp'])) $hp = "";
       else $hp = show(_hpicon_forum, array("hp" => $getu['hp']));
-      if(data($pUId, "signatur")) $sig = _sig.bbcode(data($pUId, "signatur"),1);
+      if(data("signatur",$pUId)) $sig = _sig.bbcode(data("signatur",$pUId),1);
       else $sig = "";
       $onoff = onlinecheck($userid);
-      $userposts = show(_forum_user_posts, array("posts" => userstats($pUId, "forumposts")+1));
+      $userposts = show(_forum_user_posts, array("posts" => userstats("forumposts",$pUId)+1));
     } else {
         $pn = "";
         $icq = "";
@@ -2507,7 +2507,7 @@ case 'preview';
 
       if(empty($getu['hp'])) $hp = "";
       else $hp = show(_hpicon_forum, array("hp" => $getu['hp']));
-      if(data($pUId, "signatur")) $sig = _sig.bbcode(data($pUId, "signatur"),1);
+      if(data("signatur",$pUId)) $sig = _sig.bbcode(data("signatur",$pUId),1);
       else $sig = "";
     } else {
       $icq = "";

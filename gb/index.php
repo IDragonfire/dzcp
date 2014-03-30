@@ -352,7 +352,7 @@ case 'admin';
                                                                                            "hp" => $gbhp));
           } else {
               $gbtitel = show(_gb_titel, array("postid" => "?",
-                                                                               "nick" => data($get['reg'], "nick"),
+                                                                               "nick" => data("nick",$get['reg']),
                                          "edit" => "",
                                          "public" => "",
                                          "delete" => "",

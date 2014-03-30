@@ -141,7 +141,7 @@ else
           $qry = db("SELECT id,level FROM ".$db['users']."");
           while($get = _fetch($qry))
           {
-                    if(perm_sendnews($get['id']) or $get['level'] == 4)
+                    if(permission('news',$get['id']) or $get['level'] == 4)
                     {
                         $update = db("INSERT INTO ".$db['msg']."
                                                   SET `datum`     = '".((int)time())."',

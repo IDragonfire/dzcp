@@ -92,7 +92,7 @@ if(_adminMenu != 'true') exit;
           $message = show(bbcode_email(settings('eml_nletter')), array("text" => bbcode_nletter($_POST['eintrag'])));
                   $subject = re(settings('eml_nletter_subj'));
 
-          $qry = db("SELECT s2.email	FROM ".$db['squaduser']." AS s1
+          $qry = db("SELECT s2.email    FROM ".$db['squaduser']." AS s1
                      LEFT JOIN ".$db['users']." AS s2 ON s2.id=s1.user
                      LEFT JOIN ".$db['userpos']." AS s3 ON s3.squad=s1.squad AND s3.user=s1.user
                      LEFT JOIN ".$db['pos']." AS s4 ON s4.id=s3.posi

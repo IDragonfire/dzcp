@@ -70,6 +70,7 @@ define('_ts_settings_showchannels_desc', 'If this is on, they will only show cha
 
 define('_upload_error', 'Failed to upload the file!');
 define('_login_banned', 'Your account has been banned by administrator!');
+define('_lobby_no_mymessages', '<a href="../user/?action=msg">You have no new messages!</a>');
 
 ## ADDED / REDEFINED FOR 1.5 Final
 define('_side_membermap', 'Membermap');

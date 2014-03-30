@@ -70,6 +70,7 @@ define('_ts_settings_showchannels_desc', 'Wenn dies eingeschaltet ist werden nur
 
 define('_upload_error', 'Fehler beim hochladen der Datei!');
 define('_login_banned', 'Dein Account wurde vom Administrator gesperrt!');
+define('_lobby_no_mymessages', '<a href="../user/?action=msg">Du hast keine neuen Nachrichten!</a>');
 
 ## ADDED / REDEFINED FOR 1.5 Final
 define('_id_dont_exist', 'Die von dir angegebene ID existiert nicht!');

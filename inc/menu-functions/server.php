@@ -7,7 +7,9 @@
 function server($serverID = 0) {
     global $db, $servermenu, $language, $config, $cache;
 
+    header('Content-Type: text/html; charset=iso-8859-1');
     if(!fsockopen_support()) return _fopen;
+
     $servernavi = '';
     if(empty($serverID)) {
         $qry = db("SELECT `id` FROM ".$db['server']." WHERE `navi` = '1'"); $st = 0;
