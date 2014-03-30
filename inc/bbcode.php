@@ -194,23 +194,6 @@ if(!$chkMe) {
     $_SESSION['pwd']       = '';
     $_SESSION['ip']        = '';
     $_SESSION['lastvisit'] = '';
-} else {
-    if(!dbc_index::issetIndex('user_'.$userid)) {
-        $get = db("SELECT * FROM ".$db['users']." WHERE id = '".intval($userid)."'",false,true);
-        dbc_index::setIndex('user_'.$userid, $get);
-    }
-
-    if(!dbc_index::issetIndex('userstats_'.$userid)) {
-        $get = db("SELECT * FROM ".$db['userstats']." WHERE user = '".intval($userid)."'",false,true);
-        dbc_index::setIndex('userstats_'.$userid, $get);
-    }
-
-    if(!dbc_index::issetIndex('user_permission_'.$userid)) {
-        $get = db("SELECT * FROM ".$db['permissions']." WHERE user = '".intval($userid)."'",false,true);
-        dbc_index::setIndex('user_permission_'.$userid, $get);
-    }
-
-    unset($get);
 }
 
 /**
