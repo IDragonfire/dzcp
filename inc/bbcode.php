@@ -194,6 +194,23 @@ if(!$chkMe) {
     $_SESSION['pwd']       = '';
     $_SESSION['ip']        = '';
     $_SESSION['lastvisit'] = '';
+} else {
+    if(!dbc_index::issetIndex('user_'.$userid)) {
+        $get = db("SELECT * FROM ".$db['users']." WHERE id = '".intval($userid)."'",false,true);
+        dbc_index::setIndex('user_'.$userid, $get);
+    }
+
+    if(!dbc_index::issetIndex('userstats_'.$userid)) {
+        $get = db("SELECT * FROM ".$db['userstats']." WHERE user = '".intval($userid)."'",false,true);
+        dbc_index::setIndex('userstats_'.$userid, $get);
+    }
+
+    if(!dbc_index::issetIndex('user_permission_'.$userid)) {
+        $get = db("SELECT * FROM ".$db['permissions']." WHERE user = '".intval($userid)."'",false,true);
+        dbc_index::setIndex('user_permission_'.$userid, $get);
+    }
+
+    unset($get);
 }
 
 /**
@@ -1698,7 +1715,7 @@ function sgames($game = '') {
 //Umfrageantworten selektieren
 function voteanswer($what, $vid) {
     global $db;
-    $get = db("SELECT * FROM ".$db['vote_results']." WHERE what = '".up($what)."' AND vid = '".$vid."'",false,true);
+    $get = db("SELECT sel FROM ".$db['vote_results']." WHERE what = '".up($what)."' AND vid = '".$vid."'",false,true);
     return $get['sel'];
 }
 
@@ -2227,8 +2244,7 @@ final class dbc_index
             return false;
 
         $data = self::$index[$index_key];
-
-        if(!array_key_exists($key,$data))
+        if(empty($data) || !array_key_exists($key,$data))
             return false;
 
         return $data[$key];
