@@ -788,13 +788,14 @@ case 'userlobby';
         $index = error(_error_have_to_be_logged, 1);
 break;
 case 'erase';
-  $_SESSION['lastvisit'] = data("time");
+    if($userid) {
+        $_SESSION['lastvisit'] = data("time");
+        db("UPDATE ".$db['userstats']."
+            SET `lastvisit` = '".((int)$_SESSION['lastvisit'])."'
+            WHERE user = '".$userid."'");
+    }
 
-  $update = db("UPDATE ".$db['userstats']."
-                SET `lastvisit` = '".((int)$_SESSION['lastvisit'])."'
-                WHERE user = '".$userid."'");
-
-  header("Location: ?action=userlobby");
+    header("Location: ?action=userlobby");
 break;
 case 'user';
   $where = _user_profile_of.'autor_'.$_GET['id'];
