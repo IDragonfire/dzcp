@@ -105,141 +105,140 @@ case 'lostpwd';
         $index = error(_error_user_already_in, 1);
 break;
 case 'logout';
-  $where = _site_user_logout;
-    $qry = db("UPDATE ".$db['users']."
-                      SET online = '0',
-               sessid = ''
-                     WHERE id = '".$userid."'");
+    $where = _site_user_logout;
+    if($chkMe && $userid) {
+        db("UPDATE ".$db['users']." SET online = '0', pkey = '', sessid = '' WHERE id = '".$userid."'");
+        setIpcheck("logout(".$userid.")");
 
-    setIpcheck("logout(".$userid.")");
+        set_cookie($prev.'id', '');
+        set_cookie($prev.'pkey','');
+        set_cookie(session_name(), '');
 
-  set_cookie($prev.'id', '');
-  set_cookie($prev.'pkey',"");
-  set_cookie(session_name(), '');
+        session_unset();
+        session_destroy();
+        session_regenerate_id();
+    }
 
-  session_unset();
-  session_destroy();
-  session_regenerate_id();
-
-  header("Location: ../news/");
+    header("Location: ../news/");
 break;
 case 'register';
-  $where = _site_reg;
-  $check_regcode = settings("regcode");
-  if(!$chkMe)
-    {
-    if($check_regcode == 1)
-    {
-      $regcode = show($dir."/register_regcode", array("confirm" => _register_confirm,
-                                                      "confirm_add" => _register_confirm_add,));
-    } else {
-      $regcode = "";
-    }
+    $where = _site_reg;
+    if(!$chkMe) {
+        $check_regcode = settings("regcode"); $regcode = "";
+        if($check_regcode) {
+              $regcode = show($dir."/register_regcode", array("confirm" => _register_confirm,
+                                                              "confirm_add" => _register_confirm_add,));
+        }
 
-    $index = show($dir."/register", array("registerhead" => _register_head,
-                                          "error" => "",
-                                          "name" => _loginname,
-                                          "nick" => _nick,
-                                          "pwd" => _pwd,
-                                          "pwd2" => _pwd2,
-                                          "email" => _email,
-                                          "r_name" => "",
-                                          "r_nick" => "",
-                                          "r_email" => "",
-                                          "pflicht" => _contact_pflichtfeld,
-                                          "value" => _button_value_reg,
-                                          "regcode" => $regcode));
-    } else {
+        $index = show($dir."/register", array("registerhead" => _register_head,
+                                              "error" => "",
+                                              "name" => _loginname,
+                                              "nick" => _nick,
+                                              "pwd" => _pwd,
+                                              "pwd2" => _pwd2,
+                                              "email" => _email,
+                                              "r_name" => "",
+                                              "r_nick" => "",
+                                              "r_email" => "",
+                                              "pflicht" => _contact_pflichtfeld,
+                                              "value" => _button_value_reg,
+                                              "regcode" => $regcode));
+    }
+    else
         $index = error(_error_user_already_in, 1);
-    }
 
-  if ($_GET['do'] == "add")
-  {
-        $check_user = db("SELECT id FROM ".$db['users']."
-                                            WHERE user = '".$_POST['user']."'");
-        $check_nick = db("SELECT id FROM ".$db['users']."
-                                            WHERE nick = '".$_POST['nick']."'");
-        $check_email = db("SELECT id FROM ".$db['users']."
-                                             WHERE email = '".$_POST['email']."'");
+    if ($do == "add") {
+        $check_user = db_stmt("SELECT id FROM ".$db['users']." WHERE `user`= ?",
+                array('s', up($_POST['user'])),true,false);
 
-    $_POST['user'] = trim($_POST['user']); $_POST['nick'] = trim($_POST['nick']);
-      if(empty($_POST['user']) || empty($_POST['nick']) || empty($_POST['email']) || ($_POST['pwd'] != $_POST['pwd2']) || ($check_regcode == 1 && ($_POST['confirm'] != $_SESSION['sec_reg'] || $_SESSION['sec_reg'] == NULL)) || _rows($check_user) || _rows($check_nick) || _rows($check_email))
-    {
+        $check_nick = db_stmt("SELECT id FROM ".$db['users']." WHERE `nick`= ?",
+                array('s', up($_POST['nick'])),true,false);
 
-        if($check_regcode == 1 && ($_POST['confirm'] != $_SESSION['sec_reg'] || $_SESSION['sec_reg'] == NULL)) $error = show("errors/errortable", array("error" => _error_invalid_regcode));
-        if($_POST['pwd2'] != $_POST['pwd']) $error = show("errors/errortable", array("error" => _wrong_pwd));
-        if(!check_email($_POST['email'])) $error = show("errors/errortable", array("error" => _error_invalid_email));
-        if(empty($_POST['email'])) $error = show("errors/errortable", array("error" => _empty_email));
-        if(_rows($check_email)) $error = show("errors/errortable", array("error" => _error_email_exists));
-        if(empty($_POST['nick'])) $error = show("errors/errortable", array("error" => _empty_nick));
-        if(_rows($check_nick)) $error = show("errors/errortable", array("error" => _error_nick_exists));
-        if(empty($_POST['user'])) $error = show("errors/errortable", array("error" => _empty_user));
-        if(_rows($check_user)) $error = show("errors/errortable", array("error" => _error_user_exists));
+        $check_email = db_stmt("SELECT id FROM ".$db['users']." WHERE `email`= ?",
+                array('s', up($_POST['email'])),true,false);
 
-        if($check_regcode == 1)
-        {
-          $regcode = show($dir."/register_regcode", array("confirm" => _register_confirm,
-                                                          "confirm_add" => _register_confirm_add,));
-        } else {
-          $regcode = "";
+        $_POST['user'] = trim($_POST['user']); $_POST['nick'] = trim($_POST['nick']);
+
+        if(empty($_POST['user']) || empty($_POST['nick']) || empty($_POST['email']) || ($_POST['pwd'] != $_POST['pwd2']) || ($check_regcode && ($_POST['confirm'] != $_SESSION['sec_reg'] || $_SESSION['sec_reg'] == NULL)) || $check_user || $check_nick || $check_email) {
+
+        if($check_regcode && ($_POST['confirm'] != $_SESSION['sec_reg'] || $_SESSION['sec_reg'] == NULL))
+            $error = show("errors/errortable", array("error" => _error_invalid_regcode));
+
+        if($_POST['pwd2'] != $_POST['pwd'])
+            $error = show("errors/errortable", array("error" => _wrong_pwd));
+
+        if(!check_email($_POST['email']))
+            $error = show("errors/errortable", array("error" => _error_invalid_email));
+
+        if(empty($_POST['email']))
+            $error = show("errors/errortable", array("error" => _empty_email));
+
+        if($check_email)
+            $error = show("errors/errortable", array("error" => _error_email_exists));
+
+        if(empty($_POST['nick']))
+            $error = show("errors/errortable", array("error" => _empty_nick));
+
+        if($check_nick)
+            $error = show("errors/errortable", array("error" => _error_nick_exists));
+
+        if(empty($_POST['user']))
+            $error = show("errors/errortable", array("error" => _empty_user));
+
+        if($check_user)
+            $error = show("errors/errortable", array("error" => _error_user_exists));
+
+        $regcode = "";
+        if($check_regcode) {
+            $regcode = show($dir."/register_regcode", array("confirm" => _register_confirm,
+                                                            "confirm_add" => _register_confirm_add,));
         }
 
         $index = show($dir."/register", array("registerhead" => _register_head,
                                               "error" => $error,
                                               "name" => _loginname,
                                               "nick" => _nick,
-                          "pwd" => _pwd,
+                                              "pwd" => _pwd,
                                               "pwd2" => _pwd2,
                                               "email" => _email,
                                               "r_name" => $_POST['user'],
                                               "r_nick" => $_POST['nick'],
                                               "r_email" => $_POST['email'],
-"pflicht" => _contact_pflichtfeld,
+                                              "pflicht" => _contact_pflichtfeld,
                                               "value" => _button_value_reg,
                                               "regcode" => $regcode));
-    } else {
-
-        if(empty($_POST['pwd']))
-        {
-          $mkpwd = mkpwd();
-          $pwd = md5($mkpwd);
-          $msg = _info_reg_valid;
         } else {
-          $mkpwd = $_POST['pwd'];
-          $pwd = md5($mkpwd);
-          $msg = _info_reg_valid_pwd;
-        }
+            if(empty($_POST['pwd']))
+            {
+                $mkpwd = mkpwd();
+                $pwd = md5($mkpwd);
+                $msg = _info_reg_valid;
+            } else {
+                $mkpwd = $_POST['pwd'];
+                $pwd = md5($mkpwd);
+                $msg = _info_reg_valid_pwd;
+            }
 
-            $qry = db("INSERT INTO ".$db['users']."
-                 SET `user`     = '".up($_POST['user'])."',
-                     `nick`     = '".up($_POST['nick'])."',
-                     `email`    = '".up($_POST['email'])."',
-                     `pwd`      = '".$pwd."',
-                     `regdatum` = '".((int)time())."',
-                     `level`    = '1',
-                     `time`     = '".time()."',
-                     `status`   = '1'");
+            db("INSERT INTO ".$db['users']."
+                     SET `user`     = '".up($_POST['user'])."',
+                         `nick`     = '".up($_POST['nick'])."',
+                         `email`    = '".up($_POST['email'])."',
+                         `pwd`      = '".$pwd."',
+                         `regdatum` = '".((int)time())."',
+                         `level`    = '1',
+                         `time`     = '".time()."',
+                         `status`   = '1'");
 
-      $insert_id = mysqli_insert_id($mysql);
-
-      $qry = db("INSERT INTO ".$db['permissions']."
-                 SET `user` = '".((int)$insert_id)."'");
-
-            $qry = db("INSERT INTO ".$db['userstats']."
-                                 SET `user`       = '".((int)$insert_id)."',
-                     `lastvisit`    = '".((int)time())."'");
+            $insert_id = mysqli_insert_id($mysql);
+            db("INSERT INTO ".$db['permissions']." SET `user` = '".((int)$insert_id)."'");
+            db("INSERT INTO ".$db['userstats']." SET `user` = '".((int)$insert_id)."', `lastvisit` = '".((int)time())."'");
 
             setIpcheck("reg(".$insert_id.")");
-
-          $message = show(bbcode_email(settings('eml_reg')), array("user" => up($_POST['user']),
-                                                   "pwd" => $mkpwd));
-        $subject = re(settings('eml_reg_subj'));
-
-        sendMail($_POST['email'],$subject,$message);
-
-        $index = info(show($msg, array("email" => $_POST['email'])), "../user/?action=login");
-     }
-  }
+            $message = show(bbcode_email(settings('eml_reg')), array("user" => $_POST['user'], "pwd" => $mkpwd));
+            sendMail($_POST['email'],re(settings('eml_reg_subj')),$message);
+            $index = info(show($msg, array("email" => $_POST['email'])), "../user/?action=login");
+        }
+    }
 break;
 case 'userlobby';
     $where = _site_user_lobby;
