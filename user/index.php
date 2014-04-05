@@ -902,6 +902,9 @@ case 'user';
                                                                     "class" => $class));
                 }
 
+                if(empty($gal))
+                    $gal = show(_no_entrys_yet, array("colspan" => "3"));
+
                 $show = show($dir."/profil_gallery", array("galleryhead" => _gallery_head,
                                                            "pic" => _gallery_pic,
                                                            "beschr" => _gallery_beschr,
@@ -973,6 +976,9 @@ case 'user';
                                                           "ip" => $posted_ip));
             $i--;
         }
+
+        if(empty($membergb))
+            $membergb = show(_no_entrys_yet, array("colspan" => "1"));
 
         $add = "";
         if(!ipcheck("mgbid(".$_GET['id'].")", $flood_membergb)) {
