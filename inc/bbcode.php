@@ -2376,7 +2376,7 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
         $pholder = file_get_contents($designpath."/index.html");
 
         //filter placeholders
-        $blArr = array("[title]","[copyright]","[java_vars]","[login]", "[template_switch]","[headtitle]","[index]", "[time]","[rss]","[dir]","[charset]","[where]");
+        $blArr = array("[clanname]","[title]","[copyright]","[java_vars]","[login]", "[template_switch]","[headtitle]","[index]", "[time]","[rss]","[dir]","[charset]","[where]");
         $pholdervars = '';
         for($i=0;$i<=count($blArr)-1;$i++) {
             if(preg_match("#".$blArr[$i]."#",$pholder))
