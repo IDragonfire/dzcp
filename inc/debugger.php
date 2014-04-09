@@ -5,8 +5,8 @@
  */
 
 ## Check PHP Version ##
-if(version_compare(PHP_VERSION, '5.3.0', '>=') === false)
-    die('DZCP required PHP 5.3.0 or newer!<p> Found PHP ' . PHP_VERSION);
+if(version_compare(PHP_VERSION, '5.2.0', '>=') === false)
+    die('DZCP required PHP 5.2.0 or newer!<p> Found PHP ' . PHP_VERSION);
 
 #########################################
 //-> Debug Console Settings Start
