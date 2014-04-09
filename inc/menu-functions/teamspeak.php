@@ -23,7 +23,11 @@ function teamspeak($js = 0) {
           </div>';
 
     } else {
-        if(!empty(settings('ts_ip')) && !empty(settings('ts_sport')) && !empty(settings('ts_port'))) {
+        $ts_ip = settings('ts_ip');
+        $ts_sport = settings('ts_sport');
+        $ts_port = settings('ts_port');
+
+        if(!empty($ts_ip) && !empty($ts_port) && !empty($ts_port)) {
             if(!$cache->isExisting('nav_teamspeak_'.$language)) {
                 $teamspeak = teamspeakViewer();
                 $cache->set('nav_teamspeak_'.$language, $teamspeak, config('cache_teamspeak'));
