@@ -2203,8 +2203,8 @@ final class dbc_index
             case 'wincache': return (extension_loaded('wincache') && function_exists("wincache_ucache_set")); break;
             case 'auto':
                 return ((extension_loaded('apc') && ini_get('apc.enabled') && strpos(PHP_SAPI,"CGI") === false) ||
-                       ($config_cache['dbc_memcache'] && ping_port($config_cache['server'][0][0],$config_cache['server'][0][1],0.2) && class_exists("memcached")) ||
-                       ($config_cache['dbc_memcache'] && ping_port($config_cache['server'][0][0],$config_cache['server'][0][1],0.2) && function_exists("memcache_connect")) ||
+                       ($config_cache['dbc_auto_memcache'] && ping_port($config_cache['server'][0][0],$config_cache['server'][0][1],0.2) && class_exists("memcached")) ||
+                       ($config_cache['dbc_auto_memcache'] && ping_port($config_cache['server'][0][0],$config_cache['server'][0][1],0.2) && function_exists("memcache_connect")) ||
                        (extension_loaded('xcache') && function_exists("xcache_get")) ||
                        (extension_loaded('wincache') && function_exists("wincache_ucache_set")));
             break;
