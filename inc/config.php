@@ -17,6 +17,7 @@ $config_cache = array();
 $config_cache['storage'] = "auto"; //memcache
 $config_cache['server'] = array(array("127.0.0.1",11211,1));
 $config_cache['dbc'] = true; //use database querie caching * only use with memory cache
+$config_cache['dbc_auto_memcache'] = false; //use database querie caching * auto memcache check
 
 #########################################
 //-> DZCP Settings End
@@ -37,7 +38,10 @@ if(view_error_reporting)
         set_error_handler('dzcp_error_handler');
 }
 else
+{
+    ini_set('display_errors', 1);
     error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+}
 
 ## REQUIRES ##
 //DZCP-Install default variable

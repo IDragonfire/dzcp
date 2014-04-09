@@ -2196,20 +2196,22 @@ final class dbc_index
         global $config_cache;
         if(!$config_cache['dbc']) return false;
         switch ($config_cache['storage']) {
-            case 'apc': return extension_loaded('apc') && ini_get('apc.enabled') && strpos(PHP_SAPI,"CGI") === false; break;
-            case 'memcached': return ping_port($config_cache['server'][0][0],$config_cache['server'][0][1],0.2) && class_exists("memcached"); break;
-            case 'memcache': return ping_port($config_cache['server'][0][0],$config_cache['server'][0][1],0.2) && function_exists("memcache_connect"); break;
-            case 'xcache': return extension_loaded('xcache') && function_exists("xcache_get"); break;
-            case 'wincache': return extension_loaded('wincache') && function_exists("wincache_ucache_set"); break;
+            case 'apc': return (extension_loaded('apc') && ini_get('apc.enabled') && strpos(PHP_SAPI,"CGI") === false); break;
+            case 'memcached': return (ping_port($config_cache['server'][0][0],$config_cache['server'][0][1],0.2) && class_exists("memcached")); break;
+            case 'memcache': return (ping_port($config_cache['server'][0][0],$config_cache['server'][0][1],0.2) && function_exists("memcache_connect")); break;
+            case 'xcache': return (extension_loaded('xcache') && function_exists("xcache_get")); break;
+            case 'wincache': return (extension_loaded('wincache') && function_exists("wincache_ucache_set")); break;
             case 'auto':
-                return (extension_loaded('apc') && ini_get('apc.enabled') && strpos(PHP_SAPI,"CGI") === false) ||
-                       (ping_port($config_cache['server'][0][0],$config_cache['server'][0][1],0.2) && class_exists("memcached")) ||
-                       (ping_port($config_cache['server'][0][0],$config_cache['server'][0][1],0.2) && function_exists("memcache_connect")) ||
+                return ((extension_loaded('apc') && ini_get('apc.enabled') && strpos(PHP_SAPI,"CGI") === false) ||
+                       ($config_cache['dbc_memcache'] && ping_port($config_cache['server'][0][0],$config_cache['server'][0][1],0.2) && class_exists("memcached")) ||
+                       ($config_cache['dbc_memcache'] && ping_port($config_cache['server'][0][0],$config_cache['server'][0][1],0.2) && function_exists("memcache_connect")) ||
                        (extension_loaded('xcache') && function_exists("xcache_get")) ||
-                       (extension_loaded('wincache') && function_exists("wincache_ucache_set"));
+                       (extension_loaded('wincache') && function_exists("wincache_ucache_set")));
             break;
             default: return false; break;
         }
+
+        return false;
     }
 }
 
