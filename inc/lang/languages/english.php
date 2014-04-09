@@ -541,12 +541,10 @@ define('_config_serverliste' , 'Serverlist');
 define('_config_squads' , 'Teams');
 define('_config_backup' , 'Backup database');
 define('_config_news' , 'News-/Article categories');
-define('_config_positions' , 'Positions');
 define('_config_allgemein' , 'Configuration');
 define('_config_impressum' , 'Imprint');
 define('_config_clankasse' , 'Clan Cash');
 define('_config_downloads' , 'Download categories');
-define('_config_dl' , 'Downloads');
 define('_config_newsadmin' , 'News');
 define('_config_filebrowser' , 'Filebrowser');
 define('_config_navi' , 'Navigation');
@@ -963,7 +961,6 @@ define('_kalender_deleted' , 'The event was successfully deleted!');
 ## Umfragen ##
 define('_error_vote_closed' , 'This vote is closed!');
 define('_votes_admin_closed' , 'Close vote');
-define('_vote_menu_no_vote' , '<tr><td align="center"><span class="fontBold">No vote registered</span></td></tr>');
 define('_votes_head' , 'Votes');
 define('_votes_stimmen' , 'Voted');
 define('_votes_intern' , '<span class="fontWichtig">Internal:</span> ');
@@ -1091,12 +1088,10 @@ define('_cw_head_details_show' , 'Details');
 define('_cw_head_page' , 'Site: ');
 define('_cw_head_legende' , 'Legend');
 define('_cw_nothing' , '<option value="lazy" class="" class="dropdownKat">--- change nothing ---</option>');
-define('_cw_screenshot' , 'Screen');
 define('_cw_screens' , 'Screenshots');
 define('_cw_new' , 'New');
 define('_cw_screens_info' , 'jpg, gif and png files only!');
 define('_clanwars_no_show' , 'No registered clanwar yet!');
-define('_cw_screens' , 'Screenshots');
 define('_cw_show_all' , '
 <tr>
   <td class="contentMainFirst" colspan="8" align="center"><a href="../clanwars/?action=showall&amp;id=[id]">Show all clanwars of this team</a></td>
@@ -1273,7 +1268,6 @@ define('_stats_dl_traffic' , 'Totally caused traffic');
 define('_stats_dl_hits' , 'Totally downloaded');
 ## User ##
 define('_profil_head' , '<span class="fontBold">Userprofile from [nick]</span> [[profilhits] times viewed]');
-define('_user_noposi' , '<option value="lazy" class="dropdownKat">no position</option>');
 define('_login_head' , 'Login');
 define('_new_pwd' , 'new password');
 define('_register_head' , 'Registration');
@@ -1785,7 +1779,6 @@ define('_config_c_gallerypics' , 'User: Usergallery');
 define('_config_c_upicsize_what' , 'allowed filesize of the pictures in KB (Newspicture, Userpicture etc.)');
 define('_config_c_regcode' , 'Reg: Securitycodee');
 define('_config_c_regcode_what' , 'User have to enter a securitycode during the registration');
-define('_admin_pos' , 'Position labels');
 define('_pos_add_new' , '<a href="?admin=positions&amp;do=new">Insert position</a>');
 define('_pos_new_head' , 'Insert position');
 define('_pos_edit_head' , 'Edit position');
@@ -2218,10 +2211,6 @@ define('_error_unregistered_nc' , '
   <td class="contentMainFirst" colspan="2" align="center">
     <span class="fontBold">You have to be registered to write a comment!</span>
   </td>
-</tr>');
-define('_no_server_navi' , '
-<tr>
-  <td align="center"><span class="fontBold">No server yet</span></td>
 </tr>');
 define('_server_menu_austragen' , 'The server was successfully unset from the menu!');
 define('_server_menu_eintragen' , 'The server was successfully set into the menu!');
