@@ -33,6 +33,9 @@ if(_adminMenu != 'true') exit;
                                                   "delete" => $delete));
       }
 
+
+      $ts_port = settings('ts_port',false);
+      $ts_sport = settings('ts_sport',false);
       $show = show($dir."/server", array("game" => _game,
                                          "serveradmin_head" => _server_admin_head,
                                          "sip" => _server_ip,
@@ -42,9 +45,9 @@ if(_adminMenu != 'true') exit;
                                          "value" => _button_value_save,
                                          "yesno" => _server_menu_icon_yesno,
                                          "legendemenu" => _server_legendemenu,
-                                         "ts_port" => (empty(settings('ts_port',false)) ? '' : settings('ts_port',false)),
+                                         "ts_port" => (empty($ts_port) ? '' : $ts_port),
                                          "ts_ip" => re(settings('ts_ip',false)),
-                                         "ts_sport" => (empty(settings('ts_sport',false)) ? '' : settings('ts_sport',false)),
+                                         "ts_sport" => (empty($ts_sport) ? '' : $ts_sport),
                                          "ts_width" => settings('ts_width',false),
                                          "ts_version" => (settings('ts_version',false) == 3 ? ' selected="selected"' : ''),
                                          "ts_showsettings" => (settings('ts_version',false) == 3 ? '' : ' style="display:none;"'),
