@@ -639,7 +639,7 @@ define('_editor_from' , 'From');
 define('intern' , '<span class="fontWichtig">Internal</span>');
 define('_comments_head' , 'Comments');
 define('_click_close' , 'close');
-## Begr��ungen ##
+## Begruessungen ##
 define('_welcome_18' , 'Good evening,');
 define('_welcome_13' , 'Good day,');
 define('_welcome_11' , 'Good lunch,');
@@ -828,7 +828,7 @@ define('_country_list' , '
 <option value="yu"> Yugoslavia</option>
 <option value="ye"> Yemen</option>
 <option value="zm"> Zambia</option>');
-## Globale Userr�nge ##
+## Globale Userraenge ##
 define('_status_banned' , 'banned');
 define('_status_unregged' , 'unregistered');
 define('_status_user' , 'User');
@@ -926,7 +926,7 @@ define('_forum_search_results' , 'Search results');
 define('_forum_online_head' , 'Browsing the board');
 define('_forum_nobody_is_online' , 'Right now no user is browsing the board!');
 define('_forum_nobody_is_online2' , 'Right now no user except you is browsing the board!');
-## G�stebuch ##
+## Gaestebuch ##
 define('_gb_delete_successful' , 'The entry was successfully deleted!');
 define('_gb_head' , 'Guestbook');
 define('_gb_add_head' , 'Insert entry');
