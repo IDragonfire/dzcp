@@ -3,6 +3,7 @@
 include("../inc/buffer.php");
 
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
 include(basePath."/user/helper.php");
@@ -18,7 +19,7 @@ switch ($action):
 case 'login';
     $where = _site_user_login;
     if($do == "yes") {
-        if($secureLogin == 1 && ($_POST['secure'] != $_SESSION['sec_login'] || empty($_SESSION['sec_login'])))
+        if(config('securelogin') && ($_POST['secure'] != $_SESSION['sec_login'] || empty($_SESSION['sec_login'])))
             $index = error(_error_invalid_regcode, 1);
         else {
             if(checkpwd($_POST['user'], md5($_POST['pwd']))) {
@@ -61,7 +62,7 @@ case 'login';
         }
     } else {
         if(!$chkMe) {
-            $secure = $secureLogin ? show($dir."/secure", array("help" => _login_secure_help, "security" => _register_confirm)) : '';
+            $secure = config('securelogin') ? show($dir."/secure", array("help" => _login_secure_help, "security" => _register_confirm)) : '';
             $index = show($dir."/login", array("loginhead" => _login_head,
                                                "loginname" => _loginname,
                                                "secure" => $secure,
@@ -285,11 +286,11 @@ case 'userlobby';
                                 $post = "";
                             } elseif($count == 1) {
                                 $cnt = 1;
-                                $pagenr = ceil($lp/$maxfposts);
+                                $pagenr = ceil($lp/config('m_ftopics'));
                                 $post = _new_post_1;
                             } else {
                                 $cnt = $count;
-                                $pagenr = ceil($lp/$maxfposts);
+                                $pagenr = ceil($lp/config('m_ftopics'));
                                 $post = _new_post_2;
                             }
 
@@ -371,14 +372,14 @@ case 'userlobby';
 
         /** Neue Eintruage im Guastebuch anzeigen */
         $permission_gb = permission("gb"); $activ = "";
-        if(!$permission_gb && $gb_activ == '1')
+        if(!$permission_gb && settings('gb_activ'))
             $activ = "WHERE public = 1";
 
         $gb = '';
         $getgb = db("SELECT id,datum FROM ".$db['gb']." ".$activ." ORDER BY id DESC",false,true);
         if(!empty($getgb) && check_new($getgb['datum'],1)) {
             $cntgb = "";
-            if(!$permission_gb && $gb_activ == '1')
+            if(!$permission_gb && settings('gb_activ'))
                 $cntgb = "AND public = 1";
 
             $check = cnt($db['gb'], " WHERE datum > ".$lastvisit." ".$cntgb."");
@@ -700,7 +701,7 @@ case 'userlobby';
             while($getft = _fetch($qryft)) {
                 if(fintern($getft['kid'])) {
                     $lp = cnt($db['f_posts'], " WHERE sid = '".$getft['id']."'");
-                    $pagenr = ceil($lp/$maxfposts);
+                    $pagenr = ceil($lp/config('m_ftopics'));
                     $page = ($pagenr == 0 ? 1 : $pagenr);
                     $getp = db("SELECT text FROM ".$db['f_posts']."
                                 WHERE kid = '".$getft['kid']."'
@@ -920,10 +921,10 @@ case 'user';
         $qrygb = db("SELECT * FROM ".$db['usergb']."
                      WHERE user = ".intval($_GET['id'])."
                      ORDER BY datum DESC
-                     LIMIT ".($page - 1)*$maxusergb.",".$maxusergb."");
+                     LIMIT ".($page - 1)*config('m_usergb').",".config('m_usergb')."");
 
         $entrys = cnt($db['usergb'], " WHERE user = ".intval($_GET['id']));
-        $i = $entrys-($page - 1)*$maxusergb;
+        $i = $entrys-($page - 1)*config('m_usergb');
 
         $membergb = '';
         while($getgb = _fetch($qrygb)) {
@@ -981,7 +982,7 @@ case 'user';
             $membergb = show(_no_entrys_yet, array("colspan" => "1"));
 
         $add = "";
-        if(!ipcheck("mgbid(".$_GET['id'].")", $flood_membergb)) {
+        if(!ipcheck("mgbid(".$_GET['id'].")", config('f_membergb'))) {
             if($userid >= 1) {
                 $form = show("page/editor_regged", array("nick" => autor($userid),
                                                          "von" => _autor));
@@ -1013,7 +1014,7 @@ case 'user';
                                                   "eintraghead" => _eintrag));
         }
 
-        $seiten = nav($entrys,$maxusergb,"?action=user&amp;id=".$_GET['id']."&show=gb");
+        $seiten = nav($entrys,config('m_usergb'),"?action=user&amp;id=".$_GET['id']."&show=gb");
         $qryperm = db("SELECT perm_gb FROM ".$db['users']." WHERE id = ".$_GET['id'],false,true);
         $add = $qryperm['perm_gb'] != 1 ? "" : $add;
         $show = show($dir."/profil_gb",array("gbhead" => _membergb,
@@ -2210,50 +2211,50 @@ case 'userlist';
                    WHERE nick LIKE '%".$_GET['search']."%'
                    AND level != 0
                    ORDER BY nick
-                   LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
+                   LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } elseif($show_sql == "bday") {
         $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,regdatum
                    FROM ".$db['users']."
                    WHERE bday LIKE '".date("d", intval($_GET['time'])).".".date("m", intval($_GET['time'])).".____"."'
                    AND level != 0
                    ORDER BY nick
-                   LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
+                   LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } elseif($show_sql == "newreg") {
         $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,regdatum FROM ".$db['users']."
                    WHERE regdatum > '".$_SESSION['lastvisit']."'
                    AND level != '0'
                    ORDER BY regdatum DESC,nick
-                   LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
+                   LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } elseif($show_sql == "lastlogin") {
         $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,regdatum FROM ".$db['users']."
                    WHERE level != '0'
                    ORDER BY time DESC,nick
-                   LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
+                   LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } elseif($show_sql == "lastreg") {
         $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,regdatum FROM ".$db['users']."
                    WHERE level != '0'
                    ORDER BY regdatum DESC,nick
-                   LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
+                   LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } elseif($show_sql == "online") {
         $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,time FROM ".$db['users']."
                    WHERE level != '0'
                    ORDER BY time DESC,nick
-                   LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
+                   LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } elseif($show_sql == "country") {
         $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,country FROM ".$db['users']."
                    WHERE level != '0'
                    ORDER BY country,nick
-                   LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
+                   LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } elseif($show_sql == "sex") {
         $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position FROM ".$db['users']."
                    WHERE level != '0'
                    ORDER BY sex DESC
-                   LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
+                   LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } elseif($show_sql == "banned") {
         $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position FROM ".$db['users']."
                    WHERE level = '0'
                    ORDER BY nick
-                   LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
+                   LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } elseif(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("nick","bday"))) {
         $tmp_orderby = $_GET['orderby'];
             if($_GET['orderby'] == "bday")
@@ -2262,13 +2263,13 @@ case 'userlist';
         $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,STR_TO_DATE(bday, '%d.%m.%Y') AS bday_order FROM ".$db['users']."
                    WHERE level != '0'
                    ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
-                   LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
+                   LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } else {
           $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,
                    icq,status,position FROM ".$db['users']."
                    WHERE level != '0'
                    ORDER BY level DESC,nick
-                   LIMIT ".($page - 1)*$maxuserlist.",".$maxuserlist."");
+                   LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     }
 
     $color = 0; $userliste = '';
@@ -2334,7 +2335,7 @@ case 'userlist';
 
     $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
     $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
-    $seiten = nav($entrys,$maxuserlist,"?action=userlist&show=".$show_sql."".$orderby);
+    $seiten = nav($entrys,config('m_userlist'),"?action=userlist&show=".$show_sql."".$orderby);
     $edel = permission("editusers") ? '<td class="contentMainTop" colspan="2">&nbsp;</td>' : "";
     $search = isset($_GET['search']) && !empty($_GET['search']) ? $_GET['search'] : _nick;
 

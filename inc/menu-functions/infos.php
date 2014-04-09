@@ -5,8 +5,8 @@
  * Menu: Headline Infos
  */
 function infos($checkBrowser = "") {
-    global $userip, $settings;
-    if($settings['persinfo']) {
+    global $userip;
+    if(settings('persinfo')) {
         $data = $_SERVER['HTTP_USER_AGENT'];
         if(preg_match("/Android/i",$data))                     $system = "Android";
         elseif(preg_match ("/Linux/i",$data))               $system = "Linux";

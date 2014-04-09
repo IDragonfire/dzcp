@@ -175,11 +175,11 @@ if(_adminMenu != 'true') exit;
         if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("titel","datum","autor"))) {
         $qry = db("SELECT * FROM ".$db['artikel']."
                    ORDER BY ".mysqli_real_escape_string($mysql, $mysql, $_GET['orderby']." ".$_GET['order'])."
-                   LIMIT ".($page - 1)*$maxadminartikel.",".$maxadminartikel."");
+                   LIMIT ".($page - 1)*config('m_adminartikel').",".config('m_adminartikel')."");
         }
         else {$qry = db("SELECT * FROM ".$db['artikel']."
                          ORDER BY `public` ASC, `datum` DESC
-                         LIMIT ".($page - 1)*$maxadminartikel.",".$maxadminartikel."");
+                         LIMIT ".($page - 1)*config('m_adminartikel').",".config('m_adminartikel')."");
         }
         while($get = _fetch($qry))
         {
@@ -190,7 +190,7 @@ if(_adminMenu != 'true') exit;
                                                             "action" => "admin=artikel&amp;do=delete",
                                                             "title" => _button_title_del,
                                                             "del" => convSpace(_confirm_del_artikel)));
-          $titel = show(_artikel_show_link, array("titel" => re(cut($get['titel'],$lnewsadmin)),
+          $titel = show(_artikel_show_link, array("titel" => re(cut($get['titel'],config('l_newsadmin'))),
                                                   "id" => $get['id']));
 
           $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
@@ -214,7 +214,7 @@ if(_adminMenu != 'true') exit;
         }
         $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
         $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
-        $nav = nav($entrys,$maxadminnews,"?admin=artikel".$_GET['show']."".$orderby);
+        $nav = nav($entrys,config('m_adminnews'),"?admin=artikel".$_GET['show']."".$orderby);
 
         $show = show($dir."/admin_news", array("head" => _artikel,
                                                "nav" => $nav,

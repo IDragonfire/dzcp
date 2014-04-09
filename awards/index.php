@@ -1,9 +1,12 @@
 <?php
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
@@ -43,10 +46,10 @@ default:
                 LEFT JOIN ".$db['squads']." AS s2 ON s1.squad = s2.id
                 WHERE s1.squad='".$get['id']."'
                 ORDER BY s1.date DESC
-                    LIMIT ".$maxawards."");
+                    LIMIT ".config('m_awards')."");
 
     $entrys = cnt($db['awards'], " WHERE squad = ".$get['id']);
-    $i = $entrys-($page - 1)*$maxawards;
+    $i = $entrys-($page - 1)*config('m_awards');
 
       $awards = "";
       while($getm = _fetch($qrym))
@@ -68,7 +71,7 @@ default:
                                                                          "event" => $event));
     }
 
-    if(cnt($db['awards'], " WHERE squad = ".$get['id']) > $maxawards)
+    if(cnt($db['awards'], " WHERE squad = ".$get['id']) > config('m_awards'))
       $show_all = show(_list_all_link, array("id" => $get['id']));
     else
          $show_all = "";
@@ -200,10 +203,10 @@ case 'showall';
                 LEFT JOIN ".$db['squads']." AS s2 ON s1.squad = s2.id
                 WHERE s1.squad='".$get['id']."'
                 ORDER BY s1.date DESC
-                    LIMIT ".($page - 1)*$maxawards.",".$maxawards."");
+                    LIMIT ".($page - 1)*config('m_awards').",".config('m_awards')."");
 
     $entrys = cnt($db['awards'], " WHERE squad = ".$get['id']);
-    $i = $entrys-($page - 1)*$maxawards;
+    $i = $entrys-($page - 1)*config('m_awards');
 
       $awards = "";
       while($getm = _fetch($qrym))
@@ -226,7 +229,7 @@ case 'showall';
 
     }
 
-    $nav = nav($entrys,$maxawards,"?action=showall&amp;id=".$get['id']."");
+    $nav = nav($entrys,config('m_awards'),"?action=showall&amp;id=".$get['id']."");
     $showawards = show($dir."/awards_show_all", array("squad" => _awards_head_squad,
                                                                      "date" => _awards_head_date,
                                                                       "place" => _awards_head_place,

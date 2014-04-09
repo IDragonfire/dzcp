@@ -1,9 +1,12 @@
 <?php
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
@@ -20,29 +23,29 @@ $dir = "online";
   {
     if(!preg_match("#autor_#is",$get['whereami'])) $whereami = re($get['whereami']);
     else $whereami =  preg_replace_callback("#autor_(.*?)$#",create_function('$id', 'return autor("$id[1]");'),$get['whereami']);
-    
+
     $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
     $show .= show($dir."/online_show", array("nick" => autor($get['id']),
                                              "whereami" => $whereami,
                                              "class" => $class));
   }
-		if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("whereami","ip"))) {
-	          $qry = db("SELECT * FROM ".$db['c_who']."
+        if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("whereami","ip"))) {
+              $qry = db("SELECT * FROM ".$db['c_who']."
                          WHERE online+'".$useronline."'>'".time()."'
                          AND login = 0
                          ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."");
-		}
+        }
         else{$qry = db("SELECT * FROM ".$db['c_who']."
                        WHERE online+'".$useronline."'>'".time()."'
                        AND login = 0
                        ORDER BY whereami");
   }
-  
+
   while($get = _fetch($qry))
   {
     if(!preg_match("#autor_#is",$get['whereami'])) $whereami = re($get['whereami']);
     else $whereami = preg_replace_callback("#autor_(.*?)$#",create_function('$id', 'return autor("$id[1]");'),$get['whereami']);
-    
+
     $online_ip = preg_replace("#^(.*)\.(.*)#","$1",$get['ip']);
     $online_host = preg_replace("#^(.*?)\.(.*)#","$2",gethostbyaddr($get['ip']));
     $online_ip = $online_ip.'.XX (*.'.$online_host.')';
@@ -56,8 +59,8 @@ $dir = "online";
   $index = show($dir."/online", array("show" => $show,
                                       "head" => _online_head,
                                       "user" => _status_user.'/'._server_ip,
-									  "order_user" => orderby('ip'),
-									  "order_where" => orderby('whereami'),
+                                      "order_user" => orderby('ip'),
+                                      "order_where" => orderby('whereami'),
                                       "where" => _online_whereami));
 
 ## SETTINGS ##

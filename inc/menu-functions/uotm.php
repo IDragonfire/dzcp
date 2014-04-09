@@ -5,7 +5,7 @@
  * Menu: User of the Moment
  */
 function uotm() {
-    global $db, $allowHover;
+    global $db;
 
     $files = get_files('../inc/images/uploads/userpics',false,true);
     shuffle($files);
@@ -16,7 +16,7 @@ function uotm() {
         $qry = db("SELECT `id`,`bday` FROM ".$db['users']." WHERE `id` = '".$userid."'");
         if(_rows($qry)) {
             $get = _fetch($qry);
-            if($allowHover == 1)
+            if(config('allowhover') == 1)
                 $info = 'onmouseover="DZCP.showInfo(\''.fabo_autor($get['id']).'\', \''._age.'\', \''.getAge($get['bday']).'\', \''.hoveruserpic($get['id']).'\')" onmouseout="DZCP.hideInfo()"';
 
 

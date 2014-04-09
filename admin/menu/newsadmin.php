@@ -392,10 +392,10 @@ if(_adminMenu != 'true') exit;
         if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("titel","datum","autor"))) {
         $qry = db("SELECT * FROM ".$db['news']."
                    ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
-                   LIMIT ".($page - 1)*$maxadminnews.",".$maxadminnews."");
+                   LIMIT ".($page - 1)*config('m_adminnews').",".config('m_adminnews')."");
         }
         else{
-        $qry = db("SELECT * FROM ".$db['news']." ORDER BY `public` ASC, `datum` DESC LIMIT ".($page - 1)*$maxadminnews.",".$maxadminnews."");
+        $qry = db("SELECT * FROM ".$db['news']." ORDER BY `public` ASC, `datum` DESC LIMIT ".($page - 1)*config('m_adminnews').",".config('m_adminnews')."");
         }
         while($get = _fetch($qry))
         {
@@ -406,7 +406,7 @@ if(_adminMenu != 'true') exit;
                                                             "action" => "admin=newsadmin&amp;do=delete",
                                                             "title" => _button_title_del,
                                                             "del" => convSpace(_confirm_del_news)));
-          $titel = show(_news_show_link, array("titel" => re(cut($get['titel'],$lnewsadmin)),
+          $titel = show(_news_show_link, array("titel" => re(cut($get['titel'],config('l_newsadmin'))),
                                                "id" => $get['id']));
 
           $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
@@ -435,7 +435,7 @@ if(_adminMenu != 'true') exit;
 
         $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
         $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
-        $nav = nav($entrys,$maxadminnews,"?admin=newsadmin".$_GET['show']."".$orderby);
+        $nav = nav($entrys,config('m_adminnews'),"?admin=newsadmin".$_GET['show']."".$orderby);
 
         $show = show($dir."/admin_news", array("head" => _news_admin_head,
                                                "nav" => $nav,

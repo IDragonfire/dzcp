@@ -1,4 +1,8 @@
 <?php
+## Check PHP Version ##
+if(version_compare(PHP_VERSION, '5.3.0', '>=') === false)
+    die('DZCP required PHP 5.3.0 or newer!<p> Found PHP ' . PHP_VERSION);
+
 ob_start();
 session_start();
 define('basePath', dirname(dirname(__FILE__).'../'));

@@ -1,15 +1,19 @@
 <?php
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
 $where = _site_server;
 $title = $pagetitle." - ".$where."";
 $dir = "server";
+
 ## SECTIONS ##
 switch ($action):
 default:
@@ -207,7 +211,7 @@ default:
                                                     "name" => re($server['hostname']),
                                                                         "image_map" => $image_map));
 
-          $cache->set('gameserver_'.intval($get['id']).'_'.$language, $index, $config['cache_server']);
+          $cache->set('gameserver_'.intval($get['id']).'_'.$language, $index, config('cache_server'));
         } else {
             $index = $cache->get('gameserver_'.intval($get['id']).'_'.$language);
         }

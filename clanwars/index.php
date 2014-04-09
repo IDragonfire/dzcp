@@ -1,9 +1,12 @@
 <?php
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
@@ -97,14 +100,14 @@ default:
                 WHERE s1.squad_id='".$get['id']."'
                   AND s1.datum < ".time()."
                 ORDER BY s1.datum DESC
-                LIMIT ".$maxcw."");
+                LIMIT ".config('m_clanwars')."");
      while($getm = _fetch($qrym))
     {
       $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
       $game = squad($getm['icon']);
 
       $flagge = flag($getm['gcountry']);
-      $gegner = show(_cw_details_gegner, array("gegner" => re(cut($getm['clantag']." - ".$getm['gegner'], $lcwgegner)),
+      $gegner = show(_cw_details_gegner, array("gegner" => re(cut($getm['clantag']." - ".$getm['gegner'], config('l_clanwars'))),
                                                "url" => '?action=details&amp;id='.$getm['id']));
 
       $details = show(_cw_show_details, array("id" => $getm['id']));
@@ -184,7 +187,7 @@ default:
                                                          "ges_wars" => $anz_ges_wars,
                                                          "ges_points" => $anz_ges_points));
 
-    if(cnt($db['cw'], " WHERE squad_id = ".$get['id']." AND datum < ".time()."") > $maxcw)
+    if(cnt($db['cw'], " WHERE squad_id = ".$get['id']." AND datum < ".time()."") > config('m_clanwars'))
       $more = show(_cw_show_all, array("id" => $get['id'])); else $more = "";
 
     if(cnt($db['cw'], " WHERE squad_id = ".$get['id']." AND datum < ".time()."") > 0)
@@ -245,9 +248,9 @@ case 'showall';
              LEFT JOIN ".$db['squads']." AS s2 ON s1.squad_id = s2.id
              WHERE s1.datum < ".time()." AND s1.squad_id = ".intval($_GET['id'])."
              ORDER BY s1.datum DESC
-             LIMIT ".($page - 1)*$maxcw.",".$maxcw."");
+             LIMIT ".($page - 1)*config('m_clanwars').",".config('m_clanwars')."");
 
-  $i = $entrys-($page - 1)*$maxcw;
+  $i = $entrys-($page - 1)*config('m_clanwars');
   $entrys = cnt($db['cw'], "  WHERE datum < ".time()." AND squad_id = ".intval($_GET['id'])."");
   if(_rows($qry))
   {
@@ -256,7 +259,7 @@ case 'showall';
     {
       $img = squad($get['icon']);
       $flagge = flag($get['gcountry']);
-      $gegner = show(_cw_details_gegner, array("gegner" => re(cut($get['clantag']." - ".$get['gegner'], $lcwgegner)),
+      $gegner = show(_cw_details_gegner, array("gegner" => re(cut($get['clantag']." - ".$get['gegner'], config('l_clanwars'))),
                                                "url" => '?action=details&amp;id='.$get['id']));
 
       $details = show(_cw_show_details, array("id" => $get['id']));
@@ -356,7 +359,7 @@ case 'showall';
       $show = show($dir."/clanwars_no_show", array("clanwars_no_show" => _clanwars_no_show));
     }
 
-    $nav = nav($entrys,$maxcw,"?action=showall&amp;id=".$_GET['id']."");
+    $nav = nav($entrys,config('m_clanwars'),"?action=showall&amp;id=".$_GET['id']."");
     $show = show($dir."/clanwars", array("head" => _cw_head_clanwars,
                                                          "game" => _cw_head_game,
                                          "datum" => _cw_head_datum,
@@ -401,9 +404,9 @@ case 'kalender';
              LEFT JOIN ".$db['squads']." AS s2 ON s1.squad_id = s2.id
              WHERE DATE_FORMAT(FROM_UNIXTIME(s1.datum), '%d.%m.%Y') = '".date("d.m.Y",intval($_GET['time']))."'
              ORDER BY s1.datum DESC
-             LIMIT ".($page - 1)*$maxcw.",".$maxcw."");
+             LIMIT ".($page - 1)*config('m_clanwars').",".config('m_clanwars')."");
 
-  $i = $entrys-($page - 1)*$maxcw;
+  $i = $entrys-($page - 1)*config('m_clanwars');
   $entrys = cnt($db['cw'], " WHERE DATE_FORMAT(FROM_UNIXTIME('".$get['datum']."'), '%d.%m.%Y') = '".date("d.m.Y",intval($_GET['time']))."'");
 
   if(_rows($qry))
@@ -413,7 +416,7 @@ case 'kalender';
     {
       $img = squad($get['icon']);
       $flagge = flag($get['gcountry']);
-      $gegner = show(_cw_details_gegner, array("gegner" => re(cut($get['clantag']." - ".$get['gegner'], $lcwgegner)),
+      $gegner = show(_cw_details_gegner, array("gegner" => re(cut($get['clantag']." - ".$get['gegner'], config('l_clanwars'))),
                                                "url" => '?action=details&amp;id='.$get['id']));
 
       $details = show(_cw_show_details, array("id" => $get['id']));
@@ -517,7 +520,7 @@ case 'kalender';
       $show = show($dir."/clanwars_no_show", array("clanwars_no_show" => _clanwars_no_show));
     }
 
-    $nav = nav($entrys,$maxcw,"?action=nav");
+    $nav = nav($entrys,config('m_clanwars'),"?action=nav");
     $index = show($dir."/clanwars", array("head" => _cw_head_clanwars,
                                                             "game" => _cw_head_game,
                                           "datum" => _cw_head_datum,
@@ -654,10 +657,10 @@ case 'details';
     $qryc = db("SELECT * FROM ".$db['cw_comments']."
                             WHERE cw = ".intval($_GET['id'])."
                             ORDER BY datum DESC
-              LIMIT ".($page - 1)*$maxcwcomments.",".$maxcwcomments."");
+              LIMIT ".($page - 1)*config('m_cwcomments').",".config('m_cwcomments')."");
 
   $entrys = cnt($db['cw_comments'], " WHERE cw = ".intval($_GET['id']));
-  $i = $entrys-($page - 1)*$maxcwcomments;
+  $i = $entrys-($page - 1)*config('m_cwcomments');
 
     while($getc = _fetch($qryc))
     {
@@ -722,7 +725,7 @@ case 'details';
   {
     $add = _error_unregistered_nc;
   } else {
-    if(!ipcheck("cwid(".$_GET['id'].")", $flood_cwcom))
+    if(!ipcheck("cwid(".$_GET['id'].")", config('f_cwcom')))
     {
       if($userid >= 1)
         {
@@ -762,7 +765,7 @@ case 'details';
     }
   }
 
-  $seiten = nav($entrys,$maxcwcomments,"?action=details&amp;id=".$_GET['id']."");
+  $seiten = nav($entrys,config('m_cwcomments'),"?action=details&amp;id=".$_GET['id']."");
 
   $comments = show($dir."/comments",array("head" => _cw_comments_head,
                                                                                "show" => $comments,
@@ -826,7 +829,7 @@ case 'details';
             {
                 $index = error(_error_have_to_be_logged, 1);
             } else {
-                if(!ipcheck("cwid(".$_GET['id'].")", $flood_cwcom))
+                if(!ipcheck("cwid(".$_GET['id'].")", config('f_cwcom')))
                 {
                     if($userid >= 1)
                         $toCheck = empty($_POST['comment']);
@@ -889,7 +892,7 @@ case 'details';
                         $index = info(_comment_added, "?action=details&amp;id=".$_GET['id']."");
                     }
                 } else {
-                    $index = error(show(_error_flood_post, array("sek" => $flood_cwcom)), 1);
+                    $index = error(show(_error_flood_post, array("sek" => config('f_cwcom'))), 1);
                 }
             }
         } else{

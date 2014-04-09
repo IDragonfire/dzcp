@@ -3,6 +3,7 @@
 include("../inc/buffer.php");
 
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
 
@@ -19,12 +20,12 @@ default:
         $qry = db("SELECT id,kat,titel,datum,autor,text FROM ".$db['artikel']."
                    WHERE public = 1
                    ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
-                   LIMIT ".($page - 1)*$martikel.",".$martikel."");
+                   LIMIT ".($page - 1)*config('m_artikel').",".config('m_artikel')."");
     } else {
         $qry = db("SELECT id,kat,titel,datum,autor,text FROM ".$db['artikel']."
                    WHERE public = 1
                    ORDER BY datum DESC
-                   LIMIT ".($page - 1)*$martikel.",".$martikel."");
+                   LIMIT ".($page - 1)*config('m_artikel').",".config('m_artikel')."");
     }
     $entrys = cnt($db['artikel']);
 
@@ -52,7 +53,7 @@ default:
 
     $orderby = isset($_GET['orderby']) ? "&orderby".$_GET['orderby'] : "";
     $orderby .= isset($_GET['order']) ? "&order=".$_GET['order'] : "";
-    $seiten = nav($entrys,$martikel,"?page".(isset($_GET['show']) ? $_GET['show'] : 0)."".$orderby);
+    $seiten = nav($entrys,config('m_artikel'),"?page".(isset($_GET['show']) ? $_GET['show'] : 0)."".$orderby);
     $index = show($dir."/artikel", array("show" => $show,
                                          "nav" => $seiten,
                                          "artikel" => _artikel,
@@ -106,9 +107,9 @@ case 'show';
             $qryc = db("SELECT * FROM ".$db['acomments']."
                         WHERE artikel = ".intval($_GET['id'])."
                         ORDER BY datum DESC
-                        LIMIT ".($page - 1)*$maxcomments.",".$maxcomments."");
+                        LIMIT ".($page - 1)*config('m_comments').",".config('m_comments')."");
 
-            $i = ($entrys-($page - 1)*$maxcomments);
+            $i = ($entrys-($page - 1)*config('m_comments'));
             $comments = '';
             while($getc = _fetch($qryc)) {
                 $hp = ($getc['hp'] ? show(_hpicon, array("hp" => $getc['hp'])) : "");
@@ -172,7 +173,7 @@ case 'show';
                                                                 "hphead" => _hp));
                 }
 
-                if(!ipcheck("artid(".$_GET['id'].")", $flood_newscom)) {
+                if(!ipcheck("artid(".$_GET['id'].")", config('f_newscom'))) {
                     $add = show("page/comments_add", array("titel" => _artikel_comments_write_head,
                                                            "bbcodehead" => _bbcode,
                                                            "form" => $form,
@@ -195,7 +196,7 @@ case 'show';
             }
 
 
-            $seiten = nav($entrys,$maxcomments,"?action=show&amp;id=".$_GET['id']."");
+            $seiten = nav($entrys,config('m_comments'),"?action=show&amp;id=".$_GET['id']."");
             $showmore = show($dir."/comments",array("head" => _comments_head,
                                                     "show" => $comments,
                                                     "seiten" => $seiten,
@@ -229,7 +230,7 @@ case 'show';
             {
                 $index = error(_error_have_to_be_logged, 1);
             } else {
-                if(!ipcheck("artid(".$_GET['id'].")", $flood_artikelcom))
+                if(!ipcheck("artid(".$_GET['id'].")", config('f_artikelcom')))
                 {
                     if($userid >= 1)
                         $toCheck = empty($_POST['comment']);
@@ -295,7 +296,7 @@ case 'show';
                         $index = info(_comment_added, "?action=show&amp;id=".$_GET['id']."");
                     }
                 } else {
-                    $index = error(show(_error_flood_post, array("sek" => $flood_newscom)), 1);
+                    $index = error(show(_error_flood_post, array("sek" => config('f_newscom'))), 1);
                 }
             }
         } else{

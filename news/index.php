@@ -8,6 +8,7 @@
 include("../inc/buffer.php");
 
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
 
@@ -43,7 +44,7 @@ else
                        AND public = 1 ".(permission("intnews") ? "" : "AND `intern` = '0'")."
                        ".$n_kat."
                        ORDER BY datum DESC
-                       LIMIT ".($page - 1)*intval($maxnews).",".intval($maxnews)."");
+                       LIMIT ".($page - 1)*config('m_news').",".config('m_news')."");
 
             $show_sticky = '';
             if(_rows($qry)) {
@@ -127,7 +128,7 @@ else
                        WHERE sticky < ".time()." AND datum <= ".time()." AND public = 1 ".(permission("intnews") ? "" : "AND `intern` = '0'")."
                        ".$n_kat."
                        ORDER BY datum DESC
-                       LIMIT ".($page - 1)*intval($maxnews).",".intval($maxnews)."");
+                       LIMIT ".($page - 1)*config('m_news').",".config('m_news')."");
            $show = '';
            if(_rows($qry)) {
                 while($get = _fetch($qry))
@@ -217,7 +218,7 @@ else
 
         $index = show($dir."/news", array("show" => $show,
                                           "show_sticky" => $show_sticky,
-                                          "nav" => nav(cnt($db['news'],$navWhere),intval($maxnews),"?kat=".$navKat,false),
+                                          "nav" => nav(cnt($db['news'],$navWhere),config('m_news'),"?kat=".$navKat,false),
                                           "kategorien" => $kategorien,
                                           "choose" => _news_kat_choose,
                                           "archiv" => _news_archiv));
@@ -278,10 +279,10 @@ else
                 $qryc = db("SELECT * FROM ".$db['newscomments']."
                             WHERE news = ".intval($_GET['id'])."
                             ORDER BY datum DESC
-                            LIMIT ".($page - 1)*intval($maxcomments).",".intval($maxcomments)."");
+                            LIMIT ".($page - 1)*config('m_comments').",".config('m_comments')."");
 
                 $entrys = cnt($db['newscomments'], " WHERE news = ".intval($_GET['id']));
-                $i = $entrys-($page - 1)*intval($maxcomments);
+                $i = $entrys-($page - 1)*config('m_comments');
 
                 $comments = ''; $i = 0;
                 while($getc = _fetch($qryc)) {
@@ -338,7 +339,7 @@ else
                     $form = show("page/editor_notregged", array("nickhead" => _nick, "emailhead" => _email, "hphead" => _hp));
 
                 $add = '';
-                if(!ipcheck("ncid(".$_GET['id'].")", $flood_newscom))
+                if(!ipcheck("ncid(".$_GET['id'].")", config('f_newscom')))
                 {
                     $add = show("page/comments_add", array("titel" => _news_comments_write_head,
                                                            "bbcodehead" => _bbcode,
@@ -362,7 +363,7 @@ else
                 }
             }
 
-            $seiten = nav($entrys,$maxcomments,"?action=show&amp;id=".$_GET['id']."");
+            $seiten = nav($entrys,config('m_comments'),"?action=show&amp;id=".$_GET['id']."");
             $showmore = show($dir."/comments",array("head" => _comments_head,
                                                     "show" => $comments,
                                                     "seiten" => $seiten,
@@ -404,7 +405,7 @@ else
                         if(settings("reg_newscomments") && !$chkMe)
                             $index = error(_error_have_to_be_logged, 1);
                         else {
-                            if(!ipcheck("ncid(".$_GET['id'].")", $flood_newscom)) {
+                            if(!ipcheck("ncid(".$_GET['id'].")", config('f_newscom'))) {
                                 if($userid >= 1)
                                     $toCheck = empty($_POST['comment']);
                                 else
@@ -463,7 +464,7 @@ else
                                 }
                             }
                             else
-                                $index = error(show(_error_flood_post, array("sek" => $flood_newscom)), 1);
+                                $index = error(show(_error_flood_post, array("sek" => config('f_newscom'))), 1);
                         }
                     }
                     else
@@ -696,7 +697,7 @@ else
                       ".$intern."
                       AND `datum` <= ".time()."
                       ORDER BY `datum` DESC
-                      LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
+                      LIMIT ".($page - 1)*config('m_archivnews').",".config('m_archivnews')."");
 
             $entrys = cnt($db['news'], " WHERE text LIKE '%".$search."%' OR klapptext LIKE '%".$search."%' ".$intern."");
 
@@ -708,14 +709,14 @@ else
                        WHERE datum BETWEEN ".$from ." AND ".$til."
                        ".$intern."
                        ORDER BY datum DESC
-                       LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
+                       LIMIT ".($page - 1)*config('m_archivnews').",".config('m_archivnews')."");
             $entrys = cnt($db['news'], " WHERE datum BETWEEN ".$from." AND ".$til." ".$intern."");
         } else if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("date","autor","titel","kat"))) {
             $qry = db("SELECT id,titel,autor,datum,kat,text FROM ".$db['news']."
                        ".$intern2."
                        ".$n_kat."
                        ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
-                       LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
+                       LIMIT ".($page - 1)*config('m_archivnews').",".config('m_archivnews')."");
             $entrys = cnt($db['news'], " ".$intern2." ".$n_kat);
         } else {
             $qry = db("SELECT id,titel,autor,datum,kat,text
@@ -723,7 +724,7 @@ else
                        ".$intern2."
                        ".$n_kat."
                        ORDER BY datum DESC
-                       LIMIT ".($page - 1)*$maxarchivnews.",".$maxarchivnews."");
+                       LIMIT ".($page - 1)*config('m_archivnews').",".config('m_archivnews')."");
             $entrys = cnt($db['news'], " ".$intern2." ".$n_kat);
         }
 
@@ -731,7 +732,7 @@ else
         while($get = _fetch($qry)) {
             $getk = db("SELECT kategorie FROM ".$db['newskat']." WHERE id = '".$get['kat']."'",false,true);
             $comments = cnt($db['newscomments'], " WHERE news = ".$get['id']."");
-            $titel = show(_news_show_link, array("titel" => cut(re($get['titel']),$lnewsarchiv), "id" => $get['id']));
+            $titel = show(_news_show_link, array("titel" => cut(re($get['titel']),config('l_newsarchiv')), "id" => $get['id']));
             $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
             $show .= show($dir."/archiv_show", array("autor" => autor($get['autor']),
                                                      "date" => date("d.m.y", $get['datum']),
@@ -779,7 +780,7 @@ else
 
         $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
         $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
-        $nav = nav($entrys,$maxarchivnews,"?action=archiv&year=".$pyear."&month=".$pmonth."&search=".$psearch."".$orderby);
+        $nav = nav($entrys,config('m_archivnews'),"?action=archiv&year=".$pyear."&month=".$pmonth."&search=".$psearch."".$orderby);
 
         $index = show($dir."/archiv", array("head" => _news_archiv_head,
                                             "head_sort" => _news_archiv_sort,

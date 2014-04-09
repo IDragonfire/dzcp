@@ -5,7 +5,7 @@
  * Menu: Gameserver
  */
 function server($serverID = 0) {
-    global $db, $servermenu, $language, $config, $cache;
+    global $db, $language, $cache;
 
     header('Content-Type: text/html; charset=iso-8859-1');
     if(!fsockopen_support()) return _fopen;
@@ -37,7 +37,7 @@ function server($serverID = 0) {
         if(!$cache->isExisting('nav_server_'.$serverID)) {
             $server = gs_normalise(@call_user_func('server_query_'.$get['status'], $get['ip'], $get['port'], $get['qport'], 'info'));
             $player_list = call_user_func('server_query_'.$get['status'], $get['ip'], $get['port'], $get['qport'], 'players');
-            $cache->set('nav_server_'.$serverID, serialize(array('server' => $server, 'players' => $player_list)), $config['cache_server']);
+            $cache->set('nav_server_'.$serverID, serialize(array('server' => $server, 'players' => $player_list)), config('cache_server'));
         } else {
             $server_cache = $cache->get('nav_server_'.$serverID);
             $server_cache = unserialize($server_cache);
@@ -92,11 +92,11 @@ function server($serverID = 0) {
         if($count == 0)
             $players = 'Keine Spieler';
 
-        $servername = jsconvert(re(cut($server['hostname'],$servermenu)));
+        $servername = jsconvert(re(cut($server['hostname'],config('l_servernavi'))));
         $servernameout = (!empty($servername)) ? $servername : "no name available";
         $info = 'onmouseover="DZCP.showInfo(\''.$servernameout.'\', \'IP/Port;'.$pwd_info.';Game;Map;Players Online;On the Game\', \''.$get['ip'].':'.$get['port'].';'.$pwd_txt.';'.jsconvert(re($game_icon)).''.$server_name_short.';'.(empty($server['mapname']) ? '-' : re($server['mapname'])).';'.$server['players'].' / '.$server['maxplayers'].';'.$players.'\')" onmouseout="DZCP.hideInfo()"';
 
-        $servernavi .= show("menu/server", array("host" => re(cut($server['hostname'],$servermenu)),
+        $servernavi .= show("menu/server", array("host" => re(cut($server['hostname'],config('l_servernavi'))),
                                                 "ip" => $get['ip'],
                                                 "map" => (empty($server['mapname']) ? '-' : re($server['mapname'])),
                                                 "mappic" => $image_map,

@@ -1,15 +1,19 @@
 <?php
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
 $where = _site_gallery;
 $title = $pagetitle." - ".$where."";
 $dir = "gallery";
+
 ## SECTIONS ##
     switch ($action):
     default:
@@ -74,7 +78,7 @@ $dir = "gallery";
           $tr2 = "";
 
           if($t == 0 || $t == 1) $tr1 = "<tr>";
-          if($t == $gallery)
+          if($t == config('gallery'))
           {
             $tr2 = "</tr>";
             $t = 0;
@@ -93,8 +97,8 @@ $dir = "gallery";
           $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
           $show .= show($dir."/show_gallery", array("img" => gallery_size($files[$i]),
                                                     "tr1" => $tr1,
-                                                    "max" => $gallery,
-                                                    "width" => intval(round(100/$gallery)),
+                                                    "max" => config('gallery'),
+                                                    "width" => intval(round(100/config('gallery'))),
                                                     "del" => $del,
                                                     "tr2" => $tr2));
           $t++;
@@ -102,9 +106,9 @@ $dir = "gallery";
         }
       }
 
-      if(is_float($cnt/$gallery))
+      if(is_float($cnt/config('gallery')))
       {
-        for($e=$t; $e<=$gallery; $e++)
+        for($e=$t; $e<=config('gallery'); $e++)
         {
           $end .= '<td class="contentMainFirst"></td>';
         }

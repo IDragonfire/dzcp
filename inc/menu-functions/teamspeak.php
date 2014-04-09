@@ -5,7 +5,7 @@
  * Menu: Teamspeak
  */
 function teamspeak($js = 0) {
-    global $db, $settings, $language, $config, $cache;
+    global $db, $language, $cache;
 
     header('Content-Type: text/html; charset=iso-8859-1');
     if(!fsockopen_support()) return _fopen;
@@ -23,10 +23,10 @@ function teamspeak($js = 0) {
           </div>';
 
     } else {
-        if(!empty($settings['ts_ip']) && !empty($settings['ts_sport']) && !empty($settings['ts_port'])) {
+        if(!empty(settings('ts_ip')) && !empty(settings('ts_sport')) && !empty(settings('ts_port'))) {
             if(!$cache->isExisting('nav_teamspeak_'.$language)) {
-                $teamspeak = teamspeakViewer($settings);
-                $cache->set('nav_teamspeak_'.$language, $teamspeak, $config['cache_teamspeak']);
+                $teamspeak = teamspeakViewer();
+                $cache->set('nav_teamspeak_'.$language, $teamspeak, config('cache_teamspeak'));
             } else {
                 $teamspeak = $cache->get('nav_teamspeak_'.$language);
             }

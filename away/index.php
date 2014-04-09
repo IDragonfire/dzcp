@@ -1,14 +1,18 @@
 <?php
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
 $dir = "away";
 $where = _site_away;
+
 ## SECTIONS ##
 switch ($action):
 default:
@@ -23,12 +27,12 @@ $where = $where.' - '._away_list;
     if($_GET['orderby'] == "start") $_GET['orderby'] = "start ".$_GET['order'].", end";
     $qry = db("SELECT * FROM ".$db['away']."
                ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
-               LIMIT ".($page - 1)*$maxaway.",".$maxaway."");
+               LIMIT ".($page - 1)*config('m_away').",".config('m_away')."");
     $_GET['orderby'] = $tmp_orderby;
     }
     else {$qry = db("SELECT * FROM ".$db['away']."
                ORDER BY id DESC
-               LIMIT ".($page - 1)*$maxaway.",".$maxaway."");
+               LIMIT ".($page - 1)*config('m_away').",".config('m_away')."");
     }
     while($get = _fetch($qry))
     {
@@ -73,7 +77,7 @@ $where = $where.' - '._away_list;
       if(!$show) $show = _away_no_entry;
       $orderby = empty($_GET['orderby']) ? "" : "?orderby".$_GET['orderby'];
       $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
-      $nav= nav($entrys,$maxaway,"?".$_GET['show']."".$orderby);
+      $nav= nav($entrys,config('m_away'),"?".$_GET['show']."".$orderby);
 
       $index = show($dir."/away", array("head" => _away_head,
                                           "show" => $show,

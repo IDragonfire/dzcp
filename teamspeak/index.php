@@ -15,11 +15,11 @@ $dir = "teamspeak";
   {
     if(!$cache->isExisting('teamspeak_'.$language) || isset($_GET['cID']))
     {
-    switch($settings['ts_version']):
+    switch(settings('ts_version')):
     default; case '2';
-    $uip      = $settings['ts_ip'];
-    $tPort = $settings['ts_sport'];
-    $port  = $settings['ts_port'];
+    $uip      = settings('ts_ip');
+    $tPort = settings('ts_sport');
+    $port  = settings('ts_port');
     @set_time_limit(2);
       $fp = @fsockopen($uip, $tPort, $errno, $errstr, 2);
 
@@ -227,7 +227,7 @@ $dir = "teamspeak";
                                            "userstats" => $userstats));
     break;
     case '3';
-      $tsstatus = new TSStatus($settings['ts_ip'], $settings['ts_port'], $settings['ts_sport'], $settings['ts_customicon'], $settings['ts_showchannel']);
+      $tsstatus = new TSStatus(settings('ts_ip'), settings('ts_port'), settings('ts_sport'), settings('ts_customicon'), settings('ts_showchannel'));
       $tstree = $tsstatus->render(true);
 
       $users = 0;
@@ -269,7 +269,7 @@ $dir = "teamspeak";
                                              "t_name" => _ts_name,
                                              "t_os" => _ts_os,
                                              "uchannels" => $tstree,
-                                             "info" => bbcode($tsstatus->welcome($settings, intval($_GET['cID']),$_GET['cName']),0,0,1),
+                                             "info" => bbcode($tsstatus->welcome(intval($_GET['cID']),$_GET['cName']),0,0,1),
                                              "t_uptime" => _ts_uptime,
                                              "t_channels" => _ts_channels,
                                              "t_user" => _ts_user,
@@ -286,7 +286,7 @@ $dir = "teamspeak";
                                              "userstats" => $userstats));
     break;
     endswitch;
-        $cache->set('teamspeak_'.$language, $index, $config['cache_teamspeak']);
+        $cache->set('teamspeak_'.$language, $index, config('cache_teamspeak'));
     } else {
         $index = $cache->get('teamspeak_'.$language);
     }

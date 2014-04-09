@@ -1,30 +1,31 @@
 <?php
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
 $where = _site_gb;
 $title = $pagetitle." - ".$where."";
 $dir = "gb";
+
 ## SECTIONS ##
 switch ($action):
 default:
-  $add = show(_gb_eintragen, array("id" => $_GET['id']));
-  if(!permission("gb") && $gb_activ == '1') $activ = "WHERE public = 1";
-  elseif(permission("gb") && $gb_activ == '1') $activ = "";
-    elseif(permission("gb") && $gb_activ == '0') $activ = "";
-    elseif($gb_activ == '0') $activ = "";
-  $qry = db("SELECT * FROM ".$db['gb']."
-               ".$activ."
-                   ORDER BY datum DESC
-             LIMIT ".($page - 1)*$maxgb.",".$maxgb."");
+    $add = show(_gb_eintragen, array("id" => $_GET['id']));
+    $activ = (!permission("gb") && settings('gb_activ')) ? "WHERE public = 1" : "";
+    $qry = db("SELECT * FROM ".$db['gb']."
+              ".$activ."
+               ORDER BY datum DESC
+               LIMIT ".($page - 1)*config('m_gb').",".config('m_gb')."");
 
-  $entrys = cnt($db['gb']);
-  $i = $entrys-($page - 1)*$maxgb;
+    $entrys = cnt($db['gb']);
+  $i = $entrys-($page - 1)*config('m_gb');
 
   if(_rows($qry))
   {
@@ -54,7 +55,7 @@ default:
         $comment = "";
       }
       $public = "";
-      if(permission("gb") && $gb_activ == 1)
+      if(permission("gb") && settings('gb_activ'))
       {
         $public = ($get['public'] == 1)
              ? '<a href="?action=do&amp;what=unset&amp;id='.$get['id'].'"><img src="../inc/images/public.gif" alt="" title="nicht ver&ouml;ffentlichen" align="top" style="padding-top:1px"/></a>'
@@ -103,9 +104,9 @@ default:
     $show = show(_no_entrys_yet, array("colspan" => "2"));
   }
 
-  $seiten = nav($entrys,$maxgb,"?action=nav");
+  $seiten = nav($entrys,config('m_gb'),"?action=nav");
 
-  if(!ipcheck("gb", $flood_gb))
+  if(!ipcheck("gb", config('f_gb')))
   {
     if($userid >= 1)
       {

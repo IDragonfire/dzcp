@@ -1,9 +1,12 @@
 <?php
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
@@ -161,7 +164,7 @@ case 'show';
                  WHERE kid ='".intval($_GET['id'])."'
                  OR global = 1
                  ORDER BY global DESC, sticky DESC, lp DESC, t_date DESC
-                 LIMIT ".($page - 1)*$maxfthreads.",".$maxfthreads."");
+                 LIMIT ".($page - 1)*config('m_fthreads').",".config('m_fthreads')."");
     } else {
       $qry = db("SELECT s1.global,s1.topic,s1.subtopic,s1.t_text,s1.t_email,s1.hits,s1.t_reg,s1.t_date,s1.closed,s1.sticky,s1.id
                  FROM ".$db['f_threads']." AS s1
@@ -172,7 +175,7 @@ case 'show';
                  OR s1.t_text LIKE '%".$_POST['suche']."%'
                  AND s1.kid = '".intval($_GET['id'])."'
                  ORDER BY s1.global DESC, s1.sticky DESC, s1.lp DESC, s1.t_date DESC
-                 LIMIT ".($page - 1)*$maxfthreads.",".$maxfthreads."");
+                 LIMIT ".($page - 1)*config('m_fthreads').",".config('m_fthreads')."");
     }
 
     $entrys = cnt($db['f_threads'], " WHERE kid = ".intval($_GET['id']));
@@ -192,7 +195,7 @@ case 'show';
       $cntpage = cnt($db['f_posts'], " WHERE sid = ".$get['id']);
 
       if($cntpage == "0") $pagenr = "1";
-      else $pagenr = ceil($cntpage/$maxfposts);
+      else $pagenr = ceil($cntpage/config('m_fposts'));
 
       if(empty($_POST['suche']))
       {
@@ -200,7 +203,7 @@ case 'show';
                     WHERE id = '".intval($_GET['id'])."'");
         $gets = _fetch($qrys);
 
-        $threadlink = show(_forum_thread_link, array("topic" => re(cut($get['topic'],$lforumtopic)),
+        $threadlink = show(_forum_thread_link, array("topic" => re(cut($get['topic'],config('l_forumtopic'))),
                                                      "id" => $get['id'],
                                                      "kid" => $gets['id'],
                                                      "sticky" => $sticky,
@@ -209,7 +212,7 @@ case 'show';
                                                      "lpid" => $cntpage+1,
                                                      "page" => $pagenr));
       } else {
-        $threadlink = show(_forum_thread_search_link, array("topic" => re(cut($get['topic'],$lforumtopic)),
+        $threadlink = show(_forum_thread_search_link, array("topic" => re(cut($get['topic'],config('l_forumtopic'))),
                                                             "id" => $get['id'],
                                                             "sticky" => $sticky,
                                                             "hl" => $_POST['suche'],
@@ -235,7 +238,7 @@ case 'show';
       $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
       $threads .= show($dir."/forum_show_threads", array("new" => check_new($get['lp']),
                                                          "topic" => $threadlink,
-                                                         "subtopic" => re(cut($get['subtopic'],$lforumsubtopic)),
+                                                         "subtopic" => re(cut($get['subtopic'],config('l_forumsubtopic'))),
                                                          "hits" => $get['hits'],
                                                          "replys" => cnt($db['f_posts'], " WHERE sid = '".$get['id']."'"),
                                                          "class" => $class,
@@ -251,7 +254,7 @@ case 'show';
     $search = show($dir."/forum_skat_search", array("head_search" => _forum_head_skat_search,
                                                     "id" => $_GET['id'],
                                                     "suchwort" => re($_POST['suche'])));
-    $nav = nav($entrys,$maxfthreads,"?action=show&amp;id=".$_GET['id']."");
+    $nav = nav($entrys,config('m_fthreads'),"?action=show&amp;id=".$_GET['id']."");
 
     if(!empty($_POST['suche']))
     {
@@ -318,13 +321,13 @@ case 'showthread';
       $qryp = db("SELECT * FROM ".$db['f_posts']."
                   WHERE sid = '".intval($_GET['id'])."'
                   ORDER BY id
-                  LIMIT ".($page - 1)*$maxfposts.",".$maxfposts."");
+                  LIMIT ".($page - 1)*config('m_fposts').",".config('m_fposts')."");
 
       $entrys = cnt($db['f_posts'], " WHERE sid = ".intval($_GET['id']));
       $i = 2;
 
       if($entrys == 0) $pagenr = "1";
-      else $pagenr = ceil($entrys/$maxfposts);
+      else $pagenr = ceil($entrys/config('m_fposts'));
 
       if(!empty($_GET['hl'])) $hL = '&amp;hl='.$_GET['hl'];
       else                    $hL = '';
@@ -370,10 +373,10 @@ case 'showthread';
         if($chkMe == 4) $posted_ip = $getp['ip'];
         else $posted_ip = _logged;
 
-        $titel = show(_eintrag_titel_forum, array("postid" => $i+($page-1)*$maxfposts,
+        $titel = show(_eintrag_titel_forum, array("postid" => $i+($page-1)*config('m_fposts'),
                                                                                     "datum" => date("d.m.Y", $getp['date']),
                                                                                     "zeit" => date("H:i", $getp['date'])._uhr,
-                                            "url" => '?action=showthread&amp;id='.intval($_GET['id']).'&amp;page='.$page.'#p'.($i+($page-1)*$maxfposts),
+                                            "url" => '?action=showthread&amp;id='.intval($_GET['id']).'&amp;page='.$page.'#p'.($i+($page-1)*config('m_fposts')),
                                             "edit" => $edit,
                                             "delete" => $delete));
 
@@ -410,8 +413,8 @@ case 'showthread';
         }
 
         $show .= show($dir."/forum_posts_show", array("nick" => $nick,
-                                                      "postnr" => "#".($i+($page-1)*$maxfposts),
-                                                      "p" => ($i+($page-1)*$maxfposts),
+                                                      "postnr" => "#".($i+($page-1)*config('m_fposts')),
+                                                      "p" => ($i+($page-1)*config('m_fposts')),
                                                       "text" => $text,
                                                       "pn" => $pn,
                                                       "class" => $ftxt['class'],
@@ -472,7 +475,7 @@ case 'showthread';
                                           "kid" => $getw['kid']));
       }
 
-      $nav = nav($entrys,$maxfposts,"?action=showthread&amp;id=".$_GET['id'].$hL);
+      $nav = nav($entrys,config('m_fposts'),"?action=showthread&amp;id=".$_GET['id'].$hL);
 
       if(data("signatur",$get['t_reg'])) $sig = _sig.bbcode(data("signatur",$get['t_reg']));
       else $sig = "";
@@ -1071,7 +1074,7 @@ case 'thread';
                                                             "entrys" => "1",
                                                             "page" => "1",
                                                             "text" => bbcode($_POST['eintrag']),
-                                                            "clan" => $clanname));
+                                                            "clan" => settings('clanname')));
 
           sendMail(re($getabo['email']),$subj,$message);
         }
@@ -1086,7 +1089,7 @@ case 'thread';
     {
       $index = error(_error_unregistered,1);
     } else {
-      if(!ipcheck("fid(".$_GET['kid'].")", $flood_forum))
+      if(!ipcheck("fid(".$_GET['kid'].")", config('f_forum')))
       {
         if(permission("forum"))
         {
@@ -1170,7 +1173,7 @@ case 'thread';
                                             "vote" => $vote,
                                             "posteintrag" => ""));
       } else {
-        $index = error(show(_error_flood_post, array("sek" => $flood_forum)), 1);
+        $index = error(show(_error_flood_post, array("sek" => config('f_forum'))), 1);
       }
     }
   } elseif($_GET['do'] == "addthread") {
@@ -1537,7 +1540,7 @@ case 'post';
             $entrys = cnt($db['f_posts'], " WHERE `sid` = ".$getp['sid']);
 
             if($entrys == "0") $pagenr = "1";
-            else $pagenr = ceil($entrys/$maxfposts);
+            else $pagenr = ceil($entrys/config('m_fposts'));
 
           $subj = show(re(settings('eml_fabo_pedit_subj')), array("titel" => $title));
 
@@ -1550,7 +1553,7 @@ case 'post';
                                                             "entrys" => $entrys+1,
                                                             "page" => $pagenr,
                                                             "text" => bbcode($_POST['eintrag']),
-                                                            "clan" => $clanname));
+                                                            "clan" => settings('clanname')));
 
           sendMail(re($getabo['email']),$subj,$message);
         }
@@ -1558,7 +1561,7 @@ case 'post';
         $entrys = cnt($db['f_posts'], " WHERE `sid` = ".$getp['sid']);
 
         if($entrys == "0") $pagenr = "1";
-        else $pagenr = ceil($entrys/$maxfposts);
+        else $pagenr = ceil($entrys/config('m_fposts'));
 
         $lpost = show(_forum_add_lastpost, array("id" => $entrys+1,
                                                  "tid" => $getp['sid'],
@@ -1574,7 +1577,7 @@ case 'post';
     {
       $index = error(_error_unregistered,1);
     } else {
-      if(!ipcheck("fid(".$_GET['kid'].")", $flood_forum))
+      if(!ipcheck("fid(".$_GET['kid'].")", config('f_forum')))
       {
         $check = db("SELECT s2.id,s1.intern FROM ".$db['f_kats']." AS s1
                      LEFT JOIN ".$db['f_skats']." AS s2
@@ -1684,7 +1687,7 @@ case 'post';
                                                              "class" => 'class="commentsRight"',
                                                              "email" => $email,
                                                              "titel" => $titel,
-                                                             "p" => ($i+($page-1)*$maxfposts),
+                                                             "p" => ($i+($page-1)*config('m_fposts')),
                                                              "ip" => $posted_ip,
                                                              "edited" => $getl['edited'],
                                                              "posts" => $userposts,
@@ -1760,7 +1763,7 @@ case 'post';
                                                              "email" => $email,
                                                              "titel" => $titel,
                                                              "ip" => $posted_ip,
-                                                             "p" => ($i+($page-1)*$maxfposts),
+                                                             "p" => ($i+($page-1)*config('m_fposts')),
                                                              "edited" => $gett['edited'],
                                                              "posts" => $userposts,
                                                              "date" => _posted_by.date("d.m.y H:i", $gett['t_date'])._uhr,
@@ -1810,7 +1813,7 @@ case 'post';
                                             "posteintrag" => ""));
         }
       } else {
-        $index = error(show(_error_flood_post, array("sek" => $flood_forum)), 1);
+        $index = error(show(_error_flood_post, array("sek" => config('f_forum'))), 1);
       }
     }
   } elseif($_GET['do'] == "addpost") {
@@ -1931,7 +1934,7 @@ case 'post';
                                                                                                                          "class" => $ftxt['class'],
                                                                                                                          "email" => $email,
                                                                                                                          "ip" => $posted_ip,
-                                                                                                                         "p" => ($i+($page-1)*$maxfposts),
+                                                                                                                         "p" => ($i+($page-1)*config('m_fposts')),
                                                                                                                          "edited" => $getl['edited'],
                                                                                                                          "posts" => $userposts,
                                                                                                                          "signatur" => $sig,
@@ -2004,7 +2007,7 @@ case 'post';
                                                                                                                          "hp" => $hp,
                                                                                                                          "email" => $email,
                                                                                                                          "edit" => "",
-                                                                                                                         "p" => ($i+($page-1)*$maxfposts),
+                                                                                                                         "p" => ($i+($page-1)*config('m_fposts')),
                                                                                                                          "delete" => "",
                                                                                                                          "edited" => $gett['edited'],
                                                                                                                          "posts" => $userposts,
@@ -2053,10 +2056,10 @@ case 'post';
 
                         if($userid >= 1)
                         {
-                            if($userid == $getdp['reg'] && $double_post == 1) $spam = 1;
+                            if($userid == $getdp['reg'] && settings('double_post')) $spam = 1;
                             else $spam = 0;
                         } else {
-                            if($_POST['nick'] == $getdp['nick'] && $double_post == 1) $spam = 1;
+                            if($_POST['nick'] == $getdp['nick'] && settings('double_post')) $spam = 1;
                             else $spam = 0;
                         }
                     } else {
@@ -2068,10 +2071,10 @@ case 'post';
 
                         if($userid >= 1)
                         {
-                            if($userid == $gettdp['t_reg'] && $double_post == 1) $spam = 2;
+                            if($userid == $gettdp['t_reg'] && settings('double_post')) $spam = 2;
                             else $spam = 0;
                         } else {
-                            if($_POST['nick'] == $gettdp['t_nick'] && $double_post == 1) $spam = 2;
+                            if($_POST['nick'] == $gettdp['t_nick'] && settings('double_post')) $spam = 2;
                             else $spam = 0;
                         }
                     }
@@ -2143,7 +2146,7 @@ case 'post';
                             $entrys = cnt($db['f_posts'], " WHERE `sid` = ".intval($_GET['id']));
 
                             if($entrys == "0") $pagenr = "1";
-                            else $pagenr = ceil($entrys/$maxfposts);
+                            else $pagenr = ceil($entrys/config('m_fposts'));
 
                             $subj = show(settings('eml_fabo_npost_subj'), array("titel" => $title));
 
@@ -2156,7 +2159,7 @@ case 'post';
                                                                             "entrys" => $entrys+1,
                                                                             "page" => $pagenr,
                                                                             "text" => bbcode($_POST['eintrag']),
-                                                                            "clan" => $clanname));
+                                                                            "clan" => settings('clanname')));
 
                             sendMail(re($getabo['email']),$subj,$message);
                         }
@@ -2165,7 +2168,7 @@ case 'post';
                     $entrys = cnt($db['f_posts'], " WHERE `sid` = ".intval($_GET['id']));
 
                     if($entrys == "0") $pagenr = "1";
-                    else $pagenr = ceil($entrys/$maxfposts);
+                    else $pagenr = ceil($entrys/config('m_fposts'));
 
                     $lpost = show(_forum_add_lastpost, array("id" => $entrys+1,
                                                                                                      "tid" => $_GET['id'],
@@ -2199,7 +2202,7 @@ case 'post';
                       SET `first` = '1'
                       WHERE kid = '".$get['kid']."'");
       } else {
-        $pagenr = ceil($entrys/$maxfposts);
+        $pagenr = ceil($entrys/config('m_fposts'));
       }
 
       $lpost = show(_forum_add_lastpost, array("id" => $entrys+1,
@@ -2518,8 +2521,8 @@ case 'preview';
     }
 
     $index = show($dir."/forum_posts_show", array("nick" => cleanautor($pUId, '', $_POST['nick'], $_POST['email']),
-                                                  "postnr" => "#".($i+($page-1)*$maxfposts),
-                                                  "p" => ($i+($page-1)*$maxfposts),
+                                                  "postnr" => "#".($i+($page-1)*config('m_fposts')),
+                                                  "p" => ($i+($page-1)*config('m_fposts')),
                                                   "class" => 'class="commentsRight"',
                                                   "text" => bbcode(re($_POST['eintrag']),1).$editedby,
                                                   "pn" => $pn,

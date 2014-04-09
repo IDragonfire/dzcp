@@ -1,15 +1,19 @@
 <?php
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
 $where = _site_member;
 $title = $pagetitle." - ".$where."";
 $dir = "squads";
+
 ## SECTIONS ##
   if(!empty($_GET['showsquad'])) header('Location: ?action=shows&id='.intval($_GET['showsquad']));
   else if(!empty($_GET['show'])) header('Location: ?action=shows&id='.intval($_GET['show']));

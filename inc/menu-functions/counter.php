@@ -5,7 +5,7 @@
  * Menu: User Counter
  */
 function counter() {
-    global $db,$today,$counter_start,$useronline,$where,$isSpider;
+    global $db,$today,$useronline,$where,$isSpider;
 
     if(!$isSpider) {
         $v_today = 0;
@@ -55,7 +55,7 @@ function counter() {
 
         $counter = show("menu/counter", array("v_today" => $v_today,
                                               "v_yesterday" => $yDay,
-                                              "v_all" => $getstats['allvisitors']+$counter_start,
+                                              "v_all" => $getstats['allvisitors']+settings('counter_start'),
                                               "v_perday" => round($getstats['avgvisitors'], 2),
                                               "v_max" => $getstats['maxvisitors'],
                                               "g_online" => abs(online_guests($where)-online_reg()),

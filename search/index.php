@@ -1,15 +1,19 @@
 <?php
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
-include("../inc/config.php");
-include("../inc/bbcode.php");
+include(basePath."/inc/debugger.php");
+include(basePath."/inc/config.php");
+include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
 $dir = "search";
 $where = /*_search_head*/_forum_search_head;
 $title = $pagetitle." - ".$where."";
+
 ## SECTIONS ##
 switch ($action):
 default:
@@ -204,7 +208,7 @@ default:
 
             $cntpage = cnt($db['f_posts'], " WHERE sid = ".$get['id']);
             if($cntpage == 0) $pagenr = 1;
-            else $pagenr = ceil($cntpage/$maxfposts);
+            else $pagenr = ceil($cntpage/config('m_ftopics'));
 
 
             $qrylp = db("SELECT date,nick,reg,email FROM ".$db['f_posts']."
@@ -221,7 +225,7 @@ default:
               $lpdate = "";
             }
 
-            $threadlink = show(_forum_thread_search_link, array("topic" => cut(re($get['topic']),$lforumtopic),
+            $threadlink = show(_forum_thread_search_link, array("topic" => cut(re($get['topic']),config('l_forumtopic')),
                                                                 "id" => $get['id'],
                                                                 "sticky" => $sticky,
                                                                 "hl" => $_GET['search'],
@@ -233,7 +237,7 @@ default:
 
             $results .= show($dir."/forum_search_results", array("new" => check_new($get['lp']),
                                                                  "topic" => $threadlink,
-                                                                 "subtopic" => cut(re($get['subtopic']),$lforumsubtopic),
+                                                                 "subtopic" => cut(re($get['subtopic']),config('l_forumsubtopic')),
                                                                  "hits" => $get['hits'],
                                                                  "replys" => cnt($db['f_posts'], " WHERE sid = '".$get['id']."'"),
                                                                  "class" => $class,

@@ -5,9 +5,9 @@
  * Menu: Shoutbox
  */
 function shout($ajax = 0) {
-    global $db,$maxshout,$lshouttext,$lshoutnick,$shout_max_zeichen,$userid,$chkMe;
+    global $db,$userid,$chkMe;
 
-    $qry = db("SELECT `id`,`text`,`datum`,`nick`,`email` FROM ".$db['shout']." ORDER BY id DESC LIMIT ".intval($maxshout));
+    $qry = db("SELECT `id`,`text`,`datum`,`nick`,`email` FROM ".$db['shout']." ORDER BY id DESC LIMIT ".config('m_shout'));
     $i = 1; $color = 0; $show = '';
     while ($get = _fetch($qry)) {
         $class = ($color % 2) ? "navShoutContentFirst" : "navShoutContentSecond"; $color++;
@@ -19,13 +19,13 @@ function shout($ajax = 0) {
         $is_num = preg_match("#\d#", $get['email']);
 
         if($is_num && !check_email($get['email']))
-            $nick = autor($get['email'], "navShout",'','',$lshoutnick);
+            $nick = autor($get['email'], "navShout",'','',config('l_shoutnick'));
         else
-            $nick = '<a class="navShout" href="mailto:'.eMailAddr($get['email']).'" title="'.$get['nick'].'">'.cut($get['nick'], $lshoutnick).'</a>';
+            $nick = '<a class="navShout" href="mailto:'.eMailAddr($get['email']).'" title="'.$get['nick'].'">'.cut($get['nick'], config('l_shoutnick')).'</a>';
 
         $show .= show("menu/shout_part", array("nick" => $nick,
                                                "datum" => date("j.m.Y H:i", $get['datum'])._uhr,
-                                               "text" => bbcode(wrap(re($get['text']), $lshouttext),0,0,0,1),
+                                               "text" => bbcode(wrap(re($get['text']), config('l_shouttext')),0,0,0,1),
                                                "class" => $class,
                                                "del" => $delete));
         $i++;
@@ -41,7 +41,7 @@ function shout($ajax = 0) {
             $form = show("menu/shout_form", array("dis" => $dis));
             $sec = show("menu/shout_antispam", array("help" => _login_secure_help, "dis" => $dis));
         } else
-            $form = autor($userid, "navShout",'','',$lshoutnick);
+            $form = autor($userid, "navShout",'','',config('l_shoutnick'));
     }
 
     $add = show("menu/shout_add", array("form" => $form,
@@ -51,7 +51,7 @@ function shout($ajax = 0) {
                                         "dis" => $dis,
                                         "only4reg" => $only4reg,
                                         "security" => $sec,
-                                        "zeichen" => $shout_max_zeichen));
+                                        "zeichen" => config('shout_max_zeichen')));
 
     $shout = show("menu/shout", array("shout" => $show,
                                       "shoutbox" => _shoutbox_head,

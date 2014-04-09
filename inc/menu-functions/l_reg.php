@@ -5,16 +5,16 @@
  * Menu: zuletzt registrierte User
  */
 function l_reg() {
-    global $db,$llreg,$maxlreg;
+    global $db;
 
     $qry = db("SELECT `id`,`nick`,`country`,`regdatum` FROM ".$db['users']."
                ORDER BY `regdatum` DESC
-               LIMIT ".intval($maxlreg));
+               LIMIT ".config('m_lreg'));
 
     $lreg = '';
     if(_rows($qry)) {
         while($get = _fetch($qry)) {
-          $lreg .= show("menu/last_reg", array("nick" => re(cut($get['nick'], $llreg)),
+          $lreg .= show("menu/last_reg", array("nick" => re(cut($get['nick'], config('l_lreg'))),
                                                "country" => flag($get['country']),
                                                "reg" => date("d.m.", $get['regdatum']),
                                                "id" => $get['id']));

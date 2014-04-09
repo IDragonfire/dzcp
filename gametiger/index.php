@@ -1,18 +1,23 @@
 <?php
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
 $where = _site_gametiger;
 $title = $pagetitle." - ".$where."";
 $dir = "gametiger";
+
 ## SECTIONS ##
-if($gametiger_game == "lazy") $gametiger_game = "all";
-elseif($gametiger_game == "bf1942") $gametiger_game = "bf";
+if(settings('gametiger') == "lazy") $gametiger_game = "all";
+elseif(settings('gametiger') == "bf1942") $gametiger_game = "bf";
+else $gametiger_game = settings('gametiger');
 
 switch ($action):
 default:

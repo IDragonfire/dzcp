@@ -1,15 +1,19 @@
 <?php
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
 $where = _site_votes;
 $title = $pagetitle." - ".$where."";
 $dir = "votes";
+
 ## SECTIONS ##
 switch ($action):
 default:
@@ -21,7 +25,7 @@ default:
         $order = 'intern DESC';
     }
     $fvote = '';
-    if($forum_vote == 0)
+    if(!settings('forum_vote'))
         $fvote = empty($whereIntern) ? ' AND forum = 0' : ' AND forum = 0';
     if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array('titel','datum','von','ges_stimmen'))) {
           $order = mysqli_real_escape_string($mysql, $_GET['orderby'].' '.$_GET['order']);

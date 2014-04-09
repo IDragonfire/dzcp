@@ -5,7 +5,7 @@
  * Menu: Forum Vote
  */
 function fvote($id, $ajax=false) {
-    global $db,$balken_vote_menu,$prev;
+    global $db,$prev;
 
     $qry = db("SELECT `id`,`closed`,`titel` FROM ".$db['votes']." WHERE `id` = '".$id."' ".(permission("votes") ? "" : " AND `intern` = 0")."");
     if(_rows($qry)) {

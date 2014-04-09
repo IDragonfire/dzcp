@@ -1,17 +1,21 @@
 <?php
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
 $dir = "shout";
+
 ## SECTIONS ##
 switch ($action):
 default:
-  if(!ipcheck("shout", $flood_shout))
+  if(!ipcheck("shout", config('f_shout')))
   {
     if(($_POST['protect'] != 'nospam' || empty($_SESSION['sec_shout']) || $_POST['spam'] != $_SESSION['sec_shout'] || empty($_POST['spam'])) && !$userid)
                                                                                      $index = error(_error_invalid_regcode,1);
@@ -29,14 +33,14 @@ default:
                  SET `datum`  = '".((int)time())."',
                      `nick`   = '".up($_POST['name'],'','UTF-8')."',
                      `email`  = '".up($reg,'','UTF-8')."',
-                     `text`   = '".up(substr(str_replace("\n", ' ', $_POST['eintrag']),0,$shout_max_zeichen),'','UTF-8')."',
+                     `text`   = '".up(substr(str_replace("\n", ' ', $_POST['eintrag']),0,config('shout_max_zeichen')),'','UTF-8')."',
                      `ip`     = '".$userip."'");
 
       setIpcheck("shout");
       if(!isset($_GET['ajax'])) header("Location: ".$_SERVER['HTTP_REFERER'].'#shoutbox');
     }
   } else {
-    $index = error(show(_error_flood_post, array("sek" => $flood_shout)), 1);
+    $index = error(show(_error_flood_post, array("sek" => config('f_shout'))), 1);
   }
 
   if(isset($_GET['ajax'])) {
@@ -62,17 +66,17 @@ case 'archiv';
   $title = $pagetitle." - ".$where."";
 
   $entrys = cnt($db['shout']);
-  $i = $entrys-($page - 1)*$maxshoutarchiv;
+  $i = $entrys-($page - 1)*config('maxshoutarchiv');
 
   $qry = db("SELECT * FROM ".$db['shout']."
              ORDER BY datum DESC
-             LIMIT ".($page - 1)*$maxshoutarchiv.",".$maxshoutarchiv."");
+             LIMIT ".($page - 1)*config('maxshoutarchiv').",".config('maxshoutarchiv')."");
   while($get = _fetch($qry))
   {
     $is_num = preg_match("#\d#", $get['email']);
 
     if($is_num && !check_email($get['email'])) $nick = autor($get['email']);
-    else $nick = '<a href="mailto:'.$get['email'].'" title="'.$get['nick'].'">'.cut($get['nick'], $lshoutnick).'</a>';
+    else $nick = '<a href="mailto:'.$get['email'].'" title="'.$get['nick'].'">'.cut($get['nick'], config('l_shoutnick')).'</a>';
 
     $class = ($color % 2) ? "contentMainTop" : "contentMainFirst"; $color++;
 
@@ -97,7 +101,7 @@ case 'archiv';
                                             "email" => re($get['email'])));
     $i--;
   }
-  $nav = nav($entrys,$maxshoutarchiv,"?action=archiv");
+  $nav = nav($entrys,config('maxshoutarchiv'),"?action=archiv");
   $index = show($dir."/shout", array("shout_part" => $show,
                                      "head" => _shout_archiv_head,
                                      "nav" => $nav));

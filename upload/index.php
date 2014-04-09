@@ -8,6 +8,7 @@
 include("../inc/buffer.php");
 
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
 
@@ -23,7 +24,7 @@ $index = '';
 switch ($action):
     default:
         if(permission("editsquads")) {
-            $infos = show(_upload_usergallery_info, array("userpicsize" => $upicsize));
+            $infos = show(_upload_usergallery_info, array("userpicsize" => config('upicsize')));
             $index = show($dir."/upload", array("uploadhead" => _upload_icons_head,
                                                 "file" => _upload_file,
                                                 "name" => "file",
@@ -37,7 +38,7 @@ switch ($action):
     break;
     case 'partners';
         if(permission('partners')) {
-            $infos = show(_upload_partners_info, array("userpicsize" => $upicsize));
+            $infos = show(_upload_partners_info, array("userpicsize" => config('upicsize')));
             $index = show($dir."/upload", array("uploadhead" => _upload_partners_head,
                                                 "file" => _upload_file,
                                                 "name" => "file",
@@ -73,7 +74,7 @@ switch ($action):
 
             if(!$tmpname)
                 $index = error(_upload_no_data, 1);
-            else if($size > $upicsize."000")
+            else if($size > config('upicsize')."000")
                 $index = error(_upload_wrong_size, 1);
             else {
                 if(move_uploaded_file($tmpname, basePath."/inc/images/gameicons/".$_FILES['file']['name']))
@@ -94,7 +95,7 @@ switch ($action):
             else
                 $action = "?action=newskats&amp;do=upload";
 
-            $infos = show(_upload_usergallery_info, array("userpicsize" => $upicsize));
+            $infos = show(_upload_usergallery_info, array("userpicsize" => config('upicsize')));
             $index = show($dir."/upload", array("uploadhead" => _upload_newskats_head,
                                                 "file" => _upload_file,
                                                 "name" => "file",
@@ -111,7 +112,7 @@ switch ($action):
 
                 if(!$tmpname)
                     $index = error(_upload_no_data, 1);
-                else if($size > $upicsize."000")
+                else if($size > config('upicsize')."000")
                     $index = error(_upload_wrong_size, 1);
                 else {
                     if(move_uploaded_file($tmpname, basePath."/inc/images/newskat/".$_FILES['file']['name'])) {
@@ -162,7 +163,7 @@ switch ($action):
     break;
     case 'userpic';
         if($chkMe >= 1 && $userid) {
-            $infos = show(_upload_userpic_info, array("userpicsize" => $upicsize));
+            $infos = show(_upload_userpic_info, array("userpicsize" => config('upicsize')));
             $index = show($dir."/upload", array("uploadhead" => _upload_head,
                                                 "file" => _upload_file,
                                                 "name" => "file",
@@ -183,7 +184,7 @@ switch ($action):
 
                     if(!$tmpname)
                         $index = error(_upload_no_data, 1);
-                    else if($size > $upicsize."000")
+                    else if($size > config('upicsize')."000")
                         $index = error(_upload_wrong_size, 1);
                     else {
                         foreach($picformat as $tmpendung) {
@@ -213,7 +214,7 @@ switch ($action):
     break;
     case 'avatar';
         if($chkMe >= 1) {
-            $infos = show(_upload_userava_info, array("userpicsize" => $upicsize));
+            $infos = show(_upload_userava_info, array("userpicsize" => config('upicsize')));
             $index = show($dir."/upload", array("uploadhead" => _upload_ava_head,
                                                 "file" => _upload_file,
                                                 "name" => "file",
@@ -234,7 +235,7 @@ switch ($action):
 
                     if(!$tmpname)
                         $index = error(_upload_no_data, 1);
-                    else if($size > $upicsize."000")
+                    else if($size > config('upicsize')."000")
                         $index = error(_upload_wrong_size, 1);
                     else  {
                         foreach($picformat as $tmpendung) {
@@ -263,7 +264,7 @@ switch ($action):
     break;
     case 'usergallery';
         if($chkMe >= 1) {
-            $infos = show(_upload_usergallery_info, array("userpicsize" => $upicsize));
+            $infos = show(_upload_usergallery_info, array("userpicsize" => config('upicsize')));
             $index = show($dir."/usergallery", array("uploadhead" => _upload_head_usergallery,
                                                      "file" => _upload_file,
                                                      "name" => "file",
@@ -281,9 +282,9 @@ switch ($action):
 
                     if(!$tmpname)
                         $index = error(_upload_no_data, 1);
-                    elseif($size > $upicsize."000")
+                    elseif($size > config('upicsize')."000")
                         $index = error(_upload_wrong_size, 1);
-                    elseif(cnt($db['usergallery'], " WHERE user = ".$userid) == $maxgallerypics)
+                    elseif(cnt($db['usergallery'], " WHERE user = ".$userid) == config('m_gallerypics'))
                         $index = error(_upload_over_limit, 2);
                     elseif(file_exists(basePath."/inc/images/uploads/usergallery/".$userid."_".$_FILES['file']['name']))
                         $index = error(_upload_file_exists, 1);
@@ -302,7 +303,7 @@ switch ($action):
                 case 'edit':
                     $get = db("SELECT id,user,pic,beschreibung FROM ".$db['usergallery']." WHERE id = '".intval($_GET['gid'])."'",false,true);
                     if($get['user'] == $userid) {
-                        $infos = show(_upload_usergallery_info, array("userpicsize" => $upicsize));
+                        $infos = show(_upload_usergallery_info, array("userpicsize" => config('upicsize')));
                         $index = show($dir."/usergallery_edit", array("uploadhead" => _upload_head_usergallery,
                                                                       "file" => _upload_file,
                                                                       "showpic" => img_size("inc/images/uploads/usergallery/".$get['user']."_".$get['pic']),

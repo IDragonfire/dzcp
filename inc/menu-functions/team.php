@@ -5,7 +5,7 @@
  * Menu: Teamausgabe
  */
 function team($tID = '') {
-    global $db,$teamRow,$l_team;
+    global $db;
 
     if(!empty($tID)) $where = "WHERE `id` = '".intval($tID)."' AND `navi` = 1";
     else             $where = "WHERE `navi` = '1' ORDER BY RAND()";
@@ -29,7 +29,7 @@ function team($tID = '') {
     while($getm = _fetch($qrym)) {
         $tr1 = ''; $tr2 = '';
         if($i == 0 || $i == 1) $tr1 = "<tr>";
-        if($i == $teamRow) {
+        if($i == config('teamrow')) {
             $tr2 = "</tr>";
             $i = 0;
         }
@@ -43,14 +43,14 @@ function team($tID = '') {
                                                 "squad" => $get['id'],
                                                 "info" => $info,
                                                 "id" => $getm['id'],
-                                                "width" => round(100/$teamRow,0)));
+                                                "width" => round(100/config('teamrow'),0)));
         $i++;
         $cnt++;
     }
 
     $end = '';
-    if(is_float($cnt/$teamRow)) {
-        for($e=$i;$e<=$teamRow;$e++) {
+    if(is_float($cnt/config('teamrow'))) {
+        for($e=$i;$e<=config('teamrow');$e++) {
             $end .= '<td></td>';
         }
 
@@ -70,8 +70,8 @@ function team($tID = '') {
         $last = db("SELECT `id` FROM ".$db['squads']." WHERE `navi` = '1' ORDER BY `id` DESC LIMIT 1",false,true);
 
     //Output
-    $team = show("menu/team", array("row" => $teamRow,
-                                    "team" => re($get['name']),
+    $team = show("menu/team", array("row" => config('teamrow'),
+                                    "team" => cut(re($get['name'],config('l_team'))),
                                     "id" => $get['id'],
                                     "next" => $next['id'],
                                     "last" => $last['id'],

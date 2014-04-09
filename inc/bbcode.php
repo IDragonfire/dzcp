@@ -4,6 +4,11 @@
  * http://www.dzcp.de
  */
 
+## Error Reporting ##
+if(!defined('DEBUG_LOADER'))
+    exit('<b>Die Debug-Console wurde nicht geladen!<p>
+    Bitte überprüfen Sie ob die index.php einen "include(basePath."/inc/debugger.php");" Eintrag hat.</b>');
+
 ## INCLUDES/REQUIRES ##
 require_once(basePath.'/inc/secure.php');
 require_once(basePath.'/inc/_version.php');
@@ -34,123 +39,46 @@ $config_cache['securityKey'] = settings('prev',false);
 phpFastCache::setup($config_cache);
 $cache = phpFastCache();
 
-//-> Settingstabelle auslesen
+//-> Settingstabelle auslesen * Use function settings('xxxxxx');
 if(!dbc_index::issetIndex('settings')) {
     $get = db("SELECT * FROM ".$db['settings'],false,true);
     dbc_index::setIndex('settings', $get);
 }
 
-$settings = dbc_index::getIndex('settings');
-$prev = $settings['prev'].'_';
+//-> Configtabelle auslesen * Use function config('xxxxxx');
+if(!dbc_index::issetIndex('config')) {
+    $config = db("SELECT * FROM ".$db['config'],false,true);
+    dbc_index::setIndex('config', $config);
+}
+
+//-> DZCP Cookie Prefix
+$prev = settings('prev').'_';
 
 //-> Language auslesen
-$language = (isset($_COOKIE[$prev.'language']) ? (file_exists(basePath.'/inc/lang/languages/'.$_COOKIE[$prev.'language'].'.php') ? $_COOKIE[$prev.'language'] : $settings["language"]) : $settings["language"]);
+$language = (isset($_COOKIE[$prev.'language']) ? (file_exists(basePath.'/inc/lang/languages/'.$_COOKIE[$prev.'language'].'.php') ? $_COOKIE[$prev.'language'] : settings('language')) : settings('language'));
 
 //einzelne Definitionen
 $isSpider = isSpider();
 $subfolder = basename(dirname(dirname($_SERVER['PHP_SELF']).'../'));
 $httphost = $_SERVER['HTTP_HOST'].(empty($subfolder) ? '' : '/'.$subfolder);
 $domain = str_replace('www.','',$httphost);
-$pagetitle = $settings["pagetitel"];
-$clanname = $settings["clanname"];
-$badwords = $settings["badwords"];
-$mailfrom = $settings["mailfrom"];
-$double_post = $settings["double_post"];
-$forum_vote = $settings["forum_vote"];
-$gb_activ = $settings["gb_activ"];
-$gametiger_game = $settings["gametiger"];
-$ts_ip = $settings["ts_ip"];
-$ts_port = $settings["ts_port"];
-$balken_cw = $settings["balken_cw"];
-$balken_vote = $settings["balken_vote"];
-$balken_vote_menu = $settings["balken_vote_menu"];
-$i_domain = $settings["i_domain"];
-$i_autor = $settings["i_autor"];
-$counter_start = $settings["counter_start"];
-$sdir = $settings['tmpdir'];
+$pagetitle = settings('pagetitel');
+$sdir = settings('tmpdir');
 $useronline = 1800;
 $reload = 3600 * 24;
 $datum = time();
 $today = date("j.n.Y");
 $picformat = array("jpg", "gif", "png");
+$userip = visitorIp();
+$maxpicwidth = 90;
+$maxadmincw = 10;
+$maxfilesize = @ini_get('upload_max_filesize');
 
 //-> Global
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $do = isset($_GET['do']) ? $_GET['do'] : '';
 $index = ''; $show = '';
-
-//-> Configtabelle auslesen
-if(!dbc_index::issetIndex('config')) {
-    $config = db("SELECT * FROM ".$db['config'],false,true);
-    dbc_index::setIndex('config', $config);
-}
-
-$config = dbc_index::getIndex('config');
-
-//-> Config
-$teamRow = $config['teamrow'];
-$allowHover = $config['allowhover'];
-$secureLogin = $config['securelogin'];
-$maxwidth = $config['maxwidth'];
-$gallery = $config['gallery'];
-$upicsize = $config['upicsize'];
-$maxgallerypics = $config['m_gallerypics'];
-$maxusergb = $config['m_usergb'];
-$maxclankasse = $config['m_clankasse'];
-$maxuserlist = $config['m_userlist'];
-$maxbanned = $config['m_banned'];
-$maxadminnews = $config['m_adminnews'];
-$maxadminartikel = $config["m_adminartikel"];
-$martikel = $config["m_artikel"];
-$maxshout = $config['m_shout'];
-$maxcomments = $config['m_comments'];
-$maxcwcomments = $config['m_cwcomments'];
-$maxarchivnews = $config['m_archivnews'];
-$maxgb = $config['m_gb'];
-$maxfthreads = $config['m_fthreads'];
-$maxcw = $config['m_clanwars'];
-$maxfposts = $config['m_fposts'];
-$maxnews = $config['m_news'];
-$maxftopics = $config['m_ftopics'];
-$maxevent = $config['m_events'];
-$maxlnews = $config['m_lnews'];
-$maxlartikel = $config['m_lartikel'];
-$maxtopdl = $config['m_topdl'];
-$maxlwars = $config['m_lwars'];
-$maxnwars = $config['m_nwars'];
-$maxlreg = $config['m_lreg'];
-$maxaway = $config['m_away'];
-$maxshoutarchiv = $config['maxshoutarchiv'];
-$shout_max_zeichen = $config['shout_max_zeichen'];
-$flood_forum = $config['f_forum'];
-$flood_gb = $config['f_gb'];
-$flood_membergb = $config['f_membergb'];
-$flood_shout = $config['f_shout'];
-$flood_newscom = $config['f_newscom'];
-$flood_artikelcom = $config['f_artikelcom'];
-$flood_cwcom = $config['f_cwcom'];
-$lnewsadmin = $config['l_newsadmin'];
-$lshouttext = $config['l_shouttext'];
-$lshoutnick = $config['l_shoutnick'];
-$lnews = $config['l_lnews'];
-$lartikel = $config['l_lartikel'];
-$ltopdl = $config['l_topdl'];
-$lftopics = $config['l_ftopics'];
-$llwars = $config['l_lwars'];
-$llreg = $config['l_lreg'];
-$servermenu = $config['l_servernavi'];
-$lnwars = $config['l_nwars'];
-$lnewsarchiv = $config['l_newsarchiv'];
-$lcwgegner = $config['l_clanwars'];
-$l_team = $config['l_team'];
-$lforumtopic = $config['l_forumtopic'];
-$lforumsubtopic = $config['l_forumsubtopic'];
-$maxawards = $config['m_awards'];
-$userip = visitorIp();
-$maxpicwidth = 90;
-$maxadmincw = 10;
-$maxfilesize = @ini_get('upload_max_filesize');
 
 //-> Auslesen der Cookies und automatisch anmelden
 if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSION['id']) && !checkme()) {
@@ -496,8 +424,7 @@ function replace($txt,$type=0,$no_vid_tag=0) {
 
 //-> Badword Filter
 function BadwordFilter($txt) {
-    global $badwords;
-    $words = explode(",",trim($badwords));
+    $words = explode(",",trim(settings('badwords')));
     foreach($words as $word)
     { $txt = preg_replace("#".$word."#i", str_repeat("*", strlen($word)), $txt); }
     return $txt;
@@ -609,10 +536,10 @@ function make_clickable($ret) {
 
 //Diverse BB-Codefunktionen
 function bbcode($txt, $tinymce=0, $no_vid=0, $ts=0, $nolink=0) {
-    global $settings,$charset;
+    global $charset;
 
     $txt = html_entity_decode($txt,ENT_COMPAT,$charset);
-    if($no_vid == 0 && $settings['urls_linked'] == 1 && $nolink == 0)
+    if($no_vid == 0 && settings('urls_linked') && $nolink == 0)
         $txt = make_clickable($txt);
 
     $txt = str_replace("\\","\\\\",$txt);
@@ -1322,8 +1249,7 @@ function checkpwd($user, $pwd) {
 
 //-> Infomeldung ausgeben
 function info($msg, $url, $timeout = 5) {
-    global $config;
-    if($config['direct_refresh'])
+    if(config('direct_refresh'))
         return header('Location: '.str_replace('&amp;', '&', $url));
 
     $u = parse_url($url); $parts = '';
@@ -1562,10 +1488,10 @@ function userstats($what,$tid=0) {
 
 //- Funktion zum versenden von Emails
 function sendMail($mailto,$subject,$content) {
-    global $mailfrom,$language;
+    global $language;
     $mail = new PHPMailer;
     $mail->isHTML(true);
-    $mail->From = $mailfrom;
+    $mail->From = ($mailfrom =settings('mailfrom'));
     $mail->FromName = $mailfrom;
     $mail->AddAddress(preg_replace('/(\\n+|\\r+|%0A|%0D)/i', '',$mailto));
     $mail->Subject = $subject;
@@ -1577,13 +1503,13 @@ function sendMail($mailto,$subject,$content) {
 }
 
 function check_msg_emal() {
-    global $db,$clanname,$httphost;
+    global $db,$httphost;
     $qry = db("SELECT s1.an,s1.page,s1.titel,s1.sendmail,s1.id AS mid,s2.id,s2.nick,s2.email,s2.pnmail FROM ".$db['msg']." AS s1 LEFT JOIN ".$db['users']." AS s2 ON s2.id = s1.an WHERE page = 0 AND sendmail = 0");
     while($get = _fetch($qry)) {
         if($get['pnmail']) {
             db("UPDATE ".$db['msg']." SET `sendmail` = '1' WHERE id = '".$get['mid']."'");
             $subj = show(settings('eml_pn_subj'), array("domain" => $httphost));
-            $message = show(bbcode_email(settings('eml_pn')), array("nick" => re($get['nick']), "domain" => $httphost, "titel" => $get['titel'], "clan" => $clanname));
+            $message = show(bbcode_email(settings('eml_pn')), array("nick" => re($get['nick']), "domain" => $httphost, "titel" => $get['titel'], "clan" => settings('clanname')));
             sendMail(re($get['email']), $subj, $message);
         }
     }
@@ -1931,7 +1857,7 @@ function convert_feed($txt) {
 }
 
 function feed() {
-    global $db,$pagetitle,$clanname,$charset;
+    global $db,$pagetitle,$charset;
 
     $host = $_SERVER['HTTP_HOST'];
     $pfad = preg_replace("#^(.*?)\/(.*?)#Uis","$1",dirname($_SERVER['PHP_SELF']));
@@ -1945,11 +1871,11 @@ function feed() {
     $feed .= "\r\n";
     $feed .= '  <link>http://'.$host.'</link>';
     $feed .= "\r\n";
-    $feed .= '  <description>Clannews von '.convert_feed($clanname).'</description>';
+    $feed .= '  <description>Clannews von '.convert_feed(settings('clanname')).'</description>';
     $feed .= "\r\n";
     $feed .= '  <language>de-de</language>';
     $feed .= "\r\n";
-    $feed .= '  <copyright>'.date("Y", time()).' '.convert_feed($clanname).'</copyright>';
+    $feed .= '  <copyright>'.date("Y", time()).' '.convert_feed(settings('clanname')).'</copyright>';
     $feed .= "\r\n";
 
     $data = @fopen("../rss.xml","w+");
@@ -2307,8 +2233,8 @@ include_once(basePath.'/inc/menu-functions/navi.php');
 //-> Ausgabe des Indextemplates
 function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
 {
-    global $db,$userid,$userip,$tmpdir,$secureLogin,$chkMe,$charset,$mysql;
-    global $designpath,$maxwidth,$language,$cp_color,$copyright;
+    global $db,$userid,$userip,$tmpdir,$chkMe,$charset,$mysql;
+    global $designpath,$language,$cp_color,$copyright;
 
     // user gebannt? Logge aus!
     if(isBanned()) header("Location: ../news/");
@@ -2317,13 +2243,13 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
     $lng = ($language=='deutsch')?'de':'en';
     $edr = ($wysiwyg=='_word')?'advanced':'normal';
     $lcolor = ($cp_color==1)?'lcolor=true;':'';
-    $java_vars = '<script language="javascript" type="text/javascript">var maxW = '.$maxwidth.',lng = \''.$lng.'\',dzcp_editor = \''.$edr.'\';'.$lcolor.'</script>'."\n";
+    $java_vars = '<script language="javascript" type="text/javascript">var maxW = '.config('maxwidth').',lng = \''.$lng.'\',dzcp_editor = \''.$edr.'\';'.$lcolor.'</script>'."\n";
 
     if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') && !strstr($_SERVER['HTTP_USER_AGENT'],'webOS'))
         $java_vars .= '<script language="javascript" type="text/javascript" src="'.$designpath.'/_js/wysiwyg.js"></script>'."\n";;
 
     if(settings("wmodus") && $chkMe != 4) {
-        if($secureLogin == 1)
+        if(config('securelogin'))
             $secure = show("menu/secure", array("help" => _login_secure_help, "security" => _register_confirm));
 
         $login = show("errors/wmodus_login", array("what" => _login_login, "secure" => $secure, "signup" => _login_signup, "permanent" => _login_permanent, "lostpwd" => _login_lostpwd));
@@ -2408,7 +2334,8 @@ function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
         { $arr[$pholdervars[$i]] = $$pholdervars[$i]; }
 
         //index output
-        echo (file_exists("../inc/_templates_/".$tmpdir."/".$index_templ.".html") ? show($index_templ, $arr) : show("index", $arr));
-        $mysql->close();
+        $index = (file_exists("../inc/_templates_/".$tmpdir."/".$index_templ.".html") ? show($index_templ, $arr) : show("index", $arr));
+        $mysql->close(); //MySQL
+        echo view_error_reporting ? DebugConsole::show_logs().$index : $index; //Debug Console + Index Out
     }
 }

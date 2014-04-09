@@ -9,6 +9,7 @@
 #########################################
 
 define('view_error_reporting', false); // Zeigt alle Fehler und Notices etc.
+define('debug_dzcp_handler', true);
 define('use_default_timezone', true); // Verwendende die Zeitzone vom Server
 define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selbst einstellen * 'use_default_timezone' auf false stellen *
 
@@ -21,9 +22,19 @@ $config_cache['dbc'] = true; //use database querie caching * only use with memor
 //-> DZCP Settings End
 #########################################
 
-if(view_error_reporting) {
+if(function_exists("date_default_timezone_set") && function_exists("date_default_timezone_get") && use_default_timezone)
+    @date_default_timezone_set(@date_default_timezone_get());
+else if(!use_default_timezone) date_default_timezone_set(default_timezone);
+else date_default_timezone_set("Europe/Berlin");
+
+if(view_error_reporting)
+{
     error_reporting(E_ALL);
     ini_set('display_errors', 1);
+    DebugConsole::initCon();
+
+    if(debug_dzcp_handler)
+        set_error_handler('dzcp_error_handler');
 }
 else
     error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
@@ -40,11 +51,6 @@ if(file_exists(basePath."/inc/mysql.php"))
 //DZCP-Install default variable
 if(!isset($installation))
   $installation = false;
-
-if(function_exists("date_default_timezone_set") && function_exists("date_default_timezone_get") && use_default_timezone)
-    @date_default_timezone_set(@date_default_timezone_get());
-else if(!use_default_timezone) date_default_timezone_set(default_timezone);
-else date_default_timezone_set("Europe/Berlin");
 
 function show($tpl="", $array=array(), $array_lang_constant=array(), $array_block=array()) {
     global $tmpdir,$chkMe;

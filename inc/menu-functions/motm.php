@@ -5,7 +5,7 @@
  * Menu: Member of the Moment
  */
 function motm() {
-    global $db, $allowHover;
+    global $db;
 
     $userpics = get_files(basePath.'/inc/images/uploads/userpics/',false,true);
     $qry = db("SELECT `id` FROM ".$db['users']." WHERE level >= 2");
@@ -29,7 +29,7 @@ function motm() {
         if(!empty($get) && !empty($temparr)) {
             $status = ($get['status'] == 1 || $get['level'] == 1) ? "aktiv" : "inaktiv";
 
-            if($allowHover == 1)
+            if(config('allowhover') == 1)
                 $info = 'onmouseover="DZCP.showInfo(\''.fabo_autor($get['id']).'\', \''._posi.';'._status.';'._age.'\', \''.getrank($get['id']).';'.$status.';'.getAge($get['bday']).'\', \''.hoveruserpic($get['id']).'\')" onmouseout="DZCP.hideInfo()"';
 
             $member = show("menu/motm", array("uid" => $get['id'],

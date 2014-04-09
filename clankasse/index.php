@@ -1,9 +1,12 @@
 <?php
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
@@ -24,12 +27,12 @@ default:
             if($_GET['orderby'] == "betrag") $sub_orderby = "pm ".$_GET['order'].",";
            $qry = db("SELECT * FROM ".$db['clankasse']."
                        ORDER BY ".$sub_orderby.mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
-                       LIMIT ".($page - 1)*$maxclankasse.",".$maxclankasse."");
+                       LIMIT ".($page - 1)*config('m_clankasse').",".config('m_clankasse')."");
 
     }
     else { $qry = db("SELECT * FROM ".$db['clankasse']."
                       ORDER BY datum DESC
-                      LIMIT ".($page - 1)*$maxclankasse.",".$maxclankasse."");
+                      LIMIT ".($page - 1)*config('m_clankasse').",".config('m_clankasse')."");
     }
     while ($get = _fetch($qry))
     {
@@ -135,7 +138,7 @@ default:
     $qry = db("SELECT k_inhaber,k_nr,k_blz,k_bank,iban,bic,k_waehrung,k_vwz FROM ".$db['settings']."");
     $get = _fetch($qry);
 
-    $seiten = nav($entrys,$maxclankasse,"?action=nav");
+    $seiten = nav($entrys,config('m_clankasse'),"?action=nav");
     $index = show($dir."/clankasse", array("show" => $show,
                                            "showstatus" => $showstatus,
                                            "clankasse_head" => _clankasse_head,

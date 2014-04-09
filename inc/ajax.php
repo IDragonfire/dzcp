@@ -9,6 +9,7 @@ include("../inc/buffer.php");
 
 ## INCLUDES ##
 $ajaxJob = true;
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
 

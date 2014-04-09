@@ -1,15 +1,19 @@
 <?php
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SETTINGS ##
 $time_start = generatetime();
 lang($language);
 $where = _site_contact;
 $title = $pagetitle." - ".$where."";
 $dir = "news";
+
 ## SECTIONS ##
 if(check_internal_url())
     $index = error(_error_have_to_be_logged, 1);
