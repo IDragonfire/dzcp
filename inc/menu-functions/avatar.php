@@ -5,5 +5,9 @@
  * Menu: Avatar
  */
 function avatar() {
-    return show("menu/avatars", array("avatar_show" => useravatar(0,70,70)));
+    global $chkMe;
+    if($chkMe >= 1)
+        return show("menu/avatars", array("avatar_show" => useravatar(0,70,70)));
+
+    return '';
 }
