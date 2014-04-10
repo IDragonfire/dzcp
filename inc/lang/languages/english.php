@@ -637,7 +637,7 @@ define('_editor_from' , 'From');
 define('intern' , '<span class="fontWichtig">Internal</span>');
 define('_comments_head' , 'Comments');
 define('_click_close' , 'close');
-## Begrüßungen ##
+## Begruessungen ##
 define('_welcome_18' , 'Good evening,');
 define('_welcome_13' , 'Good day,');
 define('_welcome_11' , 'Good lunch,');
@@ -826,7 +826,7 @@ define('_country_list' , '
 <option value="yu"> Yugoslavia</option>
 <option value="ye"> Yemen</option>
 <option value="zm"> Zambia</option>');
-## Globale Userränge ##
+## Globale Userraenge ##
 define('_status_banned' , 'banned');
 define('_status_unregged' , 'unregistered');
 define('_status_user' , 'User');
@@ -924,7 +924,7 @@ define('_forum_search_results' , 'Search results');
 define('_forum_online_head' , 'Browsing the board');
 define('_forum_nobody_is_online' , 'Right now no user is browsing the board!');
 define('_forum_nobody_is_online2' , 'Right now no user except you is browsing the board!');
-## Gästebuch ##
+## Gaestebuch ##
 define('_gb_delete_successful' , 'The entry was successfully deleted!');
 define('_gb_head' , 'Guestbook');
 define('_gb_add_head' , 'Insert entry');
@@ -1469,8 +1469,8 @@ define('_user_delete_verify' , '
 define('_user_deleted' , 'The user successfully was deleted!');
 define('_admin_user_shoutbox' , 'Admin: Shoutbox');
 define('_admin_user_awards' , 'Admin: Awards');
-define('_userlobby_kal_today' , 'Next event is <a href="../kalender/?action=show&time=[time]"><span class="fontWichtig">today</span></a>');
-define('_userlobby_kal_not_today' , 'Next event is at <a href="../kalender/?action=show&time=[time]"><span class="fontUnder">[date]</span></a>');
+define('_userlobby_kal_today' , 'Next event is <a href="../kalender/?action=show&time=[time]"><span class="fontWichtig">today - [event]</span></a>');
+define('_userlobby_kal_not_today' , 'Next event is at <a href="../kalender/?action=show&time=[time]"><span class="fontUnder">[date] - [event]</span></a>');
 define('_profil_country' , 'Country');
 define('_lobby_awards' , 'Awards');
 define('_new_awards_1' , 'new award');
