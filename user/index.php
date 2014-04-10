@@ -540,10 +540,12 @@ case 'userlobby';
         $nextkal = '';
         if(!empty($getkal) && check_new($getkal['datum'],1)) {
             if(date("d.m.Y",$getkal['datum']) == date("d.m.Y", time())) {
-              $nextkal = show(_userlobby_kal_today, array("time" => mktime(0,0,0,date("m",$getkal['datum']), date("d",$getkal['datum']),date("Y",$getkal['datum']))));
+              $nextkal = show(_userlobby_kal_today, array("time" => mktime(0,0,0,date("m",$getkal['datum']), date("d",$getkal['datum']),date("Y",$getkal['datum'])),
+                                                          "event" => $getkal['title']));
             } else {
               $nextkal = show(_userlobby_kal_not_today, array("time" => mktime(0,0,0,date("m",$getkal['datum']), date("d",$getkal['datum']),date("Y",$getkal['datum'])),
-                                                              "date" => date("d.m.Y", $getkal['datum'])));
+                                                              "date" => date("d.m.Y", $getkal['datum']),
+                                                              "event" => $getkal['title']));
             }
         }
 
