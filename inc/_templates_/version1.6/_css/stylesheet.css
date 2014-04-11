@@ -234,7 +234,7 @@ div#index {
     margin-bottom:7px;
     padding:0 7px 7px 7px
 }
-/* Globale Überschriftendefinierung */
+/* Globale Ueberschriftendefinierung */
 .headline {
     line-height:41px;
     font-size:13px;
@@ -242,7 +242,7 @@ div#index {
     display:block;
     font-weight:normal;
 }
-/* Überschrift normale Boxen */
+/* Ueberschrift normale Boxen */
 .box .headline {
     height:49px;
     background:url(../images/headBox.jpg) bottom repeat-x;
@@ -255,7 +255,7 @@ div#index {
     padding-bottom:5px;
     margin-bottom:10px
 }
-/* Überschrift Main Navigation */
+/* Ueberschrift Main Navigation */
 .mainNavigation h2.headline {
     height: 45px;
     color:#fff;
@@ -275,7 +275,7 @@ div#galleriebox {
     padding:11px 12px 11px 12px;
     margin:0 14px
 }
-/* Überschrift Galleriebox */
+/* Ueberschrift Galleriebox */
 #galleriebox span.headline {
     background:#f0f0f0;
     height:37px;
@@ -685,7 +685,10 @@ td.navKalHead span, td.navKalHead a {
 }
 
 td.navKalToday {
-  border: 1px solid #000;
+  border: 1px solid #2372fa;
+  font-weight: bold;
+  font-style: italic;
+  color: #2372fa;
 }
 
 /*---------------------------------------------
