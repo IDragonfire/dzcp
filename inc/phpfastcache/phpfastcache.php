@@ -481,16 +481,25 @@ class phpFastCache {
     function encode($data='')
     {
         $data = serialize($data);
-        $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
-        $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-        return mcrypt_encrypt(MCRYPT_RIJNDAEL_256, 'mcr_'.$this->option['securityKey_mcrypt'], $data, MCRYPT_MODE_ECB, $iv);
+        if(function_exists('mcrypt_encrypt')) {
+            $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
+            $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+            return mcrypt_encrypt(MCRYPT_RIJNDAEL_256, 'mcr_'.$this->option['securityKey_mcrypt'], $data, MCRYPT_MODE_ECB, $iv);
+        }
+        else
+            return base64_encode($data);
     }
 
     function decode($value)
     {
-       $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
-       $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-       $decrypttext = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, 'mcr_'.$this->option['securityKey_mcrypt'], $value, MCRYPT_MODE_ECB, $iv);
+        if(function_exists('mcrypt_decrypt')) {
+            $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
+            $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
+            $decrypttext = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, 'mcr_'.$this->option['securityKey_mcrypt'], $value, MCRYPT_MODE_ECB, $iv);
+        }
+        else
+            $decrypttext = base64_decode($value);
+
        $x = @unserialize(trim($decrypttext));
        if($x == false) {
             return $value;
