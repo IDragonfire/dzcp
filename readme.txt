@@ -74,6 +74,10 @@ Aufgrund der vielzahl an Änderungen, wird kein manuelles Update für diese Versio
         -Option Usergästebuch Posts Speeren / zulassen wurde hinzugefügt
         -JoinUs Formular werden alle Teams angezeigt, diese können selber entscheiden ob Sie im Formular mit aufgeführt werden
         -Backupfunktion wurde überarbeitet
+        -MySQL Backend wurde gegen ein MySQLi Backend ausgetauscht um die lauffähigkeit für Spätere PHP Versionen zu sichern
+        -Der Newstricker in der DZCP Administarion kann optional in der config.php abgeschaltet werden
+        -Der alte DZCP Cache wurde gegen einen neuen ersetzt, dieser unterstützt jetzt Files,SQL-Lite, APC, Memcache, WinCache und XCache
+        -Verschiedene Optimierungen und Ausbesserungen im PHP und HTML Code
 
 
         Bugfixes
@@ -126,7 +130,6 @@ Aufgrund der vielzahl an Änderungen, wird kein manuelles Update für diese Versio
         -User IPs werden auch bei vorgeschaltete Proxyserver oder Load Balancer richtig erkannt
         -Smile Bug Fix TinyMC
         -E-Mail Fix HTML-Bug
-
 
 
 
