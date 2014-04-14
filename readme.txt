@@ -62,7 +62,7 @@ Aufgrund der vielzahl an Änderungen, wird kein manuelles Update für diese Versio
         -Template version1.6 inkl. erweiterte Platzhalter für die Boxen (Boxentitel werden beim ändern der Sprache mit übersetzt)
         -Platzhalter [where] für die Ausgabe des Seitentitels innerhalb des Templates hinzugefügt
         -Dynamische Platzhalter [lang_xxxx] für die Ausgabe beliebiger Definitionen aus der language file innerhalb des Templates hinzugefügt
-    -Slideshow wurde hinzugefügt - Platzhalter [slideshow] (Template Version 1.5 wurde der Platzhalter Sildeshow nicht in die index.html übernommen)
+        -Slideshow wurde hinzugefügt - Platzhalter [slideshow] (Template Version 1.5 wurde der Platzhalter Sildeshow nicht in die index.html übernommen)
         -eigenes Newsbild kann als Alternative zum Kat.-Banner beim erstellen der News mit angegeben werden
         -Interne Galerie und Downloads
         -in mehrere Bereiche lassen sich die Inhalte Ordnen
@@ -74,11 +74,10 @@ Aufgrund der vielzahl an Änderungen, wird kein manuelles Update für diese Versio
         -Option Usergästebuch Posts Speeren / zulassen wurde hinzugefügt
         -JoinUs Formular werden alle Teams angezeigt, diese können selber entscheiden ob Sie im Formular mit aufgeführt werden
         -Backupfunktion wurde überarbeitet
-        -MySQL Backend wurde gegen ein MySQLi Backend ausgetauscht um die lauffähigkeit für Spätere PHP Versionen zu sichern
-        -Der Newstricker in der DZCP Administarion kann optional in der config.php abgeschaltet werden
+        -MySQL Backend wurde gegen ein MySQLi Backend ausgetauscht um die Lauffähigkeit für Spätere PHP Versionen zu sichern
+        -Der Newstricker in der DZCP Administration kann optional in der config.php abgeschaltet werden
         -Der alte DZCP Cache wurde gegen einen neuen ersetzt, dieser unterstützt jetzt Files,SQL-Lite, APC, Memcache, WinCache und XCache
         -Verschiedene Optimierungen und Ausbesserungen im PHP und HTML Code
-
 
         Bugfixes
         --------
