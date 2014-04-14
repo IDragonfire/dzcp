@@ -114,15 +114,18 @@ else {
             $old = "_old";
         }
 
-        if(!$cache->isExisting("admin_news")) {
-            $dzcp_news = fileExists("http://www.dzcp.de/dzcp_news.php");
-            if(!empty($dzcp_news))
-                $cache->set("admin_news", $dzcp_news, 1200);
+        $dzcp_news = '';
+        if(admin_view_dzcp_news) {
+            if(!$cache->isExisting("admin_news")) {
+                $dzcp_news = fileExists("http://www.dzcp.de/dzcp_news.php");
+                if(!empty($dzcp_news))
+                    $cache->set("admin_news", $dzcp_news, 1200);
+                else
+                    $dzcp_news = false;
+            }
             else
-                $dzcp_news = false;
+                $dzcp_news = $cache->get("admin_news");
         }
-        else
-            $dzcp_news = $cache->get("admin_news");
     }
 
     if(@file_exists(basePath."/_installer") && $chkMe == 4 && !view_error_reporting)

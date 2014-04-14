@@ -12,6 +12,7 @@ define('view_error_reporting', false); // Zeigt alle Fehler und Notices etc.
 define('debug_dzcp_handler', true);
 define('use_default_timezone', true); // Verwendende die Zeitzone vom Server
 define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selbst einstellen * 'use_default_timezone' auf false stellen *
+define('admin_view_dzcp_news', true); // Entscheidet ob der Newstricker in der Administration angezeigt wird.
 
 $config_cache = array();
 $config_cache['storage'] = "auto"; //memcache
@@ -170,7 +171,7 @@ if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '
     if ($mysql->connect_error) { die("<b>Fehler beim Zugriff auf die Datenbank!"); }
 }
 
-//MySQL-Funktionen
+//MySQLi-Funktionen
 function _rows($rows)
 {
     if(array_key_exists('_stmt_rows_', $rows))
@@ -189,7 +190,7 @@ function _fetch($fetch)
 
 function db($query='',$rows=false,$fetch=false) {
     global $prefix,$mysql;
-    if(!$qry = $mysql->query($query)) die('<b>MySQL-Query failed:</b><br /><br /><ul>'.
+    if(!$qry = $mysql->query($query)) die('<b>MySQLi-Query failed:</b><br /><br /><ul>'.
                                      '<li><b>ErrorNo</b> = '.!empty($prefix) ? str_replace($prefix,'',$mysql->connect_errno) : $mysql->connect_errno.
                                      '<li><b>Error</b>   = '.!empty($prefix) ? str_replace($prefix,'',$mysql->connect_error) : $mysql->connect_error.
                                      '<li><b>Query</b>   = '.!empty($prefix) ? str_replace($prefix,'',$query).'</ul>' : $query);
