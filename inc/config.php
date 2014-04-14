@@ -190,6 +190,8 @@ function _fetch($fetch)
 
 function db($query='',$rows=false,$fetch=false) {
     global $prefix,$mysql;
+
+    if(debug_all_sql_querys) DebugConsole::wire_log('debug', 9, 'SQL_Query', $query);
     if(!$qry = $mysql->query($query)) die('<b>MySQLi-Query failed:</b><br /><br /><ul>'.
                                      '<li><b>ErrorNo</b> = '.!empty($prefix) ? str_replace($prefix,'',$mysql->connect_errno) : $mysql->connect_errno.
                                      '<li><b>Error</b>   = '.!empty($prefix) ? str_replace($prefix,'',$mysql->connect_error) : $mysql->connect_error.
