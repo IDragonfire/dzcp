@@ -120,6 +120,7 @@ if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSI
     unset($sql);
 }
 
+lang($language); //Lade Sprache
 $userid = userid();
 $chkMe = checkme();
 if(!$chkMe) {
@@ -2232,14 +2233,20 @@ if($functions_files = get_files(basePath.'/inc/additional-functions/',false,true
 //-> Navigation einbinden
 include_once(basePath.'/inc/menu-functions/navi.php');
 
+//-> Timer Start
+$time_start = generatetime();
+
 //-> Ausgabe des Indextemplates
-function page($index,$title,$where,$time,$wysiwyg='',$index_templ='index')
+function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index')
 {
     global $db,$userid,$userip,$tmpdir,$chkMe,$charset,$mysql;
-    global $designpath,$language,$cp_color,$copyright;
+    global $designpath,$language,$cp_color,$copyright,$time_start;
 
     // user gebannt? Logge aus!
     if(isBanned()) header("Location: ../news/");
+
+    // Timer Stop
+    $time = round(generatetime() - $time_start,4);
 
     // JS-Dateine einbinden
     $lng = ($language=='deutsch')?'de':'en';

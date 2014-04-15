@@ -21,8 +21,6 @@ require_once(basePath."/inc/menu-functions/kalender.php");
 require_once(basePath."/inc/menu-functions/team.php");
 
 ## SETTINGS ##
-$time_start = generatetime();
-lang($language);
 $dir = "sites";
 
 ## SECTIONS ##

@@ -8,8 +8,6 @@ include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
 
 ## SETTINGS ##
-$time_start = generatetime();
-lang($language);
 $where = _side_membermap;
 $dir = "membermap";
 
@@ -58,11 +56,10 @@ $index = show($dir."/membermap", array('head' => _membermap,
                                      'mm_infos' => $mm_infos,
                                      'mm_markerIcon' => $mm_markerIcon
                                     ));
-## SETTINGS ##
+
+## INDEX OUTPUT ##
 $title = $pagetitle." - ".$where."";
-$time_end = generatetime();
-$time = round($time_end - $time_start,4);
-page($index, $title, $where,$time);
+page($index, $title, $where);
+
 ## OUTPUT BUFFER END ##
 gz_output();
-?>

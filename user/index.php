@@ -9,8 +9,6 @@ include(basePath."/inc/bbcode.php");
 include(basePath."/user/helper.php");
 
 ## SETTINGS ##
-$time_start = generatetime();
-lang($language);
 $dir = "user";
 $where = _site_user;
 
@@ -2923,12 +2921,11 @@ case 'get_steam_image';
 break;
 
 endswitch;
-## SETTINGS ##
+
+## INDEX OUTPUT ##
 $whereami = preg_replace_callback("#autor_(.*?)$#",create_function('$id', 'return data("nick","$id[1]");'),$where);
 $title = $pagetitle." - ".$whereami."";
-$time_end = generatetime();
-$time = round($time_end - $time_start,4);
-page($index, $title, $where,$time);
+page($index, $title, $where);
 
 ## OUTPUT BUFFER END ##
 gz_output();

@@ -8,8 +8,6 @@ include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
 
 ## SETTINGS ##
-$time_start = generatetime();
-lang($language);
 $where = _site_gallery;
 $title = $pagetitle." - ".$where."";
 $dir = "gallery";
@@ -123,10 +121,9 @@ $dir = "gallery";
                                         "head" => _subgallery_head));
     break;
     endswitch;
-## SETTINGS ##
-$time_end = generatetime();
-$time = round($time_end - $time_start,4);
-page($index, $title, $where,$time);
+
+## INDEX OUTPUT ##
+page($index, $title, $where);
+
 ## OUTPUT BUFFER END ##
 gz_output();
-?>

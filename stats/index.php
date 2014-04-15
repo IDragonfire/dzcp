@@ -8,8 +8,6 @@ include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
 
 ## SETTINGS ##
-$time_start = generatetime();
-lang($language);
 $where = _site_stats;
 $title = $pagetitle." - ".$where."";
 $dir = "stats";
@@ -227,10 +225,10 @@ $dir = "stats";
                                      "cw" => _site_clanwars,
                                      "gb" =>  _site_gb,
                                      "forum" => _site_forum));
-## SECTIONS ##
-$time_end = generatetime();
-$time = round($time_end - $time_start,4);
-page($index, $title, $where,$time);
+
+## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where."";
+page($index, $title, $where);
+
 ## OUTPUT BUFFER END ##
 gz_output();
-?>
