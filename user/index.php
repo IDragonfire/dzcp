@@ -1391,15 +1391,15 @@ case 'editprofile';
       $index = info(_info_edit_gallery_done, "?action=editprofile&show=gallery");
 
     } elseif($_GET['do'] == "edit")    {
-            $check_user = db("SELECT id FROM ".$db['users']."
-                                              WHERE user = '".intval($_POST['user'])."'
-                                              AND id != '".$userid."'");
-          $check_nick = db("SELECT id FROM ".$db['users']."
-                                              WHERE nick = '".$_POST['nick']."'
-                                              AND id != '".$userid."'");
-          $check_email = db("SELECT id  FROM ".$db['users']."
-                                               WHERE email = '".$_POST['email']."'
-                                               AND id != '".$userid."'");
+
+        $check_user = db_stmt("SELECT id FROM ".$db['users']." WHERE `user`= ? AND id != ?",
+                array('is', $userid, up($_POST['user'])),true,false);
+
+        $check_nick = db_stmt("SELECT id FROM ".$db['users']." WHERE `nick`= ? AND id != ?",
+                array('is', $userid, up($_POST['nick'])),true,false);
+
+        $check_email = db_stmt("SELECT id FROM ".$db['users']." WHERE `email`= ? AND id != ?",
+                array('is', $userid, up($_POST['email'])),true,false);
 
       if(empty($_POST['user']))
       {
@@ -1410,11 +1410,11 @@ case 'editprofile';
             $index = error(_empty_email, 1);
         } elseif(!check_email($_POST['email'])) {
             $index = error(_error_invalid_email, 1);
-        } elseif(_rows($check_user)) {
+        } elseif($check_user) {
             $index = error(_error_user_exists, 1);
-        } elseif(_rows($check_nick)) {
+        } elseif($check_nick) {
             $index = error(_error_nick_exists, 1);
-        } elseif(_rows($check_email)) {
+        } elseif($check_email) {
             $index = error(_error_email_exists, 1);
         } else {
             if ($_POST['pwd'])
