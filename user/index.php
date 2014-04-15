@@ -1711,7 +1711,7 @@ case 'editprofile';
           $gmaps = show('membermap/geocoder', array('form' => 'editprofil'));
 
 
-          if($userid == $rootAdmin) $delete = _profil_del_admin;
+          if(rootAdmin($userid)) $delete = _profil_del_admin;
                 else $delete = show("page/button_delete_account", array("id" => $get['id'],
                                                                                                                               "action" => "action=editprofile&amp;do=delete",
                                                                                                                               "value" => _button_title_del_account,
@@ -2549,12 +2549,12 @@ case 'admin';
                                             "squad" => _member_admin_squad,
                                             "posi" => _profil_position,
                                             "deletesq" => $deletesq));
-  } elseif(data("level",intval($_GET['edit'])) == 4 && $userid != $rootAdmin) {
+  } elseif(data("level",intval($_GET['edit'])) == 4 && !rootAdmin($userid)) {
     $index = error(_error_edit_admin, 1);
   } else {
     if($do == "identy")
     {
-      if(data("level",intval($_GET['id'])) == 4 && $userid != $rootAdmin)
+      if(data("level",intval($_GET['id'])) == 4 && !rootAdmin($userid))
       {
         $index = error(_identy_admin, 1);
       } else {

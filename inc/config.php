@@ -25,6 +25,10 @@ $config_cache['dbc_auto_memcache'] = false; //use database querie caching * auto
 ###########################################################################
 $cp_color = '#d3d3d3';
 
+//-> Legt die UserID des Rootadmins fest
+//-> (dieser darf bestimmte Dinge, den normale Admins nicht duerfen, z.B. andere Admins editieren)
+$rootAdmins = array(1); // Die ID/s der User die Rootadmins sein sollen, bei mehreren mit "," trennen '1,4,2,6' usw.
+
 #########################################
 //-> DZCP Settings End
 #########################################

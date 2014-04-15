@@ -22,11 +22,6 @@ require_once(basePath."/inc/phpfastcache/phpfastcache.php");
 ## Is AjaxJob ##
 $ajaxJob = (!isset($ajaxJob) ? false : $ajaxJob);
 
-## FUNCTIONS ##
-//-> Legt die UserID desRootadmins fest
-//-> (dieser darf bestimmte Dinge, den normale Admins nicht duerfen, z.B. andere Admins editieren)
-$rootAdmin = 1;
-
 //Cache
 $config_cache['htaccess'] = true;
 $config_cache['fallback'] = array( "memcache" => "apc", "memcached" =>  "apc", "apc" =>  "sqlite", "sqlite" => "files");
@@ -256,6 +251,14 @@ function config($what,$use_dbc=true) {
 
     $get = db("SELECT `".$what."` FROM ".$db['config'],false,true);
     return $get[$what];
+}
+
+//-> Prueft ob der User ein Rootadmin ist
+function rootAdmin($userid=0) {
+    global $rootAdmins;
+    $userid = !$userid ? userid() : $userid;
+    if(!count($rootAdmins)) return false;
+    return in_array($userid, $rootAdmins);
 }
 
 //-> PHP-Code farbig anzeigen

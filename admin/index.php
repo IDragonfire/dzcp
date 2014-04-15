@@ -38,7 +38,7 @@ else {
         $rights = (string)$xml->Rights; $oa = (int)$xml->Only_Admin; $ora = (int)$xml->Only_Root;
         if(permission($rights) && !$oa && !$ora) $permission = true;
         if($oa && !$ora && $chkMe == 4) $permission = true;
-        if($ora && $chkMe == 4 && userid() == $rootAdmin) $permission = true;
+        if($ora && $chkMe == 4 && rootAdmin()) $permission = true;
 
         if($permission)
             include(basePath.'/admin/menu/'.strtolower($_GET['admin']).'.php');
@@ -56,7 +56,7 @@ else {
                 $rights = (string)$xml->Rights; $oa = (int)$xml->Only_Admin; $ora = (int)$xml->Only_Root;
                 if(permission($rights) && !$oa && !$ora) $permission = true;
                 if($oa && !$ora && $chkMe == 4) $permission = true;
-                if($ora && $chkMe == 4 && userid() == $rootAdmin) $permission = true;
+                if($ora && $chkMe == 4 && rootAdmin()) $permission = true;
 
                 foreach($picformat AS $end) {
                     if(file_exists(basePath.'/admin/menu/'.str_replace('.xml','',$file_xml).'.'.$end))
