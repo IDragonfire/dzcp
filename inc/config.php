@@ -8,7 +8,7 @@
 //-> DZCP Settings Start
 #########################################
 
-define('view_error_reporting', true); // Zeigt alle Fehler und Notices etc.
+define('view_error_reporting', false); // Zeigt alle Fehler und Notices etc.
 define('debug_dzcp_handler', true);
 define('use_default_timezone', true); // Verwendende die Zeitzone vom Server
 define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selbst einstellen * 'use_default_timezone' auf false stellen *
@@ -19,6 +19,11 @@ $config_cache['storage'] = "auto"; //memcache
 $config_cache['server'] = array(array("127.0.0.1",11211,1));
 $config_cache['dbc'] = true; //use database querie caching * only use with memory cache
 $config_cache['dbc_auto_memcache'] = false; //use database querie caching * auto memcache check
+
+###########################################################################
+# Hex Farbcode der Hintergrundfarbe Copyrightlinks am Ende der Homepage #
+###########################################################################
+$cp_color = '#d3d3d3';
 
 #########################################
 //-> DZCP Settings End
