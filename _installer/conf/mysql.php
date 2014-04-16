@@ -311,7 +311,6 @@ function install_mysql($login, $nick, $pwd, $email)
              `ftp_pwd` varchar(100) NOT NULL default '',
              `language` varchar(50) NOT NULL default 'deutsch',
              `domain` varchar(200) NOT NULL default '".$host."',
-             `gametiger` varchar(20) NOT NULL default 'cstrike',
              `regcode` int(1) NOT NULL default '1',
              `ts_ip` varchar(200) NOT NULL default '',
              `mailfrom` varchar(200) NOT NULL default 'info@".$host."',
@@ -510,7 +509,6 @@ function install_mysql($login, $nick, $pwd, $email)
         $qry = db("INSERT INTO ".$db['navi']." (id, pos, kat, shown, name, url, type, internal) VALUES (16, 5, 'nav_clan', 1, '_rankings_', '../rankings/', 1, 0)");
         $qry = db("INSERT INTO ".$db['navi']." (id, pos, kat, shown, name, url, type, internal) VALUES (17, 2, 'nav_server', 1, '_serverlist_', '../serverliste/', 1, 0)");
         $qry = db("INSERT INTO ".$db['navi']." (id, pos, kat, shown, name, url, type, internal) VALUES (18, 3, 'nav_server', 1, '_ts_', '../teamspeak/', 1, 0)");
-        $qry = db("INSERT INTO ".$db['navi']." (id, pos, kat, shown, name, url, type, internal) VALUES (19, 1, 'nav_misc', 1, '_gametiger_', '../gametiger/', 1, 0)");
         $qry = db("INSERT INTO ".$db['navi']." (id, pos, kat, shown, name, url, type, internal) VALUES (20, 2, 'nav_misc', 1, '_galerie_', '../gallery/', 1, 0)");
         $qry = db("INSERT INTO ".$db['navi']." (id, pos, kat, shown, name, url, type, internal) VALUES (21, 3, 'nav_misc', 1, '_kontakt_', '../contact/', 1, 0)");
         $qry = db("INSERT INTO ".$db['navi']." (id, pos, kat, shown, name, url, type, internal) VALUES (22, 4, 'nav_misc', 1, '_joinus_', '../contact/?action=joinus', 1, 0)");

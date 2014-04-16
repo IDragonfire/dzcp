@@ -14,12 +14,12 @@ $dir = "kalender";
 ## SECTIONS ##
 switch ($action):
 default:
-  if(isset($_POST['monat'])) $monat = $_POST['monat'];
-  elseif(isset($_GET['m']))  $monat = $_GET['m'];
+  if(isset($_POST['monat'])) $monat = ((int)$_POST['monat']);
+  elseif(isset($_GET['m']))  $monat = ((int)$_GET['m']);
   else $monat = date("m");
 
-  if(isset($_POST['jahr'])) $jahr = $_POST['jahr'];
-  elseif(isset($_GET['y'])) $jahr = $_GET['y'];
+  if(isset($_POST['jahr'])) $jahr = ((int)$_POST['jahr']);
+  elseif(isset($_GET['y'])) $jahr = ((int)$_GET['y']);
   else $jahr = date("Y");
 
   for($i = 1; $i <= 12; $i++)

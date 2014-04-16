@@ -167,10 +167,6 @@ define('_awards_legende', '<tr><td class="[class]" align="center" width="1%">[im
 ## Serverliste ##
 define('_slist_clanname_with_url', '<a href="[url]" target="blank">[name]</a>');
 define('_slist_clanname_without_url', '<span class="fontBold">[name]</span>');
-## Gametiger ##
-define('_gametiger_player_results', '<tr><td class="[class]" colspan="4">[players]</td><td class="[class]" colspan="4"><a href="hlsw://[servers]">[servers]</a></td></tr>');
-define('_gametiger_server_results', '<tr><td class="[class]"><a href="hlsw://[serverip]">[servername]</a></td><td class="[class]" width="2%" align="center">[map]</td><td width="2%"class="[class]" align="center">[players]</td></tr>');
-define('_gametiger_map_results', '<tr><td class="[class]"><a href="hlsw://[ip]">[name]</a></td><td class="[class]" width="2%" align="center">[aktmap]</td><td width="2%" class="[class]" align="center">[player]</td></tr>');
 ## Kontaktformulare ##
 define('_contact_hp', '<a href="[hp]" target="_blank">[hp]</a>');
 ## Linkus ##

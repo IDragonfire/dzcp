@@ -2783,14 +2783,15 @@ case 'admin';
                                                      "epwd" => ""));
 
                 if($chkMe == 4)    $elevel = show(_elevel_admin_select, array("selu" => $selu,
-                                                                           "selt" => $selt,
-                                                                           "selm" => $selm,
-                                                                           "sela" => $sela,
-                                                                           "ruser" => _status_user,
-                                                                           "banned" => _admin_level_banned,
-                                                                           "trial" => _status_trial,
-                                                                           "member" => _status_member,
-                                                                           "admin" => _status_admin));
+                                                                              "selt" => $selt,
+                                                                              "selm" => $selm,
+                                                                              "sela" => $sela,
+                                                                              "ruser" => _status_user,
+                                                                              "banned" => _admin_level_banned,
+                                                                              "trial" => _status_trial,
+                                                                              "member" => _status_member,
+                                                                              "admin" => _status_admin));
+
                 elseif(permission("editusers"))  $elevel = show(_elevel_perm_select, array("selu" => $selu,
                                                                                            "selt" => $selt,
                                                                                            "selm" => $selm,
