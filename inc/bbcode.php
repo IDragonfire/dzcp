@@ -1828,8 +1828,12 @@ function txtArea($txt)
 //-> Konvertiert Platzhalter in die jeweiligen bersetzungen
 function navi_name($name) {
     $name = trim($name);
-    if(preg_match("#^_(.*?)_$#Uis",$name))
-        @eval("\$name = _".preg_replace("#_(.*?)_#Uis", "$1", $name).";");
+    if(preg_match("#^_(.*?)_$#Uis",$name)) {
+        $name = preg_replace("#_(.*?)_#Uis", "$1", $name);
+
+        if(defined("_".$name))
+            return constant("_".$name);
+    }
 
     return $name;
 }
