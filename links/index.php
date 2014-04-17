@@ -14,14 +14,12 @@ $where = _site_links;
 ## SECTIONS ##
 switch ($action):
     default:
-        $admin = permission("links") ? _links_admin : "";
-
         $qry = db("SELECT * FROM ".$db['links']." ORDER BY banner DESC"); $show = '';
         if(_rows($qry)) {
             while($get = _fetch($qry)) {
                 if($get['banner']) {
                     $banner = show(_links_bannerlink, array("id" => $get['id'],
-                                                              "banner" => re($get['text'])));
+                                                            "banner" => re($get['text'])));
                 } else {
                     $banner = show(_links_textlink, array("id" => $get['id'],
                                                           "text" => str_replace('http://','',re($get['url']))));
@@ -33,6 +31,9 @@ switch ($action):
                                                         "banner" => $banner));
             }
         }
+
+        if(empty($show))
+            $show = _no_entrys_yet;
 
         $index = show($dir."/links", array("head" => _links_head, "show" => $show));
     break;

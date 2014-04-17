@@ -16,7 +16,6 @@ $title = $pagetitle." - ".$where."";
 switch ($action):
     default:
         $qry = db("SELECT * FROM ".$db['linkus']." ORDER BY banner DESC"); $show = '';
-        $show = _no_entrys_yet;
         if(_rows($qry))
         {
             $color = 0;
@@ -45,6 +44,9 @@ switch ($action):
                                                          "url" => $get['url']));
             }
       }
+
+      if(empty($show))
+        $show = _no_entrys_yet;
 
       $index = show($dir."/linkus", array("head" => _linkus_head,
                                           "show" => $show));
