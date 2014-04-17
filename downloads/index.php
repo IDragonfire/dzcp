@@ -193,7 +193,7 @@ switch ($action):
     break;
 endswitch;
 
-## SETTINGS ##
+## INDEX OUTPUT ##
 page($index, $title, $where);
 
 ## OUTPUT BUFFER END ##
