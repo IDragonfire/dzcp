@@ -13,46 +13,40 @@ $where = _site_sponsor;
 
 ## SECTIONS ##
 switch ($action):
-default:
+    default:
+        $qry = db("SELECT * FROM ".$db['sponsoren']." WHERE site = 1 ORDER BY pos"); $color = 0; $show = '';
+        while($get = _fetch($qry)) {
+            if(empty($get['slink'])) {
+                $banner = show(_sponsors_bannerlink, array("id" => $get['id'],
+                                                           "title" => str_replace('http://', '', re($get['link'])),
+                                                           "banner" => "../banner/sponsors/site_".$get['id'].".".re($get['send'])));
+            } else {
+                $banner = show(_sponsors_bannerlink, array("id" => $get['id'],
+                                                           "title" => str_replace('http://', '', re($get['link'])),
+                                                           "banner" => $get['slink']));
+            }
 
-  $qry = db("SELECT * FROM ".$db['sponsoren']."
-               WHERE site = 1
-             ORDER BY pos");
-  while($get = _fetch($qry))
-  {
-    if(empty($get['slink']))
-    {
-        $banner = show(_sponsors_bannerlink, array("id" => $get['id'],
-                                                 "title" => str_replace('http://', '', re($get['link'])),
-                                                 "banner" => "../banner/sponsors/site_".$get['id'].".".re($get['send'])));
-    } else {
-      $banner = show(_sponsors_bannerlink, array("id" => $get['id'],
-                                                 "title" => str_replace('http://', '', re($get['link'])),
-                                                 "banner" => $get['slink']));
-    }
+            $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+            $show .= show($dir."/sponsors_show", array("class" => $class,
+                                                       "beschreibung" => bbcode($get['beschreibung']),
+                                                       "hits" => $get['hits'],
+                                                       "hit" => _hits,
+                                                       "banner" => $banner));
+        }
 
-     $show .= show($dir."/sponsors_show", array("class" => $class,
-                                                "beschreibung" => bbcode($get['beschreibung']),
-                                                "hits" => $get['hits'],
-                                                "hit" => _hits,
-                                                "banner" => $banner));
-  }
+        $index = show($dir."/sponsors", array("head" => _sponsor_head,
+                                              "show" => $show));
+    break;
+    case 'link';
+        $get = db("SELECT link FROM ".$db['sponsoren']."
+                   WHERE id = '".intval($_GET['id'])."'",true,false);
 
-  $index = show($dir."/sponsors", array("head" => _sponsor_head,
-                                        "show" => $show));
-break;
-case 'link';
+        db("UPDATE ".$db['sponsoren']."
+            SET `hits` = hits+1
+            WHERE id = '".intval($_GET['id'])."'");
 
-  $qry = db("SELECT link FROM ".$db['sponsoren']."
-             WHERE id = '".intval($_GET['id'])."'");
-  $get = _fetch($qry);
-
-  $upd = db("UPDATE ".$db['sponsoren']."
-             SET `hits` = hits+1
-             WHERE id = '".intval($_GET['id'])."'");
-
-  header("Location: ".$get['link']);
-break;
+        header("Location: ".$get['link']);
+    break;
 endswitch;
 
 ## INDEX OUTPUT ##
