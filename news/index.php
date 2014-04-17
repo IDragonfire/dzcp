@@ -127,7 +127,7 @@ else
                        ".$n_kat."
                        ORDER BY datum DESC
                        LIMIT ".($page - 1)*config('m_news').",".config('m_news')."");
-           $show = '';
+
            if(_rows($qry)) {
                 while($get = _fetch($qry))
                 {
@@ -726,7 +726,6 @@ else
             $entrys = cnt($db['news'], " ".$intern2." ".$n_kat);
         }
 
-        $color = 0; $show = '';
         while($get = _fetch($qry)) {
             $getk = db("SELECT kategorie FROM ".$db['newskat']." WHERE id = '".$get['kat']."'",false,true);
             $comments = cnt($db['newscomments'], " WHERE news = ".$get['id']."");

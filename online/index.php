@@ -29,7 +29,6 @@ if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("whereami","ip"))
                ORDER BY nick");
 }
 
-$show = ''; $color = 0;
 if(_rows($qry)) {
     while($get = _fetch($qry)) {
         if(!preg_match("#autor_#is",$get['whereami']))

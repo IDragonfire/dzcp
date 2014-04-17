@@ -895,7 +895,6 @@ case 'user';
             $qryuser = db("SELECT level FROM ".$db['users']." WHERE id = ".$userid,false,true);
             $gal = '';
             if($qryperm['perm_gallery'] < $qryuser['level'] || $qryperm['id'] == $userid) {
-                $color = 0;
                 while($getgl = _fetch($qrygl)) {
                     $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
                     $gal .= show($dir."/profil_gallery_show", array("picture" => img_size("inc/images/uploads/usergallery"."/".$qryperm['id']."_".$getgl['pic']),
@@ -2271,7 +2270,7 @@ case 'userlist';
                    LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     }
 
-    $color = 0; $userliste = '';
+    $userliste = '';
     while($get = _fetch($qry)) {
         $email = show(_emailicon, array("email" => eMailAddr($get['email'])));
         $hlsw = empty($get['hlswid']) ? "-" : show(_hlswicon, array("id" => re($get['hlswid']), "img" => "1", "css" => ""));
@@ -2379,7 +2378,7 @@ case 'buddys';
         $index = error(_error_have_to_be_logged, 1);
     else {
         $qry = db("SELECT buddy FROM ".$db['buddys']." WHERE user = ".$userid);
-        $too = ""; $color = 0; $buddys = "";
+        $too = ""; $buddys = "";
         while($get = _fetch($qry)) {
             $pn = show(_pn_write, array("id" => $get['buddy'], "nick" => data("nick",$get['buddy'])));
             $delete = show(_buddys_delete, array("id" => $get['buddy']));

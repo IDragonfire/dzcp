@@ -14,7 +14,7 @@ $where = _site_sponsor;
 ## SECTIONS ##
 switch ($action):
     default:
-        $qry = db("SELECT * FROM ".$db['sponsoren']." WHERE site = 1 ORDER BY pos"); $color = 0; $show = '';
+        $qry = db("SELECT * FROM ".$db['sponsoren']." WHERE site = 1 ORDER BY pos");
         while($get = _fetch($qry)) {
             if(empty($get['slink'])) {
                 $banner = show(_sponsors_bannerlink, array("id" => $get['id'],

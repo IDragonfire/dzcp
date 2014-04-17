@@ -17,7 +17,7 @@ default:
   $qry = db("SELECT * FROM ".$db['f_kats']." ORDER BY kid");
   while($get = _fetch($qry))
   {
-    $showt = ""; $color = 0;
+    $showt = "";
     $qrys = db("SELECT * FROM ".$db['f_skats']."
                 WHERE sid = '".$get['id']."'
                 ORDER BY pos");
@@ -181,7 +181,7 @@ case 'show';
     $entrys = cnt($db['f_threads'], " WHERE kid = ".intval($_GET['id']));
     $i = 2;
 
-    $color = 0; $threads = '';
+    $threads = '';
     while($get = _fetch($qry))
     {
       if($get['sticky'] == "1") $sticky = _forum_sticky;

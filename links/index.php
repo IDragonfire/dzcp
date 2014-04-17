@@ -14,7 +14,7 @@ $where = _site_links;
 ## SECTIONS ##
 switch ($action):
     default:
-        $qry = db("SELECT * FROM ".$db['links']." ORDER BY banner DESC"); $show = '';
+        $qry = db("SELECT * FROM ".$db['links']." ORDER BY banner DESC");
         if(_rows($qry)) {
             while($get = _fetch($qry)) {
                 if($get['banner']) {

@@ -26,7 +26,7 @@ switch ($action):
 
             $show = "";
             if(_rows($qrydl)) {
-                $display = "none"; $img = "expand"; $color = 0;
+                $display = "none"; $img = "expand";
                 while($getdl = _fetch($qrydl)) {
                     if(isset($_GET['hl']) && $_GET['hl'] == $getdl['id']) {
                         $display = "";

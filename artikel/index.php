@@ -28,7 +28,6 @@ default:
     $entrys = cnt($db['artikel']);
 
     if(_rows($qry)) {
-        $color = 0; $show = '';
         while($get = _fetch($qry)) {
             $getk = db("SELECT kategorie FROM ".$db['newskat']." WHERE id = '".$get['kat']."'",false,true);
             $titel = '<a style="display:block" href="?action=show&amp;id='.$get['id'].'">'.$get['titel'].'</a>';

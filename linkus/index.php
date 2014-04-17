@@ -15,18 +15,14 @@ $title = $pagetitle." - ".$where."";
 ## SECTIONS ##
 switch ($action):
     default:
-        $qry = db("SELECT * FROM ".$db['linkus']." ORDER BY banner DESC"); $show = '';
-        if(_rows($qry))
-        {
-            $color = 0;
-            while($get = _fetch($qry))
-            {
+        $qry = db("SELECT * FROM ".$db['linkus']." ORDER BY banner DESC");
+        if(_rows($qry)) {
+            while($get = _fetch($qry)) {
                 $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
                 $banner = show(_linkus_bannerlink, array("id" => $get['id'],
                                                          "banner" => re($get['text'])));
                 $edit = ""; $delete = "";
-                if(permission("links"))
-                {
+                if(permission("links")) {
                     $edit = show("page/button_edit", array("id" => $get['id'],
                                                            "action" => "action=admin&amp;do=edit",
                                                            "title" => _button_title_edit));
