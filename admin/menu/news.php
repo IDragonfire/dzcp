@@ -30,7 +30,7 @@ if(_adminMenu != 'true') exit;
                                            "delete" => _deleteicon_blank,
                                            "edit" => _editicon_blank,
                                            "mainkat" => _config_newskats_kat));
-      if($_GET['do'] == "delete")
+      if($do == "delete")
       {
         $qry = db("SELECT katimg FROM ".$db['newskat']."
                    WHERE id = '".intval($_GET['id'])."'");
@@ -42,7 +42,7 @@ if(_adminMenu != 'true') exit;
                    WHERE id = '".intval($_GET['id'])."'");
 
         $show = info(_config_newskat_deleted, "?admin=news");
-      } elseif($_GET['do'] == "add") {
+      } elseif($do == "add") {
         $files = get_files('../inc/images/newskat/',false,true);
         for($i=0; $i<count($files); $i++)
         {
@@ -60,7 +60,7 @@ if(_adminMenu != 'true') exit;
                                                 "nimg" => _config_newskats_katbild,
                                                 "upload" => _config_neskats_katbild_upload,
                                                 "img" => $img));
-      } elseif($_GET['do'] == "addnewskat") {
+      } elseif($do == "addnewskat") {
         if(empty($_POST['kat']))
         {
           $show = error(_config_empty_katname,1);
@@ -71,7 +71,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_config_newskats_added, "?admin=news");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry = db("SELECT * FROM ".$db['newskat']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -100,7 +100,7 @@ if(_adminMenu != 'true') exit;
                                                 "nimg" => _config_newskats_katbild,
                                                 "upload" => $upload,
                                                 "img" => $img));
-      } elseif($_GET['do'] == "editnewskat") {
+      } elseif($do == "editnewskat") {
         if(empty($_POST['kat']))
         {
           $show = error(_config_empty_katname,1);

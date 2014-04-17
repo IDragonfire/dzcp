@@ -2,7 +2,7 @@
 if(_adminMenu != 'true') exit;
 
   $where = $where.': '._kalender_head;
-    if($_GET['do'] == "add")
+    if($do == "add")
     {
       $dropdown_date = show(_dropdown_date, array("day" => dropdown("day",date("d",time())),
 				      	                                  "month" => dropdown("month",date("m",time())),
@@ -21,7 +21,7 @@ if(_adminMenu != 'true') exit;
                                                 "k_event" => "",
                                                 "k_beschreibung" => "",
                                                 "head" => _kalender_admin_head));
-    } elseif($_GET['do'] == "addevent") {
+    } elseif($do == "addevent") {
       if(empty($_POST['title']) || empty($_POST['event']))
       {
         if(empty($_POST['title']))     $show = error(_kalender_error_no_title,1);
@@ -36,7 +36,7 @@ if(_adminMenu != 'true') exit;
 
         $show = info(_kalender_successful_added,"?admin=kalender");
       }
-    } elseif($_GET['do'] == "edit") {
+    } elseif($do == "edit") {
       $qry = db("SELECT * FROM ".$db['events']."
                  WHERE id = '".intval($_GET['id'])."'");
       $get = _fetch($qry);
@@ -58,7 +58,7 @@ if(_adminMenu != 'true') exit;
                                                 "k_event" => re($get['title']),
                                                 "k_beschreibung" => re_bbcode($get['event']),
                                                 "head" => _kalender_admin_head_edit));
-    } elseif($_GET['do'] == "editevent") {
+    } elseif($do == "editevent") {
       if(empty($_POST['title']) || empty($_POST['event']))
       {
         if(empty($_POST['title']))     $show = error(_kalender_error_no_title,1);
@@ -74,7 +74,7 @@ if(_adminMenu != 'true') exit;
 
         $show = info(_kalender_successful_edited,"?admin=kalender");
       }
-    } elseif($_GET['do'] == "delete") {
+    } elseif($do == "delete") {
       $del = db("DELETE FROM ".$db['events']."
                  WHERE id = '".intval($_GET['id'])."'");
 

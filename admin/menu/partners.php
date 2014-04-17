@@ -2,7 +2,7 @@
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._partners_head;
-      if($_GET['do'] == "add")
+      if($do == "add")
       {
         $files = get_files('../banner/partners/',false,true);
         for($i=0; $i<count($files); $i++)
@@ -21,7 +21,7 @@ if(_adminMenu != 'true') exit;
                                                   "textlink" => _partnerbuttons_textlink,
                                                   "banners" => $banners,
                                                   "what" => _button_value_add));
-      } elseif($_GET['do'] == "addbutton") {
+      } elseif($do == "addbutton") {
         if(empty($_POST['link']))
         {
           $show = error(_empty_url, 1);
@@ -33,7 +33,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_partners_added, "?admin=partners");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry = db("SELECT * FROM ".$db['partners']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -58,7 +58,7 @@ if(_adminMenu != 'true') exit;
                                                   "textlink" => _partnerbuttons_textlink,
                                                   "banners" => $banners,
                                                   "what" => _button_value_edit));
-      } elseif($_GET['do'] == "editbutton") {
+      } elseif($do == "editbutton") {
         if(empty($_POST['link']))
         {
           $show = error(_empty_url, 1);
@@ -71,7 +71,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_partners_edited, "?admin=partners");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $del = db("DELETE FROM ".$db['partners']."
                    WHERE id = '".intval($_GET['id'])."'");
 

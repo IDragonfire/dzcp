@@ -2,14 +2,14 @@
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._smileys_head;
-      if($_GET['do'] == "add")
+      if($do == "add")
       {
         $show = show($dir."/form_smileys", array("head" => _smileys_head_add,
                                                  "what" => _button_value_add,
                                                  "do" => "addsmiley",
                                                  "smiley" => _smileys_smiley,
                                                  "bbcode" => _smileys_bbcode));
-      } elseif($_GET['do'] == "addsmiley") {
+      } elseif($do == "addsmiley") {
         $tmpname = $_FILES['smiley']['tmp_name'];
         $name = $_FILES['smiley']['name'];
         $type = $_FILES['smiley']['type'];
@@ -30,11 +30,11 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_smileys_added, "?admin=smileys");
         }
-      } elseif($_GET['do'] == "delete")
+      } elseif($do == "delete")
       {
         @unlink(basePath."/inc/images/smileys/".$_GET['id']."");
         $show = info(_smileys_deleted, "?admin=smileys");
-      } elseif($_GET['do'] == "edit")
+      } elseif($do == "edit")
       {
         $akt = preg_replace("#.gif#Uis","",$_GET['id']);
         $show = show($dir."/form_smileys_edit", array("head" => _smileys_head_edit,
@@ -42,7 +42,7 @@ if(_adminMenu != 'true') exit;
                                                       "id" => $_GET['id'],
                                                       "value" => _button_value_edit,
                                                       "akt" => $akt));
-      } elseif($_GET['do'] == "editsmiley"){
+      } elseif($do == "editsmiley"){
         if(empty($_POST['bbcode']))
         {
           $show = error(_smileys_error_bbcode);

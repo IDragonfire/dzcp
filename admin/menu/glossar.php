@@ -2,7 +2,7 @@
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._server_admin_head;
-      if($_GET['do'] == 'add')
+      if($do == 'add')
       {
         $show = show($dir."/form_glossar", array("head" => _admin_glossar_add,
                                                  "link" => _glossar_bez,
@@ -12,7 +12,7 @@ if(_adminMenu != 'true') exit;
                                                  "do" => "insert",
                                                  "value" => _button_value_add
                                                  ));
-      } elseif($_GET['do'] == 'insert') {
+      } elseif($do == 'insert') {
         if(empty($_POST['link']) || empty($_POST['beschreibung']) || preg_match("#[[:punct:]]]#is",$_POST['link']))
         {
           if(empty($_POST['link']))       $show = error(_admin_error_glossar_word);
@@ -25,7 +25,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_admin_glossar_added,'?admin=glossar');
         }
-      } elseif($_GET['do'] == 'edit') {
+      } elseif($do == 'edit') {
         $qry = db("SELECT * FROM ".$db['glossar']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -38,7 +38,7 @@ if(_adminMenu != 'true') exit;
                                                  "do" => "update&amp;id=".$_GET['id'],
                                                  "value" => _button_value_edit
                                                  ));
-      } elseif($_GET['do'] == 'update') {
+      } elseif($do == 'update') {
         if(empty($_POST['link']) || empty($_POST['beschreibung']) || preg_match("#[[:punct:]]]#is",$_POST['link']))
         {
           if(empty($_POST['link']))       $show = error(_admin_error_glossar_word);
@@ -52,7 +52,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_admin_glossar_edited,'?admin=glossar');
         }
-      } elseif($_GET['do'] == 'delete') {
+      } elseif($do == 'delete') {
         $del = db("DELETE FROM ".$db['glossar']."
                    WHERE id = '".intval($_GET['id'])."'");
 

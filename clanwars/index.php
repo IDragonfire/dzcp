@@ -819,7 +819,7 @@ case 'details';
                                        "cw_bericht" => $bericht,
                                        "screenshots" => $screens));
 
-  if($_GET['do'] == "add")
+  if($do == "add")
   {
         if(_rows(db("SELECT `id` FROM ".$db['cw']." WHERE `id` = '".(int)$_GET['id']."'")) != 0)
         {
@@ -898,7 +898,7 @@ case 'details';
         }
   }
 
-  if($_GET['do'] == "delete")
+  if($do == "delete")
   {
     $qry = db("SELECT reg FROM ".$db['cw_comments']."
                WHERE id = '".intval($_GET['cid'])."'");
@@ -913,7 +913,7 @@ case 'details';
     } else {
       $index = error(_error_wrong_permissions, 1);
     }
-  } elseif($_GET['do'] == "editcom") {
+  } elseif($do == "editcom") {
     $qry = db("SELECT * FROM ".$db['cw_comments']."
                WHERE id = '".intval($_GET['cid'])."'");
     $get = _fetch($qry);
@@ -934,7 +934,7 @@ case 'details';
       } else {
         $index = error(_error_edit_post,1);
       }
-    } elseif($_GET['do'] == "edit") {
+    } elseif($do == "edit") {
       $qry = db("SELECT * FROM ".$db['cw_comments']."
                  WHERE id = '".intval($_GET['cid'])."'");
       $get = _fetch($qry);
@@ -981,7 +981,7 @@ case 'details';
 break;
 case 'compreview';
   header("Content-type: text/html; charset=utf-8");
-  if($_GET['do'] == 'edit')
+  if($do == 'edit')
   {
     $qry = db("SELECT * FROM ".$db['cw_comments']."
                WHERE id = '".intval($_GET['cid'])."'");
@@ -1173,7 +1173,7 @@ case 'update';
   }
 break;
 case 'admin';
-  if($_GET['do'] == 'edit') header("Location: ../admin/?admin=cw&do=edit&id=".$_GET['id']);
+  if($do == 'edit') header("Location: ../admin/?admin=cw&do=edit&id=".$_GET['id']);
 break;
 case 'resetplayers';
   if(permission("clanwars")) {

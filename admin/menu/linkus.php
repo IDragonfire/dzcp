@@ -1,7 +1,7 @@
 <?php
 if(_adminMenu != 'true') exit;
 
-      if($_GET['do'] == "new")
+      if($do == "new")
       {
         $show = show($dir."/form_linkus", array("head" => _linkus_admin_head,
                                                 "link" => _linkus_link,
@@ -17,7 +17,7 @@ if(_adminMenu != 'true') exit;
                                                 "ltext" => _linkus_bsp_bannerurl,
                                                 "what" => _button_value_add,
                                                 "do" => "add"));
-      } elseif($_GET['do'] == "add") {
+      } elseif($do == "add") {
         if(empty($_POST['link']) || empty($_POST['beschreibung']) || empty($_POST['text']))
         {
           if(empty($_POST['link']))             $show = error(_linkus_empty_link, 1);
@@ -32,7 +32,7 @@ if(_adminMenu != 'true') exit;
   
           $show = info(_linkus_added, "?admin=linkus");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry = db("SELECT * FROM ".$db['linkus']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -49,7 +49,7 @@ if(_adminMenu != 'true') exit;
                                                 "ltext" => $get['text'],
                                                 "what" => _button_value_edit,
                                                 "do" => "editlink&amp;id=".$_GET['id'].""));
-      } elseif($_GET['do'] == "editlink") {
+      } elseif($do == "editlink") {
         if(empty($_POST['link']) || empty($_POST['beschreibung']) || empty($_POST['text']))
         {
           if(empty($_POST['link']))             $show = error(_linkus_empty_link, 1);
@@ -65,7 +65,7 @@ if(_adminMenu != 'true') exit;
   
           $show = info(_linkus_edited, "?admin=linkus");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db['linkus']."
                    WHERE id = '".intval($_GET['id'])."'");
   

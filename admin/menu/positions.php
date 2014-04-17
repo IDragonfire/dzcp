@@ -30,7 +30,7 @@ if(_adminMenu != 'true') exit;
                                          "edit" => _editicon_blank,
                                          "delete" => _deleteicon_blank));
 
-      if($_GET['do'] == "edit")
+      if($do == "edit")
       {
         $qry1 = db("SELECT * FROM ".$db['pos']."
                     ORDER BY pid");
@@ -57,7 +57,7 @@ if(_adminMenu != 'true') exit;
                                              "nothing" => _nothing,
                                              "what" => _button_value_edit,
                                              "dlkat" => _admin_download_kat));
-      } elseif($_GET['do'] == "editpos") {
+      } elseif($do == "editpos") {
         if(empty($_POST['kat']))
         {
           $show = error(_pos_empty_kat,1);
@@ -102,13 +102,13 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_pos_admin_edited, "?admin=positions");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         db("DELETE FROM ".$db['pos']." WHERE id = '".intval($_GET['id'])."'");
         db("DELETE FROM ".$db['permissions']." WHERE pos = '".intval($_GET['id'])."'");
 
         $show = info(_pos_admin_deleted, "?admin=positions");
 
-      } elseif($_GET['do'] == "new") {
+      } elseif($do == "new") {
         $qry = db("SELECT * FROM ".$db['pos']."
                    ORDER BY pid");
         while($get = _fetch($qry))
@@ -129,7 +129,7 @@ if(_adminMenu != 'true') exit;
                                              "kat" => "",
                                              "what" => _button_value_add,
                                              "dlkat" => _admin_download_kat));
-      } elseif($_GET['do'] == "add") {
+      } elseif($do == "add") {
         if(empty($_POST['kat']))
         {
           $show = error(_pos_empty_kat,1);

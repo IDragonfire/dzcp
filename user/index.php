@@ -1199,7 +1199,7 @@ case 'usergb';
   $where = _site_user_profil;
     if(db("SELECT `id` FROM ".$db['users']." WHERE `id` = '".(int)$_GET['id']."'",true) != 0)
     {
-        if($_GET['do'] == "add")
+        if($do == "add")
         {
             if($userid >= 1) $toCheck = empty($_POST['eintrag']);
             else
@@ -1267,7 +1267,7 @@ case 'usergb';
                     $index = info(_usergb_entry_successful, "?action=user&amp;id=".$_GET['id']."&show=gb");
                 }
             }
-        } elseif($_GET['do'] == 'edit') {
+        } elseif($do == 'edit') {
                 if($_POST['reg'] == $userid || permission('editusers'))
                 {
                     if($_POST['reg'] == 0)
@@ -1388,7 +1388,7 @@ case 'editprofile';
 
       $index = info(_info_edit_gallery_done, "?action=editprofile&show=gallery");
 
-    } elseif($_GET['do'] == "edit")    {
+    } elseif($do == "edit")    {
 
         $check_user = db_stmt("SELECT id FROM ".$db['users']." WHERE `user`= ? AND id != ?",
                 array('is', $userid, up($_POST['user'])),true,false);
@@ -1476,7 +1476,7 @@ case 'editprofile';
                   `perm_gallery` = '".up($_POST['visibility_gallery'])."'
            WHERE id = ".$userid);
           }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
                 $qrydel = db("SELECT id,nick,email,hp FROM ".$db['users']."
                                             WHERE id = '".intval($userid)."'");
                 $getdel = _fetch($qrydel);
@@ -1819,7 +1819,7 @@ case 'msg';
     {
         $index = error(_error_have_to_be_logged, 1);
     } else {
-      if($_GET['do'] == "show")
+      if($do == "show")
       {
       $qry = db("SELECT * FROM ".$db['msg']."
                            WHERE id = ".intval($_GET['id']));
@@ -1856,7 +1856,7 @@ case 'msg';
                                                 "sendnews" => $sendnews,
                                                 "delete" => $delete));
       }
-      } elseif($_GET['do'] == "sendnewsdone") {
+      } elseif($do == "sendnewsdone") {
           $qry = db("SELECT * FROM ".$db['msg']."
                      WHERE id = '".intval($_GET['id'])."'");
           while($get = _fetch($qry))
@@ -1869,7 +1869,7 @@ case 'msg';
 
             $index = info(_send_news_done, "?action=msg&do=show&id=".$get['id']."");
           }
-      } elseif($_GET['do'] == "showsended") {
+      } elseif($do == "showsended") {
           $qry = db("SELECT * FROM ".$db['msg']."
                      WHERE id = ".intval($_GET['id']));
           $get = _fetch($qry);
@@ -1886,7 +1886,7 @@ case 'msg';
                                                 "sendnews" => "",
                                                 "delete" => ""));
       }
-      } elseif($_GET['do'] == "answer") {
+      } elseif($do == "answer") {
           $qry = db("SELECT * FROM ".$db['msg']."
                                WHERE id = ".intval($_GET['id']));
           $get = _fetch($qry);
@@ -1909,7 +1909,7 @@ case 'msg';
                                               "nick" => autor($get['von']),
                                               "zitat" => zitat(autor($get['von']),$get['nachricht'])));
       }
-      } elseif($_GET['do'] == "pn") {
+      } elseif($do == "pn") {
           if(!$chkMe)       $index = error(_error_have_to_be_logged);
           elseif($_GET['id'] == $userid) $index = error(_error_msg_self, 1);
           else {
@@ -1929,7 +1929,7 @@ case 'msg';
                                               "nick" => autor($_GET['id']),
                                               "zitat" => ""));
           }
-      } elseif($_GET['do'] == "sendanswer") {
+      } elseif($do == "sendanswer") {
         if(empty($_POST['titel']))
           {
               $index = error(_empty_titel, 1);
@@ -1950,7 +1950,7 @@ case 'msg';
 
         $index = info(_msg_answer_done, "?action=msg");
           }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
       $qry = db("SELECT * FROM ".$db['msg']."
                  WHERE an = '".$userid."'
                  AND see_u = 0");
@@ -1971,7 +1971,7 @@ case 'msg';
           }
 
         header("Location: ?action=msg");
-      } elseif($_GET['do'] == "deletethis") {
+      } elseif($do == "deletethis") {
       $qry = db("SELECT * FROM ".$db['msg']."
                  WHERE id = '".intval($_GET['id'])."'");
       $get = _fetch($qry);
@@ -1987,7 +1987,7 @@ case 'msg';
       }
 
       $index = info(_msg_deleted, "?action=msg");
-    } elseif($_GET['do'] == "deletesended") {
+    } elseif($do == "deletesended") {
       $qry = db("SELECT * FROM ".$db['msg']."
                  WHERE von = '".$userid."'
                  AND see = 1");
@@ -2008,7 +2008,7 @@ case 'msg';
           }
 
           header("Location: ?action=msg");
-      } elseif($_GET['do'] == "new") {
+      } elseif($do == "new") {
           $qry = db("SELECT id,nick FROM ".$db['users']."
                  WHERE id != '".$userid."'
                                ORDER BY nick");
@@ -2044,7 +2044,7 @@ case 'msg';
                                                                             "posttitel" => "",
                                                                             "error" => "",
                                                                             "posteintrag" => ""));
-      } elseif($_GET['do'] == "send") {
+      } elseif($do == "send") {
         if(empty($_POST['titel']) || empty($_POST['eintrag']) || $_POST['buddys'] == "-" && $_POST['users'] == "-" || $_POST['buddys'] != "-"
       && $_POST['users'] != "-" || $_POST['users'] == $userid || $_POST['buddys'] == $userid)
           {
@@ -2578,7 +2578,7 @@ case 'admin';
 
         setIpcheck("ident(".$userid."_".intval($_GET['id']).")");
       }
-    } elseif($_GET['do'] == "update") {
+    } elseif($do == "update") {
       if($_POST)
       {
     // permissions
@@ -2642,7 +2642,7 @@ case 'admin';
         setIpcheck("upduser(".$userid."_".intval($_GET['user']).")");
       }
       $index = info(_admin_user_edited, "?action=userlist");
-    } elseif($_GET['do'] == "updateme") {
+    } elseif($do == "updateme") {
       $del = db("DELETE FROM ".$db['squaduser']."
                  WHERE user = '".$userid."'");
       $del = db("DELETE FROM ".$db['userpos']."
@@ -2668,7 +2668,7 @@ case 'admin';
       }
 
       $index = info(_admin_user_edited, "?action=user&amp;id=".$userid."");
-    } elseif($_GET['do'] == "delete") {
+    } elseif($do == "delete") {
       $index = show(_user_delete_verify, array("user" => autor($_GET['id']),
                                                "id" => $_GET['id']));
 

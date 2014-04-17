@@ -57,7 +57,7 @@ if(_adminMenu != 'true') exit;
                                             "delete" => _deleteicon_blank,
                                             "show" => $show_,
                                             "konto" => $konto));
-      if($_GET['do'] == "update")
+      if($do == "update")
       {
         $qry = db("UPDATE ".$db['settings']."
                    SET `k_inhaber`    = '".up($_POST['inhaber'])."',
@@ -70,13 +70,13 @@ if(_adminMenu != 'true') exit;
                        `bic`          = '".up($_POST['bic'])."'
                    WHERE id = 1");
         $show = info(_config_set, "?admin=konto");
-      } elseif($_GET['do'] == "new") {
+      } elseif($do == "new") {
         $show = show($dir."/form_clankasse", array("newhead" => _clankasse_new_head,
                                                    "do" => "add",
                                                    "kat" => "",
                                                    "what" => _button_value_add,
                                                    "dlkat" => _admin_download_kat));
-      } elseif($_GET['do'] == "add") {
+      } elseif($do == "add") {
         if(empty($_POST['kat']))
         {
           $show = error(_clankasse_empty_kat, 1);
@@ -86,7 +86,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_clankasse_kat_added, "?admin=konto");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry = db("SELECT * FROM ".$db['c_kats']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -97,7 +97,7 @@ if(_adminMenu != 'true') exit;
                                                    "top" => _config_c_clankasse,
                                                    "what" => _button_value_edit,
                                                    "dlkat" => _admin_download_kat));
-      } elseif($_GET['do'] == "editkat") {
+      } elseif($do == "editkat") {
         if(empty($_POST['kat']))
         {
           $show = error(_clankasse_empty_kat, 1);
@@ -108,7 +108,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_clankasse_kat_edited, "?admin=konto");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db['c_kats']."
                    WHERE id = '".intval($_GET['id'])."'");
 

@@ -30,7 +30,7 @@ if(_adminMenu != 'true') exit;
                                          "edit" => _editicon_blank,
                                          "delete" => _deleteicon_blank));
 
-      if($_GET['do'] == "edit")
+      if($do == "edit")
       {
         $qry = db("SELECT * FROM ".$db['dl_kat']."
                    WHERE id = '".intval($_GET['id'])."'");
@@ -41,7 +41,7 @@ if(_adminMenu != 'true') exit;
                                                 "kat" => re($get['name']),
                                                 "what" => _button_value_edit,
                                                 "dlkat" => _dl_dlkat));
-      } elseif($_GET['do'] == "editkat") {
+      } elseif($do == "editkat") {
         if(empty($_POST['kat']))
         {
           $show = error(_dl_empty_kat,1);
@@ -52,19 +52,19 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_dl_admin_edited, "?admin=dl");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db['dl_kat']."
                    WHERE id = '".intval($_GET['id'])."'");
 
         $show = info(_dl_admin_deleted, "?admin=dl");
 
-      } elseif($_GET['do'] == "new") {
+      } elseif($do == "new") {
         $show = show($dir."/dlkats_form", array("newhead" => _dl_new_head,
                                                 "do" => "add",
                                                 "kat" => "",
                                                 "what" => _button_value_add,
                                                 "dlkat" => _dl_dlkat));
-      } elseif($_GET['do'] == "add") {
+      } elseif($do == "add") {
         if(empty($_POST['kat']))
         {
           $show = error(_dl_empty_kat,1);

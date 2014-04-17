@@ -17,7 +17,7 @@ default:
   $qry = db("SELECT * FROM ".$db['f_kats']." ORDER BY kid");
   while($get = _fetch($qry))
   {
-    $showt = "";
+    $showt = ""; $color = 0;
     $qrys = db("SELECT * FROM ".$db['f_skats']."
                 WHERE sid = '".$get['id']."'
                 ORDER BY pos");
@@ -40,19 +40,20 @@ default:
                      ORDER BY s1.date DESC");
         $getlp = _fetch($qrylp);
 
-        if(cnt($db['f_threads'], " WHERE kid = '".$gets['id']."'") == "0")
+        $lpost = "-"; $lpdate = "";
+        if(cnt($db['f_threads'], " WHERE kid = '".$gets['id']."'"))
         {
-          $lpost = "-";
-          $lpdate = "";
-        } elseif($getlt['first'] == "1") {
-          $lpost .= show(_forum_thread_lpost, array("nick" => autor($getlt['t_reg'], '', $getlt['t_nick'], $getlt['t_email']),
-                                                    "date" => date("d.m.y H:i", $getlt['t_date'])._uhr));
+           $lpost = '';
+           if($getlt['first'] == "1") {
+              $lpost .= show(_forum_thread_lpost, array("nick" => autor($getlt['t_reg'], '', $getlt['t_nick'], $getlt['t_email']),
+                                                        "date" => date("d.m.y H:i", $getlt['t_date'])._uhr));
 
-          $lpdate = $getlt['t_date'];
-        } elseif($getlt['first'] == "0") {
-          $lpost .= show(_forum_thread_lpost, array("nick" => autor($getlp['reg'], '', $getlp['nick'], $getlp['email']),
-                                                    "date" => date("d.m.y H:i", $getlp['date'])._uhr));
-          $lpdate = $getlp['date'];
+              $lpdate = $getlt['t_date'];
+            } elseif($getlt['first'] == "0") {
+              $lpost .= show(_forum_thread_lpost, array("nick" => autor($getlp['reg'], '', $getlp['nick'], $getlp['email']),
+                                                        "date" => date("d.m.y H:i", $getlp['date'])._uhr));
+              $lpdate = $getlp['date'];
+            }
         }
 
         $threads = cnt($db['f_threads'], " WHERE kid = '".$gets['id']."'");
@@ -91,6 +92,7 @@ default:
                ORDER BY forumposts DESC, id
                LIMIT 5");
 
+  $show_top = '';
   while($gettp = _fetch($qrytp))
   {
     $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
@@ -179,6 +181,7 @@ case 'show';
     $entrys = cnt($db['f_threads'], " WHERE kid = ".intval($_GET['id']));
     $i = 2;
 
+    $color = 0; $threads = '';
     while($get = _fetch($qry))
     {
       if($get['sticky'] == "1") $sticky = _forum_sticky;
@@ -197,9 +200,8 @@ case 'show';
 
       if(empty($_POST['suche']))
       {
-        $qrys = db("SELECT id FROM ".$db['f_skats']."
-                    WHERE id = '".intval($_GET['id'])."'");
-        $gets = _fetch($qrys);
+        $gets = db("SELECT id FROM ".$db['f_skats']."
+                    WHERE id = '".intval($_GET['id'])."'",false,true);
 
         $threadlink = show(_forum_thread_link, array("topic" => re(cut($get['topic'],config('l_forumtopic'))),
                                                      "id" => $get['id'],
@@ -245,13 +247,12 @@ case 'show';
       $i--;
     }
 
-    $qrys = db("SELECT id,kattopic FROM ".$db['f_skats']."
-                WHERE id = '".intval($_GET['id'])."'");
-    $gets = _fetch($qrys);
+    $gets = db("SELECT id,kattopic FROM ".$db['f_skats']."
+                WHERE id = '".intval($_GET['id'])."'",false,true);
 
     $search = show($dir."/forum_skat_search", array("head_search" => _forum_head_skat_search,
                                                     "id" => $_GET['id'],
-                                                    "suchwort" => re($_POST['suche'])));
+                                                    "suchwort" => isset($_POST['suche']) ? re($_POST['suche']) : ''));
     $nav = nav($entrys,config('m_fthreads'),"?action=show&amp;id=".$_GET['id']."");
 
     if(!empty($_POST['suche']))
@@ -277,13 +278,11 @@ case 'show';
                                                     "new" => $new,));
     }
 
-    $qrysub = db("SELECT sid FROM ".$db['f_skats']."
-                  WHERE id = '".intval($_GET['id'])."'");
-    $subkat = _fetch($qrysub);
+    $subkat = db("SELECT sid FROM ".$db['f_skats']."
+                  WHERE id = '".intval($_GET['id'])."'",false,true);
 
-    $qryk = db("SELECT name FROM ".$db['f_kats']."
-                WHERE id = '".$subkat['sid']."'");
-    $kat = _fetch($qryk);
+    $kat = db("SELECT name FROM ".$db['f_kats']."
+                WHERE id = '".$subkat['sid']."'",false,true);
 
     $wheres = show(_forum_subkat_where, array("where" => re($gets['kattopic']),
                                               "id" => $gets['id']));
@@ -433,20 +432,17 @@ case 'showthread';
         $i++;
       }
 
-      $qry = db("SELECT * FROM ".$db['f_threads']."
-                 WHERE id = '".intval($_GET['id'])."'");
-      $get = _fetch($qry);
+      $get = db("SELECT * FROM ".$db['f_threads']."
+                 WHERE id = '".intval($_GET['id'])."'",false,true);
 
-      $qryw = db("SELECT s1.kid,s1.topic,s2.kattopic,s2.sid
+      $getw = db("SELECT s1.kid,s1.topic,s2.kattopic,s2.sid
                   FROM ".$db['f_threads']." AS s1
                   LEFT JOIN ".$db['f_skats']." AS s2
                   ON s1.kid = s2.id
-                  WHERE s1.id = '".intval($_GET['id'])."'");
-      $getw = _fetch($qryw);
+                  WHERE s1.id = '".intval($_GET['id'])."'",false,true);
 
-      $qrykat = db("SELECT name FROM ".$db['f_kats']."
-                    WHERE id = '".$getw['sid']."'");
-      $kat = _fetch($qrykat);
+      $kat = db("SELECT name FROM ".$db['f_kats']."
+                    WHERE id = '".$getw['sid']."'",false,true);
 
       $wheres = show(_forum_post_where, array("wherepost" => re($getw['topic']),
                                               "wherekat" => re($getw['kattopic']),
@@ -486,8 +482,8 @@ case 'showthread';
 
       if(permission("forum"))
       {
-        if($get['sticky'] == "1") $sticky = "checked=\"checked\"";
-        if($get['global'] == "1") $global = "checked=\"checked\"";
+        $sticky = $get['sticky'] ? "checked=\"checked\"" : "";
+        $global = $get['global'] ? "checked=\"checked\"" : "";
 
         if($get['closed'] == "1")
         {
@@ -500,6 +496,7 @@ case 'showthread';
 
         $qryok = db("SELECT * FROM ".$db['f_kats']."
                      ORDER BY kid");
+        $move = '';
         while($getok = _fetch($qryok))
         {
           $skat = "";
@@ -532,26 +529,26 @@ case 'showthread';
                                            "sticky" => $sticky));
       }
 
-      $ftxt = hl($get['t_text'], $_GET['hl']);
-      if($_GET['hl']) $text = bbcode($ftxt['text']);
+      $hl = isset($_GET['hl']) ? $_GET['hl'] : '';
+      $ftxt = hl($get['t_text'], $hl);
+      if(isset($_GET['hl'])) $text = bbcode($ftxt['text']);
       else $text = bbcode($get['t_text']);
 
       if($chkMe == "4") $posted_ip = $get['ip'];
       else $posted_ip = _logged;
 
       $titel = show(_eintrag_titel_forum, array("postid" => "1",
-                                                                                  "datum" => date("d.m.Y", $get['t_date']),
-                                                                                  "zeit" => date("H:i", $get['t_date'])._uhr,
-                                          "url" => '?action=showthread&amp;id='.intval($_GET['id']).'&amp;page=1#p1',
-                                          "edit" => $editt,
-                                          "delete" => ""));
+                                                "datum" => date("d.m.Y", $get['t_date']),
+                                                "zeit" => date("H:i", $get['t_date'])._uhr,
+                                                "url" => '?action=showthread&amp;id='.intval($_GET['id']).'&amp;page=1#p1',
+                                                "edit" => $editt,
+                                                "delete" => ""));
 
 
       if($get['t_reg'] != 0)
       {
-        $qryu = db("SELECT nick,icq,hp,email FROM ".$db['users']."
-                    WHERE id = '".$get['t_reg']."'");
-        $getu = _fetch($qryu);
+        $getu = db("SELECT nick,icq,hp,email FROM ".$db['users']."
+                    WHERE id = '".$get['t_reg']."'",false,true);
 
         $email = show(_emailicon_forum, array("email" => eMailAddr($getu['email'])));
         $pn = show(_pn_write_forum, array("id" => $get['t_reg'],
@@ -578,14 +575,10 @@ case 'showthread';
         if(preg_match("#".$_GET['hl']."#i",$nick)) $ftxt['class'] = 'class="highlightSearchTarget"';
       }
 
-      $qryabo = db("SELECT user,fid FROM ".$db['f_abo']."
-                    WHERE user = '".$userid."'
-                    AND fid = '".intval($_GET['id'])."'");
-      $getabo = _fetch($qryabo);
-      if(_rows($qryabo)) $abo = 'checked="checked"';
-
-      if(!$chkMe)
-      {
+      $abo = db("SELECT user FROM ".$db['f_abo']."
+                 WHERE user = '".$userid."'
+                 AND fid = '".intval($_GET['id'])."'",true) ? 'checked="checked"' : '';
+      if(!$chkMe) {
           $f_abo = '';
       } else {
           $f_abo = show($dir."/forum_abo", array("id" => intval($_GET['id']),
@@ -596,11 +589,11 @@ case 'showthread';
                                             ));
         }
 
-        if(empty($get['vote'])) $vote = "";
-        else {
+      $vote = "";
+      if(!empty($get['vote'])) {
         include_once(basePath.'/inc/menu-functions/fvote.php');
         $vote = '<tr><td>'.fvote($get['vote']).'</td></tr>';
-          }
+      }
 
       $title = re($getw['topic']).' - '.$title;
       $index = show($dir."/forum_posts", array("head" => _forum_head,
@@ -630,8 +623,8 @@ case 'showthread';
                                                "lp" => cnt($db['f_posts'], " WHERE sid = '".intval($_GET['id'])."'")+1,
                                                "add" => $add,
                                                "nav" => $nav,
-                                                                     "vote" => $vote,
-                                                                     "f_abo" => $f_abo,
+                                               "vote" => $vote,
+                                               "f_abo" => $f_abo,
                                                "show" => $show));
     }
   } else {
@@ -639,18 +632,16 @@ case 'showthread';
   }
 break;
 case 'thread';
-  if($_GET['do'] == "edit")
+  if($do == "edit")
   {
-    $qry = db("SELECT * FROM ".$db['f_threads']."
-               WHERE id = '".intval($_GET['id'])."'");
-    $get = _fetch($qry);
+    $get = db("SELECT * FROM ".$db['f_threads']."
+               WHERE id = '".intval($_GET['id'])."'",false,true);
     if($get['t_reg'] == $userid || permission("forum"))
     {
       if(permission("forum"))
       {
-        if($get['sticky'] == 1) $sticky = "checked=\"checked\"";
-        if($get['global'] == 1) $global = "checked=\"checked\"";
-
+        $sticky = $get['sticky'] ? "checked=\"checked\"" : "";
+        $global = $get['global'] ? "checked=\"checked\"" : "";
         $admin = show($dir."/form_admin", array("adminhead" => _forum_admin_head,
                                                 "addsticky" => _forum_admin_addsticky,
                                                 "sticky" => $sticky,
@@ -669,25 +660,25 @@ case 'thread';
                                                     "hphead" => _hp));
       }
 
-      $qryv = db("SELECT * FROM ".$db['votes']." WHERE id = '".$get['vote']."'");
-      $getv = _fetch($qryv);
+        $getv = db("SELECT * FROM ".$db['votes']." WHERE id = '".$get['vote']."'",false,true);
+        $fget = db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1
+                    LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id
+                    WHERE s2.`id` = '".intval($get['kid'])."'",false,true);
 
-      $toggle = 'collapse';
+        $intern = ''; $intern_kat = ''; $isclosed = ''; $display = ''; $toggle = 'collapse';
+        $internVisible = '';
+        if($getv['intern'])
+            $intern = 'checked="checked"';
 
+        if($fget['intern']) {
+            $intern = 'checked="checked"'; $internVisible = 'style="display:none"';
+        }
 
-            $fget = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1
-                         LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id
-                         WHERE s2.`id` = '".intval($get['kid'])."'"));
-
-            if($getv['intern'] == "1") $intern = 'checked="checked"';
-          $intern = ''; $intern_kat = '';
-          if($fget['intern'] == "1") { $intern = 'checked="checked"'; $internVisible = 'style="display:none"'; };
-      if($getv['closed'] == "1")
-          {
+        if($getv['closed']) {
             $isclosed = "checked=\"checked\"";
             $display = 'none';
-        $toggle = 'expand';
-          }
+            $toggle = 'expand';
+        }
 
         if(empty($get['vote'])) {
         $vote = show($dir."/form_vote", array("head" => _votes_admin_head,
@@ -705,13 +696,13 @@ case 'thread';
                                               "error" => "",
                                               "br1" => "<!--",
                                               "br2" => "-->",
-                                                  "display" => "none",
+                                              "display" => "none",
                                               "a8" => "",
                                               "a9" => "",
                                               "a10" => "",
                                               "intern" => "",
                                               "tgl" => "expand",
-                                                  "vote_del" => _forum_vote_del,
+                                              "vote_del" => _forum_vote_del,
                                               "interna" => _votes_admin_intern,
                                               "question" => _votes_admin_question,
                                               "answer" => _votes_admin_answer));
@@ -719,7 +710,7 @@ case 'thread';
         $vote = show($dir."/form_vote", array("head" => _votes_admin_edit_head,
                                               "value" => "edit",
                                               "id" => $getv['id'],
-                                              "what" => $what,
+                                              "what" => '',
                                               "value" => _button_value_edit,
                                               "br1" => "",
                                               "br2" => "",
@@ -776,7 +767,7 @@ case 'thread';
     } else {
       $index = error(_error_wrong_permissions, 1);
     }
-  } elseif($_GET['do'] == "editthread") {
+  } elseif($do == "editthread") {
     $qry = db("SELECT * FROM ".$db['f_threads']."
                WHERE id = '".intval($_GET['id'])."'");
     $get = _fetch($qry);
@@ -1082,7 +1073,7 @@ case 'thread';
 
       }
     } else $index = error(_error_wrong_permissions, 1);
-  } elseif($_GET['do'] == "add") {
+  } elseif($do == "add") {
     if(settings("reg_forum") && !$chkMe)
     {
       $index = error(_error_unregistered,1);
@@ -1174,7 +1165,7 @@ case 'thread';
         $index = error(show(_error_flood_post, array("sek" => config('f_forum'))), 1);
       }
     }
-  } elseif($_GET['do'] == "addthread") {
+  } elseif($do == "addthread") {
       if(_rows(db("SELECT id FROM ".$db['f_skats']." WHERE id = '".intval($_GET['kid'])."'")) == 0) {
           $index = error(_id_dont_exist, 1);
       } else {
@@ -1409,7 +1400,7 @@ case 'thread';
   }
 break;
 case 'post';
-  if($_GET['do'] == "edit")
+  if($do == "edit")
   {
     $qry = db("SELECT * FROM ".$db['f_posts']."
                WHERE id = '".intval($_GET['id'])."'");
@@ -1455,7 +1446,7 @@ case 'post';
     } else {
       $index = error(_error_wrong_permissions, 1);
     }
-  } elseif($_GET['do'] == "editpost") {
+  } elseif($do == "editpost") {
     $qry = db("SELECT reg FROM ".$db['f_posts']."
                WHERE id = '".intval($_GET['id'])."'");
     $get = _fetch($qry);
@@ -1570,7 +1561,7 @@ case 'post';
     } else {
       $index = error(_error_wrong_permissions, 1);
     }
-  } elseif($_GET['do'] == "add") {
+  } elseif($do == "add") {
     if(settings("reg_forum") && !$chkMe)
     {
       $index = error(_error_unregistered,1);
@@ -1814,7 +1805,7 @@ case 'post';
         $index = error(show(_error_flood_post, array("sek" => config('f_forum'))), 1);
       }
     }
-  } elseif($_GET['do'] == "addpost") {
+  } elseif($do == "addpost") {
         $qry_thread = db("SELECT `id`,`kid` FROM ".$db['f_threads']." WHERE `id` = '".(int)$_GET['id']."'");
         if(_rows($qry_thread) == 0)
         {
@@ -2176,7 +2167,7 @@ case 'post';
                 }
             }
         }
-  } elseif($_GET['do'] == "delete") {
+  } elseif($do == "delete") {
     $qry = db("SELECT * FROM ".$db['f_posts']."
                WHERE id = '".intval($_GET['id'])."'");
     $get = _fetch($qry);
@@ -2212,7 +2203,7 @@ case 'post';
   }
 break;
 case 'foption';
-  if($_GET['do'] == "fabo")
+  if($do == "fabo")
   {
     if(isset($_POST['f_abo']))
     {
@@ -2231,7 +2222,7 @@ break;
 case 'admin';
   if(permission("forum"))
   {
-    if($_GET['do'] == "mod")
+    if($do == "mod")
     {
       if(isset($_POST['delete']))
       {
@@ -2339,7 +2330,7 @@ case 'preview';
   header("Content-type: text/html; charset=utf-8");
   if($_GET['what'] == 'thread')
   {
-    if($_GET['do'] == 'editthread')
+    if($do == 'editthread')
     {
       $qry = db("SELECT * FROM ".$db['f_threads']." WHERE id = '".intval($_GET['id'])."'");
       $get = _fetch($qry);
@@ -2457,7 +2448,7 @@ case 'preview';
     echo '<table class="mainContent" cellspacing="1" style="margin-top:17px">'.$index.'</table>';
     exit;
   } else {
-    if($_GET['do'] == 'editpost')
+    if($do == 'editpost')
     {
       $qry = db("SELECT * FROM ".$db['f_posts']."
                  WHERE id = '".intval($_GET['id'])."'");

@@ -2,7 +2,7 @@
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._votes_head;
-      if($_GET['do'] == 'new')
+      if($do == 'new')
       {
         $show = show($dir."/form_vote", array("head" => _votes_admin_head,
                                               "value" => _button_value_add,
@@ -26,7 +26,7 @@ if(_adminMenu != 'true') exit;
                                               "interna" => _votes_admin_intern,
                                               "question" => _votes_admin_question,
                                               "answer" => _votes_admin_answer));
-      } elseif($_GET['do'] == "add") {
+      } elseif($do == "add") {
           if(empty($_POST['question']) || empty($_POST['a1']) || empty($_POST['a2']))
             {
               if(empty($_POST['question'])) $error = _empty_votes_question;
@@ -137,7 +137,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_vote_admin_successful, "?admin=votes");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db['votes']."
                    WHERE id = '".intval($_GET['id'])."'");
 
@@ -147,7 +147,7 @@ if(_adminMenu != 'true') exit;
         db("DELETE FROM ".$db['ipcheck']." WHERE what = 'vid_".$_GET['id']."'");
 
         $show = info(_vote_admin_delete_successful, "?admin=votes");
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry = db("SELECT * FROM ".$db['votes']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -182,7 +182,7 @@ if(_adminMenu != 'true') exit;
                                               "interna" => _votes_admin_intern,
                                               "question" => _votes_admin_question,
                                               "answer" => _votes_admin_answer));
-      } elseif($_GET['do'] == "editvote") {
+      } elseif($do == "editvote") {
         $qry = db("SELECT * FROM ".$db['vote_results']."
                   WHERE vid = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -230,7 +230,7 @@ if(_adminMenu != 'true') exit;
         }
 
         $show = info(_vote_admin_successful_edited, "?admin=votes");
-      } elseif($_GET['do'] == "menu") {
+      } elseif($do == "menu") {
         $qryv = db("SELECT intern FROM ".$db['votes']."
                     WHERE id = '".intval($_GET['id'])."'
                     AND intern = 1");

@@ -73,7 +73,7 @@ if(_adminMenu != 'true') exit;
                                          "edit" => _editicon_blank,
                                          "delete" => _deleteicon_blank));
 
-      if($_GET['do'] == "ts")
+      if($do == "ts")
       {
         switch (((int)$_POST['ts_version'])) {
         case "3": //TS3
@@ -99,7 +99,7 @@ if(_adminMenu != 'true') exit;
 
         $show = info(_config_server_ts_updated,"?admin=server");
 
-      } elseif($_GET['do'] == "menu") {
+      } elseif($do == "menu") {
         $qrys = db("SELECT * FROM ".$db['server']."
                     WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qrys);
@@ -123,7 +123,7 @@ if(_adminMenu != 'true') exit;
           }
         }
         $show = header("Location: ?admin=server");
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry = db("SELECT * FROM ".$db['server']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -171,13 +171,13 @@ if(_adminMenu != 'true') exit;
                                                 "spwd" => $get['pwd'],
                                                 "game" => _game,
                                                 "sgame" => $game));
-      } elseif($_GET['do'] == 'mapdl') {
+      } elseif($do == 'mapdl') {
         echo 'not supported since 2012';
         exit;
-      } elseif($_GET['do'] == 'downloadmap') {
+      } elseif($do == 'downloadmap') {
         echo 'not supported since 2012';
         exit;
-      } elseif($_GET['do'] == "editserver") {
+      } elseif($do == "editserver") {
         if(empty($_POST['ip']) || empty($_POST['port']))
         {
           $show = error(_empty_ip,1);
@@ -203,13 +203,13 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_server_admin_edited, "?admin=server");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db['server']."
                    WHERE id = '".intval($_GET['id'])."'");
 
         $show = info(_server_admin_deleted, "?admin=server");
 
-      } elseif($_GET['do'] == "new") {
+      } elseif($do == "new") {
         $files = get_files('../inc/images/gameicons/',false,true);
         for($i=0; $i<count($files); $i++)
         {
@@ -237,7 +237,7 @@ if(_adminMenu != 'true') exit;
                                                "ftphead" => _server_admin_ftp_head,
                                                "c_ftp_file" => _server_ftp_file,
                                                "sgame" => $game));
-      } elseif($_GET['do'] == "add")
+      } elseif($do == "add")
       {
         if(empty($_POST['ip']) || empty($_POST['port']))
         {

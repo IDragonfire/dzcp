@@ -2,7 +2,7 @@
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_sponsors;
-      if($_GET['do'] == "new")
+      if($do == "new")
       {
 
         $qry = db("SELECT * FROM ".$db['sponsoren']."
@@ -52,7 +52,7 @@ if(_adminMenu != 'true') exit;
                         												  "posname" => $posname,
                         												  "what" => _button_value_add,
                                                	  "do" => "add"));
-      } elseif($_GET['do'] == "add") {
+      } elseif($do == "add") {
         if(empty($_POST['name']) || empty($_POST['link']) || empty($_POST['beschreibung']))
         {
           if(empty($_POST['beschreibung'])) $error = show("errors/errortable", array("error" => _sponsors_empty_beschreibung));
@@ -214,7 +214,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_sponsor_added, "?admin=sponsors");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
 
         $qry = db("SELECT * FROM ".$db['sponsoren']."
                    WHERE id = '".intval($_GET['id'])."'");
@@ -330,7 +330,7 @@ if(_adminMenu != 'true') exit;
 												   "posname" => $posname,
 												   "what" => _button_value_edit,
 												   "do" => "editsponsor&amp;id=".$_GET['id'].""));
-      } elseif($_GET['do'] == "editsponsor") {
+      } elseif($do == "editsponsor") {
       if(empty($_POST['name']) || empty($_POST['link']) || empty($_POST['beschreibung']))
       {
       if(empty($_POST['beschreibung'])) $error = show("errors/errortable", array("error" => _sponsors_empty_beschreibung));
@@ -557,7 +557,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_sponsor_edited, "?admin=sponsors");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db['sponsoren']."
                    WHERE id = '".intval($_GET['id'])."'");
 

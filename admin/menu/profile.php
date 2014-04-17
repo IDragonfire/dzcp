@@ -2,7 +2,7 @@
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._profile_head;
-      if($_GET['do'] == "add")
+      if($do == "add")
       {
         $show = show($dir."/form_profil", array("head" => _profile_add_head,
                                                 "name" => _profile_name,
@@ -11,7 +11,7 @@ if(_adminMenu != 'true') exit;
                                                                       "kat" => _profile_kat,
                                                                       "form_kat" => _profile_kat_dropdown,
                                                                       "form_type" => _profile_type_dropdown));
-      } elseif($_GET['do'] == "addprofile") {
+      } elseif($do == "addprofile") {
         if(empty($_POST['name']))
         {
           $show = error(_profil_no_name,1);
@@ -39,7 +39,7 @@ if(_adminMenu != 'true') exit;
 
               $show = info(_profile_added,"?admin=profile");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("SELECT feldname FROM ".$db['profile']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -47,7 +47,7 @@ if(_adminMenu != 'true') exit;
         $del = db("DELETE FROM ".$db['profile']."
                    WHERE id = '".intval($_GET['id'])."'");
         $show = info(_profil_deleted, "?admin=profile");
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry = db("SELECT * FROM ".$db['profile']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -67,7 +67,7 @@ if(_adminMenu != 'true') exit;
                                                                              "form_kat" => $kat,
                                                                              "form_type" => $type,
                                                      "head" => _profile_edit_head));
-      } elseif($_GET['do'] == "editprofil") {
+      } elseif($do == "editprofil") {
         if(empty($_POST['name']))
         {
           $show = error(_profil_no_name,1);
@@ -83,7 +83,7 @@ if(_adminMenu != 'true') exit;
 
               $show = info(_profile_edited,"?admin=profile");
         }
-      } elseif($_GET['do'] == "shown") {
+      } elseif($do == "shown") {
           if($_GET['what'] == 'set')
         {
           $upd = db("UPDATE ".$db['profile']."

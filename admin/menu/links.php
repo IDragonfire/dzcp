@@ -2,7 +2,7 @@
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_links;
-      if($_GET['do'] == "new")
+      if($do == "new")
       {
         $linktyp = '
 <tr>
@@ -36,7 +36,7 @@ if(_adminMenu != 'true') exit;
                                                "ltext" => "",
                                                "what" => _button_value_add,
                                                "do" => "add"));
-      } elseif($_GET['do'] == "add") {
+      } elseif($do == "add") {
         if(empty($_POST['link']) || empty($_POST['beschreibung']) || (isset($_POST['banner']) && empty($_POST['text'])))
         {
           if(empty($_POST['link']))             $show = error(_links_empty_link, 1);
@@ -51,7 +51,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_link_added, "?admin=links");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
 
         $qry = db("SELECT * FROM ".$db[$_GET['type']]."
                    WHERE id = '".intval($_GET['id'])."'");
@@ -83,7 +83,7 @@ if(_adminMenu != 'true') exit;
                                                "ltext" => re($get['text']),
                                                "what" => _button_value_edit,
                                                "do" => "editlink&amp;id=".$_GET['id'].""));
-      } elseif($_GET['do'] == "editlink") {
+      } elseif($do == "editlink") {
         if(empty($_POST['link']) || empty($_POST['beschreibung']) || (isset($_POST['banner']) && empty($_POST['text'])))
         {
           if(empty($_POST['link']))             $show = error(_links_empty_link, 1);
@@ -99,7 +99,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_link_edited, "?admin=links");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db[$_GET['type']]."
                    WHERE id = '".intval($_GET['id'])."'");
 

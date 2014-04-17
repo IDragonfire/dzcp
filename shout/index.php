@@ -50,7 +50,7 @@ case 'admin';
   {
     $index = error(_error_wrong_permissions, 1);
   } else {
-    if($_GET['do'] == "delete")
+    if($do == "delete")
     {
       $qry = db("DELETE FROM ".$db['shout']."
                  WHERE id = '".intval($_GET['id'])."'");

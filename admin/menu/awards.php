@@ -2,7 +2,7 @@
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._awards_head;
-        if($_GET['do'] == "new")
+        if($do == "new")
       {
           $qry = db("SELECT * FROM ".$db['squads']."
                    ORDER BY game ASC");
@@ -33,7 +33,7 @@ if(_adminMenu != 'true') exit;
                                                 "award_url" => "",
                                                 "award_place" => "",
                                                 "award_prize" => ""));
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry = db("SELECT * FROM ".$db['awards']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -71,7 +71,7 @@ if(_adminMenu != 'true') exit;
                                                                    "award_url" => $get['url'],
                                                                   "award_place" => re($get['place']),
                                                                   "award_prize" => re($get['prize'])));
-      } elseif($_GET['do'] == "add") {
+      } elseif($do == "add") {
           if(empty($_POST['event']) || empty($_POST['url']))
         {
               if(empty($_POST['event']))
@@ -100,7 +100,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_awards_admin_added, "?admin=awards");
         }
-      } elseif($_GET['do'] == "editaw") {
+      } elseif($do == "editaw") {
           if(empty($_POST['event']) || empty($_POST['url']))
         {
               if(empty($_POST['event']))
@@ -129,7 +129,7 @@ if(_adminMenu != 'true') exit;
                    WHERE id = '".intval($_GET['id'])."'");
 
         $show = info(_awards_admin_edited, "?admin=awards");
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db['awards']."
                    WHERE id = '".intval($_GET['id'])."'");
 

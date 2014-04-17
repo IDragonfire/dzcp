@@ -2,13 +2,13 @@
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._nletter;
-        if($_GET['do'] == 'preview')
+        if($do == 'preview')
     {
       $show = show($dir."/nletter_prev", array("head" => _nletter_prev_head,
                                                "text" => bbcode_nletter($_POST['eintrag'])));
       echo '<table class="mainContent" cellspacing="1">'.$show.'</table>';
       exit;
-    } elseif($_GET['do'] == "send") {
+    } elseif($do == "send") {
         if(empty($_POST['eintrag']) || $_POST['to'] == "-")
           {
             if(empty($_POST['eintrag'])) $error = _empty_eintrag;

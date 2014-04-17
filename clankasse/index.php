@@ -178,7 +178,7 @@ break;
 case 'admin':
   if(permission("clankasse"))
   {
-    if ($_GET['do'] == "new")
+    if ($do == "new")
     {
       $qry = db("SELECT * FROM ".$db['c_kats']."");
       while($get = _fetch($qry))
@@ -212,7 +212,7 @@ case 'admin':
                                        "minus" => _clankasse_admin_minus,
                                        "post" => time()));
 
-    } elseif ($_GET['do'] == "add") {
+    } elseif ($do == "add") {
       if(!$_POST['t'] OR !$_POST['m'])
       {
         $index = error(_error_clankasse_empty_datum, 1);
@@ -234,12 +234,12 @@ case 'admin':
 
         $index = info(_clankasse_saved, "../clankasse/");
       }
-    } elseif ($_GET['do'] == "delete" && $_GET['id']) {
+    } elseif ($do == "delete" && $_GET['id']) {
       $qry = db("DELETE FROM ".$db['clankasse']."
                  WHERE id = ".intval($_GET['id']));
 
       $index = info(_clankasse_deleted, "../clankasse/");
-    } elseif ($_GET['do'] == "update" && $_POST['id']) {
+    } elseif ($do == "update" && $_POST['id']) {
       if(!$_POST['datum'])
       {
         $index = error(_error_clankasse_empty_datum, 1);
@@ -257,7 +257,7 @@ case 'admin':
 
             $index = info(_clankasse_edited, "../clankasse/");
       }
-    } elseif ($_GET['do'] == "edit") {
+    } elseif ($do == "edit") {
       $qry = db("SELECT * FROM ".$db['clankasse']."
                  WHERE id = '".intval($_GET['id'])."'");
       $get = _fetch($qry);
@@ -306,7 +306,7 @@ case 'admin':
                                         "transaktion" => _clankasse_ctransaktion,
                                         "minus" => _clankasse_admin_minus,
                                         "post" => time()));
-    } elseif($_GET['do'] == "editck") {
+    } elseif($do == "editck") {
       if(!$_POST['t'] OR !$_POST['m'])
       {
         $index = error(_error_clankasse_empty_datum, 1);
@@ -329,7 +329,7 @@ case 'admin':
 
             $index = info(_clankasse_edited, "../clankasse/");
       }
-    } elseif($_GET['do'] == "paycheck") {
+    } elseif($do == "paycheck") {
       $qry = db("SELECT payed FROM ".$db['c_payed']."
                  WHERE user = '".intval($_GET['id'])."'");
       $get = _fetch($qry);
@@ -353,7 +353,7 @@ case 'admin':
                                             "t" => $tag,
                                             "m" => $monat,
                                             "j" => $jahr));
-    } elseif($_GET['do'] == "editpaycheck") {
+    } elseif($do == "editpaycheck") {
       $qry = db("SELECT payed FROM ".$db['c_payed']."
                  WHERE user = '".intval($_GET['id'])."'");
 

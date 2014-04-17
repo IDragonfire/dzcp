@@ -30,7 +30,7 @@ $where = $where.': '._slider;
                                               "add" => _slider_admin_add,
                                               "show" => $entry));
 
-  if($_GET['do'] == 'new'){
+  if($do == 'new'){
     $qry = db("SELECT * FROM ".$db['slideshow']."
               ORDER BY `pos` ASC;");
     while($get = _fetch($qry)) {
@@ -64,7 +64,7 @@ $where = $where.': '._slider;
                                                 "selected1" => "",
                                                 "selected_txt" => "selected=\"selected\"",
                                                 "v_pic" => ""));
-  }elseif($_GET['do'] == 'add'){
+  }elseif($do == 'add'){
     if(empty($_FILES['bild']['tmp_name']) || empty($_POST['bez']) || empty($_POST['url']) || $_POST['url'] == "http://") {
         if(!$_FILES['bild']['tmp_name']) $error = _slider_admin_error_nopic;
         elseif(empty($_POST['bez'])) $error = _slider_admin_error_empty_bezeichnung;
@@ -129,7 +129,7 @@ $where = $where.': '._slider;
 
         $show = info(_slider_admin_add_done, "?admin=slideshow");
     }
-  }elseif($_GET['do'] == 'edit'){
+  }elseif($do == 'edit'){
     $qry = db("SELECT * FROM ".$db['slideshow']."
                WHERE `id` = '".intval($_GET['id'])."'");
     $get = _fetch($qry);
@@ -170,7 +170,7 @@ $where = $where.': '._slider;
                                                 "selected" => $selected,
                                                 "selected_txt" => $selected_txt,
                                                 "v_pic" => img_size('inc/images/slideshow/'.$get['id'].'.jpg')."<br />"));
-}elseif($_GET['do'] == 'editdo'){
+}elseif($do == 'editdo'){
     if(empty($_POST['bez']) || empty($_POST['url']) || $_POST['url'] == "http://") {
         if(empty($_POST['bez'])) $error = _slider_admin_error_empty_bezeichnung;
         elseif(empty($_POST['url']) OR $_POST['url'] == "http://") $error = _slider_admin_error_empty_url;
@@ -233,7 +233,7 @@ $where = $where.': '._slider;
         }
         $show = info(_slider_admin_edit_done, "?admin=slideshow");
     }
-}elseif($_GET['do'] == 'delete'){
+}elseif($do == 'delete'){
     $qry = db("DELETE FROM ".$db['slideshow']."
                WHERE `id` = '".intval($_GET['id'])."'");
     @unlink(basePath."/inc/images/slideshow/".intval($_GET['id']).".jpg");

@@ -82,7 +82,7 @@ if(_adminMenu != 'true') exit;
                                           "delete" => _deleteicon_blank,
                                           "add" => _config_forum_kats_add,
                                           "kats" => $kats));
-        if($_GET['do'] == "newkat")
+        if($do == "newkat")
         {
           $qry = db("SELECT * FROM ".$db['f_kats']."
                      ORDER BY kid");
@@ -102,7 +102,7 @@ if(_adminMenu != 'true') exit;
                                               "intern" => _config_forum_intern,
                                               "value" => _button_value_add,
                                               "kat" => ""));
-        } elseif($_GET['do'] == "addkat") {
+        } elseif($do == "addkat") {
           if(!empty($_POST['kat']))
           {
             if($_POST['kid'] == "1" || "2") $sign = ">= ";
@@ -121,7 +121,7 @@ if(_adminMenu != 'true') exit;
           } else {
             $show = error(_config_empty_katname, 1);
           }
-        } elseif($_GET['do'] == "delete") {
+        } elseif($do == "delete") {
           $what = db("SELECT id FROM ".$db['f_skats']."
                       WHERE sid = '".intval($_GET['id'])."'");
           $get = _fetch($what);
@@ -139,7 +139,7 @@ if(_adminMenu != 'true') exit;
                      WHERE sid = '".intval($_GET['id'])."'");
 
           $show = info(_config_forum_kat_deleted, "?admin=forum");
-        } elseif($_GET['do'] == "edit") {
+        } elseif($do == "edit") {
           $qry = db("SELECT * FROM ".$db['f_kats']."
                      WHERE id = '".intval($_GET['id'])."'");
           while($get = _fetch($qry))
@@ -170,7 +170,7 @@ if(_adminMenu != 'true') exit;
                                                      "value" => _button_value_edit,
                                                      "kat" => re($get['name'])));
           }
-        } elseif($_GET['do'] == "editkat") {
+        } elseif($do == "editkat") {
           if(empty($_POST['kat']))
           {
             $show = error(_config_empty_katname, 1);
@@ -196,7 +196,7 @@ if(_adminMenu != 'true') exit;
 
             $show = info(_config_forum_kat_edited, "?admin=forum");
           }
-        } elseif($_GET['do'] == "newskat") {
+        } elseif($do == "newskat") {
           $qry = db("SELECT * FROM ".$db['f_skats']." WHERE sid = " . (int) $_GET['id'] .
                      " ORDER BY pos");
           while($get = _fetch($qry))
@@ -216,7 +216,7 @@ if(_adminMenu != 'true') exit;
                                                "tposition" => _position,
                                                "position" => $positions,
                                                "value" => _button_value_add));
-        } elseif($_GET['do']== "addskat") {
+        } elseif($do== "addskat") {
           if(empty($_POST['skat']))
           {
             $show = error(_config_forum_empty_skat,1);
@@ -236,7 +236,7 @@ if(_adminMenu != 'true') exit;
 
             $show = info(_config_forum_skat_added, "?admin=forum&show=subkats&amp;id=".$_GET['id']."");
           }
-        } elseif($_GET['do'] == "editsubkat") {
+        } elseif($do == "editsubkat") {
           $qry = db("SELECT * FROM ".$db['f_skats']."
                      WHERE id = '".intval($_GET['id'])."'");
           while($get = _fetch($qry)) //--> Start while subkat sort
@@ -265,7 +265,7 @@ if(_adminMenu != 'true') exit;
                                                "position" => $positions,
                                                "value" => _button_value_edit));
             } //--> End while subkat sort
-        } elseif($_GET['do'] == "editskat") {
+        } elseif($do == "editskat") {
           if(empty($_POST['skat']))
           {
             $show = error(_config_forum_empty_skat,1);
@@ -291,7 +291,7 @@ if(_adminMenu != 'true') exit;
 
             $show = info(_config_forum_skat_edited, "?admin=forum&show=subkats&amp;id=".$_POST['sid']."");
           }
-        } elseif($_GET['do'] == "deletesubkat") {
+        } elseif($do == "deletesubkat") {
           $qry = db("SELECT sid FROM ".$db['f_skats']."
                      WHERE id = '".intval($_GET['id'])."'");
           $get = _fetch($qry);

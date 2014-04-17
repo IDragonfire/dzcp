@@ -2,7 +2,7 @@
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._clear_head;
-      if($_GET['do'] == "clear")
+      if($do == "clear")
       {
         if(empty($_POST['days']))
         {

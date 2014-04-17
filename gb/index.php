@@ -321,7 +321,7 @@ case 'admin';
   {
     $index = error(_error_wrong_permissions, 1);
   } else {
-    if($_GET['do'] == "addcomment")
+    if($do == "addcomment")
     {
       $qry = db("SELECT * FROM ".$db['gb']."
                  WHERE id = '".intval($_GET['id'])."'");
@@ -374,7 +374,7 @@ case 'admin';
                                                  "what" => _button_value_add,
                                                  "id" => $_GET['id'],
                                                  "head_gb" => _gb_addcomment_headgb));
-    } elseif($_GET['do'] == "postcomment") {
+    } elseif($do == "postcomment") {
       $qry = db("SELECT * FROM ".$db['gb']."
                  WHERE id = '".intval($_GET['id'])."'");
       $get = _fetch($qry);

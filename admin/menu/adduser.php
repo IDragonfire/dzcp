@@ -79,7 +79,7 @@ if(_adminMenu != 'true') exit;
                                                                                      "admin" => _status_admin,
                                                                                      "banned" => _admin_level_banned,
                                                                                      "value" => _button_value_reg));
-      if($_GET['do'] == "add")
+      if($do == "add")
       {
         $check_user = db_stmt("SELECT id FROM ".$db['users']." WHERE `user`= ?",
                   array('s', up($_POST['user'])),true,false);

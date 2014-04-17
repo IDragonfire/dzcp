@@ -120,7 +120,7 @@ $where = $where.' - '._away_new;
                                            "text" => "",
                                            "submit" => _button_value_add));
 
-     if($_GET['do'] == "set")
+     if($do == "set")
      {
        $abdata = mktime(0,0,0,$_POST['m'],$_POST['t'],$_POST['j']);
        $bisdata = mktime(0,0,0,$_POST['monat'],$_POST['tag'],$_POST['jahr']);
@@ -246,7 +246,7 @@ case 'edit';
 
     $abdata = mktime(0,0,0,$_POST['m'],$_POST['t'],$_POST['j']);
     $bisdata = mktime(0,0,0,$_POST['monat'],$_POST['tag'],$_POST['jahr']);
-    if($_GET['do'] == "set")
+    if($do == "set")
     {
        if(empty($_POST['titel']) || empty($_POST['reason']) || $bisdata == $abdata || $abdata > $bisdata)
        {

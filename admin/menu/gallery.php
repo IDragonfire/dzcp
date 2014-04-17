@@ -1,7 +1,7 @@
 <?php
 if(_adminMenu != 'true') exit;
 
-      if($_GET['do'] == "step2")
+      if($do == "step2")
     {
       if(empty($_POST['gallery']))
       {
@@ -28,7 +28,7 @@ if(_adminMenu != 'true') exit;
                                                  "anzahl" => $_POST['anzahl'],
                                                  "gal" => _subgallery_head));
       }
-    } elseif($_GET['do'] == "add") {
+    } elseif($do == "add") {
       $galid = $_GET['id'];
       $anzahl = $_POST['anzahl'];
 
@@ -52,7 +52,7 @@ if(_adminMenu != 'true') exit;
       }
 
       $show = info(_gallery_added, "?admin=gallery");
-    } elseif($_GET['do'] == "delgal") {
+    } elseif($do == "delgal") {
       $qry = db("DELETE FROM ".$db['gallery']."
                  WHERE id = '".intval($_GET['id'])."'");
 
@@ -68,14 +68,14 @@ if(_adminMenu != 'true') exit;
       }
 
       $show = info(_gallery_deleted, "?admin=gallery");
-    } elseif($_GET['do'] == "delete") {
+    } elseif($do == "delete") {
       $pic = $_GET['pic'];
       @unlink(basePath."/gallery/images/".$pic."");
 
       $res = preg_match("#(.*)_(.*?).(gif|GIF|JPG|jpg|JPEG|jpeg|png)#",$pic,$pid);
 
       $show = info(_gallery_pic_deleted, "../gallery/?action=show&amp;id=".$pid[1]."");
-    } elseif($_GET['do'] == "edit") {
+    } elseif($do == "edit") {
       $qry = db("SELECT * FROM ".$db['gallery']."
                  WHERE id = '".intval($_GET['id'])."'");
       $get = _fetch($qry);
@@ -89,7 +89,7 @@ if(_adminMenu != 'true') exit;
                                               "e_gal" => re($get['kat']),
                                               "e_intern" => $get['intern'] ? 'checked="checked"' : '',
                                               "e_beschr" => re($get['beschreibung'])));
-    } elseif($_GET['do'] == "editgallery") {
+    } elseif($do == "editgallery") {
       $qry = db("UPDATE ".$db['gallery']."
                  SET `kat`          = '".up($_POST['gallery'])."',
 				 `intern`          = '".((int)$_POST['intern'])."',
@@ -97,7 +97,7 @@ if(_adminMenu != 'true') exit;
                  WHERE id = '".intval($_GET['id'])."'");
 
       $show = info(_gallery_edited, "?admin=gallery");
-    } elseif($_GET['do'] == "new") {
+    } elseif($do == "new") {
       $qry = db("SELECT * FROM ".$db['gallery']."
                  WHERE id = '".intval($_GET['id'])."'");
       $get = _fetch($qry);
@@ -115,7 +115,7 @@ if(_adminMenu != 'true') exit;
                                             "id" => $get['id'],
                                             "option" => $option));
 
-    } elseif($_GET['do'] == "editstep2") {
+    } elseif($do == "editstep2") {
       $qry = db("SELECT * FROM ".$db['gallery']."
                  WHERE id = '".intval($_GET['id'])."'");
       $get = _fetch($qry);
@@ -134,7 +134,7 @@ if(_adminMenu != 'true') exit;
                                               "dowhat" => _button_value_edit,
                                               "anzahl" => $_POST['anzahl'],
                                               "gal" => _subgallery_head));
-    } elseif($_GET['do'] == "editpics") {
+    } elseif($do == "editpics") {
       $galid = $_GET['id'];
       $anzahl = $_POST['anzahl'];
 
@@ -169,7 +169,7 @@ if(_adminMenu != 'true') exit;
       }
 
       $show = info(_gallery_new, "?admin=gallery");
-    } elseif($_GET['do'] == 'addnew') {
+    } elseif($do == 'addnew') {
       for($i=1;$i<=100;$i++)
       {
         $option .= "<option value=\"".$i."\">".$i."</option>";

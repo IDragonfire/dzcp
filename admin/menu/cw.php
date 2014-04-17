@@ -2,7 +2,7 @@
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._clanwars;
-      if($_GET['do'] == "new")
+      if($do == "new")
       {
         $qry = db("SELECT * FROM ".$db['squads']."
 WHERE status = '1'
@@ -82,7 +82,7 @@ ORDER BY game ASC");
    "country" => _cw_admin_head_country,
    "countrys" => show_countrys(),
    "cw_gametype" => ""));
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
 
         $qry = db("SELECT * FROM ".$db['cw']."
 WHERE id = '".intval($_GET['id'])."'");
@@ -174,7 +174,7 @@ ORDER BY game");
                                            "cw_liga" => re($get['liga']),
    "country" => _cw_admin_head_country,
    "cw_gametype" => re($get['gametype'])));
-      } elseif($_GET['do'] == "add") {
+      } elseif($do == "add") {
         if(empty($_POST['gegner']) || empty($_POST['clantag']) || empty($_POST['t']))
         {
           if(empty($_POST['gegner'])) $show = error(_cw_admin_empty_gegner, 1);
@@ -289,7 +289,7 @@ if($img4[0])
 
           $show = info(_cw_admin_added, "?admin=cw");
         }
-      } elseif($_GET['do'] == "editcw") {
+      } elseif($do == "editcw") {
 
         if(empty($_POST['gegner']) || empty($_POST['clantag']) || empty($_POST['t']))
         {
@@ -447,7 +447,7 @@ foreach($picformat AS $endun4)
 
           $show = info(_cw_admin_edited, "?admin=cw");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db['cw']."
 WHERE id = '".intval($_GET['id'])."'");
 
@@ -455,7 +455,7 @@ WHERE id = '".intval($_GET['id'])."'");
 WHERE cw = '".intval($_GET['id'])."'");
 
         $show = info(_cw_admin_deleted, "?admin=cw");
-      } elseif($_GET['do'] == "top") {
+      } elseif($do == "top") {
         $qry = db("UPDATE ".$db['cw']."
 SET `top` = '".intval($_GET['set'])."'
 WHERE id = '".intval($_GET['id'])."'");

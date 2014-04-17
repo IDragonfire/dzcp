@@ -18,7 +18,7 @@ if(_adminMenu != 'true') exit;
                                       "what" => "impressum",
                                       "value" => _button_value_edit,
                                       "show" => $show_));
-      if($_GET['do'] == "update")
+      if($do == "update")
       {
         $qry = db("UPDATE ".$db['settings']."
                    SET `i_autor` = '".up($_POST['seitenautor'], 1)."',

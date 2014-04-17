@@ -3,7 +3,7 @@ if(_adminMenu != 'true') exit;
 
     $where = $where.': '._news_admin_head;
       $wysiwyg = '_word';
-      if($_GET['do'] == "add")
+      if($do == "add")
       {
         $qryk = db("SELECT * FROM ".$db['newskat']."");
         while($getk = _fetch($qryk))
@@ -71,7 +71,7 @@ if(_adminMenu != 'true') exit;
                                               "timeshift_time" => $timeshift_time,
                                                                                             "timeshift" => "",
                                               "nurl" => _url));
-      } elseif($_GET['do'] == "insert") {
+      } elseif($do == "insert") {
           if(empty($_POST['titel']) || empty($_POST['newstext']))
             {
               if(empty($_POST['titel'])) $error = _empty_news_title;
@@ -193,7 +193,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_news_sended, "?admin=newsadmin");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry = db("SELECT * FROM ".$db['news']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -312,7 +312,7 @@ if(_adminMenu != 'true') exit;
                                               "minute" => $minute,
                                                                     "interna" => _news_admin_intern,
                                               "nurl" => _url));
-      } elseif($_GET['do'] == "editnews") {
+      } elseif($do == "editnews") {
         if($_POST)
         {
           if($_POST['sticky']) $stickytime = mktime($_POST['h'],$_POST['min'],0,$_POST['m'],$_POST['t'],$_POST['j']);
@@ -360,7 +360,7 @@ if(_adminMenu != 'true') exit;
 
         }
         $show = info(_news_edited, "?admin=newsadmin");
-      } elseif($_GET['do'] == 'public') {
+      } elseif($do == 'public') {
         if($_GET['what'] == 'set')
         {
           $upd = db("UPDATE ".$db['news']."
@@ -374,7 +374,7 @@ if(_adminMenu != 'true') exit;
         }
 
         header("Location: ?admin=newsadmin");
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $del = db("DELETE FROM ".$db['news']."
                    WHERE id = '".intval($_GET['id'])."'");
         $del = db("DELETE FROM ".$db['newscomments']."
@@ -382,7 +382,7 @@ if(_adminMenu != 'true') exit;
         @unlink(basePath."/inc/images/uploads/news/".intval($_GET['id']).".jpg");
 
         $show = info(_news_deleted, "?admin=newsadmin");
-      } elseif($_GET['do'] == "delnewspic") {
+      } elseif($do == "delnewspic") {
 
         @unlink(basePath."/inc/images/uploads/news/".intval($_GET['id']).".jpg");
 

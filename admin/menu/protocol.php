@@ -2,12 +2,12 @@
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._protocol;
-      if($_GET['do'] == 'deletesingle')
+      if($do == 'deletesingle')
       {
         db("DELETE FROM ".$db['ipcheck']." WHERE id = '".$_GET['id']."'");
 
         header("Location: ".$_SERVER['HTTP_REFERER']);
-      } elseif($_GET['do'] == 'delete') {
+      } elseif($do == 'delete') {
         db("DELETE FROM ".$db['ipcheck']." WHERE time != 0");
 
         $show = info(_protocol_deleted,'?admin=protocol');

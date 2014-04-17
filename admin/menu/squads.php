@@ -30,7 +30,7 @@ if(_adminMenu != 'true') exit;
                                          "edit" => _editicon_blank,
                                          "add" => _member_admin_add_header,
                                          "squads" => $squads));
-      if($_GET['do'] == "add")
+      if($do == "add")
       {
         $qrynav = db("SELECT s2.*, s1.name AS katname, s1.placeholder FROM ".$db['navi_kats']." AS s1 LEFT JOIN ".$db['navi']." AS s2 ON s1.`placeholder` = s2.`kat`
                            ORDER BY s1.name, s2.pos");
@@ -99,7 +99,7 @@ if(_adminMenu != 'true') exit;
 												"teams" => _admin_squads_teams,
 												"game" => _member_admin_game));
 
-      } elseif($_GET['do'] == "addsquad") {
+      } elseif($do == "addsquad") {
         if(empty($_POST['squad']))
         {
           $show = error(_admin_squad_no_squad, 1);
@@ -176,7 +176,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_admin_squad_add_successful, "?admin=squads");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry = db("SELECT * FROM ".$db['squads']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -302,7 +302,7 @@ if(_adminMenu != 'true') exit;
                                                 "positions" => $positions,
                                                 "check_show" => _button_value_show,
                                                 "game" => _member_admin_game));
-      } elseif($_GET['do'] == "editsquad") {
+      } elseif($do == "editsquad") {
         if(empty($_POST['squad']))
         {
           $show = error(_admin_squad_no_squad, 1);
@@ -435,7 +435,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_admin_squad_edit_successful, "?admin=squads");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         db("DELETE FROM ".$db['squads']." WHERE id = '".intval($_GET['id'])."'");
                 db("DELETE FROM ".$db['navi']." WHERE url = '../squads/?action=shows&amp;id=".intval($_GET['id'])."'");
         $show = info(_admin_squad_deleted, "?admin=squads");

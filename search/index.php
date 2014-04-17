@@ -66,7 +66,7 @@ default:
   }
 
 //Auswertung
-  if($_GET['do'] == 'search')
+  if($do == 'search')
   {
     $maxfsearch = 20;
 

@@ -2,7 +2,7 @@
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._dl;
-      if($_GET['do'] == "new")
+      if($do == "new")
       {
         $qry = db("SELECT * FROM ".$db['dl_kat']."
                    ORDER BY name");
@@ -40,7 +40,7 @@ if(_adminMenu != 'true') exit;
                                              "beschreibung" => _beschreibung,
                                              "download" => _downloads_name,
                                              "intern" => _internal));
-      } elseif($_GET['do'] == "add") {
+      } elseif($do == "add") {
         if(empty($_POST['download']) || empty($_POST['url']))
         {
           if(empty($_POST['download'])) $show = error(_downloads_empty_download, 1);
@@ -60,7 +60,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_downloads_added, "?admin=dladmin");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry  = db("SELECT * FROM ".$db['downloads']."
                     WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -96,7 +96,7 @@ if(_adminMenu != 'true') exit;
                                             "beschreibung" => _beschreibung,
                                             "download" => _downloads_name,
                                             "intern" => _internal));
-      } elseif($_GET['do'] == "editdl") {
+      } elseif($do == "editdl") {
         if(empty($_POST['download']) || empty($_POST['url']))
         {
           if(empty($_POST['download'])) $show = error(_downloads_empty_download, 1);
@@ -116,7 +116,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_downloads_edited, "?admin=dladmin");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db['downloads']."
                    WHERE id = '".intval($_GET['id'])."'");
 

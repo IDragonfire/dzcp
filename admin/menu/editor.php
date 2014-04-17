@@ -3,7 +3,7 @@ if(_adminMenu != 'true') exit;
 
     $where = $where.': '._editor_head;
       $wysiwyg = '_word';
-      if($_GET['do'] == "add")
+      if($do == "add")
       {
         $qry = db("SELECT s2.*, s1.name AS katname, s1.placeholder FROM ".$db['navi_kats']." AS s1 LEFT JOIN ".$db['navi']." AS s2 ON s1.`placeholder` = s2.`kat`
                    ORDER BY s1.name, s2.pos");
@@ -42,7 +42,7 @@ if(_adminMenu != 'true') exit;
                                                 "allow_html" => _editor_allow_html,
                                                 "inhalt" => _inhalt,
                                                 "do" => "addsite"));
-      } elseif($_GET['do'] == "addsite") {
+      } elseif($do == "addsite") {
         if(empty($_POST['titel']) || empty($_POST['inhalt']) || $_POST['pos'] == "lazy")
         {
           if(empty($_POST['titel'])) $error = _empty_titel;
@@ -125,7 +125,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_site_added, "?admin=editor");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qrys = db("SELECT * FROM ".$db['sites']."
                     WHERE id = '".intval($_GET['id'])."'");
         $gets = _fetch($qrys);
@@ -173,7 +173,7 @@ if(_adminMenu != 'true') exit;
                                                 "allow_html" => _editor_allow_html,
                                                 "inhalt" => _inhalt,
                                                 "do" => "editsite&amp;id=".$_GET['id'].""));
-      } elseif($_GET['do'] == "editsite") {
+      } elseif($do == "editsite") {
         if(empty($_POST['titel']) || empty($_POST['inhalt']) || $_POST['pos'] == "lazy")
         {
           if(empty($_POST['titel'])) $error = _empty_titel;
@@ -249,7 +249,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_site_edited, "?admin=editor");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db['sites']."
                    WHERE id = '".intval($_GET['id'])."'");
         $qry = db("DELETE FROM ".$db['navi']."

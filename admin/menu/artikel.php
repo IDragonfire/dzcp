@@ -3,7 +3,7 @@ if(_adminMenu != 'true') exit;
 
     $where = $where.': '._artikel;
       $wysiwyg = '_word';
-      if($_GET['do'] == "add")
+      if($do == "add")
       {
         $qryk = db("SELECT * FROM ".$db['newskat']."");
         while($getk = _fetch($qryk))
@@ -37,7 +37,7 @@ if(_adminMenu != 'true') exit;
                                                  "linkname" => _linkname,
                                                                        "interna" => _news_admin_intern,
                                                  "nurl" => _url));
-      } elseif($_GET['do'] == "insert") {
+      } elseif($do == "insert") {
           if(empty($_POST['titel']) || empty($_POST['artikel']))
             {
               if(empty($_POST['titel'])) $error = _empty_artikel_title;
@@ -96,7 +96,7 @@ if(_adminMenu != 'true') exit;
           }
           $show = info(_artikel_added, "?admin=artikel");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry = db("SELECT * FROM ".$db['artikel']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -136,7 +136,7 @@ if(_adminMenu != 'true') exit;
                                                  "button" => _button_value_edit,
                                                  "linkname" => _linkname,
                                                  "nurl" => _url));
-      } elseif($_GET['do'] == "editartikel") {
+      } elseif($do == "editartikel") {
         if($_POST)
         {
           $qry = db("UPDATE ".$db['artikel']."
@@ -152,11 +152,11 @@ if(_adminMenu != 'true') exit;
                      WHERE id = '".intval($_GET['id'])."'");
         }
         $show = info(_artikel_edited, "?admin=artikel");
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db['artikel']."
                    WHERE id = '".intval($_GET['id'])."'");
         $show = info(_artikel_deleted, "?admin=artikel");
-      } elseif($_GET['do'] == 'public') {
+      } elseif($do == 'public') {
         if($_GET['what'] == 'set')
         {
           $upd = db("UPDATE ".$db['artikel']."

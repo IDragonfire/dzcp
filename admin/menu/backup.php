@@ -22,7 +22,7 @@ if(_adminMenu != 'true') exit;
                                          "info_head" => _backup_info_head,
                                          "lastbackup" => _backup_last_head,
                                          "info" => _backup_info));
-      if($_GET['do'] == "backup")
+      if($do == "backup")
       {
         file_put_contents($file_name,sql_backup());
         header("Location: ?admin=backup");

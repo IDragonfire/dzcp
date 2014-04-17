@@ -2,7 +2,7 @@
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_rankings;
-      if($_GET['do'] == "add")
+      if($do == "add")
       {
         $qrys = db("SELECT * FROM ".$db['squads']."
                     WHERE status = '1'
@@ -25,7 +25,7 @@ if(_adminMenu != 'true') exit;
                                                   "e_rank" => "",
                                                   "e_url" => "",
                                                   "url" => _rankings_teamlink));
-      } elseif($_GET['do'] == "addranking") {
+      } elseif($do == "addranking") {
         if(empty($_POST['league']) || empty($_POST['url']) || empty($_POST['rank']))
         {
           if(empty($_POST['league']))   $show = error(_error_empty_league,1);
@@ -41,7 +41,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_ranking_added, "?admin=rankings");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry = db("SELECT * FROM ".$db['rankings']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -69,7 +69,7 @@ if(_adminMenu != 'true') exit;
                                                   "e_rank" => $get['rank'],
                                                   "e_url" => re($get['url']),
                                                   "url" => _rankings_teamlink));
-      } elseif($_GET['do'] == "editranking") {
+      } elseif($do == "editranking") {
         if(empty($_POST['league']) || empty($_POST['url']) || empty($_POST['rank']))
         {
           if(empty($_POST['league']))   $show = error(_error_empty_league,1);
@@ -91,7 +91,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_ranking_edited, "?admin=rankings");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $del = db("DELETE FROM ".$db['rankings']."
                    WHERE id = '".intval($_GET['id'])."'");
 

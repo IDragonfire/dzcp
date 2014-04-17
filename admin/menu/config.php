@@ -2,7 +2,7 @@
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_global_head;
-      if($_GET['do'] == "update")
+      if($do == "update")
       {
         if($_POST)
         {
@@ -146,7 +146,7 @@ if(_adminMenu != 'true') exit;
 
           $show .= info(_config_set, "?admin=config", 10);
         }
-      } else if($_GET['do']=='port') {
+      } else if($do=='port') {
         $qry = db("UPDATE ".$db['users']."
                    SET `gmaps_koord` = '".up($_POST['koord'])."'
                    WHERE id = '".$_GET['id']."'");

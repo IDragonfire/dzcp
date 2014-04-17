@@ -7,6 +7,7 @@ ob_start();
 session_start();
 
 define('basePath', dirname(dirname(__FILE__).'../'));
+$action = isset($_GET['action']) ? $_GET['action'] : '';
 
 require_once(basePath.'/inc/_version.php');
 require_once(basePath.'/_installer/conf/conf.php');
@@ -14,8 +15,8 @@ require_once(basePath.'/_installer/conf/mysql.php');
 
 include(basePath.'/_installer/html/header.php');
 
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
+if(!isset($action)) $action = "";
+else $action = $action;
 switch ($action):
 default:
   if(!isset($_GET['agb']) || $_GET['agb'])
@@ -38,7 +39,7 @@ if(isset($_GET['agb']) && $_GET['agb'])
 {
   header("Location: install.php?agb=false");
 } else {
-  if(isset($_GET['do']) && $_GET['do'] == "set_chmods" && $_POST['check'] != "dont")
+  if(isset($do) && $do == "set_chmods" && $_POST['check'] != "dont")
   {
     if(_ex('ftp_connect') && _ex('ftp_login') && _ex('ftp_site'))
     {
@@ -200,7 +201,7 @@ if(isset($_GET['agb']) && $_GET['agb'])
 }
 break;
 case'install';
-  if(isset($_GET['do']) && $_GET['do'] == "test_mysql")
+  if(isset($do) && $do == "test_mysql")
   {
     $sql=false;
 
@@ -280,7 +281,7 @@ case'install';
             </table>';
     }
   }
-  elseif(isset($_GET['do']) && $_GET['do'] == "write_mysql")
+  elseif(isset($do) && $do == "write_mysql")
   {
 //-> MySQL-Daten in mysql.php schreiben
     if(_ex("fopen"))
@@ -382,7 +383,7 @@ case'install';
   }
 break;
 case 'database';
-  if(isset($_GET['do']) && $_GET['do'] == "install")
+  if(isset($do) && $do == "install")
   {
     if($_POST['login'] && $_POST['nick'] && $_POST['pwd'] && $_POST['email'])
     {
