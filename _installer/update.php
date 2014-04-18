@@ -313,4 +313,3 @@ break;
 endswitch;
 include basePath.'/_installer/html/footer.php';
 ob_end_flush();
-?>
