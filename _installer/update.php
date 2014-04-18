@@ -7,6 +7,7 @@ ob_start();
 session_start();
 define('basePath', dirname(dirname(__FILE__).'../'));
 $action = isset($_GET['action']) ? $_GET['action'] : '';
+$do = isset($_GET['do']) ? $_GET['do'] : '';
 
 require_once(basePath.'/inc/_version.php');
 require_once(basePath.'/_installer/conf/conf.php');
@@ -14,8 +15,6 @@ require_once(basePath.'/_installer/conf/mysql.php');
 
 include(basePath.'/_installer/html/header_u.php');
 
-if(!isset($action)) $action = "";
-else $action = $action;
 switch ($action):
 default:
   if(isset($_GET['agb']) && $_GET['agb'])
@@ -38,7 +37,7 @@ if(isset($_GET['agb']) && $_GET['agb'])
 {
   header("Location: update.php?agb=false");
 } else {
-  if(isset($do) && $do == "set_chmods" && $_POST['check'] != "dont")
+  if($do == "set_chmods" && $_POST['check'] != "dont")
   {
     if(_ex('ftp_connect') && _ex('ftp_login') && _ex('ftp_site'))
     {
@@ -201,8 +200,7 @@ if(isset($_GET['agb']) && $_GET['agb'])
 }
 break;
 case 'database';
-
-  if(isset($do) && $do == "update")
+  if($do == "update")
   {
     if($mysql)
     {
