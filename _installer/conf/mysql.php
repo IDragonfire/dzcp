@@ -1,56 +1,4 @@
 <?php
-// Funktionen
-function makePrev()
-{
-  $arr = array(0,1,2,3,4,5,6,7,8,9);
-  return $arr[rand(0,9)].$arr[rand(0,9)].$arr[rand(0,9)];
-}
-
-function up($txt,$bbcode=0)
-{
-  $txt = str_replace("& ","&amp; ",$txt);
-  $txt = str_replace("\"","&#34;",$txt);
-  $txt = trim($txt);
-  if(empty($bbcode)) $txt = nl2br($txt);
-
-  $txt = spChars($txt);
-
-  return $txt;
-}
-
-function spChars($txt)
-{
-  $txt = str_replace("Ä","&Auml;",$txt);
-  $txt = str_replace("ä","&auml;",$txt);
-  $txt = str_replace("Ü","&Uuml;",$txt);
-  $txt = str_replace("ü","&uuml;",$txt);
-  $txt = str_replace("Ö","&Ouml;",$txt);
-  $txt = str_replace("ö","&ouml;",$txt);
-  $txt = str_replace("ß","&szlig;",$txt);
-  $txt = str_replace("€","&euro;",$txt);
-
-  return $txt;
-}
-
-function visitorIp()
-{
-    $TheIp=$_SERVER['REMOTE_ADDR'];
-    if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-        $TheIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
-
-    if(isset($_SERVER['HTTP_CLIENT_IP']) && !empty($_SERVER['HTTP_CLIENT_IP']))
-        $TheIp = $_SERVER['HTTP_CLIENT_IP'];
-
-    if(isset($_SERVER['HTTP_FROM']) && !empty($_SERVER['HTTP_FROM']))
-        $TheIp = $_SERVER['HTTP_FROM'];
-
-    $TheIp_X = explode('.',$TheIp);
-    if(count($TheIp_X) == 4 && $TheIp_X[0]<=255 && $TheIp_X[1]<=255 && $TheIp_X[2]<=255 && $TheIp_X[3]<=255 && preg_match("!^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$!",$TheIp))
-        return trim($TheIp);
-
-    return '0.0.0.0';
-}
-
 //MySQL-Daten einlesen
 $installation = true;
 include(basePath.'/inc/config.php');
@@ -445,7 +393,6 @@ function install_mysql($login, $nick, $pwd, $email)
   $qry = db("INSERT INTO ".$db['links']." (`id`, `url`, `text`, `banner`, `beschreibung`, `hits`) VALUES (2, 'http://www.my-starmedia.de', 'http://www.my-starmedia.de/extern/b3/b3.gif', 1, '<b>my-STARMEDIAN</b><br />my-STARMEDIA.de - DZCP Mods and Coding', 0)");
 
 //-> LinkUs
-  _s($email);
   $qry = db("DROP TABLE IF EXISTS ".$db['linkus']."");
   $qry = db("CREATE TABLE ".$db['linkus']." (
              `id` int(5) NOT NULL auto_increment,
@@ -1183,6 +1130,8 @@ function update_mysql_1_4()
                                            ADD `m_lartikel` int(1) NOT NULL default '5',
                                            ADD `l_team` int(5) NOT NULL default '7'");
 
+  db("INSERT INTO `".$db['config']."` SET `id` = 1");
+
   $qry = db("ALTER TABLE ".$db['c_who']." ADD `whereami` text NOT NULL,
                                           ADD `login` int(1) NOT NULL default '0'");
   $qry = db("ALTER TABLE ".$db['users']." CHANGE `whereami` `whereami` text NOT NULL,
@@ -1350,7 +1299,7 @@ function update_mysql_1_5()
   db("ALTER TABLE ".$db['news']." ADD `public` int(1) default '0' NOT NULL");
   db("UPDATE ".$db['news']." SET `public` = '1'");
   db("ALTER TABLE ".$db['config']." ADD `m_away` int(5) default '10' NOT NULL");
-  db("INSERT INTO ".$db['config']." SET `m_away` = '10', `m_events` = '5'");
+  db("UPDATE ".$db['config']." SET `m_away` = '10', `m_events` = '5'");
 
   db("DROP TABLE IF EXISTS ".$db['away']);
   db("CREATE TABLE ".$db['away']." (
@@ -1498,6 +1447,34 @@ function update_mysql_1_6()
     db("ALTER TABLE `".$db['squads']."` ADD `team_joinus`INT(1) NOT NULL DEFAULT '1';");
     db("ALTER TABLE `".$db['squads']."` ADD `team_fightus`INT(1) NOT NULL DEFAULT '1';");
     db("ALTER TABLE `".$db['users']."` ADD `banned`INT(1) NOT NULL DEFAULT '0' AFTER `level`;");
+
+    //-> Fix Settings Table
+    if(db("SELECT * FROM `".$db['settings']."`",true) >= 2) {
+        $get_settings = db("SELECT * FROM `".$db['settings']."` WHERE `id` = 1",false,true);
+        db("TRUNCATE TABLE `".$db['settings']."`");
+        $sql = "INSERT INTO `".$db['settings']."` SET ";
+        foreach ($get_settings as $key => $var) {
+            $sql .= "`".$key."` = '".$var."',";
+        }
+        db(substr($sql, 0, -1));
+    }
+
+    //-> Fix Config Table
+    if(db("SELECT * FROM `".$db['config']."`",true) >= 2) {
+        $get_config = db("SELECT * FROM `".$db['config']."` WHERE `id` = 1",false,true);
+        db("TRUNCATE TABLE `".$db['config']."`");
+        $sql = "INSERT INTO `".$db['config']."` SET ";
+        foreach ($get_config as $key => $var) {
+            $sql .= "`".$key."` = '".$var."',";
+        }
+        db(substr($sql, 0, -1));
+    }
+
+    db("UPDATE `".$db['settings']."` SET `tmpdir` = 'version1.6' WHERE `id` = 1;"); //Set Template 1.6
+
+    //Add UNIQUE KEY
+    db("ALTER TABLE `".$db['config']."` ADD UNIQUE(`id`);");
+    db("ALTER TABLE `".$db['settings']."` ADD UNIQUE(`id`);");
 
     $qry = db("SELECT id,level FROM ".$db['users']);
     if(mysqli_num_rows($qry)>= 1)

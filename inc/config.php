@@ -55,6 +55,7 @@ else
 
 ## REQUIRES ##
 //DZCP-Install default variable
+if(!isset($installer)) $installer = false;
 if(!isset($sql_host) || !isset($sql_user) || !isset($sql_pass) || !isset($sql_db)) {
 $sql_prefix = ''; $sql_host = ''; $sql_user =  ''; $sql_pass = ''; $sql_db = '';
 }
@@ -273,6 +274,15 @@ function refValues($arr) {
     }
 
     return $arr;
+}
+
+//Auto Update Detect
+if(file_exists(basePath."/_installer/index.php") &&
+   file_exists(basePath."/inc/mysql.php") && !$installation) {
+    $user_check = db("SELECT * FROM `".$db['users']."` WHERE `id` = 1",false,true);
+    if(!array_key_exists('banned',$user_check) && !$installer)
+        header('Location: ../_installer/update.php');
+    unset($user_check);
 }
 
 function sql_backup() {

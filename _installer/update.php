@@ -8,6 +8,7 @@ session_start();
 define('basePath', dirname(dirname(__FILE__).'../'));
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $do = isset($_GET['do']) ? $_GET['do'] : '';
+$installer = true;
 
 require_once(basePath.'/inc/_version.php');
 require_once(basePath."/inc/debugger.php");
@@ -15,6 +16,13 @@ require_once(basePath.'/_installer/conf/conf.php');
 require_once(basePath.'/_installer/conf/mysql.php');
 
 include(basePath.'/_installer/html/header_u.php');
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+DebugConsole::initCon();
+
+if(debug_dzcp_handler)
+    set_error_handler('dzcp_error_handler');
 
 switch ($action):
 default:
@@ -40,7 +48,7 @@ if(isset($_GET['agb']) && $_GET['agb'])
 } else {
   if($do == "set_chmods" && $_POST['check'] != "dont")
   {
-    if(_ex('ftp_connect') && _ex('ftp_login') && _ex('ftp_site'))
+    if(function_exists('ftp_connect') && function_exists('ftp_login') && function_exists('ftp_site'))
     {
       $host = $_POST['host'];
       $user = $_POST['user'];
@@ -72,40 +80,40 @@ if(isset($_GET['agb']) && $_GET['agb'])
                 </tr>
               </table>';
       } else {
-        _c('_installer',$pfad,$host,$user,$pwd);
-        _c('_installer/update.php',$pfad,$host,$user,$pwd);
-        _c('_installer/install.php',$pfad,$host,$user,$pwd);
-        _c('rss.xml',$pfad,$host,$user,$pwd);
-        _c('admin',$pfad,$host,$user,$pwd);
-        _c('banner',$pfad,$host,$user,$pwd);
-        _c('banner/partners',$pfad,$host,$user,$pwd);
-        _c('banner/sponsors',$pfad,$host,$user,$pwd);
-        _c('downloads',$pfad,$host,$user,$pwd);
-        _c('gallery',$pfad,$host,$user,$pwd);
-        _c('gallery/images',$pfad,$host,$user,$pwd);
-        _c('server',$pfad,$host,$user,$pwd);
-        _c('upload',$pfad,$host,$user,$pwd);
-        _c('upload/',$pfad,$host,$user,$pwd);
-        _c('inc',$pfad,$host,$user,$pwd);
-        _c('inc/_cache_',$pfad,$host,$user,$pwd);
-        _c('inc/images',$pfad,$host,$user,$pwd);
-        _c('inc/images/tsicons/',$pfad,$host,$user,$pwd);
-        _c('inc/images/tsicons/server/',$pfad,$host,$user,$pwd);
-        _c('inc/images/clanwars',$pfad,$host,$user,$pwd);
-        _c('inc/images/gameicons',$pfad,$host,$user,$pwd);
-        _c('inc/images/maps',$pfad,$host,$user,$pwd);
-        _c('inc/images/newskat',$pfad,$host,$user,$pwd);
-        _c('inc/images/smileys',$pfad,$host,$user,$pwd);
-        _c('inc/images/squads',$pfad,$host,$user,$pwd);
-        _c('inc/images/uploads',$pfad,$host,$user,$pwd);
-        _c('inc/images/uploads/taktiken',$pfad,$host,$user,$pwd);
-        _c('inc/images/uploads/useravatare',$pfad,$host,$user,$pwd);
-        _c('inc/images/uploads/usergallery',$pfad,$host,$user,$pwd);
-        _c('inc/images/uploads/userpics',$pfad,$host,$user,$pwd);
-        _c('inc/tinymce_files',$pfad,$host,$user,$pwd);
-        _c('inc/tinymce/plugins/ajaxfilemanager/session',$pfad,$host,$user,$pwd);
-        _c('inc/tinymce/plugins/ajaxfilemanager/session/gc_counter.ajax.php',$pfad,$host,$user,$pwd);
-        _c('inc/config.php',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('_installer',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('_installer/update.php',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('_installer/install.php',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('rss.xml',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('admin',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('banner',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('banner/partners',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('banner/sponsors',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('downloads',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('gallery',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('gallery/images',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('server',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('upload',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('upload/',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/_cache_',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/images',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/images/tsicons/',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/images/tsicons/server/',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/images/clanwars',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/images/gameicons',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/images/maps',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/images/newskat',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/images/smileys',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/images/squads',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/images/uploads',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/images/uploads/taktiken',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/images/uploads/useravatare',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/images/uploads/usergallery',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/images/uploads/userpics',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/tinymce_files',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/tinymce/plugins/ajaxfilemanager/session',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/tinymce/plugins/ajaxfilemanager/session/gc_counter.ajax.php',$pfad,$host,$user,$pwd);
+        set_ftp_chmod('inc/config.php',$pfad,$host,$user,$pwd);
       }
     } else {
       echo '<table width="100%" cellpadding="1" cellspacing="1" class="error">
@@ -121,41 +129,43 @@ if(isset($_GET['agb']) && $_GET['agb'])
             </table>';
     }
   }
+
 //Check Installfiles
-  $cm = _i('../_installer',1);
-  $cm .= _i('../_installer/install.php');
-  $cm .= _i('../_installer/update.php');
+  $cm  = check_file_dir('../_installer',1);
+  $cm .= check_file_dir('../_installer/install.php');
+  $cm .= check_file_dir('../_installer/update.php');
+
 //Check Scriptfiles
-  $c .= _i('../rss.xml');
-  $c .= _i('../admin',1);
-  $c .= _i('../banner',1);
-  $c .= _i('../banner/partners',1);
-  $c .= _i('../downloads',1);
-  $c .= _i('../gallery',1);
-  $c .= _i('../gallery/images',1);
-  $c .= _i('../server',1);
-  $c .= _i('../upload',1);
-  $c .= _i('../upload/index.php');
-  $c .= _i('../inc',1);
-  $c =  _i('../inc/_cache_',1);
-  $c .= _i('../inc/images',1);
-  $c .= _i('../inc/images/tsicons',1);
-  $c .= _i('../inc/images/tsicons/server',1);
-  $c .= _i('../inc/images/clanwars',1);
-  $c .= _i('../inc/images/gameicons',1);
-  $c .= _i('../inc/images/maps',1);
-  $c .= _i('../inc/images/newskat',1);
-  $c .= _i('../inc/images/smileys',1);
-  $c .= _i('../inc/images/squads',1);
-  $c .= _i('../inc/images/uploads',1);
-  $c .= _i('../inc/images/uploads/taktiken',1);
-  $c .= _i('../inc/images/uploads/useravatare',1);
-  $c .= _i('../inc/images/uploads/usergallery',1);
-  $c .= _i('../inc/images/uploads/userpics',1);
-  $c .= _i('../inc/tinymce_files',1);
-  $c .= _i('../inc/tinymce/plugins/ajaxfilemanager/session',1);
-  $c .= _i('../inc/tinymce/plugins/ajaxfilemanager/session/gc_counter.ajax.php',1);
-  $c .= _i('../inc/config.php',1);
+  $c  = check_file_dir('../rss.xml');
+  $c .= check_file_dir('../admin',1);
+  $c .= check_file_dir('../banner',1);
+  $c .= check_file_dir('../banner/partners',1);
+  $c .= check_file_dir('../downloads',1);
+  $c .= check_file_dir('../gallery',1);
+  $c .= check_file_dir('../gallery/images',1);
+  $c .= check_file_dir('../server',1);
+  $c .= check_file_dir('../upload',1);
+  $c .= check_file_dir('../upload/index.php');
+  $c .= check_file_dir('../inc',1);
+  $c =  check_file_dir('../inc/_cache_',1);
+  $c .= check_file_dir('../inc/images',1);
+  $c .= check_file_dir('../inc/images/tsicons',1);
+  $c .= check_file_dir('../inc/images/tsicons/server',1);
+  $c .= check_file_dir('../inc/images/clanwars',1);
+  $c .= check_file_dir('../inc/images/gameicons',1);
+  $c .= check_file_dir('../inc/images/maps',1);
+  $c .= check_file_dir('../inc/images/newskat',1);
+  $c .= check_file_dir('../inc/images/smileys',1);
+  $c .= check_file_dir('../inc/images/squads',1);
+  $c .= check_file_dir('../inc/images/uploads',1);
+  $c .= check_file_dir('../inc/images/uploads/taktiken',1);
+  $c .= check_file_dir('../inc/images/uploads/useravatare',1);
+  $c .= check_file_dir('../inc/images/uploads/usergallery',1);
+  $c .= check_file_dir('../inc/images/uploads/userpics',1);
+  $c .= check_file_dir('../inc/tinymce_files',1);
+  $c .= check_file_dir('../inc/tinymce/plugins/ajaxfilemanager/session',1);
+  $c .= check_file_dir('../inc/tinymce/plugins/ajaxfilemanager/session/gc_counter.ajax.php',1);
+  $c .= check_file_dir('../inc/config.php',1);
 
   $check = preg_match("#false#Uis",$c);
 
@@ -312,4 +322,6 @@ case 'done';
 break;
 endswitch;
 include basePath.'/_installer/html/footer.php';
-ob_end_flush();
+$installer_out = ob_get_contents();
+ob_end_clean();
+echo DebugConsole::show_logs().$installer_out;
