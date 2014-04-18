@@ -10,6 +10,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
 $do = isset($_GET['do']) ? $_GET['do'] : '';
 
 require_once(basePath.'/inc/_version.php');
+require_once(basePath."/inc/debugger.php");
 require_once(basePath.'/_installer/conf/conf.php');
 require_once(basePath.'/_installer/conf/mysql.php');
 
