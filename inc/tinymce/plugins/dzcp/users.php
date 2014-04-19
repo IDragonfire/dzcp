@@ -1,5 +1,6 @@
 <?php
   define('basePath', '../../../../');
+  include(basePath."/inc/debugger.php");
   include basePath.'/inc/config.php';
 
   if(empty($_GET['sort']) || $_GET['sort'] == 'clan')
@@ -10,27 +11,27 @@
 
   function rawflag($code)
   {
-    if(!file_exists("../../../images/flaggen/".$code.".gif")) 
+    if(!file_exists("../../../images/flaggen/".$code.".gif"))
       return 'nocountry';
     else return $code;
   }
   function flag($code)
   {
-    if(!file_exists("../../../images/flaggen/".$code.".gif")) 
+    if(!file_exists("../../../images/flaggen/".$code.".gif"))
       return '<img src="../../../images/flaggen/nocountry.gif" alt="" style="vertical-align:middle" />';
     else return'<img src="../../../images/flaggen/'.$code.'.gif" alt="" style="vertical-align:middle" />';
   }
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>{#dzcp.users}</title>
-	<script language="javascript" type="text/javascript" src="../../tiny_mce_popup.js"></script>
-	<script language="javascript" type="text/javascript" src="jscripts/users.js"></script>
-	<base target="_self" />
+    <title>{#dzcp.users}</title>
+    <script language="javascript" type="text/javascript" src="../../tiny_mce_popup.js"></script>
+    <script language="javascript" type="text/javascript" src="jscripts/users.js"></script>
+    <base target="_self" />
 </head>
 <body>
-	<div id="users" style="padding:2px" align="center">
-		<table style="width:230px" border="0" cellspacing="0" cellpadding="1">
+    <div id="users" style="padding:2px" align="center">
+        <table style="width:230px" border="0" cellspacing="0" cellpadding="1">
       <tr>
         <td colspan="2" style="text-align:center">
           <select name="sort" style="width:190px"  class="mceSelect" onchange="sort(this.value)">
@@ -54,8 +55,8 @@
       echo "</tr>\n";
     }
 ?>
-		</table>
-	</div>
+        </table>
+    </div>
 </body>
 </html>
 <?php
