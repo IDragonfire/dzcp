@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 $charset = 'iso-8859-1';
 header("Content-type: text/html; charset=".$charset);
 

@@ -1,15 +1,20 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
   $where = $where.': '._kalender_head;
     if($do == "add")
     {
       $dropdown_date = show(_dropdown_date, array("day" => dropdown("day",date("d",time())),
-				      	                                  "month" => dropdown("month",date("m",time())),
-                                      	          "year" => dropdown("year",date("Y",time()))));
+                                                            "month" => dropdown("month",date("m",time())),
+                                                    "year" => dropdown("year",date("Y",time()))));
 
       $dropdown_time = show(_dropdown_time, array("hour" => dropdown("hour",date("H",time())),
-                                      	          "minute" => dropdown("minute",date("i",time())),
+                                                    "minute" => dropdown("minute",date("i",time())),
                                                   "uhr" => _uhr));
       $show = show($dir."/form_kalender", array("datum" => _datum,
                                                 "event" => _kalender_event,
@@ -42,11 +47,11 @@ if(_adminMenu != 'true') exit;
       $get = _fetch($qry);
 
       $dropdown_date = show(_dropdown_date, array("day" => dropdown("day",date("d",$get['datum'])),
-				      	                                  "month" => dropdown("month",date("m",$get['datum'])),
-                                      	          "year" => dropdown("year",date("Y",$get['datum']))));
+                                                            "month" => dropdown("month",date("m",$get['datum'])),
+                                                    "year" => dropdown("year",date("Y",$get['datum']))));
 
       $dropdown_time = show(_dropdown_time, array("hour" => dropdown("hour",date("H",$get['datum'])),
-                                      	          "minute" => dropdown("minute",date("i",$get['datum'])),
+                                                    "minute" => dropdown("minute",date("i",$get['datum'])),
                                                   "uhr" => _uhr));
       $show = show($dir."/form_kalender", array("datum" => _datum,
                                                 "event" => _kalender_event,
@@ -81,12 +86,12 @@ if(_adminMenu != 'true') exit;
       $show = info(_kalender_deleted,"?admin=kalender");
     } else {
       if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("titel","datum"))) {
-	        $qry = db("SELECT * FROM ".$db['events']."
+            $qry = db("SELECT * FROM ".$db['events']."
                    ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."");
-	  }
+      }
       else {$qry = db("SELECT * FROM ".$db['events']."
                  ORDER BY datum DESC");
-	  }
+      }
         while($get = _fetch($qry))
         {
           $edit = show("page/button_edit_single", array("id" => $get['id'],
@@ -112,8 +117,8 @@ if(_adminMenu != 'true') exit;
                                              "date" => _datum,
                                              "titel" => _kalender_event,
                                              "show" => $show_,
-											 "order_date" => orderby('datum'),
-											 "order_titel" => orderby('event'),
+                                             "order_date" => orderby('datum'),
+                                             "order_titel" => orderby('event'),
                                              "add" => _kalender_admin_head_add
                                              ));
     }

@@ -1,8 +1,9 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('slideshow')
-///////////////////////////////
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
 $where = $where.': '._slider;

@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_rankings;
@@ -10,7 +15,7 @@ if(_adminMenu != 'true') exit;
         while($gets = _fetch($qrys))
         {
           $squads .= show(_select_field_ranking_add, array("what" => re($gets['name']),
-  		              									                     "value" => $gets['id'],
+                                                                                 "value" => $gets['id'],
                                                            "icon" => $gets['icon'],
                                                            "sel" => ""));
         }
@@ -54,7 +59,7 @@ if(_adminMenu != 'true') exit;
           if($get['squad'] == $gets['id']) $sel = "selected=\"selected\"";
           else $sel = "";
           $squads .= show(_select_field_ranking_add, array("what" => re($gets['name']),
-  		              									                     "value" => $gets['id'],
+                                                                                 "value" => $gets['id'],
                                                            "icon" => $gets['icon'],
                                                            "sel" => $sel));
         }
@@ -97,19 +102,19 @@ if(_adminMenu != 'true') exit;
 
         $show = info(_ranking_deleted, "?admin=rankings");
       } else {
-		if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("name","league"))) {
-	    $qry = db("SELECT s1.*,s2.name,s2.id AS sqid FROM ".$db['rankings']." AS s1
+        if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("name","league"))) {
+        $qry = db("SELECT s1.*,s2.name,s2.id AS sqid FROM ".$db['rankings']." AS s1
                    LEFT JOIN ".$db['squads']." AS s2
                    ON s1.squad = s2.id
                    ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."");
-	   }
+       }
 
        else{$qry = db("SELECT s1.*,s2.name,s2.id AS sqid FROM ".$db['rankings']." AS s1
                        LEFT JOIN ".$db['squads']." AS s2
                        ON s1.squad = s2.id
                        ORDER BY s1.postdate DESC");
-	   }
-		while($get = _fetch($qry))
+       }
+        while($get = _fetch($qry))
         {
           $edit = show("page/button_edit_single", array("id" => $get['id'],
                                                         "action" => "admin=rankings&amp;do=edit",
@@ -133,8 +138,8 @@ if(_adminMenu != 'true') exit;
                                              "league" => _cw_head_liga,
                                              "squad" => _cw_head_squad,
                                              "show" => $show_,
-											 "order_squad" => orderby('name'),
-											 "order_league" => orderby('league'),
+                                             "order_squad" => orderby('name'),
+                                             "order_league" => orderby('league'),
                                              "add" => _rankings_add_head
                                              ));
       }

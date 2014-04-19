@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ######## CONFIG ##############################################################################################################
 
   $server_name       = 'Battlefield Bad Company';
@@ -6,25 +11,25 @@
   $server_link       = 'bfbc2://{IP}:{S_PORT}';
 
 ##############################################################################################################################
-  
+
   function server_query_bfbc2($ip, $port, $q_port, $request)
   {
     global $server_timeout;
-    
+
     $q_port = empty($q_port) ? 48888 : $q_port;
-    
+
     @set_time_limit(20);
     $fp = @fsockopen("tcp://$ip", $q_port, $errno, $errstr, $server_timeout);
 
     if (!$fp) return false;
-    stream_set_timeout($fp, 1, 0); stream_set_blocking($fp, true);    
+    stream_set_timeout($fp, 1, 0); stream_set_blocking($fp, true);
 
     if($request == 'info') fwrite($fp, "\x00\x00\x00\x00\x1B\x00\x00\x00\x01\x00\x00\x00\x0A\x00\x00\x00serverInfo\x00");
     else if($request == 'players') fwrite($fp, "\x00\x00\x00\x00\x24\x00\x00\x00\x02\x00\x00\x00\x0B\x00\x00\x00listPlayers\x00\x03\x00\x00\x00all\x00");
-    
+
     $buffer = fread($fp, 4096);
     $buffer = substr($buffer, 12);
-    
+
     $response = cut_pascal($buffer, 4, 0, 1);
     if($response != 'OK') return false;
 
@@ -59,8 +64,8 @@
         }
       }
     }
-    
-    
+
+
     return $data;
   }
 ?>

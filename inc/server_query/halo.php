@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ######## CONFIG ##############################################################################################################
 
   $server_name       = 'Halo';
@@ -11,7 +16,7 @@
   {
     global $server_timeout;
     $q_port = empty($q_port) ? $port : $q_port;
-    
+
     if ($request == "info")    { $challenge = "\\basic\\\\info\\\\rules\\"; }
     if ($request == "players") { $challenge = "\\players\\"; }
 

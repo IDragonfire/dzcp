@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 $server_timeout = 5;
 
 function validate($string, $pattern = 'a-zA-Z0-9') {

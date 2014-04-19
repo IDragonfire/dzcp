@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ######## CONFIG ##############################################################################################################
 
   $server_name       = 'Call of Duty - Modern Warfare 3';
@@ -15,7 +20,7 @@
   {
     global $server_timeout;
     $q_port = empty($q_port) ? $port : $q_port;
-    
+
     $fp = @fsockopen("udp://$ip", $port, $errno, $errstr, $server_timeout);
 
     if (!$fp) { return FALSE; }
@@ -92,5 +97,5 @@
       return $player;
     }
   }
-  
+
 ?>

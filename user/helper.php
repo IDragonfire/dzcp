@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 function custom_content($kid=1) {
     global $db;
     $custom_content = ''; $i = 0;

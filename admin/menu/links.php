@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_links;
@@ -28,7 +33,7 @@ if(_adminMenu != 'true') exit;
                                                "text" => _links_admin_textlink,
                                                "banner" => _links_admin_bannerlink,
                                                "bchecked" => "checked=\"checked\"",
-											   "bnone" => "",
+                                               "bnone" => "",
                                                "tchecked" => "",
                                                "llink" => "",
                                                "lbeschreibung" => "",
@@ -58,12 +63,12 @@ if(_adminMenu != 'true') exit;
         $get = _fetch($qry);
 
         if($get['banner'] == 1){
-			 $bchecked = "checked=\"checked\"";
-			 $bnone = "";
-        }else{ 
-			$tchecked = "checked=\"checked\"";
-			$bnone = "display:none";
-		}
+             $bchecked = "checked=\"checked\"";
+             $bnone = "";
+        }else{
+            $tchecked = "checked=\"checked\"";
+            $bnone = "display:none";
+        }
 
         $linktyp = '<input type="hidden" name="type" value="'.$_GET['type'].'" />';
 
@@ -76,7 +81,7 @@ if(_adminMenu != 'true') exit;
                                                "banner" => _links_admin_bannerlink,
                                                "bchecked" => $bchecked,
                                                "tchecked" => $tchecked,
-											   "bnone" => $bnone,
+                                               "bnone" => $bnone,
                                                "llink" => $get['url'],
                                                "lbeschreibung" => re($get['beschreibung']),
                                                "btext" => _links_text,

@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ######## CONFIG ##############################################################################################################
 
   $server_name       = 'Command &amp; Conquer Renegade';
@@ -11,7 +16,7 @@
   {
     global $server_timeout;
     $q_port = empty($q_port) ? $port : $q_port;
-    
+
     $i = 0;
     $list = array();
     @set_time_limit(2);
@@ -29,10 +34,10 @@
          $status_pre = socket_get_status ($connect);
          $out = fread ($connect, 1);
 
-    	 if ($out=="\\") { if(empty ($b)) $b=1;
+         if ($out=="\\") { if(empty ($b)) $b=1;
 
-    	  $list[$b++]=$output;
-    	  $output="";
+          $list[$b++]=$output;
+          $output="";
          } else {
           $output = $output . $out;
          }
@@ -51,7 +56,7 @@
          $players[$i-1]=$temp[$i];
         }
       }
-  
+
       for($i=0;$i<count($list);$i++)
       {
         if($i>0)
@@ -64,19 +69,19 @@
           if($list[$i] == "hostname")   $servername = $list[$i+1];
           if($list[$i] == "numplayers") $numplayers = $list[$i+1];
           if($list[$i] == "timeleft")   $timeleft = $list[$i+1];
-  
-       	  if(empty($p)) $p=0;
-  
-      	  if($list[$i] == "player_$p") 
-          {	
+
+             if(empty($p)) $p=0;
+
+            if($list[$i] == "player_$p")
+          {
             $p++;
-      		  $player_name[$p]  = $list[$i+1];
-      		  $player_score[$p] = $list[$i-1];
-      		  $player_ping[$p]  = $list[$i-3] ;
-      	  }
+                $player_name[$p]  = $list[$i+1];
+                $player_score[$p] = $list[$i-1];
+                $player_ping[$p]  = $list[$i-3] ;
+            }
         }
       }
-  
+
       if($request == "info")
       {
         $data['gametype']   = "cnc";
@@ -86,22 +91,22 @@
         $data['players']    = $numplayers;
         $data['maxplayers'] = $sv_maxclients;
         $data['password']   = $pswrd;
-  
+
         return $data;
       }
-      
+
       if($request == "players")
       {
         for($i=0;$i<count($player_name);$i++)
         {
-        	$player[$i+1]['name']  = 	$player_name[$i+1];
-        	$player[$i+1]['score'] = 	$player_score[$i+1];
-          $player[$i+1]['ping']  =	$player_ping[$i+1];
+            $player[$i+1]['name']  =     $player_name[$i+1];
+            $player[$i+1]['score'] =     $player_score[$i+1];
+          $player[$i+1]['ping']  =    $player_ping[$i+1];
         }
-  
+
         return $player;
       }
     }
   }
-  
+
 ?>

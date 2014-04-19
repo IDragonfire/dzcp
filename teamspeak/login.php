@@ -1,11 +1,17 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
 
 ## INCLUDES ##
-
+include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+
 ## SECTIONS ##
     $uip         = settings('ts_ip');
     $tPort     = settings('ts_sport');

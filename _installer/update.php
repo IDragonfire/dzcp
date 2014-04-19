@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ## Check PHP Version ##
 if(version_compare(PHP_VERSION, '5.2.0', '>=') === false)
     die('DZCP required PHP 5.2.0 or newer!<p> Found PHP ' . PHP_VERSION);

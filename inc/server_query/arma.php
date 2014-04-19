@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ######## CONFIG ##############################################################################################################
 
   $server_name       = 'Armed Assault';
@@ -11,7 +16,7 @@
   {
     global $server_timeout;
     $q_port = empty($q_port) ? $port : $q_port;
-    
+
     if ($request == "info")     { $challenge = "\xFE\xFD\x00\xAA\xAA\xAA\xAA\xFF\x00\x00"; }
     if ($request == "players")  { $challenge = "\xFE\xFD\x00\xAA\xAA\xAA\xAA\x00\xFF\x00"; }
 
@@ -69,7 +74,7 @@
       $buffer[0]  = str_replace("", "name", $buffer[0]);
       $field_list = explode("\x00",$buffer[0]);
       $item       = explode("\x00",$buffer[1]);
-    
+
       $item_position = 0;
       $item_total    = count($item);
       $player_key    = 0;

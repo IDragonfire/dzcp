@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ######## CONFIG ##############################################################################################################
 
   $server_name       = 'Battlefield 2142';
@@ -11,7 +16,7 @@
   {
     global $server_timeout;
     $q_port = empty($q_port) ? 29900 : $q_port;
-    
+
     @set_time_limit(2);
     $fp = @fsockopen("udp://$ip", $q_port, $errno, $errstr, $server_timeout);
 
@@ -23,7 +28,7 @@
     fwrite($fp, $challenge_code);
 
     $challenge_packet = fread($fp, 1400);
-    
+
     $challenge_code = substr($challenge_packet, 5, -1);
     $challenge_code = chr($challenge_code >> 24).chr($challenge_code >> 16).chr($challenge_code >> 8).chr($challenge_code >> 0);
 
@@ -105,7 +110,7 @@
     if ($request == "info")
     {
       unset($data);
-      
+
       $gamemod = ($setting['gamename']=='stella'||$setting['gamename']=='stellad')
                  ?'bf2142':$setting['gamename'];
       $data['gamemod']    = $gamemod;

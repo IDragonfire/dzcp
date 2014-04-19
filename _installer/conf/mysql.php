@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 //MySQL-Daten einlesen
 $installation = true;
 include(basePath.'/inc/config.php');

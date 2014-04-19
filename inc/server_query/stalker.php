@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ######## CONFIG ##############################################################################################################
 
   $server_name       = 'S.T.A.L.K.E.R';
@@ -11,7 +16,7 @@
   {
     global $server_timeout;
     $q_port = empty($q_port) ? $port + 2 : $q_port;
-    
+
     @set_time_limit(2);
     $fp = @fsockopen("udp://$ip", $q_port, $errno, $errstr, $server_timeout);
     if (!$fp) { return FALSE; }
@@ -92,7 +97,7 @@
     if ($request == "info")
     {
       unset($data);
-      
+
       $data['gamemod']    = $setting['gamename'];
       $data['hostname']   = $setting['hostname'];
       $data['mapname']    = $setting['mapname'];
@@ -143,5 +148,5 @@
       return $player;
     }
   }
-  
+
 ?>

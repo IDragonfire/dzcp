@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ######## CONFIG ##############################################################################################################
 
   $server_name       = 'Halflife 2';
@@ -10,8 +15,8 @@
                               'tf'         => array('Team Fortress 2',                   'TF 2'),
                               'left4dead'  => array('Left 4 Dead',                       'LFD'),
                               'left4dead2' => array('Left 4 Dead 2',                     'LFD2'),
-							  'insurgency' => array('Insurgency',                        'INS'),
-							  'csgo'       => array('Counter-Strike: Global Offensive',  'CS:GO'),
+                              'insurgency' => array('Insurgency',                        'INS'),
+                              'csgo'       => array('Counter-Strike: Global Offensive',  'CS:GO'),
   );
 
 ##############################################################################################################################
@@ -20,7 +25,7 @@
   {
     global $server_timeout;
     $q_port = empty($q_port) ? $port : $q_port;
-    
+
     $fp = @fsockopen("udp://$ip", $port, $errno, $errstr, $server_timeout);
 
     if (!$fp) { return FALSE; }
@@ -97,5 +102,5 @@
       return $player;
     }
   }
-  
+
 ?>
