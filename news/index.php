@@ -19,10 +19,6 @@ $title = $pagetitle." - ".$where."";
 $dir = "news";
 
 ## SECTIONS ##
-if(check_internal_url())
-    $index = error(_error_have_to_be_logged, 1);
-else
-{
     switch($action):
         default:
             if(!($kat = isset($_GET['kat']) ? intval($_GET['kat']) : 0)) {
@@ -827,7 +823,6 @@ else
                                             "sel12" => $sel[12]));
     break;
     endswitch;
-}
 
 ## INDEX OUTPUT ##
 $title = $pagetitle." - ".$where."";
