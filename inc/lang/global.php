@@ -186,7 +186,8 @@ define('_icon_edit_news', '<a href="?admin=newsadmin&amp;do=edit&amp;id=[id]"><i
 define('_icon_delete_news', '<a href="?admin=newsadmin&amp;do=delete&amp;id=[id]"><img alt="" src="../inc/images/delete.gif" class="icon" /></a>');
 define('_icon_edit_squads', '<a href="?admin=squads&amp;do=edit&amp;id=[id]"><img alt="" src="../inc/images/edit.gif" class="icon" /></a>');
 define('_icon_delete_squads', '<a href="?admin=squads&amp;do=delete&amp;id=[id]"><img alt="" src="../inc/images/delete.gif" class="icon" /></a>');
-define('_member_admin_icon_upload', '<a href="../upload/">upload</a>');
+define('_member_admin_icon_upload', '<a href="../upload/?action=squads">upload</a>');
+define('_member_admin_icon_upload_edit', '<a href="../upload/?action=squads&amp;do=edit&amp;id=[id]">upload</a>');
 define('_icon_delete_slist', '<a href="?admin=serverlist&amp;do=delete&amp;id=[id]"><img alt="" src="../inc/images/delete.gif" class="icon" /></a>');
 define('_server_show_bannlist', '<a href="?action=banned&amp;id=[id]"><img src="../inc/images/rows.gif" alt="" class="icon" /> Bannliste</a>');
 define('_checkfield_squads', '
