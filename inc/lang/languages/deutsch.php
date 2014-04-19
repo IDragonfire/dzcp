@@ -2149,7 +2149,7 @@ define('_originid', 'Origin');
 define('_originstatus', 'Origin');
 define('_battlenetid', 'Battlenet');
 define('_battlenetstatus', 'Battlenet');
-define('_steamicon',  '<img src="../inc/images/steam.gif" alt="" class="icon" onmouseover="DZCP.showInfo(\'<tr><td><img src=../user/index.php?action=get_steam_image&steam_id=[steamid] /></td></tr>\')" onmouseout="DZCP.hideInfo()" />');
+define('_steamicon',  '<img src="../inc/images/steam.gif" alt="" class="icon" onmouseover="DZCP.showInfo(\'<tr><td><img src=../inc/ajax.php?i=steam&steam_id=[steamid] /></td></tr>\')" onmouseout="DZCP.hideInfo()" />');
 define('_link', 'Link');
 define('_linkname', 'Linkname');
 define('_url', 'URL');

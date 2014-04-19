@@ -115,6 +115,14 @@ if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSI
     unset($sql);
 }
 
+//-> Sprache aendern
+if(isset($_GET['set_language'])) {
+    if(file_exists(basePath."/inc/lang/languages/".$_GET['set_language'].".php"))
+        set_cookie($prev.'language',$_GET['set_language']);
+
+    header("Location: ".$_SERVER['HTTP_REFERER']);
+}
+
 lang($language); //Lade Sprache
 $userid = userid();
 $chkMe = checkme();
@@ -221,7 +229,7 @@ function languages() {
         $file = str_replace('.php','',$files[$i]);
         $upFile = strtoupper(substr($file,0,1)).substr($file,1);
         if(file_exists('../inc/lang/flaggen/'.$file.'.gif'))
-            $lang .= '<a href="../user/?action=language&amp;set='.$file.'"><img src="../inc/lang/flaggen/'.$file.'.gif" alt="'.$upFile.'" title="'.$upFile.'" class="icon" /></a> ';
+            $lang .= '<a href="?set_language='.$file.'"><img src="../inc/lang/flaggen/'.$file.'.gif" alt="'.$upFile.'" title="'.$upFile.'" class="icon" /></a> ';
     }
 
     return $lang;
@@ -2220,6 +2228,66 @@ final class dbc_index
         }
 
         return false;
+    }
+}
+
+function steamIMG($steamID='') {
+    global $cache;
+    if(!fsockopen_support()) return _fopen;
+    $data=strtolower(trim($steamID));
+    if ($data!='') {
+        if (ereg('7656119', $data)) {
+            $ret = $data;
+        }
+        else if (substr($data,0,7)=='steam_0') {
+            $tmp=explode(':',$data);
+            if ((count($tmp)==3) && is_numeric($tmp[1]) && is_numeric($tmp[2])) {
+                $friendid=($tmp[2]*2)+$tmp[1]+1197960265728;
+                $friendid='7656'.$friendid;
+                $ret = $friendid;
+            }
+        }
+
+        if ($ret!= null) {
+            if($cache->check('xml_'.$ret)) {
+                $steam_profile = simplexml_load_file("http://steamcommunity.com/profiles/".$ret."/?xml=1");
+                $cache->set('xml_'.$ret, $steam_profile, 3600);
+            }
+            else
+                $steam_profile = $cache->get('xml_'.$ret);
+        }
+        else
+        {
+            if($cache->check('xml_'.$data)) {
+                $steam_profile = simplexml_load_file("http://steamcommunity.com/id/".str_replace('steam_','ERROR_POFILE_FIXED',$data)."/?xml=1");
+                $cache->set('xml_'.$data, $steam_profile, 3600);
+            }
+            else
+                $steam_profile = $cache->get('xml_'.$data);
+
+            $ret = $steam_profile->steamID64;
+        }
+
+        if (empty($steam_profile->error) && $ret != "") {
+            if($cache->check("steamsignature_".$ret)) {
+                $image_cache = fileExists('http://steamsignature.com/profile/english/'.$ret.'.png');
+                if($image_cache && !empty($image_cache))
+                    $cache->set("steamsignature_".$ret, bin2hex($image_cache), 3600);
+            }
+            else
+                $image_cache = hextobin($cache->get("steamsignature_".$ret));
+        }
+        else {
+            if($cache->check("steamsignature_error_pic")) {
+                $image_cache = fileExists('http://steamsignature.com/profile/english/error_not_found.png');
+                if($image_cache && !empty($image_cache))
+                    $cache->set("steamsignature_error_pic", bin2hex($image_cache), 3600);
+            }
+            else
+                $image_cache = hextobin($cache->get("steamsignature_error_pic"));
+        }
+
+        return $image_cache;
     }
 }
 

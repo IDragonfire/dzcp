@@ -30,4 +30,5 @@ switch (isset($_GET['i']) ? $_GET['i'] : ''):
     case 'server';    echo '<table class="hperc" cellspacing="0">'.server($_GET['serverID']).'</table>'; break;
     case 'shoutbox';  echo '<table class="hperc" cellspacing="1">'.shout(1).'</table>'; break;
     case 'teamspeak'; echo '<table class="hperc" cellspacing="0">'.teamspeak(1).'</table>'; break;
+    case 'steam'; header('Content-Type: image/png'); exit(steamIMG($_GET['steam_id'])); break;
 endswitch;
