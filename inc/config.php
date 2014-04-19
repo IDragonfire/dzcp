@@ -15,7 +15,8 @@ define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selb
 define('admin_view_dzcp_news', true); // Entscheidet ob der Newstricker in der Administration angezeigt wird
 
 define('thumbgen_cache', true); // Sollen die verkleinerten Bilder der Thumbgen gespeichert werden
-define('thumbgen_cache_time', 3600); // Wie lange soll das Bild aus dem Cache verwendet werden
+define('thumbgen_cache_time', 60*60); // Wie lange soll das Bild aus dem Cache verwendet werden
+define('feed_update_time', 10*60); // Wann soll der Newsfeed aktualisiert werden
 
 $config_cache = array();
 $config_cache['storage'] = "auto"; //memcache
