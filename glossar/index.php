@@ -10,6 +10,8 @@ include(basePath."/inc/bbcode.php");
 ## SETTINGS ##
 $dir = "glossar";
 $where = _glossar;
+$use_glossar = false;
+
 ## SECTIONS ##
 switch ($action):
 default:
