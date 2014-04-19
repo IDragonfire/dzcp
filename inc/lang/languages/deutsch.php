@@ -77,6 +77,18 @@ define('_upload_error', 'Fehler beim hochladen der Datei!');
 define('_login_banned', 'Dein Account wurde vom Administrator gesperrt!');
 define('_lobby_no_mymessages', '<a href="../user/?action=msg">Du hast keine neuen Nachrichten!</a>');
 
+define('_perm_smileys', 'Smileys verwalten');
+define('_perm_protocol', 'Admin Protokoll einsehen');
+define('_perm_support', 'Support Seite einsehen');
+define('_perm_backup', 'SQL-Backups verwalten');
+define('_perm_clear', 'Datenbank aufr&auml;umen');
+define('_perm_forumkats', 'Forenkategorien verwalten');
+define('_perm_impressum', 'Impressum verwalten');
+define('_perm_config', 'Seitenkonfiguration &auml;ndern');
+define('_perm_positions', 'User R&auml;nge verwalten');
+define('_perm_partners', 'Partner verwalten');
+define('_perm_profile', 'Profilfelder verwalten');
+
 ## ADDED / REDEFINED FOR 1.5 Final
 define('_id_dont_exist', 'Die von dir angegebene ID existiert nicht!');
 define('_perm_editts', 'Teamspeak Server verwalten');

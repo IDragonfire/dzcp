@@ -71,7 +71,6 @@ if(_adminMenu != 'true') exit;
                                                                                      "sex" => _pedit_male,
                                                                                      "pbday" => _profil_bday,
                                                                                      "dropdown_age" => $dropdown_age,
-                                                                                     "pwohn" => _useradd_wohn,
                                                                                      "pcity" => _profil_city,
                                                                                      "pcountry" => _profil_country,
                                                                                      "country" => show_countrys($get['country']),

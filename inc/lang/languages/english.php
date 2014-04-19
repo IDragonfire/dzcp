@@ -76,6 +76,18 @@ define('_upload_error', 'Failed to upload the file!');
 define('_login_banned', 'Your account has been banned by administrator!');
 define('_lobby_no_mymessages', '<a href="../user/?action=msg">You have no new messages!</a>');
 
+define('_perm_smileys', 'manage smileys');
+define('_perm_protocol', 'can see admin protocol');
+define('_perm_support', 'can see support page');
+define('_perm_backup', 'manage SQL-Backups');
+define('_perm_clear', 'clean database');
+define('_perm_forumkats', 'manage forums categories');
+define('_perm_impressum', 'manage impressum');
+define('_perm_config', 'manage configuration page');
+define('_perm_positions', 'manage user ranks');
+define('_perm_partners', 'manage partner');
+define('_perm_profile', 'manage profile fields');
+
 ## ADDED / REDEFINED FOR 1.5 Final
 define('_side_membermap', 'Membermap');
 define('_id_dont_exist', 'The requested ID does not exist!');
