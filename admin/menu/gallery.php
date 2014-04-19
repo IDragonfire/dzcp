@@ -53,8 +53,8 @@ if(_adminMenu != 'true') exit;
 
       $show = info(_gallery_added, "?admin=gallery");
     } elseif($do == "delgal") {
-      $qry = db("DELETE FROM ".$db['gallery']."
-                 WHERE id = '".intval($_GET['id'])."'");
+      #$qry = db("DELETE FROM ".$db['gallery']."
+      #           WHERE id = '".intval($_GET['id'])."'");
 
       $files = get_files("../gallery/images/",false,true);
       for($i=0; $i<count($files); $i++)
@@ -62,18 +62,27 @@ if(_adminMenu != 'true') exit;
         if(preg_match("#".$_GET['id']."_(.*?).(gif|jpg|jpeg|png)#",strtolower($files[$i]))!= FALSE)
         {
           $res = preg_match("#".$_GET['id']."_(.*)#",$files[$i],$match);
-
           @unlink(basePath."/gallery/images/".$_GET['id']."_".$match[1]);
         }
       }
 
       $show = info(_gallery_deleted, "?admin=gallery");
-    } elseif($do == "delete") {
+    }
+    elseif($do == "delete")
+    {
       $pic = $_GET['pic'];
-      @unlink(basePath."/gallery/images/".$pic."");
+      $file_d = explode('.',$pic);
+      $files = get_files("../gallery/images/",false,true);
+      foreach ($files as $file)
+      {
+          $file_exp_minimize = explode('_minimize_',$file);
+          $file_exp = explode('.',$file);
+
+          if($file_exp_minimize[0] == $file_d[0] || $file_exp[0] == $file_d[0])
+              @unlink(basePath."/gallery/images/".$file);
+      }
 
       $res = preg_match("#(.*)_(.*?).(gif|GIF|JPG|jpg|JPEG|jpeg|png)#",$pic,$pid);
-
       $show = info(_gallery_pic_deleted, "../gallery/?action=show&amp;id=".$pid[1]."");
     } elseif($do == "edit") {
       $qry = db("SELECT * FROM ".$db['gallery']."
@@ -92,8 +101,8 @@ if(_adminMenu != 'true') exit;
     } elseif($do == "editgallery") {
       $qry = db("UPDATE ".$db['gallery']."
                  SET `kat`          = '".up($_POST['gallery'])."',
-				 `intern`          = '".((int)$_POST['intern'])."',
-				 `beschreibung` = '".up($_POST['beschreibung'], 1)."'
+                 `intern`          = '".((int)$_POST['intern'])."',
+                 `beschreibung` = '".up($_POST['beschreibung'], 1)."'
                  WHERE id = '".intval($_GET['id'])."'");
 
       $show = info(_gallery_edited, "?admin=gallery");
@@ -187,7 +196,7 @@ if(_adminMenu != 'true') exit;
                    ORDER BY id DESC");
         while($get = _fetch($qry))
         {
-          $files = get_files("../gallery/images/",false,true);
+          $files = get_files("../gallery/images/",false,true,array('png','jpg','gif'),false,array(),'minimize');
 
           $cnt = 0;
           for($i=0; $i<count($files); $i++)

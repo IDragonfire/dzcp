@@ -12,7 +12,10 @@ define('view_error_reporting', false); // Zeigt alle Fehler und Notices etc.
 define('debug_dzcp_handler', true);
 define('use_default_timezone', true); // Verwendende die Zeitzone vom Server
 define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selbst einstellen * 'use_default_timezone' auf false stellen *
-define('admin_view_dzcp_news', true); // Entscheidet ob der Newstricker in der Administration angezeigt wird.
+define('admin_view_dzcp_news', true); // Entscheidet ob der Newstricker in der Administration angezeigt wird
+
+define('thumbgen_cache', true); // Sollen die verkleinerten Bilder der Thumbgen gespeichert werden
+define('thumbgen_cache_time', 3600); // Wie lange soll das Bild aus dem Cache verwendet werden
 
 $config_cache = array();
 $config_cache['storage'] = "auto"; //memcache
@@ -37,22 +40,21 @@ if(function_exists("date_default_timezone_set") && function_exists("date_default
     @date_default_timezone_set(@date_default_timezone_get());
 else if(!use_default_timezone) date_default_timezone_set(default_timezone);
 else date_default_timezone_set("Europe/Berlin");
+if(!isset($thumbgen)) $thumbgen = false;
 
-if(view_error_reporting)
-{
-    error_reporting(E_ALL);
-    ini_set('display_errors', 1);
-    DebugConsole::initCon();
+if(!$thumbgen) {
+    if(view_error_reporting) {
+        error_reporting(E_ALL);
+        ini_set('display_errors', 1);
+        DebugConsole::initCon();
 
-    if(debug_dzcp_handler)
-        set_error_handler('dzcp_error_handler');
+        if(debug_dzcp_handler)
+            set_error_handler('dzcp_error_handler');
+    } else {
+        ini_set('display_errors', 0);
+        error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+    }
 }
-else
-{
-    ini_set('display_errors', 0);
-    error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
-}
-
 ## REQUIRES ##
 //DZCP-Install default variable
 if(!isset($installer)) $installer = false;
@@ -175,27 +177,18 @@ $db = array("host" =>           $sql_host,
             "vote_results" =>   $prefix."vote_results");
 unset($prefix,$sql_host,$sql_user,$sql_pass,$sql_db);
 
-if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '')
-{
+if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '' && !$thumbgen) {
     $mysql = new mysqli($db['host'],$db['user'],$db['pass'],$db['db']);
     if ($mysql->connect_error) { die("<b>Fehler beim Zugriff auf die Datenbank!"); }
 }
 
 //MySQLi-Funktionen
-function _rows($rows)
-{
-    if(array_key_exists('_stmt_rows_', $rows))
-        return $rows['_stmt_rows_'];
-    else
-        return $rows->num_rows;
+function _rows($rows) {
+    return array_key_exists('_stmt_rows_', $rows) ? $rows['_stmt_rows_'] : $rows->num_rows;
 }
 
-function _fetch($fetch)
-{
-    if(array_key_exists('_stmt_rows_', $fetch))
-        return $fetch[0];
-    else
-        return $fetch->fetch_assoc();
+function _fetch($fetch) {
+    return array_key_exists('_stmt_rows_', $fetch) ? $fetch[0] : $fetch->fetch_assoc();
 }
 
 function db($query='',$rows=false,$fetch=false) {
@@ -222,8 +215,7 @@ function db($query='',$rows=false,$fetch=false) {
  *  s     corresponding variable has type string
  *  b     corresponding variable is a blob and will be sent in packets
  */
-function db_stmt($query,$params=array('si', 'hallo', '4'),$rows=false,$fetch=false)
-{
+function db_stmt($query,$params=array('si', 'hallo', '4'),$rows=false,$fetch=false) {
     global $prefix,$mysql;
     if(!$statement = $mysql->prepare($query)) die('<b>MySQL-Query failed:</b><br /><br /><ul>'.
                                      '<li><b>ErrorNo</b> = '.!empty($prefix) ? str_replace($prefix,'',$mysql->connect_errno) : $mysql->connect_errno.
@@ -278,7 +270,7 @@ function refValues($arr) {
 
 //Auto Update Detect
 if(file_exists(basePath."/_installer/index.php") &&
-   file_exists(basePath."/inc/mysql.php") && !$installation) {
+   file_exists(basePath."/inc/mysql.php") && !$installation && !$thumbgen) {
     $user_check = db("SELECT * FROM `".$db['users']."` WHERE `id` = 1",false,true);
     if(!array_key_exists('banned',$user_check) && !$installer)
         header('Location: ../_installer/update.php');

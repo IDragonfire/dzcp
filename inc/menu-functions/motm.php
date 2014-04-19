@@ -7,7 +7,7 @@
 function motm() {
     global $db;
 
-    $userpics = get_files(basePath.'/inc/images/uploads/userpics/',false,true);
+    $userpics = get_files(basePath.'/inc/images/uploads/userpics/',false,true,array('png','jpg','gif'),false,array(),'minimize');
     $qry = db("SELECT `id` FROM ".$db['users']." WHERE level >= 2");
     $a = 0; $temparr = array(); $member = '';
     if(_rows($qry)) {
