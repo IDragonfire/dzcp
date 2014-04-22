@@ -14,6 +14,9 @@ if(defined('_Forum')) {
          $qryv = db("SELECT * FROM ".$db['f_threads']."
                     WHERE id = '".intval($_GET['id'])."'");
         $getv = _fetch($qryv);
+        
+        $userPostReduction = array();
+		    $userPostReduction[$getv['t_reg']] = 1;
 
         if(!empty($getv['vote']))
         {
@@ -31,7 +34,6 @@ if(defined('_Forum')) {
         // grab user to reduce post count
         $tmpSid = intval($_GET['id']);
         $userPosts = db('SELECT p.`reg` FROM ' . $db['f_posts'] . ' p WHERE sid = ' . $tmpSid . ' AND p.`reg` != 0');
-        $userPostReduction = array();
         while($get = _fetch($userPosts)) {
             if(!isset($userPostReduction[$get['reg']])) {
                 $userPostReduction[$get['reg']] = 1;

@@ -54,7 +54,7 @@ if(defined('_UserMenu')) {
                                             "squad" => _member_admin_squad,
                                             "posi" => _profil_position,
                                             "deletesq" => $deletesq));
-  } elseif(data("level",intval($_GET['edit'])) == 4 && !rootAdmin($userid)) {
+  } elseif(isset($_GET['edit']) && data("level",intval($_GET['edit'])) == 4 && !rootAdmin($userid)) {
     $index = error(_error_edit_admin, 1);
   } else {
     if($do == "identy")

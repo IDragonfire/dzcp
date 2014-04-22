@@ -571,20 +571,24 @@ case 'details';
       if($cntPlayers) $value = _button_value_edit;
       else            $value = _button_value_add;
 
+      $form_player = "";
+	  if(db("SELECT id FROM ".$db['squaduser']." WHERE squad = '".$get['squad_id']."' AND user = '".$userid."'",true)) 
+	  		$form_player = show($dir."/form_player",array("id" => intval($_GET['id']),
+															 "admin" => (permission('clanwars') ? '<input id="contentSubmitAdmin" type="button" value="'._cw_reset_button.'" class="submit" onclick="DZCP.submitButton(\'contentSubmitAdmin\');DZCP.goTo(\'?action=resetplayers&amp;id='.intval($_GET['id']).'\')" />' : ''),
+															 "yes" => _yes,
+															 "no" => _no,
+															 "sely" => (empty($sely) && empty($seln) && empty($selm) ? 'checked="checked"' : $sely),
+															 "seln" => $seln,
+															 "selm" => $selm,
+															 "maybe" => _maybe,
+                                             				 "value" => $value,
+                                            				 "play" => _cw_players_play));
+	  
       $players = show($dir."/players", array("show_players" => $show_players,
                                              "nick" => _nick,
-                                             "play" => _cw_players_play,
-                                             "yes" => _yes,
-                                             "no" => _no,
-                                             "admin" => (permission('clanwars') ? '<input id="contentSubmitAdmin" type="button" value="'._cw_reset_button.'" class="submit" onclick="DZCP.submitButton(\'contentSubmitAdmin\');DZCP.goTo(\'?action=resetplayers&amp;id='.intval($_GET['id']).'\')" />' : ''),
-                                             "sely" => (empty($sely) && empty($seln) && empty($selm) ? 'checked="checked"' : $sely),
-                                             "seln" => $seln,
-                                             "selm" => $selm,
-                                             "maybe" => _maybe,
-                                             "id" => intval($_GET['id']),
-                                             "value" => $value,
                                              "status" => _status,
-                                             "head" => _cw_players_head));
+                                             "head" => _cw_players_head,
+                                             "form_player" => $form_player));
 
       $serverpwd = show(_cw_serverpwd, array("cw_serverpwd" => re($get['serverpwd'])));
     } else {

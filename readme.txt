@@ -72,12 +72,20 @@ Aufgrund der vielzahl an Änderungen, wird kein manuelles Update für diese Versio
         -neuer Platzhalter [avatar] (siehe Template v1.6) dieser zeigt nach dem User-Login den zugehörige Avatar an
         -Option Anzeige Usergalerie im Profil wurde hinzugefügt (öffentlich / nur User / nur Member)
         -Option Usergästebuch Posts Speeren / zulassen wurde hinzugefügt
-        -JoinUs Formular werden alle Teams angezeigt, diese können selber entscheiden ob Sie im Formular mit aufgeführt werden
-        -Backupfunktion wurde überarbeitet
+        -JoinUs Formular kann nun das Teams mit ausgewählt werden; Teams können selber entscheiden ob Sie im Formular mit aufgeführt werden möchten
+        -FightUs Formular kann nun das Teams mit ausgewählt werden; Teams können selber entscheiden ob Sie im Formular mit aufgeführt werden möchten
+	-Backupfunktion wurde überarbeitet
         -MySQL Backend wurde gegen ein MySQLi Backend ausgetauscht um die Lauffähigkeit für Spätere PHP Versionen zu sichern
         -Der Newstricker in der DZCP Administration kann optional in der config.php abgeschaltet werden
         -Der alte DZCP Cache wurde gegen einen neuen ersetzt, dieser unterstützt jetzt Files,SQL-Lite, APC, Memcache, WinCache und XCache
         -Verschiedene Optimierungen und Ausbesserungen im PHP und HTML Code
+	-Skype und Steam ID wurde als Formularfeld in FightUs, JoinUs und Konatkt hinzugefügt
+	-Error-Report wurde hinzugefügt und kann über die config.php aktiviert / deaktiviert werden
+	-Mouseover wurde für die EventBox hinzugefügt
+	-[b1] und [b2] wurden entfernt und durch <logged_in></logged_in> und <logged_out></logged_out> ersetzt
+	-Gametiger wurde entfernt 
+	-Add multiple Root Adminstrator Support  
+	
 
         Bugfixes
         --------
@@ -124,11 +132,17 @@ Aufgrund der vielzahl an Änderungen, wird kein manuelles Update für diese Versio
         -Schönheitsfehler in den Formularen #201
         -Navigation Interne Seiten waren über Link für jeden aufrufbar
         -Glossarnavigation Alle ohne Funktion
-        -mit Autologin wurden Pagebesuche nicht gezählt
+        -mit aktiven Autologin wurden Pagebesuche nicht gezählt
         -mehrere kleiner Optimierungen am Code
         -User IPs werden auch bei vorgeschaltete Proxyserver oder Load Balancer richtig erkannt
         -Smile Bug Fix TinyMC
         -E-Mail Fix HTML-Bug
+	-Newstitel Längenfix
+	-[clanname] wurde im Template nicht richtig ausgegeben
+	-Online status von Usern wurde nicht richtig dargestellt (Online / Offline)
+	-fehlerhafte Weiterleitung nach GameIcon Uploads Team
+
+	
 
 
 
