@@ -338,8 +338,8 @@ if(defined('_UserMenu')) {
             }
 
         if(!empty($get['icq']) && $get['icq'] != 0) $icq = $get['icq'];
-        if($get['nletter'] == 1) $pnl = "checked=\"checked\"";
-        if($get['pnmail'] == 1) $pnm = "checked=\"checked\"";
+        if($get['nletter'] == 1) $pnl = 'checked="checked"';
+        if($get['pnmail'] == 1) $pnm = 'checked="checked"';
 
         $pic = userpic($get['id']);
         $avatar = useravatar($get['id']);

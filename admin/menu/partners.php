@@ -46,7 +46,7 @@ if(_adminMenu != 'true') exit;
         $files = get_files('../banner/partners/',false,true);
         for($i=0; $i<count($files); $i++)
         {
-          if(re($get['banner']) == $files[$i]) $sel = "selected=\"selected\"";
+          if(re($get['banner']) == $files[$i]) $sel = 'selected="selected"';
           else $sel = "";
 
           $banners .= show(_partners_select_icons, array("icon" => $files[$i],

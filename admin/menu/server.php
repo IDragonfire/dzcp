@@ -136,7 +136,7 @@ if(_adminMenu != 'true') exit;
         $files = get_files('../inc/images/gameicons/',false,true);
         for($i=0; $i<count($files); $i++)
         {
-          if($files[$i] == $get['game']) $sel = "selected=\"selected\"";
+          if($files[$i] == $get['game']) $sel = 'selected="selected"';
           else $sel = "";
 
           if(preg_match("=\.gif|.jpg|.png=Uis",$files[$i]))

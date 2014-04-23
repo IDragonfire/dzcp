@@ -252,7 +252,7 @@ if(defined('_UserMenu')) {
                    ORDER BY nick");
             while($get = _fetch($qry))
             {
-              if($get['id'] == $_POST['users']) $selected = "selected=\"selected\"";
+              if($get['id'] == $_POST['users']) $selected = 'selected="selected"';
                 else $selected = "";
 
                 $users .= show(_to_users, array("id" => $get['id'],
@@ -264,7 +264,7 @@ if(defined('_UserMenu')) {
                                  WHERE user = ".$userid);
             while($get = _fetch($qry))
             {
-                if($get['buddy'] == $_POST['buddys']) $selected = "selected=\"selected\"";
+                if($get['buddy'] == $_POST['buddys']) $selected = 'selected="selected"';
                 else $selected = "";
 
                 $buddys .= show(_to_buddys, array("id" => $get['buddy'],

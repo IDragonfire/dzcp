@@ -271,13 +271,13 @@ case 'admin':
                                                              "month" => dropdown("month",date("m",$get['datum'])),
                                                     "year" => dropdown("year",date("Y",$get['datum']))));
 
-      if($get['pm'] == "0") $psel = "selected=\"selected\"";
-      else $msel = "selected=\"selected\"";
+      if($get['pm'] == "0") $psel = 'selected="selected"';
+      else $msel = 'selected="selected"';
 
       $qryk = db("SELECT * FROM ".$db['c_kats']."");
       while($getk = _fetch($qryk))
       {
-        if($getk['kat'] == $get['transaktion']) $sel = "selected=\"selected\"";
+        if($getk['kat'] == $get['transaktion']) $sel = 'selected="selected"';
         else $sel = "";
 
         $trans .= show(_select_field, array("value" => re($getk['kat']),

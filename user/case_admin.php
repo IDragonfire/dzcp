@@ -23,7 +23,7 @@ if(defined('_UserMenu')) {
                      AND squad = '".$getsq['id']."'
                      AND user = '".intval($_GET['edit'])."'");
 
-        if(_rows($check)) $sel = "selected=\"selected\"";
+        if(_rows($check)) $sel = 'selected="selected"';
         else $sel = "";
 
         $posi .= show(_select_field_posis, array("value" => $getpos['id'],
@@ -35,7 +35,7 @@ if(defined('_UserMenu')) {
                        WHERE user = '".intval($_GET['edit'])."'
                        AND squad = '".$getsq['id']."'");
 
-      if(_rows($qrysquser)) $check = "checked=\"checked\"";
+      if(_rows($qrysquser)) $check = 'checked="checked"';
       else $check = "";
 
       $esquads .= show(_checkfield_squads, array("id" => $getsq['id'],
@@ -243,10 +243,10 @@ if(defined('_UserMenu')) {
                  WHERE id = '".intval($_GET['edit'])."'");
       while($get = _fetch($qry))
       {
-        if($get['level'] == 1)     $selu = "selected=\"selected\"";
-        elseif($get['level'] == 2) $selt = "selected=\"selected\"";
-        elseif($get['level'] == 3) $selm = "selected=\"selected\"";
-        elseif($get['level'] == 4) $sela = "selected=\"selected\"";
+        if($get['level'] == 1)     $selu = 'selected="selected"';
+        elseif($get['level'] == 2) $selt = 'selected="selected"';
+        elseif($get['level'] == 3) $selm = 'selected="selected"';
+        elseif($get['level'] == 4) $sela = 'selected="selected"';
 
         $qrysq = db("SELECT id,name FROM ".$db['squads']."
                      ORDER BY pos");
@@ -261,7 +261,7 @@ if(defined('_UserMenu')) {
                          WHERE posi = '".$getpos['id']."'
                          AND squad = '".$getsq['id']."'
                          AND user = '".intval($_GET['edit'])."'");
-            if(_rows($check)) $sel = "selected=\"selected\"";
+            if(_rows($check)) $sel = 'selected="selected"';
             else $sel = "";
 
             $posi .= show(_select_field_posis, array("value" => $getpos['id'],
@@ -273,7 +273,7 @@ if(defined('_UserMenu')) {
                            WHERE user = '".intval($_GET['edit'])."'
                            AND squad = '".$getsq['id']."'");
 
-          if(_rows($qrysquser))$check = "checked=\"checked\"";
+          if(_rows($qrysquser))$check = 'checked="checked"';
           else $check = "";
 
           $esquads .= show(_checkfield_squads, array("id" => $getsq['id'],

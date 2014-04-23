@@ -108,10 +108,10 @@ if(defined('_News')) {
 
         for($i=1;$i<=12;$i++) {
             if(!$pyear) {
-                  if($i == date("n", time())) $sel[$i] = "selected=\"selected\"";
+                  if($i == date("n", time())) $sel[$i] = 'selected="selected"';
                   else $sel[$i] = "";
             } else {
-                  if($i == nonum($pmonth)) $sel[$i] = "selected=\"selected\"";
+                  if($i == nonum($pmonth)) $sel[$i] = 'selected="selected"';
                   else $sel[$i] = "";
             }
         }

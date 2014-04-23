@@ -14,7 +14,7 @@ if(_adminMenu != 'true') exit;
       {
         if($get['checked'] == '1')
         {
-          $selected = "selected=\"selected\"";
+          $selected = 'selected="selected"';
         } else {
           $selected = "";
         }

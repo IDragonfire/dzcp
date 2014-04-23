@@ -29,7 +29,7 @@ default:
 
   for($i = 1; $i <= 12; $i++)
   {
-    if($monat == $i) $sel = "selected=\"selected\"";
+    if($monat == $i) $sel = 'selected="selected"';
     else $sel = "";
 
     $mname = array("1" => _jan,
@@ -52,7 +52,7 @@ default:
 
   for( $i = date("Y")-5; $i < date("Y")+3; $i++)
   {
-    if($jahr == $i) $sel = "selected=\"selected\"";
+    if($jahr == $i) $sel = 'selected="selected"';
     else $sel = "";
 
     $year .= show(_select_field, array("value" => $i,

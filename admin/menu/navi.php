@@ -116,10 +116,10 @@ if(_adminMenu != 'true') exit;
           $read = "";
         }
 
-        if($get['wichtig'] == "1") $selw = "selected=\"selected\"";
-        if($get['shown'] == "1") $sels = "selected=\"selected\"";
-        if($get['internal'] == "1") $seli = "selected=\"selected\"";
-        if($get['target'] == "1") $target = "selected=\"selected\"";
+        if($get['wichtig'] == "1") $selw = 'selected="selected"';
+        if($get['shown'] == "1") $sels = 'selected="selected"';
+        if($get['internal'] == "1") $seli = 'selected="selected"';
+        if($get['target'] == "1") $target = 'selected="selected"';
 
         $show = show($dir."/form_navi_edit", array("name" => _navi_name,
                                                    "url" => _navi_url_to,

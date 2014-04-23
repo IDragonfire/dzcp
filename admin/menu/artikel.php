@@ -51,7 +51,7 @@ if(_adminMenu != 'true') exit;
           $qryk = db("SELECT * FROM ".$db['newskat']."");
           while($getk = _fetch($qryk))
           {
-            if($_POST['kat'] == $getk['id']) $sel = "selected=\"selected\"";
+            if($_POST['kat'] == $getk['id']) $sel = 'selected="selected"';
             else $sel = "";
 
             $kat .= show(_select_field, array("value" => $getk['id'],
@@ -109,7 +109,7 @@ if(_adminMenu != 'true') exit;
         $qryk = db("SELECT * FROM ".$db['newskat']."");
         while($getk = _fetch($qryk))
         {
-          if($get['kat'] == $getk['id']) $sel = "selected=\"selected\"";
+          if($get['kat'] == $getk['id']) $sel = 'selected="selected"';
           else $sel = "";
 
           $kat .= show(_select_field, array("value" => $getk['id'],

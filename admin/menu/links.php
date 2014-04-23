@@ -32,7 +32,7 @@ if(_adminMenu != 'true') exit;
                                                "linktyp" => $linktyp,
                                                "text" => _links_admin_textlink,
                                                "banner" => _links_admin_bannerlink,
-                                               "bchecked" => "checked=\"checked\"",
+                                               "bchecked" => 'checked="checked"',
                                                "bnone" => "",
                                                "tchecked" => "",
                                                "llink" => "",
@@ -63,10 +63,10 @@ if(_adminMenu != 'true') exit;
         $get = _fetch($qry);
 
         if($get['banner'] == 1){
-             $bchecked = "checked=\"checked\"";
+             $bchecked = 'checked="checked"';
              $bnone = "";
         }else{
-            $tchecked = "checked=\"checked\"";
+            $tchecked = 'checked="checked"';
             $bnone = "display:none";
         }
 

@@ -75,7 +75,7 @@ if(_adminMenu != 'true') exit;
                           AND pos = '".intval(($_POST['position']-1))."'");
               $mp = _fetch($mpos);
 
-              if($getpos['pos'] == $mp['pos']) $sel = "selected=\"selected\"";
+              if($getpos['pos'] == $mp['pos']) $sel = 'selected="selected"';
               else $sel = '';
 
               $positions .= show(_select_field, array("value" => $getpos['pos']+1,
@@ -86,7 +86,7 @@ if(_adminMenu != 'true') exit;
 
             if(isset($_POST['site']))
             {
-              $schecked = "checked=\"checked\"";
+              $schecked = 'checked="checked"';
               $snone = "";
             } else {
               $schecked = "";
@@ -94,7 +94,7 @@ if(_adminMenu != 'true') exit;
             }
             if(isset($_POST['banner']))
             {
-              $bchecked = "checked=\"checked\"";
+              $bchecked = 'checked="checked"';
               $bnine = "";
             } else {
               $bchecked = "";
@@ -102,7 +102,7 @@ if(_adminMenu != 'true') exit;
             }
             if(isset($_POST['box']))
             {
-              $xchecked = "checked=\"checked\"";
+              $xchecked = 'checked="checked"';
               $xnone = "";
             } else {
               $xchecked = "";
@@ -236,7 +236,7 @@ if(_adminMenu != 'true') exit;
                           AND pos = '".intval(($get['pos']-1))."'");
               $mp = _fetch($mpos);
 
-              if($getpos['pos'] == $mp['pos']) $sel = "selected=\"selected\"";
+              if($getpos['pos'] == $mp['pos']) $sel = 'selected="selected"';
               else $sel = '';
 
               $positions .= show(_select_field, array("value" => $getpos['pos']+1,
@@ -248,7 +248,7 @@ if(_adminMenu != 'true') exit;
 
         if($get['site'] == 1)
         {
-          $schecked = "checked=\"checked\"";
+          $schecked = 'checked="checked"';
           $snone = "";
         } else {
           $schecked = "";
@@ -256,7 +256,7 @@ if(_adminMenu != 'true') exit;
         }
         if($get['banner'] == 1)
         {
-          $bchecked = "checked=\"checked\"";
+          $bchecked = 'checked="checked"';
           $bnone = "";
         } else {
           $bchecked = "";
@@ -264,7 +264,7 @@ if(_adminMenu != 'true') exit;
         }
         if($get['box'] == 1)
         {
-          $xchecked = "checked=\"checked\"";
+          $xchecked = 'checked="checked"';
           $xnone = "";
         } else {
           $xchecked = "";
@@ -357,7 +357,7 @@ if(_adminMenu != 'true') exit;
                           AND pos = '".intval(($_POST['position']-1))."'");
               $mp = _fetch($mpos);
 
-              if($getpos['pos'] == $mp['pos']) $sel = "selected=\"selected\"";
+              if($getpos['pos'] == $mp['pos']) $sel = 'selected="selected"';
               else $sel = '';
 
               $positions .= show(_select_field, array("value" => $getpos['pos']+1,
@@ -369,7 +369,7 @@ if(_adminMenu != 'true') exit;
 
             if(isset($_POST['site']))
             {
-              $schecked = "checked=\"checked\"";
+              $schecked = 'checked="checked"';
               $snone = "";
             } else {
               $schecked = "";
@@ -377,7 +377,7 @@ if(_adminMenu != 'true') exit;
             }
             if(isset($_POST['banner']))
             {
-              $bchecked = "checked=\"checked\"";
+              $bchecked = 'checked="checked"';
               $bnone = "";
             } else {
               $bchecked = "";
@@ -385,7 +385,7 @@ if(_adminMenu != 'true') exit;
             }
             if(isset($_POST['box']))
             {
-              $xchecked = "checked=\"checked\"";
+              $xchecked = 'checked="checked"';
               $xnone = "";
             } else {
               $xchecked = "";

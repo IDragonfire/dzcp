@@ -74,7 +74,7 @@ if(_adminMenu != 'true') exit;
                     ORDER BY name");
         while($getk = _fetch($qryk))
         {
-          if($getk['id'] == $get['kat']) $sel = "selected=\"selected\"";
+          if($getk['id'] == $get['kat']) $sel = 'selected="selected"';
           else $sel = "";
 
           $kats .= show(_select_field, array("value" => $getk['id'],

@@ -13,8 +13,8 @@ if(defined('_Forum')) {
     {
       if(permission("forum"))
       {
-        $sticky = $get['sticky'] ? "checked=\"checked\"" : "";
-        $global = $get['global'] ? "checked=\"checked\"" : "";
+        $sticky = $get['sticky'] ? 'checked="checked"' : "";
+        $global = $get['global'] ? 'checked="checked"' : "";
         $admin = show($dir."/form_admin", array("adminhead" => _forum_admin_head,
                                                 "addsticky" => _forum_admin_addsticky,
                                                 "sticky" => $sticky,
@@ -48,7 +48,7 @@ if(defined('_Forum')) {
         }
 
         if($getv['closed']) {
-            $isclosed = "checked=\"checked\"";
+            $isclosed = 'checked="checked"';
             $display = 'none';
             $toggle = 'expand';
         }
@@ -199,7 +199,7 @@ if(defined('_Forum')) {
             if($_POST['intern']) $intern = 'checked="checked"';
           $intern = ''; $intern_kat = '';
           if($fget['intern'] == "1") { $intern = 'checked="checked"'; $internVisible = 'style="display:none"'; };
-            if($_POST['closed']) $closed = "checked=\"checked\"";
+            if($_POST['closed']) $closed = 'checked="checked"';
 
             if(empty($_POST['question'])) $display = "none";
             $display = "";
@@ -598,7 +598,7 @@ if(defined('_Forum')) {
             if($_POST['intern']) $intern = 'checked="checked"';
             $intern = ''; $intern_kat = '';
             if($fget['intern'] == 1) { $intern = 'checked="checked"'; $internVisible = 'style="display:none"'; };
-            if($_POST['closed']) $closed = "checked=\"checked\"";
+            if($_POST['closed']) $closed = 'checked="checked"';
 
             if(!empty($_POST['question'])) $display = "";
             $display = "none";

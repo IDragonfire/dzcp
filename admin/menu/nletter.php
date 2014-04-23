@@ -25,7 +25,7 @@ if(_adminMenu != 'true') exit;
                        ORDER BY name");
             while($get = _fetch($qry))
             {
-          if($_POST['to'] == $get['id']) $selsq = "selected=\"selected\"";
+          if($_POST['to'] == $get['id']) $selsq = 'selected="selected"';
           else $selsq = "";
 
           $squads .= show(_to_squads, array("id" => $get['id'],
@@ -33,9 +33,9 @@ if(_adminMenu != 'true') exit;
                                             "name" => re($get['name'])));
         }
 
-        if($_POST['to'] == "reg") $selr = "selected=\"selected\"";
-        elseif($_POST['to'] == "member") $selm = "selected=\"selected\"";
-        elseif($_POST['to'] == "leader") $sell = "selected=\"selected\"";
+        if($_POST['to'] == "reg") $selr = 'selected="selected"';
+        elseif($_POST['to'] == "member") $selm = 'selected="selected"';
+        elseif($_POST['to'] == "leader") $sell = 'selected="selected"';
 
             $show = show($dir."/nletter", array("von" => $userid,
                                                 "an" => _to,

@@ -551,9 +551,9 @@ case 'details';
 
         if($getp['member'] == $userid)
         {
-          if($getp['status'] == "0") $sely = "checked=\"checked\"";
-          elseif($getp['status'] == "1") $seln = "checked=\"checked\"";
-          elseif($getp['status'] == "2") $selm = "checked=\"checked\"";
+          if($getp['status'] == "0") $sely = 'checked="checked"';
+          elseif($getp['status'] == "1") $seln = 'checked="checked"';
+          elseif($getp['status'] == "2") $selm = 'checked="checked"';
         } else {
           $sely = "";
           $seln = "";

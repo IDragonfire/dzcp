@@ -14,7 +14,7 @@ if(_adminMenu != 'true') exit;
                                                 "art" => _linkus_art,
                                                 "text" => _linkus_admin_textlink,
                                                 "banner" => _linkus_admin_bannerlink,
-                                                "bchecked" => "checked=\"checked\"",
+                                                "bchecked" => 'checked="checked"',
                                                 "tchecked" => "",
                                                 "llink" => _linkus_bsp_target,
                                                 "lbeschreibung" => _linkus_bsp_desc,

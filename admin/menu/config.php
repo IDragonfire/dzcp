@@ -176,26 +176,26 @@ if(_adminMenu != 'true') exit;
             $tmpldir .= show(_select_field, array("value" => $tmps[$i], "what" => $tmps[$i], "sel" => $gets['tmpdir'] == $tmps[$i] ? 'selected="selected"' : ''));
         }
 
-        if($gets['regcode'] == "1") $selyes = "selected=\"selected\"";
-        else $selno = "selected=\"selected\"";
+        if($gets['regcode'] == "1") $selyes = 'selected="selected"';
+        else $selno = 'selected="selected"';
 
-        if($gets['reg_forum'] == 1)        $selr_forum = "selected=\"selected\"";
-        if($gets['reg_newscomments'] == 1) $selr_nc = "selected=\"selected\"";
-        if($gets['reg_dl'] == 1)           $selr_dl = "selected=\"selected\"";
-        if($gets['reg_artikel'] == 1)      $selr_artikel = "selected=\"selected\"";
-        if($gets['reg_cwcomments'] == 1)   $selr_cwc = "selected=\"selected\"";
-        if($gets['reg_shout'] == 1)        $selr_shout = "selected=\"selected\"";
-        if($gets['wmodus'] == 1)           $selwm = "selected=\"selected\"";
-        if($gets['squadtmpl'] == 2)        $selsq = "selected=\"selected\"";
-        if($gets['persinfo'] == 0)         $selr_pi = "selected=\"selected\"";
-        if($get['securelogin'] == 1)       $sel_sl = "selected=\"selected\"";
-        if($get['allowhover'] == 1)        $selh_all = "selected=\"selected\"";
-        if($get['allowhover'] == 2)        $selh_cw = "selected=\"selected\"";
-        if($gets['gmaps_who'] == 1)        $sel_gm = "selected=\"selected\"";
-        if($gets['double_post'] == 1)      $sel_dp = "selected=\"selected\"";
-        if($gets['forum_vote'] == 1)       $sel_fv = "selected=\"selected\"";
-        if($gets['gb_activ'] == 1)         $sel_gba = "selected=\"selected\"";
-                                if($gets['urls_linked'] == 1)      $sel_url = "selected=\"selected\"";
+        if($gets['reg_forum'] == 1)        $selr_forum = 'selected="selected"';
+        if($gets['reg_newscomments'] == 1) $selr_nc = 'selected="selected"';
+        if($gets['reg_dl'] == 1)           $selr_dl = 'selected="selected"';
+        if($gets['reg_artikel'] == 1)      $selr_artikel = 'selected="selected"';
+        if($gets['reg_cwcomments'] == 1)   $selr_cwc = 'selected="selected"';
+        if($gets['reg_shout'] == 1)        $selr_shout = 'selected="selected"';
+        if($gets['wmodus'] == 1)           $selwm = 'selected="selected"';
+        if($gets['squadtmpl'] == 2)        $selsq = 'selected="selected"';
+        if($gets['persinfo'] == 0)         $selr_pi = 'selected="selected"';
+        if($get['securelogin'] == 1)       $sel_sl = 'selected="selected"';
+        if($get['allowhover'] == 1)        $selh_all = 'selected="selected"';
+        if($get['allowhover'] == 2)        $selh_cw = 'selected="selected"';
+        if($gets['gmaps_who'] == 1)        $sel_gm = 'selected="selected"';
+        if($gets['double_post'] == 1)      $sel_dp = 'selected="selected"';
+        if($gets['forum_vote'] == 1)       $sel_fv = 'selected="selected"';
+        if($gets['gb_activ'] == 1)         $sel_gba = 'selected="selected"';
+                                if($gets['urls_linked'] == 1)      $sel_url = 'selected="selected"';
         $wysiwyg = '_word';
 
         $show_ = show($dir."/form_config", array("limits" => _config_c_limits,

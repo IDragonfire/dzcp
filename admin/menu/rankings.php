@@ -56,7 +56,7 @@ if(_adminMenu != 'true') exit;
                     ORDER BY game ASC");
         while($gets = _fetch($qrys))
         {
-          if($get['squad'] == $gets['id']) $sel = "selected=\"selected\"";
+          if($get['squad'] == $gets['id']) $sel = 'selected="selected"';
           else $sel = "";
           $squads .= show(_select_field_ranking_add, array("what" => re($gets['name']),
                                                                                  "value" => $gets['id'],

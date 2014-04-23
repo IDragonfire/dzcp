@@ -27,7 +27,7 @@ if(_adminMenu != 'true') exit;
                          WHERE posi = '".$getpos['id']."'
                          AND squad = '".$getsq['id']."'
                          AND user = '".intval($_GET['edit'])."'");
-            if(_rows($check)) $sel = "selected=\"selected\"";
+            if(_rows($check)) $sel = 'selected="selected"';
             else $sel = "";
 
             $posi .= show(_select_field_posis, array("value" => $getpos['id'],
@@ -39,7 +39,7 @@ if(_adminMenu != 'true') exit;
                            WHERE user = '".intval($_GET['edit'])."'
                            AND squad = '".$getsq['id']."'");
 
-          if(_rows($qrysquser))$check = "checked=\"checked\"";
+          if(_rows($qrysquser))$check = 'checked="checked"';
           else $check = "";
 
           $esquads .= show(_checkfield_squads, array("id" => $getsq['id'],

@@ -85,7 +85,7 @@ if(_adminMenu != 'true') exit;
           $qryk = db("SELECT * FROM ".$db['newskat']."");
           while($getk = _fetch($qryk))
           {
-            if($_POST['kat'] == $getk['id']) $sel = "selected=\"selected\"";
+            if($_POST['kat'] == $getk['id']) $sel = 'selected="selected"';
             else $sel = "";
 
             $kat .= show(_select_field, array("value" => $getk['id'],
@@ -94,9 +94,9 @@ if(_adminMenu != 'true') exit;
           }
 
               $error = show("errors/errortable", array("error" => $error));
-              if($_POST['intern']) $int = "checked=\"checked\"";
-          if($_POST['sticky']) $sticky = "checked=\"checked\"";
-                    if($_POST['timeshift']) $timeshift = "checked=\"checked\"";
+              if($_POST['intern']) $int = 'checked="checked"';
+          if($_POST['sticky']) $sticky = 'checked="checked"';
+                    if($_POST['timeshift']) $timeshift = 'checked="checked"';
 
 
           $dropdown_date = show(_dropdown_date, array("day" => dropdown("day",$_POST['t']),
@@ -206,7 +206,7 @@ if(_adminMenu != 'true') exit;
         $qryk = db("SELECT * FROM ".$db['newskat']."");
         while($getk = _fetch($qryk))
         {
-          if($get['kat'] == $getk['id']) $sel = "selected=\"selected\"";
+          if($get['kat'] == $getk['id']) $sel = 'selected="selected"';
           else $sel = "";
 
           $kat .= show(_select_field, array("value" => $getk['id'],
@@ -215,8 +215,8 @@ if(_adminMenu != 'true') exit;
         }
         $do = show(_news_edit_link, array("id" => $_GET['id']));
 
-        if($get['intern'] == 1) $int = "checked=\"checked\"";
-                if($get['timeshift'] == 1) $timeshift = "checked=\"checked\"";
+        if($get['intern'] == 1) $int = 'checked="checked"';
+                if($get['timeshift'] == 1) $timeshift = 'checked="checked"';
         if($get['sticky'] != 0)
         {
           $sticky = 'checked="checked"';

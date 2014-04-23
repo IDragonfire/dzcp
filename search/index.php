@@ -21,10 +21,10 @@ $title = $pagetitle." - ".$where."";
 switch ($action):
 default:
 //check $_GET var
-  if($_GET['area'] == 'topic') $acheck2 = "checked=\"checked\"";
-  else                         $acheck1 = "checked=\"checked\"";
-  if($_GET['type'] == 'autor') $tcheck2 = "checked=\"checked\"";
-  else                         $tcheck1 = "checked=\"checked\"";
+  if($_GET['area'] == 'topic') $acheck2 = 'checked="checked"';
+  else                         $acheck1 = 'checked="checked"';
+  if($_GET['type'] == 'autor') $tcheck2 = 'checked="checked"';
+  else                         $tcheck1 = 'checked="checked"';
 
   $i=0;
   for(reset($_GET);list($key,$value)=each($_GET);$i++)
@@ -62,7 +62,7 @@ default:
                   AND forum = '".$gets['id']."'");
       if($get['intern'] == 0 || (($get['intern'] == 1 && _rows($intF)) || $chkMe == 4))
       {
-        if(preg_match("#k_".$gets['id']."\|#",$strkat)) $kcheck = "checked=\"checked\"";
+        if(preg_match("#k_".$gets['id']."\|#",$strkat)) $kcheck = 'checked="checked"';
         else  $kcheck = '';
 
         $fkats .= '<li><label class="search" for="k_'.$gets['id'].'"><input type="checkbox" class="chksearch" name="k_'.$gets['id'].'" id="k_'.$gets['id'].'" '.$kcheck.' onclick="DZCP.hideForumFirst()" value="true" />&nbsp;&nbsp;'.re($gets['kattopic']).'</label></li>';
@@ -267,12 +267,12 @@ default:
     $img = '<img id="img1" src="../inc/images/expand.gif" alt="" />';
     $style = 'style="display:none"';
 
-    if($_GET['si_board'] == true) $si_board = "checked=\"checked\"";
-    if(empty($strkat)) $all_board = "checked=\"checked\"";
-    if($_GET['con'] == 'or') $chk_con = "selected=\"selected\"";
+    if($_GET['si_board'] == true) $si_board = 'checked="checked"';
+    if(empty($strkat)) $all_board = 'checked="checked"';
+    if($_GET['con'] == 'or') $chk_con = 'selected="selected"';
   } else {
-    $si_board = "checked=\"checked\"";
-    $all_board = "checked=\"checked\"";
+    $si_board = 'checked="checked"';
+    $all_board = 'checked="checked"';
   }
 
   $index = show($dir."/search", array("head" => /*_search_head*/_forum_search_head,

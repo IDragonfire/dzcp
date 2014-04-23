@@ -192,15 +192,15 @@ if(defined('_Forum')) {
 
       if(permission("forum"))
       {
-        $sticky = $get['sticky'] ? "checked=\"checked\"" : "";
-        $global = $get['global'] ? "checked=\"checked\"" : "";
+        $sticky = $get['sticky'] ? 'checked="checked"' : "";
+        $global = $get['global'] ? 'checked="checked"' : "";
 
         if($get['closed'] == "1")
         {
-          $closed = "checked=\"checked\"";
+          $closed = 'checked="checked"';
           $opened = "";
         } else {
-          $opened = "checked=\"checked\"";
+          $opened = 'checked="checked"';
           $closed = "";
         }
 
