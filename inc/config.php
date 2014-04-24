@@ -46,13 +46,18 @@ if(!isset($thumbgen)) $thumbgen = false;
 if(!$thumbgen) {
     if(view_error_reporting) {
         error_reporting(E_ALL);
-        ini_set('display_errors', 1);
+
+        if(function_exists('ini_set'))
+            ini_set('display_errors', 1);
+
         DebugConsole::initCon();
 
         if(debug_dzcp_handler)
             set_error_handler('dzcp_error_handler');
     } else {
-        ini_set('display_errors', 0);
+        if(function_exists('ini_set'))
+            ini_set('display_errors', 0);
+
         error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
     }
 }
