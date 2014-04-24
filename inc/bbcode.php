@@ -18,6 +18,7 @@ require_once(basePath.'/inc/phpmailer.php');
 require_once(basePath.'/inc/server_query/_functions.php');
 require_once(basePath."/inc/teamspeak_query.php");
 require_once(basePath."/inc/phpfastcache/phpfastcache.php");
+require_once(basePath.'/inc/steamapi.php');
 
 ## Is AjaxJob ##
 $ajaxJob = (!isset($ajaxJob) ? false : $ajaxJob);
@@ -2092,6 +2093,9 @@ function setIpcheck($what = '') {
     db("INSERT INTO ".$db['ipcheck']." SET `ip` = '".$userip."', `what` = '".$what."', `time` = '".time()."'");
 }
 
+function is_php($version='5.3.0')
+{ return (floatval(phpversion()) >= $version); }
+
 function hextobin($hexstr) {
     if(is_php('5.4.0'))
         return hex2bin($hexstr);
@@ -2179,62 +2183,34 @@ final class dbc_index
 
 function steamIMG($steamID='') {
     global $cache;
-    if(!fsockopen_support()) return _fopen;
-    $data=strtolower(trim($steamID));
-    if ($data!='') {
-        if (ereg('7656119', $data)) {
-            $ret = $data;
-        }
-        else if (substr($data,0,7)=='steam_0') {
-            $tmp=explode(':',$data);
-            if ((count($tmp)==3) && is_numeric($tmp[1]) && is_numeric($tmp[2])) {
-                $friendid=($tmp[2]*2)+$tmp[1]+1197960265728;
-                $friendid='7656'.$friendid;
-                $ret = $friendid;
-            }
-        }
+    if(!fsockopen_support())
+        return array('img' => _fopen, 'send_header' => false);
 
-        if ($ret!= null) {
-            if($cache->check('xml_'.$ret)) {
-                $steam_profile = simplexml_load_file("http://steamcommunity.com/profiles/".$ret."/?xml=1");
-                $cache->set('xml_'.$ret, $steam_profile, 3600);
-            }
-            else
-                $steam_profile = $cache->get('xml_'.$ret);
+    if(!$cache->isExisting("steamsignature_error")) {
+        $image_cache_error = file_get_contents('http://steamsignature.com/profile/english/error_not_found.png');
+        if($image_cache_error && !empty($image_cache_error))
+            $cache->set("steamsignature_error", bin2hex($image_cache_error), 5*3600);
+    }
+    else
+        $image_cache_error = hextobin($cache->get("steamsignature_error"));
+
+    $return = array('img' => $image_cache_error, 'send_header' => true);
+    if($steam = SteamAPI::getUserInfos(strtolower(trim($steamID))))
+        $ret = $steam['user']['steamID'];
+
+    if (!empty($ret) && !empty($steam) && $steam) {
+        if(!$cache->isExisting("steamsignature_".$ret)) {
+            $image_cache = file_get_contents('http://steamsignature.com/profile/english/'.$ret.'.png');
+            if($image_cache && !empty($image_cache))
+                $cache->set("steamsignature_".$ret, bin2hex($image_cache), (5*60));
         }
         else
-        {
-            if($cache->check('xml_'.$data)) {
-                $steam_profile = simplexml_load_file("http://steamcommunity.com/id/".str_replace('steam_','ERROR_POFILE_FIXED',$data)."/?xml=1");
-                $cache->set('xml_'.$data, $steam_profile, 3600);
-            }
-            else
-                $steam_profile = $cache->get('xml_'.$data);
+            $image_cache = hextobin($cache->get("steamsignature_".$ret));
 
-            $ret = $steam_profile->steamID64;
-        }
-
-        if (empty($steam_profile->error) && $ret != "") {
-            if($cache->check("steamsignature_".$ret)) {
-                $image_cache = fileExists('http://steamsignature.com/profile/english/'.$ret.'.png');
-                if($image_cache && !empty($image_cache))
-                    $cache->set("steamsignature_".$ret, bin2hex($image_cache), 3600);
-            }
-            else
-                $image_cache = hextobin($cache->get("steamsignature_".$ret));
-        }
-        else {
-            if($cache->check("steamsignature_error_pic")) {
-                $image_cache = fileExists('http://steamsignature.com/profile/english/error_not_found.png');
-                if($image_cache && !empty($image_cache))
-                    $cache->set("steamsignature_error_pic", bin2hex($image_cache), 3600);
-            }
-            else
-                $image_cache = hextobin($cache->get("steamsignature_error_pic"));
-        }
-
-        return $image_cache;
+        $return = array('img' => $image_cache, 'send_header' => true);
     }
+
+    return $return;
 }
 
 //-> Neue Languages einbinden, sofern vorhanden

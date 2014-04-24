@@ -2149,7 +2149,7 @@ define('_datum', 'Datum');
 define('_legende', 'Legende');
 define('_hlswid', 'XFire Name');
 define('_hlswstatus', 'XFire');
-define('_steamid', 'Steam-ID');
+define('_steamid', 'Steam Community-ID');
 define('_xboxid', 'Xbox Live');
 define('_xboxstatus', 'Xbox Live');
 define('_xboxuserpic', 'Xbox Live Avatar:');
