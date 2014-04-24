@@ -87,6 +87,6 @@ class SteamAPI {
         return true;
     }
 
-    private static final function objectToArray($d)
+    public static final function objectToArray($d)
     { return json_decode(json_encode($d, JSON_FORCE_OBJECT), true); }
 }

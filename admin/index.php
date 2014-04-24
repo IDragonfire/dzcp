@@ -11,6 +11,7 @@ include("../inc/buffer.php");
 include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
+include(basePath."/admin/helper.php");
 
 ## SETTINGS ##
 $where = _site_config;
@@ -93,25 +94,6 @@ else {
 
     $version = '<b>'._akt_version.': '._version.'</b>'; $dzcp_news = '';
     if(fsockopen_support()) {
-        if(!$cache->isExisting("admin_version")) {
-            $dzcp_v = fileExists("http://www.dzcp.de/version.txt");
-
-            if(!empty($dzcp_v))
-                $cache->set("admin_version", $dzcp_v, 1200);
-            else
-                $dzcp_v = false;
-        }
-        else
-            $dzcp_v = $cache->get("admin_version");
-
-        if($dzcp_v && $dzcp_v <= _version) {
-            $version = '<b>'._akt_version.': <span class="fontGreen">'._version.'</span></b>';
-            $old = "";
-        } else {
-            $version = "<a href=\"http://www.dzcp.de\" target=\"_blank\" title=\"external Link: www.dzcp.de\"><b>"._akt_version.":</b> <span class=\"fontRed\">"._version."</span></a>";
-            $old = "_old";
-        }
-
         $dzcp_news = '';
         if(admin_view_dzcp_news) {
             if(!$cache->isExisting("admin_news")) {
@@ -129,9 +111,10 @@ else {
     if(@file_exists(basePath."/_installer") && $chkMe == 4 && !view_error_reporting)
         $index = _installdir;
     else {
+        $dzcp_version = show_dzcp_version();
         $index = show($dir."/admin", array("head" => _config_head,
-                                           "version" => $version,
-                                           "old" => $old,
+                                           "version" => $dzcp_version['version'],
+                                           "version_img" => $dzcp_version['version_img'],
                                            "dbase" => _stats_mysql,
                                            "einst" => _config_einst,
                                            "content" => _content,

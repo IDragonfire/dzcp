@@ -88,6 +88,8 @@ define('_perm_positions', 'manage user ranks');
 define('_perm_partners', 'manage partner');
 define('_perm_profile', 'manage profile fields');
 
+define('_dzcp_vcheck', 'The DZCP Version Checker will inform you about new DZCP updates and shows you whether your version is up to date.<br><br><span class=fontBold>Description:</span><br><font color=#17D427>Green:</font>Up to Date!<br><font color=#FFFF00>Yellow:</font> Could not connect to Server</br><font color=#FF0000>Red:</font>A new update available!');
+
 ## ADDED / REDEFINED FOR 1.5 Final
 define('_side_membermap', 'Membermap');
 define('_id_dont_exist', 'The requested ID does not exist!');

@@ -18,6 +18,9 @@ define('thumbgen_cache', true); // Sollen die verkleinerten Bilder der Thumbgen 
 define('thumbgen_cache_time', 60*60); // Wie lange soll das Bild aus dem Cache verwendet werden
 define('feed_update_time', 10*60); // Wann soll der Newsfeed aktualisiert werden
 
+define('dzcp_version_checker', true); // Version auf DZCP.de abgleichen und benachrichtigen ob eine neue Version zur Verfügung steht
+define('dzcp_version_checker_refresh', (30*60)); // Wie lange soll gewartet werden um einen Versionsabgleich auszuführen
+
 $config_cache = array();
 $config_cache['storage'] = "auto"; //memcache
 $config_cache['server'] = array(array("127.0.0.1",11211,1));
