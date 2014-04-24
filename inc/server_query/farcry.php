@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ######## CONFIG ##############################################################################################################
 
   $server_name       = 'FarCry';
@@ -18,7 +23,7 @@
     if (!$fp) { return FALSE; }
 
     stream_set_timeout($fp, 1, 0); stream_set_blocking($fp, true);
-    
+
     fwrite($fp, "s");
     $buffer = fread($fp, 4096);
     fclose($fp);
@@ -104,5 +109,5 @@
 
     return $player;
   }
-  
+
 ?>

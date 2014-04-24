@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 //MySQL-Daten einlesen
 $installation = true;
 include(basePath.'/inc/config.php');
@@ -1447,6 +1452,18 @@ function update_mysql_1_6()
     db("ALTER TABLE `".$db['squads']."` ADD `team_joinus`INT(1) NOT NULL DEFAULT '1';");
     db("ALTER TABLE `".$db['squads']."` ADD `team_fightus`INT(1) NOT NULL DEFAULT '1';");
     db("ALTER TABLE `".$db['users']."` ADD `banned`INT(1) NOT NULL DEFAULT '0' AFTER `level`;");
+    db("ALTER TABLE `".$db['permissions']."` ADD `backup` INT(1) NOT NULL DEFAULT '0' AFTER `artikel`;");
+    db("ALTER TABLE `".$db['permissions']."` ADD `clear` INT(1) NOT NULL DEFAULT '0' AFTER `clanwars`;");
+    db("ALTER TABLE `".$db['permissions']."` ADD `config` INT(1) NULL DEFAULT '0' AFTER `clear`;");
+    db("ALTER TABLE `".$db['permissions']."` ADD `forumkats` INT(1) NOT NULL DEFAULT '0' AFTER `forum`;");
+    db("ALTER TABLE `".$db['permissions']."` ADD `partners` INT(1) NOT NULL DEFAULT '0' AFTER `gb`;");
+    db("ALTER TABLE `".$db['permissions']."` ADD `profile` INT(1) NOT NULL DEFAULT '0' AFTER `partners`;");
+    db("ALTER TABLE `".$db['permissions']."` ADD `positions` INT(1) NOT NULL DEFAULT '0' AFTER `pos`;");
+    db("ALTER TABLE `".$db['permissions']."` ADD `protocol` INT(1) NOT NULL DEFAULT '0' AFTER `profile`;");
+    db("ALTER TABLE `".$db['permissions']."` ADD `smileys` INT(1) NOT NULL DEFAULT '0' AFTER `slideshow`;");
+    db("ALTER TABLE `".$db['permissions']."` ADD `support` INT(1) NOT NULL DEFAULT '0' AFTER `smileys`;");
+    db("ALTER TABLE `".$db['permissions']."` ADD `impressum` INT(1) NOT NULL DEFAULT '0' AFTER `intnews`;");
+    db("ALTER TABLE `".$db['f_threads']."` CHANGE `t_reg` `t_reg` INT(11) NOT NULL DEFAULT '0';");
 
     //-> Fix Settings Table
     if(db("SELECT * FROM `".$db['settings']."`",true) >= 2) {

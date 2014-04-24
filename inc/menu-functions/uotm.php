@@ -7,7 +7,7 @@
 function uotm() {
     global $db;
 
-    $files = get_files('../inc/images/uploads/userpics',false,true);
+    $files = get_files(basePath.'/inc/images/uploads/userpics',false,true,array('png','jpg','gif'),false,array(),'minimize');
     shuffle($files);
 
     $uotm = '';

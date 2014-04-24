@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._admin_pos;
@@ -63,10 +68,10 @@ if(_adminMenu != 'true') exit;
           $show = error(_pos_empty_kat,1);
         } else {
           if($_POST['pos'] == "lazy")
-		      {
-		  		  $pid = "";
-		      } else {
-		  		  $pid = ",`pid` = '".((int)$_POST['pos'])."'";
+              {
+                    $pid = "";
+              } else {
+                    $pid = ",`pid` = '".((int)$_POST['pos'])."'";
 
             if($_POST['pos'] == "1" || "2") $sign = ">= ";
             else $sign = "> ";
@@ -74,7 +79,7 @@ if(_adminMenu != 'true') exit;
             $posi = db("UPDATE ".$db['pos']."
                         SET `pid` = pid+1
                         WHERE pid ".$sign." '".intval($_POST['pos'])."'");
-		      }
+              }
 
           $qry = db("UPDATE ".$db['pos']."
                      SET `position` = '".up($_POST['kat'])."'
@@ -86,11 +91,11 @@ if(_adminMenu != 'true') exit;
           {
             foreach($_POST['perm'] AS $v => $k) $p .= "`".substr($v, 2)."` = '".intval($k)."',";
                                   if(!empty($p))$p = ', '.substr($p, 0, strlen($p) - 1);
-                                      
+
             db("INSERT INTO ".$db['permissions']." SET `pos` = '".intval($_GET['id'])."'".$p);
           }
     ////////////////////
-    
+
     // internal boardpermissions
           db("DELETE FROM ".$db['f_access']." WHERE `pos` = '".intval($_GET['id'])."'");
           if(!empty($_POST['board']))
@@ -148,10 +153,10 @@ if(_adminMenu != 'true') exit;
     // permissions
           foreach($_POST['perm'] AS $v => $k) $p .= "`".substr($v, 2)."` = '".intval($k)."',";
                                 if(!empty($p))$p = ', '.substr($p, 0, strlen($p) - 1);
-                                    
+
           db("INSERT INTO ".$db['permissions']." SET `pos` = '".$posID."'".$p);
     ////////////////////
-    
+
     // internal boardpermissions
           if(!empty($_POST['board']))
           {
@@ -159,7 +164,7 @@ if(_adminMenu != 'true') exit;
               db("INSERT INTO ".$db['f_access']." SET `pos` = '".$posID."', `forum` = '".$v."'");
           }
     ////////////////////
-    
+
           $show = info(_pos_admin_added, "?admin=positions");
         }
       }

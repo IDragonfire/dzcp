@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ## ADDED / REDEFINED FOR 1.5.2
 define('_dropdown_date_ts', '<select id="t_[nr]" name="t_[nr]" class="dropdown">[day]</select> <select id="m_[nr]" name="m_[nr]" class="dropdown">[month]</select> <select id="j_[nr]" name="j_[nr]" class="dropdown">[year]</select>');
 define('_dropdown_time_ts', '<select id="h_[nr]" name="h_[nr]" class="dropdown">[hour]</select> <select id="min_[nr]" name="min_[nr]" class="dropdown">[minute]</select>[uhr]');
@@ -186,7 +191,8 @@ define('_icon_edit_news', '<a href="?admin=newsadmin&amp;do=edit&amp;id=[id]"><i
 define('_icon_delete_news', '<a href="?admin=newsadmin&amp;do=delete&amp;id=[id]"><img alt="" src="../inc/images/delete.gif" class="icon" /></a>');
 define('_icon_edit_squads', '<a href="?admin=squads&amp;do=edit&amp;id=[id]"><img alt="" src="../inc/images/edit.gif" class="icon" /></a>');
 define('_icon_delete_squads', '<a href="?admin=squads&amp;do=delete&amp;id=[id]"><img alt="" src="../inc/images/delete.gif" class="icon" /></a>');
-define('_member_admin_icon_upload', '<a href="../upload/">upload</a>');
+define('_member_admin_icon_upload', '<a href="../upload/?action=squads">upload</a>');
+define('_member_admin_icon_upload_edit', '<a href="../upload/?action=squads&amp;do=edit&amp;id=[id]">upload</a>');
 define('_icon_delete_slist', '<a href="?admin=serverlist&amp;do=delete&amp;id=[id]"><img alt="" src="../inc/images/delete.gif" class="icon" /></a>');
 define('_server_show_bannlist', '<a href="?action=banned&amp;id=[id]"><img src="../inc/images/rows.gif" alt="" class="icon" /> Bannliste</a>');
 define('_checkfield_squads', '

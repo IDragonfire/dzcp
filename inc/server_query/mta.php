@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ######## CONFIG ##############################################################################################################
 
   $server_name       = 'Multi-Theft-Auto';
@@ -22,7 +27,7 @@
     fwrite($fp, "s");
     $buffer = fread($fp, 4096);
     fclose($fp);
-    
+
     if (!$buffer) { return FALSE; }
 
     $buffer = substr($buffer, 4);
@@ -105,5 +110,5 @@
 
     return $player;
   }
-  
+
 ?>

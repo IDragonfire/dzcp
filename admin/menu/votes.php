@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._votes_head;
@@ -35,7 +40,7 @@ if(_adminMenu != 'true') exit;
 
               $error = show("errors/errortable", array("error" => $error));
 
-          if($_POST['intern']) $intern = "checked=\"checked\"";
+          if($_POST['intern']) $intern = 'checked="checked"';
 
           $show = show($dir."/form_vote", array("head" => _votes_admin_head,
                                                 "value" => _button_value_add,
@@ -152,8 +157,8 @@ if(_adminMenu != 'true') exit;
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
 
-        if($get['intern'] == "1") $intern = "checked=\"checked\"";
-        if($get['closed'] == "1") $isclosed = "checked=\"checked\"";
+        if($get['intern'] == "1") $intern = 'checked="checked"';
+        if($get['closed'] == "1") $isclosed = 'checked="checked"';
 
         $what = "&amp;do=editvote&amp;id=".$_GET['id']."";
 

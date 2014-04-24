@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_newskats_edit_head;
@@ -79,7 +84,7 @@ if(_adminMenu != 'true') exit;
         $files = get_files('../inc/images/newskat/',false,true);
         for($i=0; $i<count($files); $i++)
         {
-          if($get['katimg'] == $files[$i]) $sel = "selected=\"selected\"";
+          if($get['katimg'] == $files[$i]) $sel = 'selected="selected"';
           else $sel = '';
 
           $img .= show(_select_field, array("value" => $files[$i],

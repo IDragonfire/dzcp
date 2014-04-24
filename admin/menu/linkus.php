@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
       if($do == "new")
@@ -9,7 +14,7 @@ if(_adminMenu != 'true') exit;
                                                 "art" => _linkus_art,
                                                 "text" => _linkus_admin_textlink,
                                                 "banner" => _linkus_admin_bannerlink,
-                                                "bchecked" => "checked=\"checked\"",
+                                                "bchecked" => 'checked="checked"',
                                                 "tchecked" => "",
                                                 "llink" => _linkus_bsp_target,
                                                 "lbeschreibung" => _linkus_bsp_desc,
@@ -29,7 +34,7 @@ if(_adminMenu != 'true') exit;
                          `text`         = '".up($_POST['text'])."',
                          `banner`       = '".up($_POST['banner'])."',
                          `beschreibung` = '".up($_POST['beschreibung'])."'");
-  
+
           $show = info(_linkus_added, "?admin=linkus");
         }
       } elseif($do == "edit") {
@@ -62,13 +67,13 @@ if(_adminMenu != 'true') exit;
                          `banner`       = '".up($_POST['banner'])."',
                          `beschreibung` = '".up($_POST['beschreibung'])."'
                      WHERE id = '".intval($_GET['id'])."'");
-  
+
           $show = info(_linkus_edited, "?admin=linkus");
         }
       } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db['linkus']."
                    WHERE id = '".intval($_GET['id'])."'");
-  
+
         $show = info(_linkus_deleted, "?admin=linkus");
       } else {
         $qry = db("SELECT * FROM ".$db['linkus']."
@@ -77,7 +82,7 @@ if(_adminMenu != 'true') exit;
         while($get = _fetch($qry))
         {
           $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-    
+
           $banner = show(_linkus_bannerlink, array("id" => $get['id'],
                                                    "banner" => re($get['text'])));
 
@@ -95,7 +100,7 @@ if(_adminMenu != 'true') exit;
                                                     "cnt" => $cnt,
                                                     "banner" => $banner,
                                                     "besch" => re($get['beschreibung']),
-    									    		                      "url" => $get['url']));
+                                                                          "url" => $get['url']));
           $cnt++;
         }
 

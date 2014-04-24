@@ -1,7 +1,12 @@
 <?php
-  include("../inc/config.php");
-  include("../inc/debugger.php");
-  include("../inc/bbcode.php");
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
+include("../inc/config.php");
+include("../inc/debugger.php");
+include("../inc/bbcode.php");
 ?>
 <html>
 <head>

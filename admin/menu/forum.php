@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
       $where = $where.': '._config_forum_head;
@@ -155,7 +160,7 @@ if(_adminMenu != 'true') exit;
               }
             }
 
-            if($get['intern'] == "1") $sel = "selected=\"selected\"";
+            if($get['intern'] == "1") $sel = 'selected="selected"';
 
             $show = show($dir."/katform_edit", array("fkat" => _config_katname,
                                                      "head" => _config_forum_kat_head_edit,

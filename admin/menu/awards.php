@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._awards_head;
@@ -42,7 +47,7 @@ if(_adminMenu != 'true') exit;
                     ORDER BY game");
           while($gets = _fetch($qrym))
           {
-              if($get['squad'] == $gets['id']) $sel = "selected=\"selected\"";
+              if($get['squad'] == $gets['id']) $sel = 'selected="selected"';
             else $sel = "";
 
              $squads .= show(_awards_admin_edit_select_field_squads, array("id" => $gets['id'],

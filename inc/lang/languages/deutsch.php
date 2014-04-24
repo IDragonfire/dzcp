@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 $charset = 'iso-8859-1';
 header("Content-type: text/html; charset=".$charset);
 
@@ -71,6 +76,18 @@ define('_ts_settings_showchannels_desc', 'Wenn dies eingeschaltet ist werden nur
 define('_upload_error', 'Fehler beim hochladen der Datei!');
 define('_login_banned', 'Dein Account wurde vom Administrator gesperrt!');
 define('_lobby_no_mymessages', '<a href="../user/?action=msg">Du hast keine neuen Nachrichten!</a>');
+
+define('_perm_smileys', 'Smileys verwalten');
+define('_perm_protocol', 'Admin Protokoll einsehen');
+define('_perm_support', 'Support Seite einsehen');
+define('_perm_backup', 'SQL-Backups verwalten');
+define('_perm_clear', 'Datenbank aufr&auml;umen');
+define('_perm_forumkats', 'Forenkategorien verwalten');
+define('_perm_impressum', 'Impressum verwalten');
+define('_perm_config', 'Seitenkonfiguration &auml;ndern');
+define('_perm_positions', 'User R&auml;nge verwalten');
+define('_perm_partners', 'Partner verwalten');
+define('_perm_profile', 'Profilfelder verwalten');
 
 ## ADDED / REDEFINED FOR 1.5 Final
 define('_id_dont_exist', 'Die von dir angegebene ID existiert nicht!');
@@ -2132,7 +2149,7 @@ define('_datum', 'Datum');
 define('_legende', 'Legende');
 define('_hlswid', 'XFire Name');
 define('_hlswstatus', 'XFire');
-define('_steamid', 'Steam-ID');
+define('_steamid', 'Steam Community-ID');
 define('_xboxid', 'Xbox Live');
 define('_xboxstatus', 'Xbox Live');
 define('_xboxuserpic', 'Xbox Live Avatar:');
@@ -2144,7 +2161,7 @@ define('_originid', 'Origin');
 define('_originstatus', 'Origin');
 define('_battlenetid', 'Battlenet');
 define('_battlenetstatus', 'Battlenet');
-define('_steamicon',  '<img src="../inc/images/steam.gif" alt="" class="icon" onmouseover="DZCP.showInfo(\'<tr><td><img src=../user/index.php?action=get_steam_image&steam_id=[steamid] /></td></tr>\')" onmouseout="DZCP.hideInfo()" />');
+define('_steamicon',  '<img src="../inc/images/steam.gif" alt="" class="icon" onmouseover="DZCP.showInfo(\'<tr><td><img src=../inc/ajax.php?i=steam&steam_id=[steamid] /></td></tr>\')" onmouseout="DZCP.hideInfo()" />');
 define('_link', 'Link');
 define('_linkname', 'Linkname');
 define('_url', 'URL');

@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._slist_head_admin;
@@ -9,7 +14,7 @@ if(_adminMenu != 'true') exit;
       {
         if($get['checked'] == '1')
         {
-          $selected = "selected=\"selected\"";
+          $selected = 'selected="selected"';
         } else {
           $selected = "";
         }

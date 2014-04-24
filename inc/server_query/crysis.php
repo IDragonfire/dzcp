@@ -1,10 +1,15 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ######## CONFIG ##############################################################################################################
 
   $server_name       = 'Crysis';
   $server_name_short = 'Crysis';
   $server_link       = 'crysis://{IP}:{S_PORT}';
-  
+
   $server_name_config = array('crysiswars'   => array('Crysis Wars',  'Crysis'),
   );
 
@@ -14,26 +19,26 @@
   {
     global $server_timeout;
     $q_port = empty($q_port) ? $port : $q_port;
-    
+
     @set_time_limit(2);
     $fp = @fsockopen("udp://$ip", $q_port, $errno, $errstr, $server_timeout);
     if (!$fp) { return FALSE; }
     stream_set_timeout($fp, 1, 0); stream_set_blocking($fp, true);
-    
+
       fwrite($fp, "\xFE\xFD\x09\x21\x21\x21\x21\xFF\xFF\xFF\x01");
 
       $challenge_packet = fread($fp, 4096);
 
       if (!$challenge_packet) { return FALSE; }
 
-      $challenge_code = substr($challenge_packet, 5, -1); 
+      $challenge_code = substr($challenge_packet, 5, -1);
       $challenge_code = $challenge_code ? chr($challenge_code >> 24).chr($challenge_code >> 16).chr($challenge_code >> 8).chr($challenge_code >> 0) : "";
-      
+
     fwrite($fp, "\xFE\xFD\x00\x21\x21\x21\x21".$challenge_code."\xFF\xFF\xFF\x01");
 
     $packet_check = "/(hostname\\x00|player_\\x00|score_\\x00|ping_\\x00|deaths_\\x00|pid_\\x00|skill_\\x00|team_\\x00|team_t\\x00|score_t\\x00)/U";
 
-    $packet_check_expected = 1; 
+    $packet_check_expected = 1;
 
     $packet1 = fread($fp, 1400);
     if (!trim($packet1)) { fclose($fp); return FALSE; }
@@ -156,5 +161,5 @@
       return $player;
     }
   }
-  
+
 ?>

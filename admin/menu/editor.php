@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._editor_head;
@@ -51,7 +56,7 @@ if(_adminMenu != 'true') exit;
 
           $error = show("errors/errortable", array("error" => $error));
 
-          if(isset($_POST['html'])) $checked = "checked=\"checked\"";
+          if(isset($_POST['html'])) $checked = 'checked="checked"';
 
           $kat_ = preg_replace('/-(\d+)/','',$_POST['pos']);
           $pos_ = preg_replace("=nav_(.*?)-=","",$_POST['pos']);
@@ -151,7 +156,7 @@ if(_adminMenu != 'true') exit;
                     WHERE editor = '".intval($_GET['id'])."'");
         $getn = _fetch($qryn);
 
-        if($gets['html'] == "1") $checked = "checked=\"checked\"";
+        if($gets['html'] == "1") $checked = 'checked="checked"';
 
         $show = show($dir."/form_editor", array("head" => _editor_edit_head,
                                                 "what" => _button_value_edit,
@@ -182,7 +187,7 @@ if(_adminMenu != 'true') exit;
 
           $error = show("errors/errortable", array("error" => $error));
 
-          if(isset($_POST['html'])) $checked = "checked=\"checked\"";
+          if(isset($_POST['html'])) $checked = 'checked="checked"';
 
           $qry = db("SELECT s2.*, s1.name AS katname, s1.placeholder FROM ".$db['navi_kats']." AS s1 LEFT JOIN ".$db['navi']." AS s2 ON s1.`placeholder` = s2.`kat`
                      ORDER BY s1.name, s2.pos");

@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
 
@@ -13,10 +18,6 @@ $title = $pagetitle." - ".$where."";
 $dir = "news";
 
 ## SECTIONS ##
-if(check_internal_url())
-    $index = error(_error_have_to_be_logged, 1);
-else
-{
     switch ($action):
     default:
 
@@ -160,7 +161,6 @@ else
       }
     break;
     endswitch;
-}
 
 ## INDEX OUTPUT ##
 $title = $pagetitle." - ".$where."";

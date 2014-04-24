@@ -8,7 +8,7 @@ function random_gallery() {
     global $db;
 
     $gallery = '';
-    $files = get_files(basePath.'/gallery/images/',false,true);
+    $files = get_files(basePath.'/gallery/images/',false,true,array('png','jpg','gif'),false,array(),'minimize');
     if(count($files) >= 1) {
         $get = db("SELECT `id`,`kat` FROM ".$db['gallery']." ORDER BY RAND()",false,true);
 

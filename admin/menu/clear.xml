@@ -2,6 +2,6 @@
 <settings>
 	<Menu>rootmenu</Menu>
 	<Rights>clear</Rights>
-	<Only_Admin>1</Only_Admin>
+	<Only_Admin>0</Only_Admin>
 	<Only_Root>0</Only_Root>
 </settings>

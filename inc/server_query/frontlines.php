@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ######## CONFIG ##############################################################################################################
 
   $server_name       = 'Frontlines: Fuel of War';
@@ -11,10 +16,10 @@
   {
     global $server_timeout;
     $q_port = empty($q_port) ? 5478 : $q_port;
-    
+
     @set_time_limit(2);
     $fp = @fsockopen("udp://".$ip, $q_port, $errno, $errstr, $server_timeout);
-    
+
     if($request == "players")
     {
       fwrite($fp, "\xFF\xFF\xFF\xFF\x57");
@@ -23,18 +28,18 @@
       if (!$challenge_packet) { return FALSE; }
       $challenge_code = substr($challenge_packet, 5, 4);
     }
-    
+
     if($request == "players") fwrite($fp, "\xFF\xFF\xFF\xFF\x55{$challenge_code}");
     else                      fwrite($fp, "\xFF\xFF\xFF\xFFFLSQ");
-    
+
     $buffer = fread($fp, 4096);
 
     if (!$buffer) { return FALSE; }
 
     if($request == "info")
-    {    
+    {
       $buffer = substr($buffer, 6); // REMOVE PACKET HEADER
-    
+
       $data['hostname']   = cut_string($buffer);
       $data['mapname']    = cut_string($buffer);
       $data['gamemod']    = strtolower(cut_string($buffer));
@@ -49,7 +54,7 @@
     if($request == "players")
     {
       $buffer = substr($buffer, 4); // REMOVE PACKET HEADER
-      
+
       $response_type = cut_byte($buffer, 1);
       $returned = ord(cut_byte($buffer, 1));
 
@@ -68,9 +73,9 @@
 
         $player_key ++;
       }
-      
+
       $player = array_reverse($player);
-      
+
       return $player;
     }
   }

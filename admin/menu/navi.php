@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._navi_head;
@@ -13,9 +18,9 @@ if(_adminMenu != 'true') exit;
               <option class="dropdownKat" value="lazy">'.re($get['katname']).'</option>
               <option value="'.re($get['placeholder']).'-1">-> '._admin_first.'</option>
             ';
-          }          
+          }
           $thiskat = $get['kat'];
-     
+
           $position .= empty($get['name']) ? '' : '<option value="'.re($get['placeholder']).'-'.($get['pos']+1).'">'._nach.' -> '.navi_name(re($get['name'])).'</option>';
         }
 
@@ -89,10 +94,10 @@ if(_adminMenu != 'true') exit;
               <option class="dropdownKat" value="lazy">'.re($get['katname']).'</option>
               <option value="'.re($get['placeholder']).'-1">-> '._admin_first.'</option>
             ';
-          }          
+          }
           $thiskat = $get['kat'];
           $sel[$i] = ($get['id'] == $_GET['id']) ? 'selected="selected"' : '';
-     
+
           $position .= empty($get['name']) ? '' : '<option value="'.re($get['placeholder']).'-'.($get['pos']+1).'" '.$sel[$i].'>'._nach.' -> '.navi_name(re($get['name'])).'</option>';
 
           $i++;
@@ -111,10 +116,10 @@ if(_adminMenu != 'true') exit;
           $read = "";
         }
 
-        if($get['wichtig'] == "1") $selw = "selected=\"selected\"";
-        if($get['shown'] == "1") $sels = "selected=\"selected\"";
-        if($get['internal'] == "1") $seli = "selected=\"selected\"";
-        if($get['target'] == "1") $target = "selected=\"selected\"";
+        if($get['wichtig'] == "1") $selw = 'selected="selected"';
+        if($get['shown'] == "1") $sels = 'selected="selected"';
+        if($get['internal'] == "1") $seli = 'selected="selected"';
+        if($get['target'] == "1") $target = 'selected="selected"';
 
         $show = show($dir."/form_navi_edit", array("name" => _navi_name,
                                                    "url" => _navi_url_to,
@@ -173,7 +178,7 @@ if(_adminMenu != 'true') exit;
         header("Location: ?admin=navi");
       } else if($do == 'editkat') {
         $get = _fetch(db("SELECT * FROM ".$db['navi_kats']." WHERE `id` = '".intval($_GET['id'])."'"));
-        
+
         $show = show($dir."/form_navi_kats", array("head" => _menu_edit_kat,
                                                    "name" => _sponsors_admin_name,
                                                    "placeholder" => _placeholder,
@@ -206,7 +211,7 @@ if(_adminMenu != 'true') exit;
         $show = info(_menukat_deleted, '?admin=navi');
       }  else if($do == 'addkat') {
         $get = _fetch(db("SELECT * FROM ".$db['navi_kats']." WHERE `id` = '".intval($_GET['id'])."'"));
-        
+
         $show = show($dir."/form_navi_kats", array("head" => _menu_add_kat,
                                                    "name" => _sponsors_admin_name,
                                                    "placeholder" => _placeholder,
@@ -266,10 +271,10 @@ if(_adminMenu != 'true') exit;
             $shown = _noicon;
             $set = 1;
           }
-		  if($get['katname'] != $kat) { 
-			  $kat = $get['katname']; 
-			  $show_ .= '<tr><td align="center" colspan="8" class="contentHead"><span class="fontBold">'.$get['katname'].'</span></td></tr>';
-		  }
+          if($get['katname'] != $kat) {
+              $kat = $get['katname'];
+              $show_ .= '<tr><td align="center" colspan="8" class="contentHead"><span class="fontBold">'.$get['katname'].'</span></td></tr>';
+          }
           $show_ .= show($dir."/navi_show", array("class" => $class,
                                                   "name" => $type,
                                                   "id" => $get['id'],
@@ -281,12 +286,12 @@ if(_adminMenu != 'true') exit;
                                                   "edit" => $edit,
                                                   "del" => $delete));
         }
-        
+
         unset($color);
         $qry = db("SELECT * FROM ".$db['navi_kats']." ORDER BY `name` ASC");
         while($get = _fetch($qry)) {
           $class = ($color % 2) ? 'contentMainFirst' : 'contentMainSecond'; $color++;
-          
+
           $type = re($get['name']);
           if($get['placeholder'] == 'nav_admin') {
             $edit = '';
@@ -308,8 +313,8 @@ if(_adminMenu != 'true') exit;
                                                       "class" => $class,
                                                       "edit" => $edit,
                                                       "del" => $delete));
-        }        
-        
+        }
+
         $show = show($dir."/navi", array("show" => $show_,
                                          "intern" => _config_forum_intern,
                                          "name" => _navi_name,

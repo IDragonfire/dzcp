@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._clanwars;
@@ -94,7 +99,7 @@ WHERE status = '1'
 ORDER BY game");
         while($gets = _fetch($qrym))
         {
-   if($get['squad_id'] == $gets['id']) $sel = "selected=\"selected\"";
+   if($get['squad_id'] == $gets['id']) $sel = 'selected="selected"';
           else $sel = "";
 
           $squads .= show(_cw_edit_select_field_squads, array("id" => $gets['id'],

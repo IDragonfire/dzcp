@@ -1,8 +1,9 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('slideshow')
-///////////////////////////////
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
 $where = $where.': '._slider;
@@ -62,7 +63,7 @@ $where = $where.': '._slider;
                                                 "v_url" => "http://",
                                                 "selected0" => "",
                                                 "selected1" => "",
-                                                "selected_txt" => "selected=\"selected\"",
+                                                "selected_txt" => 'selected="selected"',
                                                 "v_pic" => ""));
   }elseif($do == 'add'){
     if(empty($_FILES['bild']['tmp_name']) || empty($_POST['bez']) || empty($_POST['url']) || $_POST['url'] == "http://") {
@@ -72,8 +73,8 @@ $where = $where.': '._slider;
 
         $error = show("errors/errortable", array("error" => $error));
 
-        if($_POST['target'] == 1) $selected = "selected=\"selected\"";
-        if($get['showbez'] == 1) $selected_txt = "selected=\"selected\"";
+        if($_POST['target'] == 1) $selected = 'selected="selected"';
+        if($get['showbez'] == 1) $selected_txt = 'selected="selected"';
 
         $qry = db("SELECT * FROM ".$db['slideshow']."
                   ORDER BY `pos` ASC;");
@@ -143,8 +144,8 @@ $where = $where.': '._slider;
                                                 "sel" => ""));
     }
 
-    if($get['target'] == 1) $selected = "selected=\"selected\"";
-    if($get['showbez'] == 1) $selected_txt = "selected=\"selected\"";
+    if($get['target'] == 1) $selected = 'selected="selected"';
+    if($get['showbez'] == 1) $selected_txt = 'selected="selected"';
 
     $show = show($dir."/slideshow_form", array("id" => re($get['id']),
                                                "error" => "",
@@ -177,8 +178,8 @@ $where = $where.': '._slider;
 
         $error = show("errors/errortable", array("error" => $error));
 
-        if($_POST['target'] == 1) $selected = "selected=\"selected\"";
-        if($get['showbez'] == 1) $selected_txt = "selected=\"selected\"";
+        if($_POST['target'] == 1) $selected = 'selected="selected"';
+        if($get['showbez'] == 1) $selected_txt = 'selected="selected"';
 
         $show = show($dir."/slideshow_form", array("id" => re($_POST['id']),
                                                     "error" => $error,

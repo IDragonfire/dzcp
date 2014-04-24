@@ -4,11 +4,12 @@
  * http://www.dzcp.de
  */
 
-## OUTPUT BUFFER START ##
-include("../inc/buffer.php");
+## OUTPUT BUFFER START #
+define('basePath', dirname(dirname(__FILE__).'../'));
+ob_start();
+$ajaxJob = true;
 
 ## INCLUDES ##
-$ajaxJob = true;
 include(basePath."/inc/debugger.php");
 include(basePath."/inc/config.php");
 include(basePath."/inc/bbcode.php");
@@ -30,4 +31,12 @@ switch (isset($_GET['i']) ? $_GET['i'] : ''):
     case 'server';    echo '<table class="hperc" cellspacing="0">'.server($_GET['serverID']).'</table>'; break;
     case 'shoutbox';  echo '<table class="hperc" cellspacing="1">'.shout(1).'</table>'; break;
     case 'teamspeak'; echo '<table class="hperc" cellspacing="0">'.teamspeak(1).'</table>'; break;
+    case 'steam';
+        $data = steamIMG($_GET['steam_id']);
+        if($data['send_header'])
+           header('Content-Type: image/png');
+
+        echo $data['img'];
+    break;
 endswitch;
+ob_end_flush();

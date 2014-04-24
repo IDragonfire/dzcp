@@ -9,19 +9,5 @@
 </tr>
 [show_players]
 <tr>
-  <td class="contentMainTop" colspan="3" align="center"><span class="fontBold">[play]</span></td>
+	<td colspan="3">[form_player]</td>
 </tr>
-<form name="cwstatus" action="?action=update&amp;id=[id]" method="post" onsubmit="return(DZCP.submitButton())">
-<tr>
-  <td class="contentMainFirst" colspan="3" align="center">
-  <input class="checkbox" type="radio" name="status" value="0" [sely] /> [yes] 
-  <input class="checkbox" type="radio" name="status" value="1" [seln] /> [no] 
-  <input class="checkbox"  type="radio" name="status" value="2" [selm] /> [maybe]</td>
-</tr>
-<tr>
-  <td class="contentBottom" colspan="3">
-    <input id="contentSubmit" type="submit" value="[value]" class="submit" />
-    [admin]
-  </td>
-</tr>
-</form>

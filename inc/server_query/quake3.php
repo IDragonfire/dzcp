@@ -1,4 +1,9 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
+
 ######## CONFIG ##############################################################################################################
 
   $server_name       = 'Quake 3';
@@ -15,7 +20,7 @@
   {
     global $server_timeout;
     $q_port = empty($q_port) ? 29900 : $q_port;
-  
+
     $fp = @fsockopen("udp://$ip", $port, $errno, $errstr, $server_timeout);
 
     if (!$fp) { return FALSE; }
@@ -87,5 +92,5 @@
     if ($request == "players") { return $player; }
 
   }
-  
+
 ?>
