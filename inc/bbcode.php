@@ -2208,7 +2208,7 @@ final class dbc_index
 }
 
 function steamIMG($steamID='') {
-    global $cache;
+    global $cache,$language;
     if(!fsockopen_support())
         return array('img' => _fopen, 'send_header' => false);
 
@@ -2220,18 +2220,19 @@ function steamIMG($steamID='') {
     else
         $image_cache_error = hextobin($cache->get("steamsignature_error"));
 
+    $lang = ($language == 'deutsch') ? 'german' : 'english';
     $return = array('img' => $image_cache_error, 'send_header' => true);
     if($steam = SteamAPI::getUserInfos(strtolower(trim($steamID))))
         $ret = $steam['user']['steamID'];
 
     if (!empty($ret) && !empty($steam) && $steam) {
-        if(!$cache->isExisting("steamsignature_".$ret)) {
-            $image_cache = file_get_contents('http://steamsignature.com/profile/english/'.$ret.'.png');
+        if(!$cache->isExisting("steamsignature_".$lang."_".$ret)) {
+            $image_cache = file_get_contents('http://steamsignature.com/profile/'.$lang.'/'.$ret.'.png');
             if($image_cache && !empty($image_cache))
-                $cache->set("steamsignature_".$ret, bin2hex($image_cache), (5*60));
+                $cache->set("steamsignature_".$lang."_".$ret, bin2hex($image_cache), (5*60));
         }
         else
-            $image_cache = hextobin($cache->get("steamsignature_".$ret));
+            $image_cache = hextobin($cache->get("steamsignature_".$lang."_".$ret));
 
         $return = array('img' => $image_cache, 'send_header' => true);
     }
