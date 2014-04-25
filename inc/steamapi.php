@@ -65,25 +65,37 @@ class SteamAPI {
      */
     private static final function get_steamcommunity($zone='',$xml='profile') {
         global $cache;
-        $zone_url = !empty($zone) ? $zone.'/' : ''; $zone_tag = !empty($zone) ? $zone.'_' : 'profile';
+        $zone_url = !empty($zone) ? '/'.$zone.'/' : ''; $zone_tag = !empty($zone) ? $zone.'_' : 'profile';
         if(!$cache->isExisting('steam_'.$zone_tag.'_'.self::$profile_url)) {
-            $xml_stream = file_get_contents(self::$api_com.'/id/'.self::$profile_url.'/'.$zone_url.'?xml=1');
+
+            $xml_stream = file_get_contents(self::$api_com.'/id/'.self::$profile_url.$zone_url.'?xml=1');
             if(empty($xml_stream)) {
                 DebugConsole::insert_error('SteamAPI::get_steamcommunity()', 'No connection to the community interface!');
                 DebugConsole::insert_warning('SteamAPI::get_steamcommunity()', 'URL: '.self::$api_com.'/id/'.self::$profile_url.'/'.$zone_url.'?xml=1');
                 return false;
             }
 
+            if(!$xml = simplexml_load_string($xml_stream, 'SimpleXMLElement', LIBXML_NOCDATA)) return false;
+            $xml = self::objectToArray($xml);
+            if(array_key_exists('error',$xml))
+            {
+                $xml_stream = file_get_contents(self::$api_com.'/profiles/'.self::$profile_url.'?xml=1');
+                if(empty($xml_stream)) {
+                    DebugConsole::insert_error('SteamAPI::get_steamcommunity()', 'No connection to the community interface!');
+                    DebugConsole::insert_warning('SteamAPI::get_steamcommunity()', 'URL: '.self::$api_com.'/profiles/'.self::$profile_url.'?xml=1');
+                    return false;
+                }
+            }
+
+            $xml = self::objectToArray($xml_stream);
+            if(array_key_exists('error',$xml) || empty($xml_stream)) return false;
             $cache->set('steam_'.$zone_tag.'_'.self::$profile_url,$xml_stream,3600);
         }
         else
             $xml_stream = $cache->get('steam_'.$zone_tag.'_'.self::$profile_url);
 
-        if(empty($xml_stream)) return false;
         if(!$xml = simplexml_load_string($xml_stream, 'SimpleXMLElement', LIBXML_NOCDATA)) return false;
         self::$community_data[str_replace('_', '', $zone_tag)] = self::objectToArray($xml);
-        $array_check = self::$community_data[str_replace('_', '', $zone_tag)];
-        if(key_exists('error', $array_check)) return false;
         return true;
     }
 

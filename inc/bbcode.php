@@ -15,6 +15,7 @@ require_once(basePath.'/inc/_version.php');
 require_once(basePath.'/inc/pop3.php');
 require_once(basePath.'/inc/smtp.php');
 require_once(basePath.'/inc/phpmailer.php');
+require_once(basePath."/inc/cookie.php");
 require_once(basePath.'/inc/server_query/_functions.php');
 require_once(basePath."/inc/teamspeak_query.php");
 require_once(basePath."/inc/phpfastcache/phpfastcache.php");
@@ -37,21 +38,26 @@ $cache = phpFastCache();
 
 //-> Settingstabelle auslesen * Use function settings('xxxxxx');
 if(!dbc_index::issetIndex('settings')) {
-    $get = db("SELECT * FROM ".$db['settings'],false,true);
-    dbc_index::setIndex('settings', $get);
+    $get_settings = db("SELECT * FROM ".$db['settings'],false,true);
+    dbc_index::setIndex('settings', $get_settings);
+    unset($get_settings);
 }
 
 //-> Configtabelle auslesen * Use function config('xxxxxx');
 if(!dbc_index::issetIndex('config')) {
-    $config = db("SELECT * FROM ".$db['config'],false,true);
-    dbc_index::setIndex('config', $config);
+    $get_config = db("SELECT * FROM ".$db['config'],false,true);
+    dbc_index::setIndex('config', $get_config);
+    unset($get_config);
 }
 
 //-> DZCP Cookie Prefix
 $prev = settings('prev').'_';
 
+## Cookie initialisierung ##
+cookie::init('dzcp_'.settings('prev'));
+
 //-> Language auslesen
-$language = (isset($_COOKIE[$prev.'language']) ? (file_exists(basePath.'/inc/lang/languages/'.$_COOKIE[$prev.'language'].'.php') ? $_COOKIE[$prev.'language'] : settings('language')) : settings('language'));
+$language = (cookie::get('language') != false ? (file_exists(basePath.'/inc/lang/languages/'.cookie::get('language').'.php') ? cookie::get('language') : re(settings('language'))) : re(settings('language')));
 
 //einzelne Definitionen
 $isSpider = isSpider();
@@ -77,15 +83,16 @@ $do = isset($_GET['do']) ? $_GET['do'] : '';
 $index = ''; $show = ''; $color = 0;
 
 //-> Auslesen der Cookies und automatisch anmelden
-if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSION['id']) && !checkme()) {
+if(cookie::get('id') != false && cookie::get('pkey') != false && empty($_SESSION['id']) && !checkme()) {
     ## User aus der Datenbank suchen ##
-    $sql = db_stmt("SELECT id,user,nick,pwd,email,level,time,pkey FROM ".$db['users']." WHERE id = ? AND pkey = ? AND level != '0'",array('is', $_COOKIE[$prev.'id'], $_COOKIE[$prev.'pkey']));
+    $sql = db_stmt("SELECT id,user,nick,pwd,email,level,time,pkey FROM ".$db['users']." WHERE id = ? AND pkey = ? AND level != '0'",array('is', cookie::get('id'), cookie::get('pkey')));
     if(_rows($sql)) {
         $get = _fetch($sql);
 
         ## Generiere neuen permanent-key ##
         $permanent_key = md5(mkpwd(8));
-        set_cookie($prev."pkey",$permanent_key);
+        cookie::put('pkey', $permanent_key);
+        cookie::save();
 
         ## Schreibe Werte in die Server Sessions ##
         $_SESSION['id']         = $get['id'];
@@ -118,8 +125,10 @@ if(isset($_COOKIE[$prev.'id']) && isset($_COOKIE[$prev.'pkey']) && empty($_SESSI
 
 //-> Sprache aendern
 if(isset($_GET['set_language'])) {
-    if(file_exists(basePath."/inc/lang/languages/".$_GET['set_language'].".php"))
-        set_cookie($prev.'language',$_GET['set_language']);
+    if(file_exists(basePath."/inc/lang/languages/".$_GET['set_language'].".php")) {
+        cookie::put('language', $_GET['set_language']);
+        cookie::save();
+    }
 
     header("Location: ".$_SERVER['HTTP_REFERER']);
 }
@@ -187,16 +196,16 @@ $files = get_files(basePath.'/inc/_templates_/',true);
 if(isset($_GET['tmpl_set'])) {
     foreach ($files as $templ) {
         if($templ == $_GET['tmpl_set']) {
-            set_cookie($prev.'tmpdir',$templ);
+            cookie::put('tmpdir', $templ);
+            cookie::save();
             header("Location: ".$_SERVER['HTTP_REFERER']);
-            exit;
         }
     }
 }
 
-if(isset($_COOKIE[$prev.'tmpdir']) && $_COOKIE[$prev.'tmpdir'] != NULL) {
-    if(file_exists(basePath."/inc/_templates_/".$_COOKIE[$prev.'tmpdir']))
-        $tmpdir = $_COOKIE[$prev.'tmpdir'];
+if(cookie::get('tmpdir') != false && cookie::get('tmpdir') != NULL) {
+    if(file_exists(basePath."/inc/_templates_/".cookie::get('tmpdir')))
+        $tmpdir = cookie::get('tmpdir');
     else
         $tmpdir = $files[0];
 } else {
@@ -1091,9 +1100,7 @@ function isBanned($userid_set=0,$logout=true) {
                 session_unset();
                 session_destroy();
                 session_regenerate_id();
-                set_cookie($prev.'id', '');
-                set_cookie($prev.'pkey',"");
-                set_cookie(session_name(), '');
+                cookie::clear();
                 $userid = 0; $chkMe = 0;
             }
 
@@ -1206,17 +1213,33 @@ function cw_result_details($punkte, $gpunkte) {
 
 //-> Flaggen ausgeben
 function flag($code) {
-    if(!file_exists(basePath."/inc/images/flaggen/".$code.".gif"))
+    global $picformat;
+    if(empty($code))
         return '<img src="../inc/images/flaggen/nocountry.gif" alt="" class="icon" />';
-    else
-        return'<img src="../inc/images/flaggen/'.$code.'.gif" alt="" class="icon" />';
+
+    foreach($picformat as $end) {
+        if(file_exists(basePath."/inc/images/flaggen/".$code.".".$end)) break;
+    }
+
+    if(file_exists(basePath."/inc/images/flaggen/".$code.".".$end))
+        return'<img src="../inc/images/flaggen/'.$code.'.'.$end.'" alt="" class="icon" />';
+
+    return '<img src="../inc/images/flaggen/nocountry.gif" alt="" class="icon" />';
 }
 
 function rawflag($code) {
-    if(!file_exists(basePath."/inc/images/flaggen/".$code.".gif"))
+    global $picformat;
+    if(empty($code))
         return '<img src=../inc/images/flaggen/nocountry.gif alt= class=icon />';
-    else
-        return'<img src=../inc/images/flaggen/'.$code.'.gif alt= class=icon />';
+
+    foreach($picformat as $end) {
+        if(file_exists(basePath."/inc/images/flaggen/".$code.".".$end)) break;
+    }
+
+    if(file_exists(basePath."/inc/images/flaggen/".$code.".".$end))
+        return'<img src=../inc/images/flaggen/'.$code.'.'.$end.' alt= class=icon />';
+
+    return '<img src=../inc/images/flaggen/nocountry.gif alt= class=icon />';
 }
 
 //-> Liste der Laender ausgeben
@@ -1231,18 +1254,23 @@ function show_countrys($i="") {
 
 //-> Gameicon ausgeben
 function squad($code) {
-    if(!isset($code))
+    global $picformat;
+    if(empty($code))
         return '<img src="../inc/images/gameicons/nogame.gif" alt="" class="icon" />';
-    else
-        return '<img  src="../inc/images/gameicons/'.$code.'" alt="" class="icon" />';
+
+    foreach($picformat as $end) {
+        if(file_exists(basePath."/inc/images/gameicons/".$code.".".$end)) break;
+    }
+
+    if(file_exists(basePath."/inc/images/gameicons/".$code.".".$end))
+        return'<img src="../inc/images/gameicons/'.$code.'.'.$end.'" alt="" class="icon" />';
+
+    return '<img src="../inc/images/gameicons/nogame.gif" alt="" class="icon" />';
 }
 
 //-> Funktion um bei DB-Eintraegen URLs einem http:// zuzuweisen
 function links($hp) {
-    if(!empty($hp))
-        return 'http://'.str_replace("http://","",$hp);
-
-    return $hp;
+    return !empty($hp) ? 'http://'.str_replace("http://","",$hp) : $hp;
 }
 
 //-> Funktion um Passwoerter generieren zu lassen
@@ -1252,28 +1280,6 @@ function mkpwd() {
     for($i = 0; $i < 10; $i++)
     { $pw .= $chars{rand(0, $len)}; }
     return $pw;
-}
-
-//-> set cookies
-function set_cookie($name, $value = '', $path = '/', $secure = false, $http_only = true) {
-    if($value == '')
-        $expires = time() - 6000;
-    else
-        $expires = time() + 3600 * 24 * 360;
-
-    $domain = $_SERVER['HTTP_HOST'];
-    $domain = (strtolower(substr($domain, 0, 4)) == 'www.' ? substr($domain, 4) : '.' . $domain);
-    $port = strpos($domain, ':');
-
-    if($port !== false)
-        $domain = substr($domain, 0, $port);
-
-    header('Set-Cookie: ' . rawurlencode($name) . '=' . rawurlencode($value)
-                          . (empty($expires) ? '' : '; expires=' . gmdate('D, d-M-Y H:i:s \\G\\M\\T', $expires))
-                          . (empty($path)    ? '' : '; path=' . $path)
-                          . '; domain=' . $domain
-                          . (!$secure        ? '' : '; secure')
-                          . (!$http_only    ? '' : '; HttpOnly'), false);
 }
 
 //-> Passwortabfrage
@@ -1686,38 +1692,6 @@ function voteanswer($what, $vid) {
 //Profilfelder konvertieren
 function conv($txt) {
     return str_replace(array("ä","ü","ö","Ä","Ü","Ö","ß"), array("ae","ue","oe","Ae","Ue","Oe","ss"), $txt);
-}
-
-//PHPInfo in array lesen
-function parsePHPInfo() {
-    ob_start();
-        phpinfo();
-        $s = ob_get_contents();
-    ob_end_clean();
-
-    $s = strip_tags($s,'<h2><th><td>');
-    $s = preg_replace('/<th[^>]*>([^<]+)<\/th>/',"<info>\\1</info>",$s);
-    $s = preg_replace('/<td[^>]*>([^<]+)<\/td>/',"<info>\\1</info>",$s);
-    $vTmp = preg_split('/(<h2[^>]*>[^<]+<\/h2>)/',$s,-1,PREG_SPLIT_DELIM_CAPTURE);
-    $vModules = array();
-    for ($i=1;$i<count($vTmp);$i++) {
-        if(preg_match('/<h2[^>]*>([^<]+)<\/h2>/',$vTmp[$i],$vMat)) {
-            $vName = trim($vMat[1]);
-            $vTmp2 = explode("\n",$vTmp[$i+1]);
-            foreach ($vTmp2 AS $vOne) {
-                $vPat = '<info>([^<]+)<\/info>';
-                $vPat3 = "/$vPat\s*$vPat\s*$vPat/";
-                $vPat2 = "/$vPat\s*$vPat/";
-
-                if(preg_match($vPat3,$vOne,$vMat))
-                    $vModules[$vName][trim($vMat[1])] = array(trim($vMat[2]),trim($vMat[3]));
-                else if(preg_match($vPat2,$vOne,$vMat))
-                    $vModules[$vName][trim($vMat[1])] = trim($vMat[2]);
-            }
-        }
-    }
-
-    return $vModules;
 }
 
 //-> Prueft, ob eine Userid existiert
@@ -2286,6 +2260,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index')
             $secure = show("menu/secure", array("help" => _login_secure_help, "security" => _register_confirm));
 
         $login = show("errors/wmodus_login", array("what" => _login_login, "secure" => $secure, "signup" => _login_signup, "permanent" => _login_permanent, "lostpwd" => _login_lostpwd));
+        cookie::save(); //Save Cookie
         echo show("errors/wmodus", array("wmodus" => _wartungsmodus,
                                          "head" => _wartungsmodus_head,
                                          "tmpdir" => $tmpdir,
@@ -2368,7 +2343,8 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index')
 
         //index output
         $index = (file_exists("../inc/_templates_/".$tmpdir."/".$index_templ.".html") ? show($index_templ, $arr) : show("index", $arr));
-        $mysql->close(); //MySQL
+        if(!mysqli_persistconns) $mysql->close(); //MySQL
+        cookie::save(); //Save Cookie
         echo view_error_reporting ? DebugConsole::show_logs().$index : $index; //Debug Console + Index Out
     }
 }

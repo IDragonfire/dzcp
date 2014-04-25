@@ -478,21 +478,22 @@ class phpFastCache {
         return $os;
     }
 
-    function encode($data='')
-    {
+    function encode($data='',$base64=false) {
         $data = serialize($data);
         if(function_exists('mcrypt_encrypt')) {
             $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
             $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-            return mcrypt_encrypt(MCRYPT_RIJNDAEL_256, 'mcr_'.$this->option['securityKey_mcrypt'], $data, MCRYPT_MODE_ECB, $iv);
+            $decrypttext = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, 'mcr_'.$this->option['securityKey_mcrypt'], $data, MCRYPT_MODE_ECB, $iv);
+            if($base64) $decrypttext = base64_encode($decrypttext);
+            return $decrypttext;
         }
         else
             return base64_encode($data);
     }
 
-    function decode($value)
-    {
+    function decode($value,$base64=false) {
         if(function_exists('mcrypt_decrypt')) {
+            if($base64) $value = base64_decode($value);
             $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
             $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
             $decrypttext = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, 'mcr_'.$this->option['securityKey_mcrypt'], $value, MCRYPT_MODE_ECB, $iv);
@@ -622,7 +623,4 @@ allow from 127.0.0.1";
            return $string;
         }
     }
-
-
-
 }

@@ -55,8 +55,7 @@ if(defined('_Clanwars')) {
                                            "ges_points" => $anz_ges_points));
 
     $qry = db("SELECT * FROM ".$db['squads']." WHERE status = '1' ORDER BY pos");
-    while($get = _fetch($qry))
-    {
+    while($get = _fetch($qry)) {
         if(isset($_GET['showsquad']) && $_GET['showsquad'] == $get['id'] ||
            isset($_GET['show']) && $_GET['show'] == $get['id']) {
             $shown = show(_klapptext_show, array("id" => $get['id']));
@@ -181,8 +180,7 @@ if(defined('_Clanwars')) {
               GROUP BY game
               ORDER BY game ASC");
     $legende = '';
-    while($get = _fetch($qry))
-    {
+    while($get = _fetch($qry)) {
         $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
         $img = squad($get['icon']);
         $legende .= show(_cw_legende, array("game" => re($get['game']),

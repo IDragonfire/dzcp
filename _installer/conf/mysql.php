@@ -1464,6 +1464,9 @@ function update_mysql_1_6()
     db("ALTER TABLE `".$db['permissions']."` ADD `support` INT(1) NOT NULL DEFAULT '0' AFTER `smileys`;");
     db("ALTER TABLE `".$db['permissions']."` ADD `impressum` INT(1) NOT NULL DEFAULT '0' AFTER `intnews`;");
     db("ALTER TABLE `".$db['f_threads']."` CHANGE `t_reg` `t_reg` INT(11) NOT NULL DEFAULT '0';");
+    db("ALTER TABLE `".$db['settings']."` DROP `pfad`;");
+    db("ALTER TABLE `".$db['server']."` DROP `bl_file`, DROP `bl_path`, DROP `ftp_pwd`, DROP `ftp_login`, DROP `ftp_host`;");
+    db("ALTER TABLE `".$db['settings']."` DROP `gmaps_key`;");
 
     //-> Fix Settings Table
     if(db("SELECT * FROM `".$db['settings']."`",true) >= 2) {

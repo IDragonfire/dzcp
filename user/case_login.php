@@ -15,9 +15,10 @@ if(defined('_UserMenu')) {
                 if(!isBanned($get['id'])) {
                     $permanent_key = '';
                     if(isset($_POST['permanent'])) {
-                        set_cookie($prev."id",$get['id']);
+                        cookie::put('id', $get['id']);
                         $permanent_key = md5(mkpwd(8));
-                        set_cookie($prev."pkey",$permanent_key);
+                        cookie::put('pkey', $permanent_key);
+                        cookie::save();
                     }
 
                     ## Aktualisiere Datenbank ##
@@ -43,8 +44,8 @@ if(defined('_UserMenu')) {
                     setIpcheck("trylogin(".$get['id'].")");
                 }
 
-                set_cookie($prev."id","");
-                set_cookie($prev."pkey","");
+                cookie::put('id', '');
+                cookie::put('pkey', '');
                 $index = error(_login_pwd_dont_match);
             }
         }
@@ -59,8 +60,8 @@ if(defined('_UserMenu')) {
                                                "pwd" => _pwd));
         } else {
             $index = error(_error_user_already_in, 1);
-            set_cookie($prev."id","");
-            set_cookie($prev."pkey","");
+            cookie::put('id', '');
+            cookie::put('pkey', '');
         }
     }
 }

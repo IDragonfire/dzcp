@@ -92,9 +92,8 @@ else {
         $cdminc1 = '/*'; $cdminc2 = '*/';
     }
 
-    $version = '<b>'._akt_version.': '._version.'</b>'; $dzcp_news = '';
+    $dzcp_news = '';
     if(fsockopen_support()) {
-        $dzcp_news = '';
         if(admin_view_dzcp_news) {
             if(!$cache->isExisting("admin_news")) {
                 $dzcp_news = fileExists("http://www.dzcp.de/dzcp_news.php");

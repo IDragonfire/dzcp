@@ -16,10 +16,18 @@ define('admin_view_dzcp_news', true); // Entscheidet ob der Newstricker in der A
 
 define('thumbgen_cache', true); // Sollen die verkleinerten Bilder der Thumbgen gespeichert werden
 define('thumbgen_cache_time', 60*60); // Wie lange soll das Bild aus dem Cache verwendet werden
-define('feed_update_time', 10*60); // Wann soll der Newsfeed aktualisiert werden
 
-define('dzcp_version_checker', true); // Version auf DZCP.de abgleichen und benachrichtigen ob eine neue Version zur Verfügung steht
-define('dzcp_version_checker_refresh', (30*60)); // Wie lange soll gewartet werden um einen Versionsabgleich auszuführen
+define('feed_update_time', 10*60); // Wann soll der Newsfeed aktualisiert werden
+define('cookie_expires', (60*60*24*30*12)); // Wie Lange die Cookies des CMS ihre Gueltigkeit behalten.
+
+define('dzcp_version_checker', true); // Version auf DZCP.de abgleichen und benachrichtigen ob eine neue Version zur Verfuegung steht
+define('dzcp_version_checker_refresh', (30*60)); // Wie lange soll gewartet werden um einen Versionsabgleich auszufuehren
+
+/*
+* Bitte vor der Aktivierung der Persistent Connections lesen:
+* http://php.net/manual/de/features.persistent-connections.php
+*/
+define('mysqli_persistconns', false);
 
 $config_cache = array();
 $config_cache['storage'] = "auto"; //memcache
@@ -187,7 +195,8 @@ $db = array("host" =>           $sql_host,
 unset($prefix,$sql_host,$sql_user,$sql_pass,$sql_db);
 
 if($db['host'] != '' && $db['user'] != '' && $db['pass'] != '' && $db['db'] != '' && !$thumbgen) {
-    $mysql = new mysqli($db['host'],$db['user'],$db['pass'],$db['db']);
+    $db_host = (mysqli_persistconns ? 'p:' : '').$db['host'];
+    $mysql = new mysqli($db_host,$db['user'],$db['pass'],$db['db']);
     if ($mysql->connect_error) { die("<b>Fehler beim Zugriff auf die Datenbank!"); }
 }
 

@@ -17,8 +17,6 @@ ob_start();
         include(basePath."/inc/debugger.php");
         include(basePath."/inc/config.php");
         include(basePath."/inc/bbcode.php");
-
-        header('Location: '.(empty($_COOKIE[$prev.'id']) && empty($_COOKIE[$prev.'pkey']) ? 'news/' : 'user/?action=userlobby'));
+        header('Location: '.($userid && $chkMe ? 'user/?action=userlobby' : 'news/'));
     }
-
 ob_end_flush();

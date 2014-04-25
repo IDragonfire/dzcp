@@ -1,13 +1,13 @@
 <tr>
-  <td class="contentHead"><span class="fontBold">[head]</span></td>
+  <td class="contentHead" colspan="4"><span class="fontBold">[lang_membermap]</span></td>
 </tr>
 <tr>
-  <td class="contentMainFirst">
+  <td class="contentMainFirst" colspan="4">
     <div id="memberMap"><noscript><br /><center>You have to enable javascript to view the membermap!</center></noscript></div>
   </td>
 </tr>
 <tr>
-  <td class="contentBottom">
+  <td class="contentBottom" colspan="4">
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?libraries=places&sensor=false"></script>
     <script type="text/javascript">
       <!--
@@ -35,8 +35,21 @@
             google.maps.event.addListener(marker, "mouseover", function(userInfo) { return function() {DZCP.showInfo(userInfo);}}(userInfo[coord]));
             google.maps.event.addListener(marker, "mouseout", function() { DZCP.hideInfo(); });
         }
-        
+
       //-->
     </script>
   </td>
+</tr>
+<tr>
+  <td class="contentHead" colspan="4" align="center"><span class="fontBold">[lang_membermap_user]</span></td>
+</tr>
+<tr>
+  <td class="contentMainTop" align="center"><span class="fontBold">[lang_membermap_pic]</span></td>
+  <td class="contentMainTop" align="center"><span class="fontBold">[lang_membermap_nick]</span></td>
+  <td class="contentMainTop" align="center"><span class="fontBold">[lang_membermap_rank]</span></td>
+  <td class="contentMainTop" align="center"><span class="fontBold">[lang_membermap_city]</span></td>
+</tr>
+[membermapusers]
+<tr>
+  <td class="contentBottom" colspan="13"></td>
 </tr>

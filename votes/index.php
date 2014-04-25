@@ -59,7 +59,7 @@ default:
     $hostIpcheck = ipcheck($vid);
     while($getv = _fetch($qryv)) {
       $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-      if($hostIpcheck || $ipcheck || isset($_COOKIE[$prev."vid_".$get['id']]) || $get['closed'] == 1) {
+      if($hostIpcheck || $ipcheck || cookie::get('vid_'.$get['id']) != false || $get['closed'] == 1) {
         $percent = @round($getv['stimmen']/$stimmen*100,2);
         $rawpercent = @round($getv['stimmen']/$stimmen*100,0);
 
@@ -223,7 +223,8 @@ case 'do';
         if($userid >= 1) $cookie = $userid;
         else $cookie = "voted";
       }
-      set_cookie($prev."vid_".$_GET['id'],$cookie);
+
+      cookie::put('vid_'.$_GET['id'], $cookie);
     }
   }
 
@@ -263,12 +264,12 @@ case 'do';
         setIpcheck("vid_".intval($_GET['id']));
         setIpcheck("vid(".intval($_GET['id']).")");
 
-        if(!isset($_GET['fajax'])) $index = info(_vote_successful, "forum/?action=showthread&amp;kid=".$_POST['kid']."&amp;id=".$_POST['fid']."");
+        if(!isset($_GET['fajax'])) $index = info(_vote_successful, "../forum/?action=showthread&amp;kid=".$_POST['kid']."&amp;id=".$_POST['fid']."");
       }
       if($userid >= 1) $cookie = $userid;
       else $cookie = "voted";
     }
-      set_cookie($prev."vid_".$_GET['id'],$cookie);
+    cookie::put('vid_'.$_GET['id'], $cookie);
   }
 
   if($_GET['fajax'] == 1)
@@ -278,8 +279,6 @@ case 'do';
     echo fvote($_GET['id'], 1);
     exit;
   }
-
-
 break;
 endswitch;
 

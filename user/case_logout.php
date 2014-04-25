@@ -9,11 +9,7 @@ if(defined('_UserMenu')) {
     if($chkMe && $userid) {
         db("UPDATE ".$db['users']." SET online = '0', pkey = '', sessid = '' WHERE id = '".$userid."'");
         setIpcheck("logout(".$userid.")");
-
-        set_cookie($prev.'id', '');
-        set_cookie($prev.'pkey','');
-        set_cookie(session_name(), '');
-
+        cookie::clear();
         session_unset();
         session_destroy();
         session_regenerate_id();

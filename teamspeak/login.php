@@ -33,7 +33,8 @@ include(basePath."/inc/bbcode.php");
            $time = time();
 
            $cookie_data =  $nickname.'¶'.$reg.'¶'.$loginname.'¶'.$password;
-        set_cookie($prev."Teamspeakdata",$cookie_data);
+           cookie::put('Teamspeakdata', $cookie_data);
+           cookie::save(); //Save Cookie
       } elseif($_GET) {
           $ok = true;
           $channel = $_GET['cName'];

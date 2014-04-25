@@ -15,7 +15,7 @@ function fvote($id, $ajax=false) {
             while($getv = _fetch($qryv)) {
                 $stimmen = sum($db['vote_results'], " WHERE `vid` = '".$get['id']."'", "stimmen");
                 if($stimmen != 0) {
-                    if(ipcheck("vid_".$get['id']) || isset($_COOKIE[$prev."vid_".$get['id']]) || $get['closed'] == 1) {
+                    if(ipcheck("vid_".$get['id']) || cookie::get('vid_'.$get['id']) != false || $get['closed'] == 1) {
                         $percent = round($getv['stimmen']/$stimmen*100,1);
                         $rawpercent = round($getv['stimmen']/$stimmen*100,0);
                         $balken = show(_votes_balken, array("width" => $rawpercent));

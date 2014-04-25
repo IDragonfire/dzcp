@@ -66,9 +66,8 @@ if(defined('_UserMenu')) {
         $msg = show(_admin_user_get_identy, array("nick" => autor($_GET['id'])));
         $index = info($msg, "?action=user&amp;id=".$_GET['id']."");
 
-        set_cookie($prev.'id','');
-        set_cookie($prev.'pkey',"");
-
+        cookie::put('id', '');
+        cookie::put('pkey', '');
         @session_regenerate_id();
 
         $_SESSION['id'] = $_GET['id'];
