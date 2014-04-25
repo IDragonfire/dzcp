@@ -244,22 +244,48 @@ if($userid >= 1 && $ajaxJob != true)
 function settings($what,$use_dbc=true) {
     global $db;
 
-    if($use_dbc)
-        return dbc_index::getIndexKey('settings', $what);
+    if(is_array($what)) {
+        if($use_dbc)
+            $dbd = dbc_index::getIndex('settings');
+        else
+            $dbd = db("SELECT * FROM ".$db['settings'],false,true);
 
-    $get = db("SELECT `".$what."` FROM ".$db['settings'],false,true);
-    return $get[$what];
+        $return = array();
+        foreach ($dbd as $key => $var)
+        { $return[$key] =  $var; }
+
+        return $return;
+    } else {
+        if($use_dbc)
+            return dbc_index::getIndexKey('settings', $what);
+
+        $get = db("SELECT `".$what."` FROM ".$db['settings'],false,true);
+        return $get[$what];
+    }
 }
 
 //-> Config auslesen
 function config($what,$use_dbc=true) {
     global $db;
 
-    if($use_dbc)
-        return dbc_index::getIndexKey('config', $what);
+    if(is_array($what)) {
+        if($use_dbc)
+            $dbd = dbc_index::getIndex('config');
+        else
+            $dbd = db("SELECT * FROM ".$db['config'],false,true);
 
-    $get = db("SELECT `".$what."` FROM ".$db['config'],false,true);
-    return $get[$what];
+        $return = array();
+        foreach ($dbd as $key => $var)
+        { $return[$key] =  $var; }
+
+        return $return;
+    } else {
+        if($use_dbc)
+            return dbc_index::getIndexKey('config', $what);
+
+        $get = db("SELECT `".$what."` FROM ".$db['config'],false,true);
+        return $get[$what];
+    }
 }
 
 //-> Prueft ob der User ein Rootadmin ist
