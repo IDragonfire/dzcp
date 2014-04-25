@@ -10,7 +10,7 @@ function show_dzcp_version() {
     $return = array();
     if(dzcp_version_checker || !fsockopen_support()) {
         if(!$cache->isExisting('dzcp_version')) {
-            if($dzcp_online_v = file_get_contents("http://raw.githubusercontent.com/DZCP-Community/dzcp/final/dzcp_version.xml"))
+            if($dzcp_online_v = file_get_contents("https://raw.githubusercontent.com/DZCP-Community/dzcp/final/dzcp_version.xml"))
                 $cache->set('dzcp_version', $dzcp_online_v, dzcp_version_checker_refresh);
         }
         else
