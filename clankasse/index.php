@@ -138,9 +138,8 @@ default:
                                                 "class" => $class,
                                                 "edit" => $edit));
     }
-    $qry = db("SELECT k_inhaber,k_nr,k_blz,k_bank,iban,bic,k_waehrung,k_vwz FROM ".$db['settings']."");
-    $get = _fetch($qry);
 
+    $get = settings(array('k_inhaber','k_nr','k_blz','k_bank','iban','bic','k_waehrung','k_vwz'));
     $seiten = nav($entrys,config('m_clankasse'),"?action=nav");
     $index = show($dir."/clankasse", array("show" => $show,
                                            "showstatus" => $showstatus,
