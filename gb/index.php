@@ -205,7 +205,7 @@ case 'do';
                                                                            "eintraghead" => _eintrag));
       } else {
           $qry = db("INSERT INTO ".$db['gb']."
-                 SET `datum`      = '".((int)time())."',
+                 SET `datum`      = '".time()."',
                      `nick`       = '".up($_POST['nick'])."',
                      `email`      = '".up($_POST['email'])."',
                      `hp`         = '".links($_POST['hp'])."',

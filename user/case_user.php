@@ -46,6 +46,7 @@ if(defined('_UserMenu')) {
             $cnt = cnt($db['userpos'], " WHERE user = '".$get['id']."'"); $i=1;
 
             if(_rows($sq) && !isset($_GET['sq'])) {
+                $pos = '';
                 while($getsq = _fetch($sq)) {
                     if($i == $cnt) $br = "";
                     else $br = "-";

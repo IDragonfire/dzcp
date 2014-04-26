@@ -312,7 +312,7 @@ if(defined('_Forum')) {
         }
         } elseif(empty($gett['vote']) && !empty($_POST['question'])) {
           $qry = db("INSERT INTO ".$db['votes']."
-                     SET `datum`  = '".((int)time())."',
+                     SET `datum`  = '".time()."',
                          `titel`  = '".up($_POST['question'])."',
                          `intern` = '".((int)$_POST['intern'])."',
                                      `forum`  = 1,
@@ -667,7 +667,7 @@ if(defined('_Forum')) {
                         else $ivote = "`intern` = '".((int)$_POST['intern'])."',";
 
                         $qry = db("INSERT INTO ".$db['votes']."
-                                             SET `datum`  = '".((int)time())."',
+                                             SET `datum`  = '".time()."',
                                                      `titel`  = '".up($_POST['question'])."',
                                                      ".$ivote."
                                                      `forum`  = 1,
@@ -745,7 +745,7 @@ if(defined('_Forum')) {
 
             $qry = db("INSERT INTO ".$db['f_threads']."
                                  SET     `kid`      = '".((int)$_GET['kid'])."',
-                                                `t_date`   = '".((int)time())."',
+                                                `t_date`   = '".time()."',
                                                 `topic`    = '".up($_POST['topic'])."',
                                                 `subtopic` = '".up($_POST['subtopic'])."',
                                                 `t_nick`   = '".up($_POST['nick'])."',
@@ -756,7 +756,7 @@ if(defined('_Forum')) {
                                                 `sticky`   = '".((int)$_POST['sticky'])."',
                                                 `global`   = '".((int)$_POST['global'])."',
                                                 `ip`       = '".$userip."',
-                                                `lp`       = '".((int)time())."',
+                                                `lp`       = '".time()."',
                                                 `vote`     = '".$vid."',
                                                 `first`    = '1'");
                 $thisFID = mysqli_insert_id($mysql);

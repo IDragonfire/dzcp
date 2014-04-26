@@ -107,14 +107,14 @@ if(defined('_UserMenu')) {
                     `nick`     = '".up($_POST['nick'])."',
                     `email`    = '".up($_POST['email'])."',
                     `pwd`      = '".$pwd."',
-                    `regdatum` = '".((int)time())."',
+                    `regdatum` = '".time()."',
                     `level`    = '1',
                     `time`     = '".time()."',
                     `status`   = '1'");
 
             $insert_id = mysqli_insert_id($mysql);
             db("INSERT INTO ".$db['permissions']." SET `user` = '".((int)$insert_id)."'");
-            db("INSERT INTO ".$db['userstats']." SET `user` = '".((int)$insert_id)."', `lastvisit` = '".((int)time())."'");
+            db("INSERT INTO ".$db['userstats']." SET `user` = '".((int)$insert_id)."', `lastvisit` = '".time()."'");
 
             setIpcheck("reg(".$insert_id.")");
             $message = show(bbcode_email(settings('eml_reg')), array("user" => $_POST['user'], "pwd" => $mkpwd));

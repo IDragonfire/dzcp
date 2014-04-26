@@ -95,14 +95,14 @@ case 'addserver':
     $msg = _slist_added_msg;
     $title = _slist_title;
     $send = db("INSERT INTO ".$db['msg']."
-                SET `datum`     = '".((int)time())."',
+                SET `datum`     = '".time()."',
                     `von`       = '0',
                     `an`        = '1',
                     `titel`     = '".up($title)."',
                     `nachricht` = '".up($msg)."'");
 
     $insert = db("INSERT INTO ".$db['serverliste']."
-                  SET `datum`     = '".((int)time())."',
+                  SET `datum`     = '".time()."',
                       `clanname`  = '".up($_POST['clanname'])."',
                       `clanurl`   = '".links($_POST['clanurl'])."',
                       `ip`        = '".up($_POST['ip'])."',

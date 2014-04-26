@@ -143,6 +143,21 @@ if(!$chkMe) {
     $_SESSION['lastvisit'] = '';
 }
 
+//-> Prueft ob der User gebannt ist, oder die IP des Clients warend einer offenen session verändert wurde.
+if($chkMe && $userid && !empty($_SESSION['ip'])) {
+    if($_SESSION['ip'] != visitorIp() || isBanned($userid,false) ) {
+        $_SESSION['id']        = '';
+        $_SESSION['pwd']       = '';
+        $_SESSION['ip']        = '';
+        $_SESSION['lastvisit'] = '';
+        session_unset();
+        session_destroy();
+        session_regenerate_id();
+        cookie::clear();
+        header("Location: ../news/");
+    }
+}
+
 /**
 * Gibt die IP des Besuchers / Users zurück
 * Forwarded IP Support
@@ -361,17 +376,6 @@ function highlight_text($txt) {
     return $txt;
 }
 
-//-> Glossarfunktion
-$gl_words = array(); $gl_desc = array();
-if(!$ajaxJob) {
-    $qryglossar = db("SELECT `word`,`glossar` FROM ".$db['glossar']);
-    while($getglossar = _fetch($qryglossar)) {
-        $gl_words[] = re($getglossar['word']);
-        $gl_desc[]  = $getglossar['glossar'];
-    }
-    unset($getglossar,$qryglossar);
-}
-
 function regexChars($txt) {
     $txt = strip_tags($txt);
     $txt = str_replace('"','&quot;',$txt);
@@ -398,20 +402,40 @@ function regexChars($txt) {
     return str_replace("\n",'',$txt);
 }
 
+//-> Glossarfunktion
 $use_glossar = true; //Global
-function glossar($txt) {
-    global $db,$gl_words,$gl_desc,$use_glossar;
+function glossar_load_index() {
+    global $db,$use_glossar;
+    if(!$use_glossar) return false;
 
-    if(!$use_glossar)
+    $gl_words = array(); $gl_desc = array();
+    $qryglossar = db("SELECT `word`,`glossar` FROM ".$db['glossar']);
+    while($getglossar = _fetch($qryglossar)) {
+        $gl_words[] = re($getglossar['word']);
+        $gl_desc[]  = $getglossar['glossar'];
+    }
+
+    dbc_index::setIndex('glossar', array('gl_words' => $gl_words, 'gl_desc' => $gl_desc));
+}
+
+function glossar($txt) {
+    global $db,$gl_words,$gl_desc,$use_glossar,$ajaxJob;
+
+    if(!$use_glossar || $ajaxJob)
         return $txt;
+
+    if(!dbc_index::issetIndex('glossar'))
+        glossar_load_index();
+
+    $gl_words = dbc_index::getIndexKey('glossar', 'gl_words');
+    $gl_desc = dbc_index::getIndexKey('glossar', 'gl_desc');
 
     $txt = str_replace('&#93;',']',$txt);
     $txt = str_replace('&#91;','[',$txt);
 
     // mark words
-    for($s=0;$s<=count($gl_words)-1;$s++)
-    {
-        $w = addslashes(regexChars(html_entity_decode($gl_words[$s])));
+    foreach($gl_words as $gl_word) {
+        $w = addslashes(regexChars(html_entity_decode($gl_word)));
         $txt = str_ireplace(' '.$w.' ', ' <tmp|'.$w.'|tmp> ', $txt);
         $txt = str_ireplace('>'.$w.'<', '> <tmp|'.$w.'|tmp> <', $txt);
         $txt = str_ireplace('>'.$w.' ', '> <tmp|'.$w.'|tmp> ', $txt);
@@ -419,8 +443,7 @@ function glossar($txt) {
     }
 
     // replace words
-    for($g=0;$g<=count($gl_words)-1;$g++)
-    {
+    for($g=0;$g<=count($gl_words)-1;$g++) {
         $desc = regexChars($gl_desc[$g]);
         $info = 'onmouseover="DZCP.showInfo(\''.jsconvert($desc).'\')" onmouseout="DZCP.hideInfo()"';
         $w = regexChars(html_entity_decode($gl_words[$g]));
@@ -896,28 +919,6 @@ function fileExists($url) {
 
     if(preg_match("#404#",$response)) return false;
     else return trim($content);
-}
-
-//-> Informationen ueber die mySQL-Datenbank
-function dbinfo()
-{
-    $info = array(); $entrys = 0;
-    $qry = db("Show table status");
-    while($data = _fetch($qry)) {
-        $allRows = $data["Rows"];
-        $dataLength  = $data["Data_length"];
-        $indexLength = $data["Index_length"];
-        $tableSum    = $dataLength + $indexLength;
-
-        $sum += $tableSum;
-        $rows += $allRows;
-        $entrys ++;
-    }
-
-    $info["entrys"] = $entrys;
-    $info["rows"] = $rows;
-    $info["size"] = @round($sum/1048576,2);
-    return $info;
 }
 
 //-> Funktion um Sonderzeichen zu konvertieren
@@ -2240,9 +2241,6 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index')
     global $db,$userid,$userip,$tmpdir,$chkMe,$charset,$mysql;
     global $designpath,$language,$cp_color,$copyright,$time_start;
 
-    // user gebannt? Logge aus!
-    if(isBanned()) header("Location: ../news/");
-
     // Timer Stop
     $time = round(generatetime() - $time_start,4);
 
@@ -2277,7 +2275,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index')
             include_once(basePath.'/inc/menu-functions/login.php');
         else {
             $check_msg = check_msg(); set_lastvisit(); $login = "";
-            db("UPDATE ".$db['users']." SET `time` = '".((int)time())."', `whereami` = '".up($where)."' WHERE id = '".intval($userid)."'");
+            db("UPDATE ".$db['users']." SET `time` = '".time()."', `whereami` = '".up($where)."' WHERE id = '".intval($userid)."'");
         }
 
         //init templateswitch

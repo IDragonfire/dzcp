@@ -42,7 +42,7 @@ if(_adminMenu != 'true') exit;
                          `squad`    = '".up($_POST['squad'])."',
                          `url`      = '".links($_POST['url'])."',
                          `rank`     = '".((int)$_POST['rank'])."',
-                         `postdate` = '".((int)time())."'");
+                         `postdate` = '".time()."'");
 
           $show = info(_ranking_added, "?admin=rankings");
         }
@@ -91,7 +91,7 @@ if(_adminMenu != 'true') exit;
                          `url`          = '".links($_POST['url'])."',
                          `rank`         = '".((int)$_POST['rank'])."',
                          `lastranking`  = '".((int)$get['rank'])."',
-                         `postdate`     = '".((int)time())."'
+                         `postdate`     = '".time()."'
                      WHERE id = '".intval($_GET['id'])."'");
 
           $show = info(_ranking_edited, "?admin=rankings");

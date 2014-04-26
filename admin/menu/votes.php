@@ -66,7 +66,7 @@ if(_adminMenu != 'true') exit;
                                                 "answer" => _votes_admin_answer));
         } else {
           $qry = db("INSERT INTO ".$db['votes']."
-                     SET `datum`  = '".((int)time())."',
+                     SET `datum`  = '".time()."',
                          `titel`  = '".up($_POST['question'])."',
                          `intern` = '".((int)$_POST['intern'])."',
                          `von`    = '".((int)$userid)."'");

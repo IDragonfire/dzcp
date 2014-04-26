@@ -147,7 +147,7 @@ $dir = "news";
                     if(permission('news',$get['id']) or $get['level'] == 4)
                     {
                         $update = db("INSERT INTO ".$db['msg']."
-                                                  SET `datum`     = '".((int)time())."',
+                                                  SET `datum`     = '".time()."',
                                                           `von`       = '".$von_nick."',
                                                           `an`        = '".((int)$get['id'])."',
                                                           `titel`     = '".$titel."',

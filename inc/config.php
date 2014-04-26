@@ -8,7 +8,7 @@
 //-> DZCP Settings Start
 #########################################
 
-define('view_error_reporting', false); // Zeigt alle Fehler und Notices etc.
+define('view_error_reporting', true); // Zeigt alle Fehler und Notices etc.
 define('debug_dzcp_handler', true);
 define('use_default_timezone', true); // Verwendende die Zeitzone vom Server
 define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selbst einstellen * 'use_default_timezone' auf false stellen *
@@ -30,14 +30,12 @@ define('dzcp_version_checker_refresh', (30*60)); // Wie lange soll gewartet werd
 define('mysqli_persistconns', false);
 
 $config_cache = array();
-$config_cache['storage'] = "auto"; //memcache
+$config_cache['storage'] = "auto"; //auto,memcache,files,sqlite,wincache,xcache oder apc
 $config_cache['server'] = array(array("127.0.0.1",11211,1));
 $config_cache['dbc'] = true; //use database querie caching * only use with memory cache
 $config_cache['dbc_auto_memcache'] = false; //use database querie caching * auto memcache check
 
-###########################################################################
-# Hex Farbcode der Hintergrundfarbe Copyrightlinks am Ende der Homepage #
-###########################################################################
+//-> Hex Farbcode der Hintergrundfarbe Copyrightlinks am Ende der Homepage
 $cp_color = '#d3d3d3';
 
 //-> Legt die UserID des Rootadmins fest
@@ -72,11 +70,12 @@ if(!$thumbgen) {
         error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
     }
 }
+
 ## REQUIRES ##
 //DZCP-Install default variable
 if(!isset($installer)) $installer = false;
 if(!isset($sql_host) || !isset($sql_user) || !isset($sql_pass) || !isset($sql_db)) {
-$sql_prefix = ''; $sql_host = ''; $sql_user =  ''; $sql_pass = ''; $sql_db = '';
+    $sql_prefix = ''; $sql_host = ''; $sql_user =  ''; $sql_pass = ''; $sql_db = '';
 }
 
 if(file_exists(basePath."/inc/mysql.php"))

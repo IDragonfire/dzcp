@@ -285,7 +285,7 @@ case 'show';
                     } else {
                         $qry = db("INSERT INTO ".$db['acomments']."
                                              SET `artikel`  = '".((int)$_GET['id'])."',
-                                                     `datum`    = '".((int)time())."',
+                                                     `datum`    = '".time()."',
                                                      `nick`     = '".up($_POST['nick'])."',
                                                      `email`    = '".$_POST['email']."',
                                                      `hp`       = '".links($_POST['hp'])."',

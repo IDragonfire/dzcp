@@ -349,7 +349,7 @@ if(defined('_Clanwars')) {
                     } else {
                         $qry = db("INSERT INTO ".$db['cw_comments']."
                                              SET `cw`       = '".((int)$_GET['id'])."',
-                                                     `datum`    = '".((int)time())."',
+                                                     `datum`    = '".time()."',
                                                      `nick`     = '".up($_POST['nick'])."',
                                                      `email`    = '".up($_POST['email'])."',
                                                      `hp`       = '".links($_POST['hp'])."',

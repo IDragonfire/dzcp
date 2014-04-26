@@ -127,7 +127,7 @@ if(_adminMenu != 'true') exit;
                                  `bday`     = '".$bday."',
                                  `city`     = '".up($_POST['city'])."',
                                  `country`  = '".up($_POST['land'])."',
-                                 `regdatum` = '".((int)time())."',
+                                 `regdatum` = '".time()."',
                                  `level`    = '".((int)$_POST['level'])."',
                                  `time`     = '".time()."',
                                  `gmaps_koord`  = '".up($_POST['gmaps_koord'])."',
@@ -226,7 +226,7 @@ if(_adminMenu != 'true') exit;
 
       $qry = db("INSERT INTO ".$db['userstats']."
                        SET `user`       = '".((int)$insert_id)."',
-                   `lastvisit`    = '".((int)time())."'");
+                   `lastvisit`    = '".time()."'");
 
       $show = info(_uderadd_info, "../admin/");
 

@@ -184,7 +184,7 @@ case 'do':
         $index = error(_error_taktik_empty_map, 1);
       } else {
         $qry = db("INSERT INTO ".$db['taktik']."
-                   SET `datum`      = '".((int)time())."',
+                   SET `datum`      = '".time()."',
                        `map`        = '".up($_POST['map'])."',
                        `spart`      = '".up($_POST['spart'], 1)."',
                        `sparct`     = '".up($_POST['sparct'], 1)."',

@@ -158,7 +158,7 @@ case 'do';
             {
                 $sqlAnd .= " AND s2.`user` != '".intval($get['id'])."'";
                 $qrys = db("INSERT INTO ".$db['msg']."
-                            SET `datum`     = '".((int)time())."',
+                            SET `datum`     = '".time()."',
                                 `von`       = '0',
                                 `an`        = '".((int)$get['id'])."',
                                 `titel`     = '"._contact_title."',
@@ -172,7 +172,7 @@ case 'do';
             while($get = _fetch($qry))
             {
                 $qrys = db("INSERT INTO ".$db['msg']."
-                            SET `datum`     = '".((int)time())."',
+                            SET `datum`     = '".time()."',
                                 `von`       = '0',
                                 `an`        = '".((int)$get['user'])."',
                                 `titel`     = '"._contact_title."',
@@ -222,7 +222,7 @@ case 'do';
         $sqlAnd .= " AND s2.`user` != '".intval($get['id'])."'";
 
         $qrys = db("INSERT INTO ".$db['msg']."
-                    SET `datum`     = '".((int)time())."',
+                    SET `datum`     = '".time()."',
                         `von`       = '0',
                         `an`        = '".((int)$get['id'])."',
                         `titel`     = '"._contact_title_joinus."',
@@ -235,7 +235,7 @@ case 'do';
       while($get = _fetch($qry))
       {
         $qrys = db("INSERT INTO ".$db['msg']."
-                    SET `datum`     = '".((int)time())."',
+                    SET `datum`     = '".time()."',
                         `von`       = '0',
                         `an`        = '".((int)$get['user'])."',
                         `titel`     = '"._contact_title_joinus."',
@@ -298,7 +298,7 @@ case 'do';
       {
         $sqlAnd .= " AND s2.`user` != '".intval($get['user'])."'";
         $qry = db("INSERT INTO ".$db['msg']."
-                   SET `datum`      = '".((int)time())."',
+                   SET `datum`      = '".time()."',
                        `von`        = '0',
                        `an`         = '".((int)$get['user'])."',
                        `titel`      = '"._contact_title_fightus."',
@@ -314,7 +314,7 @@ case 'do';
       while($get === _fetch($qry))
       {
         $qry = db("INSERT INTO ".$db['msg']."
-                   SET `datum`      = '".((int)time())."',
+                   SET `datum`      = '".time()."',
                        `von`        = '0',
                        `an`         = '".((int)$get['user'])."',
                        `titel`      = '"._contact_title_fightus."',

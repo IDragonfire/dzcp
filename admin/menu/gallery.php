@@ -22,7 +22,7 @@ if(_adminMenu != 'true') exit;
                    SET `kat`            = '".up($_POST['gallery'])."',
                        `intern`   = '".((int)$_POST['intern'])."',
                        `beschreibung`   = '".up($_POST['beschreibung'], 1)."',
-                       `datum`          = '".((int)time())."'");
+                       `datum`          = '".time()."'");
 
         $show = show($dir."/form_gallery_step2", array("head" => _gallery_admin_head,
                                                  "what" => re($_POST['gallery']),

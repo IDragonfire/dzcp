@@ -63,7 +63,7 @@ if(defined('_UserMenu')) {
                 {
                     $qry = db("INSERT INTO ".$db['usergb']."
                                          SET `user`       = '".((int)$_GET['id'])."',
-                                                 `datum`      = '".((int)time())."',
+                                                 `datum`      = '".time()."',
                                                  `nick`       = '".up($_POST['nick'])."',
                                                  `email`      = '".up($_POST['email'])."',
                                                  `hp`         = '".links($_POST['hp'])."',

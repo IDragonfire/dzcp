@@ -128,7 +128,7 @@ if(defined('_UserMenu')) {
               $index = error(_empty_eintrag, 1);
           } else {
               $qry = db("INSERT INTO ".$db['msg']."
-                         SET `datum`      = '".((int)time())."',
+                         SET `datum`      = '".time()."',
                                 `von`        = '".((int)$_POST['von'])."',
                              `an`         = '".((int)$_POST['an'])."',
                              `titel`      = '".up($_POST['titel'])."',
@@ -293,7 +293,7 @@ if(defined('_UserMenu')) {
             else $to = $_POST['buddys'];
 
             $qry = db("INSERT INTO ".$db['msg']."
-                           SET `datum`      = '".((int)time())."',
+                           SET `datum`      = '".time()."',
                        `von`        = '".((int)$userid)."',
                        `an`         = '".((int)$to)."',
                        `titel`      = '".up($_POST['titel'])."',

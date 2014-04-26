@@ -707,7 +707,7 @@ if(defined('_Forum')) {
                     $qry = db("INSERT INTO ".$db['f_posts']."
                                          SET `kid`   = '".((int)$get_threadkid['kid'])."',
                                                  `sid`   = '".((int)$_GET['id'])."',
-                                                 `date`  = '".((int)time())."',
+                                                 `date`  = '".time()."',
                                                  `nick`  = '".up($_POST['nick'])."',
                                                  `email` = '".up($_POST['email'])."',
                                                  `hp`    = '".links($_POST['hp'])."',
@@ -716,7 +716,7 @@ if(defined('_Forum')) {
                                                  `ip`    = '".$userip."'");
 
                     $update = db("UPDATE ".$db['f_threads']."
-                                                SET `lp`    = '".((int)time())."',
+                                                SET `lp`    = '".time()."',
                                                         `first` = '0'
                                                 WHERE id    = '".intval($_GET['id'])."'");
                 }

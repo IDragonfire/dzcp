@@ -19,7 +19,7 @@ $dir = "online";
 
 ## SECTIONS ##
 if($chkMe)
-    db("UPDATE ".$db['users']." SET `time` = '".((int)time())."', `whereami` = '".up($where)."' WHERE id = '".$userid."'");
+    db("UPDATE ".$db['users']." SET `time` = '".time()."', `whereami` = '".up($where)."' WHERE id = '".$userid."'");
 
 //Users
 if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("whereami","ip"))) {

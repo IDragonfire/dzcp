@@ -12,7 +12,7 @@ if(defined('_Forum')) {
       $f_abo = db("INSERT INTO ".$db['f_abo']."
                     SET `user` = '".((int)$userid)."',
                         `fid`  = '".intval($_GET['id'])."',
-                        `datum`  = '".((int)time())."'");
+                        `datum`  = '".time()."'");
     } else {
       $f_abo = db("DELETE FROM ".$db['f_abo']."
                    WHERE user = '".((int)$userid)."'

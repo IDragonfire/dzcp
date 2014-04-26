@@ -96,7 +96,7 @@ if(_adminMenu != 'true') exit;
 
           $qry = db("INSERT INTO ".$db['awards']."
                      SET `date`     = '".((int)$datum)."',
-                         `postdate` = '".((int)time())."',
+                         `postdate` = '".time()."',
                                    `squad`    = '".((int)$_POST['squad'])."',
                                  `event`    = '".up($_POST['event'])."',
                          `url`      = '".links($_POST['url'])."',
