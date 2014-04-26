@@ -7,7 +7,7 @@
   var isIE  = (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;
   var isWin = (navigator.appVersion.toLowerCase().indexOf("win") != -1) ? true : false;
   var isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;
-  
+
 // DZCP JAVASCRIPT LIBARY FOR JQUERY >= V1.9
   var DZCP = {
 
@@ -15,35 +15,35 @@
     init: function() {
       doc.body.id = 'dzcp-engine-1.6';
       $('body').append('<div id="infoDiv"></div>');
-      
-    	layer = $('#infoDiv')[0];
-    	doc.body.onmousemove = DZCP.trackMouse;
 
-   // refresh shoutbox
+        layer = $('#infoDiv')[0];
+        doc.body.onmousemove = DZCP.trackMouse;
+
+    // refresh shoutbox
       if($('#navShout')[0]) window.setInterval("$('#navShout').load('../inc/ajax.php?i=shoutbox');", shoutInterval);
 
-	// refresh teamspeak
+    // refresh teamspeak
       if($('#navTeamspeakContent')[0]) window.setInterval("$('#navTeamspeakContent').load('../inc/ajax.php?i=teamspeak');", teamspeakInterval);
 
-  // init lightbox
+    // init lightbox
       DZCP.initLightbox();
     },
-    
+
   // init lightbox
     initLightbox: function() {
       $('a[rel^=lightbox]').lightBox({
           fixedNavigation:      true,
           overlayBgColor:       '#000',
-         	overlayOpacity:       0.8,
-        	imageLoading:         '../inc/images/lightbox/loading.gif',
-         	imageBtnClose:        '../inc/images/lightbox/close.gif',
-        	imageBtnPrev:         '../inc/images/lightbox/prevlabel.gif',
-         	imageBtnNext:         '../inc/images/lightbox/nextlabel.gif',
-        	containerResizeSpeed: 350,
-        	txtImage:             (lng == 'de' ? 'Bild' : 'Image'),
-         	txtOf:                (lng == 'de' ? 'von' : 'of'),
-			maxHeight: screen.height * 0.9,
-        	maxWidth: screen.width * 0.9
+             overlayOpacity:       0.8,
+            imageLoading:         '../inc/images/lightbox/loading.gif',
+             imageBtnClose:        '../inc/images/lightbox/close.gif',
+            imageBtnPrev:         '../inc/images/lightbox/prevlabel.gif',
+             imageBtnNext:         '../inc/images/lightbox/nextlabel.gif',
+            containerResizeSpeed: 350,
+            txtImage:             (lng == 'de' ? 'Bild' : 'Image'),
+             txtOf:                (lng == 'de' ? 'von' : 'of'),
+            maxHeight: screen.height * 0.9,
+            maxWidth: screen.width * 0.9
       });
     },
 
@@ -69,28 +69,28 @@
         var mLeft = 5;
         var mTop = -15;
 
-      	x = (ns6) ? e.pageX-mLeft : window.event.clientX+doc.documentElement.scrollLeft - mLeft;
-      	y = (ns6) ? e.pageY-mTop  : window.event.clientY+doc.documentElement.scrollTop  - mTop;
+          x = (ns6) ? e.pageX-mLeft : window.event.clientX+doc.documentElement.scrollLeft - mLeft;
+          y = (ns6) ? e.pageY-mTop  : window.event.clientY+doc.documentElement.scrollTop  - mTop;
 
         if(innerLayer)
         {
-        	var layerW = ((ie4) ? innerLayer.offsetWidth : innerLayer.clientWidth) - 3;
+            var layerW = ((ie4) ? innerLayer.offsetWidth : innerLayer.clientWidth) - 3;
           var layerH = (ie4) ? innerLayer.offsetHeight : innerLayer.clientHeight;
 
         } else {
-        	var layerW = ((ie4) ? layer.clientWidth : layer.offsetWidth) - 3;
+            var layerW = ((ie4) ? layer.clientWidth : layer.offsetWidth) - 3;
           var layerH = (ie4) ? layer.clientHeight : layer.offsetHeight;
         }
-        	var winW   = (ns6) ? (window.innerWidth) + window.pageXOffset - 12
+            var winW   = (ns6) ? (window.innerWidth) + window.pageXOffset - 12
                      : doc.documentElement.clientWidth + doc.documentElement.scrollLeft;
 
-        	var winH   = (ns6) ? (window.innerHeight) + window.pageYOffset
+            var winH   = (ns6) ? (window.innerHeight) + window.pageYOffset
                      : doc.documentElement.clientHeight + doc.documentElement.scrollTop;
 
           layer.style.left = ((x + offsetX + layerW >= winW - offsetX) ? x - (layerW + offsetX) : x + offsetX) + 'px';
           layer.style.top  = (y + offsetY) + 'px';
       }
-    	return true;
+        return true;
     },
 
     // handle popups
@@ -104,21 +104,21 @@
 
   // init Gameserver via Ajax
     initGameServer: function(serverID) {
-		DZCP.initDynLoader("navGameServer_" + serverID,"../inc/ajax.php?i=server&serverID=" + serverID);
+        DZCP.initDynLoader('navGameServer_' + serverID,'server','&serverID=' + serverID);
     },
 
   // init Teamspeakserver via Ajax
     initTeamspeakServer: function() {
-		DZCP.initDynLoader("navTeamspeakServer","../inc/ajax.php?i=teamspeak");
-    },
-	
-    // init Ajax DynLoader
-    initDynLoader: function(tag,url) {
-        var request = $.ajax({ url: url, type: "GET", data: {}, cache:false, dataType: "html" });
-        request.done(function(msg) { $('#' + tag).html( msg ); });
+        DZCP.initDynLoader('navTeamspeakServer','teamspeak','');
     },
 
-  // submit shoutbox
+    // init Ajax DynLoader
+    initDynLoader: function(tag,menu,options) {
+        var request = $.ajax({ url: "../inc/ajax.php?i=" + menu + options, type: "GET", data: {}, cache:true, dataType: "html", contentType: "application/x-www-form-urlencoded; charset=iso-8859-1" });
+        request.done(function(msg) { $('#' + tag).html( msg ).hide().fadeIn("normal"); });
+    },
+
+    // submit shoutbox
     shoutSubmit: function() {
       $.post('../shout/index.php?ajax', $('#shoutForm').serialize(),function(req) {
         if(req) alert(req.replace(/  /g, ' '));
@@ -149,35 +149,35 @@
 
   // limit text lenthn
     maxlength: function(field, countfield, max) {
-    	if(field.value.length > max) field.value = field.value.substring(0, max);
-    	else                         countfield.value = max - field.value.length;
+        if(field.value.length > max) field.value = field.value.substring(0, max);
+        else                         countfield.value = max - field.value.length;
     },
 
   // handle info layer
     showInfo: function(info, kats, text, img, width, height) {
       if(typeof(layer) == 'object')
       {
-		var output = '';
-		if(kats && text){
-			var kat=kats.split(";");
-			var texts=text.split(";");
-			var katout = "";
-        	for(var i=0; i<kat.length; ++i) {
-		  		katout = katout + '<tr><td>'+kat[i]+'</td><td>'+texts[i]+'</td></tr>';
-			}
-			output = '<tr><td class="infoTop" colspan="2">'+info+'</td></tr>'+katout+'';
-		}else if(kats && typeof(text)=="undefined"){
-			output = '<tr><td class="infoTop" colspan="2">'+info+'</td></tr><tr><td>'+kats+'</td></tr>';
-		}else{
-			output = '<tr><td>'+info+'</td></tr>';
-		}
+        var output = '';
+        if(kats && text){
+            var kat=kats.split(";");
+            var texts=text.split(";");
+            var katout = "";
+            for(var i=0; i<kat.length; ++i) {
+                  katout = katout + '<tr><td>'+kat[i]+'</td><td>'+texts[i]+'</td></tr>';
+            }
+            output = '<tr><td class="infoTop" colspan="2">'+info+'</td></tr>'+katout+'';
+        }else if(kats && typeof(text)=="undefined"){
+            output = '<tr><td class="infoTop" colspan="2">'+info+'</td></tr><tr><td>'+kats+'</td></tr>';
+        }else{
+            output = '<tr><td>'+info+'</td></tr>';
+        }
 
-		var userimg = "";
-		if(img){
-			userimg = '<tr><td colspan=2 align=center><img src="'+img+'" width="'+width+'" height="'+height+'" alt="" /></td></tr>';
-		}else{
-			userimg = '';
-		}
+        var userimg = "";
+        if(img){
+            userimg = '<tr><td colspan=2 align=center><img src="'+img+'" width="'+width+'" height="'+height+'" alt="" /></td></tr>';
+        }else{
+            userimg = '';
+        }
         layer.innerHTML =
           '<div id="hDiv">' +
           '  <table class="hperc" cellspacing="0" style="height:100%">' +
@@ -217,45 +217,45 @@
       else {
         if($('#more' + id).css('display') == 'none')
         {
-        	$('#more' + id).css('display', '');
-        	$('#img' + id).prop('src', '../inc/images/collapse.gif');
+            $('#more' + id).css('display', '');
+            $('#img' + id).prop('src', '../inc/images/collapse.gif');
         } else {
-        	$('#more' + id).css('display', 'none');
+            $('#more' + id).css('display', 'none');
           $('#img' + id).prop('src', '../inc/images/expand.gif');
         }
       }
     },
   // toggle with effect
-  	fadetoggle: function(id) {
-		$("#more_"+id).fadeToggle("slow", "swing");
-		if($('#img_'+id).prop('alt') == "hidden") {
-			$('#img_'+id).prop({alt: 'normal',
-								src: '../inc/images/toggle_normal.png'});
-		} else {
-			$('#img_'+id).prop({alt: 'hidden',
-								src: '../inc/images/toggle_hidden.png'});
-		}
-	},
+      fadetoggle: function(id) {
+        $("#more_"+id).fadeToggle("slow", "swing");
+        if($('#img_'+id).prop('alt') == "hidden") {
+            $('#img_'+id).prop({alt: 'normal',
+                                src: '../inc/images/toggle_normal.png'});
+        } else {
+            $('#img_'+id).prop({alt: 'hidden',
+                                src: '../inc/images/toggle_hidden.png'});
+        }
+    },
   // resize images
     resizeImages: function() {
-    	for(var i=0;i<doc.images.length;i++)
+        for(var i=0;i<doc.images.length;i++)
       {
         var d = doc.images[i];
 
         if(d.className == 'content')
         {
-      	  var imgW = d.width;
-      	  var imgH = d.height;
+            var imgW = d.width;
+            var imgH = d.height;
 
-      	  if(maxW != 0 && imgW > maxW)
+            if(maxW != 0 && imgW > maxW)
           {
-       		  d.width = maxW;
-      		  d.height = Math.round(imgH * (maxW / imgW));
+                 d.width = maxW;
+                d.height = Math.round(imgH * (maxW / imgW));
 
-      		  if(!DZCP.linkedImage(d))
+                if(!DZCP.linkedImage(d))
             {
               var textLink = doc.createElement("span");
-      			  var popupLink = doc.createElement("a");
+                    var popupLink = doc.createElement("a");
 
               textLink.appendChild(doc.createElement("br"));
               textLink.setAttribute('class', 'resized');
@@ -264,25 +264,25 @@
               popupLink.setAttribute('href', d.src);
               popupLink.setAttribute('rel', 'lightbox');
               popupLink.appendChild(d.cloneNode(true));
-              
+
               d.parentNode.appendChild(textLink);
-      			  d.parentNode.replaceChild(popupLink, d);
-              
+                    d.parentNode.replaceChild(popupLink, d);
+
               DZCP.initLightbox();
-      		  }
+                }
           }
         }
-    	}
+        }
     },
 
     linkedImage: function(node) {
-    	do {
-    		node = node.parentNode;
-    		if (node.nodeName == 'A') return true;
-    	}
-    	while(node.nodeName != 'TD' && node.nodeName != 'BODY');
+        do {
+            node = node.parentNode;
+            if (node.nodeName == 'A') return true;
+        }
+        while(node.nodeName != 'TD' && node.nodeName != 'BODY');
 
-    	return false;
+        return false;
     },
 
   // ajax calendar switch
@@ -293,8 +293,7 @@
   // ajax team switch
     teamSwitch: function(obj) {
       clearTimeout(mTimer[1]);
-
-     $('#navTeam').load('../inc/ajax.php?i=teams&tID=' + obj, DZCP.initTicker('teams', 'h', 60));
+      $('#navTeam').load('../inc/ajax.php?i=teams&tID=' + obj, DZCP.initTicker('teams', 'h', 60));
     },
 
   // ajax vote
@@ -314,8 +313,8 @@
         $('#navFVote').html(req);
       });
 
-  	 return false;
-  	},
+       return false;
+      },
 
   // ajax preview
     ajaxPreview: function(form) {
@@ -350,21 +349,19 @@
       return confirm(txt + '?');
     },
 
-
-
   // forum search
     hideForumFirst: function() {
       $('#allkat').prop('checked', false);
     },
 
     hideForumAll: function() {
-    	for(var i = 0; i < doc.forms['search'].elements.length; i++)
-    	{
-    		var box = doc.forms['search'].elements[i];
+        for(var i = 0; i < doc.forms['search'].elements.length; i++)
+        {
+            var box = doc.forms['search'].elements[i];
 
         if(box.id.match(/k_/g))
-    		  box.checked = false;
-    	}
+              box.checked = false;
+        }
     },
 
   // disable submit button
@@ -418,44 +415,14 @@
       else thisObj.style.top = (thisObj.style.top == '' || (parseInt(thisObj.style.top)<(0-(width/2)+6))) ? 0 : parseInt(thisObj.style.top)-1 + 'px';
     },
 
-  // ADD FLASH
-    addFlash: function() {
-      var ret = new Object(); ret.embedAttrs = new Object(); ret.params = new Object(); ret.objAttrs = new Object();
-      var def = new Array('menu|false', 'quality|high', 'wmode|transparent', 'classid|clsid:d27cdb6e-ae6d-11cf-96b8-444553540000', 'type|application/x-shockwave-flash');
-
-      for(var i=0; i<arguments.length; i=i+2)
-      {
-        ret.objAttrs[arguments[i]]   = arguments[i+1];
-        ret.embedAttrs[arguments[i]] = ret.params[arguments[i]] = arguments[i+1];
-        ret.params[arguments[i]]     = arguments[i+1];
-      }
-
-      for(var i=0; i<def.length; i++)
-      {
-        var s = def[i].split('|');
-        if(!ret.params[s[0]])
-        {
-          ret.objAttrs[s[0]]   = s[1];
-          ret.embedAttrs[s[0]] = s[1];
-          ret.params[s[0]]     = s[1];
+    //TS3 Settings
+    TS3Settings: function(id) {
+        if(id == 3) {
+            $('#ts3settings').css('display', '');
+        } else {
+            $('#ts3settings').css('display', 'none');
         }
-      }
-
-      var c = '<object ';
-      for(var i in ret.objAttrs)   c += i + '="' + ret.objAttrs[i] + '" '; c += '>';
-      for(var i in ret.params)     c += '<param name="' + i + '" value="' + ret.params[i] + '" /> ';  c += '<embed ';
-      for(var i in ret.embedAttrs) c += i + '="' + ret.embedAttrs[i] + '" '; c += ' ></embed></object>';
-
-      doc.write(c);
-    },
-	//TS3 Settings
-	TS3Settings: function(id) {
-		if(id == 3) {
-			$('#ts3settings').css('display', '');
-		} else {
-			$('#ts3settings').css('display', 'none');
-		}
-	}
+    }
   }
 
 // load global events
