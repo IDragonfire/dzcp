@@ -1661,6 +1661,7 @@ function sgames($game = '') {
                     $protocol = strtr($protocol, array('bfbc2' => 'Battlefield Bad Company 2', 'bfv' => 'Battlefield V', 'bf' => 'Battlefield '));
                 break;
                 case 'bf3'; $protocol = 'Battlefield 3'; break;
+				case 'bf4'; $protocol = 'Battlefield 4'; break
                 case 'swat4'; $protocol = strtoupper($protocol); break;
                 case 'aarmy'; $protocol = 'Americas Army'; break;
                 case 'arma'; $protocol = 'Armed Assault'; break;
