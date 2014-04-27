@@ -8,7 +8,7 @@
 //-> DZCP Settings Start
 #########################################
 
-define('view_error_reporting', false); // Zeigt alle Fehler und Notices etc.
+define('view_error_reporting', true); // Zeigt alle Fehler und Notices etc.
 define('debug_all_sql_querys', false);
 define('debug_save_to_file', false);
 define('debug_dzcp_handler', true);

@@ -2146,26 +2146,38 @@ final class dbc_index
         global $cache;
 
         if(self::MemSetIndex()) {
+            if(show_dbc_debug)
+                DebugConsole::insert_info('dbc_index::setIndex()', 'Set index: "'.$index_key.'" to cache');
+
             $cache->set('dbc_'.$index_key, serialize($data), 1);
         }
+
+        if(show_dbc_debug)
+            DebugConsole::insert_info('dbc_index::setIndex()', 'Set index: "'.$index_key.'"');
 
         self::$index[$index_key] = $data;
     }
 
     public static final function getIndex($index_key) {
-        if(!array_key_exists($index_key,self::$index))
+        if(!self::issetIndex($index_key))
             return false;
+
+        if(show_dbc_debug)
+            DebugConsole::insert_info('dbc_index::getIndex()', 'Get full index: "'.$index_key.'"');
 
         return self::$index[$index_key];
     }
 
     public static final function getIndexKey($index_key,$key) {
-        if(!array_key_exists($index_key,self::$index))
+        if(!self::issetIndex($index_key))
             return false;
 
         $data = self::$index[$index_key];
         if(empty($data) || !array_key_exists($key,$data))
             return false;
+
+        if(show_dbc_debug)
+            DebugConsole::insert_info('dbc_index::getIndexKey()', 'Get from index: "'.$index_key.'" get key: "'.$key.'"');
 
         return $data[$key];
     }
@@ -2173,7 +2185,11 @@ final class dbc_index
     public static final function issetIndex($index_key) {
         global $cache;
 
-        if(self::MemSetIndex() && $cache->isExisting('dbc_'.$index_key)) {
+        if(!array_key_exists($index_key,self::$index) && self::MemSetIndex() && $cache->isExisting('dbc_'.$index_key)) {
+
+            if(show_dbc_debug)
+                DebugConsole::insert_loaded('dbc_index::issetIndex()', 'Load index: "'.$index_key.'" from cache');
+
             self::$index[$index_key] = unserialize($cache->get('dbc_'.$index_key));
             return true;
         }
