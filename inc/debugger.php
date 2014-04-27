@@ -12,13 +12,10 @@ if(version_compare(PHP_VERSION, '5.2.0', '>=') === false)
 //-> Debug Console Settings Start
 #########################################
 
-define('show_initialize', true);
 define('show_loaded', true);
 define('show_info', true);
 define('show_warning', true);
-define('show_cache_debug', true);
-define('show_sessions_debug', true);
-define('show_dbc_debug', true);
+define('show_dbc_debug', false);
 define('show_deprecation_debug', true);
 
 #############################################
@@ -31,13 +28,10 @@ class DebugConsole {
     private static $file_data = '';
 
     public static final function initCon()
-    { self::$log_array=array(array()); self::$file_data=''; self::insert_initialize('DebugConsole::initCon()','Debugger'); }
+    { self::$log_array=array(array()); self::$file_data=''; }
 
     public static final function insert_log($file,$msg,$back=false,$func="",$line=0)
     { self::$log_array[$file][] = ($line != 0 ? 'Line:"'.$line.'" => ' : "").($back ? $msg.$func : $func.$msg); }
-
-    public static final function insert_initialize($file,$func)
-    { if(show_initialize) self::$log_array[$file][] = '<font color="#0000FF">Initialize '.$func.'</font>'; }
 
     public static final function insert_successful($file,$func)
     { self::$log_array[$file][] = '<font color="#009900">'.$func.'</font>'; }
