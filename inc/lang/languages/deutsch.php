@@ -1754,7 +1754,6 @@ define('_admin_server_new', 'Neuen Server hinzuf&uuml;gen');
 define('_server_admin_added', 'Der Server wurde erfolgreich hinzugef&uuml;gt!');
 define('_empty_game', 'Du musst ein Icon ausw&auml;hlen!');
 define('_empty_servername', 'Du musst einen Servernamen angeben!');
-define('_server_admin_servermaps_head', 'Mapscreens (f&uuml;r den Live-Serverstatus)');
 define('_config_server_mapname', 'Mapname');
 define('_config_server_maps_head', 'Servermaps');
 define('_config_server_map_deleted', 'Der Mapscreen wurde erfolgreich gel&ouml;scht!');
