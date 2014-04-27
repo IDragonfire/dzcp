@@ -8,17 +8,6 @@
      *
      */
 
-    ## OUTPUT BUFFER START ##
-    include_once("../../../buffer.php");
-    ## INCLUDES ##
-    include_once(basePath."/inc/debugger.php");
-    include_once(basePath."/inc/config.php");
-    include_once(basePath."/inc/bbcode.php");
-    ## SETTINGS ##
-    if(!(permission("downloads") || permission("news") || permission('artikel'))) {
-        die('Permission denied');
-    }
-
     if(!isset($manager))
     {
         /**

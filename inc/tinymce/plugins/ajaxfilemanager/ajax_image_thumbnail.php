@@ -7,17 +7,6 @@
      *
      */
 
-    ## OUTPUT BUFFER START ##
-    include_once("../../../buffer.php");
-    ## INCLUDES ##
-    include_once(basePath."/inc/debugger.php");
-    include_once(basePath."/inc/config.php");
-    include_once(basePath."/inc/bbcode.php");
-    ## SETTINGS ##
-    if(!(permission("downloads") || permission("news") || permission('artikel'))) {
-        die('Permission denied');
-    }
-
     include_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . "inc" . DIRECTORY_SEPARATOR . "config.php");
     if(!empty($_GET['path']) && file_exists($_GET['path']) && is_file($_GET['path']))
     {
