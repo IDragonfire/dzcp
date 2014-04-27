@@ -1,28 +1,24 @@
 <?php
-ob_start();
-function get_files($dir)
-{
-  $dp = @opendir($dir);
-  $files = array();
-  while($file = @readdir($dp))
-  {
-    if($file != '.' && $file != '..' && $file != 'usen.gif')
-    {
-      array_push($files, $file);
-    }
-  }
-  @closedir($dp);
-  sort($files);
+/**
+ * DZCP - deV!L`z ClanPortal 1.6 Final
+ * http://www.dzcp.de
+ */
 
-  return($files);
-}
+ob_start();
+define('basePath', '../../../../');
+
+## INCLUDES ##
+$ajaxJob = true;
+include_once(basePath."/inc/debugger.php");
+include_once(basePath."/inc/config.php");
+include_once(basePath."/inc/bbcode.php");
 ?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>{#dzcp.fltitle}</title>
-	<script language="javascript" type="text/javascript" src="../../tiny_mce_popup.js"></script>
-	<script language="javascript" type="text/javascript" src="jscripts/smileys.js"></script>
-	<base target="_self" />
+    <title>{#dzcp.fltitle}</title>
+    <script language="javascript" type="text/javascript" src="../../tiny_mce_popup.js"></script>
+    <script language="javascript" type="text/javascript" src="jscripts/smileys.js"></script>
+    <base target="_self" />
   <script language="javascript" type="text/javascript">
     function resizeMe()
     {
@@ -38,14 +34,14 @@ function get_files($dir)
         winB = smDiv.offsetWidth+30;
         winH = smDiv.offsetHeight+30;
       }
-  
+
       window.resizeTo(winB+20,winH+70);
     }
   </script>
 </head>
 <body onload="resizeMe()">
-	<div align="center">
-		<table id="smileys" border="0" cellspacing="0" cellpadding="4">
+    <div align="center">
+        <table id="smileys" border="0" cellspacing="0" cellpadding="4">
       <tr>
         <td style="border:1px solid #888;padding:0" colspan="16">
           <table style="width:100%;padding:4px" cellspacing="1">
@@ -69,35 +65,35 @@ function get_files($dir)
         <td style="height:6px"></td>
       </tr>
 <?php
-    $files = get_files('../../../images/flaggen');
+    $files = get_files(basePath."/inc/images/flaggen",false,true,$picformat);
 
     $t=1;
-    for($i=0; $i<count($files); $i++) 
+    for($i=0; $i<count($files); $i++)
     {
       $tr1 = '';
       $tr2 = '';
-      
+
       if(
         $files[$i] != 'de.gif' && $files[$i] != 'en.gif' && $files[$i] != 'eu.gif' && $files[$i] != 'at.gif' && $files[$i] != 'ch.gif'
      && $files[$i] != 'us.gif' && $files[$i] != 'ca.gif' && $files[$i] != 'uk.gif' && $files[$i] != 'fr.gif' && $files[$i] != 'it.gif'
      && $files[$i] != 'es.gif' && $files[$i] != 'tr.gif'
       ) {
-        
+
         if($t == 0 || $t == 1) $tr1 = "<tr>";
         if($t == 11)
         {
           $tr2 = "</tr>";
           $t = 0;
         }
-        $t++;    
-       
+        $t++;
+
   echo $tr1; ?><td><a href="javascript:insertFlag('<?php echo$files[$i]; ?>')"><img src="../../../images/flaggen/<?php echo $files[$i]; ?>" border="0" alt="" /></a></td><?php echo $tr2;
       }
     }
 
 ?>
-		</table>
-	</div>
+        </table>
+    </div>
 </body>
 </html>
 <?php
