@@ -25,10 +25,9 @@ function gz_output($output='') {
         $output = str_ireplace('</body>',$licence_bar."\r\n</body>",$output);
     }
 
-    $output .= "\r\n<!--This CMS is powered by deV!L`z Clanportal V"._version." - www.dzcp.de-->";
-
     ob_end_clean();
     ob_start('ob_gzhandler');
+             $output .= "\r\n<!--This CMS is powered by deV!L`z Clanportal V"._version." - www.dzcp.de-->";
         echo $output."\r\n"."<!-- [GZIP => Level ".$gzip_compress_level."] ".sprintf("%01.2f",((strlen(gzcompress($output,$gzip_compress_level)))/1024))." kBytes | uncompressed: ".sprintf("%01.2f",((strlen($output))/1024 ))." kBytes -->";
     ob_end_flush();
     exit();
