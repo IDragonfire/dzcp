@@ -59,6 +59,8 @@ define('_slider_position_first', 'first');
 define('_slider_position_lazy', '<option value="lazy">- no change -</option>');
 define('_slider_url', 'URL');
 define('_slider_show_title', 'Show title');
+define('_forum_kat', 'Categorie');
+
 define('_news_userimage', 'Own Newspicture');
 define('_newspic_del', 'delete Newspicture?');
 define('_newspic_deleted', 'Newspicture deleted successfully');

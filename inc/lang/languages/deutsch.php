@@ -59,6 +59,7 @@ define('_slider_position_first', 'als erstes');
 define('_slider_position_lazy', '<option value="lazy">- nicht &auml;ndern -</option>');
 define('_slider_url', 'URL');
 define('_slider_show_title', 'Title anzeigen');
+define('_forum_kat', 'Kategorie');
 
 define('_news_userimage', 'Eigenes Newsbild');
 define('_newspic_del', 'Newsbild l&ouml;schen?');
