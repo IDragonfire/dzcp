@@ -25,6 +25,3 @@ if(file_exists(basePath."/forum/case_".$action.".php"))
 
 ## INDEX OUTPUT ##
 page($index, $title, $where);
-
-## OUTPUT BUFFER END ##
-gz_output();

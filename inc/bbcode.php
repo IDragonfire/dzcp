@@ -2345,6 +2345,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index')
         if(!mysqli_persistconns) $mysql->close(); //MySQL
         cookie::save(); //Save Cookie
         if(debug_save_to_file) DebugConsole::save_log(); //Debug save to file
-        echo view_error_reporting ? DebugConsole::show_logs().$index : $index; //Debug Console + Index Out
+        $output = view_error_reporting ? DebugConsole::show_logs().$index : $index; //Debug Console + Index Out
+        gz_output($output); // OUTPUT BUFFER END
     }
 }

@@ -28,6 +28,3 @@ $index = show($dir."/impressum", array("head" => _impressum_head,
 ## INDEX OUTPUT ##
 $title = $pagetitle." - ".$where."";
 page($index, $title, $where);
-
-## OUTPUT BUFFER END ##
-gz_output();

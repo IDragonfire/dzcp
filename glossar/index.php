@@ -54,6 +54,3 @@ $index = show($dir."/glossar", array("head" => _glossar_head,
 ## INDEX OUTPUT ##
 $title = $pagetitle." - ".$where."";
 page($index, $title, $where);
-
-## OUTPUT BUFFER END ##
-gz_output();

@@ -117,6 +117,3 @@ endswitch;
 
 ## INDEX OUTPUT ##
 page($index, $title, $where);
-
-## OUTPUT BUFFER END ##
-gz_output();

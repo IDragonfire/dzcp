@@ -135,6 +135,3 @@ else {
 ## INDEX OUTPUT ##
 $title = $pagetitle." - ".$where."";
 page($index, $title, $where, $wysiwyg);
-
-## OUTPUT BUFFER END ##
-gz_output();

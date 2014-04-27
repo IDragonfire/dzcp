@@ -52,6 +52,3 @@ if(file_exists(basePath."/user/case_".$action.".php"))
 $whereami = preg_replace_callback("#autor_(.*?)$#",create_function('$id', 'return data("nick","$id[1]");'),$where);
 $title = $pagetitle." - ".$whereami."";
 page($index, $title, $where);
-
-## OUTPUT BUFFER END ##
-gz_output();

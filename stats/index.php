@@ -235,6 +235,3 @@ $dir = "stats";
 ## INDEX OUTPUT ##
 $title = $pagetitle." - ".$where."";
 page($index, $title, $where);
-
-## OUTPUT BUFFER END ##
-gz_output();

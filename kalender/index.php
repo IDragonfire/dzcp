@@ -24,7 +24,7 @@ default:
   else $monat = date("m");
 
   $monat = str_pad($monat, 2 ,'0', STR_PAD_LEFT);
-  
+
   if(isset($_POST['jahr'])) $jahr = ((int)$_POST['jahr']);
   elseif(isset($_GET['y'])) $jahr = ((int)$_GET['y']);
   else $jahr = date("Y");
@@ -187,6 +187,3 @@ endswitch;
 
 ## INDEX OUTPUT ##
 page($index, $title, $where);
-
-## OUTPUT BUFFER END ##
-gz_output();

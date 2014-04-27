@@ -70,6 +70,3 @@ $index = show($dir."/membermap", array('mm_coords' => $mm_coords,
 ## INDEX OUTPUT ##
 $title = $pagetitle." - ".$where."";
 page($index, $title, $where);
-
-## OUTPUT BUFFER END ##
-gz_output();
