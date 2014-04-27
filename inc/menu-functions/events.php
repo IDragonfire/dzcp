@@ -22,7 +22,7 @@ function events() {
                                                    "info" => $info));
 
             $eventbox .= show("menu/event", array("events" => $events,
-			                                      "info" => $info));
+                                                  "info" => $info));
         }
     }
 
