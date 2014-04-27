@@ -189,10 +189,17 @@ function fsockopen_support() {
     if(!function_exists('fsockopen') || !function_exists("fopen"))
         return false;
 
-    if(strpos(ini_get('disable_functions'),'fsockopen') || strpos(ini_get('disable_functions'),'file_get_contents') || strpos(ini_get('disable_functions'),'fopen'))
+    if(strpos(ini_get('disable_functions'),'fsockopen') || strpos(ini_get('disable_functions'),'fopen'))
         return false;
 
     return true;
+}
+
+function allow_url_fopen_support() {
+    if(ini_get('allow_url_fopen') == 1)
+        return true;
+
+    return false;
 }
 
 //-> Auslesen der UserID
@@ -908,7 +915,7 @@ function fileExists($url) {
     $host = $url_p['host'];
     $port = isset($url_p['port']) ? $url_p['port'] : 80;
 
-    if(!fsockopen_support()) return false;
+    if(!allow_url_fopen_support()) return false;
     $fp = @fsockopen($url_p['host'], $port, $errno, $errstr, 5);
     if(!$fp) return false;
 
@@ -2199,7 +2206,7 @@ final class dbc_index
 
 function steamIMG($steamID='') {
     global $cache,$language;
-    if(!fsockopen_support())
+    if(!allow_url_fopen_support())
         return array('img' => _fopen, 'send_header' => false);
 
     if(!$cache->isExisting("steamsignature_error")) {

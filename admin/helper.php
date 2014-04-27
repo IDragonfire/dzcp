@@ -8,7 +8,7 @@ function show_dzcp_version() {
     global $cache;
     $dzcp_version_info = 'onmouseover="DZCP.showInfo(\'<tr><td colspan=2 align=center padding=3 class=infoTop>DZCP Versions Checker</td></tr><tr><td>'._dzcp_vcheck.'</td></tr>\')" onmouseout="DZCP.hideInfo()"';
     $return = array();
-    if(dzcp_version_checker || !fsockopen_support()) {
+    if(dzcp_version_checker || allow_url_fopen_support()) {
         if(!$cache->isExisting('dzcp_version')) {
             if($dzcp_online_v = file_get_contents("https://raw.githubusercontent.com/DZCP-Community/dzcp/final/dzcp_version.xml"))
                 $cache->set('dzcp_version', $dzcp_online_v, dzcp_version_checker_refresh);

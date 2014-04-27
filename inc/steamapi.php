@@ -22,6 +22,8 @@ class SteamAPI {
      * @return boolean|array:
      */
     public static function getUserInfos($custom_profile_url) {
+        if(!allow_url_fopen_support()) return false;
+
         if(empty($custom_profile_url)) {
             DebugConsole::insert_warning('SteamAPI::getUserInfos()', 'There was no specified Steam Profile-URL');
             return false;
@@ -67,7 +69,6 @@ class SteamAPI {
         global $cache;
         $zone_url = !empty($zone) ? '/'.$zone.'/' : ''; $zone_tag = !empty($zone) ? $zone.'_' : 'profile';
         if(!$cache->isExisting('steam_'.$zone_tag.'_'.self::$profile_url)) {
-
             $xml_stream = file_get_contents(self::$api_com.'/id/'.self::$profile_url.$zone_url.'?xml=1');
             if(empty($xml_stream)) {
                 DebugConsole::insert_error('SteamAPI::get_steamcommunity()', 'No connection to the community interface!');

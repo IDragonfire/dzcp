@@ -93,7 +93,7 @@ else {
     }
 
     $dzcp_news = '';
-    if(fsockopen_support()) {
+    if(allow_url_fopen_support()) {
         if(admin_view_dzcp_news) {
             if(!$cache->isExisting("admin_news")) {
                 $dzcp_news = fileExists("http://www.dzcp.de/dzcp_news.php");
