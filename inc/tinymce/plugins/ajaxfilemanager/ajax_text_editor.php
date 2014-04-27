@@ -10,6 +10,7 @@
     ## OUTPUT BUFFER START ##
     include_once("../../../buffer.php");
     ## INCLUDES ##
+    include_once(basePath."/inc/debugger.php");
     include_once(basePath."/inc/config.php");
     include_once(basePath."/inc/bbcode.php");
     ## SETTINGS ##
@@ -76,8 +77,8 @@
         function()
         {
                 editAreaLoader.init({
-                id: "content"	// id of the textarea to transform
-                ,start_highlight: false	// if start with highlight
+                id: "content"    // id of the textarea to transform
+                ,start_highlight: false    // if start with highlight
                 ,allow_resize: "both"
                 ,gecko_spellcheck:true
                 ,allow_toggle: true

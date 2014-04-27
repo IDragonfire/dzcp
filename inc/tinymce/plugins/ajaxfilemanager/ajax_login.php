@@ -1,30 +1,31 @@
 <?php
-	/**
-	 * access control login form
-	 * @author Logan Cai (cailongqun [at] yahoo [dot] com [dot] cn)
-	 * @link www.phpletter.com
-	 * @since 22/April/2007
-	 *
-	 */
-     
+    /**
+     * access control login form
+     * @author Logan Cai (cailongqun [at] yahoo [dot] com [dot] cn)
+     * @link www.phpletter.com
+     * @since 22/April/2007
+     *
+     */
+
 ## OUTPUT BUFFER START ##
 include_once("../../../buffer.php");
 ## INCLUDES ##
+include_once(basePath."/inc/debugger.php");
 include_once(basePath."/inc/config.php");
 include_once(basePath."/inc/bbcode.php");
 ## SETTINGS ##
 if(!(permission("downloads") || permission("news") || permission('artikel'))) {
     die('Permission denied');
-}  
-     
+}
+
 require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . "inc" . DIRECTORY_SEPARATOR . "config.php");
 if(isset($_POST['username']))
 {
-	if($auth->login())
-	{
-		header('Location: ' . appendQueryString(CONFIG_URL_HOME, makeQueryString()));
-		exit;		
-	}
+    if($auth->login())
+    {
+        header('Location: ' . appendQueryString(CONFIG_URL_HOME, makeQueryString()));
+        exit;
+    }
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -37,31 +38,31 @@ if(isset($_POST['username']))
 <body>
 <div id="container">
     <div id="content">
-			<form name="frmLogin" method="post" action="">
-			    <table class="adminLoginTable" cellpadding="0" cellspacing="0">
-			        <thead>
-			            <tr>
-			                <th colspan="2"><?php echo LOGIN_FORM_TITLE; ?></th>
-			            </tr>
-			        </thead>
-			        <tbody>
-			            <tr>
-			                <th class="padTop"><label><?php echo LOGIN_USERNAME; ?> </label></th>
-			                <td class="padTop"><input type="text" value="" class="input" name="username" id="username" /></td>
-			            </tr>
-			            <tr>
-			                <th><label><?php echo LOGIN_PASSWORD; ?> </label></th>
-			                <td><input type="password" value="" class="input" name="password" id="password" /></td>
-			            </tr>
-			        </tbody>
-			        <tfoot>
-			            <tr>
-			            	<td>&nbsp;</td>
-			              <td><input type="submit" class="button" value="Login" /></td>
-			            </tr>			        
-			        </tfoot>
-			    </table>
-			</form>
+            <form name="frmLogin" method="post" action="">
+                <table class="adminLoginTable" cellpadding="0" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th colspan="2"><?php echo LOGIN_FORM_TITLE; ?></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="padTop"><label><?php echo LOGIN_USERNAME; ?> </label></th>
+                            <td class="padTop"><input type="text" value="" class="input" name="username" id="username" /></td>
+                        </tr>
+                        <tr>
+                            <th><label><?php echo LOGIN_PASSWORD; ?> </label></th>
+                            <td><input type="password" value="" class="input" name="password" id="password" /></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td>&nbsp;</td>
+                          <td><input type="submit" class="button" value="Login" /></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </form>
     </div>
 </div>
 </body>

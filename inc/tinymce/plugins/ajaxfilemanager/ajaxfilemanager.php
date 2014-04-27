@@ -10,6 +10,7 @@
     ## OUTPUT BUFFER START ##
     include_once("../../../buffer.php");
     ## INCLUDES ##
+    include_once(basePath."/inc/debugger.php");
     include_once(basePath."/inc/config.php");
     include_once(basePath."/inc/bbcode.php");
     ## SETTINGS ##
@@ -604,7 +605,7 @@ $(document).ready(
                               <table cellpadding="0" cellspacing="0" border="0">
                                   <tr>
                                       <td width="99%">&nbsp;</td>
-                                      <td nowrap width="1%"><a href="#" class="buttonLink" onclick="return doCreateFolder();" ><span><?php echo FOLDER_LBL_CREATE; ?></span></a>		</td>
+                                      <td nowrap width="1%"><a href="#" class="buttonLink" onclick="return doCreateFolder();" ><span><?php echo FOLDER_LBL_CREATE; ?></span></a>        </td>
                                   </tr>
                               </table>
 
@@ -659,7 +660,7 @@ $(document).ready(
                               <table cellpadding="0" cellspacing="0" border="0">
                                   <tr>
                                       <td width="99%">&nbsp;</td>
-                                      <td nowrap width="1%"><a href="#" class="buttonLink" onclick="return doRename();" ><span><?php echo RENAME_LBL_RENAME; ?></span></a>	</td>
+                                      <td nowrap width="1%"><a href="#" class="buttonLink" onclick="return doRename();" ><span><?php echo RENAME_LBL_RENAME; ?></span></a>    </td>
                                   </tr>
                               </table>
 
