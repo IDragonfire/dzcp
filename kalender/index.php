@@ -23,6 +23,8 @@ default:
   elseif(isset($_GET['m']))  $monat = ((int)$_GET['m']);
   else $monat = date("m");
 
+  $monat = str_pad($monat, 2 ,'0', STR_PAD_LEFT);
+  
   if(isset($_POST['jahr'])) $jahr = ((int)$_POST['jahr']);
   elseif(isset($_GET['y'])) $jahr = ((int)$_GET['y']);
   else $jahr = date("Y");
