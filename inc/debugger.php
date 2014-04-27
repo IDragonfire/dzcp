@@ -56,14 +56,16 @@ class DebugConsole {
     public static final function insert_warning($file,$func)
     { if(show_warning) self::$log_array[$file][] = '<font color="#FFFF00">'.$func.'</font>'; }
 
-    public static final function sql_error_handler($query,$mysql)
+    public static final function sql_error_handler($query)
     {
+        global $mysql;
         $message = '#####################################################################'.EOL.
         '   Datum   = '.date("d.m.y H:i", time()).EOL.
-        '   URL     = http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].$_SERVER['PHP_self'].EOL.
+        '   URL     = http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].$_SERVER['PHP_self'].EOL.EOL.
         '   MySQLi-Query failed:'.EOL.
-        '   ErrorNo = '.$mysql->connect_errno.EOL.
-        '   Error   = '.$mysql->connect_error.EOL.
+        '   ConnectErrorNo = '.mysqli_connect_errno().EOL.
+        '   ConnectError   = '.mysqli_connect_error().EOL.EOL.
+        '   QueryError   = '.mysqli_error($mysql).EOL.EOL.
         '   Query   = '.$query.EOL.
         '#####################################################################'.EOL.EOL;
 
