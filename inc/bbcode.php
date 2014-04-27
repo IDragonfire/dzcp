@@ -1423,41 +1423,55 @@ function artikelSites($sites, $id) {
 //-> Nickausgabe mit Profillink oder Emaillink (reg/nicht reg)
 function autor($uid, $class="", $nick="", $email="", $cut="",$add="") {
     global $db;
-    $qry = db("SELECT nick,country FROM ".$db['users']." WHERE id = '".intval($uid)."'");
-    if(_rows($qry)) {
-        $get = _fetch($qry);
-        $nickname = (!empty($cut)) ? cut(re($get['nick']), $cut) : re($get['nick']);
-        return show(_user_link, array("id" => $uid,
-                                         "country" => flag($get['country']),
-                                         "class" => $class,
-                                         "get" => $add,
-                                         "nick" => $nickname));
-    } else {
-        $nickname = (!empty($cut)) ? cut(re($nick), $cut) : re($nick);
-        return show(_user_link_noreg, array("nick" => $nickname, "class" => $class, "email" => eMailAddr($email)));
+    if(!dbc_index::issetIndex('user_'.intval($uid))) {
+        $qry = db("SELECT * FROM ".$db['users']." WHERE id = '".intval($uid)."'");
+        if(_rows($qry)) {
+            $get = _fetch($qry);
+            dbc_index::setIndex('user_'.$get['id'], $get);
+        } else {
+            $nickname = (!empty($cut)) ? cut(re($nick), $cut) : re($nick);
+            return show(_user_link_noreg, array("nick" => $nickname, "class" => $class, "email" => eMailAddr($email)));
+        }
     }
+
+    $nickname = (!empty($cut)) ? cut(re(dbc_index::getIndexKey('user_'.intval($uid), 'nick')), $cut) : re(dbc_index::getIndexKey('user_'.intval($uid), 'nick'));
+    return show(_user_link, array("id" => $uid,
+                                  "country" => flag(dbc_index::getIndexKey('user_'.intval($uid), 'country')),
+                                  "class" => $class,
+                                  "get" => $add,
+                                  "nick" => $nickname));
 }
 
 function cleanautor($uid, $class="", $nick="", $email="", $cut="") {
     global $db;
-    $qry = db("SELECT nick,country FROM ".$db['users']." WHERE id = '".intval($uid)."'");
-    if(_rows($qry)) {
-        $get = _fetch($qry);
-        return show(_user_link_preview, array("id" => $uid, "country" => flag($get['country']), "class" => $class, "nick" => re($get['nick'])));
+    if(!dbc_index::issetIndex('user_'.intval($uid))) {
+        $qry = db("SELECT * FROM ".$db['users']." WHERE id = '".intval($uid)."'");
+        if(_rows($qry)) {
+            $get = _fetch($qry);
+            dbc_index::setIndex('user_'.$get['id'], $get);
+        }
+        else
+            return show(_user_link_noreg, array("nick" => re($nick), "class" => $class, "email" => eMailAddr($email)));
     }
-    else
-        return show(_user_link_noreg, array("nick" => re($nick), "class" => $class, "email" => eMailAddr($email)));
+
+    return show(_user_link_preview, array("id" => $uid, "country" => flag(dbc_index::getIndexKey('user_'.intval($uid), 'country')),
+                                          "class" => $class, "nick" => re(dbc_index::getIndexKey('user_'.intval($uid), 'nick'))));
 }
 
 function rawautor($uid) {
     global $db;
-    $qry = db("SELECT nick,country FROM ".$db['users']." WHERE id = '".intval($uid)."'");
-    if(_rows($qry)) {
-        $get = _fetch($qry);
-        return rawflag($get['country'])." ".jsconvert(re($get['nick']));
+    if(!dbc_index::issetIndex('user_'.intval($uid))) {
+        $qry = db("SELECT * FROM ".$db['users']." WHERE id = '".intval($uid)."'");
+        if(_rows($qry)) {
+            $get = _fetch($qry);
+            dbc_index::setIndex('user_'.$get['id'], $get);
+        }
+        else
+            return rawflag('')." ".jsconvert(re($uid));
     }
-    else
-        return rawflag('')." ".jsconvert(re($uid));
+
+    return rawflag(dbc_index::getIndexKey('user_'.intval($uid), 'country'))." ".
+    jsconvert(re(dbc_index::getIndexKey('user_'.intval($uid), 'nick')));
 }
 
 //-> Nickausgabe ohne Profillink oder Emaillink fr das ForenAbo
@@ -2125,7 +2139,7 @@ final class dbc_index
         global $cache;
 
         if(self::MemSetIndex()) {
-            $cache->set('dbc_'.$index_key, serialize($data), 2);
+            $cache->set('dbc_'.$index_key, serialize($data), 1);
         }
 
         self::$index[$index_key] = $data;
