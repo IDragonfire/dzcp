@@ -53,7 +53,7 @@ default:
 
             if(!file_exists($image_map))
             {
-              if($chkMe == 4) $index .= '<span style="color:#000;background-color:#FFF"><b style="color:red">Admin:</b> <b>Mappath:</b> '.str_replace(basePath, '', $image_map).'<br />';
+              if($chkMe == 4) $mappath = '<span style="color:#000;background-color:#FFF"><b style="color:red">Admin:</b> <b>Mappath:</b> '.str_replace(basePath, '', $image_map).'<br />';
               $image_map = "../inc/images/maps/no_map.gif";
             }
 
@@ -212,7 +212,8 @@ default:
                                                     "ip" => $get['ip'],
                                                     "playerstats" => $playerstats,
                                                     "name" => re($server['hostname']),
-                                                                        "image_map" => $image_map));
+                                                    "mappath" => $mappath,
+                                                    "image_map" => $image_map));
 
           $cache->set('gameserver_'.intval($get['id']).'_'.$language, $index, config('cache_server'));
         } else {
