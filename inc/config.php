@@ -9,7 +9,10 @@
 #########################################
 
 define('view_error_reporting', false); // Zeigt alle Fehler und Notices etc.
+define('debug_all_sql_querys', false);
+define('debug_save_to_file', false);
 define('debug_dzcp_handler', true);
+
 define('use_default_timezone', true); // Verwendende die Zeitzone vom Server
 define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selbst einstellen * 'use_default_timezone' auf false stellen *
 define('admin_view_dzcp_news', true); // Entscheidet ob der Newstricker in der Administration angezeigt wird
@@ -68,6 +71,9 @@ if(!$thumbgen) {
             ini_set('display_errors', 0);
 
         error_reporting(E_ALL ^ E_NOTICE ^ E_DEPRECATED);
+
+        if(debug_dzcp_handler)
+            set_error_handler('dzcp_error_handler');
     }
 }
 

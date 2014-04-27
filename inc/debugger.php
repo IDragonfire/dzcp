@@ -20,9 +20,6 @@ define('show_cache_debug', false);
 define('show_sessions_debug', false);
 define('show_deprecation_debug', false);
 
-define('debug_all_sql_querys', false);
-define('debug_save_to_file', false);
-
 #############################################
 ############### Debug Console ###############
 #############################################
@@ -56,8 +53,7 @@ class DebugConsole {
     public static final function insert_warning($file,$func)
     { if(show_warning) self::$log_array[$file][] = '<font color="#FFFF00">'.$func.'</font>'; }
 
-    public static final function sql_error_handler($query)
-    {
+    public static final function sql_error_handler($query) {
         global $mysql;
         $message = '#####################################################################'.EOL.
         '   Datum   = '.date("d.m.y H:i", time()).EOL.
@@ -77,7 +73,7 @@ class DebugConsole {
     public static final function save_log() {
         foreach(self::$log_array as $file => $msg_array)
         { foreach($msg_array as $msg) { self::$file_data .= strip_tags('"'.$file.'" => "'.$msg.'"')."\n"; } }
-        file_put_contents(basePath.'/inc/_logs/debug_'.date("s-i-h").'_'.date("d_m_Y").'.txt', self::$file_data);
+        if(!empty(self::$file_data)) file_put_contents(basePath.'/inc/_logs/debug_'.date("s-i-h").'_'.date("d_m_Y").'.txt', self::$file_data);
     }
 
     public static final function show_logs() {
