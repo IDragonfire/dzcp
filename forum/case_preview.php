@@ -119,10 +119,11 @@ if(defined('_Forum')) {
                                              "lpost" => $lpost,
                                              "lp" => "",
                                              "add" => "",
-                                             "nav" => nav("","",""),
-                                                                   "vote" => $vote,
+                                             "nav" => "",
+                                             "vote" => $vote,
                                              "f_abo" => "",
                                              "show" => $show));
+
     echo '<table class="mainContent" cellspacing="1" style="margin-top:17px">'.$index.'</table>';
     exit;
   } else {

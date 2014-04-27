@@ -1259,6 +1259,7 @@ function squad($code) {
     if(empty($code))
         return '<img src="../inc/images/gameicons/nogame.gif" alt="" class="icon" />';
 
+    $code = str_replace(array('.png','.gif','.jpg'),'',$code);
     foreach($picformat as $end) {
         if(file_exists(basePath."/inc/images/gameicons/".$code.".".$end)) break;
     }
@@ -1360,7 +1361,7 @@ function check_url($url) {
 }
 
 //-> Blaetterfunktion
-function nav($entrys, $perpage, $urlpart, $icon=true) {
+function nav($entrys, $perpage, $urlpart='', $icon=true) {
     global $page;
     if($perpage == 0)
         return "&#xAB; <span class=\"fontSites\">0</span> &#xBB;";
@@ -1375,32 +1376,33 @@ function nav($entrys, $perpage, $urlpart, $icon=true) {
         $page = 2;
 
     $pages = ceil($entrys/$perpage);
+    $urlpart_ext = empty($urlpart) ? '?' : '&amp;';
 
     if(($page-5) <= 2 && $page != 1)
-        $first = '<a class="sites" href="'.$urlpart.'&amp;page='.($page-1).'">&#xAB;</a><span class="fontSitesMisc">&#xA0;</span> <a  class="sites" href="'.$urlpart.'&amp;page=1">1</a> ';
+        $first = '<a class="sites" href="'.$urlpart.$urlpart_ext.'page='.($page-1).'">&#xAB;</a><span class="fontSitesMisc">&#xA0;</span> <a  class="sites" href="'.$urlpart.$urlpart_ext.'page=1">1</a> ';
     else if($page > 1)
-        $first = '<a class="sites" href="'.$urlpart.'&amp;page='.($page-1).'">&#xAB;</a><span class="fontSitesMisc">&#xA0;</span> <a class="sites" href="'.$urlpart.'&amp;page=1">1</a>...';
+        $first = '<a class="sites" href="'.$urlpart.$urlpart_ext.'page='.($page-1).'">&#xAB;</a><span class="fontSitesMisc">&#xA0;</span> <a class="sites" href="'.$urlpart.$urlpart_ext.'page=1">1</a>...';
     else
         $first = '<span class="fontSitesMisc">&#xAB;&#xA0;</span>';
 
     if($page == $pages)
         $last = '<span class="fontSites">'.$pages.'</span><span class="fontSitesMisc">&#xA0;&#xBB;<span>';
     else if(($page+5) >= $pages)
-        $last = '<a class="sites" href="'.$urlpart.'&amp;page='.($pages).'">'.$pages.'</a>&#xA0;<a class="sites" href="'.$urlpart.'&amp;page='.($page+1).'">&#xBB;</a>';
+        $last = '<a class="sites" href="'.$urlpart.$urlpart_ext.'page='.($pages).'">'.$pages.'</a>&#xA0;<a class="sites" href="'.$urlpart.$urlpart_ext.'page='.($page+1).'">&#xBB;</a>';
     else
-        $last = '...<a class="sites" href="'.$urlpart.'&amp;page='.($pages).'">'.$pages.'</a>&#xA0;<a class="sites" href="'.$urlpart.'&amp;page='.($page+1).'">&#xBB;</a>';
+        $last = '...<a class="sites" href="'.$urlpart.$urlpart_ext.'page='.($pages).'">'.$pages.'</a>&#xA0;<a class="sites" href="'.$urlpart.$urlpart_ext.'page='.($page+1).'">&#xBB;</a>';
 
     $result = ''; $resultm = '';
     for($i = $page;$i<=($page+5) && $i<=($pages-1);$i++) {
         if($i == $page)
             $result .= '<span class="fontSites">'.$i.'</span><span class="fontSitesMisc">&#xA0;</span>';
         else
-            $result .= '<a class="sites" href="'.$urlpart.'&amp;page='.$i.'">'.$i.'</a><span class="fontSitesMisc">&#xA0;</span>';
+            $result .= '<a class="sites" href="'.$urlpart.$urlpart_ext.'page='.$i.'">'.$i.'</a><span class="fontSitesMisc">&#xA0;</span>';
     }
 
     for($i=($page-5);$i<=($page-1);$i++) {
         if($i >= 2)
-            $resultm .= '<a class="sites" href="'.$urlpart.'&amp;page='.$i.'">'.$i.'</a> ';
+            $resultm .= '<a class="sites" href="'.$urlpart.$urlpart_ext.'page='.$i.'">'.$i.'</a> ';
     }
 
     return $icon.' '.$first.$resultm.$result.$last;

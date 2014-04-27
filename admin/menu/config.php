@@ -71,7 +71,8 @@ switch ($do) {
                                              `direct_refresh`     = '".((int)$_POST['direct_refresh'])."',
                                              `cache_teamspeak`    = '".((int)$_POST['cache_teamspeak'])."',
                                              `cache_server`       = '".((int)$_POST['cache_server'])."',
-                                             `l_nwars`            = '".((int)$_POST['l_nwars'])."'
+                                             `l_nwars`            = '".((int)$_POST['l_nwars'])."',
+                                             `m_membermap`        = '".((int)$_POST['m_membermap'])."'
                                          WHERE id = 1");
 
             db("UPDATE ".$db['settings']." SET `clanname`           = '".up($_POST['clanname'])."',
@@ -109,9 +110,6 @@ switch ($do) {
                                                `tmpdir`             = '".up($_POST['tmpdir'])."',
                                                `persinfo`           = '".((int)$_POST['persinfo'])."',
                                                `wmodus`             = '".((int)$_POST['wmodus'])."',
-                                               `balken_cw`          = '".up($_POST['balken_cw'])."',
-                                               `balken_vote`        = '".up($_POST['balken_vote'])."',
-                                               `balken_vote_menu`   = '".up($_POST['balken_vote_menu'])."',
                                                `urls_linked`        = '".up($_POST['urls_linked'])."'
                                              WHERE id = 1");
 
@@ -224,6 +222,7 @@ switch ($do) {
                                                  "c_m_gallerypics" => _config_c_gallerypics,
                                                  "c_m_upicsize" => _config_c_upicsize,
                                                  "c_m_gallery" => _config_c_gallery,
+                                                 "c_m_membermap" => _config_c_m_membermap,
                                                  "c_l_servernavi" => _config_c_servernavi,
                                                  "c_tmpdir" => _config_tmpdir,
                                                  "c_maxwidth" => _config_maxwidth,
@@ -283,6 +282,7 @@ switch ($do) {
                                                  "m_comments" => $get['m_comments'],
                                                  "m_cwcomments" => $get['m_cwcomments'],
                                                  "m_archivnews" => $get['m_archivnews'],
+                                                 "m_membermap" => $get['m_membermap'],
                                                  "m_gb" => $get['m_gb'],
                                                  "m_fthreads" => $get['m_fthreads'],
                                                  "m_fposts" => $get['m_fposts'],
@@ -388,14 +388,6 @@ switch ($do) {
                                                  "reg_artikel" => _reg_artikel,
                                                  "c_f_artikelcom" => _reg_artikel,
                                                  "f_artikelcom" => $get['f_artikelcom'],
-                                                 "balken" => _config_head_balken,
-                                                 "balken_cw_head" => _config_balken_cw,
-                                                 "balken_info" => _config_balken_info,
-                                                 "balken_vote_head" => _config_balken_vote_head,
-                                                 "balken_vote_menu_head" => _config_balken_vote_menu_head,
-                                                 "balken_cw" => $gets['balken_cw'],
-                                                 "balken_vote" => $gets['balken_vote'],
-                                                 "balken_vote_menu" => $gets['balken_vote_menu'],
                                                  'urls_linked' => _config_url_linked_head,
                                                  'urls_linked_info' => _urls_linked_info,
                                                  "sel_url" => $sel_url));

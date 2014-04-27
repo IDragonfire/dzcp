@@ -48,18 +48,18 @@ if(defined('_Clanwars')) {
       else            $value = _button_value_add;
 
       $form_player = "";
-	  if(db("SELECT id FROM ".$db['squaduser']." WHERE squad = '".$get['squad_id']."' AND user = '".$userid."'",true)) 
-	  		$form_player = show($dir."/form_player",array("id" => intval($_GET['id']),
-															 "admin" => (permission('clanwars') ? '<input id="contentSubmitAdmin" type="button" value="'._cw_reset_button.'" class="submit" onclick="DZCP.submitButton(\'contentSubmitAdmin\');DZCP.goTo(\'?action=resetplayers&amp;id='.intval($_GET['id']).'\')" />' : ''),
-															 "yes" => _yes,
-															 "no" => _no,
-															 "sely" => (empty($sely) && empty($seln) && empty($selm) ? 'checked="checked"' : $sely),
-															 "seln" => $seln,
-															 "selm" => $selm,
-															 "maybe" => _maybe,
-                                             				 "value" => $value,
-                                            				 "play" => _cw_players_play));
-	  
+      if(db("SELECT id FROM ".$db['squaduser']." WHERE squad = '".$get['squad_id']."' AND user = '".$userid."'",true))
+              $form_player = show($dir."/form_player",array("id" => intval($_GET['id']),
+                                                             "admin" => (permission('clanwars') ? '<input id="contentSubmitAdmin" type="button" value="'._cw_reset_button.'" class="submit" onclick="DZCP.submitButton(\'contentSubmitAdmin\');DZCP.goTo(\'?action=resetplayers&amp;id='.intval($_GET['id']).'\')" />' : ''),
+                                                             "yes" => _yes,
+                                                             "no" => _no,
+                                                             "sely" => (empty($sely) && empty($seln) && empty($selm) ? 'checked="checked"' : $sely),
+                                                             "seln" => $seln,
+                                                             "selm" => $selm,
+                                                             "maybe" => _maybe,
+                                                              "value" => $value,
+                                                             "play" => _cw_players_play));
+
       $players = show($dir."/players", array("show_players" => $show_players,
                                              "nick" => _nick,
                                              "status" => _status,
@@ -74,11 +74,11 @@ if(defined('_Clanwars')) {
     $serverpwd = "";
     $players = "";
   }
-  $img = squad($get['icon']);
+
   $show = show(_cw_details_squad, array("game" => re($get['game']),
-                                                          "name" => re($get['name']),
+                                        "name" => re($get['name']),
                                         "id" => $get['squad_id'],
-                                                          "img" => $img));
+                                        "img" => squad($get['icon'])));
   $flagge = flag($get['gcountry']);
   $gegner = show(_cw_details_gegner_blank, array("gegner" => re($get['clantag']." - ".$get['gegner']),
                                                  "url" => !empty($get['url']) ? re($get['url']) : "#"));
@@ -111,6 +111,7 @@ if(defined('_Clanwars')) {
   }
 
 
+  $screens = '';
   if(!empty($screen1) || !empty($screen2) || !empty($screen3) || !empty($screen4))
   {
     $screens = show($dir."/screenshots", array("head" => _cw_screens,
@@ -131,7 +132,7 @@ if(defined('_Clanwars')) {
 
   $entrys = cnt($db['cw_comments'], " WHERE cw = ".intval($_GET['id']));
   $i = $entrys-($page - 1)*config('m_cwcomments');
-
+  $comments = '';
     while($getc = _fetch($qryc))
     {
     if($getc['hp']) $hp = show(_hpicon, array("hp" => $getc['hp']));
@@ -238,37 +239,45 @@ if(defined('_Clanwars')) {
   $seiten = nav($entrys,config('m_cwcomments'),"?action=details&amp;id=".$_GET['id']."");
 
   $comments = show($dir."/comments",array("head" => _cw_comments_head,
-                                                                               "show" => $comments,
+                                          "show" => $comments,
                                           "seiten" => $seiten,
                                           "add" => $add));
 
   $logo_squad = '_defaultlogo.jpg'; $logo_gegner = '_defaultlogo.jpg';
-  foreach($picformat AS $end)
-  {
-       if(file_exists(basePath.'/inc/images/clanwars/'.$get['id'].'_logo.'.$end)) $logo_gegner = $get['id'].'_logo.'.$end;
-    if(file_exists(basePath.'/inc/images/squads/'.$get['squad_id'].'_logo.'.$end))$logo_squad = $get['squad_id'].'_logo.'.$end;
+  foreach($picformat AS $end) {
+       if(file_exists(basePath.'/inc/images/clanwars/'.$get['id'].'_logo.'.$end)) {
+           $logo_gegner = $get['id'].'_logo.'.$end;
+           break;
+       }
+  }
+
+  foreach($picformat AS $end) {
+      if(file_exists(basePath.'/inc/images/squads/'.$get['squad_id'].'_logo.'.$end)) {
+          $logo_squad = $get['squad_id'].'_logo.'.$end;
+          break;
+      }
   }
 
   $logos = ($logo_squad == '_defaultlogo.jpg') && ($logo_gegner == '_defaultlogo.jpg');
   $pagetitle = re($get['name']).' vs. '.re($get['gegner']).' - '.$pagetitle;
 
   $index = show($dir."/details", array("head" => _cw_head_details,
-                                                         "result_head" => _cw_head_results,
-                                                         "lineup_head" => _cw_head_lineup,
-                                                         "admin_head" => _cw_head_admin,
-                                                         "gametype_head" => _cw_head_gametype,
-                                                         "squad_head" => _cw_head_squad,
-                                                         "flagge" => $flagge,
+                                       "result_head" => _cw_head_results,
+                                       "lineup_head" => _cw_head_lineup,
+                                       "admin_head" => _cw_head_admin,
+                                       "gametype_head" => _cw_head_gametype,
+                                       "squad_head" => _cw_head_squad,
+                                       "flagge" => $flagge,
                                        "br1" => ($logos ? '<!--' : ''),
                                        "br2" => ($logos ? '-->' : ''),
                                        "logo_squad" => $logo_squad,
                                        "logo_gegner" => $logo_gegner,
-                                                         "squad" => $show,
-                                                         "squad_name" => re($get['name']),
-                                                         "gametype" => empty($get['gametype']) ? '-' : re($get['gametype']),
-                                                         "lineup" => preg_replace("#\,#","<br />",re($get['lineup'])),
-                                                         "glineup" => preg_replace("#\,#","<br />",re($get['glineup'])),
-                                                         "match_admins" => empty($get['matchadmins']) ? '-' : re($get['matchadmins']),
+                                       "squad" => $show,
+                                       "squad_name" => re($get['name']),
+                                       "gametype" => empty($get['gametype']) ? '-' : re($get['gametype']),
+                                       "lineup" => preg_replace("#\,#","<br />",re($get['lineup'])),
+                                       "glineup" => preg_replace("#\,#","<br />",re($get['glineup'])),
+                                       "match_admins" => empty($get['matchadmins']) ? '-' : re($get['matchadmins']),
                                        "datum" => _datum,
                                        "gegner" => _cw_head_gegner,
                                        "xonx" => _cw_head_xonx,

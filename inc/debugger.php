@@ -28,8 +28,7 @@ define('debug_save_to_file', false);
 #############################################
 define("EOL","\r\n");
 define('DEBUG_LOADER', true);
-class DebugConsole
-{
+class DebugConsole {
     private static $log_array = array(array());
     private static $file_data = '';
 
@@ -60,20 +59,16 @@ class DebugConsole
     public static final function sql_error_handler($query)
     { self::$log_array['WARNUNG: MySQL Query'][] = 'Fail MySQL Query: <font color="#FF0000">'.$query.'</font>'; }
 
-    public static final function save_log()
-    {
+    public static final function save_log() {
         foreach(self::$log_array as $file => $msg_array)
         { foreach($msg_array as $msg) { self::$file_data .= strip_tags('"'.$file.'" => "'.$msg.'"')."\n"; } }
         file_put_contents(basePath.'/inc/debug_'.date("s-i-h").'_'.date("d_m_Y").'.txt', self::$file_data);
     }
 
-    public static final function show_logs()
-    {
+    public static final function show_logs() {
         $data = ''; $color = 0; $i=0;
-        foreach(self::$log_array as $file => $msg_array)
-        {
-            foreach($msg_array as $msg)
-            {
+        foreach(self::$log_array as $file => $msg_array) {
+            foreach($msg_array as $msg) {
                 $set_color = ($color % 2) ? "#CCCCCC" : "#E6E6E6"; $color++;
                 $data .= '<tr><td width="40%" bgcolor="'.$set_color.'"><b><div align="center"><font color="#000000" style="font-size:11px">"'.$file.'"</font></div></b></td>
                 <td width="60%" bgcolor="'.$set_color.'"><b><div align="center"><font color="#000000" style="font-size:11px">"'.$msg.'"</font></div></b></td></tr>'; $i++;
@@ -88,48 +83,39 @@ class DebugConsole
         '.$data.'</table></td></tr></table><table width="100%" border="0" cellpadding="0" cellspacing="0"><tr><td width="100%" bgcolor="#999999">&nbsp;</td></tr></table>';
     }
 
-    public static final function wire_log($input_level, $input_maxlevel=9, $input_file_name='', $input_content = "",$input_customlevel = "")
-    {
+    public static final function wire_log($input_level, $input_maxlevel=9, $input_file_name='', $input_content = "",$input_customlevel = "") {
         $file = basePath."/inc/_logs/".date("Y-m-d",time(TRUE))."_".$input_file_name.".log";
-        if ($input_maxlevel > 0)
-        {
+        if ($input_maxlevel > 0) {
             $string =
             "#############################".EOL.
             "# <".$input_file_name.">-Logfile ".date("Y-m-d",time(TRUE))." #".EOL.
             "# ========================= #".EOL.
             "# File created at: ".date("H:i:s",time(TRUE))." #".EOL.
             "#############################".EOL.EOL;
-            if (!file_exists($file))
-            {
-                if (!$fileheader = fopen($file,"w"))
-                {
+            if (!file_exists($file)) {
+                if (!$fileheader = fopen($file,"w")) {
                     $status["int"] = 3;
                     $status["str"] = "LOG_COULD_NOT_OPEN_FILE";
                     return $status;
                 }
 
-                if (!fwrite($fileheader,$string))
-                {
+                if (!fwrite($fileheader,$string)) {
                     $status["int"] = 3;
                     $status["str"] = "LOG_COULD_NOT_WRITE_FILE";
                     return $status;
                 }
 
-                if (!fclose($fileheader))
-                {
+                if (!fclose($fileheader)) {
                     $status["int"] = 4;
                     $status["str"] = "LOG_COULD_NOT_CLOSE_FILE";
-                }
-                else
-                {
+                } else {
                     $status["int"] = 0;
                     $status["str"] = "LOG_OK";
                 }
             }
         }
 
-        switch($input_level)
-        {
+        switch($input_level) {
 
             /**** Wert:(OFF) ***********************************************************/
             case "off":
@@ -198,31 +184,25 @@ class DebugConsole
                 break;
         }
 
-        if ($loglevel_int > 0 AND $loglevel_int <= $input_maxlevel)
-        {
+        if ($loglevel_int > 0 AND $loglevel_int <= $input_maxlevel) {
             $string = date("H:i:s",time(TRUE))." ". $_SERVER["REMOTE_ADDR"]." [".$loglevel_str."]: ".$input_content.EOL;
 
-            if (!$fileheader = fopen($file,"a"))
-            {
+            if (!$fileheader = fopen($file,"a")) {
                 $status["int"] = 2;
                 $status["str"] = "LOG_COULD_NOT_OPEN_FILE";
                 return $status;
             }
 
-            if (!fwrite($fileheader,$string))
-            {
+            if (!fwrite($fileheader,$string)) {
                 $status["int"] = 3;
                 $status["str"] = "LOG_COULD_NOT_WRITE";
                 return $status;
             }
 
-            if (!fclose($fileheader))
-            {
+            if (!fclose($fileheader)) {
                 $status["int"] = 4;
                 $status["str"] = "LOG_COULD_NOT_CLOSE_FILE";
-            }
-            else
-            {
+            } else {
                 $status["int"] = 0;
                 $status["str"] = "LOG_OK";
             }
@@ -230,11 +210,9 @@ class DebugConsole
     }
 }
 
-function dzcp_error_handler($code, $msg, $file, $line, $context)
-{
+function dzcp_error_handler($code, $msg, $file, $line, $context) {
     $file = str_replace(basePath, '', $file);
-    switch ($code)
-    {
+    switch ($code) {
         case E_WARNING:
         case E_USER_WARNING:
             DebugConsole::insert_log("<b>WARNUNG:' ".$file." '</b>", $msg, false, "", $line);

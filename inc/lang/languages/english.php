@@ -68,6 +68,7 @@ define('_perm_galleryintern','View internal Gallery');
 define('_perm_dlintern','View internal Downloads');
 
 define('_config_url_linked_head', "URLs linking");
+define('_config_c_m_membermap', 'Membermap');
 define('_ts_settings_customicon', 'custom icons downloading');
 define('_ts_settings_showchannels', 'Only show channels with user');
 define('_ts_settings_showchannels_desc', 'If this is on, they will only show channels there are users.');
@@ -1813,9 +1814,6 @@ define('_ts_sport' , 'Server queryport');
 define('_config_c_awards' , 'Awards');
 define('_counter_start' , 'Counter');
 define('_counter_start_info' , 'Here you can enter a number which will be added to the counter.');
-define('_config_balken_cw' , 'Clanwar statistic');
-define('_config_balken_vote_head' , 'Vote statistic');
-define('_config_balken_vote_menu_head' , 'Menu: Vote statistic');
 define('_admin_nc' , 'Newscomments');
 define('_admin_reg_info' , 'Here you can djust, if users have to be registered to do stuff (write comments, download things, etc)');
 define('_admin_reg_head' , 'Registration required');
