@@ -21,7 +21,8 @@ function events() {
                                                    "event" => $get['title'],
                                                    "info" => $info));
 
-            $eventbox .= show("menu/event", array("events" => $events));
+            $eventbox .= show("menu/event", array("events" => $events,
+			                                      "info" => $info));
         }
     }
 
