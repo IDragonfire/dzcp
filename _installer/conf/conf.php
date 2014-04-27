@@ -13,16 +13,21 @@ define('_true', '<img src="img/true.gif" border="0" alt="" vspace="0" align="cen
 define('_false', '<img src="img/false.gif" border="0" alt="" vspace="0" align="center"> ');
 define('_link_start', '<font class="enabled">&raquo; Lizenz</font>');
 define('_link_start_1', '<font class="disabled">1. Lizenz</font>');
+define('_link_require', '<font class="enabled">&raquo; Erweiterungen</font>');
+define('_link_require_1', '<font class="disabled">2. Erweiterungen</font>');
 define('_link_prepare', '<font class="enabled">&raquo; Vorbereitung</font>');
-define('_link_prepare_1', '<font class="disabled">2. Vorbereitung</font>');
+define('_link_prepare_1', '<font class="disabled">3. Vorbereitung</font>');
 define('_link_install', '<font class="enabled">&raquo; MySQL</font>');
-define('_link_install_1', '<font class="disabled">3. MySQL</font>');
+define('_link_install_1', '<font class="disabled">4. MySQL</font>');
 define('_link_db', '<font class="enabled">&raquo; Installation</font>');
-define('_link_db_1', '<font class="disabled">4. Installation</font>');
+define('_link_db_1', '<font class="disabled">5. Installation</font>');
 define('_link_dbu', '<font class="enabled">&raquo; Update</font>');
 define('_link_dbu_1', '<font class="disabled">4. Update</font>');
 define('_link_done', '<font class="enabled">&raquo; Done</font>');
-define('_link_done_1', '<font class="disabled">5. Done</font>');
+define('_link_done_1', '<font class="disabled">6. Done</font>');
+
+define('_link_update_done', '<font class="enabled">&raquo; Done</font>');
+define('_link_update_done_1', '<font class="disabled">5. Done</font>');
 
 ################
 ## Funktionen ##

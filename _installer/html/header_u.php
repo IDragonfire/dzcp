@@ -33,7 +33,7 @@
                           <td width="38"></td>
                           <td>
                           <?php
-                            if(isset($action) && $action == "")
+                            if($action == "")
                               echo _link_start;
                             else
                               echo _link_start_1;
@@ -44,7 +44,18 @@
                           <td></td>
                           <td>
                           <?php
-                            if(isset($action) && $action == "prepare")
+                            if($action == "require")
+                              echo _link_require;
+                            else
+                              echo _link_require_1;
+                          ?>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td>
+                          <?php
+                            if($action == "prepare")
                               echo _link_prepare;
                             else
                               echo _link_prepare_1;
@@ -55,19 +66,8 @@
                           <td></td>
                           <td>
                           <?php
-                            if(isset($action) && $action == "install")
-                              echo _link_install;
-                            else
-                              echo _link_install_1;
-                          ?>
-                          </td>
-                        </tr>
-                        <tr>
-                          <td></td>
-                          <td>
-                          <?php
-                            if(isset($action) && $action == "database")
-                              echo _link_db;
+                            if($action == "database")
+                              echo _link_dbu;
                             else
                               echo _link_dbu_1;
                           ?>
@@ -77,10 +77,10 @@
                           <td></td>
                           <td>
                           <?php
-                            if(isset($action) && $action == "done")
-                              echo _link_done;
+                            if($action == "done")
+                              echo _link_update_done;
                             else
-                              echo _link_done_1;
+                              echo _link_update_done_1;
                           ?>
                           </td>
                         </tr>

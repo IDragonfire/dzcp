@@ -48,10 +48,6 @@ default:
   include(basePath.'/_installer/html/welcome.php');
 break;
 case 'prepare';
-if(isset($_GET['agb']) && $_GET['agb'])
-{
-  header("Location: install.php?agb=false");
-} else {
   if($do == "set_chmods" && $_POST['check'] != "dont")
   {
     if(function_exists('ftp_connect') && function_exists('ftp_login') && function_exists('ftp_site'))
@@ -213,6 +209,59 @@ if(isset($_GET['agb']) && $_GET['agb'])
             </tr>
           </table>';
   }
+break;
+case 'require';
+if(isset($_GET['agb']) && $_GET['agb']) {
+    header("Location: install.php?agb=false");
+} else {
+    include(basePath.'/_installer/html/require.php');
+    $mcrypt_decrypt = extension_loaded('mcrypt') ? _true."<font color='green'><b>" : _false."<font color='red'><b>";
+    $mcrypt_decrypt.= "</b>&nbsp;&nbsp;&nbsp; Mcrypt</font><br />";
+    $apc = extension_loaded('apc') ? _true."<font color='green'><b>" : _false."<font color='red'><b>";
+    $apc.= "</b>&nbsp;&nbsp;&nbsp; Alternative PHP Cache (APC)</font><br />";
+
+    $opt = '';
+    $opt .= $mcrypt_decrypt;
+    $opt .= $apc;
+    $check = preg_match("#false#Uis",$opt);
+
+    if($check == FALSE)
+    {
+        echo '<table width="100%" cellpadding="1" cellspacing="1" class="done">
+            <tr>
+              <td class="error_text"><b>Optimal</b></td>
+            </tr>
+            <tr>
+              <td class="error_text">Klicken Sie unten rechts auf Weiter um fortzufahren.
+              </td>
+            </tr>
+          </table>';
+        $formcheck = "dont";
+    }
+
+    echo '<table width="100%" cellpadding="3" cellspacing="1" class="emph">
+          <tr>
+            <td><b>Optionale PHP-Erweiterungen</b></td>
+            <td></td>
+          </tr>
+          <tr>
+            <td valign="top">'.$opt.'</td>
+            <td>&nbsp;</td>
+          </tr>
+          <tr>
+            <td valign="top">&nbsp;</td>
+            <td>&nbsp;</td>
+          </tr>
+          </table>';
+
+        echo '<table width="100%" cellpadding="1" cellspacing="1">
+            <tr>
+              <td align="right"><a href="install.php?action=prepare">&raquo; Weiter</a></td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+            </tr>
+          </table>';
 }
 break;
 case'install';
