@@ -42,7 +42,7 @@ $support .= "\r\n";
 $support .= "#####################\r\n";
 $support .= "Socket-Verbindungen \r\n";
 $support .= "#####################\r\n";
-$support .= "PHP fsockopen: ".(function_exists("fsockopen") ? 'On' : 'Off')."\r\n";
+$support .= "PHP fsockopen: ".(fsockopen_support() ? 'On' : 'Off')."\r\n";
 $support .= "PHP allow_url_fopen: ".($PhpInfo['Core']['allow_url_fopen'][0] == 'On' ? 'On' : 'Off')."\r\n";
 $support .= "PHP Sockets: ".(function_exists("socket_create") && $PhpInfo['sockets']['Sockets Support'] == "enabled" ? 'On' : 'Off')."\r\n";
 $support .= "\r\n";
