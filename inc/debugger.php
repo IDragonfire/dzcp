@@ -65,7 +65,7 @@ class DebugConsole {
         '   Query   = '.$query.EOL.
         '#####################################################################'.EOL.EOL;
 
-        $fp = fopen(basePath."/inc/_logs/sql_error_log.txt", "a+");
+        $fp = fopen(basePath."/inc/_logs/sql_error_log.log", "a+");
         fwrite($fp, $message);
         fclose($fp);
     }
@@ -73,7 +73,7 @@ class DebugConsole {
     public static final function save_log() {
         foreach(self::$log_array as $file => $msg_array)
         { foreach($msg_array as $msg) { self::$file_data .= strip_tags('"'.$file.'" => "'.$msg.'"')."\n"; } }
-        if(!empty(self::$file_data)) file_put_contents(basePath.'/inc/_logs/debug_'.date("s-i-h").'_'.date("d_m_Y").'.txt', self::$file_data);
+        if(!empty(self::$file_data)) file_put_contents(basePath.'/inc/_logs/debug_'.date("s-i-h").'_'.date("d_m_Y").'.log', self::$file_data);
     }
 
     public static final function show_logs() {
