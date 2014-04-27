@@ -100,8 +100,7 @@ if(_adminMenu != 'true') exit;
                                                     ));
         }
 
-        if(!empty($_GET['sip'])) $sip = "&amp;sip=".$_GET['sip'];
-
+        $sip = (isset($_GET['sip']) && !empty($_GET['sip'])) ? "&amp;sip=".$_GET['sip'] : "";
         $show = show($dir."/protocol", array("show" => $show,
                                              "date" => _datum,
                                              "del" => _button_title_del_protocol,
@@ -110,6 +109,5 @@ if(_adminMenu != 'true') exit;
                                              "user" => _info_ip,
                                              "value" => _button_value_search,
                                              "search" => $swhat,
-                                             "nav" => nav($entrys,$maxprot,"?admin=protocol".$sip)
-                                             ));
+                                             "nav" => nav($entrys,$maxprot,"?admin=protocol".$sip)));
       }

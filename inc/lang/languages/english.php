@@ -1901,8 +1901,6 @@ define('_admin_artikel' , 'Admin: Article');
 define('_c_l_shoutnick' , 'Menu: Shoutbox: Nick');
 define('_config_c_martikel' , 'Article');
 define('_config_c_madminartikel' , 'Articleadmin');
-define('_admin_squadtemplate' , 'Teamlayouts');
-define('_admin_squadtemplate_info' , 'Here you can adjust several team layouts!');
 define('_reg_artikel' , 'Articlecomments');
 define('_cw_comments' , 'Clanwarcomments');
 define('_on' , 'on');

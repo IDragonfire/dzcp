@@ -1921,8 +1921,6 @@ define('_admin_artikel', 'Admin: Artikel');
 define('_c_l_shoutnick', 'Men&uuml;: Shoutbox: Nick');
 define('_config_c_martikel', 'Artikel');
 define('_config_c_madminartikel', 'Artikel-Admin');
-define('_admin_squadtemplate', 'Teamlayouts');
-define('_admin_squadtemplate_info', 'Hier kannst du versch. Teamlayouts einstellen!');
 define('_reg_artikel', 'Artikelkommentare');
 define('_cw_comments', 'Clanwarkommentare');
 define('_on', 'eingeschaltet');

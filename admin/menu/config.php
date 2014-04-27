@@ -86,7 +86,6 @@ switch ($do) {
                                                `reg_artikel`        = '".((int)$_POST['reg_artikel'])."',
                                                `reg_shout`          = '".((int)$_POST['reg_shout'])."',
                                                `reg_cwcomments`     = '".((int)$_POST['reg_cwcomments'])."',
-                                               `squadtmpl`          = '".((int)$_POST['squadtmpl'])."',
                                                `counter_start`      = '".((int)$_POST['counter_start'])."',
                                                `reg_newscomments`   = '".((int)$_POST['reg_nc'])."',
                                                `reg_dl`             = '".((int)$_POST['reg_dl'])."',
@@ -141,7 +140,6 @@ switch ($do) {
         $selr_cwc = $gets['reg_cwcomments'] ? 'selected="selected"' : '';
         $selr_shout = $gets['reg_shout'] ? 'selected="selected"' : '';
         $selwm = $gets['wmodus'] ? 'selected="selected"' : '';
-        $selsq = $gets['squadtmpl'] == 2 ? 'selected="selected"' : '';
         $selr_pi = !$gets['persinfo'] ? 'selected="selected"' : '';
         $sel_sl = $get['securelogin'] ? 'selected="selected"' : '';
         $selh_all = $get['allowhover'] == 1 ? 'selected="selected"' : '';
@@ -293,8 +291,6 @@ switch ($do) {
                                                  "counter_start" => _counter_start,
                                                  "c_start" => $gets['counter_start'],
                                                  "selsq" => $selsq,
-                                                 "squadtmpl" => _admin_squadtemplate,
-                                                 "squadtmpl_info" => _admin_squadtemplate_info,
                                                  "c_start_info" => _counter_start_info,
                                                  "floods" => _config_c_floods,
                                                  "floods_what" => _config_c_floods_what,
