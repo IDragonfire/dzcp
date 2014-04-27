@@ -200,10 +200,15 @@ function userid() {
     global $db;
 
     if(empty($_SESSION['id']) || empty($_SESSION['pwd'])) return 0;
-    $sql = db("SELECT id FROM ".$db['users']." WHERE id = '".$_SESSION['id']."' AND pwd = '".$_SESSION['pwd']."'");
-    if(!_rows($sql)) return 0;
-    $get = _fetch($sql);
-    return $get['id'];
+    if(!dbc_index::issetIndex('user_'.$_SESSION['id'])) {
+        $sql = db("SELECT * FROM ".$db['users']." WHERE id = '".$_SESSION['id']."' AND pwd = '".$_SESSION['pwd']."'");
+        if(!_rows($sql)) return 0;
+        $get = _fetch($sql);
+        dbc_index::setIndex('user_'.$get['id'], $get);
+        return $get['id'];
+    }
+
+    return dbc_index::getIndexKey('user_'.$_SESSION['id'], 'id');
 }
 
 //-> Templateswitch
@@ -992,13 +997,6 @@ function orderby($sort) {
     return $url."orderby=".$sort."&order=ASC";
 }
 
-//-> Funktion um einer id einen Nick zuzuweisen
-function nick_id($tid) {
-    global $db;
-    $get = db("SELECT nick FROM ".$db['users']." WHERE id = '".$tid."'",false,true);
-    return $get['nick'];
-}
-
 //-> Funktion um ein Datenbankinhalt zu highlighten
 function highlight($word) {
     if(substr(phpversion(),0,1) == 5)
@@ -1073,17 +1071,17 @@ function online_reg() {
 //-> Prueft, ob der User eingeloggt ist und wenn ja welches Level besitzt er
 function checkme($userid_set=0) {
     global $db;
-
-    if(!$userid = ($userid_set != 0 ? intval($userid_set) : userid()))
-        return 0;
-
-    $qry = db("SELECT level FROM ".$db['users']." WHERE id = ".$userid." AND pwd = '".$_SESSION['pwd']."' AND ip = '".$_SESSION['ip']."'");
-    if(_rows($qry)) {
+    if(!$userid = ($userid_set != 0 ? intval($userid_set) : userid())) return 0;
+    if(empty($_SESSION['id']) || empty($_SESSION['pwd'])) return 0;
+    if(!dbc_index::issetIndex('user_'.$userid)) {
+        $qry = db("SELECT * FROM ".$db['users']." WHERE id = ".$userid." AND pwd = '".$_SESSION['pwd']."' AND ip = '".$_SESSION['ip']."'");
+        if(!_rows($qry)) return 0;
         $get = _fetch($qry);
+        dbc_index::setIndex('user_'.$get['id'], $get);
         return $get['level'];
     }
-    else
-        return 0;
+
+    return dbc_index::getIndexKey('user_'.$userid, 'level');
 }
 
 //-> Prueft, ob der User gesperrt ist und meldet ihn ab
