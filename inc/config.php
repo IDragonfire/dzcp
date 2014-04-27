@@ -23,6 +23,9 @@ define('cookie_expires', (60*60*24*30*12)); // Wie Lange die Cookies des CMS ihr
 define('dzcp_version_checker', true); // Version auf DZCP.de abgleichen und benachrichtigen ob eine neue Version zur Verfuegung steht
 define('dzcp_version_checker_refresh', (30*60)); // Wie lange soll gewartet werden um einen Versionsabgleich auszufuehren
 
+define('buffer_gzip_compress_level', 4); // Level der GZIP Kompression 1 - 9
+define('buffer_show_licence_bar', true); // Schaltet die "Powered by DZCP - deV!L`z Clanportal V1.6" am ende der Seite an oder aus
+
 /*
 * Bitte vor der Aktivierung der Persistent Connections lesen:
 * http://php.net/manual/de/features.persistent-connections.php
@@ -34,9 +37,6 @@ $config_cache['storage'] = "auto"; //auto,memcache,files,sqlite,wincache,xcache 
 $config_cache['server'] = array(array("127.0.0.1",11211,1));
 $config_cache['dbc'] = true; //use database querie caching * only use with memory cache
 $config_cache['dbc_auto_memcache'] = false; //use database querie caching * auto memcache check
-
-//-> Hex Farbcode der Hintergrundfarbe Copyrightlinks am Ende der Homepage
-$cp_color = '#d3d3d3';
 
 //-> Legt die UserID des Rootadmins fest
 //-> (dieser darf bestimmte Dinge, den normale Admins nicht duerfen, z.B. andere Admins editieren)
