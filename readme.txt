@@ -1,8 +1,17 @@
-########################################
+﻿########################################
 # deV!L`z Clanportal - kurz 'DZCP'     #
 # =====================================#
 # www.dzcp.de                          #
 ########################################
+
+
+ ______     ______  ______   ______     __   __      ____           ______      
+/_____/\   /_____/\/_____/\ /_____/\   /_/\ /_/\    /___/\         /_____/\     
+\:::_ \ \  \:::__\/\:::__\/ \:::_ \ \  \:\ \\ \ \   \_::\ \        \:::__\/     
+ \:\ \ \ \    /: /  \:\ \  __\:(_) \ \  \:\ \\ \ \    \::\ \     ___\:\ \____   
+  \:\ \ \ \  /::/___ \:\ \/_/\\: ___\/   \:\_/.:\ \   _\: \ \__ /__/\\::__::/\  
+   \:\/.:| |/_:/____/\\:\_\ \ \\ \ \      \ ..::/ /  /__\: \__/\\::\ \\:\_\:\ \ 
+    \____/_/\_______\/ \_____\/ \_\/       \___/_(   \________\/ \:_\/ \_____\/ 
 
 
 1. Installation
@@ -39,24 +48,24 @@ Aufgrund der vielzahl an �nderungen, wird kein manuelles Update f�r diese Ve
 
         Update / New
         ------------
-        -sicheres automatisches generiertes Passwort #1
-        -TinyMCE mit neuem FileUploader + Smartphone tauglich #4 #54
-        -Server-Queries  #10
-        -Membermap (new Google Maps API) #16 #46
-        -Infobox Update #20 #21 #76
-        -JQuery #28 #29
-        -Lightbox #28
-        -News nach Kategorien anzeigen #35
-        -Mapdownload (Gameserver) entfernt (Service wurde eingestellt)  #37
-        -TS3 Update (support customs icons) #68
-        -manuell sortieren der Sub-Forumkategorien #71
-        -valid html template #80
-        -auto URL Erkennung #82
-        -Admin - Navigation nach Kategorie geordnet #108
-        -Teamspeak IP ohne Port #114
-        -Profilfelderverwaltung k�nnen Profilfelder ausgeblendet werden #119
-        -Filter in der Admin Clanwars�bersicht hinzugef�gt # 123 # 124
-        -Avatar Upload beim Adminmen� Userhinzuf�gen hinzugef�gt #204
+        -sicheres automatisches generiertes Passwort
+        -TinyMCE mit neuem FileUploader + Smartphone tauglich
+        -Server-Queries hinzugefügt zbsp. Battlefield 4
+        -Membermap (new Google Maps API)
+        -Infobox Update
+        -JQuery Upadte v1.11.0
+        -Lightbox
+        -News nach Kategorien anzeigen
+        -Mapdownload (Gameserver) entfernt (Service wurde eingestellt)  
+        -TS3 Update (support customs icons) 
+        -manuell sortieren der Sub-Forumkategorien
+        -valid html template 
+        -auto URL Erkennung 
+        -Admin - Navigation nach Kategorie geordnet 
+        -Teamspeak IP ohne Port 
+        -Profilfelderverwaltung k�nnen Profilfelder ausgeblendet werden 
+        -Filter in der Admin Clanwars�bersicht hinzugef�gt 
+        -Avatar Upload beim Adminmen� Userhinzuf�gen hinzugef�gt 
         -Vorschaubild in der Galerie�bersicht wurde hinzugef�gt
         -neues Template v1.6 ( Danke an esport Designs f�r das Design Template v1.6 )
         -Template version1.6 inkl. erweiterte Platzhalter f�r die Boxen (Boxentitel werden beim �ndern der Sprache mit �bersetzt)
@@ -80,7 +89,7 @@ Aufgrund der vielzahl an �nderungen, wird kein manuelles Update f�r diese Ve
         -Der alte DZCP Cache wurde gegen einen neuen ersetzt, dieser unterst�tzt jetzt Files,SQL-Lite, APC, Memcache, WinCache und XCache
         -Verschiedene Optimierungen und Ausbesserungen im PHP und HTML Code
 	-Skype und Steam ID wurde als Formularfeld in FightUs, JoinUs und Konatkt hinzugef�gt
-	-Error-Report wurde hinzugef�gt und kann �ber die config.php aktiviert / deaktiviert werden
+	-Error-Report wurde hinzugef�gt und kann �ber die config.php aktiviert / deaktiviert werden (logfils werden unter inc/_logs gespeichert)
 	-Mouseover wurde f�r die EventBox hinzugef�gt
 	-[b1] und [b2] wurden entfernt und durch <logged_in></logged_in> und <logged_out></logged_out> ersetzt
 	-Gametiger wurde entfernt 
@@ -90,46 +99,46 @@ Aufgrund der vielzahl an �nderungen, wird kein manuelles Update f�r diese Ve
         Bugfixes
         --------
 
-        -unver�ffentlichte Artikel kann man nicht ansehen #2
-        -highlight in der Forum Suche wird nicht ressetet #5
-        -Man kann als Gast / unregistrierte User Kommentare abgeben #7 #23 #30
-        -Serverviewer f�r MOHAA, SH und BT Fix #8
-        -Loginname / Username mit Sonderzeichen nicht m�glich #9
-        -Datum letzter Download wird nicht richtig aktualisiert #13
-        -gel�schte Forenposts werden nicht zur�ckgerechnet #14
-        -Nachtragsfunktion wird nicht in der Userlobby angezeigt #15
-        -JoinUs Benachrichtigung fehlerhaft #18
-        -Galerie Bilder wurden nicht richtig verkleinert und waren zu gro� #32
-        -additional languages werden vor additional functions geladen #33
-        -Glossarw�rter zerrei�en Text (aus Interesse wird z.b. INT eresse) #34
-        -Newsletter interne Links werden nicht richtig kodiert #36
+        -unver�ffentlichte Artikel kann man nicht ansehen 
+        -highlight in der Forum Suche wird nicht resetet 
+        -Man kann als Gast / unregistrierte User Kommentare abgeben 
+        -Serverviewer f�r MOHAA, SH und BT Fix 
+        -Loginname / Username mit Sonderzeichen nicht m�glich 
+        -Datum letzter Download wird nicht richtig aktualisiert 
+        -gel�schte Forenposts werden nicht zur�ckgerechnet 
+        -Nachtragsfunktion wird nicht in der Userlobby angezeigt 
+        -JoinUs Benachrichtigung fehlerhaft 
+        -Galerie Bilder wurden nicht richtig verkleinert und waren zu gro� 
+        -additional languages werden vor additional functions geladen 
+        -Glossarw�rter zerrei�en Text (aus Interesse wird z.b. INT eresse) 
+        -Newsletter interne Links werden nicht richtig kodiert 
         -Bug beim Ajax Vote
-        -Nick in der Shoutbox wird nicht gek�rzt #55
-        -G�stebuch Homepage-Links werden gek�rzt #57
-        -Gro�geschriebener bbcode ohne Funktion #58
-        -Bilder wurden nicht immer verkleinert (auto resized) #60
-        -Server Passwort war sichtbar #53 #61 #62
-        -FightUs Benachrichtigung fehlerhaft #63
-        -interne Votes werden public nach Editierung #65
-        -inaktive Squads kann man keine Awards vergeben #66 #67
-        -Event Links werden nicht richtig erkannt #66
-        -Fehlende defines in Sprachdatei #75
-        -Men� f�r Banneradresse hat sich nicht ge�ffnet #85
-        -Adminmen� war nicht immer f�r alle Berechtigten sichtbar #90
-        -Infomeldungen werden 5 anstatt 2 Sekunden angezeigt #91
-        -Emailvorlagen Probleme mit Sonderzeichen #92
-        -unver�ffentliche Artikel / News k�nnen von unregistrierten Usern eingesehn werden #105
+        -Nick in der Shoutbox wird nicht gek�rzt 
+        -G�stebuch Homepage-Links werden gek�rzt 
+        -Gro�geschriebener bbcode ohne Funktion 
+        -Bilder wurden nicht immer verkleinert (auto resized) 
+        -Server Passwort war sichtbar 
+        -FightUs Benachrichtigung fehlerhaft 
+        -interne Votes werden public nach Editierung 
+        -inaktive Squads kann man keine Awards vergeben
+        -Event Links werden nicht richtig erkannt
+        -Fehlende defines in Sprachdatei 
+        -Men� f�r Banneradresse hat sich nicht ge�ffnet 
+        -Adminmen� war nicht immer f�r alle Berechtigten sichtbar 
+        -Infomeldungen werden 5 anstatt 2 Sekunden angezeigt
+        -Emailvorlagen Probleme mit Sonderzeichen 
+        -unver�ffentliche Artikel / News k�nnen von unregistrierten Usern eingesehn werden 
         -Threadersteller wird nicht als Top Poster gez�hlt
-        -bestimmte Zeichen wurden in der Datenbank doppelt codiert #120
-        -editprofile BUG #121 #122
-        -Backslashes are not supported #125
-        -Fix Privatnachrichten (ErrorNo = 1364) #130
-        -Loginname wurde nicht richtig formatiert beim Editieren #139
-        -TS3 funktionieren keine Sonderzeichen #165
-        -Seitenaufteilung: 0 als Wert #166
-        -Newskatimage / Galeriebilder werden bei langen Filenamen nicht angezeigt # 198 # 205
-        -Forumsuche - internen Threads werden nicht in die suche mit einbezogen #212
-        -Sch�nheitsfehler in den Formularen #201
+        -bestimmte Zeichen wurden in der Datenbank doppelt codiert 
+        -editprofile BUG 
+        -Backslashes are not supported 
+        -Fix Privatnachrichten (ErrorNo = 1364) 
+        -Loginname wurde nicht richtig formatiert beim Editieren
+        -TS3 funktionieren keine Sonderzeichen 
+        -Seitenaufteilung: 0 als Wert 
+        -Newskatimage / Galeriebilder werden bei langen Filenamen nicht angezeigt 
+        -Forumsuche - internen Threads werden nicht in die suche mit einbezogen 
+        -Sch�nheitsfehler in den Formularen 
         -Navigation Interne Seiten waren �ber Link f�r jeden aufrufbar
         -Glossarnavigation Alle ohne Funktion
         -mit aktiven Autologin wurden Pagebesuche nicht gez�hlt
