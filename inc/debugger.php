@@ -21,6 +21,7 @@ define('show_sessions_debug', false);
 define('show_deprecation_debug', false);
 
 define('debug_all_sql_querys', false);
+define('debug_save_to_file', false);
 
 #############################################
 ############### Debug Console ###############

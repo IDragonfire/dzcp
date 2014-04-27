@@ -2344,6 +2344,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index')
         $index = (file_exists("../inc/_templates_/".$tmpdir."/".$index_templ.".html") ? show($index_templ, $arr) : show("index", $arr));
         if(!mysqli_persistconns) $mysql->close(); //MySQL
         cookie::save(); //Save Cookie
+        if(debug_save_to_file) DebugConsole::save_log(); //Debug save to file
         echo view_error_reporting ? DebugConsole::show_logs().$index : $index; //Debug Console + Index Out
     }
 }
