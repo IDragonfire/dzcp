@@ -53,7 +53,7 @@ default:
 
             if(!file_exists($image_map))
             {
-              if($chkMe == 4) $index .= '<span style="color:#000;background-color:#FFF"><b style="color:red">Admin:</b> <b>Mappath:</b> '.str_replace('../', basePath.'/', $image_map).'<br />';
+              if($chkMe == 4) $index .= '<span style="color:#000;background-color:#FFF"><b style="color:red">Admin:</b> <b>Mappath:</b> '.str_replace(basePath, '', $image_map).'<br />';
               $image_map = "../inc/images/maps/no_map.gif";
             }
 
