@@ -1236,7 +1236,7 @@ function rawflag($code) {
     }
 
     if(file_exists(basePath."/inc/images/flaggen/".$code.".".$end))
-        return'<img src=../inc/images/flaggen/'.$code.'.'.$end.' alt= class=icon />';
+        return'&lt;img src=../inc/images/flaggen/'.$code.'.'.$end.' alt= class=icon />';
 
     return '<img src=../inc/images/flaggen/nocountry.gif alt= class=icon />';
 }
