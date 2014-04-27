@@ -14,6 +14,7 @@ ob_start();
     if(empty($sql_user) && empty($sql_pass) && empty($sql_db)) {
         header('Location: _installer/index.php');
     }    else {
+        $global_index = true;
         include(basePath."/inc/debugger.php");
         include(basePath."/inc/config.php");
         include(basePath."/inc/bbcode.php");

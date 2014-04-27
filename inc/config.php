@@ -91,6 +91,9 @@ if(file_exists(basePath."/inc/mysql.php"))
 if(!isset($installation))
   $installation = false;
 
+if(!isset($global_index))
+    $global_index = false;
+
 function show($tpl="", $array=array(), $array_lang_constant=array(), $array_block=array()) {
     global $tmpdir,$chkMe;
     if(!empty($tpl) && $tpl != null) {
@@ -297,7 +300,8 @@ if(file_exists(basePath."/_installer/index.php") &&
    file_exists(basePath."/inc/mysql.php") && !$installation && !$thumbgen) {
     $user_check = db("SELECT * FROM `".$db['users']."` WHERE `id` = 1",false,true);
     if(!array_key_exists('banned',$user_check) && !$installer)
-        header('Location: ../_installer/update.php');
+        $global_index ? header('Location: _installer/update.php') :
+                        header('Location: ../_installer/update.php');
     unset($user_check);
 }
 
