@@ -44,7 +44,7 @@ switch ($action):
     break;
     case 'link';
         $get = db("SELECT link FROM ".$db['sponsoren']."
-                   WHERE id = '".intval($_GET['id'])."'",true,false);
+                   WHERE id = '".intval($_GET['id'])."'",false,true);
 
         db("UPDATE ".$db['sponsoren']."
             SET `hits` = hits+1
