@@ -209,13 +209,14 @@ function _fetch($fetch) {
 }
 
 function db($query='',$rows=false,$fetch=false) {
-    global $prefix,$mysql;
+    global $prefix,$mysql,$clanname;
 
     if(debug_all_sql_querys) DebugConsole::wire_log('debug', 9, 'SQL_Query', $query);
-    if(!$qry = $mysql->query($query)) die('<b>MySQLi-Query failed:</b><br /><br /><ul>'.
-                                     '<li><b>ErrorNo</b> = '.!empty($prefix) ? str_replace($prefix,'',$mysql->connect_errno) : $mysql->connect_errno.
-                                     '<li><b>Error</b>   = '.!empty($prefix) ? str_replace($prefix,'',$mysql->connect_error) : $mysql->connect_error.
-                                     '<li><b>Query</b>   = '.!empty($prefix) ? str_replace($prefix,'',$query).'</ul>' : $query);
+    if(!$qry = $mysql->query($query)) {
+        DebugConsole::sql_error_handler($query,$mysql);
+        die('<b>Upps...</b><br /><br />Entschuldige bitte! Das h&auml;tte nicht passieren d&uuml;rfen. Wir k&uuml;mmern uns so schnell wie m&ouml;glich darum.<br><br>'.$clanname.'<br><br>'._back);
+    }
+
     if ($rows && !$fetch)
         return _rows($qry);
     else if($fetch && $rows)

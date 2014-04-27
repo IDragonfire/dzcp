@@ -56,13 +56,26 @@ class DebugConsole {
     public static final function insert_warning($file,$func)
     { if(show_warning) self::$log_array[$file][] = '<font color="#FFFF00">'.$func.'</font>'; }
 
-    public static final function sql_error_handler($query)
-    { self::$log_array['WARNUNG: MySQL Query'][] = 'Fail MySQL Query: <font color="#FF0000">'.$query.'</font>'; }
+    public static final function sql_error_handler($query,$mysql)
+    {
+        $message = '#####################################################################'.EOL.
+        '   Datum   = '.date("d.m.y H:i", time()).EOL.
+        '   URL     = http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'].$_SERVER['PHP_self'].EOL.
+        '   MySQLi-Query failed:'.EOL.
+        '   ErrorNo = '.$mysql->connect_errno.EOL.
+        '   Error   = '.$mysql->connect_error.EOL.
+        '   Query   = '.$query.EOL.
+        '#####################################################################'.EOL.EOL;
+
+        $fp = fopen(basePath."/inc/_logs/sql_error_log.txt", "a+");
+        fwrite($fp, $message);
+        fclose($fp);
+    }
 
     public static final function save_log() {
         foreach(self::$log_array as $file => $msg_array)
         { foreach($msg_array as $msg) { self::$file_data .= strip_tags('"'.$file.'" => "'.$msg.'"')."\n"; } }
-        file_put_contents(basePath.'/inc/debug_'.date("s-i-h").'_'.date("d_m_Y").'.txt', self::$file_data);
+        file_put_contents(basePath.'/inc/_logs/debug_'.date("s-i-h").'_'.date("d_m_Y").'.txt', self::$file_data);
     }
 
     public static final function show_logs() {
