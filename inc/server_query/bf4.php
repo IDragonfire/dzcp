@@ -37,7 +37,7 @@
       $data['players']    = cut_pascal($buffer, 4, 0, 1);
       $data['maxplayers'] = cut_pascal($buffer, 4, 0, 1);
       cut_pascal($buffer, 4, 0, 1);
-      $data['gamemod']    = 'bf4';
+      $data['gamemod']    = 'maps';
 	  switch (cut_pascal($buffer, 4, 0, 1)) {
 		        // Battlefield 4 Maps
      			default:             $nmap = '-'; break;
