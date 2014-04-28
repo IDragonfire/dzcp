@@ -255,6 +255,11 @@ div#index {
     padding-bottom:5px;
     margin-bottom:10px
 }
+
+.mainNavigation ul li:nth-last-child(1) a {
+background:none;
+}
+
 /* Ueberschrift Main Navigation */
 .mainNavigation h2.headline {
     height: 45px;
@@ -726,6 +731,7 @@ td.contentHead,td.contentMainTop,td.contentMainFirst,td.contentMainSecond,td.con
   vertical-align: middle;
 }
 
+
 td.contentHead,td.infoTop {
   background-color: #303030;
   text-align: center;
@@ -925,11 +931,13 @@ a.navLastArtikel:link,a.navLastArtikel:visited {
   display: block; padding: 1px 2px;
 }
 
+a.navLastArtikel:link,a.navLastArtikel:visited,
 a.navLastCw:link,a.navLastCw:visited,
 a.navNextCw:link,a.navNextCw:visited,
 a.navLastNews:link,a.navLastNews:visited,
 a.navFtopics:link,a.navFtopics:visited {
-  padding: 2px 6px; padding-bottom: 4px;
+  padding: 2px 6px; 
+  padding-bottom: 4px;
   display: block;
 }
 
@@ -947,6 +955,7 @@ a.navKal:link,a.navKal:visited {
 }
 
 /* Navigation */
+
 a.navMain:link,a.navMain:visited {
   background: url(../images/main_navigation.jpg) bottom repeat-x;
   font-weight: normal;
@@ -956,6 +965,13 @@ a.navMain:link,a.navMain:visited {
   margin:0 19px;
   color:#cccccc;
 }
+
+
+td.contentHead a:link, td.contentHead a:visited {
+  color:#cccccc;
+}
+
+td.contentHead a:hover, td.contentHead a:active,
 a.navMain:hover,a.navMain:active {
   color: #fff;
 }
@@ -976,7 +992,6 @@ a.navServer:hover,a.navServer:active,
 a.navMisc:hover,a.navMisc:active {
   color: #7d7d7d;
   background:#e4e4e4;
-  font-weight:bold;
 }
 
 /*

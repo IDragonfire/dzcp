@@ -2345,7 +2345,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index')
             $index = error(_error_have_to_be_logged, 1);
 
         $where = preg_replace_callback("#autor_(.*?)$#",create_function('$id', 'return data("nick","$id[1]");'),$where);
-        $index = empty($index) ? '' : (empty($check_msg) ? '' : $check_msg).'<table class="mainContent" cellspacing="1" style="margin-top:0">'.$index.'</table>';
+        $index = empty($index) ? '' : (empty($check_msg) ? '' : $check_msg).'<table class="mainContent" cellspacing="1">'.$index.'</table>';
 
         //-> Sort & filter placeholders
         //default placeholders
