@@ -85,18 +85,13 @@ if(_adminMenu != 'true') exit;
 
       $show = info(_kalender_deleted,"?admin=kalender");
     } else {
-      if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("titel","datum"))) {
-            $qry = db("SELECT * FROM ".$db['events']."
-                   ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."");
-      }
-      else {$qry = db("SELECT * FROM ".$db['events']."
-                 ORDER BY datum DESC");
-      }
+        $qry = db("SELECT * FROM ".$db['events']." ".orderby_sql(array("event","datum"),'ORDER BY datum DESC'));
         while($get = _fetch($qry))
         {
           $edit = show("page/button_edit_single", array("id" => $get['id'],
                                                         "action" => "admin=kalender&amp;do=edit",
                                                         "title" => _button_title_edit));
+
           $delete = show("page/button_delete_single", array("id" => $get['id'],
                                                             "action" => "admin=kalender&amp;do=delete",
                                                             "title" => _button_title_del,
