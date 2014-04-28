@@ -393,15 +393,8 @@ if(_adminMenu != 'true') exit;
 
         $show = info(_newspic_deleted, "?admin=newsadmin&do=edit&id=".intval($_GET['id'])."");
       } else {
-        $entrys = cnt($db['news']);
-        if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("titel","datum","autor"))) {
-        $qry = db("SELECT * FROM ".$db['news']."
-                   ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
-                   LIMIT ".($page - 1)*config('m_adminnews').",".config('m_adminnews')."");
-        }
-        else{
-        $qry = db("SELECT * FROM ".$db['news']." ORDER BY `public` ASC, `datum` DESC LIMIT ".($page - 1)*config('m_adminnews').",".config('m_adminnews')."");
-        }
+        $entrys = cnt($db['news']); $show_ = '';
+        $qry = db("SELECT * FROM ".$db['news']." ".orderby_sql(array("titel","datum","autor"), 'ORDER BY `public` ASC, `datum` DESC')." LIMIT ".($page - 1)*config('m_adminnews').",".config('m_adminnews')."");
         while($get = _fetch($qry))
         {
           $edit = show("page/button_edit_single", array("id" => $get['id'],
@@ -438,9 +431,9 @@ if(_adminMenu != 'true') exit;
                                                    "delete" => $delete));
         }
 
-        $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
-        $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
-        $nav = nav($entrys,config('m_adminnews'),"?admin=newsadmin".$_GET['show']."".$orderby);
+        $orderby = !isset($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
+        $orderby .= !isset($_GET['order']) ? "" : "&order=".$_GET['order'];
+        $nav = nav($entrys,config('m_adminnews'),"?admin=newsadmin".isset($_GET['show']) ? $_GET['show'] : ''.$orderby);
 
         $show = show($dir."/admin_news", array("head" => _news_admin_head,
                                                "nav" => $nav,

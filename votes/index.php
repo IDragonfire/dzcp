@@ -30,10 +30,10 @@ default:
     $fvote = '';
     if(!settings('forum_vote'))
         $fvote = empty($whereIntern) ? ' AND forum = 0' : ' AND forum = 0';
-    if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array('titel','datum','von','ges_stimmen'))) {
-          $order = mysqli_real_escape_string($mysql, $_GET['orderby'].' '.$_GET['order']);
-    }
-    $qry = db('SELECT votes.*,sum(votes_result.stimmen) as ges_stimmen FROM '.$db['votes'].' votes,'.$db['vote_results'].' votes_result WHERE votes.id = votes_result.vid '.$whereIntern.$fvote.' GROUP by votes.id ORDER BY ' . $order);
+
+    $qry = db('SELECT votes.*,sum(votes_result.stimmen) as ges_stimmen FROM '.$db['votes'].' votes,'.$db['vote_results'].' votes_result
+            WHERE votes.id = votes_result.vid '.$whereIntern.$fvote.'
+            GROUP by votes.id '.orderby_sql(array('titel','datum','von','ges_stimmen'), 'ORDER BY datum'));
 
   while($get = _fetch($qry)) {
         $qryv = db('SELECT * FROM ' . $db['vote_results'] .

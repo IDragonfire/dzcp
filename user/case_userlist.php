@@ -59,20 +59,11 @@ if(defined('_UserMenu')) {
                    WHERE level = '0'
                    ORDER BY nick
                    LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
-    } elseif(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("nick","bday"))) {
-        $tmp_orderby = $_GET['orderby'];
-            if($_GET['orderby'] == "bday")
-                $_GET['orderby'] = "bday_order";
-
-        $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,STR_TO_DATE(bday, '%d.%m.%Y') AS bday_order FROM ".$db['users']."
-                   WHERE level != '0'
-                   ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
-                   LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } else {
-          $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,
+        $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,
                    icq,status,position FROM ".$db['users']."
                    WHERE level != '0'
-                   ORDER BY level DESC,nick
+                  ".orderby_sql(array("nick","bday"), 'ORDER BY level DESC,nick')."
                    LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     }
 
