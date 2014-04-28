@@ -9,14 +9,26 @@
  * Contributing: http://tinymce.moxiecode.com/contributing
  */
 
+define('basePath', dirname(dirname(dirname(__FILE__))));
+ob_start();
+
+## Require ##
+$ajaxJob = true;
+require_once(basePath."/inc/debugger.php");
+require_once(basePath."/inc/config.php");
+require_once(basePath."/inc/bbcode.php");
+
 // Handle incoming request if it's a script call
 if (TinyMCE_Compressor::getParam("js")) {
     // Default settings
-    $tinyMCECompressor = new TinyMCE_Compressor(array("cache_dir" => "../../inc/_cache_/"));
+    $tinyMCECompressor = new TinyMCE_Compressor();
 
     // Handle request, compress and stream to client
     $tinyMCECompressor->handleRequest();
 }
+
+if(!mysqli_persistconns)
+    $mysql->close(); //MySQL
 
 /**
  * This class combines and compresses the TinyMCE core, plugins, themes and
@@ -76,6 +88,7 @@ class TinyMCE_Compressor {
      * Handles the incoming HTTP request and sends back a compressed script depending on settings and client support.
      */
     public function handleRequest() {
+        global $cache;
         $files = array();
         $supportsGzip = false;
         $expiresOffset = $this->parseTime($this->settings["expires"]);
@@ -100,10 +113,6 @@ class TinyMCE_Compressor {
         $tagFiles = self::getParam("files");
         if ($tagFiles)
             $this->settings["files"] = $tagFiles;
-
-        $diskCache = self::getParam("diskcache");
-        if ($diskCache)
-            $this->settings["disk_cache"] = ($diskCache === "true");
 
         $src = self::getParam("src");
         if ($src)
@@ -162,9 +171,6 @@ class TinyMCE_Compressor {
 
         $supportsGzip = $this->settings['compress'] && !empty($encoding) && !$zlibOn && function_exists('gzencode');
 
-        // Set cache file name
-        $cacheFile = $this->settings["cache_dir"] . "/" . $hash . ($supportsGzip ? ".cache" : ".js");
-
          // Set headers
         header("Content-type: text/javascript");
         header("Vary: Accept-Encoding");  // Handle proxies
@@ -174,37 +180,32 @@ class TinyMCE_Compressor {
         if ($supportsGzip)
             header("Content-Encoding: " . $encoding);
 
-        // Use cached file
-        if ($this->settings['disk_cache'] && file_exists($cacheFile)) {
-            readfile($cacheFile);
-            return;
-        }
+        if(!$cache->isExisting($hash)) {
+            // Set base URL for where tinymce is loaded from
+            $buffer = "var tinyMCEPreInit={base:'" . dirname($_SERVER["SCRIPT_NAME"]) . "',suffix:''};";
 
-        // Set base URL for where tinymce is loaded from
-        $buffer = "var tinyMCEPreInit={base:'" . dirname($_SERVER["SCRIPT_NAME"]) . "',suffix:''};";
-
-        // Load all tinymce script files into buffer
-        foreach ($allFiles as $file) {
-            if ($file) {
-                $fileContents = $this->getFileContents($tinymceDir . "/" . $file);
-//                $buffer .= "\n//-FILE-$tinymceDir/$file (". strlen($fileContents) . " bytes)\n";
-                $buffer .= $fileContents;
+            // Load all tinymce script files into buffer
+            foreach ($allFiles as $file) {
+                if ($file) {
+                    $fileContents = $this->getFileContents($tinymceDir . "/" . $file);
+                    $buffer .= $fileContents;
+                }
             }
+
+            // Mark all themes, plugins and languages as done
+            $buffer .= 'tinymce.each("' . implode(',', $files) . '".split(","),function(f){tinymce.ScriptLoader.markDone(tinyMCE.baseURL+"/"+f+".js");});';
+
+            // Compress data
+            if ($supportsGzip)
+                $buffer = gzencode($buffer, 9, FORCE_GZIP);
+
+            $cache->set($hash, $buffer, 8*60*60);
+
+            // Stream contents to client
+            echo $buffer;
         }
-
-        // Mark all themes, plugins and languages as done
-        $buffer .= 'tinymce.each("' . implode(',', $files) . '".split(","),function(f){tinymce.ScriptLoader.markDone(tinyMCE.baseURL+"/"+f+".js");});';
-
-        // Compress data
-        if ($supportsGzip)
-            $buffer = gzencode($buffer, 9, FORCE_GZIP);
-
-        // Write cached file
-        if ($this->settings["disk_cache"])
-            @file_put_contents($cacheFile, $buffer);
-
-        // Stream contents to client
-        echo $buffer;
+        else
+            echo $cache->get($hash);
     }
 
     /**
@@ -316,4 +317,4 @@ class TinyMCE_Compressor {
         return $content;
     }
 }
-?>
+ob_end_flush();
