@@ -217,6 +217,11 @@ function _fetch($fetch) {
     return array_key_exists('_stmt_rows_', $fetch) ? $fetch[0] : $fetch->fetch_assoc();
 }
 
+function _real_escape_string($string='') {
+    global $mysql;
+    return !empty($string) ? $mysql->real_escape_string($string) : '';
+}
+
 function db($query='',$rows=false,$fetch=false) {
     global $prefix,$mysql,$clanname;
 

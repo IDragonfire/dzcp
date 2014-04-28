@@ -290,7 +290,6 @@ switch ($do) {
                                                  "m_upicsize" => $get['upicsize'],
                                                  "counter_start" => _counter_start,
                                                  "c_start" => $gets['counter_start'],
-                                                 "selsq" => $selsq,
                                                  "c_start_info" => _counter_start_info,
                                                  "floods" => _config_c_floods,
                                                  "floods_what" => _config_c_floods_what,

@@ -1004,6 +1004,15 @@ function orderby($sort) {
     return $url."orderby=".$sort."&order=ASC";
 }
 
+function orderby_sql($sort_by=array(), $default_order='') {
+    if(!isset($_GET['order']) || empty($_GET['order'])) return $default_order;
+    if(!isset($_GET['orderby']) || empty($_GET['orderby']) || !in_array($_GET['orderby'],$sort_by)) return $default_order;
+    $orderby_real = _real_escape_string($_GET['orderby']);
+    $order_real = _real_escape_string($_GET['order']);
+    if(empty($orderby_real) || empty($order_real)) return $default_order;
+    return 'ORDER BY '.$orderby_real." ".$order_real;
+}
+
 //-> Funktion um ein Datenbankinhalt zu highlighten
 function highlight($word) {
     if(substr(phpversion(),0,1) == 5)

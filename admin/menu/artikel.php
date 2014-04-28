@@ -177,15 +177,9 @@ if(_adminMenu != 'true') exit;
         header("Location: ?admin=artikel");
       } else {
         $entrys = cnt($db['artikel']);
-        if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("titel","datum","autor"))) {
         $qry = db("SELECT * FROM ".$db['artikel']."
-                   ORDER BY ".mysqli_real_escape_string($mysql, $mysql, $_GET['orderby']." ".$_GET['order'])."
-                   LIMIT ".($page - 1)*config('m_adminartikel').",".config('m_adminartikel')."");
-        }
-        else {$qry = db("SELECT * FROM ".$db['artikel']."
-                         ORDER BY `public` ASC, `datum` DESC
-                         LIMIT ".($page - 1)*config('m_adminartikel').",".config('m_adminartikel')."");
-        }
+                  ".orderby_sql(array("titel","datum","autor"),'ORDER BY `public` ASC, `datum` DESC')."
+                  LIMIT ".($page - 1)*config('m_adminartikel').",".config('m_adminartikel')."");
         while($get = _fetch($qry))
         {
           $edit = show("page/button_edit_single", array("id" => $get['id'],
@@ -211,7 +205,7 @@ if(_adminMenu != 'true') exit;
                                                    "titel" => $titel,
                                                    "class" => $class,
                                                    "autor" => autor($get['autor']),
-                                                       "intnews" => "",
+                                                   "intnews" => "",
                                                    "sticky" => "",
                                                    "public" => $public,
                                                    "edit" => $edit,
