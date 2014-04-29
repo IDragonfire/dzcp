@@ -151,6 +151,7 @@ Aufgrund der vielzahl an �nderungen, wird kein manuelles Update f�r diese Ve
 	-[clanname] wurde im Template nicht richtig ausgegeben
 	-Online status von Usern wurde nicht richtig dargestellt (Online / Offline)
 	-fehlerhafte Weiterleitung nach GameIcon Uploads Team
+	-Clankasse Währung wurde bei neue Beiträge hinzufügen und editieren falsch angezeigt
 
 	
 
