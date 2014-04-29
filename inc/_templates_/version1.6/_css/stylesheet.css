@@ -926,11 +926,12 @@ a.navTeamspeak:hover,a.navTeamspeak:active {
   color: #ff0000;
 }
 
-a.navTopdl:link,a.navTopdl:visited,
+
 a.navLastArtikel:link,a.navLastArtikel:visited {
   display: block; padding: 1px 2px;
 }
 
+a.navTopdl:link,a.navTopdl:visited,
 a.navLastArtikel:link,a.navLastArtikel:visited,
 a.navLastCw:link,a.navLastCw:visited,
 a.navNextCw:link,a.navNextCw:visited,
@@ -1282,7 +1283,7 @@ textarea.editorStyleWord,
 textarea.editorStyleMini,
 textarea.editorStyleNewsletter {
   overflow: auto;
-  width: 650px;
+  width: 100%;
   height: 200px;
 }
 textarea.editorStyleWord {
