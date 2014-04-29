@@ -74,7 +74,6 @@ if(defined('_UserMenu')) {
             $icq = preg_replace("=-=Uis","",$_POST['icq']);
 
         if($_POST['t'] && $_POST['m'] && $_POST['j']) $bday = cal($_POST['t']).".".cal($_POST['m']).".".$_POST['j'];
-        if($_POST['steamid3']) $steamid = $_POST['steamid1'].":".$_POST['steamid2'].":".$_POST['steamid3'];
 
             $qrycustom = db("SELECT feldname,type FROM ".$db['profile']);
           while($getcustom = _fetch($qrycustom))
@@ -82,8 +81,6 @@ if(defined('_UserMenu')) {
               if($getcustom['type'] == 2) $customfields .= " ".$getcustom['feldname']." = '".links($_POST[$getcustom['feldname']])."', ";
               else $customfields .= " ".$getcustom['feldname']." = '".up($_POST[$getcustom['feldname']])."', ";
             }
-        if($_POST['steamid'] != "STEAM_") $steamid = up(trim($_POST['steamid']));
-           else $steamid = "";
 
           $qry = db("UPDATE ".$db['users']."
                        SET    ".$newpwd."
@@ -94,7 +91,7 @@ if(defined('_UserMenu')) {
                   `rlname`       = '".up($_POST['rlname'])."',
                   `sex`          = '".((int)$_POST['sex'])."',
                   `status`       = '".((int)$_POST['status'])."',
-                  `bday`         = '".$bday."',
+                  `bday`         = '".strtotime($bday)."',
                   `email`        = '".up($_POST['email'])."',
                   `nletter`      = '".((int)$_POST['nletter'])."',
                   `pnmail`       = '".((int)$_POST['pnmail'])."',
@@ -107,7 +104,7 @@ if(defined('_UserMenu')) {
                   `psnid`        = '".up(trim($_POST['psnid']))."',
           `originid`     = '".up(trim($_POST['originid']))."',
           `battlenetid`  = '".up(trim($_POST['battlenetid']))."',
-                  `steamid`      = '".$steamid."',
+                  `steamid`      = '".up(trim($_POST['steamid']))."',
           `skypename`    = '".up(trim($_POST['skypename']))."',
                   `signatur`     = '".up($_POST['sig'],1)."',
                   `beschreibung` = '".up($_POST['ich'],1)."',
@@ -245,8 +242,9 @@ if(defined('_UserMenu')) {
                                                                   "custom_clan" => $custom_clan));
       }
 
-      list($steamid1,$steamid2,$steamid3) = explode(':', $get['steamid']);
-        list($bdayday, $bdaymonth, $bdayyear) = explode('.', $get['bday']);
+      $bdayday=0; $bdaymonth=0; $bdayyear=0;
+      if(!empty($get['bday']) && $get['bday'])
+          list($bdayday, $bdaymonth, $bdayyear) = explode('.', date('d.m.Y',$get['bday']));
 
       if($_GET['show'] == "gallery")
       {
@@ -276,8 +274,8 @@ if(defined('_UserMenu')) {
                                                  "showgallery" => $gal));
       } else {
         $dropdown_age = show(_dropdown_date, array("day" => dropdown("day",$bdayday,1),
-                                                              "month" => dropdown("month",$bdaymonth,1),
-                                                     "year" => dropdown("year",$bdayyear,1)));
+                                                   "month" => dropdown("month",$bdaymonth,1),
+                                                   "year" => dropdown("year",$bdayyear,1)));
 
         $qrycustom = db("SELECT * FROM ".$db['profile']."
                                    WHERE kid = '1' AND shown = '1'
@@ -417,9 +415,6 @@ if(defined('_UserMenu')) {
                           "psnid" => $get['psnid'],
                         "originid" => $get['originid'],
                         "battlenetid" => $get['battlenetid'],
-                                                "steamid1" => $steamid1,
-                                                "steamid2" => $steamid2,
-                                                "steamid3" => $steamid3,
                                                 "clan" => $clan,
                                                 "pic" => $pic,
                                                 "editpic" => _profil_edit_pic,

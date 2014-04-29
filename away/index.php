@@ -25,18 +25,9 @@ $where = $where.' - '._away_list;
     $index = error(_error_wrong_permissions, 1);
   } else {
     $entrys = cnt($db['away']);
-    if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("userid","start","end"))) {
-    $tmp_orderby = $_GET['orderby'];
-    if($_GET['orderby'] == "start") $_GET['orderby'] = "start ".$_GET['order'].", end";
     $qry = db("SELECT * FROM ".$db['away']."
-               ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
-               LIMIT ".($page - 1)*config('m_away').",".config('m_away')."");
-    $_GET['orderby'] = $tmp_orderby;
-    }
-    else {$qry = db("SELECT * FROM ".$db['away']."
-               ORDER BY id DESC
-               LIMIT ".($page - 1)*config('m_away').",".config('m_away')."");
-    }
+              ".orderby_sql(array("userid","start","end"), 'ORDER BY id DESC')."
+              LIMIT ".($page - 1)*config('m_away').",".config('m_away')."");
     while($get = _fetch($qry))
     {
       if($get['start'] > time()) $status = _away_status_new;
@@ -78,9 +69,7 @@ $where = $where.' - '._away_list;
       }
 
       if(!$show) $show = _away_no_entry;
-      $orderby = empty($_GET['orderby']) ? "" : "?orderby".$_GET['orderby'];
-      $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
-      $nav= nav($entrys,config('m_away'),"?".$_GET['show']."".$orderby);
+      $nav= nav($entrys,config('m_away'),"?".$_GET['show'].orderby_nav());
 
       $index = show($dir."/away", array("head" => _away_head,
                                           "show" => $show,

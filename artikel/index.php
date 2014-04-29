@@ -19,19 +19,11 @@ $dir = "artikel";
 ## SECTIONS ##
 switch ($action):
 default:
-    if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("artikel","titel","datum","kat"))) {
-        $qry = db("SELECT id,kat,titel,datum,autor,text FROM ".$db['artikel']."
-                   WHERE public = 1
-                   ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
-                   LIMIT ".($page - 1)*config('m_artikel').",".config('m_artikel')."");
-    } else {
-        $qry = db("SELECT id,kat,titel,datum,autor,text FROM ".$db['artikel']."
-                   WHERE public = 1
-                   ORDER BY datum DESC
-                   LIMIT ".($page - 1)*config('m_artikel').",".config('m_artikel')."");
-    }
+    $qry = db("SELECT id,kat,titel,datum,autor,text FROM ".$db['artikel']."
+               WHERE public = 1
+               ".orderby_sql(array("artikel","titel","datum","kat"), 'ORDER BY datum DESC')."
+               LIMIT ".($page - 1)*config('m_artikel').",".config('m_artikel')."");
     $entrys = cnt($db['artikel']);
-
     if(_rows($qry)) {
         while($get = _fetch($qry)) {
             $getk = db("SELECT kategorie FROM ".$db['newskat']." WHERE id = '".$get['kat']."'",false,true);
@@ -53,9 +45,7 @@ default:
         $show = show(_no_entrys_yet, array("colspan" => "4"));
     }
 
-    $orderby = isset($_GET['orderby']) ? "&orderby".$_GET['orderby'] : "";
-    $orderby .= isset($_GET['order']) ? "&order=".$_GET['order'] : "";
-    $seiten = nav($entrys,config('m_artikel'),"?page".(isset($_GET['show']) ? $_GET['show'] : 0)."".$orderby);
+    $seiten = nav($entrys,config('m_artikel'),"?page".(isset($_GET['show']) ? $_GET['show'] : 0).orderby_nav());
     $index = show($dir."/artikel", array("show" => $show,
                                          "nav" => $seiten,
                                          "artikel" => _artikel,

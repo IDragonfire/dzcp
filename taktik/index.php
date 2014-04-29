@@ -23,18 +23,10 @@ default:
   if(!$chkMe || $chkMe < 2)
   {
     $index = error(_error_wrong_permissions, 1);
-  }
-      if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("map","autor"))) {
+  } else {
       $qry = db("SELECT id,datum,map,spart,sparct,standardt,standardct,autor
                  FROM ".$db['taktik']."
-                 ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."");
-      }
-      else {
-      $qry = db("SELECT id,datum,map,spart,sparct,standardt,standardct,autor
-                 FROM ".$db['taktik']."
-                 ORDER BY id DESC");
-      }
-  {
+                 ".orderby_sql(array("map","autor"), 'ORDER BY id DESC'));
       while ($get = _fetch($qry))
       {
         if($get['sparct'] != "") $sparct = show(_taktik_spar_ct, array("id" => $get['id']));

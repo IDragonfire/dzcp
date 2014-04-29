@@ -193,7 +193,6 @@ if(_adminMenu != 'true') exit;
                                                   "id" => $get['id']));
 
           $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-
           $public = ($get['public'] == 1)
                ? '<a href="?admin=artikel&amp;do=public&amp;id='.$get['id'].'&amp;what=unset"><img src="../inc/images/public.gif" alt="" title="'._non_public.'" /></a>'
                : '<a href="?admin=artikel&amp;do=public&amp;id='.$get['id'].'&amp;what=set"><img src="../inc/images/nonpublic.gif" alt="" title="'._public.'" /></a>';
@@ -211,10 +210,8 @@ if(_adminMenu != 'true') exit;
                                                    "edit" => $edit,
                                                    "delete" => $delete));
         }
-        $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
-        $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
-        $nav = nav($entrys,config('m_adminnews'),"?admin=artikel".$_GET['show']."".$orderby);
 
+        $nav = nav($entrys,config('m_adminnews'),"?admin=artikel".$_GET['show'].orderby_nav());
         $show = show($dir."/admin_news", array("head" => _artikel,
                                                "nav" => $nav,
                                                "autor" => _autor,

@@ -1473,6 +1473,9 @@ function update_mysql_1_6()
     db("ALTER TABLE `".$db['settings']."` DROP `squadtmpl`;");
     db("ALTER TABLE `".$db['downloads']."` CHANGE `beschreibung` `beschreibung` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT NULL;");
     db("ALTER TABLE `".$db['away']."` CHANGE `lastedit` `lastedit` TEXT NULL DEFAULT NULL;");
+    db("ALTER TABLE `".$db['serverliste']."` CHANGE `slots` `slots` CHAR(11) NOT NULL DEFAULT '';");
+    db("ALTER TABLE `".$db['serverliste']."` CHANGE `clanname` `clanname` VARCHAR(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
+    db("ALTER TABLE `".$db['serverliste']."` CHANGE `pwd` `pwd` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
 
     //-> Fix Settings Table
     if(db("SELECT * FROM `".$db['settings']."`",true) >= 2) {
@@ -1502,15 +1505,17 @@ function update_mysql_1_6()
     db("ALTER TABLE `".$db['config']."` ADD UNIQUE(`id`);");
     db("ALTER TABLE `".$db['settings']."` ADD UNIQUE(`id`);");
 
-    $qry = db("SELECT id,level FROM ".$db['users']);
+    $qry = db("SELECT id,level,bday FROM ".$db['users']);
     if(mysqli_num_rows($qry)>= 1)
         while($get = mysqli_fetch_assoc($qry)) {
         $banned = $get['level'] == 'banned' ? 1 : 0;
         $level = $get['level'] == 'banned' ? 0 : $get['level'];
-        db("UPDATE ".$db['users']." SET level = ".$level.", banned = ".$banned." WHERE id = ".$get['id']);
+        db("UPDATE ".$db['users']." SET `level` = ".$level.", `banned` = ".$banned.", `bday` = ".(!empty($get['bday']) ? strtotime($get['bday']) : 0)." WHERE `id` = ".$get['id']);
     }
     unset($level,$banned);
+
     db("ALTER TABLE ".$db['users']." CHANGE `level` `level` INT( 2 ) NOT NULL DEFAULT '0';"); //Set level to int
+    db("ALTER TABLE ".$db['users']." CHANGE `bday` `bday` INT(11) NOT NULL DEFAULT '0';");
 
     //-> Forum Sortieren
     db("ALTER TABLE ".$db['f_skats']." ADD `pos` int(5) NOT NULL");

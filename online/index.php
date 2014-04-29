@@ -22,17 +22,10 @@ if($chkMe)
     db("UPDATE ".$db['users']." SET `time` = '".time()."', `whereami` = '".up($where)."' WHERE id = '".$userid."'");
 
 //Users
-if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("whereami","ip"))) {
-    $qry = db("SELECT id,ip,nick,whereami FROM ".$db['users']."
-               WHERE time+'".$useronline."'>'".time()."'
-               AND online = 1
-               ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."");
-} else {
-    $qry = db("SELECT id,ip,nick,whereami FROM ".$db['users']."
-               WHERE time+'".$useronline."'>'".time()."'
-               AND online = 1
-               ORDER BY nick");
-}
+$qry = db("SELECT id,ip,nick,whereami FROM ".$db['users']."
+           WHERE time+'".$useronline."'>'".time()."'
+           AND online = 1
+           ".orderby_sql(array("whereami","ip"), 'ORDER BY nick'));
 
 if(_rows($qry)) {
     while($get = _fetch($qry)) {
@@ -56,17 +49,10 @@ if(_rows($qry)) {
 }
 
 //Gast
-if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("whereami","ip"))) {
-    $qry = db("SELECT * FROM ".$db['c_who']."
-               WHERE online+'".$useronline."'>'".time()."'
-               AND login = 0
-               ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."");
-} else {
-    $qry = db("SELECT * FROM ".$db['c_who']."
-               WHERE online+'".$useronline."'>'".time()."'
-               AND login = 0
-               ORDER BY whereami");
-}
+$qry = db("SELECT * FROM ".$db['c_who']."
+           WHERE online+'".$useronline."'>'".time()."'
+           AND login = 0
+           ".orderby_sql(array("whereami","ip"), 'ORDER BY whereami'));
 
 if(_rows($qry)) {
     while($get = _fetch($qry)) {

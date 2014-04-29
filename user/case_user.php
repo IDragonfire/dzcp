@@ -29,7 +29,7 @@ if(defined('_UserMenu')) {
         $psnu = empty($get['psnid']) ? "-" : show(_psnicon, array("id" => str_replace(" ","%20",trim(re($get['psnid']))), "img" => "1", "css" => ""));
         $originu = empty($get['originid']) ? '-' : show(_originicon, array("id" => str_replace(" ","%20",trim(re($get['originid']))), "img" => "1", "css" => ""));
         $battlenetu = empty($get['battlenetid']) ? '-' : show(_battleneticon, array("id" => str_replace(" ","%20",trim(re($get['battlenetid']))), "img" => "1", "css" => ""));
-        $bday = ($get['bday'] == ".." || $get['bday'] == 0 || empty($get['bday'])) ? "-" : $get['bday'];
+        $bday = (!$get['bday'] || empty($get['bday'])) ? "-" : date('d.m.Y',$get['bday']);
 
         $icq = "-"; $icqnr = '';
         if(!empty($get['icq'])) {

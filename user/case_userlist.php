@@ -16,13 +16,6 @@ if(defined('_UserMenu')) {
                    AND level != 0
                    ORDER BY nick
                    LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
-    } elseif($show_sql == "bday") {
-        $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,regdatum
-                   FROM ".$db['users']."
-                   WHERE bday LIKE '".date("d", intval($_GET['time'])).".".date("m", intval($_GET['time'])).".____"."'
-                   AND level != 0
-                   ORDER BY nick
-                   LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } elseif($show_sql == "newreg") {
         $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,regdatum FROM ".$db['users']."
                    WHERE regdatum > '".$_SESSION['lastvisit']."'
@@ -61,10 +54,10 @@ if(defined('_UserMenu')) {
                    LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } else {
         $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,
-                   icq,status,position FROM ".$db['users']."
-                   WHERE level != '0'
+                  icq,status,position FROM ".$db['users']."
+                  WHERE level != '0'
                   ".orderby_sql(array("nick","bday"), 'ORDER BY level DESC,nick')."
-                   LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
+                  LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     }
 
     $userliste = '';
@@ -128,9 +121,7 @@ if(defined('_UserMenu')) {
                                                          "hlsw" => $hlsw));
     }
 
-    $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
-    $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
-    $seiten = nav($entrys,config('m_userlist'),"?action=userlist&show=".$show_sql."".$orderby);
+    $seiten = nav($entrys,config('m_userlist'),"?action=userlist&show=".$show_sql.orderby_nav());
     $edel = permission("editusers") ? '<td class="contentMainTop" colspan="2">&nbsp;</td>' : "";
     $search = isset($_GET['search']) && !empty($_GET['search']) ? $_GET['search'] : _nick;
 

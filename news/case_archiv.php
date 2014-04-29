@@ -50,19 +50,12 @@ if(defined('_News')) {
                        ORDER BY datum DESC
                        LIMIT ".($page - 1)*config('m_archivnews').",".config('m_archivnews')."");
             $entrys = cnt($db['news'], " WHERE datum BETWEEN ".$from." AND ".$til." ".$intern."");
-        } else if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("date","autor","titel","kat"))) {
-            $qry = db("SELECT id,titel,autor,datum,kat,text FROM ".$db['news']."
-                       ".$intern2."
-                       ".$n_kat."
-                       ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
-                       LIMIT ".($page - 1)*config('m_archivnews').",".config('m_archivnews')."");
-            $entrys = cnt($db['news'], " ".$intern2." ".$n_kat);
         } else {
             $qry = db("SELECT id,titel,autor,datum,kat,text
                        FROM ".$db['news']."
                        ".$intern2."
                        ".$n_kat."
-                       ORDER BY datum DESC
+                       ".orderby_sql(array("datum","autor","titel","kat"), 'ORDER BY datum DESC')."
                        LIMIT ".($page - 1)*config('m_archivnews').",".config('m_archivnews')."");
             $entrys = cnt($db['news'], " ".$intern2." ".$n_kat);
         }
@@ -116,10 +109,7 @@ if(defined('_News')) {
             }
         }
 
-        $orderby = empty($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
-        $orderby .= empty($_GET['order']) ? "" : "&order=".$_GET['order'];
-        $nav = nav($entrys,config('m_archivnews'),"?action=archiv&year=".$pyear."&month=".$pmonth."&search=".$psearch."".$orderby);
-
+        $nav = nav($entrys,config('m_archivnews'),"?action=archiv&year=".$pyear."&month=".$pmonth."&search=".$psearch.orderby_nav());
         $index = show($dir."/archiv", array("head" => _news_archiv_head,
                                             "head_sort" => _news_archiv_sort,
                                             "date" => _datum,

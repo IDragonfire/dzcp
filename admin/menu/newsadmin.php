@@ -431,10 +431,7 @@ if(_adminMenu != 'true') exit;
                                                    "delete" => $delete));
         }
 
-        $orderby = !isset($_GET['orderby']) ? "" : "&orderby".$_GET['orderby'];
-        $orderby .= !isset($_GET['order']) ? "" : "&order=".$_GET['order'];
-        $nav = nav($entrys,config('m_adminnews'),"?admin=newsadmin".isset($_GET['show']) ? $_GET['show'] : ''.$orderby);
-
+        $nav = nav($entrys,config('m_adminnews'),"?admin=newsadmin".isset($_GET['show']) ? $_GET['show'].orderby_nav() : orderby_nav());
         $show = show($dir."/admin_news", array("head" => _news_admin_head,
                                                "nav" => $nav,
                                                "autor" => _autor,

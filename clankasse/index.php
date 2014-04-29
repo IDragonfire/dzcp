@@ -25,18 +25,9 @@ default:
     $index = error(_error_wrong_permissions, 1);
   } else {
     $entrys = cnt($db['clankasse']);
-    if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("betrag","transaktion","datum","member"))) {
-            $sub_orderby = "";
-            if($_GET['orderby'] == "betrag") $sub_orderby = "pm ".$_GET['order'].",";
-           $qry = db("SELECT * FROM ".$db['clankasse']."
-                       ORDER BY ".$sub_orderby.mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."
-                       LIMIT ".($page - 1)*config('m_clankasse').",".config('m_clankasse')."");
-
-    }
-    else { $qry = db("SELECT * FROM ".$db['clankasse']."
-                      ORDER BY datum DESC
-                      LIMIT ".($page - 1)*config('m_clankasse').",".config('m_clankasse')."");
-    }
+    $qry = db("SELECT * FROM ".$db['clankasse']."
+               ".orderby_sql(array("betrag","transaktion","datum","member"), 'ORDER BY datum DESC')."
+               LIMIT ".($page - 1)*config('m_clankasse').",".config('m_clankasse')."");
     while ($get = _fetch($qry))
     {
       $betrag = $get['betrag'];
@@ -97,23 +88,12 @@ default:
 
    if(permission("clankasse")) $new = _clankasse_new;
 
-    if(!empty($_GET['orderby']) && in_array($_GET['orderby'],array("nick","payed"))) {
-            $qrys = db("SELECT tbl1.id,tbl1.nick,tbl2.user,tbl2.payed
+    $qrys = db("SELECT tbl1.id,tbl1.nick,tbl2.user,tbl2.payed
                FROM ".$db['users']." AS tbl1
                LEFT JOIN ".$db['c_payed']." AS tbl2 ON tbl2.user = tbl1.id
                WHERE tbl1.listck = '1'
                OR tbl1.level = '4'
-               ORDER BY ".mysqli_real_escape_string($mysql, $_GET['orderby']." ".$_GET['order'])."");
-
-    }
-    else {
-        $qrys = db("SELECT tbl1.id,tbl1.nick,tbl2.user,tbl2.payed
-               FROM ".$db['users']." AS tbl1
-               LEFT JOIN ".$db['c_payed']." AS tbl2 ON tbl2.user = tbl1.id
-               WHERE tbl1.listck = '1'
-               OR tbl1.level = '4'
-               ORDER BY tbl1.nick");
-    }
+               ".orderby_sql(array("nick","payed"), 'ORDER BY tbl1.nick', 'tbl2'));
     while($gets = _fetch($qrys))
     {
       if($gets['user'])
@@ -209,7 +189,7 @@ case 'admin':
                                        "einzahlung" => _clankasse_einzahlung,
                                        "auszahlung" => _clankasse_auszahlung,
                                        "trans" => $trans,
-									   "w" => $w,
+                                       "w" => $w,
                                        "sponsor" => _clankasse_ssponsor,
                                        "sonstiges" => _clankasse_sonstiges,
                                        "member" => _member,
@@ -298,7 +278,7 @@ case 'admin':
                                         "ssel" => $ssel,
                                         "spsel" => $spsel,
                                         "trans" => $trans,
-										"w" => $w,
+                                        "w" => $w,
                                         "evonan" => re($get['member']),
                                         "sum" => re($get['betrag']),
                                         "beitrag" => _clankasse_sbeitrag,
