@@ -1476,6 +1476,7 @@ function update_mysql_1_6()
     db("ALTER TABLE `".$db['serverliste']."` CHANGE `slots` `slots` CHAR(11) NOT NULL DEFAULT '';");
     db("ALTER TABLE `".$db['serverliste']."` CHANGE `clanname` `clanname` VARCHAR(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
     db("ALTER TABLE `".$db['serverliste']."` CHANGE `pwd` `pwd` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
+    db("ALTER TABLE `".$db['ipcheck']."` ADD `user_id` INT(11) NOT NULL DEFAULT '0' AFTER `ip`;");
 
     //-> Fix Settings Table
     if(db("SELECT * FROM `".$db['settings']."`",true) >= 2) {
@@ -1504,6 +1505,7 @@ function update_mysql_1_6()
     //Add UNIQUE KEY
     db("ALTER TABLE `".$db['config']."` ADD UNIQUE(`id`);");
     db("ALTER TABLE `".$db['settings']."` ADD UNIQUE(`id`);");
+    db("ALTER TABLE `".$db['ipcheck']."` ADD INDEX(`what`);");
 
     $qry = db("SELECT id,level,bday FROM ".$db['users']);
     if(mysqli_num_rows($qry)>= 1)

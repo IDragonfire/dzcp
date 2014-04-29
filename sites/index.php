@@ -49,7 +49,11 @@ case 'preview';
                                      "inhalt" => $inhalt));
 
   echo '<table class="mainContent" cellspacing="1"'.$index.'</table>';
-  exit;
+
+  if(!mysqli_persistconns)
+      $mysql->close(); //MySQL
+
+  exit();
 break;
 endswitch;
 ## INDEX OUTPUT ##

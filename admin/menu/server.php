@@ -43,7 +43,11 @@ switch ($do)
                 db("UPDATE ".$db['server']." SET `navi` = '1' WHERE id = '".intval($_GET['id'])."'");
             else {
                 $show = error(_server_isnt_live,1);
-                exit;
+
+                if(!mysqli_persistconns)
+                    $mysql->close(); //MySQL
+
+                exit();
             }
         }
 

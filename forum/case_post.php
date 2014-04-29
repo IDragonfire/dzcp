@@ -427,8 +427,13 @@ if(defined('_Forum')) {
                                          WHERE s2.id = '".intval($_GET['kid'])."'");
                 $checks = _fetch($check);
 
-                if($checks['intern'] == 1 && !permission("intforum") && !fintern($checks['id']))
-                exit;
+                if($checks['intern'] == 1 && !permission("intforum") && !fintern($checks['id'])) {
+
+                    if(!mysqli_persistconns)
+                        $mysql->close(); //MySQL
+
+                    exit();
+                }
 
                 if($userid >= 1) $toCheck = empty($_POST['eintrag']);
                 else $toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['eintrag']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);

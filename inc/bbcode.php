@@ -2131,7 +2131,7 @@ function getBoardPermissions($checkID = 0, $pos = 0) {
 //-> schreibe in dei IPCheck Tabelle
 function setIpcheck($what = '') {
     global $db, $userip;
-    db("INSERT INTO ".$db['ipcheck']." SET `ip` = '".$userip."', `what` = '".$what."', `time` = '".time()."'");
+    db("INSERT INTO ".$db['ipcheck']." SET `ip` = '".$userip."', `user_id` = '".userid()."', `what` = '".$what."', `time` = ".time().";");
 }
 
 function is_php($version='5.3.0')

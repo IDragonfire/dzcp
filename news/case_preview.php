@@ -71,5 +71,9 @@ if(defined('_News')) {
                                                "autor" => autor($_SESSION['id'])));
 
         echo '<table class="mainContent" cellspacing="1">'.$index.'</table>';
-        exit;
+
+        if(!mysqli_persistconns)
+            $mysql->close(); //MySQL
+
+        exit();
 }

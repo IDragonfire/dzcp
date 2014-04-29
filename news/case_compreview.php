@@ -61,5 +61,9 @@ if(defined('_News')) {
                                               "ip" => $userip._only_for_admins));
 
     echo '<table class="mainContent" cellspacing="1">'.$index.'</table>';
-    exit;
+
+    if(!mysqli_persistconns)
+        $mysql->close(); //MySQL
+
+    exit();
 }

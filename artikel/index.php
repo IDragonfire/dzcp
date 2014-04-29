@@ -432,7 +432,11 @@ case 'preview';
                                            "links" => $links,
                                            "autor" => autor($userid)));
     echo '<table class="mainContent" cellspacing="1">'.$index.'</table>';
-  exit;
+
+    if(!mysqli_persistconns)
+        $mysql->close(); //MySQL
+
+    exit();
 break;
     case 'compreview';
         if($do == 'edit') {
@@ -499,7 +503,11 @@ break;
                                                   "ip" => $userip._only_for_admins));
 
         echo '<table class="mainContent" cellspacing="1">'.$index.'</table>';
-        exit;
+
+        if(!mysqli_persistconns)
+            $mysql->close(); //MySQL
+
+        exit();
     break;
 endswitch;
 

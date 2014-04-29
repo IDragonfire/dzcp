@@ -99,5 +99,9 @@ if(defined('_Clanwars')) {
                                        "cw_bericht" => $bericht,
                                        "screenshots" => $screens));
     echo '<table class="mainContent" cellspacing="1">'.$index.'</table>';
-  exit;
+
+    if(!mysqli_persistconns)
+        $mysql->close(); //MySQL
+
+    exit();
 }

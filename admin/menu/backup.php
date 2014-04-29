@@ -16,7 +16,11 @@ if(file_exists($file_name)) {
     header("Content-Disposition: attachment; filename=".$file_name);
     readfile($file_name);
     @unlink($file_name);
-    exit;
+
+    if(!mysqli_persistconns)
+        $mysql->close(); //MySQL
+
+    exit();
 }
 
 $show = show($dir."/backup", array("head" => _backup_head,

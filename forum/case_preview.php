@@ -125,7 +125,11 @@ if(defined('_Forum')) {
                                              "show" => $show));
 
     echo '<table class="mainContent" cellspacing="1" style="margin-top:17px">'.$index.'</table>';
-    exit;
+
+    if(!mysqli_persistconns)
+        $mysql->close(); //MySQL
+
+    exit();
   } else {
     if($do == 'editpost')
     {
@@ -209,6 +213,10 @@ if(defined('_Forum')) {
                                                   "p" => ""));
 
     echo '<table class="mainContent" cellspacing="1" style="margin-top:17px">'.$index.'</table>';
-    exit;
+
+    if(!mysqli_persistconns)
+        $mysql->close(); //MySQL
+
+    exit();
   }
 }

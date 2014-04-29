@@ -47,7 +47,12 @@ default:
   }
 
   if(isset($_GET['ajax'])) {
-    echo str_replace("\n", '', html_entity_decode(strip_tags($index))); exit;
+    echo str_replace("\n", '', html_entity_decode(strip_tags($index)));
+
+    if(!mysqli_persistconns)
+        $mysql->close(); //MySQL
+
+    exit();
   }
 break;
 case 'admin';
