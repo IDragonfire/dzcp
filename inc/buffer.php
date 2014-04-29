@@ -20,9 +20,11 @@ function gz_output($output='') {
     if(function_exists('ini_set'))
         ini_set('zlib.output_compression_level', $gzip_compress_level);
 
-    if(!buffer_show_licence_bar || !file_exists(basePath.'/_codeking.licence')) {
+    if(buffer_show_licence_bar) {
         $licence_bar = '<div style="width:100%;text-align:center;padding:7px 0;z-index:9999"> <table style="width:100%;margin:auto" cellspacing="0"> <tr> <td style="vertical-align:middle;text-align:center;" nowrap="nowrap">Powered by <a style="font-weight:normal" href="http://www.dzcp.de" target="_blank" title="deV!L`z Clanportal">DZCP - deV!L`z&nbsp;Clanportal V'._version.'</a></td></tr> </table> </div>';
-        $output = str_ireplace('</body>',$licence_bar."\r\n</body>",$output);
+
+        if(!file_exists(basePath.'/_codeking.licence'))
+            $output = str_ireplace('</body>',$licence_bar."\r\n</body>",$output);
     }
 
     ob_end_clean();
