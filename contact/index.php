@@ -293,7 +293,6 @@ case 'do';
                  WHERE s1.receivecws = '1' AND s1.`user` != '0'
                  ".$add." GROUP BY s1.`user`");
       $sqlAnd = '';
-      var_dump($who);
       while($get = _fetch($who))
       {
         $sqlAnd .= " AND s2.`user` != '".intval($get['user'])."'";
@@ -309,8 +308,7 @@ case 'do';
       $qry = db("SELECT s3.`user` FROM ".$db['permissions']." AS s1
                  LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
                  LEFT JOIN ".$db['squaduser']." AS s3 ON s2.user = s3.user
-                                 WHERE s1.`receivecws` = '1' AND s2.`posi` != '0'".$sqlAnd.$add." GROUP BY s2.`user`");
-      var_dump($qry);
+                 WHERE s1.`receivecws` = '1' AND s2.`posi` != '0'".$sqlAnd.$add." GROUP BY s2.`user`");
       while($get === _fetch($qry))
       {
         $qry = db("INSERT INTO ".$db['msg']."
