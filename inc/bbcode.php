@@ -1730,12 +1730,6 @@ function conv($txt) {
     return str_replace(array("ä","ü","ö","Ä","Ü","Ö","ß"), array("ae","ue","oe","Ae","Ue","Oe","ss"), $txt);
 }
 
-//-> Prueft, ob eine Userid existiert
-function exist($tid) {
-    global $db;
-    return db("SELECT id FROM ".$db['users']." WHERE id = '".intval($tid)."'",true) ? true : false;
-}
-
 //-> Geburtstag errechnen
 function getAge($bday) {
     if(!empty($bday) && $bday) {

@@ -6,7 +6,8 @@
 
 if(defined('_UserMenu')) {
     $where = _user_profile_of.'autor_'.$_GET['id'];
-    if(!exist((int)$_GET['id']))
+
+    if(!db("SELECT id FROM ".$db['users']." WHERE id = '".intval($_GET['id'])."'",true) ? true : false)
         $index = error(_user_dont_exist, 1);
     else {
         db("UPDATE ".$db['userstats']."
