@@ -1616,9 +1616,7 @@ function check_new($datum,$new = "",$datum2 = "") {
 //-> DropDown Mens Date/Time
 function dropdown($what, $wert, $age = 0) {
     if($what == "day") {
-        if($age == 1)
-            $return ='<option value="" class="dropdownKat">'._day.'</option>'."\n";
-
+        $return = ($age == 1 ? '<option value="" class="dropdownKat">'._day.'</option>'."\n" : '');
         for($i=1; $i<32; $i++) {
             if($i==$wert)
                 $return .= "<option value=\"".$i."\" selected=\"selected\">".$i."</option>\n";
@@ -1626,9 +1624,7 @@ function dropdown($what, $wert, $age = 0) {
                 $return .= "<option value=\"".$i."\">".$i."</option>\n";
         }
     } else if($what == "month") {
-        if($age == 1)
-            $return .='<option value="" class="dropdownKat">'._month.'</option>'."\n";
-
+        $return = ($age == 1 ? '<option value="" class="dropdownKat">'._month.'</option>'."\n" : '');
         for($i=1; $i<13; $i++) {
             if($i==$wert)
                 $return .= "<option value=\"".$i."\" selected=\"selected\">".$i."</option>\n";
@@ -1637,7 +1633,7 @@ function dropdown($what, $wert, $age = 0) {
         }
     } else if($what == "year") {
         if($age == 1) {
-            $return .='<option value="" class="dropdownKat">'._year.'</option>'."\n";
+            $return ='<option value="" class="dropdownKat">'._year.'</option>'."\n";
             for($i=date("Y",time())-80; $i<date("Y",time())-10; $i++)
             {
                 if($i==$wert)
@@ -1646,6 +1642,7 @@ function dropdown($what, $wert, $age = 0) {
                     $return .= "<option value=\"".$i."\">".$i."</option>\n";
             }
         } else {
+            $return = '';
             for($i=date("Y",time())-3; $i<date("Y",time())+3; $i++) {
                 if($i==$wert)
                     $return .= "<option value=\"".$i."\" selected=\"selected\">".$i."</option>\n";
@@ -1654,6 +1651,7 @@ function dropdown($what, $wert, $age = 0) {
             }
         }
     } else if($what == "hour") {
+        $return = '';
         for($i=0; $i<24; $i++) {
             if($i==$wert)
                 $return .= "<option value=\"".$i."\" selected=\"selected\">".$i."</option>\n";
@@ -1661,6 +1659,7 @@ function dropdown($what, $wert, $age = 0) {
                 $return .= "<option value=\"".$i."\">".$i."</option>\n";
         }
     } else if($what == "minute") {
+        $return = '';
         for($i="00"; $i<60; $i++) {
             if($i == 0 || $i == 15 || $i == 30 || $i == 45) {
                 if($i==$wert)
