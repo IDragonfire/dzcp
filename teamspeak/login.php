@@ -27,10 +27,10 @@ include(basePath."/inc/bbcode.php");
           else $loginname    = "";
 
         $password    = $_POST['password'];
-          $channel  = $_POST['channel'];
-         $channel  = str_replace("¶","'",$channel);
-           $channelpassword = $_POST['channelpassword'];
-           $time = time();
+        $channel  = $_POST['channel'];
+        $channel  = str_replace("¶","'",$channel);
+        $channelpassword = $_POST['channelpassword'];
+        $time = time();
 
            $cookie_data =  $nickname.'¶'.$reg.'¶'.$loginname.'¶'.$password;
            cookie::put('Teamspeakdata', $cookie_data);
@@ -42,8 +42,8 @@ include(basePath."/inc/bbcode.php");
           $reg = "";
            $loginname = "";
            $password = "";
-        if(isset($_COOKIE[$prev."Teamspeakdata"])) {
-            $cookie_info = explode("¶", $_COOKIE[$prev.'Teamspeakdata']);
+        if( !empty(cookie::get('Teamspeakdata'))) {
+            $cookie_info = explode("¶", cookie::get('Teamspeakdata'));
             $nickname = $cookie_info[0];
             $reg = $cookie_info[1];
             $loginname = $cookie_info[2];

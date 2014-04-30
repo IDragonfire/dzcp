@@ -34,7 +34,7 @@ if(!is_dir($config_cache['path'])) //Check cache dir
 
 $config_cache['securityKey'] = settings('prev',false);
 phpFastCache::setup($config_cache);
-$cache = phpFastCache();
+$cache = new phpFastCache();
 
 //-> Settingstabelle auslesen * Use function settings('xxxxxx');
 if(!dbc_index::issetIndex('settings')) {
@@ -49,9 +49,6 @@ if(!dbc_index::issetIndex('config')) {
     dbc_index::setIndex('config', $get_config);
     unset($get_config);
 }
-
-//-> DZCP Cookie Prefix
-$prev = settings('prev').'_';
 
 ## Cookie initialisierung ##
 cookie::init('dzcp_'.settings('prev'));
@@ -1109,7 +1106,7 @@ function checkme($userid_set=0) {
 
 //-> Prueft, ob der User gesperrt ist und meldet ihn ab
 function isBanned($userid_set=0,$logout=true) {
-    global $db,$userid,$prev;
+    global $db,$userid;
     $userid_set = $userid_set ? $userid_set : $userid;
     if(checkme($userid_set) >= 1 || $userid_set) {
         $get = db("SELECT banned FROM ".$db['users']." WHERE `id` = ".intval($userid_set)." LIMIT 1",false,true);

@@ -5,7 +5,7 @@
  * Menu: Votes
  */
 function vote($ajax = false) {
-    global $db,$prev;
+    global $db;
 
     $qry = db("SELECT `id`,`closed`,`titel` FROM ".$db['votes']." WHERE `menu` = '1' AND `forum` = 0"); $vote = '';
     if(_rows($qry)) {
