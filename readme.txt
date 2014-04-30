@@ -94,7 +94,8 @@ Aufgrund der vielzahl an �nderungen, wird kein manuelles Update f�r diese Ve
 	-[b1] und [b2] wurden entfernt und durch <logged_in></logged_in> und <logged_out></logged_out> ersetzt
 	-Gametiger wurde entfernt 
 	-Add multiple Root Adminstrator Support
-	-Team erstellen Option Status Aktive / Inaktive hinzugefügt  
+	-Team erstellen Option Status Aktive / Inaktive hinzugefügt
+	-Taktik verallgemeinert  
 	
 
         Bugfixes
