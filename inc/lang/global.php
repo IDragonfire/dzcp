@@ -5,8 +5,8 @@
  */
 
 ## ADDED / REDEFINED FOR 1.6
-define('_steamicon', '<a target="_blank" href="[profile_url]"><img height="20" width="20" src="inc/images/steam.png" alt="" class="icon" onmouseover="DZCP.showSteamBox(\'[username]\',\'[avatar_url]\',\'[text1]\',\'[text2]\',[status])" onmouseout="DZCP.hideInfo()" /> [username]</a>');
-define('_steamicon_nouser', '<a target="_blank" href="[profile_url]"><img height="20" width="20" src="inc/images/steam.png" alt="" class="icon" onmouseover="DZCP.showSteamBox(\'[username]\',\'[avatar_url]\',\'[text1]\',\'[text2]\',[status])" onmouseout="DZCP.hideInfo()" /></a>');
+define('_steamicon', '<a target="_blank" href="[profile_url]"><img height="20" width="20" src="inc/images/steam.gif" alt="" class="icon" onmouseover="DZCP.showSteamBox(\'[username]\',\'[avatar_url]\',\'[text1]\',\'[text2]\',[status])" onmouseout="DZCP.hideInfo()" /> [username]</a>');
+define('_steamicon_nouser', '<a target="_blank" href="[profile_url]"><img height="20" width="20" src="inc/images/steam.gif" alt="" class="icon" onmouseover="DZCP.showSteamBox(\'[username]\',\'[avatar_url]\',\'[text1]\',\'[text2]\',[status])" onmouseout="DZCP.hideInfo()" /></a>');
 
 ## ADDED / REDEFINED FOR 1.5.2
 define('_dropdown_date_ts', '<select id="t_[nr]" name="t_[nr]" class="dropdown">[day]</select> <select id="m_[nr]" name="m_[nr]" class="dropdown">[month]</select> <select id="j_[nr]" name="j_[nr]" class="dropdown">[year]</select>');
