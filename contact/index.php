@@ -309,7 +309,7 @@ case 'do';
                  LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
                  LEFT JOIN ".$db['squaduser']." AS s3 ON s2.user = s3.user
                  WHERE s1.`receivecws` = '1' AND s2.`posi` != '0'".$sqlAnd.$add." GROUP BY s2.`user`");
-      while($get === _fetch($qry))
+      while($get = _fetch($qry))
       {
         $qry = db("INSERT INTO ".$db['msg']."
                    SET `datum`      = '".time()."',
