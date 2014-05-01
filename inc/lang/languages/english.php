@@ -96,7 +96,7 @@ define('_dzcp_vcheck', 'The DZCP Version Checker will inform you about new DZCP 
 //Steam
 define('_steam', 'Steam');
 define('_steam_online', 'Online');
-define('_steam_offline', 'Last online: [time].');
+define('_steam_offline', 'Last online: [time]');
 define('_steam_offline_simple', 'Offline.');
 define('_steam_in_game', 'In Game');
 define('_config_steam_apikey', 'Steam API-Key');
