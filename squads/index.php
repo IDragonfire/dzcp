@@ -67,6 +67,7 @@ $dir = "squads";
                                                      "icq" => $icqnr,
                                                      "emails" => eMailAddr($getm['email']),
                                                      "id" => $getm['user'],
+													 "psteam" => _steam,
                                                      "steam" => $steam,
                                                      "class" => $class,
                                                      "nick" => $nick,
