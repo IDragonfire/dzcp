@@ -1571,13 +1571,11 @@ function userstats($what,$tid=0) {
 function sendMail($mailto,$subject,$content) {
     global $language;
     $mail = new PHPMailer;
-    $mail->isHTML(true);
     $mail->From = ($mailfrom =settings('mailfrom'));
     $mail->FromName = $mailfrom;
     $mail->AddAddress(preg_replace('/(\\n+|\\r+|%0A|%0D)/i', '',$mailto));
     $mail->Subject = $subject;
-    $mail->WordWrap = 50;
-    $mail->Body = $content;
+    $mail->msgHTML($content);
     $mail->AltBody = bbcode_nletter_plain($content);
     $mail->setLanguage(($language=='deutsch')?'de':'en', basePath.'/inc/lang/sendmail/');
     return $mail->Send();
