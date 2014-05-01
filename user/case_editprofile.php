@@ -386,6 +386,7 @@ if(defined('_UserMenu')) {
                                                 "pcity" => _profil_city,
                                                 "city" => re($get['city']),
                                                 "psteamid" => _steam,
+												"v_steamid" => re($get['steamid']),
                         "skypename" => $get['skypename'],
                                                 "nletter" => _profil_nletter,
                                                 "pnmail" => _profil_pnmail,
