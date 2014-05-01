@@ -1,35 +1,35 @@
 // GLOBAL VARS
-  var doc = document, ie4 = document.all, opera = window.opera;
-  var innerLayer, layer, x, y, doWheel = false, offsetX = 15, offsetY = 5;
-  var tickerc = 0, mTimer = new Array(), tickerTo = new Array(), tickerSpeed = new Array();
-  var shoutInterval = 15000; // refresh interval of the shoutbox in ms
-  var teamspeakInterval = 15000; // refresh interval of the teamspeak viewer in ms
-  var isIE  = (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;
-  var isWin = (navigator.appVersion.toLowerCase().indexOf("win") != -1) ? true : false;
-  var isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;
+var doc = document, ie4 = document.all, opera = window.opera;
+var innerLayer, layer, x, y, doWheel = false, offsetX = 15, offsetY = 5;
+var tickerc = 0, mTimer = new Array(), tickerTo = new Array(), tickerSpeed = new Array();
+var shoutInterval = 15000; // refresh interval of the shoutbox in ms
+var teamspeakInterval = 15000; // refresh interval of the teamspeak viewer in ms
+var isIE  = (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;
+var isWin = (navigator.appVersion.toLowerCase().indexOf("win") != -1) ? true : false;
+var isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;
 
 // DZCP JAVASCRIPT LIBARY FOR JQUERY >= V1.9
-  var DZCP = {
+var DZCP = {
 
   //init
     init: function() {
-      doc.body.id = 'dzcp-engine-1.6';
-      $('body').append('<div id="infoDiv"></div>');
+        doc.body.id = 'dzcp-engine-1.6';
+        $('body').append('<div id="infoDiv"></div>');
 
         layer = $('#infoDiv')[0];
         doc.body.onmousemove = DZCP.trackMouse;
 
-    // refresh shoutbox
-      if($('#navShout')[0]) window.setInterval("$('#navShout').load('../inc/ajax.php?i=shoutbox');", shoutInterval);
+        // refresh shoutbox
+        if($('#navShout')[0]) window.setInterval("$('#navShout').load('../inc/ajax.php?i=shoutbox');", shoutInterval);
 
-    // refresh teamspeak
-      if($('#navTeamspeakContent')[0]) window.setInterval("$('#navTeamspeakContent').load('../inc/ajax.php?i=teamspeak');", teamspeakInterval);
+        // refresh teamspeak
+        if($('#navTeamspeakContent')[0]) window.setInterval("$('#navTeamspeakContent').load('../inc/ajax.php?i=teamspeak');", teamspeakInterval);
 
-    // init lightbox
-      DZCP.initLightbox();
+        // init lightbox
+        DZCP.initLightbox();
     },
 
-  // init lightbox
+    // init lightbox
     initLightbox: function() {
       $('a[rel^=lightbox]').lightBox({
           fixedNavigation:      true,
@@ -47,7 +47,7 @@
       });
     },
 
-  // handle events
+    // handle events
     addEvent : function(obj, evType, fn) {
       if(obj.addEventListener)
       {
@@ -59,21 +59,19 @@
       } else return false;
     },
 
-  // track mouse
+    // track mouse
     trackMouse: function(e) {
-      innerLayer = $('#infoInnerLayer')[0];
-      if(typeof(layer) == 'object')
-      {
+        innerLayer = $('#infoInnerLayer')[0];
+        if(typeof(layer) == 'object') {
         var ie4 = doc.all;
         var ns6 = doc.getElementById && !doc.all;
         var mLeft = 5;
         var mTop = -15;
 
-          x = (ns6) ? e.pageX-mLeft : window.event.clientX+doc.documentElement.scrollLeft - mLeft;
-          y = (ns6) ? e.pageY-mTop  : window.event.clientY+doc.documentElement.scrollTop  - mTop;
+        x = (ns6) ? e.pageX-mLeft : window.event.clientX+doc.documentElement.scrollLeft - mLeft;
+        y = (ns6) ? e.pageY-mTop  : window.event.clientY+doc.documentElement.scrollTop  - mTop;
 
-        if(innerLayer)
-        {
+        if(innerLayer) {
             var layerW = ((ie4) ? innerLayer.offsetWidth : innerLayer.clientWidth) - 3;
           var layerH = (ie4) ? innerLayer.offsetHeight : innerLayer.clientHeight;
 
@@ -395,6 +393,8 @@
       return confirm(txt + '?');
     },
 
+
+
   // forum search
     hideForumFirst: function() {
       $('#allkat').prop('checked', false);
@@ -469,7 +469,7 @@
             $('#ts3settings').css('display', 'none');
         }
     }
-  }
+}
 
 // load global events
 $(document).ready(function() { DZCP.init(); });
