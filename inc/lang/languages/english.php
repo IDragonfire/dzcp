@@ -93,6 +93,15 @@ define('_perm_profile', 'manage profile fields');
 
 define('_dzcp_vcheck', 'The DZCP Version Checker will inform you about new DZCP updates and shows you whether your version is up to date.<br><br><span class=fontBold>Description:</span><br><font color=#17D427>Green:</font>Up to Date!<br><font color=#FFFF00>Yellow:</font> Could not connect to Server</br><font color=#FF0000>Red:</font>A new update available!');
 
+//Steam
+define('_steam', 'Steam');
+define('_steam_online', 'Online');
+define('_steam_offline', 'Last online: [time].');
+define('_steam_offline_simple', 'Offline.');
+define('_steam_in_game', 'In Game');
+define('_config_steam_apikey', 'Steam API-Key');
+define('_steam_apikey_info', 'Registering a Steam API Key: <a href="http://steamcommunity.com/dev/apikey/" target="_blank">steamcommunity.com</a>');
+
 ## ADDED / REDEFINED FOR 1.5 Final
 define('_side_membermap', 'Membermap');
 define('_id_dont_exist', 'The requested ID does not exist!');
@@ -2123,7 +2132,7 @@ define('_datum' , 'Date');
 define('_legende' , 'Legend');
 define('_hlswid' , 'XFire Name');
 define('_hlswstatus' , 'XFire');
-define('_steamid' , 'Steam Community-ID');
+define('_steamid', 'Steam Community-ID');
 define('_xboxid', 'Xbox Live');
 define('_xboxstatus', 'Xbox Live');
 define('_xboxuserpic', 'Xbox Live Avatar:');

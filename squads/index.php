@@ -52,15 +52,7 @@ $dir = "squads";
           $icqnr = $getm['icq'];
         }
 
-        if(empty($getm['steamid']))
-        {
-          $steamid = "-";
-          $steam = _steamid;
-        } else {
-          $steamid = show(_steamicon, array("steamid" => re($getm['steamid'])))." ".re($getm['steamid']);
-          $steam = _steamid;
-        }
-
+        $steam = (!empty($getm['steamid']) && steam_enable ? '<div id="infoSteam_'.md5(re($getm['steamid'])).'"><div style="width:100%;text-align:center"><img src="../inc/images/ajax-loader-mini.gif" alt="" /></div><script language="javascript" type="text/javascript">DZCP.initDynLoader("infoSteam_'.md5(re($getm['steamid'])).'","steam","&steamid='.re($getm['steamid']).'");</script></div>' : '-');
         $class = ($color % 2) ? "contentMainFirst" : "contentMainSecond"; $color++;
         $nick = autor($getm['user'],'','','','','&amp;sq='.$getm['squad']);
 
@@ -75,7 +67,6 @@ $dir = "squads";
                                                      "icq" => $icqnr,
                                                      "emails" => eMailAddr($getm['email']),
                                                      "id" => $getm['user'],
-                                                     "steamid" => $steamid,
                                                      "steam" => $steam,
                                                      "class" => $class,
                                                      "nick" => $nick,

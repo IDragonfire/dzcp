@@ -6,10 +6,6 @@
 
 if(defined('_UserMenu')) {
     $where = _user_profile_of.'autor_'.$_GET['id'];
-
-    echo $_GET['id'];
-    die();
-
     if(!db("SELECT id FROM ".$db['users']." WHERE id = '".intval($_GET['id'])."'",true) ? true : false)
         $index = error(_user_dont_exist, 1);
     else {
@@ -243,7 +239,7 @@ if(defined('_UserMenu')) {
 
             $rlname = $get['rlname'] ? re($get['rlname']) : "-";
             $skypename = $get['skypename'] ? "<a href=\"skype:".$get['skypename']."?chat\"><img src=\"http://mystatus.skype.com/smallicon/".$get['skypename']."\" style=\"border: none;\" width=\"16\" height=\"16\" alt=\"".$get['skypename']."\"/></a>" : "-";
-            $steam = $get['steamid'] ? show(_steamicon, array("steamid" => $get['steamid']))." ".re($get['steamid']) : "-";
+            $steam = (!empty($get['steamid']) && steam_enable ? '<div id="infoSteam_'.md5(re($get['steamid'])).'"><div style="width:100%;text-align:center"><img src="../inc/images/ajax-loader-mini.gif" alt="" /></div><script language="javascript" type="text/javascript">DZCP.initDynLoader("infoSteam_'.md5(re($get['steamid'])).'","steam","&steamid='.re($get['steamid']).'");</script></div>' : '-');
 
             $city = re($get['city']); $beschreibung = bbcode($get['beschreibung']);
             $show = show($dir."/profil_show",array("hardware_head" => $hardware_head,
@@ -273,7 +269,7 @@ if(defined('_UserMenu')) {
                                                    "pemail" => _email,
                                                    "picq" => _icq,
                                                    "phlsw" => _hlswstatus,
-                                                   "psteam" => _steamid,
+                                                   "psteam" => _steam,
                                                    "xboxl" => _xboxstatus,
                                                    "xboxavatarl" => _xboxuserpic,
                                                    "psnl" => _psnstatus,

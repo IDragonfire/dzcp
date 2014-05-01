@@ -93,6 +93,15 @@ define('_perm_profile', 'Profilfelder verwalten');
 
 define('_dzcp_vcheck', 'Der DZCP Versions Checker informiert dich &uuml;ber neue DZCP Updates und zeigt dir, ob deine Version aktuell ist.<br><br><span class=fontBold>Beschreibung:</span><br><font color=#17D427>Gr&uuml;n:</font>Up to Date!<br><font color=#FFFF00>Gelb:</font> Keine Verbindung zu Server<br><font color=#FF0000>Rot:</font> Es ist ein neues Update verf&uuml;gbar!');
 
+//Steam
+define('_steam', 'Steam');
+define('_steam_online', 'Online');
+define('_steam_offline', 'Zuletzt online: vor [time].');
+define('_steam_offline_simple', 'Offline.');
+define('_steam_in_game', 'Im Spiel');
+define('_config_steam_apikey', 'Steam API-Key');
+define('_steam_apikey_info', 'Registrierung eines Steam API-Keys: <a href="http://steamcommunity.com/dev/apikey/" target="_blank">steamcommunity.com</a>');
+
 ## ADDED / REDEFINED FOR 1.5 Final
 define('_id_dont_exist', 'Die von dir angegebene ID existiert nicht!');
 define('_perm_editts', 'Teamspeak Server verwalten');

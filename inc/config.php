@@ -29,6 +29,13 @@ define('dzcp_version_checker_refresh', (30*60)); // Wie lange soll gewartet werd
 define('buffer_gzip_compress_level', 4); // Level der GZIP Kompression 1 - 9
 define('buffer_show_licence_bar', true); // Schaltet die "Powered by DZCP - deV!L`z Clanportal V1.6" am ende der Seite an oder aus
 
+define('steam_enable', true); // Steam Status anzeigen
+define('steam_avatar_cache', true); // Steam Useravatare fuer schnellen Zugriff speichern
+define('steam_avatar_refresh', (30*60)); // Wann soll das Avatarbild aktualisiert werden
+define('steam_refresh', (10*60)); // Wann soll der Steam Status in der Userliste aktualisiert werden
+define('steam_api_refresh', 30); // Wann sollen die Daten der Steam API aktualisiert werden * Online / Offline / In-Game Status
+define('steam_infos_cache', true); //Sollen die Profil Daten zwischen gespeichert werden, * Cache Use
+
 /*
 * Bitte vor der Aktivierung der Persistent Connections lesen:
 * http://php.net/manual/de/features.persistent-connections.php

@@ -53,6 +53,9 @@ if(!dbc_index::issetIndex('config')) {
 ## Cookie initialisierung ##
 cookie::init('dzcp_'.settings('prev'));
 
+//SteamAPI
+SteamAPI::set('apikey',re(settings('steam_api_key')));
+
 //-> Language auslesen
 $language = (cookie::get('language') != false ? (file_exists(basePath.'/inc/lang/languages/'.cookie::get('language').'.php') ? cookie::get('language') : re(settings('language'))) : re(settings('language')));
 
@@ -2226,43 +2229,70 @@ final class dbc_index
     }
 }
 
-function steamIMG($steamID='') {
+/**
+ * Gibt die vergangene zeit zwischen $timestamp und $aktuell als lesbaren string zurueck.
+ * bsp: 3 Wochen, 4 Tage, 5 Sekunden
+ * @param int $timestamp * der timestamp der ersten zeit-marke.
+ * @param int $aktuell * der timestamp der zweiten zeit-marke. * aktuelle zeit *
+ * @param int $anzahl_einheiten * wie viele einheiten sollen maximal angezeigt werden
+ * @param boolean $zeige_leere_einheiten * sollen einheiten, die den wert 0 haben, angezeigt werden?
+ * @param array $zeige_einheiten * zeige nur angegebene einheiten. jahre werden zb in sekunden umgerechnet
+ * @param string $standard * falls der timestamp 0 oder ungueltig ist, gebe diesen string zurueck
+ * @return string
+ */
+function get_elapsed_time( $timestamp, $aktuell = null, $anzahl_einheiten = null, $zeige_leere_einheiten = null, $zeige_einheiten = null, $standard = null ) {
+    if ( $aktuell === null ) $aktuell = time();
+    if ( $anzahl_einheiten === null ) $anzahl_einheiten = 1;
+    if ( $zeige_leere_einheiten === null ) $zeige_leere_einheiten = true;
+    if ( !is_array( $zeige_einheiten ) ) $zeige_einheiten = array();
+    if ( $standard === null ) $standard = "nie";
+    if ( $timestamp == 0 ) return $standard;
+    if ( $timestamp > $aktuell ) $timestamp = $aktuell;
+    if ( $anzahl_einheiten < 1 ) $anzahl_einheiten = 10;
+    $zeit = bcsub( $aktuell, $timestamp );
+    if ( $zeit < 1 ) $zeit = 1; $arr = array();
+    $werte = array( 63115200 => _years, 31557600 => _year.' ', 4838400 => _months, 2419200 => _month.' ',
+            1209600 => _weeks, 604800 => _week.' ', 172800 => _days.' ', 86400 => _day.' ', 7200 => _hours,
+            3600 => _hour.' ', 120 => _minutes, 60 => _minute.' ',  1 => _seconds );
 
-}
-/*
-function steamIMG($steamID='') {
-    global $cache,$language;
-    if(!allow_url_fopen_support())
-        return array('img' => _fopen, 'send_header' => false);
-
-    if(!$cache->isExisting("steamsignature_error")) {
-        $image_cache_error = file_get_contents('http://steamsignature.com/profile/english/error_not_found.png');
-        if($image_cache_error && !empty($image_cache_error))
-            $cache->set("steamsignature_error", bin2hex($image_cache_error), 5*3600);
-    }
-    else
-        $image_cache_error = hextobin($cache->get("steamsignature_error"));
-
-    $lang = ($language == 'deutsch') ? 'german' : 'english';
-    $return = array('img' => $image_cache_error, 'send_header' => true);
-    if($steam = SteamAPI::getUserInfos(strtolower(trim($steamID))))
-        $ret = $steam['user']['steamID'];
-
-    if (!empty($ret) && !empty($steam) && $steam) {
-        if(!$cache->isExisting("steamsignature_".$lang."_".$ret)) {
-            $image_cache = file_get_contents('http://steamsignature.com/profile/'.$lang.'/'.$ret.'.png');
-            if($image_cache && !empty($image_cache))
-                $cache->set("steamsignature_".$lang."_".$ret, bin2hex($image_cache), (5*60));
+    if ( ( is_array( $zeige_einheiten ) ) and ( count( $zeige_einheiten ) > 0 ) ) {
+        $neu = array();
+        foreach ( $werte as $key => $val ) {
+            if ( in_array( $val, $zeige_einheiten ) )
+                $neu[$key] = $val;
         }
-        else
-            $image_cache = hextobin($cache->get("steamsignature_".$lang."_".$ret));
 
-        $return = array('img' => $image_cache, 'send_header' => true);
+        $werte = $neu;
     }
 
-    return $return;
+    foreach ( $werte as $div => $einheit ) {
+        if ( $zeit < $div ) {
+            if ( count( $arr ) != 0 )
+                $arr[$einheit] = 0;
+
+            continue;
+        }
+
+        $anzahl = bcdiv( $zeit, $div );
+        $zeit -= bcmul( $anzahl, $div );
+        $arr[$einheit] = $anzahl;
+    }
+
+    reset( $arr ); $output = 0; $ret = "";
+    while ( ( count( $arr ) > 0 ) and ( $output < $anzahl_einheiten ) ) {
+        $key = key( $arr );
+        $cur = current( $arr );
+        $einheit = ( $cur == 1 ) ? substr( $key, 0, bcsub( strlen( $key ), 1 ) ) : $key;
+        if ( ( $cur != 0 ) or ( $zeige_leere_einheiten == true ) )
+            $ret .= ( empty( $ret ) )
+            ? ($anzahl_einheiten == 1 ? round($cur, 0, PHP_ROUND_HALF_DOWN) : $cur) . " " . $einheit
+            : ", " . ($anzahl_einheiten == 1 ? round($cur, 0, PHP_ROUND_HALF_DOWN) : $cur) . " " . $einheit;
+        $output++;
+        unset( $arr[$key] );
+    }
+    return $ret;
 }
-*/
+
 
 //-> Neue Languages einbinden, sofern vorhanden
 if($language_files = get_files(basePath.'/inc/additional-languages/'.$language.'/',false,true,array('php'))) {

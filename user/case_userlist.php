@@ -68,7 +68,6 @@ if(defined('_UserMenu')) {
         $psnu = empty($get['psnid']) ? "-" : show(_psnicon, array("id" => re($get['psnid']), "img" => "1", "css" => ""));
         $originu = empty($get['originid']) ? "-" : show(_originicon, array("id" => re($get['originid']), "img" => "1", "css" => ""));
         $battlenetu = empty($get['battlenetid']) ? "-" : show(_battleneticon, array("id" => re($get['battlenetid']), "img" => "1", "css" => ""));
-        $steam = empty($get['steamid']) ? "-" : show(_steamicon, array("steamid" => $get['steamid']));
         $skypename = empty($get['skypename']) ? "-" : "<a href=\"skype:".$get['skypename']."?chat\"><img src=\"http://mystatus.skype.com/smallicon/".$get['skypename']."\" style=\"border: none;\" width=\"16\" height=\"16\" alt=\"".$get['skypename']."\"/></a>";
         $hp = empty($get['hp']) ? "-" : show(_hpicon, array("hp" => $get['hp']));
 
@@ -99,6 +98,12 @@ if(defined('_UserMenu')) {
                                                        "title" => _button_title_del));
         }
 
+        $steam = '-';
+        if(!empty($get['steamid']))
+            $steam = '<div id="infoSteam_'.md5($get['steamid']).'">
+            <div style="width:100%;text-align:center"><img src="../inc/images/ajax-loader-mini.gif" alt="" /></div>
+            <script language="javascript" type="text/javascript">DZCP.initDynLoader("infoSteam_'.md5($get['steamid']).'","steam","&steamid='.$get['steamid'].'&list=true");</script></div>';
+
         $userliste .= show($dir."/userliste_show", array("nick" => autor($get['id'],'','',10),
                                                          "level" => getrank($get['id']),
                                                          "status" => $status,
@@ -124,7 +129,6 @@ if(defined('_UserMenu')) {
     $seiten = nav($entrys,config('m_userlist'),"?action=userlist&show=".$show_sql.orderby_nav());
     $edel = permission("editusers") ? '<td class="contentMainTop" colspan="2">&nbsp;</td>' : "";
     $search = isset($_GET['search']) && !empty($_GET['search']) ? $_GET['search'] : _nick;
-
     $index = show($dir."/userliste", array("userlistehead" => _userlist,
                                          "nickhead" => _nick,
                                          "normal" => _ulist_normal,

@@ -109,7 +109,8 @@ switch ($do) {
                                                `tmpdir`             = '".up($_POST['tmpdir'])."',
                                                `persinfo`           = '".((int)$_POST['persinfo'])."',
                                                `wmodus`             = '".((int)$_POST['wmodus'])."',
-                                               `urls_linked`        = '".up($_POST['urls_linked'])."'
+                                               `urls_linked`        = '".up($_POST['urls_linked'])."',
+                                               `steam_api_key`      = '".up($_POST['steam_apikey'])."'
                                              WHERE id = 1");
 
             $show = info(_config_set, "?admin=config", 10);
@@ -243,6 +244,7 @@ switch ($do) {
                                                  "c_m_reguser" => _config_lreg,
                                                  "l_lreg" => $get['l_lreg'],
                                                  "m_lreg" => $get['m_lreg'],
+                                                 "steam_apikey" => re($gets['steam_api_key']),
                                                  "selr_shout" => $selr_shout,
                                                  "reg_shout" => _config_c_shout,
                                                  "persinfo" => _pers_info,
