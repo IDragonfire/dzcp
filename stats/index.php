@@ -152,25 +152,33 @@ $dir = "stats";
                                        "nrows" => $dbinfo["rows"]));
   } elseif($action == "downloads") {
     $qry = db("SELECT * FROM ".$db['downloads']."");
+    $allhits = 0; $allsize = 0;
     while($get = _fetch($qry))
     {
       $file = preg_replace("#added...#Uis", "../downloads/files/", $get['url']);
-      if(strpos($get['url'],"http://") != 0) $rawfile = @basename($file);
-      else                                   $rawfile = re($get['download']);
+      if(strpos($get['url'],"http://") != 0)
+          $rawfile = @basename($file);
+      else
+          $rawfile = re($get['download']);
 
-      $size = @filesize($file);
+      $size = 0;
+      if(file_exists($file))
+          $size = filesize($file);
+
       $hits = $get['hits'];
       $allhits += $hits;
       $allsize += $size;
     }
 
     if(strlen(@round(($allsize/1048576)*$allhits,0)) >= 4)
-      $alltraffic = @round(($allsize/1073741824)*$allhits,2).' GB';
-    else $alltraffic = @round(($allsize/1048576)*$allhits,2).' MB';
+        $alltraffic = @round(($allsize/1073741824)*$allhits,2).' GB';
+    else
+        $alltraffic = @round(($allsize/1048576)*$allhits,2).' MB';
 
     if(strlen(@round(($allsize/1048576),0)) >= 4)
-      $allsize = @round(($allsize/1073741824),2).' GB';
-    else $allsize = @round(($allsize/1048576),2).' MB';
+        $allsize = @round(($allsize/1073741824),2).' GB';
+    else
+        $allsize = @round(($allsize/1048576),2).' MB';
 
     $stats = show($dir."/downloads", array("head" => _site_dl,
                                            "files" => _site_stats_files,
@@ -188,7 +196,7 @@ $dir = "stats";
     $allkats = cnt($db['newskat']);
 
     $qry = db("SELECT * FROM ".$db['newskat']."");
-    $i = 1;
+    $i = 1; $kats = '';
     while($get = _fetch($qry))
     {
       if($i == $allkats) $end = "";

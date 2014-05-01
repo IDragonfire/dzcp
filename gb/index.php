@@ -20,7 +20,7 @@ $dir = "gb";
 ## SECTIONS ##
 switch ($action):
 default:
-    $add = show(_gb_eintragen, array("id" => $_GET['id']));
+    $add = show(_gb_eintragen, array("id" => (isset($_GET['id']) ? $_GET['id'] : 1)));
     $activ = (!permission("gb") && settings('gb_activ')) ? "WHERE public = 1" : "";
     $qry = db("SELECT * FROM ".$db['gb']."
               ".$activ."
@@ -28,7 +28,7 @@ default:
                LIMIT ".($page - 1)*config('m_gb').",".config('m_gb')."");
 
     $entrys = cnt($db['gb']);
-  $i = $entrys-($page - 1)*config('m_gb');
+    $i = $entrys-($page - 1)*config('m_gb');
 
   if(_rows($qry))
   {
@@ -98,7 +98,7 @@ default:
       else $posted_ip = _logged;
 
           $show .= show($dir."/gb_show", array("gbtitel" => $gbtitel,
-                                                                               "nachricht" => bbcode($get['nachricht']),
+                                           "nachricht" => bbcode($get['nachricht']),
                                            "editby" => bbcode($get['editby']),
                                            "ip" => $posted_ip));
           $i--;
@@ -109,6 +109,7 @@ default:
 
   $seiten = nav($entrys,config('m_gb'),"?action=nav");
 
+  $entry = '';
   if(!ipcheck("gb", config('f_gb')))
   {
     if($userid >= 1)
@@ -116,10 +117,10 @@ default:
           $form = show("page/editor_regged", array("nick" => autor($userid),
                                                "von" => _autor));
       } else {
-      $form = show("page/editor_notregged", array("nickhead" => _nick,
-                                                  "emailhead" => _email,
-                                                  "hphead" => _hp,
-                                                  "postemail" => ""));
+          $form = show("page/editor_notregged", array("nickhead" => _nick,
+                                                      "emailhead" => _email,
+                                                      "hphead" => _hp,
+                                                      "postemail" => ""));
     }
 
     $entry = show($dir."/add", array("titel" => _eintragen_titel,
@@ -135,7 +136,7 @@ default:
                                      "whaturl" => "addgb",
                                                                      "hphead" => _hp,
                                      "preview" => _preview,
-                                                                     "id" => $_GET['id'],
+                                                                     "id" => isset($_GET['id']) ? $_GET['id'] : 1,
                                      "form" => $form,
                                                                      "posthp" => "",
                                                                      "postnick" => "",
@@ -146,14 +147,13 @@ default:
   }
 
   $index = show($dir."/gb",array("gbhead" => _gb_head,
-                                                               "show" => $show,
+                                 "show" => $show,
                                  "add" => $add,
                                  "entry" => $entry,
-                                 "addgb" => $addgb,
                                  "seiten" => $seiten));
 break;
 case 'do';
-  if($_GET['what'] == "addgb")
+  if(isset($_GET['what']) && $_GET['what'] == "addgb")
   {
     if($userid >= 1)
     {
@@ -217,8 +217,7 @@ case 'do';
         $index = info(_gb_entry_successful, "../gb/");
       }
   }
-  //FIX START
-  elseif($_GET['what'] == 'set')
+  elseif(isset($_GET['what']) && $_GET['what'] == 'set')
   {
           if(permission('gb'))
         {
@@ -238,7 +237,7 @@ case 'do';
         else
         $index = error(_error_edit_post,1);
     }
-    elseif($_GET['what'] == "delete")
+    elseif(isset($_GET['what']) && $_GET['what'] == "delete")
     {
         $qry = db("SELECT * FROM ".$db['gb']." WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -252,13 +251,12 @@ case 'do';
         $index = error(_error_edit_post,1);
 
     }
-    elseif($_GET['what'] == "edit")
+    elseif(isset($_GET['what']) && $_GET['what'] == "edit")
     {
     $qry = db("SELECT * FROM ".$db['gb']."  WHERE id = '".intval($_GET['id'])."'");
     $get = _fetch($qry);
 
     if($get['reg'] == $userid && $chkMe >= 1 or permission('gb'))
-    //FIX END
     {
       if($get['reg'] != 0)
         {
@@ -295,7 +293,7 @@ case 'do';
       } else {
         $index = error(_error_edit_post,1);
       }
-    } elseif($_GET['what'] == 'editgb') {
+    } elseif(isset($_GET['what']) && $_GET['what'] == 'editgb') {
       if($_POST['reg'] == $userid || permission('gb'))
       {
         if($_POST['reg'] == 0)

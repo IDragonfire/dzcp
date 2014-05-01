@@ -8,6 +8,7 @@
 function dbinfo()
 {
     $info = array(); $entrys = 0;
+    $sum = 0; $rows = 0;
     $qry = db("Show table status");
     while($data = _fetch($qry)) {
         $allRows = $data["Rows"];
@@ -17,7 +18,7 @@ function dbinfo()
 
         $sum += $tableSum;
         $rows += $allRows;
-        $entrys ++;
+        $entrys++;
     }
 
     $info["entrys"] = $entrys;

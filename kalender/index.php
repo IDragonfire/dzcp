@@ -29,6 +29,7 @@ default:
   elseif(isset($_GET['y'])) $jahr = ((int)$_GET['y']);
   else $jahr = date("Y");
 
+  $month = '';
   for($i = 1; $i <= 12; $i++)
   {
     if($monat == $i) $sel = 'selected="selected"';
@@ -52,6 +53,7 @@ default:
                                         "what" => $mname[$i]));
   }
 
+  $year = '';
   for( $i = date("Y")-5; $i < date("Y")+3; $i++)
   {
     if($jahr == $i) $sel = 'selected="selected"';
@@ -66,7 +68,7 @@ default:
   $i = 1;
   while($i <= 31 && checkdate($monat, $i, $jahr))
   {
-    unset($data);
+    $data = '';
     for($iw = 1; $iw <= 7; $iw++)
     {
       unset($bdays, $cws, $infoBday, $infoCW, $infoEvent);
@@ -84,6 +86,7 @@ default:
                    WHERE bday LIKE '".cal($i).".".$monat.".____"."'");
         if(_rows($qry))
         {
+          $infoBday = '';
           while($get = _fetch($qry)) $infoBday .='&lt;img src=../inc/images/bday.gif class=icon alt= /&gt;'.'&nbsp;'.jsconvert(_kal_birthday.rawautor($get['id'])).'<br />';
 
           $info = ' onmouseover="DZCP.showInfo(\''.$infoBday.'\')" onmouseout="DZCP.hideInfo()"';
@@ -96,6 +99,7 @@ default:
                      WHERE DATE_FORMAT(FROM_UNIXTIME(datum), '%d.%m.%Y') = '".cal($i).".".$monat.".".$jahr."'");
         if(_rows($qry))
         {
+          $infoCW = '';
           while($get = _fetch($qry)) $infoCW .= '&lt;img src=../inc/images/cw.gif class=icon alt= /&gt;'.'&nbsp;'.jsconvert(_kal_cw.re($get['gegner'])).'<br />';
 
           $info = ' onmouseover="DZCP.showInfo(\''.$infoCW.'\')" onmouseout="DZCP.hideInfo()"';
@@ -108,6 +112,7 @@ default:
                    WHERE DATE_FORMAT(FROM_UNIXTIME(datum), '%d.%m.%Y') = '".cal($i).".".$monat.".".$jahr."'");
         if(_rows($qry))
         {
+          $infoEvent = '';
           while($get = _fetch($qry)) $infoEvent .='&lt;img src=../inc/images/event.gif class=icon alt= /&gt;'.'&nbsp;'.jsconvert(_kal_event.re($get['title'])).'<br />';
 
           $info = ' onmouseover="DZCP.showInfo(\''.$infoEvent.'\')" onmouseout="DZCP.hideInfo()"';
@@ -118,8 +123,7 @@ default:
 
         $events = $bdays." ".$cws." ".$event;
 
-
-        if($_GET['hl'] == $i) $day = '<span class="fontMarked">'.cal($i).'</span>';
+        if(isset($_GET['hl']) && $_GET['hl'] == $i) $day = '<span class="fontMarked">'.cal($i).'</span>';
         else $day = cal($i);
 
         if(!checkdate($monat, $i, $jahr))

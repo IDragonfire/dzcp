@@ -73,12 +73,10 @@ $dir = "squads";
 
         $member .= show($dir."/squads_member", array("icqs" => $icq,
                                                      "icq" => $icqnr,
-                                                     "email" => $email,
-                                                     "hlsw" => $hlsw,
                                                      "emails" => eMailAddr($getm['email']),
                                                      "id" => $getm['user'],
                                                      "steamid" => $steamid,
-                                                                                       "steam" => $steam,
+                                                     "steam" => $steam,
                                                      "class" => $class,
                                                      "nick" => $nick,
                                                      "onoff" => onlinecheck($getm['id']),
@@ -86,7 +84,7 @@ $dir = "squads";
                                                      "pic" => userpic($getm['id'],60,80)));
       }
 
-      $squad = re($get['name']);
+      $squad = re($get['name']); $style = '';
       foreach($picformat AS $end)
       {
         if(file_exists(basePath.'/inc/images/squads/'.intval($get['id']).'.'.$end))

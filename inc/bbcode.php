@@ -2227,6 +2227,10 @@ final class dbc_index
 }
 
 function steamIMG($steamID='') {
+
+}
+/*
+function steamIMG($steamID='') {
     global $cache,$language;
     if(!allow_url_fopen_support())
         return array('img' => _fopen, 'send_header' => false);
@@ -2258,6 +2262,7 @@ function steamIMG($steamID='') {
 
     return $return;
 }
+*/
 
 //-> Neue Languages einbinden, sofern vorhanden
 if($language_files = get_files(basePath.'/inc/additional-languages/'.$language.'/',false,true,array('php'))) {
