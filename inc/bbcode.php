@@ -1940,13 +1940,12 @@ function useravatar($uid=0, $width=100,$height=100) {
 // Userpic fuer Hoverinformationen ausgeben
 function hoveruserpic($userid, $width=170,$height=210) {
     global $picformat;
+    $pic = "../inc/images/nopic.gif', '".$width."', '".$height;
     foreach($picformat as $endung) {
         if(file_exists(basePath."/inc/images/uploads/userpics/".$userid.".".$endung)) {
             $pic = "../inc/images/uploads/userpics/".$userid.".".$endung."', '".$width."', '".$height."";
             break;
         }
-        else
-            $pic = "../inc/images/nopic.gif', '".$width."', '".$height;
     }
 
     return $pic;
