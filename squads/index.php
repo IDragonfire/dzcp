@@ -52,7 +52,7 @@ $dir = "squads";
           $icqnr = $getm['icq'];
         }
 
-        $steam = (!empty($getm['steamid']) && steam_enable ? '<div id="infoSteam_'.md5(re($getm['steamid'])).'"><div style="width:100%;text-align:center"><img src="../inc/images/ajax-loader-mini.gif" alt="" /></div><script language="javascript" type="text/javascript">DZCP.initDynLoader("infoSteam_'.md5(re($getm['steamid'])).'","steam","&steamid='.re($getm['steamid']).'");</script></div>' : '-');
+        $steam = (!empty($getm['steamid']) && steam_enable ? '<div id="infoSteam_'.md5(re($getm['steamid'])).'"><div style="width:100%"><img src="../inc/images/ajax-loader-mini.gif" alt="" /></div><script language="javascript" type="text/javascript">DZCP.initDynLoader("infoSteam_'.md5(re($getm['steamid'])).'","steam","&steamid='.re($getm['steamid']).'");</script></div>' : '-');
         $class = ($color % 2) ? "contentMainFirst" : "contentMainSecond"; $color++;
         $nick = autor($getm['user'],'','','','','&amp;sq='.$getm['squad']);
 
@@ -67,7 +67,7 @@ $dir = "squads";
                                                      "icq" => $icqnr,
                                                      "emails" => eMailAddr($getm['email']),
                                                      "id" => $getm['user'],
-													 "psteam" => _steam,
+                                                     "psteam" => _steam,
                                                      "steam" => $steam,
                                                      "class" => $class,
                                                      "nick" => $nick,
