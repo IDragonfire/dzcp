@@ -123,10 +123,11 @@ class SteamAPI {
                 //-> SteamAPI Proxy Alternative
                 if(function_exists('SteamAPI_Proxy')) {
                     $proxy = SteamAPI_Proxy(self::$profile_url,'api',array('interface' => $interface,'method' => $method, 'version' => $version));
-                    if($proxy['status'] == 'unavailable' || $proxy['status'] = 'no_discover')
+                    if(!$proxy || $proxy['status'] == 'unavailable' || $proxy['status'] = 'no_discover')
                         return false;
 
-                    $xml_stream = $proxy['data'];
+                    self::$api_data = $proxy['data'];
+                    return is_array(self::$api_data);
                 } else {
                     DebugConsole::insert_error('SteamAPI::get_steamcommunity()', 'No connection to the community interface!');
                     DebugConsole::insert_warning('SteamAPI::get_steamcommunity()', 'URL: '.self::$api_com.'/id/'.self::$profile_url.'/'.$zone_url.'?xml=1');
@@ -171,10 +172,11 @@ class SteamAPI {
                 //-> SteamAPI Proxy Alternative
                 if(function_exists('SteamAPI_Proxy')) {
                    $proxy = SteamAPI_Proxy(self::$profile_url,'com',$zone);
-                   if($proxy['status'] == 'unavailable' || $proxy['status'] = 'no_discover')
+                   if(!$proxy || $proxy['status'] == 'unavailable' || $proxy['status'] = 'no_discover')
                        return false;
 
-                   $xml_stream = $proxy['data'];
+                   self::$community_data[str_replace('_', '', $zone_tag)] = $proxy['data'];
+                   return true;
                 } else {
                     DebugConsole::insert_error('SteamAPI::get_steamcommunity()', 'No connection to the community interface!');
                     DebugConsole::insert_warning('SteamAPI::get_steamcommunity()', 'URL: '.self::$api_com.'/id/'.self::$profile_url.'/'.$zone_url.'?xml=1');
@@ -190,10 +192,11 @@ class SteamAPI {
                 if(empty($xml_stream)) {
                     if(function_exists('SteamAPI_Proxy')) {
                        $proxy = SteamAPI_Proxy(self::$profile_url,'com',$zone);
-                       if($proxy['status'] == 'unavailable' || $proxy['status'] = 'no_discover')
+                       if(!$proxy || $proxy['status'] == 'unavailable' || $proxy['status'] = 'no_discover')
                            return false;
 
-                       $xml_stream = $proxy['data'];
+                       self::$community_data[str_replace('_', '', $zone_tag)] = $proxy['data'];
+                       return true;
                     } else {
                         DebugConsole::insert_error('SteamAPI::get_steamcommunity()', 'No connection to the community interface!');
                         DebugConsole::insert_warning('SteamAPI::get_steamcommunity()', 'URL: '.self::$api_com.'/id/'.self::$profile_url.'/'.$zone_url.'?xml=1');
