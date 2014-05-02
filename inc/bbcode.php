@@ -1946,7 +1946,7 @@ function hoveruserpic($userid, $width=170,$height=210) {
             break;
         }
         else
-            $pic = "../inc/images/nopic.gif".$userid.".".$endung."', '".$width."', '".$height."";
+            $pic = "../inc/images/nopic.gif', '".$width."', '".$height;
     }
 
     return $pic;
