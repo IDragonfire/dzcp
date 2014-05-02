@@ -122,7 +122,7 @@ class SteamAPI {
             if(!($xml_stream = file_get_contents(self::$api_host.'/'.$interface.'/'.$method.'/'.$version.'/?'.http_build_query(self::$send_data_api), false, $ctx))) {
                 //-> SteamAPI Proxy Alternative
                 if(function_exists('SteamAPI_Proxy')) {
-                    $proxy = SteamAPI_Proxy(self::$profile_url,'api',array('interface' => $interface,'method' => $method, 'version' => $version), self::$send_data_api);
+                    $proxy = SteamAPI_Proxy(self::$profile_url,'api',array('interface' => $interface,'method' => $method, 'version' => $version));
                     if($proxy['status'] == 'unavailable' || $proxy['status'] = 'no_discover')
                         return false;
 
@@ -170,7 +170,7 @@ class SteamAPI {
             if(empty($xml_stream)) {
                 //-> SteamAPI Proxy Alternative
                 if(function_exists('SteamAPI_Proxy')) {
-                   $proxy = SteamAPI_Proxy(self::$profile_url,'com',$zone,'id');
+                   $proxy = SteamAPI_Proxy(self::$profile_url,'com',$zone);
                    if($proxy['status'] == 'unavailable' || $proxy['status'] = 'no_discover')
                        return false;
 
@@ -189,7 +189,7 @@ class SteamAPI {
                 $xml_stream = file_get_contents(self::$api_com.'/profiles/'.self::$profile_url.'/?xml=1', false, $ctx);
                 if(empty($xml_stream)) {
                     if(function_exists('SteamAPI_Proxy')) {
-                       $proxy = SteamAPI_Proxy(self::$profile_url,'com',$zone,'profiles');
+                       $proxy = SteamAPI_Proxy(self::$profile_url,'com',$zone);
                        if($proxy['status'] == 'unavailable' || $proxy['status'] = 'no_discover')
                            return false;
 
