@@ -34,7 +34,8 @@ ob_start();
 
         //Avatar
         if(!$cache->isExisting('steam_avatar_'.$steamID)) {
-            if($img_stream = file_get_contents($steam['user']['avatarIcon_url'])) {
+            $ctx = stream_context_create(array('http'=>array('timeout' => file_get_contents_timeout)));
+            if($img_stream = file_get_contents($steam['user']['avatarIcon_url'], false, $ctx)) {
                 $steam['user']['avatarIcon_url'] = 'data:image/png;base64,'.base64_encode($img_stream);
                 if(steam_avatar_cache)
                     $cache->set('steam_avatar_'.$steamID, bin2hex($img_stream), steam_avatar_refresh);

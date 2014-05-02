@@ -98,12 +98,12 @@ else {
             if(!$cache->isExisting("admin_news")) {
                 $dzcp_news = fileExists("http://www.dzcp.de/dzcp_news.php");
                 if(!empty($dzcp_news))
-                    $cache->set("admin_news", $dzcp_news, 1200);
+                    $cache->set("admin_news", base64_encode($dzcp_news), 1200);
                 else
                     $dzcp_news = false;
             }
             else
-                $dzcp_news = $cache->get("admin_news");
+                $dzcp_news = base64_decode($cache->get("admin_news"));
         }
     }
 

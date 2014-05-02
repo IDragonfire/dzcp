@@ -22,6 +22,7 @@ define('thumbgen_cache_time', 60*60); // Wie lange soll das Bild aus dem Cache v
 
 define('feed_update_time', 10*60); // Wann soll der Newsfeed aktualisiert werden
 define('cookie_expires', (60*60*24*30*12)); // Wie Lange die Cookies des CMS ihre Gueltigkeit behalten.
+define('file_get_contents_timeout', 10);
 
 define('dzcp_version_checker', true); // Version auf DZCP.de abgleichen und benachrichtigen ob eine neue Version zur Verfuegung steht
 define('dzcp_version_checker_refresh', (30*60)); // Wie lange soll gewartet werden um einen Versionsabgleich auszufuehren
@@ -31,8 +32,8 @@ define('buffer_show_licence_bar', true); // Schaltet die "Powered by DZCP - deV!
 
 define('steam_enable', true); // Steam Status anzeigen
 define('steam_avatar_cache', true); // Steam Useravatare fuer schnellen Zugriff speichern
-define('steam_avatar_refresh', (30*60)); // Wann soll das Avatarbild aktualisiert werden
-define('steam_refresh', (10*60)); // Wann soll der Steam Status in der Userliste aktualisiert werden
+define('steam_avatar_refresh', (60*60)); // Wann soll das Avatarbild aktualisiert werden
+define('steam_refresh', (8*60*60)); // Wann soll der Steam Status in der Userliste aktualisiert werden
 define('steam_api_refresh', 30); // Wann sollen die Daten der Steam API aktualisiert werden * Online / Offline / In-Game Status
 define('steam_infos_cache', true); //Sollen die Profil Daten zwischen gespeichert werden, * Cache Use
 
@@ -43,9 +44,9 @@ define('steam_infos_cache', true); //Sollen die Profil Daten zwischen gespeicher
 define('mysqli_persistconns', false);
 
 $config_cache = array();
-$config_cache['storage'] = "auto"; //auto,memcache,files,sqlite,wincache,xcache oder apc
+$config_cache['storage'] = "files"; //auto,memcache,files,sqlite,wincache,xcache oder apc
 $config_cache['server'] = array(array("127.0.0.1",11211,1));
-$config_cache['dbc'] = true; //use database querie caching * only use with memory cache
+$config_cache['dbc'] = true; //use database query caching * only use with memory cache
 $config_cache['dbc_auto_memcache'] = false; //use database querie caching * auto memcache check
 
 //-> Legt die UserID des Rootadmins fest
