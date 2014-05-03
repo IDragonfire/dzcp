@@ -50,16 +50,16 @@ if(!dbc_index::issetIndex('config')) {
     unset($get_config);
 }
 
-## Cookie initialisierung ##
+//-> Cookie initialisierung
 cookie::init('dzcp_'.settings('prev'));
 
-//SteamAPI
+//-> SteamAPI
 SteamAPI::set('apikey',re(settings('steam_api_key')));
 
 //-> Language auslesen
 $language = (cookie::get('language') != false ? (file_exists(basePath.'/inc/lang/languages/'.cookie::get('language').'.php') ? cookie::get('language') : re(settings('language'))) : re(settings('language')));
 
-//einzelne Definitionen
+//-> einzelne Definitionen
 $isSpider = isSpider();
 $subfolder = basename(dirname(dirname($_SERVER['PHP_SELF']).'../'));
 $httphost = $_SERVER['HTTP_HOST'].(empty($subfolder) ? '' : '/'.$subfolder);
@@ -84,17 +84,17 @@ $index = ''; $show = ''; $color = 0;
 
 //-> Auslesen der Cookies und automatisch anmelden
 if(cookie::get('id') != false && cookie::get('pkey') != false && empty($_SESSION['id']) && !checkme()) {
-    ## User aus der Datenbank suchen ##
+    //-> User aus der Datenbank suchen
     $sql = db_stmt("SELECT id,user,nick,pwd,email,level,time,pkey FROM ".$db['users']." WHERE id = ? AND pkey = ? AND level != '0'",array('is', cookie::get('id'), cookie::get('pkey')));
     if(_rows($sql)) {
         $get = _fetch($sql);
 
-        ## Generiere neuen permanent-key ##
+        //-> Generiere neuen permanent-key
         $permanent_key = md5(mkpwd(8));
         cookie::put('pkey', $permanent_key);
         cookie::save();
 
-        ## Schreibe Werte in die Server Sessions ##
+        //-> Schreibe Werte in die Server Sessions
         $_SESSION['id']         = $get['id'];
         $_SESSION['pwd']        = $get['pwd'];
         $_SESSION['lastvisit']  = $get['time'];
@@ -106,10 +106,10 @@ if(cookie::get('id') != false && cookie::get('pkey') != false && empty($_SESSION
         if(empty($_SESSION['lastvisit']))
             $_SESSION['lastvisit'] = data("time",$get['id']);
 
-        ## Aktualisiere Datenbank ##
+        //-> Aktualisiere Datenbank
         db("UPDATE ".$db['users']." SET `online` = '1', `sessid` = '".session_id()."', `ip` = '".$_SESSION['ip']."', `pkey` = '".$permanent_key."' WHERE id = '".$get['id']."'");
 
-        ## Aktualisiere die User-Statistik ##
+        //-> Aktualisiere die User-Statistik
         db("UPDATE ".$db['userstats']." SET `logins` = logins+1 WHERE user = '".$get['id']."'");
         unset($get,$permanent_key);
     } else {
@@ -2317,9 +2317,6 @@ if($functions_files = get_files(basePath.'/inc/additional-functions/',false,true
 
 //-> Navigation einbinden
 include_once(basePath.'/inc/menu-functions/navi.php');
-
-//-> Timer Start
-$time_start = generatetime();
 
 //-> Ausgabe des Indextemplates
 function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index')
