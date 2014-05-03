@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>DZCP - Readme</title>
+<style type="text/css">
+
+body {
+   background-color: #FFF;
+   margin: 0px;
+   padding: 0px;
+   font-family: Verdana,Tahoma,Geneva,Arial,Helvetica,Sans-serif;
+   font-size: 15px;
+   line-height: 1.2;
+   }
+
+#header {
+	width:auto;
+	height:auto;
+	background-color:#000;
+    border-bottom:3px solid #F00;
+	}
+	
+#header H1 {
+	color:#FFF;
+	text-align:center;
+	}
+
+#footer {
+	width:auto;
+	height:auto;
+	background-color:#000;
+	color:#FFF;
+	text-align:center;
+	border-top:3px solid #F00;
+   }
+   
+#footer a:link,a:visited,a:hover,a:active {
+  color:#FFF; 
+  font-weight: bold;
+  text-decoration: none;
+	}
+	
+#footer a:hover {
+  color: #ff0000;
+	}
+	
+.content {
+	width:auto;
+	height:auto;
+	}
+
+.content H1,H2,H3 {
+	color:#000;
+	text-align:left;
+   }
+   
+.content H4 {
+	color:#F00;
+	text-align:left;
+   }
+   
+.content ul li {
+    list-style:circle;
+}
+
+.content a:link,a:visited,a:hover,a:active {
+  color:#00F; 
+  font-weight:normal;
+  text-decoration: none;
+}
+
+.content a:hover {
+  color: #ff0000;
+}
+
+</style>
+</head>
+
+<body>
+	<div id="header">
+		<h1>DZCP - Devils Clan Portal Readme</h1>
+    </div>
+	<div class="content">
+    	<h3>Inhalsverzeichniss</h3>
+        <ul>
+		<li><a href="#installation">1. Installation</a></li> 
+        <li><a href="#autoupdate">2. Automatisches Update</a></li> 
+        <li><a href="#support">3. Hilfe und Support</a></li> 
+        <li>4. DZCP v1.6
+          <ul>
+            <li><a href="#v16manuel">4.1 DZCP v1.6 manuelles Update</a></li>
+            <li><a href="#v16fixes"> 4.2 DZCP v1.6 Bugfixes, Updates, Neuerungen</a></li>
+          </ul>
+        </li>
+        </ul>
+    </div>
+	<div class="content">
+    	<h3><a name="installation">1. Installation</a></h3>
+        <ul>
+       	 <p>
+      	  Die Installation gestaltet sich recht einfach.<br>
+
+		  Lade alle Dateien aus dem Archiv per FTP auf deinen Webserver und öffne anschließend in deinem Web-Browser
+		  das Installationsprogramm mit folgender URL auf.<br>
+
+		  <p><a href="#" target="_blank">http://www.Deine-Domain.de/_installer</a></p>
+
+          Folge hier den Anweisungen, die dich durch die Installationsroutine begleiten.
+          Anschließend bitte unbedingt den Ordner _installer/ vom webspace löschen und CHMOD der inc/mysql.php auf 644 setzen.
+	  	 </p>	
+       </ul>	
+    </div>
+	<div class="content">
+    	<h3><a name="autoupdate">2. automatisches Update</a></h3>
+        <ul>
+       	 <p>
+      	  Einfach alle Dateien austauschen und das Datenbank Updatescript ausführen.<br>
+
+		  Bitte rufe nachdem du alle Dateien ausgetauscht und verändert hast einmal das Updatescript mittels
+	      folgender URL auf und folge den Anweisungen.
+
+		  <p><a href="#" target="_blank">http://www.Deine-Domain.de/_installer/update.php</a></p>
+
+		  Nach erfolgreichem Update bitte unbedingt den Ordner _installer/ vom Webspace löschen
+	  	 </p>	
+       </ul>    
+	</div>
+    <div class="content">
+    <h3><a name="support">3. Hilfe und Support</a></h3>
+        <ul>
+       	 <p>Ihr benötigt Hilfe oder habt eine Frage dann stellt diese auf <a href="http://www.dzcp.de" target="_blank">DZCP.de</a>!</p>	
+         <ul>
+         	<li><a href="http://www.dzcp.de/forum/?action=show&id=40" target="_blank">Fragen zur Installation oder zum Update</a></li>
+            <li><a href="http://www.dzcp.de/forum/?action=show&id=22" target="_blank">Probleme</a> oder<a href="http://www.dzcp.de/forum/?action=show&id=6" target="_blank"> Bugs</a></li>
+       	</ul>
+       </ul>    
+	</div>
+	<div class="content">
+    <h3><a name="v16manuel">4.1 DZCP v1.6 manuelles Update</a></h3>
+        <ul>
+       	 <p>
+      	 Aufgrund der vielzahl an Änderungen, wird kein manuelles Update für diese Version aufgeführt.
+	  	 </p>	
+       </ul>    
+	</div>
+    <div class="content">
+    <h3><a name="v16fixes">4.2 DZCP v1.6 Bugfixes, Updates, Neuerungen</a></h3>
+    	<ul>
+        <a href="https://github.com/DZCP-Community/DZCP-1.6" target="_blank">Projekt on GitHub</a>
+   		 <h4>Updates, Neuerungen</h4>
+			<ul>
+				<li>sicheres automatisches generiertes Passwort</li>
+        		<li>TinyMCE mit neuem FileUploader + Smartphone tauglich</li>
+        		<li>Server-Queries hinzugefügt zbsp. Battlefield 4</li>
+        		<li>Membermap (new Google Maps API)</li>
+        		<li>Infobox Update</li>
+        		<li>JQuery Upadte v1.11.0</li>
+        		<li>Lightbox Update</li>
+        		<li>News nach Kategorien anzeigen</li>
+        		<li>Mapdownload (Gameserver) entfernt (Service wurde eingestellt)</li>  
+        		<li>TS3 Update (support customs icons)</li>
+        		<li>manuelles sortieren der Sub-Forumkategorien</li>
+        		<li>valid HTML Template</li> 
+        		<li>auto URL Erkennung</li> 
+        		<li>Admin - Navigation nach Kategorie geordnet</li> 
+        		<li>Teamspeak IP ohne Port</li> 
+        		<li>Profilfelderverwaltung können Profilfelder ausgeblendet werden</li> 
+        		<li>Filter in der Admin Clanwarsübersicht hinzugefügt</li> 
+        		<li>Avatar Upload beim Adminmenü Userhinzufügen hinzugefügt</li> 
+        		<li>Vorschaubild in der Galerieübersicht wurde hinzugefügt</li>
+        		<li>neues Template v1.6 (Danke an eSport Designs für das Design Template v1.6)</li>
+        		<li>Template version1.6 inkl. erweiterte Platzhalter für die Boxen (Boxentitel werden beim ändern der Sprache mit übersetzt)</li>
+        		<li>Platzhalter [where] für die Ausgabe des Seitentitels innerhalb des Templates hinzugefügt</li>
+        		<li>Dynamische Platzhalter [lang_xxxx] für die Ausgabe beliebiger Definitionen aus der Language File innerhalb des Templates hinzugefügt</li>
+        		<li>Slideshow wurde hinzugefügt - Platzhalter [slideshow] (Template Version 1.5 wurde der Platzhalter [sildeshow] nicht in die index.html übernommen)</li>
+        		<li>eigenes Newsbild kann als Alternative zum Kat.-Banner beim erstellen der News mit angegeben werden</li>
+        		<li>Interne Galerie hinzugeügt</li> 
+                <li>interne Downloads hinzugefügt</li>
+       			<li>Ordnen von Spalten / Inhalten in mehrere Bereiche hinzugefügt</li>
+        		<li>Xfire wurde in der Userliste durch Steam ersetzt und Skype hinzugefügt</li>
+        		<li>Profil wurde um folgende Kontakte erweiter: Steam (Thanks Tune389 & Nitro), Skype, Xbox Live, Playstation Network, Origin, Battlenet</li>
+        		<li>Antispam Update</li>
+        		<li>neuer Platzhalter [avatar] zeigt nach User-Login den zugehörige Avatar an(Template Version 1.5 wurde der Platzhalter [avatar] nicht in die index.html übernommen)</li>
+        		<li>Option Anzeige Usergalerie im Profil wurde hinzugefügt (Öffentlich / nur User / nur Member)</li>
+        		<li>Option Usergästebucheinträge Speeren / zulassen im Profil wurde hinzugefügt</li>
+        		<li>JoinUs Formular kann das Teams mit ausgewählt werden; Teams können selber entscheiden ob Sie im Formular mit aufgeführt werden möchten</li>
+        		<li>FightUs Formular kann das Teams mit ausgewählt werden; Teams können selber entscheiden ob Sie im Formular mit aufgeführt werden möchten</li>
+				<li>Backupfunktion wurde überarbeitet</li>
+        		<li>MySQL wurde auf MySQLi umgestellt um die Lauffähigkeit für Spätere PHP Versionen zu sichern</li>
+        		<li>Newstricker im Administrationsbereich kann optional in der config.php abgeschaltet werden</li>
+        		<li>alte DZCP Cache wurde ersetzt, dieser unterstützt jetzt Files, SQL-Lite, APC, Memcache, WinCache und XCache</li>
+        		<li>Verschiedene Optimierungen / Ausbesserungen im PHP und HTML Code</li>
+				<li>Skype und Steam ID wurde als Formularfeld in FightUs, JoinUs und Konatkt hinzugefügt</li>
+				<li>Error-Report wurde hinzugefügt und kann über die config.php aktiviert / deaktiviert werden (Logfils werden unter inc/_logs gespeichert)</li>
+				<li>Mouseover wurde für die EventBox hinzugefügt</li>
+				<li>[b1] und [b2] wurden entfernt und durch HTML-Tags < logged_in>< /logged_in> und < logged_out>< /logged_out> ersetzt</li>
+	 			<li>Gametiger wurde entfernt (Service wurde eingestellt)</li> 
+				<li>multiple Root Adminstrator Support hinzugefügt</li>
+				<li>Team erstellen Option Status Aktive / Inaktive hinzugefügt</li>
+				<li>Taktik wurde verallgemeinert</li>
+            </ul>
+       <h4>Bugfixes</h4>
+             <ul>
+             	<li>unveröffentlichte Artikel kann man nicht ansehen</li> 
+        	 	<li>highlight in der Forum Suche wird nicht resetet</li> 
+        		<li>man kann als Gast / unregistrierte User Kommentare abgeben</li> 
+        		<li>Serverviewer für MOHAA, SH und BT Fix</li>
+        		<li>Loginname / Username mit Sonderzeichen nicht möglich</li> 
+        		<li>Datum letzter Download wird nicht richtig aktualisiert</li> 
+        		<li>gelöschte Forenposts werden nicht zurückgerechnet</li> 
+        		<li>Nachtragsfunktion wird nicht in der Userlobby angezeigt</li> 
+        		<li>JoinUs Benachrichtigung fehlerhaft</li>
+        		<li>Galerie Bilder wurden nicht richtig verkleinert</li>
+        		<li>additional languages werden vor additional functions geladen</li>
+        		<li>Glossarwörter zerreißen Texte (aus Interesse wird z.b. INT eresse)</li> 
+        		<li>Newsletter interne Links werden nicht richtig kodiert</li> 
+        		<li>Bug beim Ajax Vote</li>
+        		<li>Nick in der Shoutbox wird nicht gekürzt</li> 
+        		<li>Gästebuch Homepage-Links werden gekürzt</li> 
+        		<li>Großgeschriebener bbcode ohne Funktion</li> 
+        		<li>Bilder wurden nicht immer verkleinert (auto resized)</li> 
+        		<li>Server Passwort war sichtbar</li> 
+        		<li>FightUs Benachrichtigung fehlerhaft</li> 
+        		<li>interne Votes werden öffentlich nach editieren</li> 
+        		<li>inaktive Squads kann man keine Awards vergeben</li>
+        		<li>Event Links werden nicht richtig erkannt</li>
+        		<li>Fehlende definitionen in Sprachdateien</li> 
+        		<li>Menü für Banneradresse hat sich nicht geöffnet</li> 
+        		<li>Adminmenü war nicht immer für alle Berechtigten sichtbar</li>
+        		<li>Infomeldungen werden 5 anstatt 2 Sekunden angezeigt</li>
+        		<li>Emailvorlagen fehlerhaft - Probleme mit Sonderzeichen</li> 
+        		<li>unveröffentliche Artikel / News können von unregistrierten Usern eingesehn werden</li> 
+        		<li>Threadersteller wird nicht als Top Poster gezählt</li>
+        		<li>einige Zeichen wurden in der Datenbank doppelt codiert</li> 
+        		<li>edit Profile BUG</li> 
+        		<li>Backslashes are not supported</li> 
+        		<li>Fix Privatnachrichten (ErrorNo = 1364)</li> 
+        		<li>Loginname wurde nicht richtig formatiert beim Editieren</li>
+        		<li>TS3 funktionieren keine Sonderzeichen</li>
+        		<li>Seitenaufteilung: 0 als Wert</li> 
+        		<li>Newskatimage / Galeriebilder werden bei langen Filenamen nicht angezeigt</li> 
+        		<li>Forumsuche - internen Threads werden nicht in die Suche mit einbezogen</li> 
+        		<li>Schönheitsfehler in den Formularen</li> 
+        		<li>Navigation Interne Seiten waren über Link für jeden aufrufbar</li>
+        		<li>Glossarnavigation Alle ohne Funktion</li>
+        		<li>mit aktiven Autologin wurden Pagebesuche nicht gezählt</li>
+        		<li>mehrere kleiner Optimierungen am Code</li>
+        		<li>User IPs werden auch bei vorgeschaltete Proxyserver oder Load Balancer nicht richtig erkannt</li>
+        		<li>Smile Bug Fix TinyMC</li>
+        		<li>E-Mail Fix HTML-Bug</li>
+				<li>Newstitel Längenfix</li>
+				<li>[clanname] wurde im Template nicht ausgegeben</li>
+				<li>Online status von Usern wurde nicht richtig dargestellt (Online / Offline)</li>
+				<li>fehlerhafte Weiterleitung nach GameIcon Uploads Team</li>
+				<li>Clankasse Währung wurde bei "neue Beiträge hinzufügen" und "editieren" falsch angezeigt</li>
+    			<li>MySql Injetion Sicherheitslücken wurden geschlossen</li>
+            </ul>
+		<h4>Thanks</h4>
+        	<ul>
+				Wir bedanken uns bei allen die an der Fertigstellung der v1.6 mitgearbeitet haben.
+
+				<p>Godkiller_NT(Hammermaps.de), Dragonfire, xDGeForcexD, Hypernate, Koma, Alper Cino (eSport-Designs.de),  Makke,
+				Tune389, Acecom, Sk!ller</p>
+            </ul>
+       <h4>Statistik</h4>
+       		<ul>
+			Insgesammt wurden für die DZCP v1.6<br>
+			420.425 Zeilen geschrieben,<br>
+			244.848 Zeilen gelöscht und<br>
+			665.273 Zeilen gesammt verändert in<br> 
+			über 700 Commits.
+            </ul>
+       </ul>    
+	</div>
+    <div id="footer">
+    <p><a href="http://www.dzcp.de/" target="_blank">Powered by DZCP - deV!L`z Clanportal</a></p>
+    </div>
+</body>
+</html>
