@@ -7,6 +7,7 @@
 ## OUTPUT BUFFER START #
 define('basePath', dirname(dirname(__FILE__).'../'));
 ob_start();
+ob_implicit_flush(false);
     $ajaxJob = true;
 
     ## INCLUDES ##
@@ -65,4 +66,11 @@ ob_start();
     if(!mysqli_persistconns)
         $mysql->close(); //MySQL
 
+    $output = ob_get_contents();
+    if(debug_save_to_file)
+        DebugConsole::save_log(); //Debug save to file
+
+ob_end_clean();
+ob_start('ob_gzhandler');
+    exit(isset($_GET['dev']) ? DebugConsole::show_logs().$output : $output);
 ob_end_flush();
