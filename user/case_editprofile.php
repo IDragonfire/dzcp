@@ -118,29 +118,29 @@ if(defined('_UserMenu')) {
                 $getdel = _fetch($qrydel);
 
                 $qry = db("UPDATE ".$db['f_threads']."
-                                     SET `t_nick`   = '".up($getdel['nick'])."',
-                                             `t_email`  = '".up($getdel['email'])."',
+                                     SET `t_nick`   = '".$getdel['nick']."',
+                                             `t_email`  = '".$getdel['email']."',
                                              `t_hp`            = '".links($getdel['hp'])."',
                                              `t_reg`        = '0'
                                      WHERE t_reg = '".intval($getdel['id'])."'");
 
                 $qry = db("UPDATE ".$db['f_posts']."
-                                     SET `nick`   = '".up($getdel['nick'])."',
-                                             `email`  = '".up($getdel['email'])."',
+                                     SET `nick`   = '".$getdel['nick']."',
+                                             `email`  = '".$getdel['email']."',
                                              `hp`            = '".links($getdel['hp'])."',
                                              `reg`        = '0'
                                      WHERE reg = '".intval($getdel['id'])."'");
 
                 $qry = db("UPDATE ".$db['newscomments']."
-                                     SET `nick`     = '".up($getdel['nick'])."',
-                                             `email`    = '".up($getdel['email'])."',
+                                     SET `nick`     = '".$getdel['nick']."',
+                                             `email`    = '".$getdel['email']."',
                                              `hp`       = '".links($getdel['hp'])."',
                                              `reg`            = '0'
                                      WHERE reg = '".intval($getdel['id'])."'");
 
                 $qry = db("UPDATE ".$db['acomments']."
-                                     SET `nick`     = '".up($getdel['nick'])."',
-                                             `email`    = '".up($getdel['email'])."',
+                                     SET `nick`     = '".$getdel['nick']."',
+                                             `email`    = '".$getdel['email']."',
                                              `hp`       = '".links($getdel['hp'])."',
                                              `reg`            = '0'
                                      WHERE reg = '".intval($getdel['id'])."'");
