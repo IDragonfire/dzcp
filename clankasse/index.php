@@ -17,7 +17,6 @@ $where = _site_clankasse;
 $title = $pagetitle." - ".$where."";
 $dir = "clankasse";
 ## SECTIONS ##
-$w = settings("k_waehrung");
 switch ($action):
 default:
   if(!$chkMe || $chkMe < 2)
@@ -33,13 +32,10 @@ default:
       $betrag = $get['betrag'];
       $betrag = str_replace(".",",",$betrag);
 
-      if($get['pm'] == "0")
-      {
-        $pm = show(_clankasse_plus, array("betrag" => $betrag,
-                                          "w" => $w));
+      if($get['pm'] == "0") {
+        $pm = show(_clankasse_plus, array("betrag" => $betrag,"w" => settings("k_waehrung")));
       } else {
-        $pm = show(_clankasse_minus, array("betrag" => $betrag,
-                                           "w" => $w));
+        $pm = show(_clankasse_minus, array("betrag" => $betrag,"w" => settings("k_waehrung")));
       }
 
       $edit = show("page/button_edit_single", array("id" => $get['id'],
@@ -61,30 +57,18 @@ default:
                                                   "delete" => $delete,
                                                   "edit" => $edit,
                                                   "datum" => date("d.m.Y",$get['datum'])));
-      $i--;
     }
 
-    $qryp = db("SELECT sum(betrag) AS gesamt
-                FROM ".$db['clankasse']."
-                WHERE pm = 0");
-    $getp = _fetch($qryp);
-
-    $qryc = db("SELECT sum(betrag) AS gesamt
-                FROM ".$db['clankasse']."
-                WHERE pm = 1");
-    $getc = _fetch($qryc);
-
-    $ges = $getp['gesamt'] - $getc['gesamt'];
+    $getp = sum($db['clankasse'], ' WHERE pm = 0', 'betrag');
+    $getc = sum($db['clankasse'], ' WHERE pm = 1', 'betrag');
+    $ges = $getp - $getc;
     $ges = @round($ges,2);
     $ges = str_replace(".",",",$ges);
 
-    if($getp['gesamt'] < $getc['gesamt'])
-    {
-      $gesamt = show(_clankasse_summe_minus, array("summe" => $ges,
-                                                   "w" => $w));
+    if($getp < $getc) {
+      $gesamt = show(_clankasse_summe_minus, array("summe" => $ges, "w" => settings("k_waehrung")));
     } else {
-      $gesamt = show(_clankasse_summe_plus, array("summe" => $ges,
-                                                  "w" => $w));
+      $gesamt = show(_clankasse_summe_plus, array("summe" => $ges, "w" => settings("k_waehrung")));
     }
 
    if(permission("clankasse")) $new = _clankasse_new;
@@ -95,6 +79,7 @@ default:
                WHERE tbl1.listck = '1'
                OR tbl1.level = '4'
                ".orderby_sql(array("nick","payed"), 'ORDER BY tbl1.nick', 'tbl2'));
+    $showstatus = '';
     while($gets = _fetch($qrys))
     {
       if($gets['user'])
@@ -156,8 +141,7 @@ default:
                                            "bank" => $get['k_bank'],
                                            "vwz" => $get['k_vwz'],
                                            "summe" => $gesamt,
-                                           "seiten" => $seiten,
-                                           "beitrag" => $beitrag));
+                                           "seiten" => $seiten));
   }
 break;
 case 'admin':
@@ -165,7 +149,7 @@ case 'admin':
   {
     if ($do == "new")
     {
-      $qry = db("SELECT * FROM ".$db['c_kats']."");
+      $qry = db("SELECT * FROM ".$db['c_kats'].""); $trans = '';
       while($get = _fetch($qry))
       {
         $trans .= show(_select_field, array("value" => re($get['kat']),
@@ -182,16 +166,12 @@ case 'admin':
                                        "datum" => _datum,
                                        "vonan" => _clankasse_for,
                                        "thisyear" => date("Y"),
-                                       "beitrag" => _clankasse_sbeitrag,
-                                       "miete" => _clankasse_smiete,
                                        "value" => _button_value_add,
                                        "dropdown_date" => $dropdown_date,
-                                       "ssonstiges" => _clankasse_ssonstiges,
                                        "einzahlung" => _clankasse_einzahlung,
                                        "auszahlung" => _clankasse_auszahlung,
                                        "trans" => $trans,
-                                       "w" => $w,
-                                       "sponsor" => _clankasse_ssponsor,
+                                       "w" => settings("k_waehrung"),
                                        "sonstiges" => _clankasse_sonstiges,
                                        "member" => _member,
                                        "transaktion" => _clankasse_ctransaktion,
@@ -244,18 +224,14 @@ case 'admin':
             $index = info(_clankasse_edited, "../clankasse/");
       }
     } elseif ($do == "edit") {
-      $qry = db("SELECT * FROM ".$db['clankasse']."
-                 WHERE id = '".intval($_GET['id'])."'");
-      $get = _fetch($qry);
-
+      $get = db("SELECT * FROM ".$db['clankasse']." WHERE id = '".intval($_GET['id'])."'",false,true);
       $dropdown_date = show(_dropdown_date, array("day" => dropdown("day",date("d",$get['datum'])),
                                                              "month" => dropdown("month",date("m",$get['datum'])),
                                                     "year" => dropdown("year",date("Y",$get['datum']))));
 
-      if($get['pm'] == "0") $psel = 'selected="selected"';
-      else $msel = 'selected="selected"';
-
-      $qryk = db("SELECT * FROM ".$db['c_kats']."");
+      $psel = ($get['pm'] == "0" ? 'selected="selected"' : '');
+      $msel = ($get['pm'] == "1" ? 'selected="selected"' : '');
+      $qryk = db("SELECT * FROM ".$db['c_kats'].""); $trans = '';
       while($getk = _fetch($qryk))
       {
         if($getk['kat'] == $get['transaktion']) $sel = 'selected="selected"';
@@ -274,20 +250,12 @@ case 'admin':
                                         "psel" => $psel,
                                         "msel" => $msel,
                                         "value" => _button_value_edit,
-                                        "bsel" => $bsel,
-                                        "misel" => $misel,
-                                        "ssel" => $ssel,
-                                        "spsel" => $spsel,
                                         "trans" => $trans,
-                                        "w" => $w,
+                                        "w" => settings("k_waehrung"),
                                         "evonan" => re($get['member']),
                                         "sum" => re($get['betrag']),
-                                        "beitrag" => _clankasse_sbeitrag,
-                                        "miete" => _clankasse_smiete,
-                                        "ssonstiges" => _clankasse_ssonstiges,
                                         "einzahlung" => _clankasse_einzahlung,
                                         "auszahlung" => _clankasse_auszahlung,
-                                        "sponsor" => _clankasse_ssponsor,
                                         "sonstiges" => _clankasse_sonstiges,
                                         "member" => _member,
                                         "transaktion" => _clankasse_ctransaktion,
