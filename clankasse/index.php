@@ -45,8 +45,9 @@ default:
       $edit = show("page/button_edit_single", array("id" => $get['id'],
                                                    "title" => _button_title_edit,
                                                    "action" => "action=admin&amp;do=edit"));
+
       $delete = show("page/button_delete_single", array("id" => $get['id'],
-                                                       "title" => _button_title_delete,
+                                                       "title" => _button_title_del,
                                                        "action" => "action=admin&amp;do=delete",
                                                        "del" => convSpace(_confirm_del_entry)));
 
