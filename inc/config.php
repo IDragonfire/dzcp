@@ -36,6 +36,7 @@ define('steam_avatar_refresh', (60*60)); // Wann soll das Avatarbild aktualisier
 define('steam_refresh', (8*60*60)); // Wann soll der Steam Status in der Userliste aktualisiert werden
 define('steam_api_refresh', 30); // Wann sollen die Daten der Steam API aktualisiert werden * Online / Offline / In-Game Status
 define('steam_infos_cache', true); //Sollen die Profil Daten zwischen gespeichert werden, * Cache Use
+define('steam_only_proxy', false); //Sollen soll nur der Steam Proxy Server verwendet werden
 
 /*
 * Bitte vor der Aktivierung der Persistent Connections lesen:

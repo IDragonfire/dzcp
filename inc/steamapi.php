@@ -119,7 +119,7 @@ class SteamAPI {
             self::$send_data_api['key'] = self::$api_key;
             self::$send_data_api['steamids'] = self::$user_data['steamID'];
             $ctx = stream_context_create(array('http'=>array('timeout' => file_get_contents_timeout)));
-            if(!($xml_stream = file_get_contents(self::$api_host.'/'.$interface.'/'.$method.'/'.$version.'/?'.http_build_query(self::$send_data_api), false, $ctx))) {
+            if(steam_only_proxy || !($xml_stream = file_get_contents(self::$api_host.'/'.$interface.'/'.$method.'/'.$version.'/?'.http_build_query(self::$send_data_api), false, $ctx))) {
                 //-> Use SteamAPI Proxy
                 if(function_exists('SteamAPI_Proxy')) {
                     $proxy = SteamAPI_Proxy(self::$profile_url,'api',array('interface' => $interface,'method' => $method, 'version' => $version));
@@ -164,7 +164,7 @@ class SteamAPI {
         $zone_url = !empty($zone) ? '/'.$zone.'/' : ''; $zone_tag = !empty($zone) ? $zone.'_' : 'profile';
         if(!$cache->isExisting('steam_'.self::$profile_url) || !steam_infos_cache) {
             $ctx = stream_context_create(array('http'=>array('timeout' => file_get_contents_timeout)));
-            $xml_stream = file_get_contents(self::$api_com.'/id/'.self::$profile_url.$zone_url.'/?xml=1', false, $ctx);
+            $xml_stream = steam_only_proxy ? false : file_get_contents(self::$api_com.'/id/'.self::$profile_url.$zone_url.'/?xml=1', false, $ctx);
             if(empty($xml_stream) || !$xml_stream) {
                 //-> Use SteamAPI Proxy
                 if(function_exists('SteamAPI_Proxy')) {
@@ -183,7 +183,7 @@ class SteamAPI {
             if(!$xml = simplexml_load_string($xml_stream, 'SimpleXMLElement', LIBXML_NOCDATA)) return false;
             $xml = self::objectToArray($xml);
             if(array_key_exists('error',$xml)) {
-                $xml_stream = file_get_contents(self::$api_com.'/profiles/'.self::$profile_url.'/?xml=1', false, $ctx);
+                $xml_stream = steam_only_proxy ? false : file_get_contents(self::$api_com.'/profiles/'.self::$profile_url.'/?xml=1', false, $ctx);
                 if(empty($xml_stream) || !$xml_stream) {
                     DebugConsole::insert_error('SteamAPI::get_steamcommunity()', 'No connection to the community interface!');
                     DebugConsole::insert_warning('SteamAPI::get_steamcommunity()', 'URL: '.self::$api_com.'/id/'.self::$profile_url.'/'.$zone_url.'?xml=1');
