@@ -2112,12 +2112,12 @@ function getBoardPermissions($checkID = 0, $pos = 0) {
         $kats = (empty($katbreak) ? '' : '<div style="clear:both">&nbsp;</div>').'<table class="hperc" cellspacing="1"><tr><td class="contentMainTop"><b>'.re($get["name"]).'</b></td></tr></table>';
         $katbreak = 1;
 
-        $qry2 = db("SELECT kattopic,id FROM ".$db['f_skats']." WHERE `sid` = '".$get['id']."' ORDER BY `kattopic` ASC");
+        $qry2 = db("SELECT kattopic,id FROM ".$db['f_skats']." WHERE `sid` = '".$get['id']."' ORDER BY `kattopic` ASC"); $break = 0; $fkats = '';
         while($get2 = _fetch($qry2)) {
             $br = ($break % 2) ? '<br />' : ''; $break++;
             $check =  db("SELECT * FROM ".$db['f_access']." WHERE `".(empty($pos) ? 'user' : 'pos')."` = '".intval($checkID)."' AND ".(empty($pos) ? 'user' : 'pos')." != '0' AND `forum` = '".$get2['id']."'");
             $chk = _rows($check) ? ' checked="checked"' : '';
-            $fkats .= '<input type="checkbox" class="checkbox" id="board_'.$get2['id'].'" name="board['.$get2['get2'].']" value="'.$get2['id'].'"'.$chk.' /><label for="board_'.$get2['id'].'"> '.re($get2['kattopic']).'</label> '.$br;
+            $fkats .= '<input type="checkbox" class="checkbox" id="board_'.$get2['id'].'" name="board['.$get2['id'].']" value="'.$get2['id'].'"'.$chk.' /><label for="board_'.$get2['id'].'"> '.re($get2['kattopic']).'</label> '.$br;
         }
 
         $i_forum .= $kats.$fkats;
