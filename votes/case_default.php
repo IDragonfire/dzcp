@@ -59,8 +59,9 @@ if(defined('_Votes')) {
             }
         }
 
+        $showVoted = '';
         if($get['intern'] && $stimmen != 0 && ($get['von'] == $userid || permission('votes'))) {
-            $showVoted = ' <a href="?action=showvote&amp;id='.(int)$get['id'].'"><img src="../inc/images/lupe.gif" alt="" title="' .
+            $showVoted = ' <a href="?action=showvote&amp;id='.(int)$get['id'].'"><img src="../inc/images/lupe.gif" alt="" title="'.
             _show_who_voted.'" class="icon" /></a>';
         }
 

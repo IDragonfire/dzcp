@@ -190,6 +190,7 @@ if(defined('_Forum')) {
                                                       "action" => "action=thread&amp;do=edit",
                                                       "title" => _button_title_edit));
 
+      $admin = '';
       if(permission("forum"))
       {
         $sticky = $get['sticky'] ? 'checked="checked"' : "";

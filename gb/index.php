@@ -196,7 +196,7 @@ case 'do';
                                        "lang" => $language,
                                        "reg" => "",
                                        "ip" => _iplog_info,
-                                                                           "id" => $_GET['id'],
+                                                                           "id" => isset($_GET['id']) ? $_GET['id'] : '0',
                                                                            "postemail" => $_POST['email'],
                                                                            "posthp" => links($_POST['hp']),
                                                                            "postnick" => $_POST['nick'],

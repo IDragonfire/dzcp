@@ -194,6 +194,8 @@ if(defined('_UserMenu')) {
                     $form = show("page/editor_notregged", array("nickhead" => _nick,
                                                                 "emailhead" => _email,
                                                                 "hphead" => _hp,
+                                                                "postnick" => '',
+                                                                "posthp" => '',
                                                                 "postemail" => ""));
                 }
 

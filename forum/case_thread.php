@@ -197,7 +197,7 @@ if(defined('_Forum')) {
                          WHERE s2.`id` = '".intval($_GET['kid'])."'"));
 
             if($_POST['intern']) $intern = 'checked="checked"';
-          $intern = ''; $intern_kat = '';
+          $intern = ''; $intern_kat = ''; $internVisible = '';
           if($fget['intern'] == "1") { $intern = 'checked="checked"'; $internVisible = 'style="display:none"'; };
             if($_POST['closed']) $closed = 'checked="checked"';
 
@@ -464,10 +464,11 @@ if(defined('_Forum')) {
           $admin = "";
         }
 
+        $internVisible = '';
         $fget = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1
                        LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id
                        WHERE s2.`id` = '".intval($_GET['kid'])."'"));
-                $intern = ''; $intern_kat = '';
+                $intern = ''; $intern_kat = ''; $internVisible = '';
                 if($fget['intern'] == "1") { $intern = 'checked="checked"'; $internVisible = 'style="display:none"'; };
 
                 if($userid >= 1)
@@ -496,13 +497,13 @@ if(defined('_Forum')) {
                                               "error" => "",
                                               "br1" => "<!--",
                                               "br2" => "-->",
-                                                "display" => "none",
+                                              "display" => "none",
                                               "a8" => "",
                                               "a9" => "",
                                               "a10" => "",
                                               'intern_kat' => $internVisible,
                                               "intern" => $intern,
-                                                "vote_del" => _forum_vote_del,
+                                              "vote_del" => _forum_vote_del,
                                               "interna" => _votes_admin_intern,
                                               "question" => _votes_admin_question,
                                               "answer" => _votes_admin_answer));
@@ -596,7 +597,7 @@ if(defined('_Forum')) {
                                                  WHERE s2.`id` = '".intval($_GET['kid'])."'"));
 
             if($_POST['intern']) $intern = 'checked="checked"';
-            $intern = ''; $intern_kat = '';
+            $intern = ''; $intern_kat = ''; $internVisible = '';
             if($fget['intern'] == 1) { $intern = 'checked="checked"'; $internVisible = 'style="display:none"'; };
             if($_POST['closed']) $closed = 'checked="checked"';
 

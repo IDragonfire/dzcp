@@ -92,6 +92,7 @@ define('_perm_partners', 'manage partner');
 define('_perm_profile', 'manage profile fields');
 
 define('_dzcp_vcheck', 'The DZCP Version Checker will inform you about new DZCP updates and shows you whether your version is up to date.<br><br><span class=fontBold>Description:</span><br><font color=#17D427>Green:</font>Up to Date!<br><font color=#FFFF00>Yellow:</font> Could not connect to Server</br><font color=#FF0000>Red:</font>A new update available!');
+define('_cw_dont_exist', 'The specified clanwar ID does not exist!');
 
 //Steam
 define('_steam', 'Steam');

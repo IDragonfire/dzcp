@@ -192,7 +192,7 @@ if(defined('_Forum')) {
               $postnick = "";
               $postemail = "";
           }
-          if($_GET['zitat'])
+          if(isset($_GET['zitat']))
           {
             $qryzitat = db("SELECT nick,reg,text FROM ".$db['f_posts']."
                             WHERE id = '".intval($_GET['zitat'])."'");
@@ -202,7 +202,7 @@ if(defined('_Forum')) {
             else                        $nick = autor($getzitat['reg']);
 
             $zitat = zitat($nick, $getzitat['text']);
-          } elseif($_GET['zitatt']) {
+          } elseif(isset($_GET['zitatt'])) {
             $qryzitat = db("SELECT t_nick,t_reg,t_text FROM ".$db['f_threads']."
                             WHERE id = '".intval($_GET['zitatt'])."'");
             $getzitat = _fetch($qryzitat);
@@ -281,7 +281,7 @@ if(defined('_Forum')) {
                                                              "class" => 'class="commentsRight"',
                                                              "email" => $email,
                                                              "titel" => $titel,
-                                                             "p" => ($i+($page-1)*config('m_fposts')),
+                                                             "p" => ($page-1*config('m_fposts')),
                                                              "ip" => $posted_ip,
                                                              "edited" => $getl['edited'],
                                                              "posts" => $userposts,
@@ -307,8 +307,8 @@ if(defined('_Forum')) {
             if($gett['t_reg'] == "0") $onoff = "";
             else                      $onoff = onlinecheck($gett['t_reg']);
 
-            $ftxt = hl($gett['t_text'], $_GET['hl']);
-            if($_GET['hl']) $text = bbcode($ftxt['text']);
+            $ftxt = hl($gett['t_text'], (isset($_GET['hl']) ? $_GET['hl'] : ''));
+            if(isset($_GET['hl'])) $text = bbcode($ftxt['text']);
             else $text = bbcode($gett['t_text']);
 
             if($chkMe == "4") $posted_ip = $gett['ip'];
@@ -357,7 +357,7 @@ if(defined('_Forum')) {
                                                              "email" => $email,
                                                              "titel" => $titel,
                                                              "ip" => $posted_ip,
-                                                             "p" => ($i+($page-1)*config('m_fposts')),
+                                                             "p" => ($page-1*config('m_fposts')),
                                                              "edited" => $gett['edited'],
                                                              "posts" => $userposts,
                                                              "date" => _posted_by.date("d.m.y H:i", $gett['t_date'])._uhr,
@@ -403,7 +403,7 @@ if(defined('_Forum')) {
                                             "error" => "",
                                             "postnick" => $postnick,
                                             "postemail" => $postemail,
-                                            "posthp" => $posthp,
+                                            "posthp" => '',
                                             "posteintrag" => ""));
         }
       } else {
