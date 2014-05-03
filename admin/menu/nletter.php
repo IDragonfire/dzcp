@@ -72,7 +72,7 @@ if(_adminMenu != 'true') exit;
                      WHERE nletter = 1");
           while($get = _fetch($qry))
           {
-            sendMail($get['email'],$subject,$message);
+            sendMail(re($get['email']),$subject,$message);
           }
 
               $qry = db("UPDATE ".$db['userstats']."
@@ -89,7 +89,7 @@ if(_adminMenu != 'true') exit;
                      WHERE level >= 2");
           while($get = _fetch($qry))
           {
-            sendMail($get['email'],$subject,$message);
+            sendMail(re($get['email']),$subject,$message);
           }
 
               $qry = db("UPDATE ".$db['userstats']."
@@ -109,7 +109,7 @@ if(_adminMenu != 'true') exit;
 
           while($get = _fetch($qry))
           {
-            sendMail($get['email'],$subject,$message);
+            sendMail(re($get['email']),$subject,$message);
           }
 
               $qry = db("UPDATE ".$db['userstats']."
@@ -127,7 +127,7 @@ if(_adminMenu != 'true') exit;
                      WHERE s1.squad = '".$_POST['to']."'");
           while($get = _fetch($qry))
           {
-            sendMail($get['email'],$subject,$message);
+            sendMail(re($get['email']),$subject,$message);
           }
 
               $qry = db("UPDATE ".$db['userstats']."

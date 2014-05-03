@@ -46,7 +46,7 @@ if(defined('_Forum')) {
                   WHERE id = '".$pUId."'");
       $getu = _fetch($qryu);
 
-      $email = show(_emailicon_forum, array("email" => eMailAddr($getu['email'])));
+      $email = show(_emailicon_forum, array("email" => eMailAddr(re($getu['email']))));
       $pn = _forum_pn_preview;
       if(empty($getu['icq']) || $getu['icq'] == 0) $icq = "";
       else {
@@ -172,7 +172,7 @@ if(defined('_Forum')) {
                   WHERE id = '".intval($pUId)."'");
       $getu = _fetch($qryu);
 
-      $email = show(_emailicon_forum, array("email" => eMailAddr($getu['email'])));
+      $email = show(_emailicon_forum, array("email" => eMailAddr(re($getu['email']))));
       $pn = _forum_pn_preview;
       if(empty($getu['icq']) || $getu['icq'] == 0) $icq = "";
       else {

@@ -430,7 +430,7 @@ if(defined('_Clanwars')) {
           $form = show("page/editor_notregged", array("nickhead" => _nick,
                                                       "emailhead" => _email,
                                                       "hphead" => _hp,
-                                                      "postemail" => $get['email'],
+                                                      "postemail" => re($get['email']),
                                                                                               "posthp" => links($get['hp']),
                                                                                                   "postnick" => re($get['nick']),
                                                       ));

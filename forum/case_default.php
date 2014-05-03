@@ -41,7 +41,7 @@ if(defined('_Forum')) {
 
               $lpdate = $getlt['t_date'];
             } elseif($getlt['first'] == "0") {
-              $lpost .= show(_forum_thread_lpost, array("nick" => autor($getlp['reg'], '', $getlp['nick'], $getlp['email']),
+              $lpost .= show(_forum_thread_lpost, array("nick" => autor($getlp['reg'], '', $getlp['nick'], re($getlp['email'])),
                                                         "date" => date("d.m.y H:i", $getlp['date'])._uhr));
               $lpdate = $getlp['date'];
             }

@@ -386,7 +386,7 @@ if(defined('_UserMenu')) {
                                                         "hphead" => _hp,
                                                         "id" => $_GET['id'],
                                                         "form" => $form,
-                                                        "postemail" => $get['email'],
+                                                        "postemail" => re($get['email']),
                                                         "posthp" => $get['hp'],
                                                         "postnick" => re($get['nick']),
                                                         "posteintrag" => re_bbcode($get['nachricht']),

@@ -252,7 +252,7 @@ if(defined('_Forum')) {
                           WHERE id = '".$getl['reg']."'");
               $getu = _fetch($qryu);
 
-              $email = show(_emailicon_forum, array("email" => eMailAddr($getu['email'])));
+              $email = show(_emailicon_forum, array("email" => eMailAddr(re($getu['email']))));
               $pn = _forum_pn_preview;
               if(empty($getu['icq']) || $getu['icq'] == 0) $icq = "";
                   else {
@@ -265,12 +265,12 @@ if(defined('_Forum')) {
             } else {
               $icq = "";
               $pn = "";
-              $email = show(_emailicon_forum, array("email" => eMailAddr($getl['email'])));
+              $email = show(_emailicon_forum, array("email" => eMailAddr(re($getl['email']))));
               if(empty($getl['hp'])) $hp = "";
               else $hp = show(_hpicon_forum, array("hp" => $getl['hp']));
             }
 
-            $lastpost = show($dir."/forum_posts_show", array("nick" => cleanautor($getl['reg'], '', $getl['nick'], $getl['email']),
+            $lastpost = show($dir."/forum_posts_show", array("nick" => cleanautor($getl['reg'], '', $getl['nick'], re($getl['email'])),
                                                              "postnr" => "",
                                                              "text" => $text,
                                                              "status" => getrank($getl['reg']),
@@ -326,7 +326,7 @@ if(defined('_Forum')) {
                           WHERE id = '".$gett['t_reg']."'");
               $getu = _fetch($qryu);
 
-              $email = show(_emailicon_forum, array("email" => eMailAddr($getu['email'])));
+              $email = show(_emailicon_forum, array("email" => eMailAddr(re($getu['email']))));
               $pn = show(_pn_write_forum, array("id" => $gett['t_reg'],
                                                                               "nick" => $getu['nick']));
               if(empty($getu['icq']) || $getu['icq'] == 0) $icq = "";
@@ -515,7 +515,7 @@ if(defined('_Forum')) {
                             else $hp = show(_hpicon_forum, array("hp" => $getl['hp']));
                         }
 
-                        $nick = autor($getl['reg'], '', $getl['nick'], $getl['email']);
+                        $nick = autor($getl['reg'], '', $getl['nick'], re($getl['email']));
                         if(!empty($_GET['hl']) && $_SESSION['search_type'] == 'autor')
                         {
                             if(preg_match("#".$_GET['hl']."#i",$nick)) $ftxt['class'] = 'class="highlightSearchTarget"';
@@ -569,7 +569,7 @@ if(defined('_Forum')) {
                                                     WHERE id = '".$gett['t_reg']."'");
                             $getu = _fetch($qryu);
 
-                            $email = show(_emailicon_forum, array("email" => eMailAddr($getu['email'])));
+                            $email = show(_emailicon_forum, array("email" => eMailAddr(re($getu['email']))));
                             $pn = show(_pn_write_forum, array("id" => $gett['t_reg'],
                                                                                                 "nick" => $getu['nick']));
                             if(empty($getu['icq']) || $getu['icq'] == 0) $icq = "";

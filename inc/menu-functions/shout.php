@@ -16,12 +16,12 @@ function shout($ajax = 0) {
         if(permission("shoutbox"))
             $delete = '<a href="../shout/?action=admin&amp;do=delete&amp;id='.$get['id'].'" onclick="return(DZCP.del(\''._confirm_del_shout.'\'))"><img src="../inc/images/delete_small.gif" title="'._button_title_del.'" alt="'._button_title_del.'" /></a>';
 
-        $is_num = preg_match("#\d#", $get['email']);
+        $is_num = preg_match("#\d#", re($get['email']));
 
-        if($is_num && !check_email($get['email']))
-            $nick = autor($get['email'], "navShout",'','',config('l_shoutnick'));
+        if($is_num && !check_email(re($get['email'])))
+            $nick = autor(re($get['email']), "navShout",'','',config('l_shoutnick'));
         else
-            $nick = '<a class="navShout" href="mailto:'.eMailAddr($get['email']).'" title="'.$get['nick'].'">'.cut($get['nick'], config('l_shoutnick')).'</a>';
+            $nick = '<a class="navShout" href="mailto:'.eMailAddr(re($get['email'])).'" title="'.$get['nick'].'">'.cut($get['nick'], config('l_shoutnick')).'</a>';
 
         $show .= show("menu/shout_part", array("nick" => $nick,
                                                "datum" => date("j.m.Y H:i", $get['datum'])._uhr,

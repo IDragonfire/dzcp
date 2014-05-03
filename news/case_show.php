@@ -85,9 +85,9 @@ if(defined('_News')) {
                             $hp = show(_hpicon_forum, array("hp" => $getc['hp']));
 
                         if($getc['email'])
-                            $email = '<br />'.show(_emailicon_forum, array("email" => eMailAddr($getc['email'])));
+                            $email = '<br />'.show(_emailicon_forum, array("email" => eMailAddr(re($getc['email']))));
 
-                        $nick = show(_link_mailto, array("nick" => re($getc['nick']), "email" => eMailAddr($getc['email'])));
+                        $nick = show(_link_mailto, array("nick" => re($getc['nick']), "email" => eMailAddr(re($getc['email']))));
                     }
 
                     $titel = show(_eintrag_titel, array("postid" => $i,
@@ -286,7 +286,7 @@ if(defined('_News')) {
                             $form = show("page/editor_notregged", array("nickhead" => _nick,
                                                                         "emailhead" => _email,
                                                                         "hphead" => _hp,
-                                                                        "postemail" => $get['email'],
+                                                                        "postemail" => re($get['email']),
                                                                         "posthp" => links($get['hp']),
                                                                         "postnick" => re($get['nick'])));
                         }

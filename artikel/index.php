@@ -121,10 +121,10 @@ case 'show';
                 if(!$getc['reg'])
                 {
                     $hp = ($getc['hp'] ? show(_hpicon_forum, array("hp" => $getc['hp'])) : "");
-                    $email = ($getc['email'] ? '<br />'.show(_emailicon_forum, array("email" => eMailAddr($getc['email']))) : "");
+                    $email = ($getc['email'] ? '<br />'.show(_emailicon_forum, array("email" => eMailAddr(re($getc['email'])))) : "");
                     $onoff = ""; $avatar = "";
                     $nick = show(_link_mailto, array("nick" =>re($getc['nick']),
-                                                     "email" => eMailAddr($getc['email'])));
+                                                     "email" => eMailAddr(re($getc['email']))));
                 } else {
                     $email = ""; $hp = "";
                     $onoff = onlinecheck($getc['reg']);
@@ -277,7 +277,7 @@ case 'show';
                                              SET `artikel`  = '".((int)$_GET['id'])."',
                                                      `datum`    = '".time()."',
                                                      `nick`     = '".up($_POST['nick'])."',
-                                                     `email`    = '".$_POST['email']."',
+                                                     `email`    = '".up($_POST['email'])."',
                                                      `hp`       = '".links($_POST['hp'])."',
                                                      `reg`      = '".((int)$userid)."',
                                                      `comment`  = '".up($_POST['comment'],1)."',
@@ -344,7 +344,7 @@ case 'show';
           $form = show("page/editor_notregged", array("nickhead" => _nick,
                                                       "emailhead" => _email,
                                                       "hphead" => _hp,
-                                                      "postemail" => $get['email'],
+                                                      "postemail" => re($get['email']),
                                                                                               "posthp" => links($get['hp']),
                                                                                                   "postnick" => re($get['nick']),
                                                       ));

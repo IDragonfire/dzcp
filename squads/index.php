@@ -65,7 +65,7 @@ $dir = "squads";
 
         $member .= show($dir."/squads_member", array("icqs" => $icq,
                                                      "icq" => $icqnr,
-                                                     "emails" => eMailAddr($getm['email']),
+                                                     "emails" => eMailAddr(re($getm['email'])),
                                                      "id" => $getm['user'],
                                                      "psteam" => _steam,
                                                      "steam" => $steam,

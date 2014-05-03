@@ -37,7 +37,7 @@ default:
       if($get['hp']) $gbhp = show(_hpicon, array("hp" => $get['hp']));
       else $gbhp = "";
 
-      if($get['email']) $gbemail = show(_emailicon, array("email" => eMailAddr($get['email'])));
+      if($get['email']) $gbemail = show(_emailicon, array("email" => eMailAddr(re($get['email']))));
       else $gbemail = "";
 
       if(($get['reg'] == $userid && $userid >= 1) || permission("gb"))
@@ -333,7 +333,7 @@ case 'admin';
       if($get['hp']) $gbhp = show(_hpicon, array("hp" => $get['hp']));
       else $gbhp = "";
 
-      if($get_email) $gbemail = show(_emailicon, array("email" => eMailAddr($get['email'])));
+      if($get_email) $gbemail = show(_emailicon, array("email" => eMailAddr(re($get['email']))));
       else $gbemail = "";
 
       if(permission("gb")) $comment = show(_gb_commenticon, array("id" => $get['id']));

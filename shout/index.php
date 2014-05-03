@@ -81,10 +81,10 @@ case 'archiv';
              LIMIT ".($page - 1)*config('maxshoutarchiv').",".config('maxshoutarchiv')."");
   while($get = _fetch($qry))
   {
-    $is_num = preg_match("#\d#", $get['email']);
+    $is_num = preg_match("#\d#", re($get['email']));
 
-    if($is_num && !check_email($get['email'])) $nick = autor($get['email']);
-    else $nick = '<a href="mailto:'.$get['email'].'" title="'.$get['nick'].'">'.cut($get['nick'], config('l_shoutnick')).'</a>';
+    if($is_num && !check_email(re($get['email']))) $nick = autor(re($get['email']));
+    else $nick = '<a href="mailto:'.re($get['email']).'" title="'.$get['nick'].'">'.cut($get['nick'], config('l_shoutnick')).'</a>';
 
     $class = ($color % 2) ? "contentMainTop" : "contentMainFirst"; $color++;
 

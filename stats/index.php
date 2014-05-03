@@ -26,7 +26,7 @@ $dir = "stats";
     $get = _fetch($qry);
 
     if($get['reg'] != "0") $first = date("d.m.Y H:i", $get['datum'])."h "._from." ".autor($get['reg']);
-    else $first = date("d.m.Y H:i", $get['datum'])."h "._from." ".autor($get['reg'],'',$get['nick'],$get['email']);
+    else $first = date("d.m.Y H:i", $get['datum'])."h "._from." ".autor($get['reg'],'',$get['nick'],re($get['email']));
 
     $qry = db("SELECT email,reg,nick,datum FROM ".$db['gb']."
                ORDER BY datum DESC
@@ -34,7 +34,7 @@ $dir = "stats";
     $get = _fetch($qry);
 
     if($get['reg'] != "0") $last = date("d.m.Y H:i", $get['datum'])."h "._from." ".autor($get['reg']);
-    else $last = date("d.m.Y H:i", $get['datum'])."h "._from." ".autor($get['reg'],'',$get['nick'],$get['email']);
+    else $last = date("d.m.Y H:i", $get['datum'])."h "._from." ".autor($get['reg'],'',$get['nick'],re($get['email']));
 
     $stats = show($dir."/gb", array("head" => _site_gb,
                                     "all" => _stats_gb_all,
