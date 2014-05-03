@@ -287,8 +287,12 @@ function settings($what,$use_dbc=true) {
             $dbd = db("SELECT * FROM ".$db['settings'],false,true);
 
         $return = array();
-        foreach ($dbd as $key => $var)
-        { $return[$key] =  $var; }
+        foreach ($dbd as $key => $var) {
+            if(!in_array($key,$what))
+                continue;
+
+            $return[$key] = $var;
+        }
 
         return $return;
     } else {
@@ -311,8 +315,12 @@ function config($what,$use_dbc=true) {
             $dbd = db("SELECT * FROM ".$db['config'],false,true);
 
         $return = array();
-        foreach ($dbd as $key => $var)
-        { $return[$key] =  $var; }
+        foreach ($dbd as $key => $var) {
+            if(!in_array($key,$what))
+                continue;
+
+            $return[$key] =  $var;
+        }
 
         return $return;
     } else {
