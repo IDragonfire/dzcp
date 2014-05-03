@@ -110,32 +110,28 @@ class SteamAPI {
      *
      * @return boolean
      */
-    private static final function get_api($interface='ISteamUser',$method='GetPlayerSummaries',$version='v0002')
-    {
+    private static final function get_api($interface='ISteamUser',$method='GetPlayerSummaries',$version='v0002') {
         global $cache;
         if(empty(self::$api_key) || empty(self::$user_data['steamID'])) return false;
-        if(!$cache->isExisting('steam_api_'.$interface.'_'.$method.'_'.self::$profile_url)) {
+        $cache_tag = 'steam_api_'.$interface.'_'.$method.'_'.self::$profile_url;
+        if(!$cache->isExisting($cache_tag)) {
             self::$send_data_api['format'] = 'xml';
             self::$send_data_api['key'] = self::$api_key;
             self::$send_data_api['steamids'] = self::$user_data['steamID'];
             $ctx = stream_context_create(array('http'=>array('timeout' => file_get_contents_timeout)));
             if(!($xml_stream = file_get_contents(self::$api_host.'/'.$interface.'/'.$method.'/'.$version.'/?'.http_build_query(self::$send_data_api), false, $ctx))) {
-                //-> SteamAPI Proxy Alternative
+                //-> Use SteamAPI Proxy
                 if(function_exists('SteamAPI_Proxy')) {
                     $proxy = SteamAPI_Proxy(self::$profile_url,'api',array('interface' => $interface,'method' => $method, 'version' => $version));
-                    if(!$proxy || $proxy['status'] == 'unavailable' || $proxy['status'] = 'no_discover')
-                        return false;
-
+                    if($proxy['status'] != 'available' || empty($proxy['data']) || !is_array($proxy['data'])) return false;
+                    $cache->set($cache_tag, base64_encode(serialize($proxy['data'])), steam_api_refresh);
                     self::$api_data = $proxy['data'];
                     return is_array(self::$api_data);
                 } else {
                     DebugConsole::insert_error('SteamAPI::get_steamcommunity()', 'No connection to the community interface!');
-                    DebugConsole::insert_warning('SteamAPI::get_steamcommunity()', 'URL: '.self::$api_com.'/id/'.self::$profile_url.'/'.$zone_url.'?xml=1');
+                    DebugConsole::insert_warning('SteamAPI::get_steamcommunity()', 'URL: '.self::$api_host.'/'.$interface.'/'.$method.'/'.$version.'/?'.http_build_query(self::$send_data_api));
                     return false;
                 }
-
-                DebugConsole::insert_error('SteamAPI::get_api()', 'No connection to the API interface');
-                return false;
             }
 
             if(strpos($xml_stream, 'Unauthorized') !== false) {
@@ -143,17 +139,19 @@ class SteamAPI {
                 return false;
             }
 
-            $cache->set('steam_api_'.$interface.'_'.$method.'_'.self::$profile_url,base64_encode($xml_stream),steam_api_refresh);
+            $xml = self::objectToArray($xml_stream);
+            if(array_key_exists('error',$xml) || empty($xml_stream)) return false;
+            if(!$xml = simplexml_load_string($xml_stream, 'SimpleXMLElement', LIBXML_NOCDATA)) return false;
+            self::$send_data_api = array();
+            self::$api_data = self::objectToArray($xml->players->player);
+            $cache->set('steam_api_'.$interface.'_'.$method.'_'.self::$profile_url, base64_encode(serialize(self::$api_data)), steam_api_refresh);
+            return is_array(self::$api_data);
+        } else {
+            self::$api_data = unserialize(base64_decode($cache->get('steam_api_'.$interface.'_'.$method.'_'.self::$profile_url)));
+            return is_array(self::$api_data);
         }
-        else $xml_stream = base64_decode($cache->get('steam_api_'.$interface.'_'.$method.'_'.self::$profile_url));
 
-        $xml = self::objectToArray($xml_stream);
-        if(array_key_exists('error',$xml) || empty($xml_stream)) return false;
-
-        if(!$xml = simplexml_load_string($xml_stream, 'SimpleXMLElement', LIBXML_NOCDATA)) return false;
-        self::$send_data_api = array();
-        self::$api_data = self::objectToArray($xml->players->player);
-        return is_array(self::$api_data);
+        return false;
     }
 
     /**
@@ -164,19 +162,17 @@ class SteamAPI {
     private static final function get_steamcommunity($zone='',$xml='profile') {
         global $cache;
         $zone_url = !empty($zone) ? '/'.$zone.'/' : ''; $zone_tag = !empty($zone) ? $zone.'_' : 'profile';
-        if(!$cache->isExisting('steam_'.self::$profile_url) || !steam_infos_cache)
-        {
+        if(!$cache->isExisting('steam_'.self::$profile_url) || !steam_infos_cache) {
             $ctx = stream_context_create(array('http'=>array('timeout' => file_get_contents_timeout)));
             $xml_stream = file_get_contents(self::$api_com.'/id/'.self::$profile_url.$zone_url.'/?xml=1', false, $ctx);
-            if(empty($xml_stream)) {
-                //-> SteamAPI Proxy Alternative
+            if(empty($xml_stream) || !$xml_stream) {
+                //-> Use SteamAPI Proxy
                 if(function_exists('SteamAPI_Proxy')) {
                    $proxy = SteamAPI_Proxy(self::$profile_url,'com',$zone);
-                   if(!$proxy || $proxy['status'] == 'unavailable' || $proxy['status'] = 'no_discover')
-                       return false;
-
+                   if($proxy['status'] != 'available' || empty($proxy['data']) || !is_array($proxy['data'])) return false;
+                   $cache->set('steam_'.self::$profile_url, base64_encode(serialize($proxy['data'])), steam_refresh);
                    self::$community_data[str_replace('_', '', $zone_tag)] = $proxy['data'];
-                   return true;
+                   return is_array(self::$community_data[str_replace('_', '', $zone_tag)]);
                 } else {
                     DebugConsole::insert_error('SteamAPI::get_steamcommunity()', 'No connection to the community interface!');
                     DebugConsole::insert_warning('SteamAPI::get_steamcommunity()', 'URL: '.self::$api_com.'/id/'.self::$profile_url.'/'.$zone_url.'?xml=1');
@@ -186,34 +182,27 @@ class SteamAPI {
 
             if(!$xml = simplexml_load_string($xml_stream, 'SimpleXMLElement', LIBXML_NOCDATA)) return false;
             $xml = self::objectToArray($xml);
-            if(array_key_exists('error',$xml))
-            {
+            if(array_key_exists('error',$xml)) {
                 $xml_stream = file_get_contents(self::$api_com.'/profiles/'.self::$profile_url.'/?xml=1', false, $ctx);
-                if(empty($xml_stream)) {
-                    if(function_exists('SteamAPI_Proxy')) {
-                       $proxy = SteamAPI_Proxy(self::$profile_url,'com',$zone);
-                       if(!$proxy || $proxy['status'] == 'unavailable' || $proxy['status'] = 'no_discover')
-                           return false;
-
-                       self::$community_data[str_replace('_', '', $zone_tag)] = $proxy['data'];
-                       return true;
-                    } else {
-                        DebugConsole::insert_error('SteamAPI::get_steamcommunity()', 'No connection to the community interface!');
-                        DebugConsole::insert_warning('SteamAPI::get_steamcommunity()', 'URL: '.self::$api_com.'/id/'.self::$profile_url.'/'.$zone_url.'?xml=1');
-                        return false;
-                    }
+                if(empty($xml_stream) || !$xml_stream) {
+                    DebugConsole::insert_error('SteamAPI::get_steamcommunity()', 'No connection to the community interface!');
+                    DebugConsole::insert_warning('SteamAPI::get_steamcommunity()', 'URL: '.self::$api_com.'/id/'.self::$profile_url.'/'.$zone_url.'?xml=1');
+                    return false;
                 }
             }
 
-            $cache->set('steam_'.self::$profile_url, base64_encode($xml_stream), steam_refresh);
-        } else $xml_stream = base64_decode($cache->get('steam_'.self::$profile_url));
+            $xml = self::objectToArray($xml_stream);
+            if(array_key_exists('error',$xml) || empty($xml_stream)) return false;
+            if(!$xml = simplexml_load_string($xml_stream, 'SimpleXMLElement', LIBXML_NOCDATA)) return false;
+            self::$community_data[str_replace('_', '', $zone_tag)] = self::objectToArray($xml);
+            $cache->set('steam_'.self::$profile_url, base64_encode(serialize(self::$community_data[str_replace('_', '', $zone_tag)])), steam_refresh);
+            return is_array(self::$community_data[str_replace('_', '', $zone_tag)]);
+        } else {
+            self::$community_data[str_replace('_', '', $zone_tag)] = unserialize(base64_decode($cache->get('steam_'.self::$profile_url)));
+            return is_array(self::$community_data[str_replace('_', '', $zone_tag)]);
+        }
 
-        $xml = self::objectToArray($xml_stream);
-        if(array_key_exists('error',$xml) || empty($xml_stream)) return false;
-
-        if(!$xml = simplexml_load_string($xml_stream, 'SimpleXMLElement', LIBXML_NOCDATA)) return false;
-        self::$community_data[str_replace('_', '', $zone_tag)] = self::objectToArray($xml);
-        return true;
+        return false;
     }
 
     public static final function objectToArray($d)
