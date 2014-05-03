@@ -1038,7 +1038,7 @@ a.licencebar:hover,a.licencebar:active{
   Welcomelink
 */
 .welcome:link,.welcome:visited,.welcome:hover,.welcome:active {
-  color: #FFF;
+  color: #414141;
   font-weight: bold;
 }
 .welcome:hover,.welcome:active {
