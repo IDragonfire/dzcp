@@ -6,33 +6,57 @@
 <style type="text/css">
 
 body {
-   background-color: #FFF;
-   margin: 0px;
-   padding: 0px;
-   font-family: Verdana,Tahoma,Geneva,Arial,Helvetica,Sans-serif;
-   font-size: 15px;
-   line-height: 1.2;
+	background: #dfdfdf;
+	margin: 0px;
+	padding: 0px;
+	font-family: Verdana,Tahoma,Geneva,Arial,Helvetica,Sans-serif;
+	font-size: 15px;
+	line-height: 1.2;
+	margin-left: 15px;
+	margin-right: 15px;
+	margin-bottom: 20px;
    }
 
 #header {
 	width:auto;
 	height:auto;
-	background-color:#000;
     border-bottom:3px solid #F00;
+    background: -moz-linear-gradient(top, #000000 5%, #333333 95%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(5%,#000000), color-stop(95%,#333333));
+    background: -webkit-linear-gradient(top, #000000 5%,#333333 95%);
+    background: -o-linear-gradient(top, #000000 5%,#333333 95%);
+    background: -ms-linear-gradient(top, #000000 5%,#333333 95%);
+    background: linear-gradient(to bottom, #000000 5%,#333333 95%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#333333',GradientType=0 );
+    filter: none;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
 	}
 	
 #header H1 {
-	color:#FFF;
+	color:#CCCCCC;
 	text-align:center;
 	}
 
 #footer {
 	width:auto;
 	height:auto;
-	background-color:#000;
 	color:#FFF;
 	text-align:center;
 	border-top:3px solid #F00;
+    background: -moz-linear-gradient(top, #333333 5%, #000000 95%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(5%,#333333), color-stop(95%,#000000));
+    background: -webkit-linear-gradient(top, #333333 5%,#000000 95%);
+    background: -o-linear-gradient(top, #333333 5%,#000000 95%);
+    background: -ms-linear-gradient(top, #333333 5%,#000000 95%);
+    background: linear-gradient(to bottom, #333333 5%,#000000 95%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#333333', endColorstr='#000000',GradientType=0 );
+    filter: none;
+	height: 30px;
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 3px;
+    border-radius: 3px;
    }
    
 #footer a:link,a:visited,a:hover,a:active {
@@ -74,6 +98,9 @@ body {
   color: #ff0000;
 }
 
+a:link, a:visited {
+	color: #999999;
+}
 </style>
 </head>
 
@@ -273,8 +300,6 @@ body {
             </ul>
        </ul>    
 	</div>
-    <div id="footer">
-    <p><a href="http://www.dzcp.de/" target="_blank">Powered by DZCP - deV!L`z Clanportal</a></p>
-    </div>
+    <div id="footer"><a href="http://www.dzcp.de/" target="_blank">Powered by DZCP - deV!L`z Clanportal</a></div>
 </body>
 </html>
