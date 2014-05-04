@@ -1365,17 +1365,14 @@ function check_email($email) {
 
 //-> Bilder verkleinern
 function img_size($img) {
-    $s = getimagesize("../".$img);
     return "<a href=\"../".$img."\" rel=\"lightbox[l_".intval($img)."]\"><img src=\"../thumbgen.php?img=".$img."\" alt=\"\" /></a>";
 }
 
 function img_cw($folder="", $img="") {
-    $s = getimagesize("../".$folder."_".$img);
-    return "<a href=\"../".$folder."_".$img."\" rel=\"lightbox[cw_".intval($folder)."]\"><img src=\"../thumbgen.php?img=".$folder."_".$img."\" alt=\"\" /></a>";
+    return "<a href=\"../".$folder.$img."\" rel=\"lightbox[cw_".intval($folder)."]\"><img src=\"../thumbgen.php?img=".$folder.$img."\" alt=\"\" /></a>";
 }
 
 function gallery_size($img="") {
-    $s = getimagesize("../gallery/images/".$img);
     return "<a href=\"../gallery/images/".$img."\" rel=\"lightbox[gallery_".intval($img)."]\"><img src=\"../thumbgen.php?img=gallery/images/".$img."\" alt=\"\" /></a>";
 }
 
@@ -2369,6 +2366,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index')
         }
 
         //misc vars
+        $lang = $language;
         $template_switch = show("menu/tmp_switch", array("templates" => $tmpldir));
         $clanname = re(settings("clanname"));
         $time = show(_generated_time, array("time" => $time));
@@ -2391,7 +2389,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index')
         $pholder = file_get_contents($designpath."/index.html");
 
         //filter placeholders
-        $blArr = array("[clanname]","[title]","[copyright]","[java_vars]","[login]", "[template_switch]","[headtitle]","[index]", "[time]","[rss]","[dir]","[charset]","[where]");
+        $blArr = array("[clanname]","[title]","[copyright]","[java_vars]","[login]", "[template_switch]","[headtitle]","[index]", "[time]","[rss]","[dir]","[charset]","[where]","[lang]");
         $pholdervars = '';
         for($i=0;$i<=count($blArr)-1;$i++) {
             if(preg_match("#".$blArr[$i]."#",$pholder))

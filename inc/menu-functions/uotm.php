@@ -5,9 +5,9 @@
  * Menu: User of the Moment
  */
 function uotm() {
-    global $db;
+    global $db,$picformat;
 
-    $files = get_files(basePath.'/inc/images/uploads/userpics',false,true,array('png','jpg','gif'),false,array(),'minimize');
+    $files = get_files(basePath.'/inc/images/uploads/userpics',false,true,$picformat,false,array(),'minimize');
     shuffle($files);
 
     $uotm = '';

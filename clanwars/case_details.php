@@ -89,65 +89,31 @@ if(defined('_Clanwars')) {
         }
 
         $bericht = $get['bericht'] ? bbcode($get['bericht']) : "&nbsp;";
-        $libPath = "inc/images/clanwars/".intval($_GET['id']);
-        $screen1 = ''; $screen2 = ''; $screen3 = ''; $screen4 = ''; $screen5 = ''; $screen6 = ''; $screen7 = ''; $screen8 = ''; $screen9 = ''; $screen10 = '';
-        foreach($picformat AS $end) {
-            if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_1.'.$end))
-                $screen1 = img_cw($libPath, '1.'.$end);
+        $libPath = "inc/images/clanwars/"; $cw_sc_loops = 0;
+        $files = get_files(basePath."/inc/images/clanwars/",false,true,$picformat,false,array(),'minimize'); $cw_screenshots = array();
+        if($files) {
+            $file_id = 0;
+            foreach ($files as $file) {
+                if(preg_match("#^".intval($_GET['id'])."_(.*?).(gif|jpg|jpeg|png)#",strtolower($file))!=FALSE && strpos($file, '_logo') === false) {
+                    $file_id++; $cw_screenshots[$file_id] = img_cw($libPath,$file);
+                }
+            }
 
-            if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_2.'.$end))
-                $screen2 = img_cw($libPath, '2.'.$end);
-
-            if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_3.'.$end))
-                $screen3 = img_cw($libPath, '3.'.$end);
-
-            if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_4.'.$end))
-                $screen4 = img_cw($libPath, '4.'.$end);
-			
-			if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_5.'.$end))
-                $screen5 = img_cw($libPath, '5.'.$end);	
-			
-			if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_6.'.$end))
-                $screen6 = img_cw($libPath, '6.'.$end);
-			
-			if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_7.'.$end))
-                $screen7 = img_cw($libPath, '7.'.$end);
-				
-			if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_8.'.$end))
-                $screen8 = img_cw($libPath, '8.'.$end);
-			
-			if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_9.'.$end))
-                $screen9 = img_cw($libPath, '9.'.$end);
-			
-			if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_10.'.$end))
-                $screen10 = img_cw($libPath, '10.'.$end);
+            $cw_sc_loops = ceil($file_id/4); $sc1=1; $sc2=2; $sc3=3; $sc4=4; $show_sc = '';
+            for ($i = 0; $i < $cw_sc_loops; $i++) {
+                $show_sc .= show($dir."/show_screenshots", array("screen1" => (array_key_exists($sc1, $cw_screenshots) ? $cw_screenshots[$sc1] : ''),
+                                                                 "screen2" => (array_key_exists($sc2, $cw_screenshots) ? $cw_screenshots[$sc2] : ''),
+                                                                 "screen3" => (array_key_exists($sc3, $cw_screenshots) ? $cw_screenshots[$sc3] : ''),
+                                                                 "screen4" => (array_key_exists($sc4, $cw_screenshots) ? $cw_screenshots[$sc4] : ''),
+                                                                 "screenshot1" => _cw_screenshot.' '.$sc1,
+                                                                 "screenshot2" => _cw_screenshot.' '.$sc2,
+                                                                 "screenshot3" => _cw_screenshot.' '.$sc3,
+                                                                 "screenshot4" => _cw_screenshot.' '.$sc4));
+                $sc1 = $sc1+4; $sc2 = $sc2+4; $sc3 = $sc3+4; $sc4 = $sc4+4;
+            }
         }
 
-        $screens = '';
-        if(!empty($screen1) || !empty($screen2) || !empty($screen3) || !empty($screen4) || !empty($screen5) || !empty($screen6) || !empty($screen7) || !empty($screen8) || !empty($screen9) || !empty($screen10)) {
-            $screens = show($dir."/screenshots", array("head" => _cw_screens,
-                                                       "screenshot1" => _cw_screenshot." 1",
-                                                       "screenshot2" => _cw_screenshot." 2",
-                                                       "screenshot3" => _cw_screenshot." 3",
-                                                       "screenshot4" => _cw_screenshot." 4",
-									                   "screenshot5" => _cw_screenshot." 5",
-                                                       "screenshot6" => _cw_screenshot." 6",
-                                                       "screenshot7" => _cw_screenshot." 7",
-                                                       "screenshot8" => _cw_screenshot." 8",
-													   "screenshot9" => _cw_screenshot." 9",
-                                                       "screenshot10" => _cw_screenshot." 10",
-                                                       "screen1" => $screen1,
-                                                       "screen2" => $screen2,
-                                                       "screen3" => $screen3,
-													   "screen4" => $screen4,
-                                                       "screen5" => $screen5,
-													   "screen6" => $screen6,
-                                                       "screen7" => $screen7,
-													   "screen8" => $screen8,
-                                                       "screen9" => $screen9,
-                                                       "screen10" => $screen10));
-        }
-
+        $screens = $cw_sc_loops >= 1 ? show($dir."/screenshots", array("head" => _cw_screens, "show_screenshots" => $show_sc)) : '';
         $qryc = db("SELECT * FROM ".$db['cw_comments']."
                     WHERE cw = ".intval($_GET['id'])."
                     ORDER BY datum DESC
@@ -426,7 +392,6 @@ if(defined('_Clanwars')) {
                                                          "prevurl" => '../clanwars/?action=compreview&do=edit&id='.$_GET['id'].'&amp;cid='.$_GET['cid'],
                                                          "action" => '?action=details&amp;do=editcom&amp;id='.$_GET['id'].'&amp;cid='.$_GET['cid'],
                                                          "ip" => _iplog_info,
-                                                         "lang" => $language,
                                                          "id" => $_GET['id'],
                                                          "what" => _button_value_edit,
                                                          "show" => "",

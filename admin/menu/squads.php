@@ -267,10 +267,40 @@ switch ($do) {
         }
     break;
 
-
     case 'delete':
         db("DELETE FROM ".$db['squads']." WHERE id = '".intval($_GET['id'])."'");
         db("DELETE FROM ".$db['navi']." WHERE url = '../squads/?action=shows&amp;id=".intval($_GET['id'])."'");
+
+        //Remove Pic
+        foreach($picformat as $tmpendung) {
+            if(file_exists(basePath."/inc/images/squads/".intval($_GET['id']).".".$tmpendung))
+                @unlink(basePath."/inc/images/squads/".intval($_GET['id']).".".$tmpendung);
+        }
+
+        foreach($picformat as $tmpendung) {
+            if(file_exists(basePath."/inc/images/squads/".intval($_GET['id'])."_logo.".$tmpendung))
+                @unlink(basePath."/inc/images/squads/".intval($_GET['id'])."_logo.".$tmpendung);
+        }
+
+        //Remove minimize
+        $files = get_files(basePath."/inc/images/squads/",false,true,$picformat);
+        foreach ($files as $file) {
+            if(preg_match("#".intval($_GET['id'])."(.*?).(gif|jpg|jpeg|png)#",strtolower($file))!= FALSE) {
+                $res = preg_match("#".intval($_GET['id'])."_(.*)#",$file,$match);
+                if(file_exists(basePath."/inc/images/squads/".intval($_GET['id'])."_".$match[1]))
+                    @unlink(basePath."/inc/images/squads/".intval($_GET['id'])."_".$match[1]);
+            }
+        }
+
+        $files = get_files(basePath."/inc/images/squads/",false,true,$picformat);
+        foreach ($files as $file) {
+            if(preg_match("#".intval($_GET['id'])."(.*?).(gif|jpg|jpeg|png)#",strtolower($file))!= FALSE) {
+                $res = preg_match("#".intval($_GET['id'])."_logo_(.*)#",$file,$match);
+                if(file_exists(basePath."/inc/images/squads/".intval($_GET['id'])."_logo_".$match[1]))
+                    @unlink(basePath."/inc/images/squads/".intval($_GET['id'])."_logo_".$match[1]);
+            }
+        }
+
         $show = info(_admin_squad_deleted, "?admin=squads");
     break;
 

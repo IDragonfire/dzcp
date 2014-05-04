@@ -68,8 +68,8 @@ if(defined('_UserMenu')) {
                 setIpcheck("ident(".$userid."_".intval($_GET['id']).")");
 
             }
-        } elseif($do == "update") {
-            if($_POST && !empty($_POST['perm']) && isset($_GET['user'])) {
+        } else if($do == "update") {
+            if($_POST && isset($_GET['user'])) {
                 // permissions
                 db("DELETE FROM ".$db['permissions']." WHERE `user` = '".intval($_GET['user'])."'");
                 if(!empty($_POST['perm'])) {
@@ -119,7 +119,7 @@ if(defined('_UserMenu')) {
                         `nick`   = '".up($_POST['nick'])."',
                         `email`  = '".up($_POST['email'])."',
                         `user`   = '".up($_POST['loginname'])."',
-                        `listck` = '".((int)$_POST['listck'])."',
+                        `listck` = '".(isset($_POST['listck']) ? ((int)$_POST['listck']) : 0)."',
                         `level`  = '".((int)$update_level)."',
                         `banned`  = '".((int)$update_banned)."'
                     WHERE id = '".intval($_GET['user'])."'");

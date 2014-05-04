@@ -18,7 +18,6 @@ $where = _site_clanwars;
 define('_Clanwars', true);
 
 ## SECTIONS ##
-
 $action = empty($action) ? 'default' : $action;
 if(file_exists(basePath."/clanwars/case_".$action.".php"))
     require_once(basePath."/clanwars/case_".$action.".php");

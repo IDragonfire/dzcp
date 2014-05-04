@@ -30,7 +30,6 @@ if(_adminMenu != 'true') exit;
                                             "dintern" => "",
                                              "durl" => "",
                                              "oder" => _or,
-                                             "lang" => $language,
                                              "file" => $dl,
                                              "nothing" => "",
                                              "nofile" => _downloads_nofile,

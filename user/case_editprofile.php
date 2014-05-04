@@ -428,7 +428,6 @@ if(defined('_UserMenu')) {
                                                 "position" => getrank($get['id']),
                                                 "value" => _button_value_edit,
                                                 "status" => $status,
-                                                "lang" => $language,
                                                 "sonst" => _profil_sonst,
                                                 "custom_about" => $custom_about,
                                                 "custom_contact" => $custom_contact,

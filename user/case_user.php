@@ -213,7 +213,6 @@ if(defined('_UserMenu')) {
                                                       "id" => $_GET['id'],
                                                       "add_head" => _gb_add_head,
                                                       "what" => _button_value_add,
-                                                      "lang" => $language,
                                                       "ip" => _iplog_info,
                                                       "posteintrag" => "",
                                                       "error" => "",

@@ -1529,6 +1529,16 @@ function update_mysql_1_6()
         db("UPDATE ".$db['f_skats']." SET `pos` = '".$get['id']."' WHERE `id` = '".$get['id']."'");
      }
 
+     //-> Alte Artikelkommentare löschen wo für es keinen Artikel mehr gibt
+     $qry = db("SELECT id FROM `".$db['artikel']."`"); $artikel_index = array();
+     while($get = mysqli_fetch_assoc($qry)){ $artikel_index[$get['id']] = true; }
+
+     $qry = db("SELECT id,artikel FROM `".$db['acomments']."`");
+     while($get = mysqli_fetch_assoc($qry)){
+        if(!array_key_exists($get['artikel'], $artikel_index))
+            db("DELETE FROM `".$db['acomments']."` WHERE `id` = ".$get['id']);
+     }
+
      //-> Slideshow
      db("DROP TABLE IF EXISTS ".$db['slideshow']."");
      db("CREATE TABLE ".$db['slideshow']." (

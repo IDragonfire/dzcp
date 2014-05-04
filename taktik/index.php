@@ -148,7 +148,7 @@ case 'do':
       $qry = db("SELECT * FROM ".$db['taktik']."");
       $get = _fetch($qry);
 
-      $files = get_files("../inc/images/uploads/taktiken/",false,true,array('png','jpg','gif'),false,array(),'minimize');
+      $files = get_files("../inc/images/uploads/taktiken/",false,true,$picformat,false,array(),'minimize');
       for($i=0; $i<count($files); $i++)
       {
         $screen .= show(_member_admin_select_icons, array("iconimg" => $files[$i]));
@@ -196,7 +196,7 @@ case 'do':
                  WHERE id = ".intval($_GET['id']));
       $get = _fetch($qry);
 
-      $files = get_files("../inc/images/uploads/taktiken/",false,true,array('png','jpg','gif'),false,array(),'minimize');
+      $files = get_files("../inc/images/uploads/taktiken/",false,true,$picformat,false,array(),'minimize');
       for($i=0; $i<count($files); $i++)
       {
         $screen .= show(_member_admin_select_icons, array("iconimg" => $files[$i]));
