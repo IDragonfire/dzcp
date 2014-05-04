@@ -378,8 +378,14 @@ var DZCP = {
                              + ' <img src="../inc/images/admin/loading.gif" alt="" />'
                              + '</div>');
 
+      var addpars = "";
+      if(form == 'cwForm') {
+          $("input[type=file]").each(function() {
+              addpars = addpars + "&" + $(this).prop('name') + "=" + $(this).prop('value');
+          });
+      }
+
       var url = prevURL;
-      var addpars = (form == 'cwForm') ? '&s1=' + $('#screen1').prop('value') + '&s2=' + $('#screen2').prop('value') + '&s3=' + $('#screen3').prop('value') + '&s4=' + $('#screen4').prop('value') : '';
       $.post(url, $('#' + form).serialize() + addpars, function(req) {
         $('#previewDIV').html(req);
       });

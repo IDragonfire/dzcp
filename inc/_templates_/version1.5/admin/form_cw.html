@@ -1,7 +1,37 @@
 <tr>
   <td>
     <script language="javascript" type="text/javascript">
-      var prevURL = '../clanwars/?action=preview';
+      var prevURL = '../clanwars/?action=preview'; var feld = 1;
+      function plus() {
+         if (feld <= 20) {
+          document.getElementById("dynamisch").innerHTML += "<table class='hperc' cellspacing='1'>"+
+            "<tr>"+
+                "<td width='200' class='contentMainTop'><span class='fontBold'>Screenshot " + feld + ":</span></td>"+
+                "<td class='contentMainFirst' align='center'>"+
+                "<input id='screen" + feld + "' name='screen" + feld + "' type='file' />"+
+               "</td>"+
+            "</tr>"+
+            "</table>";
+          feld++;
+         }
+        }
+
+       function minus() {
+         if (feld > 1) {
+          feld--;
+          document.getElementById("dynamisch").innerHTML = "";
+          for (var zaehler = 1; zaehler < feld; zaehler++) {
+            document.getElementById("dynamisch").innerHTML +="<table class='hperc' cellspacing='1'>"+
+                "<tr>"+
+                    "<td width='200' class='contentMainTop'><span class='fontBold'>Screenshot " + zaehler + ":</span></td>"+
+                    "<td class='contentMainFirst' align='center'>"+
+                    "<input id='screen" + zaehler + "' name='screen" + zaehler + "' type='file' />"+
+                   "</td>"+
+                "</tr>"+
+            "</table>";
+          }
+         }
+        }
     </script>
     <form id="cwForm" name="cwForm" enctype="multipart/form-data" action="?admin=cw&amp;do=[do]" method="post" onsubmit="return(DZCP.submitButton())">
     <table class="hperc" cellspacing="1">
@@ -26,37 +56,36 @@
         <td class="contentMainTop" colspan="2" align="center"><span class="fontBold">[gegnerstuff]</span></td>
       </tr>
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[clantag]:</span></td> 
+        <td class="contentMainTop"><span class="fontBold">[clantag]:</span></td>
         <td class="contentMainFirst" align="center">
           <input type="text" name="clantag" value="[cw_clantag]" class="inputField_dis"
-          onfocus="this.className='inputField_en';" 
+          onfocus="this.className='inputField_en';"
           onblur="this.className='inputField_dis';" />
         </td>
       </tr>
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[gegner]:</span></td> 
+        <td class="contentMainTop"><span class="fontBold">[gegner]:</span></td>
         <td class="contentMainFirst" align="center">
           <input type="text" name="gegner" value="[cw_gegner]" class="inputField_dis"
-          onfocus="this.className='inputField_en';" 
+          onfocus="this.className='inputField_en';"
           onblur="this.className='inputField_dis';" />
         </td>
       </tr>
       <tr>
         <td class="contentMainTop"><span class="fontBold">[country]:</span></td>
-        <td class="contentMainFirst" align="center">
-      		[countrys]
+        <td class="contentMainFirst" align="center">[countrys]
         </td>
       </tr>
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[url]:</span></td> 
+        <td class="contentMainTop"><span class="fontBold">[url]:</span></td>
         <td class="contentMainFirst" align="center">
           <input type="text" name="url" value="[cw_url]" class="inputField_dis"
-          onfocus="this.className='inputField_en';" 
+          onfocus="this.className='inputField_en';"
           onblur="this.className='inputField_dis';" />
         </td>
       </tr>
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[logo]:</span><br /><small><i>100px x 100px</i></small></td> 
+        <td class="contentMainTop"><span class="fontBold">[logo]:</span><br /><small><i>100px x 100px</i></small></td>
         <td class="contentMainFirst" align="center">
           <input type="file" name="logo" />
         </td>
@@ -65,80 +94,80 @@
         <td class="contentMainTop" colspan="2" align="center"><span class="fontBold">[warstuff]</span></td>
       </tr>
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[datum]:</span></td> 
+        <td class="contentMainTop"><span class="fontBold">[datum]:</span></td>
         <td class="contentMainFirst" align="center">[dropdown_date]&nbsp;&nbsp;-&nbsp;&nbsp;[dropdown_time]</td>
       </tr>
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[xonx]:</span></td> 
+        <td class="contentMainTop"><span class="fontBold">[xonx]:</span></td>
         <td class="contentMainFirst" align="center">
           <input type="text" name="xonx1" value="[cw_xonx1]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';" 
-          onblur="this.className='inputField_dis_small';" /> on 
+          onfocus="this.className='inputField_en_small';"
+          onblur="this.className='inputField_dis_small';" /> on
           <input type="text" name="xonx2" value="[cw_xonx2]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';" 
+          onfocus="this.className='inputField_en_small';"
           onblur="this.className='inputField_dis_small';" /></td>
       </tr>
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[liga]:</span></td> 
+        <td class="contentMainTop"><span class="fontBold">[liga]:</span></td>
         <td class="contentMainFirst" align="center">
           <input type="text" name="liga" value="[cw_liga]" class="inputField_dis"
-          onfocus="this.className='inputField_en';" 
+          onfocus="this.className='inputField_en';"
           onblur="this.className='inputField_dis';" />
         </td>
       </tr>
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[gametype]:</span></td> 
+        <td class="contentMainTop"><span class="fontBold">[gametype]:</span></td>
         <td class="contentMainFirst" align="center">
           <input type="text" name="gametype" value="[cw_gametype]" class="inputField_dis"
-          onfocus="this.className='inputField_en';" 
+          onfocus="this.className='inputField_en';"
           onblur="this.className='inputField_dis';" />
         </td>
       </tr>
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[maps]:</span></td> 
+        <td class="contentMainTop"><span class="fontBold">[maps]:</span></td>
         <td class="contentMainFirst" align="center">
           <input type="text" name="maps" value="[cw_maps]" class="inputField_dis"
-          onfocus="this.className='inputField_en';" 
+          onfocus="this.className='inputField_en';"
           onblur="this.className='inputField_dis';" />
         </td>
       </tr>
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[match_admins]:</span></td> 
+        <td class="contentMainTop"><span class="fontBold">[match_admins]:</span></td>
         <td class="contentMainFirst" align="center">
           <input type="text" name="match_admins" value="[cw_matchadmins]" class="inputField_dis"
-          onfocus="this.className='inputField_en';" 
+          onfocus="this.className='inputField_en';"
           onblur="this.className='inputField_dis';" />
         </td>
       </tr>
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[servername]:</span></td> 
+        <td class="contentMainTop"><span class="fontBold">[servername]:</span></td>
         <td class="contentMainFirst" align="center">
           <input type="text" name="servername" value="[cw_servername]" class="inputField_dis"
-          onfocus="this.className='inputField_en';" 
+          onfocus="this.className='inputField_en';"
           onblur="this.className='inputField_dis';" />
         </td>
       </tr>
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[serverip]:</span></td> 
+        <td class="contentMainTop"><span class="fontBold">[serverip]:</span></td>
         <td class="contentMainFirst" align="center">
           <input type="text" name="serverip" value="[cw_serverip]" class="inputField_dis"
-          onfocus="this.className='inputField_en';" 
+          onfocus="this.className='inputField_en';"
           onblur="this.className='inputField_dis';" />
         </td>
       </tr>
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[serverpwd]:</span></td> 
+        <td class="contentMainTop"><span class="fontBold">[serverpwd]:</span></td>
         <td class="contentMainFirst" align="center">
           <input type="text" name="serverpwd" value="[cw_serverpwd]" class="inputField_dis"
-          onfocus="this.className='inputField_en';" 
+          onfocus="this.className='inputField_en';"
           onblur="this.className='inputField_dis';" />
         </td>
       </tr>
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[lineup]:</span></td> 
+        <td class="contentMainTop"><span class="fontBold">[lineup]:</span></td>
         <td class="contentMainFirst" align="center">
           <input type="text" name="lineup" value="[cw_lineup]" class="inputField_dis"
-          onfocus="this.className='inputField_en';" 
+          onfocus="this.className='inputField_en';"
           onblur="this.className='inputField_dis';" />
         </td>
       </tr>
@@ -146,10 +175,10 @@
         <td class="contentMainFirst" align="center" colspan="2">[lineup_info]</td>
       </tr>
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[glineup]:</span></td> 
+        <td class="contentMainTop"><span class="fontBold">[glineup]:</span></td>
         <td class="contentMainFirst" align="center">
           <input type="text" name="glineup" value="[cw_glineup]" class="inputField_dis"
-          onfocus="this.className='inputField_en';" 
+          onfocus="this.className='inputField_en';"
           onblur="this.className='inputField_dis';" />
         </td>
       </tr>
@@ -157,13 +186,13 @@
         <td class="contentMainFirst" align="center" colspan="2">[lineup_info]</td>
       </tr>
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[result]:</span></td> 
+        <td class="contentMainTop"><span class="fontBold">[result]:</span></td>
         <td class="contentMainFirst" align="center">
           <input type="text" name="punkte" value="[cw_punkte]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';" 
-          onblur="this.className='inputField_dis_small';" /> : 
+          onfocus="this.className='inputField_en_small';"
+          onblur="this.className='inputField_dis_small';" /> :
           <input type="text" name="gpunkte" value="[cw_gpunkte]" class="inputField_dis_small"
-          onfocus="this.className='inputField_en_small';" 
+          onfocus="this.className='inputField_en_small';"
           onblur="this.className='inputField_dis_small';" />
         </td>
       </tr>
@@ -179,65 +208,12 @@
         <td class="contentMainTop" colspan="2" align="center"><span class="fontBold">[screens]</span></td>
       </tr>
       <tr>
-        <td class="contentMainTop"><span class="fontBold">[screenshot1]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input id="screen1" name="screen1" type="file" />
-        </td>
+        <td class="contentMainTop" colspan="2" align="center"><span class="fontBold">
+        <input type="button" value="-" onClick="minus();"><input type="button" value="+" onClick="plus();"></span></td>
       </tr>
-      <tr>
-        <td class="contentMainTop"><span class="fontBold">[screenshot2]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input id="screen2" name="screen2" type="file" />
-        </td>
-      </tr>
-      <tr>
-        <td class="contentMainTop"><span class="fontBold">[screenshot3]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input id="screen3" name="screen3" type="file" />
-        </td>
-      </tr>
-      <tr>
-        <td class="contentMainTop"><span class="fontBold">[screenshot4]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input id="screen4" name="screen4" type="file" />
-        </td>
-      </tr>
-      <tr>
-        <td class="contentMainTop"><span class="fontBold">[screenshot5]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input id="screen5" name="screen5" type="file" />
-        </td>
-      </tr>
-      <tr>
-        <td class="contentMainTop"><span class="fontBold">[screenshot6]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input id="screen6" name="screen6" type="file" />
-        </td>
-      </tr>
-      <tr>
-        <td class="contentMainTop"><span class="fontBold">[screenshot7]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input id="screen7" name="screen7" type="file" />
-        </td>
-      </tr>
-      <tr>
-        <td class="contentMainTop"><span class="fontBold">[screenshot8]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input id="screen8" name="screen8" type="file" />
-        </td>
-      </tr>
-      <tr>
-        <td class="contentMainTop"><span class="fontBold">[screenshot9]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input id="screen9" name="screen9" type="file" />
-        </td>
-      </tr>
-      <tr>
-        <td class="contentMainTop"><span class="fontBold">[screenshot10]:</span></td>
-        <td class="contentMainFirst" align="center">
-          <input id="screen10" name="screen10" type="file" />
-        </td>
-      </tr>
+      </table>
+      <div id="dynamisch"></div>
+      <table class="hperc" cellspacing="1">
       <tr>
         <td class="contentHead" colspan="2" align="center"><input id="contentSubmit" type="submit" value="[what]" class="submit" />  <input type="button"  value="[preview]" class="submit" onclick="DZCP.ajaxPreview('cwForm')" /></td>
       </tr>

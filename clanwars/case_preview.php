@@ -26,66 +26,34 @@ if(defined('_Clanwars')) {
   if($_POST['punkte'] == "0" && $_POST['gpunkte'] == "0") $result = _cw_no_results;
   else $result = cw_result_details($_POST['punkte'], $_POST['gpunkte']);
 
- $editcw = "";
+    $editcw = "";
 
-  if($_POST['bericht']) $bericht = bbcode(re($_POST['bericht']),1);
-  else $bericht = "&nbsp;";
+    if($_POST['bericht']) $bericht = bbcode(re($_POST['bericht']),1);
+    else $bericht = "&nbsp;";
 
-  if(!empty($_POST['s1']))     $screen1 = '<img src="../inc/images/admin/cwscreen.jpg" alt="" />';
-  else $screen1 = "";
+      $count = 0; $cw_screenshots = array();
+      for ($zaehler = 1; $zaehler <= 20; $zaehler++) {
+          if(isset($_POST['screen'.$zaehler])) {
+              $cw_screenshots[$zaehler] = true;
+              $count++;
+          }
+          else break;
+      }
 
-  if(!empty($_POST['s2']))     $screen2 = '<img src="../inc/images/admin/cwscreen.jpg" alt="" />';
-  else $screen2 = "";
-
-  if(!empty($_POST['s3']))     $screen3 = '<img src="../inc/images/admin/cwscreen.jpg" alt="" />';
-  else $screen3 = "";
-
-  if(!empty($_POST['s4']))     $screen4 = '<img src="../inc/images/admin/cwscreen.jpg" alt="" />';
-  else $screen4 = "";
-  
-  if(!empty($_POST['s5']))     $screen5 = '<img src="../inc/images/admin/cwscreen.jpg" alt="" />';
-  else $screen5 = "";
-
-  if(!empty($_POST['s6']))     $screen6 = '<img src="../inc/images/admin/cwscreen.jpg" alt="" />';
-  else $screen6 = "";
-  
-  if(!empty($_POST['s7']))     $screen7 = '<img src="../inc/images/admin/cwscreen.jpg" alt="" />';
-  else $screen7 = "";
-  
-  if(!empty($_POST['s8']))     $screen8 = '<img src="../inc/images/admin/cwscreen.jpg" alt="" />';
-  else $screen8 = "";
-  
-  if(!empty($_POST['s9']))     $screen9 = '<img src="../inc/images/admin/cwscreen.jpg" alt="" />';
-  else $screen9 = "";
-
-  if(!empty($_POST['s10']))     $screen10 = '<img src="../inc/images/admin/cwscreen.jpg" alt="" />';
-  else $screen10 = "";
-
-  if(!empty($screen1) || !empty($screen2) || !empty($screen3) || !empty($screen4) || !empty($screen5) || !empty($screen6) || !empty($screen7) || !empty($screen8) || !empty($screen9) || !empty($screen10))
-  {
-    $screens = show($dir."/screenshots", array("head" => _cw_screens,
-                                               "screenshot1" => _cw_screenshot." 1",
-                                               "screenshot2" => _cw_screenshot." 2",
-                                               "screenshot3" => _cw_screenshot." 3",
-                                               "screenshot4" => _cw_screenshot." 4",
-											   "screenshot5" => _cw_screenshot." 5",
-                                               "screenshot6" => _cw_screenshot." 6",
-											   "screenshot7" => _cw_screenshot." 7",
-                                               "screenshot8" => _cw_screenshot." 8",
-											   "screenshot9" => _cw_screenshot." 9",
-                                               "screenshot10" => _cw_screenshot." 10",
-                                               "screen1" => $screen1,
-                                               "screen2" => $screen2,
-                                               "screen3" => $screen3,
-											   "screen4" => $screen4,
-                                               "screen5" => $screen5,
-											   "screen6" => $screen6,
-                                               "screen7" => $screen7,
-											   "screen8" => $screen8,
-                                               "screen9" => $screen9,
-                                               "screen10" => $screen10));
+    $cw_sc_loops = $cw_sc_loops = ceil($count/4); $sc1=1; $sc2=2; $sc3=3; $sc4=4; $show_sc = '';
+        for ($i = 0; $i < $cw_sc_loops; $i++) {
+          $show_sc .= show($dir."/show_screenshots", array("screen1" => (array_key_exists($sc1, $cw_screenshots) ? '<img src="../inc/images/admin/cwscreen.png" alt="" />' : ''),
+                                                           "screen2" => (array_key_exists($sc2, $cw_screenshots) ? '<img src="../inc/images/admin/cwscreen.png" alt="" />' : ''),
+                                                           "screen3" => (array_key_exists($sc3, $cw_screenshots) ? '<img src="../inc/images/admin/cwscreen.png" alt="" />' : ''),
+                                                           "screen4" => (array_key_exists($sc4, $cw_screenshots) ? '<img src="../inc/images/admin/cwscreen.png" alt="" />' : ''),
+                                                           "screenshot1" => (array_key_exists($sc1, $cw_screenshots) ? _cw_screenshot.' '.$sc1 : ''),
+                                                           "screenshot2" => (array_key_exists($sc2, $cw_screenshots) ? _cw_screenshot.' '.$sc2 : ''),
+                                                           "screenshot3" => (array_key_exists($sc3, $cw_screenshots) ? _cw_screenshot.' '.$sc3 : ''),
+                                                           "screenshot4" => (array_key_exists($sc4, $cw_screenshots) ? _cw_screenshot.' '.$sc4 : '')));
+    $sc1 = $sc1+4; $sc2 = $sc2+4; $sc3 = $sc3+4; $sc4 = $sc4+4;
   }
 
+  $screens = $cw_sc_loops >= 1 ? show($dir."/screenshots", array("head" => _cw_screens, "show_screenshots" => $show_sc)) : '';
   $datum = mktime($_POST['h'],$_POST['min'],0,$_POST['m'],$_POST['t'],$_POST['j']);
   if(empty($_POST['xonx1']) && empty($_POST['xonx2'])) $xonx = "";
   else $xonx = $_POST['xonx1']."on".$_POST['xonx2'];
