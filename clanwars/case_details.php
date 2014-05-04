@@ -105,10 +105,10 @@ if(defined('_Clanwars')) {
                                                                  "screen2" => (array_key_exists($sc2, $cw_screenshots) ? $cw_screenshots[$sc2] : ''),
                                                                  "screen3" => (array_key_exists($sc3, $cw_screenshots) ? $cw_screenshots[$sc3] : ''),
                                                                  "screen4" => (array_key_exists($sc4, $cw_screenshots) ? $cw_screenshots[$sc4] : ''),
-                                                                 "screenshot1" => _cw_screenshot.' '.$sc1,
-                                                                 "screenshot2" => _cw_screenshot.' '.$sc2,
-                                                                 "screenshot3" => _cw_screenshot.' '.$sc3,
-                                                                 "screenshot4" => _cw_screenshot.' '.$sc4));
+                                                                 "screenshot1" => (array_key_exists($sc1, $cw_screenshots) ? _cw_screenshot.' '.$sc1 : ''),
+                                                                 "screenshot2" => (array_key_exists($sc2, $cw_screenshots) ? _cw_screenshot.' '.$sc2 : ''),
+                                                                 "screenshot3" => (array_key_exists($sc3, $cw_screenshots) ? _cw_screenshot.' '.$sc3 : ''),
+                                                                 "screenshot4" => (array_key_exists($sc4, $cw_screenshots) ? _cw_screenshot.' '.$sc4 : '')));
                 $sc1 = $sc1+4; $sc2 = $sc2+4; $sc3 = $sc3+4; $sc4 = $sc4+4;
             }
         }
