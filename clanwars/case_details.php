@@ -90,7 +90,7 @@ if(defined('_Clanwars')) {
 
         $bericht = $get['bericht'] ? bbcode($get['bericht']) : "&nbsp;";
         $libPath = "inc/images/clanwars/".intval($_GET['id']);
-        $screen1 = ''; $screen2 = ''; $screen3 = ''; $screen4 = '';
+        $screen1 = ''; $screen2 = ''; $screen3 = ''; $screen4 = ''; $screen5 = ''; $screen6 = ''; $screen7 = ''; $screen8 = ''; $screen9 = ''; $screen10 = '';
         foreach($picformat AS $end) {
             if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_1.'.$end))
                 $screen1 = img_cw($libPath, '1.'.$end);
@@ -103,19 +103,49 @@ if(defined('_Clanwars')) {
 
             if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_4.'.$end))
                 $screen4 = img_cw($libPath, '4.'.$end);
+			
+			if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_5.'.$end))
+                $screen5 = img_cw($libPath, '5.'.$end);	
+			
+			if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_6.'.$end))
+                $screen6 = img_cw($libPath, '6.'.$end);
+			
+			if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_7.'.$end))
+                $screen7 = img_cw($libPath, '7.'.$end);
+				
+			if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_8.'.$end))
+                $screen8 = img_cw($libPath, '8.'.$end);
+			
+			if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_9.'.$end))
+                $screen9 = img_cw($libPath, '9.'.$end);
+			
+			if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_10.'.$end))
+                $screen10 = img_cw($libPath, '10.'.$end);
         }
 
         $screens = '';
-        if(!empty($screen1) || !empty($screen2) || !empty($screen3) || !empty($screen4)) {
+        if(!empty($screen1) || !empty($screen2) || !empty($screen3) || !empty($screen4) || !empty($screen5) || !empty($screen6) || !empty($screen7) || !empty($screen8) || !empty($screen9) || !empty($screen10)) {
             $screens = show($dir."/screenshots", array("head" => _cw_screens,
                                                        "screenshot1" => _cw_screenshot." 1",
                                                        "screenshot2" => _cw_screenshot." 2",
                                                        "screenshot3" => _cw_screenshot." 3",
                                                        "screenshot4" => _cw_screenshot." 4",
+									                   "screenshot5" => _cw_screenshot." 5",
+                                                       "screenshot6" => _cw_screenshot." 6",
+                                                       "screenshot7" => _cw_screenshot." 7",
+                                                       "screenshot8" => _cw_screenshot." 8",
+													   "screenshot9" => _cw_screenshot." 9",
+                                                       "screenshot10" => _cw_screenshot." 10",
                                                        "screen1" => $screen1,
                                                        "screen2" => $screen2,
                                                        "screen3" => $screen3,
-                                                       "screen4" => $screen4));
+													   "screen4" => $screen4,
+                                                       "screen5" => $screen5,
+													   "screen6" => $screen6,
+                                                       "screen7" => $screen7,
+													   "screen8" => $screen8,
+                                                       "screen9" => $screen9,
+                                                       "screen10" => $screen10));
         }
 
         $qryc = db("SELECT * FROM ".$db['cw_comments']."
