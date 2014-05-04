@@ -67,7 +67,7 @@
 		</section>
 	    <section>
 	    <h3><a name="support">3. Hilfe und Support</a></h3>
-	       	 <p>Ihr benötigt Hilfe oder habt eine Frage dann stellt diese auf <a href="http://www.dzcp.de" target="_blank">DZCP.de</a>!</p>	
+	       	 <p>Ihr benötigt Hilfe oder habt Fragen dann stellt diese auf <a href="http://www.dzcp.de" target="_blank">DZCP.de</a>!</p>	
 	         <ul>
 	         	<li><a href="http://www.dzcp.de/forum/?action=show&amp;id=40" target="_blank">Fragen zur Installation oder zum Update</a></li>
 	            <li><a href="http://www.dzcp.de/forum/?action=show&amp;id=22" target="_blank">Probleme</a> oder<a href="http://www.dzcp.de/forum/?action=show&amp;id=6" target="_blank"> Bugs</a></li>
@@ -108,37 +108,38 @@
 	        		<li>Platzhalter [where] für die Ausgabe des Seitentitels innerhalb des Templates hinzugefügt</li>
 	        		<li>Dynamische Platzhalter [lang_xxxx] für die Ausgabe beliebiger Definitionen aus der Language File innerhalb des Templates hinzugefügt</li>
 	        		<li>Slideshow wurde hinzugefügt - Platzhalter [slideshow] (Template Version 1.5 wurde der Platzhalter [sildeshow] nicht in die index.html übernommen)</li>
-	        		<li>eigenes Newsbild kann als Alternative zum Kat.-Banner beim erstellen der News mit angegeben werden</li>
+	        		<li>eigenes Newsbild und Artikelbild kann als Alternative zum Kat.-Banner beim erstellen mit angegeben werden</li>
 	        		<li>Interne Galerie hinzugeügt</li> 
-	                <li>interne Downloads hinzugefügt</li>
-	       			<li>Ordnen von Spalten / Inhalten in mehrere Bereiche hinzugefügt</li>
+	                <li>Interne Downloads hinzugefügt</li>
+	       			<li>Sortieren von Spalten / Inhalten in mehrere Bereiche hinzugefügt</li>
 	        		<li>Xfire wurde in der Userliste durch Steam ersetzt und Skype hinzugefügt</li>
-	        		<li>Profil wurde um folgende Kontakte erweiter: Steam (Thanks Tune389 &amp; Nitro), Skype, Xbox Live, Playstation Network, Origin, Battlenet</li>
+	        		<li>Profil wurde um folgende Kontakte erweiter:  Skype, Steam (Thanks Tune389 &amp; Nitro), Xbox Live, Playstation Network, Origin, Battlenet</li>
 	        		<li>Antispam Update</li>
-	        		<li>neuer Platzhalter [avatar] zeigt nach User-Login den zugehörige Avatar an(Template Version 1.5 wurde der Platzhalter [avatar] nicht in die index.html übernommen)</li>
-	        		<li>Option Anzeige Usergalerie im Profil wurde hinzugefügt (Öffentlich / nur User / nur Member)</li>
-	        		<li>Option Usergästebucheinträge Speeren / zulassen im Profil wurde hinzugefügt</li>
+	        		<li>neuer Platzhalter [avatar] zeigt nach User-Login den zugehörige Avatar an (Template Version 1.5 wurde der Platzhalter [avatar] nicht in die index.html übernommen)</li>
+	        		<li>Option Anzeige Usergalerie im Profil editieren wurde hinzugefügt (Öffentlich / nur User / nur Member)</li>
+	        		<li>Option Usergästebucheinträge Speeren / zulassen im Profil  editieren hinzugefügt</li>
 	        		<li>JoinUs Formular kann das Teams mit ausgewählt werden; Teams können selber entscheiden ob Sie im Formular mit aufgeführt werden möchten</li>
 	        		<li>FightUs Formular kann das Teams mit ausgewählt werden; Teams können selber entscheiden ob Sie im Formular mit aufgeführt werden möchten</li>
 					<li>Backupfunktion wurde überarbeitet</li>
 	        		<li>MySQL wurde auf MySQLi umgestellt um die Lauffähigkeit für Spätere PHP Versionen zu sichern</li>
-	        		<li>Newstricker im Administrationsbereich kann optional in der config.php abgeschaltet werden</li>
+	        		<li>Newstricker im Administrationsbereich kann optional in der ../inc/config.php abgeschaltet werden</li>
 	        		<li>alte DZCP Cache wurde ersetzt, dieser unterstützt jetzt Files, SQL-Lite, APC, Memcache, WinCache und XCache</li>
 	        		<li>Verschiedene Optimierungen / Ausbesserungen im PHP und HTML Code</li>
 					<li>Skype und Steam ID wurde als Formularfeld in FightUs, JoinUs und Konatkt hinzugefügt</li>
-					<li>Error-Report wurde hinzugefügt und kann über die config.php aktiviert / deaktiviert werden (Logfils werden unter inc/_logs gespeichert)</li>
+					<li>Error-Report wurde hinzugefügt und kann über die ../inc/config.php aktiviert / deaktiviert werden (Logfils werden unter ../inc/_logs gespeichert)</li>
 					<li>Mouseover wurde für die EventBox hinzugefügt</li>
 					<li>[b1] und [b2] wurden entfernt und durch HTML-Tags  	&lt;logged_in&gt; 	&lt;/logged_in&gt; und &lt;logged_out&gt; &lt;/logged_out&gt; ersetzt</li>
 		 			<li>Gametiger wurde entfernt (Service wurde eingestellt)</li> 
 					<li>multiple Root Adminstrator Support hinzugefügt</li>
-					<li>Team erstellen Option Status Aktive / Inaktive hinzugefügt</li>
+					<li>Team erstellen würde die Option Status Aktive / Inaktive hinzugefügt</li>
 					<li>Taktik wurde verallgemeinert</li>
+					<li>Buildversion wurde hinzugefügt (siehe Adminmenü Support)</li>
 	            </ul>
-	       <h4>Bugfixes</h4>
+          <h4>Bugfixes</h4>
 	             <ul>
 	             	<li>unveröffentlichte Artikel kann man nicht ansehen</li> 
-	        	 	<li>highlight in der Forum Suche wird nicht resetet</li> 
-	        		<li>man kann als Gast / unregistrierte User Kommentare abgeben</li> 
+	        	 	<li>highlight in der Forumsuche wird nicht resetet</li> 
+	        		<li>man kann als Gast / unregistrierter User Kommentare abgeben</li> 
 	        		<li>Serverviewer für MOHAA, SH und BT Fix</li>
 	        		<li>Loginname / Username mit Sonderzeichen nicht möglich</li> 
 	        		<li>Datum letzter Download wird nicht richtig aktualisiert</li> 
@@ -156,11 +157,11 @@
 	        		<li>Bilder wurden nicht immer verkleinert (auto resized)</li> 
 	        		<li>Server Passwort war sichtbar</li> 
 	        		<li>FightUs Benachrichtigung fehlerhaft</li> 
-	        		<li>interne Votes werden öffentlich nach editieren</li> 
+	        		<li>Interne Votes werden öffentlich nach editieren</li> 
 	        		<li>inaktive Squads kann man keine Awards vergeben</li>
 	        		<li>Event Links werden nicht richtig erkannt</li>
 	        		<li>Fehlende definitionen in Sprachdateien</li> 
-	        		<li>Menü für Banneradresse hat sich nicht geöffnet</li> 
+	        		<li>Menü für Banneradresse wurde nicht geöffnet</li> 
 	        		<li>Adminmenü war nicht immer für alle Berechtigten sichtbar</li>
 	        		<li>Infomeldungen werden 5 anstatt 2 Sekunden angezeigt</li>
 	        		<li>Emailvorlagen fehlerhaft - Probleme mit Sonderzeichen</li> 
@@ -179,7 +180,7 @@
 	        		<li>Navigation Interne Seiten waren über Link für jeden aufrufbar</li>
 	        		<li>Glossarnavigation Alle ohne Funktion</li>
 	        		<li>mit aktiven Autologin wurden Pagebesuche nicht gezählt</li>
-	        		<li>mehrere kleiner Optimierungen am Code</li>
+	        		<li>mehrere kleiner Optimierungen am Code (undefinierte Variablen und Constanten entfernt)</li>
 	        		<li>User IPs werden auch bei vorgeschaltete Proxyserver oder Load Balancer nicht richtig erkannt</li>
 	        		<li>Smile Bug Fix TinyMC</li>
 	        		<li>E-Mail Fix HTML-Bug</li>
@@ -189,7 +190,8 @@
 					<li>fehlerhafte Weiterleitung nach GameIcon Uploads Team</li>
 					<li>Clankasse Währung wurde bei "neue Beiträge hinzufügen" und "editieren" falsch angezeigt</li>
 	    			<li>MySql Injetion Sicherheitslücken wurden geschlossen</li>
-	            </ul>
+	    			<li>Clanwarsbeschreibung wurde nicht vollständig übernommen</li>
+                </ul>
 			<h4>Thanks</h4>
 					Wir bedanken uns bei allen die an der Fertigstellung der v1.6 mitgearbeitet haben.
 	
@@ -200,7 +202,7 @@
 				420.425 Zeilen geschrieben,<br>
 				244.848 Zeilen gelöscht und<br>
 				665.273 Zeilen gesammt verändert in<br> 
-				über 700 Commits.
+				über 700 Commits.<br>
 		</section>
 	    <footer><a href="http://www.dzcp.de/" target="_blank">Powered by DZCP - deV!L`z Clanportal</a></footer>
 	</body>
