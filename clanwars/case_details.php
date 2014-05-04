@@ -99,17 +99,29 @@ if(defined('_Clanwars')) {
                 }
             }
 
-            $cw_sc_loops = ceil($file_id/4); $sc1=1; $sc2=2; $sc3=3; $sc4=4; $show_sc = '';
+            $cw_sc_loops = ceil($file_id/4); $sc1=1; $sc2=2; $sc3=3; $sc4=4; $sc5=5; $sc6=6; $sc7=7; $sc8=8; $sc9=9; $sc10=10; $show_sc = '';
             for ($i = 0; $i < $cw_sc_loops; $i++) {
                 $show_sc .= show($dir."/show_screenshots", array("screen1" => (array_key_exists($sc1, $cw_screenshots) ? $cw_screenshots[$sc1] : ''),
                                                                  "screen2" => (array_key_exists($sc2, $cw_screenshots) ? $cw_screenshots[$sc2] : ''),
                                                                  "screen3" => (array_key_exists($sc3, $cw_screenshots) ? $cw_screenshots[$sc3] : ''),
                                                                  "screen4" => (array_key_exists($sc4, $cw_screenshots) ? $cw_screenshots[$sc4] : ''),
-                                                                 "screenshot1" => (array_key_exists($sc1, $cw_screenshots) ? _cw_screenshot.' '.$sc1 : ''),
+																 "screen5" => (array_key_exists($sc5, $cw_screenshots) ? $cw_screenshots[$sc5] : ''),
+																 "screen6" => (array_key_exists($sc6, $cw_screenshots) ? $cw_screenshots[$sc6] : ''),
+																 "screen7" => (array_key_exists($sc7, $cw_screenshots) ? $cw_screenshots[$sc7] : ''),
+																 "screen8" => (array_key_exists($sc8, $cw_screenshots) ? $cw_screenshots[$sc8] : ''),
+																 "screen9" => (array_key_exists($sc9, $cw_screenshots) ? $cw_screenshots[$sc9] : ''),
+                                                                 "screen10" => (array_key_exists($sc10, $cw_screenshots) ? $cw_screenshots[$sc10] : ''),
+																 "screenshot1" => (array_key_exists($sc1, $cw_screenshots) ? _cw_screenshot.' '.$sc1 : ''),
                                                                  "screenshot2" => (array_key_exists($sc2, $cw_screenshots) ? _cw_screenshot.' '.$sc2 : ''),
                                                                  "screenshot3" => (array_key_exists($sc3, $cw_screenshots) ? _cw_screenshot.' '.$sc3 : ''),
-                                                                 "screenshot4" => (array_key_exists($sc4, $cw_screenshots) ? _cw_screenshot.' '.$sc4 : '')));
-                $sc1 = $sc1+4; $sc2 = $sc2+4; $sc3 = $sc3+4; $sc4 = $sc4+4;
+																 "screenshot4" => (array_key_exists($sc4, $cw_screenshots) ? _cw_screenshot.' '.$sc4 : ''),
+																 "screenshot5" => (array_key_exists($sc5, $cw_screenshots) ? _cw_screenshot.' '.$sc5 : ''),
+																 "screenshot6" => (array_key_exists($sc6, $cw_screenshots) ? _cw_screenshot.' '.$sc6 : ''),
+																 "screenshot7" => (array_key_exists($sc7, $cw_screenshots) ? _cw_screenshot.' '.$sc7 : ''),
+																 "screenshot8" => (array_key_exists($sc8, $cw_screenshots) ? _cw_screenshot.' '.$sc8 : ''),
+                                                                 "screenshot9" => (array_key_exists($sc9, $cw_screenshots) ? _cw_screenshot.' '.$sc9 : ''),
+																 "screenshot10" => (array_key_exists($sc10, $cw_screenshots) ? _cw_screenshot.' '.$sc10 : '')));
+                $sc1 = $sc1+4; $sc2 = $sc2+4; $sc3 = $sc3+4; $sc4 = $sc4+4; $sc5 = $sc5+4; $sc6 = $sc6+4; $sc7 = $sc7+4; $sc8 = $sc8+4; $sc9 = $sc9+4; $sc10 = $sc10+4;
             }
         }
 
