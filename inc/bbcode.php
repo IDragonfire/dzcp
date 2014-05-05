@@ -1047,9 +1047,7 @@ function highlight($word) {
 //-> Counter updaten
 function updateCounter() {
     global $db,$reload,$today,$datum,$userip;
-    $ipcheck = db("SELECT id,ip,datum FROM ".$db['c_ips']." WHERE ip = '".$userip."' AND FROM_UNIXTIME(datum,'%d.%m.%Y') = '".date("d.m.Y")."'");
-    $get = _fetch($ipcheck);
-
+    $get = db("SELECT id,ip,datum FROM ".$db['c_ips']." WHERE ip = '".$userip."' AND FROM_UNIXTIME(datum,'%d.%m.%Y') = '".date("d.m.Y")."'",false,true);
     db("DELETE FROM ".$db['c_ips']." WHERE datum+".$reload." <= ".time()." OR FROM_UNIXTIME(datum,'%d.%m.%Y') != '".date("d.m.Y")."'");
     $count = db("SELECT id,visitors,today FROM ".$db['counter']." WHERE today = '".$today."'");
     if(_rows($ipcheck)>=1) {
@@ -1763,10 +1761,10 @@ function getAge($bday) {
 }
 
 //-> Ausgabe der Position des einzelnen Members
-function getrank($tid, $squad="", $profil=0) {
+function getrank($tid, $squad="", $profil=false) {
     global $db;
     if($squad) {
-        if($profil == 1)
+        if($profil)
             $qry = db("SELECT * FROM ".$db['userpos']." AS s1 LEFT JOIN ".$db['squads']." AS s2 ON s1.squad = s2.id WHERE s1.user = '".intval($tid)."' AND s1.squad = '".intval($squad)."' AND s1.posi != '0'");
         else
             $qry = db("SELECT * FROM ".$db['userpos']." WHERE user = '".intval($tid)."' AND squad = '".intval($squad)."' AND posi != '0'");
@@ -1841,7 +1839,7 @@ function pfields_name($name) {
 //-> Checkt versch. Dinge anhand der Hostmaske eines Users
 function ipcheck($what,$time = "") {
     global $db,$userip;
-    $get = _fetch(db("SELECT time,what FROM ".$db['ipcheck']." WHERE what = '".$what."' AND ip = '".$userip."' ORDER BY time DESC"));
+    $get = db("SELECT time,what FROM ".$db['ipcheck']." WHERE what = '".$what."' AND ip = '".$userip."' ORDER BY time DESC",false,true);
     if(preg_match("#vid#", $get['what']))
         return true;
     else {
@@ -2159,8 +2157,7 @@ function hextobin($hexstr) {
 }
 
 //-> Speichert Rückgaben der MySQL Datenbank zwischen um SQL-Queries einzusparen
-final class dbc_index
-{
+final class dbc_index {
     private static $index = array();
 
     public static final function setIndex($index_key,$data) {

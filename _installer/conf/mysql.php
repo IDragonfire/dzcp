@@ -1479,6 +1479,19 @@ function update_mysql_1_6()
     db("ALTER TABLE `".$db['ipcheck']."` ADD `user_id` INT(11) NOT NULL DEFAULT '0' AFTER `ip`;");
     db("ALTER TABLE `".$db['settings']."` ADD `steam_api_key` VARCHAR(50) NOT NULL DEFAULT '' AFTER `urls_linked`;");
     db("ALTER TABLE `".$db['settings']."` ADD `db_optimize` INT(20) NOT NULL DEFAULT '0' AFTER `steam_api_key`;");
+    db("ALTER TABLE `".$db['f_access']."` ADD `id` INT(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`);");
+
+    //->Add new Indexes * MySQL optimize
+    db("ALTER TABLE `".$db['users']."` ADD INDEX(`pwd`);");
+    db("ALTER TABLE `".$db['users']."` ADD INDEX(`time`);");
+    db("ALTER TABLE `".$db['users']."` ADD INDEX(`bday`);");
+    db("ALTER TABLE `".$db['navi']."` ADD INDEX(`url`);");
+    db("ALTER TABLE `".$db['ipcheck']."` ADD INDEX(`ip`);");
+    db("ALTER TABLE `".$db['userpos']."` ADD INDEX(`user`);");
+    db("ALTER TABLE `".$db['userpos']."` ADD INDEX(`squad`);");
+    db("ALTER TABLE `".$db['msg']."` ADD INDEX(`an`);");
+    db("ALTER TABLE `".$db['f_access']."` ADD INDEX(`user`);");
+    db("ALTER TABLE `".$db['f_access']."` ADD INDEX(`forum`);");
 
     //-> Fix Settings Table
     if(db("SELECT * FROM `".$db['settings']."`",true) >= 2) {
