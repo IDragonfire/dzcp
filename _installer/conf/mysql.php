@@ -1478,6 +1478,7 @@ function update_mysql_1_6()
     db("ALTER TABLE `".$db['serverliste']."` CHANGE `pwd` `pwd` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
     db("ALTER TABLE `".$db['ipcheck']."` ADD `user_id` INT(11) NOT NULL DEFAULT '0' AFTER `ip`;");
     db("ALTER TABLE `".$db['settings']."` ADD `steam_api_key` VARCHAR(50) NOT NULL DEFAULT '' AFTER `urls_linked`;");
+    db("ALTER TABLE `".$db['settings']."` ADD `db_optimize` INT(20) NOT NULL DEFAULT '0' AFTER `steam_api_key`;");
 
     //-> Fix Settings Table
     if(db("SELECT * FROM `".$db['settings']."`",true) >= 2) {
@@ -1542,7 +1543,7 @@ function update_mysql_1_6()
      //-> Slideshow
      db("DROP TABLE IF EXISTS ".$db['slideshow']."");
      db("CREATE TABLE ".$db['slideshow']." (
-        `id` int(5) NOT NULL auto_increment,
+        `id` int(11) NOT NULL auto_increment,
         `pos` int(5) NOT NULL default '0',
         `bez` varchar(200) NOT NULL default '',
         `showbez` int(1) NOT NULL default '1',
@@ -1556,4 +1557,6 @@ function update_mysql_1_6()
     while($get = mysqli_fetch_assoc($qry)) {
         db("UPDATE ".$db['permissions']." SET slideshow = 1, gs_showpw = 1 WHERE id = '".$get['id']."'");
     }
+
+    db_optimize(); // MySQL optimize
 }

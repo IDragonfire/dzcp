@@ -36,6 +36,14 @@ $config_cache['securityKey'] = settings('prev',false);
 phpFastCache::setup($config_cache);
 $cache = new phpFastCache();
 
+//-> Automatische Datenbank Optimierung
+if(auto_db_optimize && settings('db_optimize',false) <= time()) {
+    @ignore_user_abort(true);
+    db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time+auto_db_optimize_interval)."' WHERE `id` = 1;");
+    db_optimize();
+    @ignore_user_abort(false);
+}
+
 //-> Settingstabelle auslesen * Use function settings('xxxxxx');
 if(!dbc_index::issetIndex('settings')) {
     $get_settings = db("SELECT * FROM ".$db['settings'],false,true);
