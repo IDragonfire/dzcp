@@ -1572,7 +1572,7 @@ function update_mysql_1_6()
     }
 
     if($updater) {
-        db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time+auto_db_optimize_interval)."' WHERE `id` = 1;");
+        db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time()+auto_db_optimize_interval)."' WHERE `id` = 1;");
         db_optimize();
     }
 }
