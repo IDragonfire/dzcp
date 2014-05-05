@@ -96,12 +96,9 @@ if(!isset($sql_host) || !isset($sql_user) || !isset($sql_pass) || !isset($sql_db
 if(file_exists(basePath."/inc/mysql.php"))
     require_once(basePath."/inc/mysql.php");
 
-//DZCP-Install default variable
-if(!isset($installation))
-  $installation = false;
-
-if(!isset($global_index))
-    $global_index = false;
+if(!isset($installation)) $installation = false;
+if(!isset($updater)) $updater = false;
+if(!isset($global_index)) $global_index = false;
 
 function show($tpl="", $array=array(), $array_lang_constant=array(), $array_block=array()) {
     global $tmpdir,$chkMe;
@@ -232,9 +229,10 @@ function _real_escape_string($string='') {
 }
 
 function db($query='',$rows=false,$fetch=false) {
-    global $prefix,$mysql,$clanname;
+    global $prefix,$mysql,$clanname,$updater;
 
     if(debug_all_sql_querys) DebugConsole::wire_log('debug', 9, 'SQL_Query', $query);
+    if($updater) { $mysql->query($query); return; }
     if(!$qry = $mysql->query($query)) {
         DebugConsole::sql_error_handler($query);
         die('<b>Upps...</b><br /><br />Entschuldige bitte! Das h&auml;tte nicht passieren d&uuml;rfen. Wir k&uuml;mmern uns so schnell wie m&ouml;glich darum.<br><br>'.$clanname.'<br><br>'._back);
