@@ -232,10 +232,11 @@ function db($query='',$rows=false,$fetch=false) {
     global $prefix,$mysql,$clanname,$updater;
 
     if(debug_all_sql_querys) DebugConsole::wire_log('debug', 9, 'SQL_Query', $query);
-    if($updater) { $mysql->query($query); return; }
-    if(!$qry = $mysql->query($query)) {
-        DebugConsole::sql_error_handler($query);
-        die('<b>Upps...</b><br /><br />Entschuldige bitte! Das h&auml;tte nicht passieren d&uuml;rfen. Wir k&uuml;mmern uns so schnell wie m&ouml;glich darum.<br><br>'.$clanname.'<br><br>'._back);
+    if($updater) { $qry = $mysql->query($query); } else {
+        if(!$qry = $mysql->query($query)) {
+            DebugConsole::sql_error_handler($query);
+            die('<b>Upps...</b><br /><br />Entschuldige bitte! Das h&auml;tte nicht passieren d&uuml;rfen. Wir k&uuml;mmern uns so schnell wie m&ouml;glich darum.<br><br>'.$clanname.'<br><br>'._back);
+        }
     }
 
     if ($rows && !$fetch)
