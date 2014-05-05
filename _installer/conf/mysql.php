@@ -1571,5 +1571,8 @@ function update_mysql_1_6()
         db("UPDATE ".$db['permissions']." SET slideshow = 1, gs_showpw = 1 WHERE id = '".$get['id']."'");
     }
 
-    if($updater) db_optimize();
+    if($updater) {
+        db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time+auto_db_optimize_interval)."' WHERE `id` = 1;");
+        db_optimize();
+    }
 }
