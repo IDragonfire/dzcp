@@ -72,10 +72,7 @@ if(defined('_UserMenu')) {
             }
 
             $icq = preg_replace("=-=Uis","",$_POST['icq']);
-
-            $bday = 0;
-            if($_POST['t'] && $_POST['m'] && $_POST['j'])
-                $bday = cal($_POST['t']).".".cal($_POST['m']).".".$_POST['j'];
+            $bday = ($_POST['t'] && $_POST['m'] && $_POST['j'] ? cal($_POST['t']).".".cal($_POST['m']).".".$_POST['j'] : 0);
 
             $qrycustom = db("SELECT feldname,type FROM ".$db['profile']);
           while($getcustom = _fetch($qrycustom))
