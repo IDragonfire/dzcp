@@ -1928,3 +1928,9 @@ img.border {
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#706c6b', endColorstr='#4e4d4d',GradientType=0 );
     filter: none;
 }
+
+#skypedetectionswf {
+	width:0px !important; 
+	height:0px !important; 
+	display:none
+}
