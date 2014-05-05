@@ -95,16 +95,44 @@ if(defined('_Clanwars')) {
             $file_id = 0;
             foreach ($files as $file) {
                 if(preg_match("#^".intval($_GET['id'])."_(.*?).(gif|jpg|jpeg|png)#",strtolower($file))!=FALSE && strpos($file, '_logo') === false) {
-                    $file_id++; $cw_screenshots[$file_id] = img_cw($libPath,$file);
+                    $file_id++; $cw_screenshots[$file_id] = $file;
                 }
             }
 
             $cw_sc_loops = ceil($file_id/4); $sc1=1; $sc2=2; $sc3=3; $sc4=4; $show_sc = '';
             for ($i = 0; $i < $cw_sc_loops; $i++) {
-                $show_sc .= show($dir."/show_screenshots", array("screen1" => (array_key_exists($sc1, $cw_screenshots) ? $cw_screenshots[$sc1] : ''),
-                                                                 "screen2" => (array_key_exists($sc2, $cw_screenshots) ? $cw_screenshots[$sc2] : ''),
-                                                                 "screen3" => (array_key_exists($sc3, $cw_screenshots) ? $cw_screenshots[$sc3] : ''),
-                                                                 "screen4" => (array_key_exists($sc4, $cw_screenshots) ? $cw_screenshots[$sc4] : ''),
+                $del1 = ""; $del2 = ""; $del3 = ""; $del4 = "";
+                if(permission("clanwars"))
+                {
+                    $del1 = array_key_exists($sc1, $cw_screenshots) ? show("page/button_delete_single", array("id" => $_GET['id'],
+                            "action" => "action=details&amp;do=delete_pic&amp;pic=".$cw_screenshots[$sc1],
+                            "title" => _button_title_del,
+                            "del" => convSpace(_confirm_del_galpic))) : '';
+
+                    $del2 = array_key_exists($sc2, $cw_screenshots) ? show("page/button_delete_single", array("id" => $_GET['id'],
+                            "action" => "action=details&amp;do=delete_pic&amp;pic=".$cw_screenshots[$sc2],
+                            "title" => _button_title_del,
+                            "del" => convSpace(_confirm_del_galpic))) : '';
+
+                    $del3 = array_key_exists($sc3, $cw_screenshots) ? show("page/button_delete_single", array("id" => $_GET['id'],
+                            "action" => "action=details&amp;do=delete_pic&amp;pic=".$cw_screenshots[$sc3],
+                            "title" => _button_title_del,
+                            "del" => convSpace(_confirm_del_galpic))) : '';
+
+                    $del4 = array_key_exists($sc4, $cw_screenshots) ? show("page/button_delete_single", array("id" => $_GET['id'],
+                            "action" => "action=details&amp;do=delete_pic&amp;pic=".$cw_screenshots[$sc4],
+                            "title" => _button_title_del,
+                            "del" => convSpace(_confirm_del_galpic))) : '';
+                }
+
+                $show_sc .= show($dir."/show_screenshots", array("screen1" => (array_key_exists($sc1, $cw_screenshots) ? img_cw($libPath,$cw_screenshots[$sc1]) : ''),
+                                                                 "screen2" => (array_key_exists($sc2, $cw_screenshots) ? img_cw($libPath,$cw_screenshots[$sc2]) : ''),
+                                                                 "screen3" => (array_key_exists($sc3, $cw_screenshots) ? img_cw($libPath,$cw_screenshots[$sc3]) : ''),
+                                                                 "screen4" => (array_key_exists($sc4, $cw_screenshots) ? img_cw($libPath,$cw_screenshots[$sc4]) : ''),
+                                                                 "del_screen1" => '<p>'.$del1,
+                                                                 "del_screen2" => '<p>'.$del2,
+                                                                 "del_screen3" => '<p>'.$del3,
+                                                                 "del_screen4" => '<p>'.$del4,
                                                                  "screenshot1" => (array_key_exists($sc1, $cw_screenshots) ? _cw_screenshot.' '.$sc1 : ''),
                                                                  "screenshot2" => (array_key_exists($sc2, $cw_screenshots) ? _cw_screenshot.' '.$sc2 : ''),
                                                                  "screenshot3" => (array_key_exists($sc3, $cw_screenshots) ? _cw_screenshot.' '.$sc3 : ''),
@@ -342,12 +370,32 @@ if(defined('_Clanwars')) {
                 $index = error(_id_dont_exist,1);
         }
 
-        if($do == "delete") {
+        if($do == "delete_pic") {
+            $pic = explode('.',$_GET['pic']); $pic = $pic[0];
+            //Remove Pic
+            foreach($picformat as $tmpendung) {
+                if(file_exists(basePath."/inc/images/clanwars/".$pic.".".$tmpendung))
+                    @unlink(basePath."/inc/images/clanwars/".$pic.".".$tmpendung);
+            }
+
+            //Remove minimize
+            $files = get_files(basePath."/inc/images/clanwars/",false,true,$picformat);
+            foreach ($files as $file) {
+                if(preg_match("#".$pic."(.*?).(gif|jpg|jpeg|png)#",strtolower($file))!= FALSE) {
+                    $res = preg_match("#".$pic."_(.*)#",$file,$match);
+                    if(file_exists(basePath."/inc/images/clanwars/".$pic."_".$match[1]))
+                        @unlink(basePath."/inc/images/clanwars/".$pic."_".$match[1]);
+                }
+            }
+
+            $index = info(_cw_screenshot_deleted, "?action=details&amp;id=".intval($_GET['id']));
+        }
+       elseif($do == "delete") {
             $get = db("SELECT reg FROM ".$db['cw_comments']." WHERE id = '".intval($_GET['cid'])."'",false,true);
             if($get['reg'] == $userid || permission('clanwars'))
             {
                 db("DELETE FROM ".$db['cw_comments']." WHERE id = '".intval($_GET['cid'])."'");
-                $index = info(_comment_deleted, "?action=details&amp;id=".intval($_GET['id'])."");
+                $index = info(_comment_deleted, "?action=details&amp;id=".intval($_GET['id']));
             }
             else
                 $index = error(_error_wrong_permissions, 1);

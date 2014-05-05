@@ -63,12 +63,14 @@ define('_forum_kat', 'Categorie');
 
 define('_artikel_userimage', 'Own Articlepicture');
 define('_artikelpic_del', 'delete Articlepicture?');
-define('_artikelpic_deleted', 'Articlepicture deleted successfully');
+define('_artikelpic_deleted', 'Articlepicture successfully deleted');
 
 define('_news_userimage', 'Own Newspicture');
 define('_newspic_del', 'delete Newspicture?');
-define('_newspic_deleted', 'Newspicture deleted successfully');
+define('_newspic_deleted', 'Newspicture successfully deleted');
 define('_max', 'max.');
+
+define('_cw_screenshot_deleted', 'Screenshot successfully deleted');
 
 define('_perm_galleryintern','View internal Gallery');
 define('_perm_dlintern','View internal Downloads');

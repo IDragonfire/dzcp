@@ -70,6 +70,8 @@ define('_newspic_del', 'Newsbild l&ouml;schen?');
 define('_newspic_deleted', 'Newsbild erfolgreich gel&ouml;scht');
 define('_max', 'max.');
 
+define('_cw_screenshot_deleted', 'Screenshot erfolgreich gel&ouml;scht');
+
 define('_perm_galleryintern','Interne Gallery einsehen');
 define('_perm_dlintern','Interne Download einsehen');
 
