@@ -14,7 +14,7 @@ session_start();
 define('basePath', dirname(dirname(__FILE__).'../'));
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $do = isset($_GET['do']) ? $_GET['do'] : '';
-$installer = true;
+$installer = true; $updater = false;
 
 require_once(basePath.'/inc/_version.php');
 require_once(basePath."/inc/debugger.php");
@@ -451,6 +451,8 @@ case 'database';
   {
     if($_POST['login'] && $_POST['nick'] && $_POST['pwd'] && $_POST['email'])
     {
+        @set_time_limit(60);
+        @ignore_user_abort(true);
         install_mysql($_POST['login'], $_POST['nick'], $_POST['pwd'], $_POST['email']);
         update_mysql_1_4();
         update_mysql_1_5();

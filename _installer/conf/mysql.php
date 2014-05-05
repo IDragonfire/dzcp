@@ -1411,7 +1411,7 @@ function update_mysql_1_5_4()
 }
 function update_mysql_1_6()
 {
-    global $db;
+    global $db,$updater;
     db("ALTER TABLE `".$db['f_threads']."` CHANGE `edited` `edited` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
     db("ALTER TABLE `".$db['users']."` CHANGE `whereami` `whereami` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL");
     db("ALTER TABLE `".$db['downloads']."` ADD `last_dl` INT( 20 ) NOT NULL DEFAULT '0' AFTER `date`");
@@ -1487,6 +1487,7 @@ function update_mysql_1_6()
     db("ALTER TABLE `".$db['users']."` ADD INDEX(`bday`);");
     db("ALTER TABLE `".$db['navi']."` ADD INDEX(`url`);");
     db("ALTER TABLE `".$db['ipcheck']."` ADD INDEX(`ip`);");
+    db("ALTER TABLE `".$db['ipcheck']."` ADD INDEX(`what`);");
     db("ALTER TABLE `".$db['userpos']."` ADD INDEX(`user`);");
     db("ALTER TABLE `".$db['userpos']."` ADD INDEX(`squad`);");
     db("ALTER TABLE `".$db['msg']."` ADD INDEX(`an`);");
@@ -1520,7 +1521,6 @@ function update_mysql_1_6()
     //Add UNIQUE KEY
     db("ALTER TABLE `".$db['config']."` ADD UNIQUE(`id`);");
     db("ALTER TABLE `".$db['settings']."` ADD UNIQUE(`id`);");
-    db("ALTER TABLE `".$db['ipcheck']."` ADD INDEX(`what`);");
 
     $qry = db("SELECT id,level,bday FROM ".$db['users']);
     if(mysqli_num_rows($qry)>= 1)
@@ -1571,5 +1571,5 @@ function update_mysql_1_6()
         db("UPDATE ".$db['permissions']." SET slideshow = 1, gs_showpw = 1 WHERE id = '".$get['id']."'");
     }
 
-    db_optimize(); // MySQL optimize
+    if($updater) db_optimize();
 }
