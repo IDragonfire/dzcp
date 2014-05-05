@@ -28,6 +28,7 @@ function infos($checkBrowser = "") {
       elseif(preg_match("/NT 6.0/i",$data))                   $system = $windows_icon."Windows Vista";
       elseif(preg_match("/NT 6.1/i",$data))                   $system = $windows_icon."Windows 7";
       elseif(preg_match("/NT 6.2/i",$data))                   $system = $windows_icon."Windows 8";
+	  elseif(preg_match("/NT 6.3/i",$data))            	      $system = $windows_icon."Windows 8.1";
       elseif(preg_match("/OS (.*?) like Mac OS X/i",$data))   $system = $iphone_icon."iOS";
       else                                                    $system = _unknown_system;
 
@@ -43,11 +44,13 @@ function infos($checkBrowser = "") {
       elseif(preg_match("/Firefox/i",$data))    $browser = $firefox_icon."Mozilla Firefox";
       elseif(preg_match("/chrome/i",$data))     $browser = $chrome_icon."Google Chrome";
       elseif(preg_match("/Safari/i",$data))     $browser = $safari_icon."Safari";
+	  elseif(preg_match("/MSIE 5/i",$data))     $browser = $ie_icon."Internet Explorer 5";
       elseif(preg_match("/MSIE 6/i",$data))     $browser = $ie_icon."Internet Explorer 6";
       elseif(preg_match("/MSIE 7/i",$data))     $browser = $ie_icon."Internet Explorer 7";
       elseif(preg_match("/MSIE 8/i",$data))     $browser = $ie_icon."Internet Explorer 8";
       elseif(preg_match("/MSIE 9/i",$data))     $browser = $ie_icon."Internet Explorer 9";
       elseif(preg_match("/MSIE 10/i",$data))    $browser = $ie_icon."Internet Explorer 10";
+	  elseif(preg_match("/MSIE 11/i",$data))    $browser = $ie_icon."Internet Explorer 11";
       else                                      $browser = _unknown_browser;
 
       $res = "<script language=\"javascript\" type=\"text/javascript\"> doc.write(screen.width + ' x ' + screen.height)</script>";
