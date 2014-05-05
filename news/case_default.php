@@ -73,11 +73,13 @@ if(defined('_News')) {
                                                          "rel" => $rel));
 
                     $intern = $get['intern'] ? _votes_intern : "";
-
-                    if(file_exists(basePath.'/inc/images/uploads/news/'.$get['id'].'.jpg'))
-                        $newsimage = '../inc/images/uploads/news/'.$get['id'].'.jpg';
-                    else
-                        $newsimage = '../inc/images/newskat/'.$getkat['katimg'];
+                    $newsimage = '../inc/images/newskat/'.$getkat['katimg'];
+                    foreach($picformat as $tmpendung) {
+                        if(file_exists(basePath."/inc/images/uploads/news/".$get['id'].".".$tmpendung)) {
+                            $newsimage = '../inc/images/uploads/news/'.$get['id'].'.'.$tmpendung;
+                            break;
+                        }
+                    }
 
                     $show_sticky .= show($dir."/news_show", array("titel" => re($get['titel']),
                                                                   "kat" => $newsimage,
@@ -157,11 +159,13 @@ if(defined('_News')) {
                                                          "rel" => $rel));
 
                     $intern = $get['intern'] ? _votes_intern : "";
-
-                    if(file_exists(basePath.'/inc/images/uploads/news/'.$get['id'].'.jpg'))
-                        $newsimage = '../inc/images/uploads/news/'.$get['id'].'.jpg';
-                    else
-                        $newsimage = '../inc/images/newskat/'.$getkat['katimg'];
+                    $newsimage = '../inc/images/newskat/'.$getkat['katimg'];
+                    foreach($picformat as $tmpendung) {
+                        if(file_exists(basePath."/inc/images/uploads/news/".$get['id'].".".$tmpendung)) {
+                            $newsimage = '../inc/images/uploads/news/'.$get['id'].'.'.$tmpendung;
+                            break;
+                        }
+                    }
 
                     $show .= show($dir."/news_show", array("titel" => re($get['titel']),
                                                            "kat" => $newsimage,

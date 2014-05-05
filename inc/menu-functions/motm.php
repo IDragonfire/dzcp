@@ -5,9 +5,9 @@
  * Menu: Member of the Moment
  */
 function motm() {
-    global $db;
+    global $db,$picformat;
 
-    $userpics = get_files(basePath.'/inc/images/uploads/userpics/',false,true,array('png','jpg','gif'),false,array(),'minimize');
+    $userpics = get_files(basePath.'/inc/images/uploads/userpics/',false,true,$picformat,false,array(),'minimize');
     $qry = db("SELECT `id` FROM ".$db['users']." WHERE level >= 2");
     $a = 0; $temparr = array(); $member = '';
     if(_rows($qry)) {

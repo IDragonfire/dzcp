@@ -25,7 +25,7 @@ switch ($action):
         if(_rows($qry)) {
             while($get = _fetch($qry)) {
                 $imgArr = array();
-                $files = get_files("images/",false,true,array('png','jpg','gif'),false,array(),'minimize');
+                $files = get_files("images/",false,true,$picformat,false,array(),'minimize');
 
                 foreach($files AS $file) {
                     if(intval($file) == $get['id'])
@@ -62,7 +62,7 @@ switch ($action):
             break;
         }
 
-        $files = get_files("images/",false,true,array('png','jpg','gif'),false,array(),'minimize');
+        $files = get_files("images/",false,true,$picformat,false,array(),'minimize');
         $t = 1; $cnt = 0;
         foreach ($files as $file) {
             if(preg_match("#^".$_GET['id']."_(.*?).(gif|jpg|jpeg|png)#",strtolower($file))!=FALSE) {

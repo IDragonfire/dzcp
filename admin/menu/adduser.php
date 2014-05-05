@@ -115,8 +115,7 @@ if(_adminMenu != 'true') exit;
         else                      $mkpwd = $_POST['pwd'];
         $pwd = md5($mkpwd);
 
-        if($_POST['t'] && $_POST['m'] && $_POST['j']) $bday = cal($_POST['t']).".".cal($_POST['m']).".".$_POST['j'];
-
+        $bday = ($_POST['t'] && $_POST['m'] && $_POST['j'] ? cal($_POST['t']).".".cal($_POST['m']).".".$_POST['j'] : 0);
         $qry = db("INSERT INTO ".$db['users']."
                              SET `user`     = '".up($_POST['user'])."',
                                  `nick`     = '".up($_POST['nick'])."',
@@ -124,7 +123,7 @@ if(_adminMenu != 'true') exit;
                                  `pwd`      = '".up($pwd)."',
                                  `rlname`   = '".up($_POST['rlname'])."',
                                  `sex`      = '".((int)$_POST['sex'])."',
-                                 `bday`     = '".$bday."',
+                                 `bday`     = '".(!$bday ? 0 : strtotime($bday))."',
                                  `city`     = '".up($_POST['city'])."',
                                  `country`  = '".up($_POST['land'])."',
                                  `regdatum` = '".time()."',

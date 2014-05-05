@@ -5,10 +5,10 @@
  * Menu: Zufallsgalerie
  */
 function random_gallery() {
-    global $db;
+    global $db,$picformat;
 
     $gallery = '';
-    $files = get_files(basePath.'/gallery/images/',false,true,array('png','jpg','gif'),false,array(),'minimize');
+    $files = get_files(basePath.'/gallery/images/',false,true,$picformat,false,array(),'minimize');
     if(count($files) >= 1) {
         $get = db("SELECT `id`,`kat` FROM ".$db['gallery']." ORDER BY RAND()",false,true);
 

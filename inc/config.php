@@ -24,6 +24,9 @@ define('feed_update_time', 10*60); // Wann soll der Newsfeed aktualisiert werden
 define('cookie_expires', (60*60*24*30*12)); // Wie Lange die Cookies des CMS ihre Gueltigkeit behalten.
 define('file_get_contents_timeout', 10);
 
+define('auto_db_optimize', true); // Soll in der Datenbank regelmaessig ein OPTIMIZE TABLE ausgefuehrt werden?
+define('auto_db_optimize_interval', (7*24*60*60)); // Wann soll der OPTIMIZE TABLE ausgefuehrt werden, alle 7 Tage.
+
 define('dzcp_version_checker', true); // Version auf DZCP.de abgleichen und benachrichtigen ob eine neue Version zur Verfuegung steht
 define('dzcp_version_checker_refresh', (30*60)); // Wie lange soll gewartet werden um einen Versionsabgleich auszufuehren
 
@@ -96,12 +99,9 @@ if(!isset($sql_host) || !isset($sql_user) || !isset($sql_pass) || !isset($sql_db
 if(file_exists(basePath."/inc/mysql.php"))
     require_once(basePath."/inc/mysql.php");
 
-//DZCP-Install default variable
-if(!isset($installation))
-  $installation = false;
-
-if(!isset($global_index))
-    $global_index = false;
+if(!isset($installation)) $installation = false;
+if(!isset($updater)) $updater = false;
+if(!isset($global_index)) $global_index = false;
 
 function show($tpl="", $array=array(), $array_lang_constant=array(), $array_block=array()) {
     global $tmpdir,$chkMe;
@@ -232,12 +232,14 @@ function _real_escape_string($string='') {
 }
 
 function db($query='',$rows=false,$fetch=false) {
-    global $prefix,$mysql,$clanname;
+    global $prefix,$mysql,$clanname,$updater;
 
     if(debug_all_sql_querys) DebugConsole::wire_log('debug', 9, 'SQL_Query', $query);
-    if(!$qry = $mysql->query($query)) {
-        DebugConsole::sql_error_handler($query);
-        die('<b>Upps...</b><br /><br />Entschuldige bitte! Das h&auml;tte nicht passieren d&uuml;rfen. Wir k&uuml;mmern uns so schnell wie m&ouml;glich darum.<br><br>'.$clanname.'<br><br>'._back);
+    if($updater) { $qry = $mysql->query($query); } else {
+        if(!$qry = $mysql->query($query)) {
+            DebugConsole::sql_error_handler($query);
+            die('<b>Upps...</b><br /><br />Entschuldige bitte! Das h&auml;tte nicht passieren d&uuml;rfen. Wir k&uuml;mmern uns so schnell wie m&ouml;glich darum.<br><br>'.$clanname.'<br><br>'._back);
+        }
     }
 
     if ($rows && !$fetch)
@@ -295,6 +297,18 @@ function db_stmt($query,$params=array('si', 'hallo', '4'),$rows=false,$fetch=fal
         return _fetch($results);
 
     return $results;
+}
+
+function db_optimize() {
+    global $db; $sql = '';
+    $blacklist = array('host','user','pass','db','prefix');
+    foreach ($db as $key => $tb) {
+        if(!in_array($key,$blacklist))
+            $sql .= '`'.$tb.'`, ';
+    }
+
+    $sql = substr($sql, 0, -2);
+    db('OPTIMIZE TABLE '.$sql.';');
 }
 
 function refValues($arr) {

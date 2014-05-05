@@ -13,7 +13,7 @@ session_start();
 define('basePath', dirname(dirname(__FILE__).'../'));
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $do = isset($_GET['do']) ? $_GET['do'] : '';
-$installer = true;
+$installer = true; $updater = true;
 
 require_once(basePath.'/inc/_version.php');
 require_once(basePath."/inc/debugger.php");

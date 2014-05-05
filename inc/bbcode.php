@@ -36,6 +36,14 @@ $config_cache['securityKey'] = settings('prev',false);
 phpFastCache::setup($config_cache);
 $cache = new phpFastCache();
 
+//-> Automatische Datenbank Optimierung
+if(auto_db_optimize && settings('db_optimize',false) <= time()) {
+    @ignore_user_abort(true);
+    db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time+auto_db_optimize_interval)."' WHERE `id` = 1;");
+    db_optimize();
+    @ignore_user_abort(false);
+}
+
 //-> Settingstabelle auslesen * Use function settings('xxxxxx');
 if(!dbc_index::issetIndex('settings')) {
     $get_settings = db("SELECT * FROM ".$db['settings'],false,true);
@@ -1039,9 +1047,7 @@ function highlight($word) {
 //-> Counter updaten
 function updateCounter() {
     global $db,$reload,$today,$datum,$userip;
-    $ipcheck = db("SELECT id,ip,datum FROM ".$db['c_ips']." WHERE ip = '".$userip."' AND FROM_UNIXTIME(datum,'%d.%m.%Y') = '".date("d.m.Y")."'");
-    $get = _fetch($ipcheck);
-
+    $get = db("SELECT id,ip,datum FROM ".$db['c_ips']." WHERE ip = '".$userip."' AND FROM_UNIXTIME(datum,'%d.%m.%Y') = '".date("d.m.Y")."'",false,true);
     db("DELETE FROM ".$db['c_ips']." WHERE datum+".$reload." <= ".time()." OR FROM_UNIXTIME(datum,'%d.%m.%Y') != '".date("d.m.Y")."'");
     $count = db("SELECT id,visitors,today FROM ".$db['counter']." WHERE today = '".$today."'");
     if(_rows($ipcheck)>=1) {
@@ -1365,17 +1371,14 @@ function check_email($email) {
 
 //-> Bilder verkleinern
 function img_size($img) {
-    $s = getimagesize("../".$img);
     return "<a href=\"../".$img."\" rel=\"lightbox[l_".intval($img)."]\"><img src=\"../thumbgen.php?img=".$img."\" alt=\"\" /></a>";
 }
 
 function img_cw($folder="", $img="") {
-    $s = getimagesize("../".$folder."_".$img);
-    return "<a href=\"../".$folder."_".$img."\" rel=\"lightbox[cw_".intval($folder)."]\"><img src=\"../thumbgen.php?img=".$folder."_".$img."\" alt=\"\" /></a>";
+    return "<a href=\"../".$folder.$img."\" rel=\"lightbox[cw_".intval($folder)."]\"><img src=\"../thumbgen.php?img=".$folder.$img."\" alt=\"\" /></a>";
 }
 
 function gallery_size($img="") {
-    $s = getimagesize("../gallery/images/".$img);
     return "<a href=\"../gallery/images/".$img."\" rel=\"lightbox[gallery_".intval($img)."]\"><img src=\"../thumbgen.php?img=gallery/images/".$img."\" alt=\"\" /></a>";
 }
 
@@ -1758,10 +1761,10 @@ function getAge($bday) {
 }
 
 //-> Ausgabe der Position des einzelnen Members
-function getrank($tid, $squad="", $profil=0) {
+function getrank($tid, $squad="", $profil=false) {
     global $db;
     if($squad) {
-        if($profil == 1)
+        if($profil)
             $qry = db("SELECT * FROM ".$db['userpos']." AS s1 LEFT JOIN ".$db['squads']." AS s2 ON s1.squad = s2.id WHERE s1.user = '".intval($tid)."' AND s1.squad = '".intval($squad)."' AND s1.posi != '0'");
         else
             $qry = db("SELECT * FROM ".$db['userpos']." WHERE user = '".intval($tid)."' AND squad = '".intval($squad)."' AND posi != '0'");
@@ -1836,7 +1839,7 @@ function pfields_name($name) {
 //-> Checkt versch. Dinge anhand der Hostmaske eines Users
 function ipcheck($what,$time = "") {
     global $db,$userip;
-    $get = _fetch(db("SELECT time,what FROM ".$db['ipcheck']." WHERE what = '".$what."' AND ip = '".$userip."' ORDER BY time DESC"));
+    $get = db("SELECT time,what FROM ".$db['ipcheck']." WHERE what = '".$what."' AND ip = '".$userip."' ORDER BY time DESC",false,true);
     if(preg_match("#vid#", $get['what']))
         return true;
     else {
@@ -2154,8 +2157,7 @@ function hextobin($hexstr) {
 }
 
 //-> Speichert Rückgaben der MySQL Datenbank zwischen um SQL-Queries einzusparen
-final class dbc_index
-{
+final class dbc_index {
     private static $index = array();
 
     public static final function setIndex($index_key,$data) {
@@ -2369,6 +2371,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index')
         }
 
         //misc vars
+        $lang = $language;
         $template_switch = show("menu/tmp_switch", array("templates" => $tmpldir));
         $clanname = re(settings("clanname"));
         $time = show(_generated_time, array("time" => $time));
@@ -2391,7 +2394,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index')
         $pholder = file_get_contents($designpath."/index.html");
 
         //filter placeholders
-        $blArr = array("[clanname]","[title]","[copyright]","[java_vars]","[login]", "[template_switch]","[headtitle]","[index]", "[time]","[rss]","[dir]","[charset]","[where]");
+        $blArr = array("[clanname]","[title]","[copyright]","[java_vars]","[login]", "[template_switch]","[headtitle]","[index]", "[time]","[rss]","[dir]","[charset]","[where]","[lang]");
         $pholdervars = '';
         for($i=0;$i<=count($blArr)-1;$i++) {
             if(preg_match("#".$blArr[$i]."#",$pholder))

@@ -15,7 +15,6 @@ if(_adminMenu != 'true') exit;
       $show_ = show($dir."/form_impressum", array("idomain" => _config_impressum_domains,
                                                   "domain" => re($get['i_domain']),
                                                   "bbcode" => bbcode("seitenautor"),
-                                                  "lang" => $language,
                                                   "iautor" => _config_impressum_autor,
                                                   "postautor" => re_bbcode($get['i_autor'])));
 

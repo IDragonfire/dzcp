@@ -26,36 +26,38 @@ if(defined('_Clanwars')) {
   if($_POST['punkte'] == "0" && $_POST['gpunkte'] == "0") $result = _cw_no_results;
   else $result = cw_result_details($_POST['punkte'], $_POST['gpunkte']);
 
- $editcw = "";
+    $editcw = "";
 
-  if($_POST['bericht']) $bericht = bbcode(re($_POST['bericht']),1);
-  else $bericht = "&nbsp;";
+    if($_POST['bericht']) $bericht = bbcode(re($_POST['bericht']),1);
+    else $bericht = "&nbsp;";
 
-  if(!empty($_POST['s1']))     $screen1 = '<img src="../inc/images/admin/cwscreen.jpg" alt="" />';
-  else $screen1 = "";
+      $count = 0; $cw_screenshots = array();
+      for ($zaehler = 1; $zaehler <= 20; $zaehler++) {
+          if(isset($_POST['screen'.$zaehler])) {
+              $cw_screenshots[$zaehler] = true;
+              $count++;
+          }
+          else break;
+      }
 
-  if(!empty($_POST['s2']))     $screen2 = '<img src="../inc/images/admin/cwscreen.jpg" alt="" />';
-  else $screen2 = "";
-
-  if(!empty($_POST['s3']))     $screen3 = '<img src="../inc/images/admin/cwscreen.jpg" alt="" />';
-  else $screen3 = "";
-
-  if(!empty($_POST['s4']))     $screen4 = '<img src="../inc/images/admin/cwscreen.jpg" alt="" />';
-  else $screen4 = "";
-
-  if(!empty($screen1) || !empty($screen2) || !empty($screen3) || !empty($screen4))
-  {
-    $screens = show($dir."/screenshots", array("head" => _cw_screens,
-                                               "screenshot1" => _cw_screenshot." 1",
-                                               "screenshot2" => _cw_screenshot." 2",
-                                               "screenshot3" => _cw_screenshot." 3",
-                                               "screenshot4" => _cw_screenshot." 4",
-                                               "screen1" => $screen1,
-                                               "screen2" => $screen2,
-                                               "screen3" => $screen3,
-                                               "screen4" => $screen4));
+    $cw_sc_loops = $cw_sc_loops = ceil($count/4); $sc1=1; $sc2=2; $sc3=3; $sc4=4; $show_sc = '';
+        for ($i = 0; $i < $cw_sc_loops; $i++) {
+          $show_sc .= show($dir."/show_screenshots", array("screen1" => (array_key_exists($sc1, $cw_screenshots) ? '<img src="../inc/images/admin/cwscreen.png" alt="" />' : ''),
+                                                           "screen2" => (array_key_exists($sc2, $cw_screenshots) ? '<img src="../inc/images/admin/cwscreen.png" alt="" />' : ''),
+                                                           "screen3" => (array_key_exists($sc3, $cw_screenshots) ? '<img src="../inc/images/admin/cwscreen.png" alt="" />' : ''),
+                                                           "screen4" => (array_key_exists($sc4, $cw_screenshots) ? '<img src="../inc/images/admin/cwscreen.png" alt="" />' : ''),
+                                                           "del_screen1" => '',
+                                                           "del_screen2" => '',
+                                                           "del_screen3" => '',
+                                                           "del_screen4" => '',
+                                                           "screenshot1" => (array_key_exists($sc1, $cw_screenshots) ? _cw_screenshot.' '.$sc1 : ''),
+                                                           "screenshot2" => (array_key_exists($sc2, $cw_screenshots) ? _cw_screenshot.' '.$sc2 : ''),
+                                                           "screenshot3" => (array_key_exists($sc3, $cw_screenshots) ? _cw_screenshot.' '.$sc3 : ''),
+                                                           "screenshot4" => (array_key_exists($sc4, $cw_screenshots) ? _cw_screenshot.' '.$sc4 : '')));
+    $sc1 = $sc1+4; $sc2 = $sc2+4; $sc3 = $sc3+4; $sc4 = $sc4+4;
   }
 
+  $screens = $cw_sc_loops >= 1 ? show($dir."/screenshots", array("head" => _cw_screens, "show_screenshots" => $show_sc)) : '';
   $datum = mktime($_POST['h'],$_POST['min'],0,$_POST['m'],$_POST['t'],$_POST['j']);
   if(empty($_POST['xonx1']) && empty($_POST['xonx2'])) $xonx = "";
   else $xonx = $_POST['xonx1']."on".$_POST['xonx2'];

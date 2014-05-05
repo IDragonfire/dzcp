@@ -89,35 +89,59 @@ if(defined('_Clanwars')) {
         }
 
         $bericht = $get['bericht'] ? bbcode($get['bericht']) : "&nbsp;";
-        $libPath = "inc/images/clanwars/".intval($_GET['id']);
-        $screen1 = ''; $screen2 = ''; $screen3 = ''; $screen4 = '';
-        foreach($picformat AS $end) {
-            if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_1.'.$end))
-                $screen1 = img_cw($libPath, '1.'.$end);
+        $libPath = "inc/images/clanwars/"; $cw_sc_loops = 0;
+        $files = get_files(basePath."/inc/images/clanwars/",false,true,$picformat,false,array(),'minimize'); $cw_screenshots = array();
+        if($files) {
+            $file_id = 0;
+            foreach ($files as $file) {
+                if(preg_match("#^".intval($_GET['id'])."_(.*?).(gif|jpg|jpeg|png)#",strtolower($file))!=FALSE && strpos($file, '_logo') === false) {
+                    $file_id++; $cw_screenshots[$file_id] = $file;
+                }
+            }
 
-            if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_2.'.$end))
-                $screen2 = img_cw($libPath, '2.'.$end);
+            $cw_sc_loops = ceil($file_id/4); $sc1=1; $sc2=2; $sc3=3; $sc4=4; $show_sc = '';
+            for ($i = 0; $i < $cw_sc_loops; $i++) {
+                $del1 = ""; $del2 = ""; $del3 = ""; $del4 = "";
+                if(permission("clanwars"))
+                {
+                    $del1 = array_key_exists($sc1, $cw_screenshots) ? show("page/button_delete_single", array("id" => $_GET['id'],
+                            "action" => "action=details&amp;do=delete_pic&amp;pic=".$cw_screenshots[$sc1],
+                            "title" => _button_title_del,
+                            "del" => convSpace(_confirm_del_galpic))) : '';
 
-            if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_3.'.$end))
-                $screen3 = img_cw($libPath, '3.'.$end);
+                    $del2 = array_key_exists($sc2, $cw_screenshots) ? show("page/button_delete_single", array("id" => $_GET['id'],
+                            "action" => "action=details&amp;do=delete_pic&amp;pic=".$cw_screenshots[$sc2],
+                            "title" => _button_title_del,
+                            "del" => convSpace(_confirm_del_galpic))) : '';
 
-            if(file_exists(basePath."/inc/images/clanwars/".intval($_GET['id']).'_4.'.$end))
-                $screen4 = img_cw($libPath, '4.'.$end);
+                    $del3 = array_key_exists($sc3, $cw_screenshots) ? show("page/button_delete_single", array("id" => $_GET['id'],
+                            "action" => "action=details&amp;do=delete_pic&amp;pic=".$cw_screenshots[$sc3],
+                            "title" => _button_title_del,
+                            "del" => convSpace(_confirm_del_galpic))) : '';
+
+                    $del4 = array_key_exists($sc4, $cw_screenshots) ? show("page/button_delete_single", array("id" => $_GET['id'],
+                            "action" => "action=details&amp;do=delete_pic&amp;pic=".$cw_screenshots[$sc4],
+                            "title" => _button_title_del,
+                            "del" => convSpace(_confirm_del_galpic))) : '';
+                }
+
+                $show_sc .= show($dir."/show_screenshots", array("screen1" => (array_key_exists($sc1, $cw_screenshots) ? img_cw($libPath,$cw_screenshots[$sc1]) : ''),
+                                                                 "screen2" => (array_key_exists($sc2, $cw_screenshots) ? img_cw($libPath,$cw_screenshots[$sc2]) : ''),
+                                                                 "screen3" => (array_key_exists($sc3, $cw_screenshots) ? img_cw($libPath,$cw_screenshots[$sc3]) : ''),
+                                                                 "screen4" => (array_key_exists($sc4, $cw_screenshots) ? img_cw($libPath,$cw_screenshots[$sc4]) : ''),
+                                                                 "del_screen1" => '<p>'.$del1,
+                                                                 "del_screen2" => '<p>'.$del2,
+                                                                 "del_screen3" => '<p>'.$del3,
+                                                                 "del_screen4" => '<p>'.$del4,
+                                                                 "screenshot1" => (array_key_exists($sc1, $cw_screenshots) ? _cw_screenshot.' '.$sc1 : ''),
+                                                                 "screenshot2" => (array_key_exists($sc2, $cw_screenshots) ? _cw_screenshot.' '.$sc2 : ''),
+                                                                 "screenshot3" => (array_key_exists($sc3, $cw_screenshots) ? _cw_screenshot.' '.$sc3 : ''),
+                                                                 "screenshot4" => (array_key_exists($sc4, $cw_screenshots) ? _cw_screenshot.' '.$sc4 : '')));
+                $sc1 = $sc1+4; $sc2 = $sc2+4; $sc3 = $sc3+4; $sc4 = $sc4+4;
+            }
         }
 
-        $screens = '';
-        if(!empty($screen1) || !empty($screen2) || !empty($screen3) || !empty($screen4)) {
-            $screens = show($dir."/screenshots", array("head" => _cw_screens,
-                                                       "screenshot1" => _cw_screenshot." 1",
-                                                       "screenshot2" => _cw_screenshot." 2",
-                                                       "screenshot3" => _cw_screenshot." 3",
-                                                       "screenshot4" => _cw_screenshot." 4",
-                                                       "screen1" => $screen1,
-                                                       "screen2" => $screen2,
-                                                       "screen3" => $screen3,
-                                                       "screen4" => $screen4));
-        }
-
+        $screens = $cw_sc_loops >= 1 ? show($dir."/screenshots", array("head" => _cw_screens, "show_screenshots" => $show_sc)) : '';
         $qryc = db("SELECT * FROM ".$db['cw_comments']."
                     WHERE cw = ".intval($_GET['id'])."
                     ORDER BY datum DESC
@@ -346,12 +370,32 @@ if(defined('_Clanwars')) {
                 $index = error(_id_dont_exist,1);
         }
 
-        if($do == "delete") {
+        if($do == "delete_pic") {
+            $pic = explode('.',$_GET['pic']); $pic = $pic[0];
+            //Remove Pic
+            foreach($picformat as $tmpendung) {
+                if(file_exists(basePath."/inc/images/clanwars/".$pic.".".$tmpendung))
+                    @unlink(basePath."/inc/images/clanwars/".$pic.".".$tmpendung);
+            }
+
+            //Remove minimize
+            $files = get_files(basePath."/inc/images/clanwars/",false,true,$picformat);
+            foreach ($files as $file) {
+                if(preg_match("#".$pic."(.*?).(gif|jpg|jpeg|png)#",strtolower($file))!= FALSE) {
+                    $res = preg_match("#".$pic."_(.*)#",$file,$match);
+                    if(file_exists(basePath."/inc/images/clanwars/".$pic."_".$match[1]))
+                        @unlink(basePath."/inc/images/clanwars/".$pic."_".$match[1]);
+                }
+            }
+
+            $index = info(_cw_screenshot_deleted, "?action=details&amp;id=".intval($_GET['id']));
+        }
+       elseif($do == "delete") {
             $get = db("SELECT reg FROM ".$db['cw_comments']." WHERE id = '".intval($_GET['cid'])."'",false,true);
             if($get['reg'] == $userid || permission('clanwars'))
             {
                 db("DELETE FROM ".$db['cw_comments']." WHERE id = '".intval($_GET['cid'])."'");
-                $index = info(_comment_deleted, "?action=details&amp;id=".intval($_GET['id'])."");
+                $index = info(_comment_deleted, "?action=details&amp;id=".intval($_GET['id']));
             }
             else
                 $index = error(_error_wrong_permissions, 1);
@@ -396,7 +440,6 @@ if(defined('_Clanwars')) {
                                                          "prevurl" => '../clanwars/?action=compreview&do=edit&id='.$_GET['id'].'&amp;cid='.$_GET['cid'],
                                                          "action" => '?action=details&amp;do=editcom&amp;id='.$_GET['id'].'&amp;cid='.$_GET['cid'],
                                                          "ip" => _iplog_info,
-                                                         "lang" => $language,
                                                          "id" => $_GET['id'],
                                                          "what" => _button_value_edit,
                                                          "show" => "",

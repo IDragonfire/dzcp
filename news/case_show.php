@@ -29,7 +29,7 @@ if(defined('_News')) {
 
                 $viewed = show(_news_viewed, array("viewed" => $get['viewed']));
 
-                $links1 = "";
+                $links1 = ""; $rel = "";
                 if(!empty($get['url1'])) {
                     $rel = _related_links;
                     $links1 = show(_news_link, array("link" => re($get['link1']),
@@ -133,7 +133,6 @@ if(defined('_News')) {
                                                            "security" => _register_confirm,
                                                            "action" => '?action=show&amp;do=add&amp;id='.$_GET['id'],
                                                            "prevurl" => '../news/?action=compreview&id='.$_GET['id'],
-                                                           "lang" => $language,
                                                            "id" => $_GET['id'],
                                                            "postemail" => "",
                                                            "posthp" => "",
@@ -151,10 +150,13 @@ if(defined('_News')) {
                                                     "add" => $add));
 
             $intern = $get['intern'] ? _votes_intern : "";
-            if(file_exists(basePath.'/inc/images/uploads/news/'.$get['id'].'.jpg'))
-                $newsimage = '../inc/images/uploads/news/'.$get['id'].'.jpg';
-            else
-                $newsimage = '../inc/images/newskat/'.$getkat['katimg'];
+            $newsimage = '../inc/images/newskat/'.$getkat['katimg'];
+            foreach($picformat as $tmpendung) {
+                if(file_exists(basePath."/inc/images/uploads/news/".$get['id'].".".$tmpendung)) {
+                    $newsimage = '../inc/images/uploads/news/'.$get['id'].'.'.$tmpendung;
+                    break;
+                }
+            }
 
             $title = re($get['titel']).' - '.$title;
             $index = show($dir."/news_show_full", array("titel" => re($get['titel']),
@@ -220,7 +222,6 @@ if(defined('_News')) {
                                                                              "prevurl" => '../news/?action=compreview&amp;id='.$_GET['id'],
                                                                              "action" => '?action=show&amp;do=add&amp;id='.$_GET['id'],
                                                                              "ip" => _iplog_info,
-                                                                             "lang" => $language,
                                                                              "id" => $_GET['id'],
                                                                              "what" => _button_value_add,
                                                                              "show" => "",
@@ -303,7 +304,6 @@ if(defined('_News')) {
                                                                  "prevurl" => '../news/?action=compreview&do=edit&id='.$_GET['id'].'&cid='.$_GET['cid'],
                                                                  "action" => '?action=show&amp;do=editcom&amp;id='.$_GET['id'].'&amp;cid='.$_GET['cid'],
                                                                  "ip" => _iplog_info,
-                                                                 "lang" => $language,
                                                                  "id" => $_GET['id'],
                                                                  "what" => _button_value_edit,
                                                                  "show" => "",

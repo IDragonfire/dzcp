@@ -1347,7 +1347,7 @@ VALUES
 (2, 'DZCP Rotationsbanner', 'http://www.dzcp.de', '<p>deV!L`z Clanportal</p>', 0, '', '', 1, '', 'http://www.dzcp.de/banner/dzcp.gif', 0, '', '', 5, 0),
 (3, 'TEMPLATEbar', 'http://www.templatebar.de', '<p>Auf TEMPLATEbar.de kannst du dir kosteng&uuml;nstige Clandesigns und/oder Templates von Top Designer erwerben.</p>', 1, '', 'http://www.templatebar.de/___FILES/TBbanner/tb_468x60_2.gif', 1, '', 'http://www.templatebar.de/___FILES/TBbanner/tb_468x60_2.gif', 1, '', '../banner/sponsors/tb_88x32.png', 1, 0),
 (4, 'MODSbar.de', 'http://www.modsbar.de', '<p>Auf MODSbar.de kannst du dir kosteng&uuml;nstige Modifikationen und/oder Dienstleistungen von Top Codern erwerben.</p>', 1, '', 'http://www.templatebar.de/___FILES/MBbanner/mb_468x60.gif', 1, '', 'http://www.templatebar.de/___FILES/MBbanner/mb_468x60.gif', 1, '', '../banner/sponsors/mb_88x32.png', 2, 0),
-(5, 'eSport-Designs', 'http://esport-designs.de', '<p>professionelle Clandesigns in hoher Qualit&auml;t und einer validen Programierung</p>', 0, '', '', 0, '', '', 1, 'gif', '', 8, 0);");
+(5, 'eSport-Designs', 'http://esport-designs.de', '<p>professionelle Clandesigns in hoher Qualit&auml;t und einer validen Programierung</p>', 1, '', '../banner/sponsors/ed468x60.png', 1, '', '../banner/sponsors/ed468x60.png', 1, '', '../banner/sponsors/ed88x31.gif', 8, 0);");
 
 
 
@@ -1478,6 +1478,20 @@ function update_mysql_1_6()
     db("ALTER TABLE `".$db['serverliste']."` CHANGE `pwd` `pwd` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
     db("ALTER TABLE `".$db['ipcheck']."` ADD `user_id` INT(11) NOT NULL DEFAULT '0' AFTER `ip`;");
     db("ALTER TABLE `".$db['settings']."` ADD `steam_api_key` VARCHAR(50) NOT NULL DEFAULT '' AFTER `urls_linked`;");
+    db("ALTER TABLE `".$db['settings']."` ADD `db_optimize` INT(20) NOT NULL DEFAULT '0' AFTER `steam_api_key`;");
+    db("ALTER TABLE `".$db['f_access']."` ADD `id` INT(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`);");
+
+    //->Add new Indexes * MySQL optimize
+    db("ALTER TABLE `".$db['users']."` ADD INDEX(`pwd`);");
+    db("ALTER TABLE `".$db['users']."` ADD INDEX(`time`);");
+    db("ALTER TABLE `".$db['users']."` ADD INDEX(`bday`);");
+    db("ALTER TABLE `".$db['navi']."` ADD INDEX(`url`);");
+    db("ALTER TABLE `".$db['ipcheck']."` ADD INDEX(`ip`);");
+    db("ALTER TABLE `".$db['userpos']."` ADD INDEX(`user`);");
+    db("ALTER TABLE `".$db['userpos']."` ADD INDEX(`squad`);");
+    db("ALTER TABLE `".$db['msg']."` ADD INDEX(`an`);");
+    db("ALTER TABLE `".$db['f_access']."` ADD INDEX(`user`);");
+    db("ALTER TABLE `".$db['f_access']."` ADD INDEX(`forum`);");
 
     //-> Fix Settings Table
     if(db("SELECT * FROM `".$db['settings']."`",true) >= 2) {
@@ -1529,10 +1543,20 @@ function update_mysql_1_6()
         db("UPDATE ".$db['f_skats']." SET `pos` = '".$get['id']."' WHERE `id` = '".$get['id']."'");
      }
 
+     //-> Alte Artikelkommentare löschen wo für es keinen Artikel mehr gibt
+     $qry = db("SELECT id FROM `".$db['artikel']."`"); $artikel_index = array();
+     while($get = mysqli_fetch_assoc($qry)){ $artikel_index[$get['id']] = true; }
+
+     $qry = db("SELECT id,artikel FROM `".$db['acomments']."`");
+     while($get = mysqli_fetch_assoc($qry)){
+        if(!array_key_exists($get['artikel'], $artikel_index))
+            db("DELETE FROM `".$db['acomments']."` WHERE `id` = ".$get['id']);
+     }
+
      //-> Slideshow
      db("DROP TABLE IF EXISTS ".$db['slideshow']."");
      db("CREATE TABLE ".$db['slideshow']." (
-        `id` int(5) NOT NULL auto_increment,
+        `id` int(11) NOT NULL auto_increment,
         `pos` int(5) NOT NULL default '0',
         `bez` varchar(200) NOT NULL default '',
         `showbez` int(1) NOT NULL default '1',
@@ -1546,4 +1570,6 @@ function update_mysql_1_6()
     while($get = mysqli_fetch_assoc($qry)) {
         db("UPDATE ".$db['permissions']." SET slideshow = 1, gs_showpw = 1 WHERE id = '".$get['id']."'");
     }
+
+    db_optimize(); // MySQL optimize
 }

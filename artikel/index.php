@@ -101,8 +101,7 @@ case 'show';
                         ORDER BY datum DESC
                         LIMIT ".($page - 1)*config('m_comments').",".config('m_comments')."");
 
-            $i = ($entrys-($page - 1)*config('m_comments'));
-            $comments = '';
+            $i = ($entrys-($page - 1)*config('m_comments')); $comments = '';
             while($getc = _fetch($qryc)) {
                 $hp = ($getc['hp'] ? show(_hpicon, array("hp" => $getc['hp'])) : "");
 
@@ -176,7 +175,6 @@ case 'show';
                                                            "preview" => _preview,
                                                            "action" => '?action=show&amp;do=add&amp;id='.$_GET['id'],
                                                            "prevurl" => '../artikel/?action=compreview&id='.$_GET['id'],
-                                                           "lang" => $language,
                                                            "id" => $_GET['id'],
                                                            "postemail" => "",
                                                            "posthp" => "",
@@ -195,12 +193,20 @@ case 'show';
                                                     "icq" => "",
                                                     "add" => $add));
 
+            $artikelimage = '../inc/images/newskat/'.$getkat['katimg'];
+            foreach($picformat as $tmpendung) {
+                if(file_exists(basePath."/inc/images/uploads/artikel/".$get['id'].".".$tmpendung)) {
+                    $artikelimage = '../inc/images/uploads/artikel/'.$get['id'].'.'.$tmpendung;
+                    break;
+                }
+            }
+
             $index = show($dir."/show_more", array("titel" => re($get['titel']),
                                                    "id" => $get['id'],
                                                    "comments" => "",
                                                    "display" => "inline",
                                                    "nautor" => _autor,
-                                                   "kat" => re($getkat['katimg']),
+                                                   "kat" => $artikelimage,
                                                    "dir" => $designpath,
                                                    "ndatum" => _datum,
                                                    "showmore" => $showmore,
@@ -211,17 +217,13 @@ case 'show';
                                                    "autor" => autor($get['autor'])));
         }
 
-
-
-
   if($do == "add")
   {
         if(_rows(db("SELECT `id` FROM ".$db['artikel']." WHERE `id` = '".(int)$_GET['id']."'")) != 0)
         {
             if(settings("reg_artikel") && !$chkMe)
-            {
                 $index = error(_error_have_to_be_logged, 1);
-            } else {
+            else {
                 if(!ipcheck("artid(".$_GET['id'].")", config('f_artikelcom')))
                 {
                     if($userid >= 1)
@@ -351,24 +353,23 @@ case 'show';
         }
 
             $index = show("page/comments_add", array("titel" => _comments_edit,
-                                                                                           "nickhead" => _nick,
-                                                                                         "bbcodehead" => _bbcode,
-                                                                                         "emailhead" => _email,
+                                                 "nickhead" => _nick,
+                                                 "bbcodehead" => _bbcode,
+                                                 "emailhead" => _email,
                                                  "sec" => $dir,
                                                  "security" => _register_confirm,
-                                                                                         "hphead" => _hp,
+                                                 "hphead" => _hp,
                                                  "form" => $form,
                                                  "preview" => _preview,
                                                  "prevurl" => '../artikel/?action=compreview&amp;do=edit&amp;id='.$_GET['id'].'&amp;cid='.$_GET['cid'],
                                                  "action" => '?action=show&amp;do=editcom&amp;id='.$_GET['id'].'&amp;cid='.$_GET['cid'],
                                                  "ip" => _iplog_info,
-                                                 "lang" => $language,
-                                                                                         "id" => $_GET['id'],
+                                                 "id" => $_GET['id'],
                                                  "what" => _button_value_edit,
                                                  "show" => "",
-                                                                                         "posteintrag" => re_bbcode($get['comment']),
-                                                                                         "error" => "",
-                                                                                         "eintraghead" => _eintrag));
+                                                 "posteintrag" => re_bbcode($get['comment']),
+                                                 "error" => "",
+                                                 "eintraghead" => _eintrag));
       } else {
         $index = error(_error_edit_post,1);
       }

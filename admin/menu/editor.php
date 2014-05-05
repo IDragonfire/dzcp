@@ -36,7 +36,6 @@ if(_adminMenu != 'true') exit;
                                                 "e_inhalt" => "",
                                                 "checked" => "",
                                                 "pos" => _position,
-                                                "lang" => $language,
                                                 "name" => _editor_linkname,
                                                 "n_name" => "",
                                                 "position" => $position,
@@ -81,7 +80,6 @@ if(_adminMenu != 'true') exit;
 
           $show = show($dir."/form_editor", array("head" => _editor_add_head,
                                                   "what" => _button_value_add,
-                                                  "lang" => $language,
                                                   "preview" => _preview,
                                                   "bbcode" => _bbcode,
                                                   "error" => $error,
@@ -160,7 +158,6 @@ if(_adminMenu != 'true') exit;
 
         $show = show($dir."/form_editor", array("head" => _editor_edit_head,
                                                 "what" => _button_value_edit,
-                                                "lang" => $language,
                                                 "bbcode" => _bbcode,
                                                 "preview" => _preview,
                                                 "titel" => _titel,
@@ -208,7 +205,6 @@ if(_adminMenu != 'true') exit;
 
           $show = show($dir."/form_editor", array("head" => _editor_edit_head,
                                                   "what" => _button_value_edit,
-                                                  "lang" => $language,
                                                   "bbcode" => _bbcode,
                                                   "preview" => _preview,
                                                   "error" => $error,

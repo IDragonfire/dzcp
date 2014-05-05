@@ -72,8 +72,7 @@ if(defined('_UserMenu')) {
             }
 
             $icq = preg_replace("=-=Uis","",$_POST['icq']);
-
-        if($_POST['t'] && $_POST['m'] && $_POST['j']) $bday = cal($_POST['t']).".".cal($_POST['m']).".".$_POST['j'];
+            $bday = ($_POST['t'] && $_POST['m'] && $_POST['j'] ? cal($_POST['t']).".".cal($_POST['m']).".".$_POST['j'] : 0);
 
             $qrycustom = db("SELECT feldname,type FROM ".$db['profile']);
           while($getcustom = _fetch($qrycustom))
@@ -91,7 +90,7 @@ if(defined('_UserMenu')) {
                   `rlname`       = '".up($_POST['rlname'])."',
                   `sex`          = '".((int)$_POST['sex'])."',
                   `status`       = '".((int)$_POST['status'])."',
-                  `bday`         = '".strtotime($bday)."',
+                  `bday`         = '".(!$bday ? 0 : strtotime($bday))."',
                   `email`        = '".up($_POST['email'])."',
                   `nletter`      = '".((int)$_POST['nletter'])."',
                   `pnmail`       = '".((int)$_POST['pnmail'])."',
@@ -428,7 +427,6 @@ if(defined('_UserMenu')) {
                                                 "position" => getrank($get['id']),
                                                 "value" => _button_value_edit,
                                                 "status" => $status,
-                                                "lang" => $language,
                                                 "sonst" => _profil_sonst,
                                                 "custom_about" => $custom_about,
                                                 "custom_contact" => $custom_contact,

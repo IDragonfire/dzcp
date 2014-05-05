@@ -61,10 +61,16 @@ define('_slider_url', 'URL');
 define('_slider_show_title', 'Title anzeigen');
 define('_forum_kat', 'Kategorie');
 
+define('_artikel_userimage', 'Eigenes Artikelbild');
+define('_artikelpic_del', 'Artikelbild l&ouml;schen?');
+define('_artikelpic_deleted', 'Artikelbild erfolgreich gel&ouml;scht');
+
 define('_news_userimage', 'Eigenes Newsbild');
 define('_newspic_del', 'Newsbild l&ouml;schen?');
 define('_newspic_deleted', 'Newsbild erfolgreich gel&ouml;scht');
 define('_max', 'max.');
+
+define('_cw_screenshot_deleted', 'Screenshot erfolgreich gel&ouml;scht');
 
 define('_perm_galleryintern','Interne Gallery einsehen');
 define('_perm_dlintern','Interne Download einsehen');
