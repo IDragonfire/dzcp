@@ -63,9 +63,9 @@ if(defined('_Clanwars')) {
                                       "delete" => $delete));
 
   $index = show("page/comments_show", array("titel" => $titel,
-                                                                                    "comment" => bbcode(re($_POST['comment']),1),
+                                            "comment" => bbcode(re($_POST['comment']),true),
                                             "nick" => $nick,
-                                            "editby" => bbcode($editedby,1),
+                                            "editby" => bbcode($editedby,true),
                                             "email" => $email,
                                             "hp" => $hp,
                                             "avatar" => useravatar($get_userid),

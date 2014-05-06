@@ -63,9 +63,9 @@ if(defined('_News')) {
                                                "ndatum" => _datum,
                                                "ncomments" => _news_kommentare.":",
                                                "klapp" => $klapp,
-                                               "more" => bbcode(re($_POST['morenews']),1),
+                                               "more" => bbcode(re($_POST['morenews']),true),
                                                "viewed" => $viewed,
-                                               "text" => bbcode(re($_POST['newstext']),1),
+                                               "text" => bbcode(re($_POST['newstext']),true),
                                                "datum" => date("d.m.y H:i", time())._uhr,
                                                "links" => $links,
                                                "autor" => autor($_SESSION['id'])));

@@ -135,7 +135,7 @@ if(defined('_Forum')) {
                                           "posthp" => $get['t_hp'],
                                           "admin" => $admin,
                                           "vote" => $vote,
-                                          "posteintrag" => bbcode($get['t_text'],0,1)));
+                                          "posteintrag" => bbcode($get['t_text'],false,true)));
     } else {
       $index = error(_error_wrong_permissions, 1);
     }

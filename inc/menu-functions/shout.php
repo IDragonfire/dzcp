@@ -25,7 +25,7 @@ function shout($ajax = 0) {
 
         $show .= show("menu/shout_part", array("nick" => $nick,
                                                "datum" => date("j.m.Y H:i", $get['datum'])._uhr,
-                                               "text" => bbcode(wrap(re($get['text']), config('l_shouttext')),0,0,0,1),
+                                               "text" => bbcode(wrap(re($get['text']), config('l_shouttext')),false,false,false,true),
                                                "class" => $class,
                                                "del" => $delete));
         $i++;

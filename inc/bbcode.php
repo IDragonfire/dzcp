@@ -488,10 +488,10 @@ function bbcodetolow($founds) {
 }
 
 //-> Replaces
-function replace($txt,$type=0,$no_vid_tag=0) {
+function replace($txt,$type=false,$no_vid_tag=false) {
     $txt = str_replace("&#34;","\"",$txt);
 
-    if($type == 1)
+    if($type)
         $txt = preg_replace("#<img src=\"(.*?)\" mce_src=\"(.*?)\"(.*?)\>#i","<img src=\"$2\" alt=\"\">",$txt);
 
     $txt = preg_replace_callback("/\[(.*?)\](.*?)\[\/(.*?)\]/","bbcodetolow",$txt);
@@ -514,7 +514,7 @@ function replace($txt,$type=0,$no_vid_tag=0) {
     $txt = preg_replace($var,$repl,$txt);
     $txt = preg_replace_callback("#\<img(.*?)\>#", create_function('$img','if(preg_match("#class#i",$img[1])) return "<img".$img[1].">"; else return "<img class=\"content\"".$img[1].">";'), $txt);
 
-    if($no_vid_tag == 0)
+    if(!$no_vid_tag)
         $txt = preg_replace_callback("#\[youtube\]http\:\/\/www.youtube.com\/watch\?v\=(.*)\[\/youtube\]#Uis", create_function('$yt','$width = 425; $height = 344;return "<object width=\"".$width."\" height=\"".$height."\"><param name=\"movie\" value=\"http://www.youtube.com/v/".trim($yt[1])."&amp;hl=de&amp;fs=1\"></param><param name=\"allowFullScreen\" value=\"true\"></param><param name=\"allowscriptaccess\" value=\"always\"></param><embed src=\"http://www.youtube.com/v/".trim($yt[1])."&amp;hl=de&amp;fs=1\" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"".$width."\" height=\"".$height."\"></embed></object>";'), $txt);
 
     $txt = str_replace("\"","&#34;",$txt);
@@ -634,11 +634,11 @@ function make_clickable($ret) {
 /* END # from wordpress under GBU GPL license */
 
 //Diverse BB-Codefunktionen
-function bbcode($txt, $tinymce=0, $no_vid=0, $ts=0, $nolink=0) {
+function bbcode($txt, $tinymce=false, $no_vid=false, $ts=false, $nolink=false) {
     global $charset;
 
     $txt = html_entity_decode($txt,ENT_COMPAT,$charset);
-    if($no_vid == 0 && settings('urls_linked') && $nolink == 0)
+    if(!$no_vid && settings('urls_linked') && !$nolink)
         $txt = make_clickable($txt);
 
     $txt = str_replace("\\","\\\\",$txt);
@@ -648,13 +648,13 @@ function bbcode($txt, $tinymce=0, $no_vid=0, $ts=0, $nolink=0) {
     $txt = highlight_text($txt);
     $txt = re_bbcode($txt);
 
-    if($ts == 0)
+    if(!$ts)
         $txt = strip_tags($txt,"<br><object><em><param><embed><strong><iframe><hr><table><tr><td><div><span><a><b><font><i><u><p><ul><ol><li><br /><img>");
 
     $txt = smileys($txt);
 
-    if($no_vid == 0)
-        $txt = glossar($txt);
+    if(!$no_vid)
+         $txt = glossar($txt);
 
     $txt = str_replace("&#34;","\"",$txt);
     return str_replace('<p></p>', '<p>&nbsp;</p>', $txt);

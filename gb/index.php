@@ -454,8 +454,8 @@ case 'preview';
     }
 
   $index = show($dir."/gb_show", array("gbtitel" => $gbtitel,
-                                                                       "nachricht" => bbcode(re($_POST['eintrag']),1),
-                                       "editby" => bbcode($editby,1),
+                                                                       "nachricht" => bbcode(re($_POST['eintrag']),true),
+                                       "editby" => bbcode($editby,true),
                                        "ip" => $userip._only_for_admins));
 
   echo '<table class="mainContent" cellspacing="1">'.$index.'</table>';

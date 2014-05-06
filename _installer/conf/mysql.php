@@ -1493,6 +1493,8 @@ function update_mysql_1_6()
     db("ALTER TABLE `".$db['msg']."` ADD INDEX(`an`);");
     db("ALTER TABLE `".$db['f_access']."` ADD INDEX(`user`);");
     db("ALTER TABLE `".$db['f_access']."` ADD INDEX(`forum`);");
+    db("ALTER TABLE `".$db['c_ips']."` ADD INDEX(`ip`);");
+    db("ALTER TABLE `".$db['counter']."` ADD INDEX(`today`);");
 
     //-> Fix Settings Table
     if(db("SELECT * FROM `".$db['settings']."`",true) >= 2) {
