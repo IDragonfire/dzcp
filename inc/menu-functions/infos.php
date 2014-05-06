@@ -50,7 +50,7 @@ function infos($checkBrowser = "") {
       elseif(preg_match("/MSIE 8/i",$data))     $browser = $ie_icon."Internet Explorer 8";
       elseif(preg_match("/MSIE 9/i",$data))     $browser = $ie_icon."Internet Explorer 9";
       elseif(preg_match("/MSIE 10/i",$data))    $browser = $ie_icon."Internet Explorer 10";
-	  elseif(preg_match("/MSIE 11/i",$data))    $browser = $ie_icon."Internet Explorer 11";
+	  elseif(preg_match("/rv:11.0/i",$data))    $browser = $ie_icon."Internet Explorer 11";
       else                                      $browser = _unknown_browser;
 
       $res = "<script language=\"javascript\" type=\"text/javascript\"> doc.write(screen.width + ' x ' + screen.height)</script>";
