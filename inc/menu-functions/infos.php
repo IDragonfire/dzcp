@@ -7,11 +7,11 @@
 function infos($checkBrowser = "") {
     global $userip; $infos = "";
     if(settings('persinfo')) {
-      $mac_icon = ' <img align="absmiddle" src="../inc/images/info/macintosh_os.png" width="16" height="16" /> ';
-      $linux_icon = ' <img align="absmiddle" src="../inc/images/info/linux_os.png" width="16" height="16" /> ';
-      $windows_icon = ' <img align="absmiddle" src="../inc/images/info/windows_os.png" width="16" height="16" /> ';
-      $iphone_icon = ' <img align="absmiddle" src="../inc/images/info/iphone.png" width="16" height="16" /> ';
-      $android_icon = ' <img align="absmiddle" src="../inc/images/info/android.png" width="16" height="16" /> ';
+      $mac_icon = ' <img style="vertical-align:middle" alt="" src="../inc/images/info/macintosh_os.png" width="16" height="16" /> ';
+      $linux_icon = ' <img style="vertical-align:middle" alt="" src="../inc/images/info/linux_os.png" width="16" height="16" /> ';
+      $windows_icon = ' <img style="vertical-align:middle" alt="" src="../inc/images/info/windows_os.png" width="16" height="16" /> ';
+      $iphone_icon = ' <img style="vertical-align:middle" alt="" src="../inc/images/info/iphone.png" width="16" height="16" /> ';
+      $android_icon = ' <img style="vertical-align:middle" alt="" src="../inc/images/info/android.png" width="16" height="16" /> ';
 
       $data = $_SERVER['HTTP_USER_AGENT'];
       if(preg_match("/Android/i",$data))                      $system = $android_icon."Android";
@@ -32,12 +32,12 @@ function infos($checkBrowser = "") {
       elseif(preg_match("/OS (.*?) like Mac OS X/i",$data))   $system = $iphone_icon."iOS";
       else                                                    $system = _unknown_system;
 
-      $opera_icon = ' <img align="absmiddle" src="../inc/images/info/opera.png" width="16" height="16" /> ';
-      $konqueror_icon = ' <img align="absmiddle" src="../inc/images/info/konqueror.png" width="16" height="16" /> ';
-      $firefox_icon = ' <img align="absmiddle" src="../inc/images/info/firefox.png" width="16" height="16" /> ';
-      $ie_icon = ' <img align="absmiddle" src="../inc/images/info/ie.png" width="16" height="16" /> ';
-      $safari_icon = ' <img align="absmiddle" src="../inc/images/info/safari.png" width="16" height="16" /> ';
-      $chrome_icon = ' <img align="absmiddle" src="../inc/images/info/chrome.png" width="16" height="16" /> ';
+      $opera_icon = ' <img style="vertical-align:middle" alt="" src="../inc/images/info/opera.png" width="16" height="16" /> ';
+      $konqueror_icon = ' <img style="vertical-align:middle" alt="" src="../inc/images/info/konqueror.png" width="16" height="16" /> ';
+      $firefox_icon = ' <img style="vertical-align:middle" alt="" src="../inc/images/info/firefox.png" width="16" height="16" /> ';
+      $ie_icon = ' <img style="vertical-align:middle" alt="" src="../inc/images/info/ie.png" width="16" height="16" /> ';
+      $safari_icon = ' <img style="vertical-align:middle" alt="" src="../inc/images/info/safari.png" width="16" height="16" /> ';
+      $chrome_icon = ' <img style="vertical-align:middle" alt="" alt="no image upload src="../inc/images/info/chrome.png" width="16" height="16" /> ';
 
       if(preg_match("/Opera/i",$data))          $browser = $opera_icon."Opera";
       elseif(preg_match("/Konqueror/i",$data))  $browser = $konqueror_icon."Konqueror";
@@ -54,8 +54,8 @@ function infos($checkBrowser = "") {
       else                                      $browser = _unknown_browser;
 
       $res = "<script language=\"javascript\" type=\"text/javascript\"> doc.write(screen.width + ' x ' + screen.height)</script>";
-      $size_icon = ' <img align="absmiddle" src="../inc/images/info/sitze.png" width="16" height="16" /> ';
-      $ip_icon = ' <img align="absmiddle" src="../inc/images/info/network.png" width="16" height="16" /> ';
+      $size_icon = ' <img style="vertical-align:middle" alt="" src="../inc/images/info/sitze.png" width="16" height="16" /> ';
+      $ip_icon = ' <img style="vertical-align:middle" alt="" src="../inc/images/info/network.png" width="16" height="16" /> ';
 
       return show("menu/pers.infos", array("ip" => $ip_icon.($userip=visitorIp()),
                                               "info_ip" => _info_ip,
