@@ -54,10 +54,6 @@ if(defined('_UserMenu')) {
             else {
                 $msg = show(_admin_user_get_identy, array("nick" => autor($_GET['id'])));
                 db("UPDATE ".$db['users']." SET `online` = '0', `sessid` = '', `pkey` = '' WHERE id = ".$userid); //Logout
-
-                cookie::clear();
-                session_unset();
-                session_destroy();
                 session_regenerate_id();
 
                 $_SESSION['id'] = $_GET['id'];
@@ -67,6 +63,7 @@ if(defined('_UserMenu')) {
                 db("UPDATE ".$db['users']." SET `online` = '1', `sessid` = '".session_id()."', `ip` = '".$userip."' WHERE id = ".intval($_GET['id']));
                 setIpcheck("ident(".$userid."_".intval($_GET['id']).")");
 
+                $index = info($msg, "?action=user&amp;id=".$_GET['id']."");
             }
         } else if($do == "update") {
             if($_POST && isset($_GET['user'])) {
