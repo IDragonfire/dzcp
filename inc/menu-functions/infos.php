@@ -57,7 +57,7 @@ function infos($checkBrowser = "") {
       $size_icon = ' <img align="absmiddle" src="../inc/images/info/sitze.png" width="16" height="16" /> ';
       $ip_icon = ' <img align="absmiddle" src="../inc/images/info/network.png" width="16" height="16" /> ';
 
-      return $dg.show("menu/pers.infos", array("ip" => $ip_icon.($userip=visitorIp()),
+      return show("menu/pers.infos", array("ip" => $ip_icon.($userip=visitorIp()),
                                               "info_ip" => _info_ip,
                                               "host" => gethostbyaddr($userip),
                                               "info_browser" => _info_browser,
