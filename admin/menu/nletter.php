@@ -96,26 +96,6 @@ if(_adminMenu != 'true') exit;
                         WHERE user = ".intval($userid));
 
               $show = info(_msg_member_answer_done, "?admin=nletter");
-        } elseif($_POST['to'] == "leader") {
-          $message = show(bbcode_email(settings('eml_nletter')), array("text" => bbcode_nletter($_POST['eintrag'])));
-                  $subject = re(settings('eml_nletter_subj'));
-
-          $qry = db("SELECT s2.email    FROM ".$db['squaduser']." AS s1
-                     LEFT JOIN ".$db['users']." AS s2 ON s2.id=s1.user
-                     LEFT JOIN ".$db['userpos']." AS s3 ON s3.squad=s1.squad AND s3.user=s1.user
-                     LEFT JOIN ".$db['pos']." AS s4 ON s4.id=s3.posi
-                     WHERE s4.nletter = '1'");
-
-          while($get = _fetch($qry))
-          {
-            sendMail(re($get['email']),$subject,$message);
-          }
-
-              $qry = db("UPDATE ".$db['userstats']."
-                          SET `writtenmsg` = writtenmsg+1
-                          WHERE user = ".intval($userid));
-
-              $show = info(_msg_member_answer_done, "?admin=nletter");
         } else {
           $message = show(bbcode_email(settings('eml_nletter')), array("text" => bbcode_nletter($_POST['eintrag'])));
                   $subject = re(settings('eml_nletter_subj'));
@@ -137,32 +117,31 @@ if(_adminMenu != 'true') exit;
         }
       }
     } else {
-      $qry = db("SELECT id,name FROM ".$db['squads']."
-         ORDER BY name");
+          $qry = db("SELECT id,name FROM ".$db['squads']." ORDER BY name"); $squads = '';
           while($get = _fetch($qry))
           {
               $squads .= show(_to_squads, array("id" => $get['id'],
                                                 "sel" => "",
-                                                   "name" => re($get['name'])));
+                                                "name" => re($get['name'])));
           }
 
-      $show = show($dir."/nletter", array("von" => $userid,
-                                          "an" => _to,
-                                          "selr" => "",
-                                          "selm" => "",
-                                          "who" => _msg_global_who,
-                                          "squads" => $squads,
-                                          "preview" => _preview,
-                                          "reg" => _msg_global_reg,
-                                          "allmembers" => _msg_global_all,
-                                          "all_leader" => _msg_all_leader,
-                                          "leader" => _msg_leader,
-                                          "squad" => _msg_global_squad,
-                                          "titel" => _nletter_head,
-                                          "value" => _button_value_nletter,
-                                          "nickhead" => _nick,
-                                          "bbcodehead" => _bbcode,
-                                          "eintraghead" => _eintrag,
-                                          "error" => "",
-                                          "posteintrag" => ""));
+          $show = show($dir."/nletter", array("von" => $userid,
+                                              "an" => _to,
+                                              "selr" => "",
+                                              "selm" => "",
+                                              "who" => _msg_global_who,
+                                              "squads" => $squads,
+                                              "preview" => _preview,
+                                              "reg" => _msg_global_reg,
+                                              "allmembers" => _msg_global_all,
+                                              "all_leader" => _msg_all_leader,
+                                              "leader" => _msg_leader,
+                                              "squad" => _msg_global_squad,
+                                              "titel" => _nletter_head,
+                                              "value" => _button_value_nletter,
+                                              "nickhead" => _nick,
+                                              "bbcodehead" => _bbcode,
+                                              "eintraghead" => _eintrag,
+                                              "error" => "",
+                                              "posteintrag" => ""));
       }
