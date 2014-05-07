@@ -37,7 +37,7 @@ function infos($checkBrowser = "") {
       $firefox_icon = ' <img style="vertical-align:middle" alt="" src="../inc/images/info/firefox.png" width="16" height="16" /> ';
       $ie_icon = ' <img style="vertical-align:middle" alt="" src="../inc/images/info/ie.png" width="16" height="16" /> ';
       $safari_icon = ' <img style="vertical-align:middle" alt="" src="../inc/images/info/safari.png" width="16" height="16" /> ';
-      $chrome_icon = ' <img style="vertical-align:middle" alt="" alt="no image upload src="../inc/images/info/chrome.png" width="16" height="16" /> ';
+      $chrome_icon = ' <img style="vertical-align:middle" alt="" src="../inc/images/info/chrome.png" width="16" height="16" /> ';
 
       if(preg_match("/Opera/i",$data))          $browser = $opera_icon."Opera";
       elseif(preg_match("/Konqueror/i",$data))  $browser = $konqueror_icon."Konqueror";
