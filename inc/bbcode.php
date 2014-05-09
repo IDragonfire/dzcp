@@ -962,7 +962,7 @@ function spChars($txt) {
 }
 
 //-> Funktion um sauber in die DB einzutragen
-function up($txt, $bbcode=0, $charset_set='') {
+function up($txt, $bbcode='', $charset_set='') {
     global $charset;
 
     if(!empty($charset_set))
@@ -1093,9 +1093,8 @@ function online_guests($where='') {
         db("REPLACE INTO ".$db['c_who']."
                SET `ip`       = '".$userip."',
                    `online`   = '".((int)(time()+$useronline))."',
-                   `whereami` = '".up($where)."',
+                   `whereami` = '".up($where,true)."',
                    `login`    = '".((int)$logged)."'");
-
         return cnt($db['c_who']);
     }
 }
@@ -1384,8 +1383,7 @@ function gallery_size($img="") {
 
 //-> URL wird auf Richtigkeit ueberprueft
 function check_url($url) {
-    if($url && $fp = @fopen($url, "r"))
-    {
+    if($url && $fp = @fopen($url, "r")) {
         return true;
         @fclose($fp);
     }
@@ -2360,7 +2358,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index')
             include_once(basePath.'/inc/menu-functions/login.php');
         else {
             $check_msg = check_msg(); set_lastvisit(); $login = "";
-            db("UPDATE ".$db['users']." SET `time` = '".time()."', `whereami` = '".up($where)."' WHERE id = '".intval($userid)."'");
+            db("UPDATE ".$db['users']." SET `time` = '".time()."', `whereami` = '".up($where,true)."' WHERE id = '".intval($userid)."'");
         }
 
         //init templateswitch
