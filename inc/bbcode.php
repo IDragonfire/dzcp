@@ -962,7 +962,7 @@ function spChars($txt) {
 }
 
 //-> Funktion um sauber in die DB einzutragen
-function up($txt, $bbcode='', $charset_set='') {
+function up($txt, $bbcode=false, $charset_set='') {
     global $charset;
 
     if(!empty($charset_set))
@@ -971,7 +971,7 @@ function up($txt, $bbcode='', $charset_set='') {
     $txt = str_replace("& ","&amp; ",$txt);
     $txt = str_replace("\"","&#34;",$txt);
 
-    if(empty($bbcode)) {
+    if(!$bbcode) {
         $txt = htmlentities(html_entity_decode($txt), ENT_QUOTES, $charset);
         $txt = nl2br($txt);
     }
