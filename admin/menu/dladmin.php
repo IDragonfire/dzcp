@@ -113,7 +113,6 @@ if(_adminMenu != 'true') exit;
                      SET `download`     = '".up($_POST['download'])."',
                          `url`          = '".$dl."',
                          `beschreibung` = '".up($_POST['beschreibung'],1)."',
-                         `date`         = '".time()."',
                          `kat`          = '".((int)$_POST['kat'])."',
                          `intern`          = '".((int)$_POST['intern'])."'
                      WHERE id = '".intval($_GET['id'])."'");
