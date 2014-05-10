@@ -203,7 +203,7 @@ if(defined('_UserMenu')) {
                                                                  "what" => re($getpos['position'])));
                     }
 
-                    $checksquser = db("SELECT squad FROM ".$db['squaduser']." WHERE user = '".intval($_GET['edit'])."' AND squad = '".$getsq['id']."'");
+                    $checksquser = db("SELECT squad FROM ".$db['squaduser']." WHERE user = '".intval($_GET['edit'])."' AND squad = '".$getsq['id']."'",true);
 
                     $check = $checksquser ? 'checked="checked"' : '';
                     $esquads .= show(_checkfield_squads, array("id" => $getsq['id'],
