@@ -49,7 +49,7 @@ switch ($action):
                                                "eintragen" => _slist_add,
                                                "order_clan" => orderby('clanname'),
                                                "order_slots" => orderby('slots'),
-                                               "hlswip" => _gt_addip));
+                                               "hlswip" => _slist_addip));
     break;
     case 'add':
       $index = show($dir."/add", array("add_head" => _slist_add,

@@ -24,7 +24,7 @@ $dir = "squads";
   switch(strtolower($action)):
     case 'shows';
       $get = _fetch(db("SELECT * FROM ".$db['squads']." WHERE `id` = '".intval($_GET['id'])."'"));
-      $qrym = db("SELECT s1.user,s1.squad,s2.id,s2.nick,s2.icq,s2.email,s2.hlswid,s2.rlname,
+      $qrym = db("SELECT s1.user,s1.squad,s2.id,s2.nick,s2.icq,s2.email,s2.rlname,
                          s2.steamid,s2.level,s2.bday,s2.hp,s3.posi,s4.pid
                   FROM ".$db['squaduser']." AS s1
                   LEFT JOIN ".$db['users']." AS s2

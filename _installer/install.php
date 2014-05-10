@@ -460,6 +460,7 @@ case 'database';
         update_mysql_1_5_2();
         update_mysql_1_5_4();
         update_mysql_1_6();
+        update_mysql_1_6_1();
         header("Location: install.php?action=done");
     } else {
       echo '<table width="100%" cellpadding="1" cellspacing="1" class="error">

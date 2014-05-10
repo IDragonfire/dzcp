@@ -202,8 +202,6 @@ switch ($do)
                                            "on" => _on,
                                            "off" => _off,
                                            "name" => _server_name,
-                                           "mapdl" => '<img src="../inc/images/download.gif" alt="" />',
-                                           "mapdownload" => _legend_map_download,
                                            "menu" => _yesno,
                                            "pwd" => _pwd,
                                            "sport" => _ts_sport,
