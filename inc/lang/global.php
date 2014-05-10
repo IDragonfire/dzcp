@@ -434,4 +434,3 @@ define('_originicon_blank', '<img src="../inc/images/origin.png" alt="" class="i
 ## Battlenet ##
 define('_battleneticon', '<img src="../inc/images/battlenet.gif" alt="" class="icon" />');
 define('_battleneticon_blank', '<img src="../inc/images/battlenet.gif" alt="" class="icon" />');
-?>

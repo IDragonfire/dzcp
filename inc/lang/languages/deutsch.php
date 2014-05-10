@@ -2277,4 +2277,3 @@ define('_member_squad_wars', '<a href="../clanwars/?action=showall&amp;id=[id]">
 define('_member_squad_awards', '<a href="../awards/?action=showall&amp;id=[id]">Awards</a>');
 define('_user_list_ck', 'In der Clankasse auflisten?');
 define('_fightus_squad', 'gew&uuml;nschtes Team');
-?>
