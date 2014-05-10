@@ -414,10 +414,6 @@ table.mainContent {
   text-align: left;
 }
 
-.mainContent img {
-  max-width: 100%;
-}
-
 table.navContent {
   width: 100%;
   padding: 0px;
