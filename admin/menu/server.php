@@ -147,7 +147,7 @@ switch ($do)
                                               `name` = '".up($_POST['name'])."',
                                               `pwd`  = '".up($_POST['pwd'])."',
                                               `game` = '".up($_POST['game'])."',
-                                              `status = '".up($_POST['status'])."'");
+                                              `status` = '".up($_POST['status'])."'");
 
             $show = info(_server_admin_added, "?admin=server");
         }
