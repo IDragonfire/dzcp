@@ -24,7 +24,7 @@ switch ($action):
                    FROM ".$db['rankings']." AS s1
                    LEFT JOIN ".$db['squads']." AS s2
                    ON s1.squad = s2.id
-                   ".orderby_sql(array("name","rank","league"), 'ORDER BY s1.postdate DESC', 's1'));
+                   ".orderby_sql(array("rank","league"), orderby_sql(array("name"), 'ORDER BY s1.postdate DESC', 's2'), 's1'));
         if(_rows($qry))  {
             while($get = _fetch($qry)) {
                 $squad = '<a href="../squads/?showsquad='.$get['squad'].'">'.re($get['name']).'</a>';
