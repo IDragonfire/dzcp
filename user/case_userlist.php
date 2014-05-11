@@ -10,50 +10,50 @@ if(defined('_UserMenu')) {
     $show_sql = isset($_GET['show']) ? $_GET['show'] : '';
 
     if($show_sql == "search") {
-        $qry = db("SELECT id,nick,level,email,hp,steamid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,regdatum
+        $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,regdatum
                    FROM ".$db['users']."
                    WHERE nick LIKE '%".$_GET['search']."%'
                    AND level != 0
                    ORDER BY nick
                    LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } elseif($show_sql == "newreg") {
-        $qry = db("SELECT id,nick,level,email,hp,steamid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,regdatum FROM ".$db['users']."
+        $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,regdatum FROM ".$db['users']."
                    WHERE regdatum > '".$_SESSION['lastvisit']."'
                    AND level != '0'
                    ORDER BY regdatum DESC,nick
                    LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } elseif($show_sql == "lastlogin") {
-        $qry = db("SELECT id,nick,level,email,hp,steamid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,regdatum FROM ".$db['users']."
+        $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,regdatum FROM ".$db['users']."
                    WHERE level != '0'
                    ORDER BY time DESC,nick
                    LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } elseif($show_sql == "lastreg") {
-        $qry = db("SELECT id,nick,level,email,hp,steamid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,regdatum FROM ".$db['users']."
+        $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,regdatum FROM ".$db['users']."
                    WHERE level != '0'
                    ORDER BY regdatum DESC,nick
                    LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } elseif($show_sql == "online") {
-        $qry = db("SELECT id,nick,level,email,hp,steamid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,time FROM ".$db['users']."
+        $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,time FROM ".$db['users']."
                    WHERE level != '0'
                    ORDER BY time DESC,nick
                    LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } elseif($show_sql == "country") {
-        $qry = db("SELECT id,nick,level,email,hp,steamid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,country FROM ".$db['users']."
+        $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position,country FROM ".$db['users']."
                    WHERE level != '0'
                    ORDER BY country,nick
                    LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } elseif($show_sql == "sex") {
-        $qry = db("SELECT id,nick,level,email,hp,steamid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position FROM ".$db['users']."
+        $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position FROM ".$db['users']."
                    WHERE level != '0'
                    ORDER BY sex DESC
                    LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } elseif($show_sql == "banned") {
-        $qry = db("SELECT id,nick,level,email,hp,steamid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position FROM ".$db['users']."
+        $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,icq,status,position FROM ".$db['users']."
                    WHERE level = '0'
                    ORDER BY nick
                    LIMIT ".($page - 1)*config('m_userlist').",".config('m_userlist')."");
     } else {
-        $qry = db("SELECT id,nick,level,email,hp,steamid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,
+        $qry = db("SELECT id,nick,level,email,hp,steamid,hlswid,skypename,xboxid,psnid,originid,battlenetid,bday,sex,
                   icq,status,position FROM ".$db['users']."
                   WHERE level != '0'
                   ".orderby_sql(array("nick","bday"), 'ORDER BY level DESC,nick')."
@@ -63,6 +63,7 @@ if(defined('_UserMenu')) {
     $userliste = '';
     while($get = _fetch($qry)) {
         $email = show(_emailicon, array("email" => eMailAddr($get['email'])));
+        $hlsw = empty($get['hlswid']) ? "-" : show(_hlswicon, array("id" => re($get['hlswid']), "img" => "1", "css" => ""));
         $xboxu = empty($get['xboxid']) ? "-" : show(_xboxicon, array("id" => re($get['xboxid']), "img" => "1", "css" => ""));
         $psnu = empty($get['psnid']) ? "-" : show(_psnicon, array("id" => re($get['psnid']), "img" => "1", "css" => ""));
         $originu = empty($get['originid']) ? "-" : show(_originicon, array("id" => re($get['originid']), "img" => "1", "css" => ""));
@@ -121,7 +122,8 @@ if(defined('_UserMenu')) {
                                                          "xboxu" => $xboxu,
                                                          "psnu" => $psnu,
                                                          "originu" => $originu,
-                                                         "battlenetu" => $battlenetu));
+                                                         "battlenetu" => $battlenetu,
+                                                         "hlsw" => $hlsw));
     }
 
     $seiten = nav($entrys,config('m_userlist'),"?action=userlist&show=".$show_sql.orderby_nav());
@@ -157,6 +159,7 @@ if(defined('_UserMenu')) {
                                          "originicon" => _originicon_blank,
                                          "battleneticon" => _battleneticon_blank,
                                          "steamicon" => _steamicon_blank,
+                                         "hlswicon" => _hlswicon_blank,
                                          "order_nick" => orderby('nick'),
                                          "order_age" => orderby('bday'),
                                          "show" => $userliste));

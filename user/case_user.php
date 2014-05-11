@@ -23,6 +23,7 @@ if(defined('_UserMenu')) {
         $hp = empty($get['hp']) ? "-" : "<a href=\"".$get['hp']."\" target=\"_blank\">".$get['hp']."</a>";
         $email = empty($get['email']) ? "-" : "<img src=\"../inc/images/mailto.gif\" alt=\"\" align=\"texttop\"> <a href=\"mailto:".eMailAddr($get['email'])."\" target=\"_blank\">".eMailAddr($get['email'])."</a>";
         $pn = show(_pn_write, array("id" => $_GET['id'], "nick" => $get['nick']));
+        $hlsw = empty($get['hlswid']) ? "-" : show(_hlswicon, array("id" => re($get['hlswid']), "img" => "1", "css" => ""));
         $xboxu = empty($get['xboxid']) ? "-" : show(_xboxicon, array("id" => str_replace(" ","%20",trim(re($get['xboxid']))), "img" => "1", "css" => ""));
         $xboxuser = empty($get['xboxid']) ? _noxboxavatar : show(_xboxpic, array("id" => str_replace(" ","%20",trim(re($get['xboxid']))), "img" => "1", "css" => ""));
         $psnu = empty($get['psnid']) ? "-" : show(_psnicon, array("id" => str_replace(" ","%20",trim(re($get['psnid']))), "img" => "1", "css" => ""));
@@ -268,6 +269,7 @@ if(defined('_UserMenu')) {
                                                    "preal" => _profil_real,
                                                    "pemail" => _email,
                                                    "picq" => _icq,
+                                                   "phlsw" => _hlswstatus,
                                                    "psteam" => _steam,
                                                    "xboxl" => _xboxstatus,
                                                    "xboxavatarl" => _xboxuserpic,
@@ -282,6 +284,7 @@ if(defined('_UserMenu')) {
                                                    "page" => _profil_age,
                                                    "psex" => _profil_sex,
                                                    "gamestuff" => _profil_gamestuff,
+                                                   "xfire" => re($get['hlswid']),
                                                    "xboxx" => re($get['xboxid']),
                                                    "psnn" => re($get['psnid']),
                                                    "originn" => re($get['originid']),
@@ -306,6 +309,7 @@ if(defined('_UserMenu')) {
                                                    "skype" => $get['skypename'],
                                                    "pn" => $pn,
                                                    "edituser" => $edituser,
+                                                   "hlswid" => $hlsw,
                                                    "xboxid" => $xboxu,
                                                    "xboxavatar" => $xboxuser,
                                                    "psnid" => $psnu,

@@ -1409,7 +1409,6 @@ function update_mysql_1_5_4()
         db("INSERT INTO ".$db['partners']." (`link`, `banner`) VALUES ('http://www.modsbar.de', 'mb_88x32.png');");
       db("INSERT INTO ".$db['partners']." (`link`, `banner`) VALUES ('http://www.templatebar.de', 'tb_88x32.png');");
 }
-
 function update_mysql_1_6()
 {
     global $db,$updater;
@@ -1578,10 +1577,4 @@ function update_mysql_1_6()
         db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time()+auto_db_optimize_interval)."' WHERE `id` = 1;");
         db_optimize();
     }
-}
-
-function update_mysql_1_6_1()
-{
-    global $db;
-    db("ALTER TABLE `".$db['users']."` DROP `hlswid`;");
 }
