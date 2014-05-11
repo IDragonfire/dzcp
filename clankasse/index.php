@@ -67,7 +67,7 @@ switch ($action):
                         LEFT JOIN ".$db['c_payed']." AS tbl2 ON tbl2.user = tbl1.id
                         WHERE tbl1.listck = '1'
                         OR tbl1.level = '4'
-                        ".orderby_sql(array("nick","payed"), 'ORDER BY tbl1.nick', 'tbl2'));
+                        ".orderby_sql(array("payed"), orderby_sql(array("nick"), 'ORDER BY tbl1.nick', 'tbl1'), 'tbl2'));
             $showstatus = '';
             while($gets = _fetch($qrys)) {
                 if($gets['user']) {
