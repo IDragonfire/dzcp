@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<title>DZCP - Readme</title>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+		<link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css">
+		<script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
+        <script>
+		hljs.configure({tabReplace: '    '}); // 4 spaces
+		hljs.configure({useBR: true});
+        jQuery(document).ready(function() {
+   		var offset = 220;
+   		var duration = 500;
+    		jQuery(window).scroll(function() {
+        		if (jQuery(this).scrollTop() > offset) {
+            		jQuery('.back-to-top').fadeIn(duration);
+        		} else {
+            		jQuery('.back-to-top').fadeOut(duration);
+        		}
+   		});
+    
+  		jQuery('.back-to-top').click(function(event) {
+      			  event.preventDefault();
+      			  jQuery('html, body').animate({scrollTop: 0}, duration);
+       			 return false;
+   			  });
+			  
+		jQuery(".toggle_ce .toggler").click(function() {
+				$(this).closest(".toggle_ce").children(".togglebox").slideToggle(400, function() {
+				$(this).closest(".toggle_ce").children(".toggler").toggleClass('opened');
+				});
+			});
+			
+			hljs.initHighlightingOnLoad();
+			$('code').each(function(i, e) {hljs.highlightBlock(e)});
+		});
+		</script>
+		<style type="text/css">
+		
+			body 		{background: #dfdfdf;margin: 0px;padding: 15px 0px;font-family: Verdana,Tahoma;font-size: 13px;line-height: 1.3;}
+			header H1   {color:#CCCCCC;text-align:center;margin:0;padding:15px 0}
+			section 	{max-width:80%; margin:0 auto;}
+			footer		{max-width:80%;margin:0 auto;text-align:center;background: linear-gradient(to bottom, #333333 5%,#000000 100%); border-radius: 5px;}
+			header		{max-width:80%;margin:0 auto;border-bottom:3px solid #F00;text-align:center;background:#333;background-image: linear-gradient(to bottom, #333333 5%,#000000 100%);border-radius: 5px;} 
+			   
+			footer a 			{color:#FFF;display:block;padding:10px;}
+			footer a:hover 		{color: #ff0000;}
+			
+			section H2,H3 		{color:#000;text-align:left;}
+			section H4 			{color:#F00;text-align:left;}
+			a					{text-decoration: none;}
+			.back-to-top {
+   								 position: fixed; bottom: 2em; right: 0px; text-decoration: none; color: #000000; background-color: rgba(235, 235, 235, 0.80); font-size: 12px; padding: 1em; display: none;}
+			.back-to-top:hover  {background-color: rgba(135, 135, 135, 0.50);}
+			
+			.toggle_ce_main_template { color:#CCCCCC; background: linear-gradient(to bottom, #333333 5%,#000000 100%); border-radius: 3px;}
+			.toggle_ce_main_php { color:#CCCCCC; background: linear-gradient(to bottom, #333333 5%,#000000 100%); border-radius: 3px;}
+			
+			.toggle_ce_tabs_frist {background-color: rgba(135, 135, 135, 0.50); height:25px; line-height: 2; border-radius: 3px;}
+			.toggle_ce_tabs_frist_content {background-color: rgba(135, 135, 135, 0.50); border-radius: 3px;}
+			
+			.toggle_ce_tabs_second {background-color: rgba(35, 35, 135, 0.50); height:25px; line-height: 2; border-radius: 3px;}
+			.toggle_ce_tabs_second_content {background-color: rgba(35, 35, 135, 0.50); border-radius: 3px;}
+			
+			.toggle_ce { margin: 2px;}
+			.toggle_ce .togglebox {display:none;}
+			.toggle_ce .toggler {font-size:12px;cursor:pointer}
+			.toggle_ce .close {display:none;}
+			.toggle_ce .opened .close {display:block;}
+			.toggle_ce .opened .open {display:none;}
+			.hljs {border-radius: 3px; max-width:90%; text-align:left;}
+		</style>
+	</head>
+
+	<body>
+    <a href="#" class="back-to-top">Back to Top</a>
+		<header>
+			<h1>DZCP - Devils Clan Portal Bugfix Update 1.6.0.1</h1>
+	    </header>
+		<section>
+	    	<h3>Inhaltsverzeichnis</h3>
+	        <ul>
+	          <li>1. DZCP Update v1.6.0.1
+	            <ul>
+	            <li><a href="#v16manuel">1.1 DZCP v1.6.0.1 manuelles Update</a></li>
+	            <li><a href="#v16manuel">1.2 DZCP v1.6.0.1 automatisches Update</a></li>
+	            <li><a href="#v16fixes"> 1.3 DZCP v1.6.0.1 Bugfixes</a></li>
+              </ul>
+	        </li>
+          </ul>
+    </section>
+        <section></section>
+<section>
+</section>
+		<section>
+	    <h3><a name="v16manuel">1.1 DZCP v1.6.0.1 manuelles Update</a></h3>
+	       	 <p>
+	<!-- PHP -->
+	<div class="toggle_ce_main_php">
+	    <div class="toggle_ce">
+			<div class="toggler"> 
+				<span class="open">PHP Änderungen +</span>
+				<span class="close">PHP Änderungen -</span>
+			</div>
+			<div class="togglebox">
+				<div class="toggle_ce">
+					<div class="toggler toggle_ce_tabs_frist"> 
+						<span class="open">'admin/helper.php' +</span>
+						<span class="close">'admin/helper.php' -</span>
+					</div>
+					<div class="togglebox toggle_ce_tabs_frist_content">
+						<p>Suche nach: * Zeile 14 *</p>
+						<code>if($dzcp_online_v = file_get_contents("https://raw.githubusercontent.com/DZCP-Community/dzcp/final/dzcp_version.xml", false, $ctx))</code>
+						<p>austauschen gegen:</p>
+						<code>switch (_edition) {<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;case 'dev': $url = 'bugfree'; break;<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;case 'society': $url = 'society'; break;<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;default: $url = 'final'; break;<br>
+						}<br>
+						if($dzcp_online_v = file_get_contents("https://raw.githubusercontent.com/DZCP-Community/dzcp/".$url."/dzcp_version.xml", false, $ctx))</code>
+					</div>
+				</div>
+
+				<div class="toggle_ce">
+					<div class="toggler toggle_ce_tabs_second"> 
+						<span class="open">'admin/menu/dladmin.php' +</span>
+						<span class="close">'admin/menu/dladmin.php' -</span>
+					</div>
+					<div class="togglebox toggle_ce_tabs_second_content">
+						<p>Suche nach: * Zeile 116 *</p>
+						<code>`date`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= '".time()."',</code>
+						<p>lösche die Zeile vollständig.</p>
+					</div>
+				</div>
+					
+				<div class="toggle_ce">
+					<div class="toggler toggle_ce_tabs_frist"> 
+						<span class="open">'admin/menu/server.php' +</span>
+						<span class="close">'admin/menu/server.php' -</span>
+					</div>
+					<div class="togglebox toggle_ce_tabs_frist_content">
+						<p>Suche nach: * Zeile 150 *</p>
+						<code>`status = '".up($_POST['status'])."'");</code>
+						<p>austauschen gegen:</p>
+						<code>`status` = '".up($_POST['status'])."'");</code>
+						<br><p>Suche nach: * Zeile 205 *</p>
+						<code>"mapdl" => '<img src="../inc/images/download.gif" alt="" />',</code>
+						<p>lösche die Zeile vollständig.</p>
+						<br><p>Suche nach: * Zeile 206 *</p>
+						<code>"mapdownload" => _legend_map_download,</code>
+						<p>lösche die Zeile vollständig.</p>
+					</div>
+				</div>
+					
+				<div class="toggle_ce">
+					<div class="toggler toggle_ce_tabs_second"> 
+						<span class="open">'clankasse/index.php' +</span>
+						<span class="close">'clankasse/index.php' -</span>
+					</div>
+					<div class="togglebox toggle_ce_tabs_second_content">
+						<p>Suche nach: * Zeile 70 *</p>
+						<code>".orderby_sql(array("nick","payed"), 'ORDER BY tbl1.nick', 'tbl2'));</code>
+						<p>austauschen gegen:</p>
+						<code>".orderby_sql(array("payed"), orderby_sql(array("nick"), 'ORDER BY tbl1.nick', 'tbl1'), 'tbl2'));</code>
+					</div>
+				</div>
+					
+				<div class="toggle_ce">
+					<div class="toggler toggle_ce_tabs_frist"> 
+						<span class="open">'rankings/index.php' +</span>
+						<span class="close">'rankings/index.php' -</span>
+					</div>
+					<div class="togglebox toggle_ce_tabs_frist_content">
+						<p>Suche nach: * Zeile 27 *</p>
+						<code>".orderby_sql(array("name","rank","league"), 'ORDER BY s1.postdate DESC', 's1'));</code>
+						<p>austauschen gegen:</p>
+						<code>".orderby_sql(array("rank","league"), orderby_sql(array("name"), 'ORDER BY s1.postdate DESC', 's2'), 's1'));</code>
+					</div>
+				</div>
+					
+				<div class="toggle_ce">
+				    <div class="toggler toggle_ce_tabs_second"> 
+						<span class="open">'serverliste/index.php' +</span>
+						<span class="close">'serverliste/index.php' -</span>
+					</div>
+					<div class="togglebox toggle_ce_tabs_second_content">
+						<p>Suche nach: * Zeile 52 *</p>
+						<code>"hlswip" => _gt_addip));</code>
+						<p>austauschen gegen:</p>
+						<code>"hlswip" => _slist_addip));</code>
+				    </div>
+				</div>
+					
+				<div class="toggle_ce">
+				    <div class="toggler toggle_ce_tabs_frist"> 
+						<span class="open">'user/case_admin.php' +</span>
+						<span class="close">'user/case_admin.php' -</span>
+					</div>
+					<div class="togglebox toggle_ce_tabs_frist_content">
+						<p>Suche nach: * Zeile 206 *</p>
+						<code>$checksquser = db("SELECT squad FROM ".$db['squaduser']." WHERE user = '".intval($_GET['edit'])."' AND squad = '".$getsq['id']."'");</code>
+						<p>austauschen gegen:</p>
+						<code>$checksquser = db("SELECT squad FROM ".$db['squaduser']." WHERE user = '".intval($_GET['edit'])."' AND squad = '".$getsq['id']."'",true);</code>
+					</div>
+				</div>
+					
+				<div class="toggle_ce">
+		   		    <div class="toggler toggle_ce_tabs_second"> 
+						<span class="open">'inc/lang/global.php' +</span>
+						<span class="close">'inc/lang/global.php' -</span>
+					</div>
+					<div class="togglebox toggle_ce_tabs_second_content">
+						<p>Suche nach: * Zeile 437 *</p>
+						<code>?></code>
+						<p>lösche die Zeile vollständig.</p>
+					</div>
+				</div>
+				
+				<div class="toggle_ce">
+					<div class="toggler toggle_ce_tabs_frist"> 
+						<span class="open">'inc/bbcode.php' +</span>
+						<span class="close">'inc/bbcode.php' -</span>
+					</div>
+					<div class="togglebox toggle_ce_tabs_frist_content">
+						<p>Suche nach: * Zeile 965 *</p>
+						<code>function up($txt, $bbcode=0, $charset_set='') {</code>
+						<p>austauschen gegen:</p>
+						<code>function up($txt, $bbcode=false, $charset_set='') {</code>
+						<br><p>Suche nach: * Zeile 974 *</p>
+						<code>if(empty($bbcode)) {</code>
+						<p>austauschen gegen:</p>
+						<code>if(!$bbcode) {</code>
+						<br><p>Suche nach: * Zeile 1096 *</p>
+						<code>`whereami` = '".up($where)."',</code>
+						<p>austauschen gegen:</p>
+						<code>`whereami` = '".up($where,true)."',</code>
+						<br><p>Suche nach: * Zeile 2363 *</p>
+						<code>db("UPDATE ".$db['users']." SET `time` = '".time()."', `whereami` = '".up($where)."' WHERE id = '".intval($userid)."'");</code>
+						<p>austauschen gegen:</p>
+						<code>db("UPDATE ".$db['users']." SET `time` = '".time()."', `whereami` = '".up($where,true)."' WHERE id = '".intval($userid)."'");</code>
+					</div>
+				</div>
+					
+				<div class="toggle_ce">
+					<div class="toggler toggle_ce_tabs_second"> 
+						<span class="open">'inc/_version.php' +</span>
+						<span class="close">'inc/_version.php' -</span>
+					  </div>
+					  <div class="togglebox toggle_ce_tabs_second_content">
+						<p>Suche nach: * Zeile 7 bis 9 *</p>
+						<code>define('_version', '1.6');
+						define('_release', '08.05.2014');
+						define('_build', '1600.05.80');</code>
+						<p>austauschen gegen:</p>
+						<code>define('_version', '1.6.0.1');
+						define('_release', '11.05.2014');
+						define('_build', '1600.05.89');
+						define('_edition', 'final');</code>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<br>
+	<!-- Template -->
+	<div class="toggle_ce_main_template">
+		<div class="toggle_ce">
+			<div class="toggler"> 
+				<span class="open">TEMPLATE Änderungen +</span>
+				<span class="close">TEMPLATE Änderungen -</span>
+			</div>
+			<div class="togglebox">
+				<div class="toggle_ce">
+					<div class="toggler toggle_ce_tabs_frist"> 
+						<span class="open">'/inc/_templates_/version1.5/_css/stylesheet.css' +</span>
+						<span class="close">'/inc/_templates_/version1.5/_css/stylesheet.css' -</span>
+					</div>
+					<div class="togglebox toggle_ce_tabs_frist_content">
+						<p>Suche nach: * Zeile 189 bis 191 *</p>
+						<code>.mainContent img {
+							max-width: 100%;
+						}</code>
+						<p>lösche die Zeilen vollständig.</p>
+					</div>
+				</div>
+					
+				<div class="toggle_ce">
+					<div class="toggler toggle_ce_tabs_second"> 
+						<span class="open">'/inc/_templates_/version1.6/_css/stylesheet.css' +</span>
+						<span class="close">'/inc/_templates_/version1.6/_css/stylesheet.css' -</span>
+					  </div>
+					  <div class="togglebox toggle_ce_tabs_second_content">
+						<p>Suche nach: * Zeile 417 bis 419 *</p>
+						<code>.mainContent img {
+							max-width: 100%;
+						}</code>
+						<p>lösche die Zeilen vollständig.</p>
+					  </div>
+					</div>
+					
+					<div class="toggle_ce">
+					  <div class="toggler toggle_ce_tabs_frist"> 
+						<span class="open">'/inc/_templates_/version1.5/user/userlobby.html' +</span>
+						<span class="close">'/inc/_templates_/version1.5/user/userlobby.html' -</span>
+					  </div>
+					  <div class="togglebox toggle_ce_tabs_frist_content">
+						<p>Suche nach: * Zeile 8 *</p>
+						<code>&lt;td style="width:1%"&gt;[pic]&lt;/td&gt;</code>
+						<p>austauschen gegen:</p>
+						<code>&lt;td style="width:16%"&gt;[pic]&lt;/td&gt;</code>
+					  </div>
+					</div>
+					
+					<div class="toggle_ce">
+					  <div class="toggler toggle_ce_tabs_second"> 
+						<span class="open">'/inc/_templates_/version1.6/user/userlobby.html' +</span>
+						<span class="close">'/inc/_templates_/version1.6/user/userlobby.html' -</span>
+					  </div>
+					  <div class="togglebox toggle_ce_tabs_second_content">
+						<p>Suche nach: * Zeile 8 *</p>
+						<code>&lt;td style="width:1%"&gt;[pic]&lt;/td&gt;</code>
+						<p>austauschen gegen:</p>
+						<code>&lt;td style="width:16%"&gt;[pic]&lt;/td&gt;</code>
+					  </div>
+					</div>
+				</div>
+			  </div>
+			</div>
+		  	 </p>	
+		</section>
+    <section>
+    </section>
+		<section>
+	    <h3><a name="v16manuel">1.2 DZCP v1.6.0.1 automatisches Update</a></h3>
+	       	 <p>
+             Alle Daten und Ordner die sich in diesem ZIP Archiv befinden, ins DZCP Hauptverzeichnis Entpacken und alle vorhandene/alten Dateien überschreiben.
+		  	 </p>	
+		</section>
+    <section>
+	    <h3><a name="v16fixes">1.3 DZCP v1.6.0.1 Bugfixes</a></h3>
+	        <a href="https://github.com/DZCP-Community/DZCP-1.6" target="_blank">Projekt on GitHub</a>
+          <h4>Bugfixes</h4>
+             <ul>
+             	<li>Einige MySQL Fehler wurden behoben * Admin: Server *</li> 
+        	 	<li>Grafiken wurden nicht richtig dargestellt, wenn man Google Crome verwendet hat</li> 
+        		<li>auf der Seite 'Besucher online' werden jetzt alle Sonderzeichen richtig angezeigt</li> 
+       		    <li>alte Überbleibsel von Gametieger wurden entfernt</li>
+                <li>beim Editieren eines Downloads wird das Datum des Uploads nicht mehr mit aktualisiert</li>
+                <li>Checkboxen der Teamzuweisung für alle Teams, wo nur ein Team aktiviert war, wurde behoben</li>
+                <li>Rankings: 'Team' lassen sich jetzt ordnungsgemäß sortieren</li>
+                <li>Clankasse: 'Nick' lässt sich jetzt ordnungsgemäß sortieren<br>
+		</li>
+      </ul>
+</section>
+    <footer><a href="http://www.dzcp.de/" target="_blank">Powered by DZCP - deV!L`z Clanportal</a></footer>
+	</body>
+</html>
