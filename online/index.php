@@ -61,10 +61,10 @@ if(_rows($qry)) {
 
         if($chkMe == 4) {
             $online_ip = $get['ip'];
-            $online_host = ($gethostbyaddr=gethostbyaddr($get['ip']));
+            $online_host =  /*($gethostbyaddr=gethostbyaddr($get['ip']));*/'';
         } else {
             $online_ip = preg_replace("#^(.*)\.(.*)#","$1",$get['ip']);
-            $online_host = preg_replace("#^(.*?)\.(.*)#","$2",($gethostbyaddr=gethostbyaddr($get['ip'])));
+            $online_host = /*preg_replace("#^(.*?)\.(.*)#","$2",($gethostbyaddr=gethostbyaddr($get['ip'])));*/'';
         }
 
         $online_ip = ($get['ip'] == $gethostbyaddr ? $online_ip.'.XX' : $online_ip.'.XX (*.'.$online_host.')');
