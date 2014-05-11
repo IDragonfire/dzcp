@@ -50,22 +50,23 @@
 			section H2,H3 		{color:#000;text-align:left;}
 			section H4 			{color:#F00;text-align:left;}
 			a					{text-decoration: none;}
-			.back-to-top {
-   								 position: fixed; bottom: 2em; right: 0px; text-decoration: none; color: #000000; background-color: rgba(235, 235, 235, 0.80); font-size: 12px; padding: 1em; display: none;}
+			code 				{border: 1px solid #F00;}
+			
+			.back-to-top {position: fixed; bottom: 2em; right: 0px; text-decoration: none; color: #000000; background-color: rgba(235, 235, 235, 0.80); font-size: 12px; padding: 1em; display: none;}
 			.back-to-top:hover  {background-color: rgba(135, 135, 135, 0.50);}
 			
-			.toggle_ce_main_template { color:#CCCCCC; background: linear-gradient(to bottom, #333333 5%,#000000 100%); border-radius: 3px;}
-			.toggle_ce_main_php { color:#CCCCCC; background: linear-gradient(to bottom, #333333 5%,#000000 100%); border-radius: 3px;}
+			.toggle_ce_main_content { color: #FFF; background: linear-gradient(to bottom, #333333 5%,#000000 100%); border-radius: 3px; padding:3px;}
 			
-			.toggle_ce_tabs_frist {background-color: rgba(135, 135, 135, 0.50); height:25px; line-height: 2; border-radius: 3px;}
-			.toggle_ce_tabs_frist_content {background-color: rgba(135, 135, 135, 0.50); border-radius: 3px;}
+			.toggle_ce_tabs_frist {color: #000; background-color: #FFF; height:25px; line-height: 3; border-radius: 3px; padding-left:5px;}
+			.toggle_ce_tabs_frist_content {color: #000; background-color: #CCC; border-radius: 3px; padding-left:5px;}
 			
-			.toggle_ce_tabs_second {background-color: rgba(35, 35, 135, 0.50); height:25px; line-height: 2; border-radius: 3px;}
-			.toggle_ce_tabs_second_content {background-color: rgba(35, 35, 135, 0.50); border-radius: 3px;}
+			
+			.toggle_ce_tabs_second {color: #000; background-color: #EEE; height:25px; line-height: 2; border-radius: 3px; padding-left:5px;}
+			.toggle_ce_tabs_second_content {color: #000; background-color: #CCC; border-radius: 3px; padding-left:5px;}
 			
 			.toggle_ce { margin: 2px;}
 			.toggle_ce .togglebox {display:none;}
-			.toggle_ce .toggler {font-size:12px;cursor:pointer}
+			.toggle_ce .toggler {font-size:13px;cursor:pointer; line-height:2;}
 			.toggle_ce .close {display:none;}
 			.toggle_ce .opened .close {display:block;}
 			.toggle_ce .opened .open {display:none;}
@@ -90,14 +91,11 @@
 	        </li>
           </ul>
     </section>
-        <section></section>
-<section>
-</section>
-		<section>
-	    <h3><a name="v16manuel">1.1 DZCP v1.6.0.1 manuelles Update</a></h3>
-	       	 <p>
+	<section>
+	<h3><a name="v16manuel">1.1 DZCP v1.6.0.1 manuelles Update</a></h3>
+	<p>
 	<!-- PHP -->
-	<div class="toggle_ce_main_php">
+	<div class="toggle_ce_main_content">
 	    <div class="toggle_ce">
 			<div class="toggler"> 
 				<span class="open">PHP &auml;nderungen +</span>
@@ -121,7 +119,6 @@
 						if($dzcp_online_v = file_get_contents("https://raw.githubusercontent.com/DZCP-Community/dzcp/".$url."/dzcp_version.xml", false, $ctx))</code>
 					</div>
 				</div>
-
 				<div class="toggle_ce">
 					<div class="toggler toggle_ce_tabs_second"> 
 						<span class="open">'admin/menu/dladmin.php' +</span>
@@ -132,8 +129,7 @@
 						<code>`date`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= '".time()."',</code>
 						<p>lösche die Zeile vollst&auml;ndig.</p>
 					</div>
-				</div>
-					
+				</div>	
 				<div class="toggle_ce">
 					<div class="toggler toggle_ce_tabs_frist"> 
 						<span class="open">'admin/menu/server.php' +</span>
@@ -152,7 +148,6 @@
 						<p>lösche die Zeile vollst&auml;ndig.</p>
 					</div>
 				</div>
-					
 				<div class="toggle_ce">
 					<div class="toggler toggle_ce_tabs_second"> 
 						<span class="open">'clankasse/index.php' +</span>
@@ -165,7 +160,6 @@
 						<code>".orderby_sql(array("payed"), orderby_sql(array("nick"), 'ORDER BY tbl1.nick', 'tbl1'), 'tbl2'));</code>
 					</div>
 				</div>
-					
 				<div class="toggle_ce">
 					<div class="toggler toggle_ce_tabs_frist"> 
 						<span class="open">'rankings/index.php' +</span>
@@ -177,8 +171,7 @@
 						<p>austauschen gegen:</p>
 						<code>".orderby_sql(array("rank","league"), orderby_sql(array("name"), 'ORDER BY s1.postdate DESC', 's2'), 's1'));</code>
 					</div>
-				</div>
-					
+				</div>	
 				<div class="toggle_ce">
 				    <div class="toggler toggle_ce_tabs_second"> 
 						<span class="open">'serverliste/index.php' +</span>
@@ -191,7 +184,6 @@
 						<code>"hlswip" => _slist_addip));</code>
 				    </div>
 				</div>
-					
 				<div class="toggle_ce">
 				    <div class="toggler toggle_ce_tabs_frist"> 
 						<span class="open">'user/case_admin.php' +</span>
@@ -204,7 +196,6 @@
 						<code>$checksquser = db("SELECT squad FROM ".$db['squaduser']." WHERE user = '".intval($_GET['edit'])."' AND squad = '".$getsq['id']."'",true);</code>
 					</div>
 				</div>
-					
 				<div class="toggle_ce">
 		   		    <div class="toggler toggle_ce_tabs_second"> 
 						<span class="open">'inc/lang/global.php' +</span>
@@ -216,7 +207,6 @@
 						<p>lösche die Zeile vollst&auml;ndig.</p>
 					</div>
 				</div>
-				
 				<div class="toggle_ce">
 					<div class="toggler toggle_ce_tabs_frist"> 
 						<span class="open">'inc/bbcode.php' +</span>
@@ -241,7 +231,6 @@
 						<code>db("UPDATE ".$db['users']." SET `time` = '".time()."', `whereami` = '".up($where,true)."' WHERE id = '".intval($userid)."'");</code>
 					</div>
 				</div>
-					
 				<div class="toggle_ce">
 					<div class="toggler toggle_ce_tabs_second"> 
 						<span class="open">'inc/_version.php' +</span>
@@ -259,7 +248,6 @@
 						define('_edition', 'final');</code>
 					</div>
 				</div>
-				
 				<div class="toggle_ce">
 					<div class="toggler toggle_ce_tabs_frist"> 
 						<span class="open">'online/index.php' +</span>
@@ -279,9 +267,10 @@
 			</div>
 		</div>
 	</div>
+    <!-- End PHP -->
 	<br>
-	<!-- Template -->
-	<div class="toggle_ce_main_template">
+	<!-- Start Template -->
+	<div class="toggle_ce_main_content">
 		<div class="toggle_ce">
 			<div class="toggler"> 
 				<span class="open">TEMPLATE &auml;nderungen +</span>
@@ -300,8 +289,7 @@
 						}</code>
 						<p>lösche die Zeilen vollst&auml;ndig.</p>
 					</div>
-				</div>
-					
+				</div>	
 				<div class="toggle_ce">
 					<div class="toggler toggle_ce_tabs_second"> 
 						<span class="open">'/inc/_templates_/version1.6/_css/stylesheet.css' +</span>
@@ -315,7 +303,6 @@
 						<p>lösche die Zeilen vollst&auml;ndig.</p>
 					  </div>
 					</div>
-					
 					<div class="toggle_ce">
 					  <div class="toggler toggle_ce_tabs_frist"> 
 						<span class="open">'/inc/_templates_/version1.5/user/userlobby.html' +</span>
@@ -328,7 +315,6 @@
 						<code>&lt;td style="width:16%"&gt;[pic]&lt;/td&gt;</code>
 					  </div>
 					</div>
-					
 					<div class="toggle_ce">
 					  <div class="toggler toggle_ce_tabs_second"> 
 						<span class="open">'/inc/_templates_/version1.6/user/userlobby.html' +</span>
@@ -344,21 +330,17 @@
 				</div>
 			  </div>
 			</div>
-		  	 </p>	
+        <!-- End Template -->
 		</section>
-    <section>
-    </section>
 		<section>
 	    <h3><a name="v16manuel">1.2 DZCP v1.6.0.1 automatisches Update</a></h3>
-	       	 <p>
-             Alle Daten und Ordner die sich in diesem ZIP Archiv befinden, ins DZCP Hauptverzeichnis Entpacken und alle vorhandene/alten Dateien &uuml;berschreiben.
-		  	 </p>	
+             <p>Alle Daten und Ordner die sich in diesem ZIP Archiv befinden, ins DZCP Hauptverzeichnis Entpacken und alle vorhandene/alten Dateien &uuml;berschreiben. </p>	
 		</section>
-    <section>
+   	   <section>
 	    <h3><a name="v16fixes">1.3 DZCP v1.6.0.1 Bugfixes</a></h3>
 	        <a href="https://github.com/DZCP-Community/DZCP-1.6" target="_blank">Projekt on GitHub</a>
           <h4>Bugfixes</h4>
-      <ul>
+     		 <ul>
              	<li>Einige MySQL Fehler wurden behoben * Admin: Server *</li> 
         	 	<li>Grafiken wurden nicht richtig dargestellt, wenn man Google Crome verwendet hat</li> 
         		<li>auf der Seite 'Besucher online' werden jetzt alle Sonderzeichen richtig angezeigt</li> 
@@ -366,15 +348,15 @@
                 <li>beim Editieren eines Downloads wird das Datum des Uploads nicht mehr mit aktualisiert</li>
                 <li>Checkboxen der Teamzuweisung f&uuml;r alle Teams, wo nur ein Team aktiviert war, wurde behoben</li>
                 <li>Rankings: 'Team' lassen sich jetzt ordnungsgem&auml;ß sortieren</li>
-                <li>Clankasse: 'Nick' l&auml;sst sich jetzt ordnungsgem&auml;ß sortieren<br>
-		</li>
-      </ul>
+                <li>Clankasse: 'Nick' l&auml;sst sich jetzt ordnungsgem&auml;ß sortieren</li>
+      		</ul>
+            <br>
           <h4>&Auml;nderungen</h4>
              <ul>
-             	<li>Die Funktion gethostbyaddr() wurde vor&uuml;bergehen deaktiviert, da sie f&uuml;r Timeouts auf der Seite 'Besucher online' verantwortlich ist * Wird Voraussichtig  mit einem sp&auml;teren Update ge&auml;ndert *<br>
-		</li> 
- 	  </ul>
-</section>
-    <footer><a href="http://www.dzcp.de/" target="_blank">Powered by DZCP - deV!L`z Clanportal</a></footer>
+             	<li>Die Funktion gethostbyaddr() wurde vor&uuml;bergehen deaktiviert, da sie f&uuml;r Timeouts auf der Seite 'Besucher online' verantwortlich ist * Wird Voraussichtig  mit einem sp&auml;teren Update ge&auml;ndert *</li>	
+ 	  		 </ul>
+             <br>
+		</section>
+   		<footer><a href="http://www.dzcp.de/" target="_blank">Powered by DZCP - deV!L`z Clanportal</a></footer>
 	</body>
 </html>
