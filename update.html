@@ -2,7 +2,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>DZCP - Readme</title>
+		<title>DZCP - Update 1.6.0.1</title>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 		<link rel="stylesheet" href="http://yandex.st/highlightjs/8.0/styles/default.min.css">
 		<script src="http://yandex.st/highlightjs/8.0/highlight.min.js"></script>
@@ -98,8 +98,8 @@
 	<div class="toggle_ce_main_content">
 	    <div class="toggle_ce">
 			<div class="toggler"> 
-				<span class="open">PHP &auml;nderungen +</span>
-				<span class="close">PHP &auml;nderungen -</span>
+				<span class="open">PHP &Auml;nderungen +</span>
+				<span class="close">PHP &Auml;nderungen -</span>
 			</div>
 			<div class="togglebox">
 				<div class="toggle_ce">
@@ -229,6 +229,24 @@
 						<code>db("UPDATE ".$db['users']." SET `time` = '".time()."', `whereami` = '".up($where)."' WHERE id = '".intval($userid)."'");</code>
 						<p>austauschen gegen:</p>
 						<code>db("UPDATE ".$db['users']." SET `time` = '".time()."', `whereami` = '".up($where,true)."' WHERE id = '".intval($userid)."'");</code>
+						<br><p>Suche nach: * Zeile 197 *</p>
+						<code>if(!function_exists('fsockopen') || !function_exists("fopen"))</code>
+						<p>austauschen gegen:</p>
+						<code>if(fsockopen_support_bypass) return true;<br>
+						if(!function_exists('fsockopen') || disable_functions('fsockopen'))</code>
+						<br><p>Suche nach: * Zeile 200 *</p>
+						<code>if(strpos(ini_get('disable_functions'),'fsockopen') || strpos(ini_get('disable_functions'),'fopen'))</code>
+						<p>austauschen gegen:</p>
+						<code>if(!function_exists('fopen') || disable_functions('fopen'))</code>
+						<br><p>Suche nach: * Zeile 208 *</p>
+						<code>function allow_url_fopen_support() {</code>
+						<p>austauschen gegen:</p>
+						<code>function disable_functions($function='') {<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;if(empty(ini_get('disable_functions'))) return false;<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;$disabled = explode(',', ini_get('disable_functions'));<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;return !in_array($function, $disabled);<br>
+						}<br><br>
+						function allow_url_fopen_support() {</code>
 					</div>
 				</div>
 				<div class="toggle_ce">
@@ -264,6 +282,18 @@
 						<code>$online_host = /*preg_replace("#^(.*?)\.(.*)#","$2",($gethostbyaddr=gethostbyaddr($get['ip'])));*/'';</code>
 					</div>
 				</div>
+				<div class="toggle_ce">
+					<div class="toggler toggle_ce_tabs_second"> 
+						<span class="open">'inc/config.php' +</span>
+						<span class="close">'inc/config.php' -</span>
+					  </div>
+					  <div class="togglebox toggle_ce_tabs_second_content">
+						<p>Suche nach: * Zeile 15 *</p>
+						<code>define('debug_dzcp_handler', true);</code>
+						<p>schreibe darunter:</p>
+						<code>define('fsockopen_support_bypass', false); //Umgeht die fsockopen pruefung</code>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -273,8 +303,8 @@
 	<div class="toggle_ce_main_content">
 		<div class="toggle_ce">
 			<div class="toggler"> 
-				<span class="open">TEMPLATE &auml;nderungen +</span>
-				<span class="close">TEMPLATE &auml;nderungen -</span>
+				<span class="open">TEMPLATE &Auml;nderungen +</span>
+				<span class="close">TEMPLATE &Auml;nderungen -</span>
 			</div>
 			<div class="togglebox">
 				<div class="toggle_ce">
@@ -325,14 +355,15 @@
                 <li>Checkboxen der Teamzuweisung f&uuml;r alle Teams, wo nur ein Team aktiviert war, wurde behoben</li>
                 <li>Rankings: 'Team' lassen sich jetzt ordnungsgem&auml;ß sortieren</li>
                 <li>Clankasse: 'Nick' l&auml;sst sich jetzt ordnungsgem&auml;ß sortieren</li>
-      		</ul>
-            <br>
+      		    <li>Erkennung der Verfügbarkeit der fsockopen() Funktion wurde behoben</li>
+   		    </ul>
+        <br>
           <h4>&Auml;nderungen</h4>
              <ul>
              	<li>Die Funktion gethostbyaddr() wurde vor&uuml;bergehen deaktiviert, da sie f&uuml;r Timeouts auf der Seite 'Besucher online' verantwortlich ist * Wird Voraussichtig  mit einem sp&auml;teren Update ge&auml;ndert *</li>	
  	  		 </ul>
              <br>
 		</section>
-   		<footer><a href="http://www.dzcp.de/" target="_blank">Powered by DZCP - deV!L`z Clanportal</a></footer>
+	<footer><a href="http://www.dzcp.de/" target="_blank">Powered by DZCP - deV!L`z Clanportal</a></footer>
 	</body>
 </html>
