@@ -1477,6 +1477,8 @@ define('_user_delete_verify', '
     <a href="?action=admin&amp;do=delete&verify=yes&amp;id=[id]">Ja, l&ouml;schen!</a>
   </td>
 </tr>');
+define('_hlswid', 'XFire Name');
+define('_hlswstatus', 'XFire');
 define('_user_deleted', 'Der User wurde erfolgreich gel&ouml;scht!');
 define('_admin_user_shoutbox', 'Admin: Shoutbox');
 define('_admin_user_awards', 'Admin: Awards');
