@@ -12,6 +12,7 @@ define('view_error_reporting', false); // Zeigt alle Fehler und Notices etc.
 define('debug_all_sql_querys', false);
 define('debug_save_to_file', false);
 define('debug_dzcp_handler', true);
+define('fsockopen_support_bypass', false); //Umgeht die fsockopen pruefung
 
 define('use_default_timezone', true); // Verwendende die Zeitzone vom Server
 define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selbst einstellen * 'use_default_timezone' auf false stellen *

@@ -194,10 +194,8 @@ function visitorIp() {
  * @return boolean
  **/
 function fsockopen_support() {
-    if(!function_exists('fsockopen') || !function_exists("fopen"))
-        return false;
-
-    if(strpos(ini_get('disable_functions'),'fsockopen') || strpos(ini_get('disable_functions'),'fopen'))
+    if(fsockopen_support_bypass) return true;
+    if(!function_exists('fsockopen') || strpos(ini_get('disable_functions'),'fsockopen'))
         return false;
 
     return true;
@@ -2157,7 +2155,6 @@ function hextobin($hexstr) {
 //-> Speichert Rückgaben der MySQL Datenbank zwischen um SQL-Queries einzusparen
 final class dbc_index {
     private static $index = array();
-
     public static final function setIndex($index_key,$data) {
         global $cache;
 
@@ -2200,8 +2197,8 @@ final class dbc_index {
 
     public static final function issetIndex($index_key) {
         global $cache;
-
-        if(!array_key_exists($index_key,self::$index) && self::MemSetIndex() && $cache->isExisting('dbc_'.$index_key)) {
+        if(isset(self::$index[$index_key])) return true;
+        if(self::MemSetIndex() && $cache->isExisting('dbc_'.$index_key)) {
 
             if(show_dbc_debug)
                 DebugConsole::insert_loaded('dbc_index::issetIndex()', 'Load index: "'.$index_key.'" from cache');
@@ -2210,7 +2207,7 @@ final class dbc_index {
             return true;
         }
 
-        return array_key_exists($index_key,self::$index);
+        return false;
     }
 
     private static final function MemSetIndex() {
