@@ -206,8 +206,9 @@ function fsockopen_support() {
 }
 
 function disable_functions($function='') {
-    if(empty(ini_get('disable_functions'))) return false;
-    $disabled = explode(',', ini_get('disable_functions'));
+    $disable_functions = ini_get('disable_functions');
+    if(empty($disable_functions)) return false;
+    $disabled = explode(',', $disable_functions);
     return !in_array($function, $disabled);
 }
 
