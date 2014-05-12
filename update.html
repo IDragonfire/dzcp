@@ -242,11 +242,11 @@
                         <code>function allow_url_fopen_support() {</code>
                         <p>austauschen gegen:</p>
                         <code>function disable_functions($function='') {<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;if(empty(ini_get('disable_functions'))) return false;<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;$disabled = explode(',', ini_get('disable_functions'));<br>
-                        &nbsp;&nbsp;&nbsp;&nbsp;return !in_array($function, $disabled);<br>
-                        }<br><br>
-                        function allow_url_fopen_support() {</code>
+						&nbsp;&nbsp;&nbsp;&nbsp;$disable_functions = ini_get('disable_functions');<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;if(empty($disable_functions)) return false;<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;$disabled = explode(',', $disable_functions);<br>
+						&nbsp;&nbsp;&nbsp;&nbsp;return !in_array($function, $disabled);<br>
+						}}<br><br>function allow_url_fopen_support() {</code>
                         <br><p>Suche nach: * Zeile 2206 *</p>
                         <code>if(!array_key_exists($index_key,self::$index) && self::MemSetIndex() && $cache->isExisting('dbc_'.$index_key)) {</code>
                         <p>austauschen gegen:</p>
@@ -300,6 +300,30 @@
                         <code>define('debug_dzcp_handler', true);</code>
                         <p>schreibe darunter:</p>
                         <code>define('fsockopen_support_bypass', false); //Umgeht die fsockopen pruefung</code>
+                    </div>
+                </div>
+                <div class="toggle_ce">
+                    <div class="toggler toggle_ce_tabs_frist">
+                        <span class="open">'admin/menu/sponsors.php' +</span>
+                        <span class="close">'admin/menu/sponsors.php' -</span>
+                    </div>
+                    <div class="togglebox toggle_ce_tabs_frist_content">
+						<p>Suche nach: * Zeile 164 *</p>
+						<code>`slink`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= '".links($_POST['slink'])."',</code>
+						<p>austauschen gegen:</p>
+						<code>`slink`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= '".$_POST['slink']."',</code>
+						<br><p>Suche nach: * Zeile 166 *</p>
+						<code>`blink`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= '".links($_POST['blink'])."',</code>
+						<p>austauschen gegen:</p>
+						<code>`blink`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= '".$_POST['blink']."',</code>
+						<br><p>Suche nach: * Zeile 484 *</p>
+						<code>`slink`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= '".links($_POST['slink'])."',</code>
+						<p>austauschen gegen:</p>
+						<code>`slink`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= '".$_POST['slink']."',</code>
+						<br><p>Suche nach: * Zeile 486 *</p>
+						<code>`blink`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= '".links($_POST['blink'])."',</code>
+						<p>austauschen gegen:</p>
+						<code>`blink`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= '".$_POST['blink']."',</code>
                     </div>
                 </div>
             </div>
