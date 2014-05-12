@@ -247,6 +247,14 @@
                         &nbsp;&nbsp;&nbsp;&nbsp;return !in_array($function, $disabled);<br>
                         }<br><br>
                         function allow_url_fopen_support() {</code>
+                        <br><p>Suche nach: * Zeile 2206 *</p>
+                        <code>if(!array_key_exists($index_key,self::$index) && self::MemSetIndex() && $cache->isExisting('dbc_'.$index_key)) {</code>
+                        <p>austauschen gegen:</p>
+                        <code>if(isset(self::$index[$index_key])) return true;<br>if(self::MemSetIndex() && $cache->isExisting('dbc_'.$index_key)) {</code>
+                        <br><p>Suche nach: * Zeile 2206 *</p>
+                        <code>return array_key_exists($index_key,self::$index);</code>
+                        <p>austauschen gegen:</p>
+                        <code>return false;</code>
                     </div>
                 </div>
                 <div class="toggle_ce">
