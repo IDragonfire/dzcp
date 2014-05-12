@@ -195,10 +195,20 @@ function visitorIp() {
  **/
 function fsockopen_support() {
     if(fsockopen_support_bypass) return true;
-    if(!function_exists('fsockopen') || strpos(ini_get('disable_functions'),'fsockopen'))
+
+    if(!function_exists('fsockopen') || disable_functions('fsockopen'))
+        return false;
+
+    if(!function_exists('fopen') || disable_functions('fopen'))
         return false;
 
     return true;
+}
+
+function disable_functions($function='') {
+    if(empty(ini_get('disable_functions'))) return false;
+    $disabled = explode(',', ini_get('disable_functions'));
+    return !in_array($function, $disabled);
 }
 
 function allow_url_fopen_support() {
