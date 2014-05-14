@@ -37,7 +37,7 @@ phpFastCache::setup($config_cache);
 $cache = new phpFastCache();
 
 //-> Automatische Datenbank Optimierung
-if(auto_db_optimize && settings('db_optimize',false) <= time()) {
+if(auto_db_optimize && settings('db_optimize',false) <= time() && !$installer && !$updater) {
     @ignore_user_abort(true);
     db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time()+auto_db_optimize_interval)."' WHERE `id` = 1;");
     db_optimize();
@@ -196,20 +196,23 @@ function visitorIp() {
 function fsockopen_support() {
     if(fsockopen_support_bypass) return true;
 
-    if(!function_exists('fsockopen') || disable_functions('fsockopen'))
-        return false;
-
-    if(!function_exists('fopen') || disable_functions('fopen'))
+    if(disable_functions('fsockopen') || disable_functions('fopen'))
         return false;
 
     return true;
 }
 
 function disable_functions($function='') {
+    if(!function_exists($function)) return true;
     $disable_functions = ini_get('disable_functions');
     if(empty($disable_functions)) return false;
-    $disabled = explode(',', $disable_functions);
-    return !in_array($function, $disabled);
+    $disabled_array = explode(',', $disable_functions);
+    foreach ($disabled_array as $disabled) {
+       if(strtolower(trim($function)) == strtolower(trim($disabled)))
+            return true;
+    }
+
+    return false;
 }
 
 function allow_url_fopen_support() {
@@ -985,6 +988,7 @@ function up($txt, $bbcode=false, $charset_set='') {
         $txt = nl2br($txt);
     }
 
+    $txt = str_replace("'","&#39;",$txt);
     return trim(spChars($txt));
 }
 
