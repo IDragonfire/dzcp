@@ -28,7 +28,7 @@ function ftopics() {
 
                 $ftopics .= show("menu/forum_topics", array("id" => $get['id'],
                                                             "pagenr" => $page,
-                                                            "p" => $lp +1,
+                                                            "p" => $lp,
                                                             "titel" => cut(re($get['topic']),config('l_ftopics')),
                                                             "info" => $info,
                                                             "kid" => $get['kid']));
