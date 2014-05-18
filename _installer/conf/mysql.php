@@ -1578,3 +1578,31 @@ function update_mysql_1_6()
         db_optimize();
     }
 }
+function update_mysql_1_6_1()
+{
+    global $db;
+
+    //-> IP-Ban
+    db("DROP TABLE IF EXISTS ".$db['ipban']);
+    db("CREATE TABLE IF NOT EXISTS `".$db['ipban']."` (
+       `id` int(11) NOT NULL AUTO_INCREMENT,
+       `ip` varchar(15) NOT NULL DEFAULT '255.255.255.255',
+       `time` int(11) NOT NULL DEFAULT '0',
+       `data` text,
+       `typ` int(1) NOT NULL DEFAULT '0',
+       `enable` int(1) NOT NULL DEFAULT '1',
+       PRIMARY KEY (`id`),
+       UNIQUE KEY `id` (`id`),
+       KEY `ip` (`ip`));");
+
+    //-> IP-ToDNS
+    db("DROP TABLE IF EXISTS ".$db['ip2dns']);
+    db("CREATE TABLE IF NOT EXISTS `".$db['ip2dns']."` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `sessid` varchar(50) NOT NULL DEFAULT '',
+      `time` int(11) NOT NULL DEFAULT '0',
+      `update` int(11) NOT NULL DEFAULT '0',
+      `ip` varchar(15) NOT NULL DEFAULT '',
+      `dns` varchar(200) NOT NULL DEFAULT '',
+      PRIMARY KEY (`id`)) ENGINE=MEMORY;");
+}

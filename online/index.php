@@ -37,7 +37,8 @@ if(_rows($qry)) {
         $online_ip = '';
         if($chkMe == 4) {
             $online_ip = $get['ip'];
-            $online_host = ($gethostbyaddr=gethostbyaddr($get['ip']));
+            $DNS = db("SELECT dns FROM `".$db['ip2dns']."` WHERE `ip` = '".$online_ip."';",false,true);
+            $online_host = ($gethostbyaddr=$DNS['dns']);
             $online_ip = ' * '.($get['ip'] == $gethostbyaddr ? $online_ip : $online_ip.' ('.$online_host.')');
         }
 
@@ -61,10 +62,12 @@ if(_rows($qry)) {
 
         if($chkMe == 4) {
             $online_ip = $get['ip'];
-            $online_host =  /*($gethostbyaddr=gethostbyaddr($get['ip']));*/'';
+            $DNS = db("SELECT dns FROM `".$db['ip2dns']."` WHERE `ip` = '".$online_ip."';",false,true);
+            $online_host = ($gethostbyaddr=$DNS['dns']);
         } else {
             $online_ip = preg_replace("#^(.*)\.(.*)#","$1",$get['ip']);
-            $online_host = /*preg_replace("#^(.*?)\.(.*)#","$2",($gethostbyaddr=gethostbyaddr($get['ip'])));*/'';
+            $DNS = db("SELECT dns FROM `".$db['ip2dns']."` WHERE `ip` = ".$get['ip'].";",false,true);
+            $online_host = preg_replace("#^(.*?)\.(.*)#","$2",($gethostbyaddr=$DNS['dns']));
         }
 
         $online_ip = ($get['ip'] == $gethostbyaddr ? $online_ip.'.XX' : $online_ip.'.XX (*.'.$online_host.')');

@@ -7,6 +7,33 @@
 $charset = 'iso-8859-1';
 header("Content-type: text/html; charset=".$charset);
 
+## ADDED / REDEFINED FOR 1.6.1 Final
+define('_no_entrys', 'Keine Eintr&auml;ge');
+
+//IP Blocker
+define('_ipban_admin_head', 'IP Blocker');
+define('_config_ipban', 'IP Blocker');
+define('_confirm_del_ipban', 'Eintrag l&ouml;schen');
+define('_confirm_enable_ipban', 'Soll die IP-Sperrung f&uuml;r [ip] wieder aktiviert werden');
+define('_confirm_disable_ipban', 'Soll die Sperrung der IP: [ip] deaktiviert werden');
+define('_ipban_admin_deleted', 'Der IP Ban wurde erfolgreich gel&ouml;scht!');
+define('_ipban_new_head', 'Neuen IP Ban hinzuf&uuml;gen');
+define('_ipban_admin_added', 'Der neue IP Bann wurde erfolgreich hinzugef&uuml;gt!');
+define('_ipban_edit_head', 'IP Ban bearbeiten');
+define('_ipban_admin_edited', 'IP Ban wurde erfolgreich bearbeitet!');
+define('_ipban_dis', 'Grund / Beschreibung');
+define('_ipban_add_new', 'Neuer Eintrag');
+define('_ipban_assuredness', 'Zuverl&auml;ssigkeit');
+define('_ipban_reports', 'Reports');
+define('_ipban_lastten_global', 'Letzten 10 gebanten IPs by Stopforumspam.com');
+define('_ipban_lastten_user', 'Letzten 10 gebanten IPs by User');
+define('_ipban_search', 'IP Suche');
+define('_ipban_error_pip', 'Du kannst keine privaten IP-Adressen sperren!');
+define('_ipban_disable', 'IP-Ban deaktivieren');
+define('_ipban_enable', 'IP-Ban aktivieren');
+define('_ip_empty', 'Keine IP eingegeben!');
+define('_total_bans', 'Total Bans');
+
 ## ADDED / REDEFINED FOR 1.6 Final
 define('_txt_navi_main', 'Hauptnavigation');
 define('_txt_navi_clan', 'Clannavigation');

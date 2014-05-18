@@ -181,6 +181,8 @@ $db = array("host" =>           $sql_host,
             "glossar" =>        $prefix."glossar",
             "links" =>          $prefix."links",
             "linkus" =>         $prefix."linkus",
+            "ipban" =>          $prefix."ipban",
+            "ip2dns" =>         $prefix."iptodns",
             "msg" =>            $prefix."messages",
             "news" =>           $prefix."news",
             "navi" =>           $prefix."navi",
@@ -327,8 +329,12 @@ function refValues($arr) {
 //Auto Update Detect
 if(file_exists(basePath."/_installer/index.php") &&
    file_exists(basePath."/inc/mysql.php") && !$installation && !$thumbgen) {
-    $user_check = db("SELECT * FROM `".$db['users']."` WHERE `id` = 1",false,true);
-    if(!array_key_exists('banned',$user_check) && !$installer)
+
+    $sqlqry = db('SHOW TABLE STATUS'); $table_data = array();
+    while($table = _fetch($sqlqry))
+    { $table_data[$table['Name']] = true; }
+
+    if(!array_key_exists($db['ipban'],$table_data) && !$installer)
         $global_index ? header('Location: _installer/update.php') :
                         header('Location: ../_installer/update.php');
     unset($user_check);

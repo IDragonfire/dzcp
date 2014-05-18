@@ -20,6 +20,7 @@ require_once(basePath.'/inc/server_query/_functions.php');
 require_once(basePath."/inc/teamspeak_query.php");
 require_once(basePath."/inc/phpfastcache/phpfastcache.php");
 require_once(basePath.'/inc/steamapi.php');
+require_once(basePath.'/inc/sfs.php');
 
 ## Is AjaxJob ##
 $ajaxJob = (!isset($ajaxJob) ? false : $ajaxJob);
@@ -90,6 +91,108 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $do = isset($_GET['do']) ? $_GET['do'] : '';
 $index = ''; $show = ''; $color = 0;
 
+//-> Neue Kernel Funktionen einbinden, sofern vorhanden
+if($functions_files = get_files(basePath.'/inc/additional-kernel/',false,true,array('php'))) {
+    foreach($functions_files AS $func)
+    { include(basePath.'/inc/additional-kernel/'.$func); }
+    unset($functions_files,$func);
+}
+
+/**
+ * Prüft eine IP gegen eine IP-Range
+ * @param ipv4 $ip
+ * @param ipv4 range $range
+ * @return boolean
+ */
+function validateIpV4Range ($ip, $range) {
+    if(!is_array($range)) {
+        $counter = 0;
+        $tip = explode ('.', $ip);
+        $rip = explode ('.', $range);
+        foreach ($tip as $targetsegment) {
+            $rseg = $rip[$counter];
+            $rseg = preg_replace ('=(\[|\])=', '', $rseg);
+            $rseg = explode ('-', $rseg);
+            if (!isset($rseg[1]))
+                $rseg[1] = $rseg[0];
+
+            if ($targetsegment < $rseg[0] || $targetsegment > $rseg[1])
+                return false;
+
+            $counter++;
+        }
+    } else {
+        foreach ($range as $range_num) {
+            $counter = 0;
+            $tip = explode ('.', $ip);
+            $rip = explode ('.', $range_num);
+            foreach ($tip as $targetsegment)
+            {
+                $rseg = $rip[$counter];
+                $rseg = preg_replace ('=(\[|\])=', '', $rseg);
+                $rseg = explode ('-', $rseg);
+                if (!isset($rseg[1]))
+                    $rseg[1] = $rseg[0];
+
+                if ($targetsegment < $rseg[0] || $targetsegment > $rseg[1])
+                    return false;
+
+                $counter++;
+            }
+        }
+    }
+
+    return true;
+}
+
+// -> Prüft ob die IP gesperrt und gültig ist
+function check_ip() {
+    global $db,$ajaxJob,$isSpider,$userip;
+    if(!$ajaxJob && !$isSpider) {
+        if($userip == '0.0.0.0' || $userip == false || empty($userip)) {
+            dzcp_session_destroy();
+            die('Deine IP ist ung&uuml;ltig!<p>Your IP is invalid!');
+        }
+
+        //Banned IP
+        $banned_ip_sql = db("SELECT id,typ FROM `".$db['ipban']."` WHERE `ip` = '".$userip."' AND `enable` = '1'");
+        if(_rows($banned_ip_sql) >= 1) {
+            while($banned_ip = _fetch($banned_ip_sql))
+            if($banned_ip['typ'] == '2' || $banned_ip['typ'] == '3') {
+                dzcp_session_destroy();
+                die('Deine IP ist gesperrt!<p>Your IP is banned!');
+            }
+        }
+
+        unset($banned_ip,$banned_ip_sql);
+        if(allow_url_fopen_support()) {
+            sfs::check(); //SFS Update
+            if(sfs::is_spammer()) {
+                db("DELETE FROM `".$db['ip2dns']."` WHERE `sessid` = ".session_id().";");
+                dzcp_session_destroy();
+                die('Deine IP-Adresse ist auf <a href="http://www.stopforumspam.com/" target="_blank">http://www.stopforumspam.com/</a> gesperrt, die IP wurde zu oft für Spam Angriffe auf Webseiten verwendet.<p>
+                     Your IP address is known on <a href="http://www.stopforumspam.com/" target="_blank">http://www.stopforumspam.com/</a>, your IP has been used for spam attacks on websites.');
+            }
+        }
+    }
+}
+
+// IP Prüfung
+check_ip();
+
+function dzcp_session_destroy() {
+    global $db;
+    db("DELETE FROM `".$db['ip2dns']."` WHERE `sessid` = ".session_id().";");
+    $_SESSION['id']        = '';
+    $_SESSION['pwd']       = '';
+    $_SESSION['ip']        = '';
+    $_SESSION['lastvisit'] = '';
+    session_unset();
+    session_destroy();
+    session_regenerate_id();
+    cookie::clear();
+}
+
 //-> Auslesen der Cookies und automatisch anmelden
 if(cookie::get('id') != false && cookie::get('pkey') != false && empty($_SESSION['id']) && !checkme()) {
     //-> User aus der Datenbank suchen
@@ -154,16 +257,29 @@ if(!$chkMe) {
 //-> Prueft ob der User gebannt ist, oder die IP des Clients warend einer offenen session verändert wurde.
 if($chkMe && $userid && !empty($_SESSION['ip'])) {
     if($_SESSION['ip'] != visitorIp() || isBanned($userid,false) ) {
-        $_SESSION['id']        = '';
-        $_SESSION['pwd']       = '';
-        $_SESSION['ip']        = '';
-        $_SESSION['lastvisit'] = '';
-        session_unset();
-        session_destroy();
-        session_regenerate_id();
-        cookie::clear();
+        dzcp_session_destroy();
         header("Location: ../news/");
     }
+}
+
+//-> Update Client DNS
+if(session_id()) {
+    if(db("SELECT id FROM `".$db['ip2dns']."` WHERE `update` <= ".time()." AND `sessid` = '".session_id()."'",true))
+        db("UPDATE `".$db['ip2dns']."` SET `time` = ".(time()+10*60).", `update` = ".(time()+60).", `ip` = '".$userip."', `dns` = '"._real_escape_string(up(gethostbyaddr($userip)))."' WHERE `sessid` = '".session_id()."';");
+    else {
+        if(!db("SELECT id FROM `".$db['ip2dns']."` WHERE `sessid` = '".session_id()."'",true) )
+            db("INSERT INTO `".$db['ip2dns']."` SET `sessid` = '".session_id()."', `time` = ".(time()+10*60).", `ip` = '".$userip."', `dns` = '"._real_escape_string(up(gethostbyaddr($userip)))."';");
+    }
+
+    //-> Cleanup DNS DB
+    $qryDNS = db("SELECT id FROM `".$db['ip2dns']."` WHERE `time` <= ".time().";");
+    if(_rows($qryDNS) >= 1) {
+        while($getDNS = _fetch($qryDNS)) {
+            db("DELETE FROM `".$db['ip2dns']."` WHERE `id` = ".$getDNS['id'].";");
+        }
+        unset($getDNS);
+    }
+    unset($qryDNS);
 }
 
 /**
@@ -1141,14 +1257,7 @@ function isBanned($userid_set=0,$logout=true) {
         $get = db("SELECT banned FROM ".$db['users']." WHERE `id` = ".intval($userid_set)." LIMIT 1",false,true);
         if($get['banned']) {
             if($logout) {
-                $_SESSION['id']        = '';
-                $_SESSION['pwd']       = '';
-                $_SESSION['ip']        = '';
-                $_SESSION['lastvisit'] = '';
-                session_unset();
-                session_destroy();
-                session_regenerate_id();
-                cookie::clear();
+                dzcp_session_destroy();
                 $userid = 0; $chkMe = 0;
             }
 
@@ -2026,16 +2135,13 @@ function isSpider() {
 
 //-> filter placeholders
 function pholderreplace($pholder) {
-    $search = array('@<script[^>]*?>.*?</script>@si',
-                    '@<style[^>]*?>.*?</style>@siU',
-                    '@<[\/\!]*?[^<>]*?>@si',
-                    '@<![\s\S]*?--[ \t\n\r]*>@');
+    $search = array('@<script[^>]*?>.*?</script>@si','@<style[^>]*?>.*?</style>@siU','@<[\/\!][^<>]*?>@si','@<![\s\S]*?--[ \t\n\r]*>@');
+
     //Replace
     $pholder = preg_replace("#<script(.*?)</script>#is","",$pholder);
     $pholder = preg_replace("#<style(.*?)</style>#is","",$pholder);
     $pholder = preg_replace($search, '', $pholder);
     $pholder = str_replace(" ","",$pholder);
-    $pholder = preg_replace("#[0-9]#is","",$pholder);
     $pholder = preg_replace("#&(.*?);#s","",$pholder);
     $pholder = str_replace("\r","",$pholder);
     $pholder = str_replace("\n","",$pholder);
