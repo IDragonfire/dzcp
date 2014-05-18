@@ -18,7 +18,7 @@ function ftopics() {
             if(fintern($get['kid']))
             {
                 $lp = cnt($db['f_posts'], " WHERE `sid` = '".$get['id']."'");
-                $pagenr = ceil($lp/config('m_ftopics'));
+                $pagenr = ceil($lp/config('m_fposts'));
 
                 if($pagenr == 0) $page = 1;
                 else $page = $pagenr;
