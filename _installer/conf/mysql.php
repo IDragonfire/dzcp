@@ -1592,7 +1592,7 @@ function update_mysql_1_6_1()
        `typ` int(1) NOT NULL DEFAULT '0',
        `enable` int(1) NOT NULL DEFAULT '1',
       PRIMARY KEY (`id`),
-      KEY `ip` (`ip`);");
+      KEY `ip` (`ip`));");
 
     //-> IP-ToDNS
     db("DROP TABLE IF EXISTS ".$db['ip2dns']);
