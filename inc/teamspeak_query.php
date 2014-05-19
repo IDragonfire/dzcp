@@ -1012,7 +1012,10 @@ function getTSVersion($ip,$tPort,$port)
 ######################################
 
 function teamspeak3() {
-  $tsstatus = new TSStatus(settings('ts_ip'), settings('ts_port'), settings('ts_sport'),settings('ts_customicon'),settings('ts_showchannel'));
+  $ip_port = ts3dns_server ? tsdns(settings('ts_ip')) : false;
+  $host = ($ip_port != false && is_array($ip_port) ? $ip_port['ip'] : settings('ts_ip'));
+  $port = ($ip_port != false && is_array($ip_port) ? $ip_port['port'] : settings('ts_port'));
+  $tsstatus = new TSStatus($host, $port, settings('ts_sport'), settings('ts_customicon'), settings('ts_showchannel'));
   return  show("menu/teamspeak", array("hostname" => '', "channels" => $tsstatus->render()));
 }
 
@@ -1108,9 +1111,9 @@ class TSStatus
 
     function queryServer() {
         @set_time_limit(10);
-        $fp = @fsockopen($this->_host, $this->_qport, $errno, $errstr, 2);
+        $fp = @fsockopen($this->_host, $this->_qport, $errno, $errstr, 5);
         $this->_socket = $fp;
-        @stream_set_timeout($fp, 2, 0); @stream_set_blocking($fp, true);
+        @stream_set_timeout($fp, 5, 0); @stream_set_blocking($fp, true);
         if($fp)
         {
 
@@ -1407,4 +1410,54 @@ function secure_dzcp($replace) {
     return $replace;
 }
 
-?>
+/**
+* TS3 DNS Server abfragen.
+*
+* @param string $dns
+* @return boolean|ip
+*/
+function tsdns($dns) {
+    global $cache;
+
+    if(disable_functions('dns_get_record') || !fsockopen_support())
+        return false;
+
+    if(!$cache->isExisting('ts3_dns_'.$dns)) {
+        $tsdnsIP = $dns; $tsdnsPort = 41144;
+        $result = dns_get_record("_tsdns._tcp.".$dns, DNS_ALL); //Check of TSDNS Record
+        if(count($result) >= 1) {
+            $tsdnsIP = $result[0]['target'];
+            $tsdnsPort = $result[0]['port'];
+    }
+
+    if(!ping_port($tsdnsIP,$tsdnsPort,0.5)) return false;
+
+    if($fp = @fsockopen($tsdnsIP, $tsdnsPort, $errnum, $errstr, 2)) {
+        if(show_teamspeak_debug && view_error_reporting)
+            DebugConsole::insert_info('TS3Renderer::tsdns()', 'Connected TS3 - DNS Server "'.$dns.':41144"');
+
+        fputs($fp, $dns); $content = '';
+        while (!feof($fp)) { $content .= fgets($fp, 1024); }
+        @fclose($fp);
+    } else {
+        if(show_teamspeak_debug && view_error_reporting)
+            DebugConsole::insert_error('TS3Renderer::tsdns()', 'Connected to TS3 - DNS Server "'.$dns.':41144" failed');
+
+        return false;
+    }
+
+    if(!empty($content) && $content != false) {
+        if(show_teamspeak_debug && view_error_reporting)
+            DebugConsole::insert_successful('TS3Renderer::tsdns()', 'Name resolution from DNS:"'.$dns.'" to IP:"'.$content.'"');
+
+        $epl = explode(':', $content);
+        $data = array('ip' => $epl[0], 'port' => $epl[1]);
+        $cache->set('ts3_dns_'.$dns,serialize($data),1800);
+        return $data;
+        }
+    }
+    else
+        return unserialize($cache->get('ts3_dns_'.$dns));
+
+    return false;
+}

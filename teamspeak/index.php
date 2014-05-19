@@ -234,7 +234,10 @@ $dir = "teamspeak";
                                            "userstats" => $userstats));
     break;
     case '3';
-      $tsstatus = new TSStatus(settings('ts_ip'), settings('ts_port'), settings('ts_sport'), settings('ts_customicon'), settings('ts_showchannel'));
+      $ip_port = ts3dns_server ? tsdns(settings('ts_ip')) : false;
+      $host = ($ip_port != false && is_array($ip_port) ? $ip_port['ip'] : settings('ts_ip'));
+      $port = ($ip_port != false && is_array($ip_port) ? $ip_port['port'] : settings('ts_port'));
+      $tsstatus = new TSStatus($host, $port, settings('ts_sport'), settings('ts_customicon'), settings('ts_showchannel'));
       $tstree = $tsstatus->render(true);
 
       $users = 0;
