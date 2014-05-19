@@ -1591,9 +1591,8 @@ function update_mysql_1_6_1()
        `data` text,
        `typ` int(1) NOT NULL DEFAULT '0',
        `enable` int(1) NOT NULL DEFAULT '1',
-       PRIMARY KEY (`id`),
-       UNIQUE KEY `id` (`id`),
-       KEY `ip` (`ip`));");
+      PRIMARY KEY (`id`),
+      KEY `ip` (`ip`);");
 
     //-> IP-ToDNS
     db("DROP TABLE IF EXISTS ".$db['ip2dns']);
@@ -1604,5 +1603,6 @@ function update_mysql_1_6_1()
       `update` int(11) NOT NULL DEFAULT '0',
       `ip` varchar(15) NOT NULL DEFAULT '',
       `dns` varchar(200) NOT NULL DEFAULT '',
-      PRIMARY KEY (`id`)) ENGINE=MEMORY;");
+      PRIMARY KEY (`id`),
+      KEY `sessid` (`sessid`)) ENGINE=MEMORY;");
 }

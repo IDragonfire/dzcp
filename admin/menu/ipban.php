@@ -85,14 +85,14 @@ switch ($do) {
             $count_spam_nav = db("SELECT id FROM ".$db['ipban']." WHERE typ = '1' ORDER BY id DESC LIMIT ".$start.", 10",true,false); //Type Userban ROW
 
             if($start != 0)
-                $pager_sfs = '<a href="?admin=ipban&sfs_side='.($site-1).'&ub_side='.(isset($_GET['ub_side']) ? $_GET['ub_side'] : 1).'"><img align="absmiddle" src="inc/images/previous.png" alt="left" /></a>';
+                $pager_sfs = '<a href="?admin=ipban&sfs_side='.($site-1).'&ub_side='.(isset($_GET['ub_side']) ? $_GET['ub_side'] : 1).'"><img align="absmiddle" src="../inc/images/previous.png" alt="left" /></a>';
             else
                 $pager_sfs = '<img src="../inc/images/previous.png" align="absmiddle" alt="left" class="disabled" />';
 
             $pager_sfs .=  '&nbsp;'.($start+1).' bis '.($count_spam_nav+$start).'&nbsp;';
 
             if($count_spam_nav >= 10 )
-                $pager_sfs .=  '<a href="?admin=ipban&sfs_side='.($site+1).'&ub_side='.(isset($_GET['ub_side']) ? $_GET['ub_side'] : 1).'"><img align="absmiddle" src="inc/images/next.png" alt="right" /></a>';
+                $pager_sfs .=  '<a href="?admin=ipban&sfs_side='.($site+1).'&ub_side='.(isset($_GET['ub_side']) ? $_GET['ub_side'] : 1).'"><img align="absmiddle" src="../inc/images/next.png" alt="right" /></a>';
             else
                 $pager_sfs .= '<img src="../inc/images/next.png" alt="right" align="absmiddle" class="disabled" />';
 
@@ -122,14 +122,14 @@ switch ($do) {
             $count_user_nav = db("SELECT id FROM ".$db['ipban']." WHERE typ = '3' ORDER BY id DESC LIMIT ".$start.", 10",true,false); //Type System Ban ROW
 
             if($start != 0)
-                $pager_user = '<a href="?admin=ipban&ub_side='.($site-1).'&sfs_side='.(isset($_GET['sfs_side']) ? $_GET['sfs_side'] : 1).'"><img align="absmiddle" src="inc/images/previous.png" alt="left" /></a>';
+                $pager_user = '<a href="?admin=ipban&ub_side='.($site-1).'&sfs_side='.(isset($_GET['sfs_side']) ? $_GET['sfs_side'] : 1).'"><img align="absmiddle" src="../inc/images/previous.png" alt="left" /></a>';
             else
                 $pager_user = '<img src="../inc/images/previous.png" align="absmiddle" alt="left" class="disabled" />';
 
             $pager_user .=  '&nbsp;'.($start+1).' bis '.($count_user_nav+$start).'&nbsp;';
 
             if($count_user_nav >= 10 )
-                $pager_user .=  '<a href="?admin=ipban&ub_side='.($site+1).'&sfs_side='.(isset($_GET['sfs_side']) ? $_GET['sfs_side'] : 1).'"><img align="absmiddle" src="inc/images/next.png" alt="right" /></a>';
+                $pager_user .=  '<a href="?admin=ipban&ub_side='.($site+1).'&sfs_side='.(isset($_GET['sfs_side']) ? $_GET['sfs_side'] : 1).'"><img align="absmiddle" src="../inc/images/next.png" alt="right" /></a>';
             else
                 $pager_user .= '<img src="../inc/images/next.png" alt="right" align="absmiddle" class="disabled" />';
 

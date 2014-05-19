@@ -4,6 +4,10 @@
  * http://www.dzcp.de
  */
 
+## ADDED / REDEFINED FOR 1.6.1
+define('_ipban_menu_icon_enable', '<a href="[action]" title="[lang_ipban_disable]" rel="[info]" class="confirm"><img src="../inc/images/admin_lock_closed.jpg" alt="" class="icon" /></a>');
+define('_ipban_menu_icon_disable', '<a href="[action]" title="[lang_ipban_enable]" rel="[info]" class="confirm"><img src="../inc/images/admin_lock_open.jpg" alt="" class="icon" /></a>');
+
 ## ADDED / REDEFINED FOR 1.6
 define('_steamicon', '<a target="_blank" onmouseover="DZCP.showSteamBox(\'[username]\',\'[avatar_url]\',\'[text1]\',\'[text2]\',[status])" onmouseout="DZCP.hideInfo()" href="[profile_url]"><img height="16" width="16" src="../inc/images/steam.gif" alt="" class="icon" /> [username]</a>');
 define('_steamicon_nouser', '<a target="_blank" href="[profile_url]"><img height="16" width="16" src="../inc/images/steam.gif" alt="" class="icon" onmouseover="DZCP.showSteamBox(\'[username]\',\'[avatar_url]\',\'[text1]\',\'[text2]\',[status])" onmouseout="DZCP.hideInfo()" /></a>');
