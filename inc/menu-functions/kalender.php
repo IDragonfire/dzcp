@@ -48,12 +48,12 @@ function kalender($month="",$year="") {
             if($wday != $iw) {
                 $data .= "<td class=\"navKalEmpty\"></td>";
             } else {
-                $titlebd = ''; $bdays = "";
-                $qry = db("SELECT id,bday FROM ".$db['users']." WHERE bday LIKE '".cal($i).".".$monat.".____"."'");
-                if(_rows($qry)) {
-                    while($get = _fetch($qry)) {
-                          $bdays = "set";
-                          $titlebd .= '&lt;img src=../inc/images/bday.gif class=icon alt= /&gt;'.'&nbsp;'.jsconvert(_kal_birthday.rawautor($get['id'])).'&lt;br />';
+                $titlebd = ''; $bdays = '';
+                $qry = db("SELECT id,bday FROM ".$db['users']." WHERE bday != 0");
+                while($get = _fetch($qry)) {
+                    if(date("d.m",$get['bday']) == cal($i).".".$monat) {
+                        $bdays = "set";
+                        $titlebd .= '&lt;img src=../inc/images/bday.gif class=icon alt= /&gt;'.'&nbsp;'.jsconvert(_kal_birthday.rawautor($get['id'])).'&lt;br />';
                     }
                 }
 

@@ -82,17 +82,18 @@ default:
       {
         $data .= '<td class="calDay"></td>';
       } else {
-        $qry = db("SELECT id,bday,nick FROM ".$db['users']."
-                   WHERE bday LIKE '".cal($i).".".$monat.".____"."'");
-        if(_rows($qry))
-        {
-          $infoBday = '';
-          while($get = _fetch($qry)) $infoBday .='&lt;img src=../inc/images/bday.gif class=icon alt= /&gt;'.'&nbsp;'.jsconvert(_kal_birthday.rawautor($get['id'])).'<br />';
+        $infoBday = ''; $bdays = ""; $CountBday = 0;
+        $qry = db("SELECT id,bday,nick FROM ".$db['users']." WHERE bday != 0");
+        while($get = _fetch($qry)) {
+            if(date("d.m",$get['bday']) == cal($i).".".$monat) {
+                $infoBday .='&lt;img src=../inc/images/bday.gif class=icon alt= /&gt;'.'&nbsp;'.jsconvert(_kal_birthday.rawautor($get['id'])).'<br />';
+                $CountBday++;
+            }
+        }
 
-          $info = ' onmouseover="DZCP.showInfo(\''.$infoBday.'\')" onmouseout="DZCP.hideInfo()"';
-          $bdays = '<a href="../user/?action=userlist&amp;show=bday&amp;time='.$datum.'"'.$info.'><img src="../inc/images/bday.gif" alt="" /></a>';
-        } else {
-          $bdays = "";
+        if($CountBday >= 1) {
+            $info = ' onmouseover="DZCP.showInfo(\''.$infoBday.'\')" onmouseout="DZCP.hideInfo()"';
+            $bdays = '<a href="../user/?action=userlist&amp;show=bday&amp;time='.$datum.'"'.$info.'><img src="../inc/images/bday.gif" alt="" /></a>';
         }
 
           $qry = db("SELECT datum,gegner FROM ".$db['cw']."
