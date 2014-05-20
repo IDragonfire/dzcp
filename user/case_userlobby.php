@@ -45,11 +45,11 @@ if(defined('_UserMenu')) {
                                 $post = "";
                             } elseif($count == 1) {
                                 $cnt = 1;
-                                $pagenr = ceil($lp/config('m_ftopics'));
+                                $pagenr = ceil($lp/config('m_fposts'));
                                 $post = _new_post_1;
                             } else {
                                 $cnt = $count;
-                                $pagenr = ceil($lp/config('m_ftopics'));
+                                $pagenr = ceil($lp/config('m_fposts'));
                                 $post = _new_post_2;
                             }
 
@@ -462,7 +462,7 @@ if(defined('_UserMenu')) {
             while($getft = _fetch($qryft)) {
                 if(fintern($getft['kid'])) {
                     $lp = cnt($db['f_posts'], " WHERE sid = '".$getft['id']."'");
-                    $pagenr = ceil($lp/config('m_ftopics'));
+                    $pagenr = ceil($lp/config('m_fposts'));
                     $page = ($pagenr == 0 ? 1 : $pagenr);
                     $getp = db("SELECT text FROM ".$db['f_posts']."
                                 WHERE kid = '".$getft['kid']."'
