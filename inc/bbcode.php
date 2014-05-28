@@ -182,7 +182,6 @@ check_ip();
 
 function dzcp_session_destroy() {
     global $db;
-    db("DELETE FROM `".$db['ip2dns']."` WHERE `sessid` = ".session_id().";");
     $_SESSION['id']        = '';
     $_SESSION['pwd']       = '';
     $_SESSION['ip']        = '';
