@@ -21,9 +21,6 @@ if(defined('_UserMenu')) {
                         cookie::save();
                     }
 
-                    ## Aktualisiere Datenbank ##
-                    db("UPDATE ".$db['users']." SET `online` = '1', `sessid` = '".session_id()."', `ip` = '".$_SESSION['ip']."', `pkey` = '".$permanent_key."' WHERE id = '".$get['id']."'");
-
                     $_SESSION['id']         = $get['id'];
                     $_SESSION['pwd']        = $get['pwd'];
                     $_SESSION['lastvisit']  = $get['time'];
