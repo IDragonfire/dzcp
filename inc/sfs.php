@@ -64,6 +64,15 @@ class sfs {
         }
     }
 
+    public static function cleanup_db() {
+        global $db;
+        $sql = db("SELECT id,time FROM `".$db['ipban']."` WHERE `typ` = 0 ORDER BY `id` ASC");
+        while($get = _fetch($sql)) {
+            if($get['time']+86400 <= time()) //Clanup nach 24h
+                db("DELETE FROM `".$db['ipban']."` WHERE `id` = ".$get['id']);
+        }
+    }
+
     public static function is_spammer()
     { return self::$blockuser; }
 
