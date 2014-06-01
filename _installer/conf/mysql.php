@@ -24,9 +24,9 @@ function install_mysql($login, $nick, $pwd, $email)
             `url` text NOT NULL,
             PRIMARY KEY  (`id`)
             )");
-//-> Bannliste
-  $qry = db("DROP TABLE IF EXISTS ".$db['banned']."");
-  $qry = db("CREATE TABLE ".$db['banned']." (
+  //-> Bannliste
+  $qry = db("DROP TABLE IF EXISTS ".$db['prefix']."banned");
+  $qry = db("CREATE TABLE ".$db['prefix']."banned (
             `id` int(5) NOT NULL auto_increment,
             `server` int(5) NOT NULL,
             `date` int(20) NOT NULL default '0',
@@ -1583,6 +1583,7 @@ function update_mysql_1_6_1()
     global $db;
 
     db("ALTER TABLE `".$db['permissions']."` ADD `ipban` INT(1) NOT NULL DEFAULT '0' AFTER `dlintern`;");
+    db("DROP TABLE ".$db['prefix']."banned");
 
     //-> IP-Ban
     db("DROP TABLE IF EXISTS ".$db['ipban']);
