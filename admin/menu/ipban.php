@@ -6,7 +6,7 @@
  */
 
 if(_adminMenu != 'true') exit;
-$where = $where.': '._slist_head_admin;
+$where = $where.': '._ipban_head_admin;
 switch ($do) {
     case 'add':
         if(empty($_POST['ip']))

@@ -33,6 +33,8 @@ define('_ipban_disable', 'IP-Ban deaktivieren');
 define('_ipban_enable', 'IP-Ban aktivieren');
 define('_ip_empty', 'Keine IP eingegeben!');
 define('_total_bans', 'Total Bans');
+define('_ipban_head_admin', 'IP-Bans');
+define('_perm_ipban', 'IP-Bans verwalten');
 
 ## ADDED / REDEFINED FOR 1.6 Final
 define('_txt_navi_main', 'Hauptnavigation');

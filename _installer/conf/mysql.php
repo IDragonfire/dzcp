@@ -1582,6 +1582,8 @@ function update_mysql_1_6_1()
 {
     global $db;
 
+    db("ALTER TABLE `".$db['permissions']."` ADD `ipban` INT(1) NOT NULL DEFAULT '0' AFTER `dlintern`;");
+
     //-> IP-Ban
     db("DROP TABLE IF EXISTS ".$db['ipban']);
     db("CREATE TABLE IF NOT EXISTS `".$db['ipban']."` (
