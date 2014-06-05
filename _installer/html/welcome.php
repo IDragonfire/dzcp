@@ -17,7 +17,7 @@
   </tr>
   <tr>
     <td align="center">
-<form action="install.php?action=prepare&agb=false" method="post">
+<form action="install.php?action=require&agb=false" method="post">
 <textarea name="lizenz" style="width:100%;height:400px;overflow:auto" readonly>
 <?php
   $fp = fopen("conf/lizenz.txt","r");
