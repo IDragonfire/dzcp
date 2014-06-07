@@ -59,6 +59,8 @@
 
     if ($request == "info")
     {
+      $data = array();
+      
       $tmp = substr($buffer, 2);
       $tmp = explode("\x00", $tmp);
 
@@ -85,6 +87,8 @@
 
     if($request == "players")
     {
+      $player = array();
+      
       unset($player_key);
 
       $buffer = substr($buffer, 2);
