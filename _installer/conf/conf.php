@@ -79,12 +79,16 @@ function makePrev() {
     return $arr[rand(0,9)].$arr[rand(0,9)].$arr[rand(0,9)];
 }
 
-function up($txt,$bbcode=0) {
-    $txt = str_replace("& ","&amp; ",$txt);
-    $txt = str_replace("\"","&#34;",$txt);
-    $txt = trim($txt);
-    if(empty($bbcode)) $txt = nl2br($txt);
-    return spChars($txt);
+/**
+ * DZCP V1.6.1
+ * Codiert Strings und Texte in UTF8.
+ * Schreiben von Werten in die Datenbank.
+ *
+ * @param string $txt
+ * @return uft8 string
+ */
+function up($txt = '') {
+    return utf8_encode(stripcslashes(spChars(htmlentities($txt, ENT_COMPAT, 'iso-8859-1'))));;
 }
 
 function spChars($txt) {
