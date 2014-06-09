@@ -21,7 +21,13 @@ function gz_output($output='') {
         ini_set('zlib.output_compression_level', $gzip_compress_level);
 
     if(buffer_show_licence_bar) {
-        $licence_bar = '<div class="licencebar"> <table style="width:100%;margin:auto" cellspacing="0"> <tr> <td class="licencebar" nowrap="nowrap">Powered by <a class="licencebar" href="http://www.dzcp.de" target="_blank" title="deV!L`z Clanportal">DZCP - deV!L`z&nbsp;Clanportal V'._version.'</a></td></tr> </table> </div>';
+        switch (_edition) {
+            case 'dev': $dev_info = ' - Development Edition'; break;
+            case 'society': $dev_info = ' - Society Edition'; break;
+            default: $dev_info = ''; break;
+        }
+
+        $licence_bar = '<div class="licencebar"> <table style="width:100%;margin:auto" cellspacing="0"> <tr> <td class="licencebar" nowrap="nowrap">Powered by <a class="licencebar" href="http://www.dzcp.de" target="_blank" title="deV!L`z Clanportal">DZCP - deV!L`z&nbsp;Clanportal V'._version.'</a>'.$dev_info.'</td></tr> </table> </div>';
 
         if(!file_exists(basePath.'/_codeking.licence'))
             $output = str_ireplace('</body>',$licence_bar."\r\n</body>",$output);

@@ -19,7 +19,10 @@ define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selb
 define('admin_view_dzcp_news', true); // Entscheidet ob der Newstricker in der Administration angezeigt wird
 
 define('thumbgen_cache', true); // Sollen die verkleinerten Bilder der Thumbgen gespeichert werden
-define('thumbgen_cache_time', 60*60); // Wie lange soll das Bild aus dem Cache verwendet werden
+define('thumbgen_cache_time', 60*60); // Wie lange sollen die verkleinerten Bilder der Thumbgen im Cache verbleiben
+
+define('template_cache', true); // Sollen das HTML-Template in den Memory Cache geladen werden * nur memcache,wincache,xcache oder apc *
+define('template_cache_time', 30); // Wie lange soll das HTML-Template im Memory Cache verbleiben
 
 define('feed_update_time', 10*60); // Wann soll der Newsfeed aktualisiert werden
 define('cookie_expires', (60*60*24*30*12)); // Wie Lange die Cookies des CMS ihre Gueltigkeit behalten.
@@ -107,15 +110,32 @@ if(!isset($updater)) $updater = false;
 if(!isset($global_index)) $global_index = false;
 
 function show($tpl="", $array=array(), $array_lang_constant=array(), $array_block=array()) {
-    global $tmpdir,$chkMe;
+    global $tmpdir,$chkMe,$cache;
     if(!empty($tpl) && $tpl != null) {
         $template = basePath."/inc/_templates_/".$tmpdir."/".$tpl;
-        $array['dir'] = '../inc/_templates_/'.$tmpdir;
 
-        if(file_exists($template.".html"))
-            $tpl = file_get_contents($template.".html");
+        //HTML Cache for Template Files
+        $cacheHash = md5($template);
+        if(template_cache && dbc_index::useMem() && $cache->isExisting('tpl_'.$cacheHash)) {
+            $tpl = string::decode($cache->get('tpl_'.$cacheHash));
+            if(show_dbc_debug)
+                DebugConsole::insert_info('template::show()', 'Get Template-Cache: "'.'tpl_'.$cacheHash.'"');
+        }
+        else {
+            if(file_exists($template.".html")) {
+                $tpl = file_get_contents($template.".html");
+
+                if(template_cache && dbc_index::useMem()) {
+                    $cache->set('tpl_'.$cacheHash,string::encode($tpl),template_cache_time);
+
+                    if(show_dbc_debug)
+                        DebugConsole::insert_loaded('template::show()', 'Set Template-Cache: "'.'tpl_'.$cacheHash.'"');
+                }
+            }
+        }
 
         //put placeholders in array
+        $array['dir'] = '../inc/_templates_/'.$tmpdir;
         $pholder = explode("^",pholderreplace($tpl));
         for($i=0;$i<=count($pholder)-1;$i++) {
             if(in_array($pholder[$i],$array_block))

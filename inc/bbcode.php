@@ -36,6 +36,7 @@ if(!is_dir($config_cache['path'])) //Check cache dir
 $config_cache['securityKey'] = settings('prev',false);
 phpFastCache::setup($config_cache);
 $cache = new phpFastCache();
+dbc_index::init();
 
 //-> Automatische Datenbank Optimierung
 if(auto_db_optimize && settings('db_optimize',false) <= time() && !$installer && !$updater) {
@@ -2286,6 +2287,12 @@ final class string {
 //-> Speichert Rückgaben der MySQL Datenbank zwischen um SQL-Queries einzusparen
 final class dbc_index {
     private static $index = array();
+    private static $is_mem = false;
+
+    public static final function init() {
+        self::$is_mem = self::MemSetIndex();
+    }
+
     public static final function setIndex($index_key,$data) {
         global $cache;
 
@@ -2293,7 +2300,7 @@ final class dbc_index {
             if(show_dbc_debug)
                 DebugConsole::insert_info('dbc_index::setIndex()', 'Set index: "'.$index_key.'" to cache');
 
-            $cache->set('dbc_'.$index_key, serialize($data), 1);
+            $cache->set('dbc_'.$index_key, serialize($data), 1.2);
         }
 
         if(show_dbc_debug)
@@ -2329,7 +2336,7 @@ final class dbc_index {
     public static final function issetIndex($index_key) {
         global $cache;
         if(isset(self::$index[$index_key])) return true;
-        if(self::MemSetIndex() && $cache->isExisting('dbc_'.$index_key)) {
+        if(self::$is_mem && $cache->isExisting('dbc_'.$index_key)) {
 
             if(show_dbc_debug)
                 DebugConsole::insert_loaded('dbc_index::issetIndex()', 'Load index: "'.$index_key.'" from cache');
@@ -2339,6 +2346,10 @@ final class dbc_index {
         }
 
         return false;
+    }
+
+    public static final function useMem() {
+        return self::$is_mem;
     }
 
     private static final function MemSetIndex() {

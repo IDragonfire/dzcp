@@ -5,6 +5,11 @@
  */
 
 if(_adminMenu != 'true') exit;
+switch (_edition) {
+    case 'dev': $edition = 'Development'; break;
+    case 'society': $edition = 'Society'; break;
+    default: $edition = 'Stable'; break;
+}
 
 $PhpInfo = parsePHPInfo();
 $support  = "#####################\r\n";
@@ -18,6 +23,7 @@ $support .= "#####################\r\n";
 $support .= "DZCP Version: "._version."\r\n";
 $support .= "DZCP Release: "._release."\r\n";
 $support .= "DZCP Build: "._build."\r\n";
+$support .= "DZCP Edition: ".$edition."\r\n";
 $support .= "DZCP Template: ".$tmpdir."\r\n";
 $support .= "\r\n";
 

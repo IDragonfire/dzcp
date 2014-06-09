@@ -107,7 +107,7 @@ else {
         }
     }
 
-    if(@file_exists(basePath."/_installer") && $chkMe == 4 && !view_error_reporting)
+    if(@file_exists(basePath."/_installer") && $chkMe == 4 && !view_error_reporting && _edition != 'dev')
         $index = _installdir;
     else {
         $dzcp_version = show_dzcp_version();
