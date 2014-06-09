@@ -203,7 +203,7 @@ ORDER BY game");
             `lineup` = '".up($_POST['lineup'])."',
             `glineup` = '".up($_POST['glineup'])."',
             `matchadmins` = '".up($_POST['match_admins'])."',
-            `bericht` = '".up($_POST['bericht'],1)."'");
+            `bericht` = '".up($_POST['bericht'])."'");
 
           $cwid = mysqli_insert_id($mysql);
 
@@ -271,7 +271,7 @@ SET ".$xonx."
 `lineup` = '".up($_POST['lineup'])."',
 `glineup` = '".up($_POST['glineup'])."',
 `matchadmins` = '".up($_POST['match_admins'])."',
-`bericht` = '".up($_POST['bericht'],1)."'
+`bericht` = '".up($_POST['bericht'])."'
 WHERE id = '".intval($_GET['id'])."'");
 
         $cwid = intval($_GET['id']);

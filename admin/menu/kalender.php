@@ -37,7 +37,7 @@ if(_adminMenu != 'true') exit;
         $insert = db("INSERT INTO ".$db['events']."
                       SET `datum` = '".((int)$time)."',
                           `title` = '".up($_POST['title'])."',
-                          `event` = '".up($_POST['event'],1)."'");
+                          `event` = '".up($_POST['event'])."'");
 
         $show = info(_kalender_successful_added,"?admin=kalender");
       }
@@ -74,7 +74,7 @@ if(_adminMenu != 'true') exit;
         $update = db("UPDATE ".$db['events']."
                       SET `datum` = '".((int)$time)."',
                           `title` = '".up($_POST['title'])."',
-                          `event` = '".up($_POST['event'],1)."'
+                          `event` = '".up($_POST['event'])."'
                       WHERE id = '".intval($_GET['id'])."'");
 
         $show = info(_kalender_successful_edited,"?admin=kalender");

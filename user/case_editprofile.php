@@ -105,8 +105,8 @@ if(defined('_UserMenu')) {
           `battlenetid`  = '".up(trim($_POST['battlenetid']))."',
                   `steamid`      = '".up(trim($_POST['steamid']))."',
           `skypename`    = '".up(trim($_POST['skypename']))."',
-                  `signatur`     = '".up($_POST['sig'],1)."',
-                  `beschreibung` = '".up($_POST['ich'],1)."',
+                  `signatur`     = '".up($_POST['sig'])."',
+                  `beschreibung` = '".up($_POST['ich'])."',
                   `perm_gb`      = '".up($_POST['visibility_gb'])."',
                   `perm_gallery` = '".up($_POST['visibility_gallery'])."'
            WHERE id = ".$userid);

@@ -93,7 +93,7 @@ switch ($do) {
                 SET `name`         = '".up($_POST['squad'])."',
                     `game`         = '".up($_POST['game'])."',
                     `icon`         = '".up($_POST['icon'])."',
-                    `beschreibung` = '".up($_POST['beschreibung'],1)."',
+                    `beschreibung` = '".up($_POST['beschreibung'])."',
                     `shown`        = '".(isset($_POST['show']) ? ((int)$_POST['show']) : 0)."',
                     `navi`         = '".((int)$_POST['roster'])."',
                     `team_show`    = '".((int)$_POST['team_show'])."',
@@ -176,7 +176,7 @@ switch ($do) {
                     `game`          = '".up($_POST['game'])."',
                     ".$newpos."
                     ".$newicon."
-                    `beschreibung` = '".up($_POST['beschreibung'],1)."',
+                    `beschreibung` = '".up($_POST['beschreibung'])."',
                     `shown`        = '".(isset($_POST['show']) ? ((int)$_POST['show']) : 0)."',
                     `navi`         = '".((int)$_POST['roster'])."',
                     `team_show`    = '".((int)$_POST['team_show'])."',

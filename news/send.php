@@ -151,7 +151,7 @@ $dir = "news";
                                                           `von`       = '".$von_nick."',
                                                           `an`        = '".((int)$get['id'])."',
                                                           `titel`     = '".$titel."',
-                                                          `nachricht` = '".up($text, 1)."',
+                                                          `nachricht` = '".up($text)."',
                                                           `sendnews`  = '".$sendnews."',
                                                           `senduser`  = '".$user."'");
                     }

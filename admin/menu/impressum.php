@@ -25,7 +25,7 @@ if(_adminMenu != 'true') exit;
       if($do == "update")
       {
         $qry = db("UPDATE ".$db['settings']."
-                   SET `i_autor` = '".up($_POST['seitenautor'], 1)."',
+                   SET `i_autor` = '".up($_POST['seitenautor'])."',
                        `i_domain` = '".up($_POST['domain'])."'
                    WHERE id = 1");
 

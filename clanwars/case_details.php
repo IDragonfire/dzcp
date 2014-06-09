@@ -355,7 +355,7 @@ if(defined('_Clanwars')) {
                                     `email`    = '".(isset($_POST['email']) ? up($_POST['email']) : up(data('email')))."',
                                     `hp`       = '".(isset($_POST['hp']) ? links($_POST['hp']) : links(data('hp')))."',
                                     `reg`      = '".((int)$userid)."',
-                                    `comment`  = '".up($_POST['comment'],1)."',
+                                    `comment`  = '".up($_POST['comment'])."',
                                     `ip`       = '".$userip."'");
 
                             setIpcheck("cwid(".$_GET['id'].")");
@@ -407,7 +407,7 @@ if(defined('_Clanwars')) {
                     SET `nick`     = '".(isset($_POST['nick']) ? up($_POST['nick']) : up(data('nick')))."',
                         `email`    = '".(isset($_POST['email']) ? up($_POST['email']) : up(data('email')))."',
                         `hp`       = '".(isset($_POST['hp']) ? links($_POST['hp']) : links(data('hp')))."',
-                        `comment`  = '".up($_POST['comment'],1)."',
+                        `comment`  = '".up($_POST['comment'])."',
                         `editby`   = '".addslashes($editedby)."'
                     WHERE id = '".intval($_GET['cid'])."'");
                 $index = info(_comment_edited, "?action=details&amp;id=".$_GET['id']."");

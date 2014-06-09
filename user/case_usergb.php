@@ -68,7 +68,7 @@ if(defined('_UserMenu')) {
                                                  `email`      = '".up($_POST['email'])."',
                                                  `hp`         = '".links($_POST['hp'])."',
                                                  `reg`        = '".((int)$userid)."',
-                                                 `nachricht`  = '".up($_POST['eintrag'],1)."',
+                                                 `nachricht`  = '".up($_POST['eintrag'])."',
                                                  `ip`         = '".$userip."'");
 
                     setIpcheck("mgbid(".intval($_GET['id']).")");
@@ -91,7 +91,7 @@ if(defined('_UserMenu')) {
 
                     $upd = db("UPDATE ".$db['usergb']."
                                          SET ".$addme."
-                                                 `nachricht`  = '".up($_POST['eintrag'],1)."',
+                                                 `nachricht`  = '".up($_POST['eintrag'])."',
                                                  `reg`        = '".((int)$_POST['reg'])."',
                                                  `editby`     = '".addslashes($editedby)."'
                                          WHERE id = '".intval($_GET['gbid'])."'");

@@ -835,17 +835,16 @@ function zitat($nick,$zitat) {
     return '<div class="quote"><b>'.$nick.' '._wrote.':</b><br />'.re_bbcode($zitat).'</div><br /><br /><br />';
 }
 
-//-> convert string for output
-function re($txt) {
-    $txt = stripslashes($txt);
-    $txt = str_replace("& ","&amp; ",$txt);
-    $txt = str_replace("[","&#91;",$txt);
-    $txt = str_replace("]","&#93;",$txt);
-    $txt = str_replace("\"","&#34;",$txt);
-    $txt = str_replace("<","&#60;",$txt);
-    $txt = str_replace(">","&#62;",$txt);
-    $txt = str_replace("(", "&#40;", $txt);
-    return str_replace(")", "&#41;", $txt);
+/**
+ * DZCP V1.6.1
+ * Decodiert Strings und Texte von UTF8.
+ * Auslesen von Werten aus der Datenbank.
+ *
+ * @param string $txt
+ * @return string
+ */
+function re($txt = '') {
+    return string::decode($txt);
 }
 
 function re_entry($txt) {
@@ -1088,23 +1087,16 @@ function spChars($txt) {
   return str_replace("€","&euro;",$txt);
 }
 
-//-> Funktion um sauber in die DB einzutragen
-function up($txt, $bbcode=false, $charset_set='') {
-    global $charset;
-
-    if(!empty($charset_set))
-        $charset = $charset_set;
-
-    $txt = str_replace("& ","&amp; ",$txt);
-    $txt = str_replace("\"","&#34;",$txt);
-
-    if(!$bbcode) {
-        $txt = htmlentities(html_entity_decode($txt), ENT_QUOTES, $charset);
-        $txt = nl2br($txt);
-    }
-
-    $txt = str_replace("'","&#39;",$txt);
-    return trim(spChars($txt));
+/**
+ * DZCP V1.6.1
+ * Codiert Strings und Texte in UTF8.
+ * Schreiben von Werten in die Datenbank.
+ *
+ * @param string $txt
+ * @return uft8 string
+ */
+function up($txt = '') {
+    return string::encode($txt);
 }
 
 //-> Funktion um diverse Dinge aus Tabellen auszaehlen zu lassen
@@ -2272,6 +2264,25 @@ function hextobin($hexstr) {
     return $sbin;
 }
 
+//-> Codiert Text zur Speicherung
+final class string {
+    /**
+     * Codiert Text in das UTF8 Charset.
+     *
+     * @param string $txt
+     */
+    public static function encode($txt='')
+    { return utf8_encode(stripcslashes(spChars(htmlentities($txt, ENT_COMPAT, 'iso-8859-1')))); }
+
+    /**
+     * Decodiert UTF8 Text in das aktuelle Charset der Seite.
+     *
+     * @param utf8 string $txt
+     */
+    public static function decode($txt='')
+    { return trim(stripslashes(spChars(html_entity_decode(utf8_decode($txt), ENT_COMPAT, 'iso-8859-1'),true))); }
+}
+
 //-> Speichert Rückgaben der MySQL Datenbank zwischen um SQL-Queries einzusparen
 final class dbc_index {
     private static $index = array();
@@ -2475,7 +2486,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index')
             include_once(basePath.'/inc/menu-functions/login.php');
         else {
             $check_msg = check_msg(); set_lastvisit(); $login = "";
-            db("UPDATE ".$db['users']." SET `time` = '".time()."', `whereami` = '".up($where,true)."' WHERE id = '".intval($userid)."'");
+            db("UPDATE ".$db['users']." SET `time` = '".time()."', `whereami` = '".up($where)."' WHERE id = '".intval($userid)."'");
         }
 
         //init templateswitch

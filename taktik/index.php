@@ -178,10 +178,10 @@ case 'do':
         $qry = db("INSERT INTO ".$db['taktik']."
                    SET `datum`      = '".time()."',
                        `map`        = '".up($_POST['map'])."',
-                       `spart`      = '".up($_POST['spart'], 1)."',
-                       `sparct`     = '".up($_POST['sparct'], 1)."',
-                       `standardt`  = '".up($_POST['standardt'], 1)."',
-                       `standardct` = '".up($_POST['standardct'], 1)."',
+                       `spart`      = '".up($_POST['spart'])."',
+                       `sparct`     = '".up($_POST['sparct'])."',
+                       `standardt`  = '".up($_POST['standardt'])."',
+                       `standardct` = '".up($_POST['standardct'])."',
                        `autor`      = '".((int)$userid)."'");
 
         $index = info(_taktik_added, "../taktik/");
@@ -229,10 +229,10 @@ case 'do':
       } else {
         $qry = db("UPDATE ".$db['taktik']."
                    SET `map`        = '".up($_POST['map'])."',
-                       `sparct`     = '".up($_POST['sparct'], 1)."',
-                       `spart`      = '".up($_POST['spart'], 1)."',
-                       `standardct` = '".up($_POST['standardct'], 1)."',
-                       `standardt`  = '".up($_POST['standardt'], 1)."'
+                       `sparct`     = '".up($_POST['sparct'])."',
+                       `spart`      = '".up($_POST['spart'])."',
+                       `standardct` = '".up($_POST['standardct'])."',
+                       `standardt`  = '".up($_POST['standardt'])."'
                    WHERE id = ".intval($_POST['id']));
 
         $index = info(_error_taktik_edited, "../taktik/");

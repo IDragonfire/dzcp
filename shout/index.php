@@ -37,9 +37,9 @@ default:
 
       $qry = db("INSERT INTO ".$db['shout']."
                  SET `datum`  = '".time()."',
-                     `nick`   = '".up($_POST['name'],'','UTF-8')."',
-                     `email`  = '".up($reg,'','UTF-8')."',
-                     `text`   = '".up(substr(str_replace("\n", ' ', $_POST['eintrag']),0,config('shout_max_zeichen')),'','UTF-8')."',
+                     `nick`   = '".up($_POST['name'])."',
+                     `email`  = '".up($reg)."',
+                     `text`   = '".up(substr(str_replace("\n", ' ', $_POST['eintrag']),0,config('shout_max_zeichen')))."',
                      `ip`     = '".$userip."'");
 
       setIpcheck("shout");

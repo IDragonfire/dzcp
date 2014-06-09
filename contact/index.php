@@ -162,7 +162,7 @@ case 'do';
                                 `von`       = '0',
                                 `an`        = '".((int)$get['id'])."',
                                 `titel`     = '"._contact_title."',
-                                `nachricht` = '".up($text, 1)."'");
+                                `nachricht` = '".up($text)."'");
             }
 
             $qry = db("SELECT s2.`user` FROM ".$db['permissions']." AS s1
@@ -176,7 +176,7 @@ case 'do';
                                 `von`       = '0',
                                 `an`        = '".((int)$get['user'])."',
                                 `titel`     = '"._contact_title."',
-                                `nachricht` = '".up($text, 1)."'");
+                                `nachricht` = '".up($text)."'");
             }
 
             $index = info(_contact_sended, "../news/");
@@ -226,7 +226,7 @@ case 'do';
                         `von`       = '0',
                         `an`        = '".((int)$get['id'])."',
                         `titel`     = '"._contact_title_joinus."',
-                        `nachricht` = '".up($text, 1)."'");
+                        `nachricht` = '".up($text)."'");
       }
 
       $qry = db("SELECT s2.`user` FROM ".$db['permissions']." AS s1
@@ -239,7 +239,7 @@ case 'do';
                         `von`       = '0',
                         `an`        = '".((int)$get['user'])."',
                         `titel`     = '"._contact_title_joinus."',
-                        `nachricht` = '".up($text, 1)."'");
+                        `nachricht` = '".up($text)."'");
       }
 
       $index = info(_contact_joinus_sended, "../news/");
@@ -301,7 +301,7 @@ case 'do';
                        `von`        = '0',
                        `an`         = '".((int)$get['user'])."',
                        `titel`      = '"._contact_title_fightus."',
-                       `nachricht`  = '".up($msg, 1)."'");
+                       `nachricht`  = '".up($msg)."'");
 
       }
 
@@ -316,7 +316,7 @@ case 'do';
                        `von`        = '0',
                        `an`         = '".((int)$get['user'])."',
                        `titel`      = '"._contact_title_fightus."',
-                       `nachricht`  = '".up($msg, 1)."'");
+                       `nachricht`  = '".up($msg)."'");
       }
       $index = info(_contact_fightus_sended, "../news/");
     }

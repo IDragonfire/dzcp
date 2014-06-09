@@ -208,7 +208,7 @@ case 'do';
                      `email`      = '".up($_POST['email'])."',
                      `hp`         = '".links($_POST['hp'])."',
                      `reg`        = '".((int)$userid)."',
-                     `nachricht`  = '".up($_POST['eintrag'], 1)."',
+                     `nachricht`  = '".up($_POST['eintrag'])."',
                      `ip`         = '".$userip."'");
 
         setIpcheck("gb");
@@ -305,7 +305,7 @@ case 'do';
 
         $upd = db("UPDATE ".$db['gb']."
                    SET ".$addme."
-                       `nachricht`  = '".up($_POST['eintrag'], 1)."',
+                       `nachricht`  = '".up($_POST['eintrag'])."',
                        `reg`        = '".((int)$_POST['reg'])."',
                        `editby`     = '".addslashes($editedby)."'
                    WHERE id = '".intval($_GET['id'])."'");
@@ -381,7 +381,7 @@ case 'admin';
 
       $comment = show($dir."/commentlayout", array("nick" => autor($userid),
                                                    "datum" => date("d.m.Y H:i", time())._uhr,
-                                                   "comment" => up($_POST['comment'], 1),
+                                                   "comment" => up($_POST['comment']),
                                                    "nachricht" => $get['nachricht']));
 
       $upd = db("UPDATE ".$db['gb']."

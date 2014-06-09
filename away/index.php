@@ -156,7 +156,7 @@ $where = $where.' - '._away_new;
                                  `start`= '".((int)$abdata)."',
                                  `end`= '".((int)$time)."',
                             `titel`= '".up($_POST['titel'])."',
-                            `reason`= '".up($_POST['reason'],1)."',
+                            `reason`= '".up($_POST['reason'])."',
                             `date`= '".time()."'");
 
 
@@ -279,7 +279,7 @@ case 'edit';
                     SET `start`= '".((int)$abdata)."',
                           `end`= '".((int)$time)."',
                         `titel`= '".up($_POST['titel'])."',
-                        `reason`= '".up($_POST['reason'], 1)."',
+                        `reason`= '".up($_POST['reason'])."',
                         `lastedit`= '".addslashes($editedby)."'
                         WHERE id = '".intval($_GET['id'])."'");
 

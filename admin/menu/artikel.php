@@ -89,7 +89,7 @@ switch($do) {
                     SET `autor`  = '".((int)$userid)."',
                         `kat`    = '".((int)$_POST['kat'])."',
                         `titel`  = '".up($_POST['titel'])."',
-                        `text`   = '".up($_POST['artikel'],1)."',
+                        `text`   = '".up($_POST['artikel'])."',
                         `link1`  = '".up($_POST['link1'])."',
                         `link2`  = '".up($_POST['link2'])."',
                         `link3`  = '".up($_POST['link3'])."',
@@ -155,7 +155,7 @@ switch($do) {
             db("UPDATE ".$db['artikel']."
                 SET `kat`    = '".((int)$_POST['kat'])."',
                     `titel`  = '".up($_POST['titel'])."',
-                    `text`   = '".up($_POST['artikel'],1)."',
+                    `text`   = '".up($_POST['artikel'])."',
                     `link1`  = '".up($_POST['link1'])."',
                     `link2`  = '".up($_POST['link2'])."',
                     `link3`  = '".up($_POST['link3'])."',

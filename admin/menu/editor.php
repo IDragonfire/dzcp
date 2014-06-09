@@ -100,7 +100,7 @@ if(_adminMenu != 'true') exit;
         } else {
           $qry = db("INSERT INTO ".$db['sites']."
                      SET `titel` = '".up($_POST['titel'])."',
-                         `text`  = '".up($_POST['inhalt'],1)."',
+                         `text`  = '".up($_POST['inhalt'])."',
                          `html`  = '".((int)$_POST['html'])."'");
           $insert_id = mysqli_insert_id($mysql);
 
@@ -225,7 +225,7 @@ if(_adminMenu != 'true') exit;
         } else {
           $qry = db("UPDATE ".$db['sites']."
                      SET `titel` = '".up($_POST['titel'])."',
-                         `text`  = '".up($_POST['inhalt'],1)."',
+                         `text`  = '".up($_POST['inhalt'])."',
                          `html`   = '".((int)$_POST['html'])."'
                      WHERE id = '".intval($_GET['id'])."'");
 

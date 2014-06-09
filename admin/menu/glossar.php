@@ -26,7 +26,7 @@ if(_adminMenu != 'true') exit;
         } else {
           $ins = db("INSERT INTO ".$db['glossar']."
                      SET `word`    = '".up($_POST['link'])."',
-                         `glossar` = '".up($_POST['beschreibung'],1)."'");
+                         `glossar` = '".up($_POST['beschreibung'])."'");
 
           $show = info(_admin_glossar_added,'?admin=glossar');
         }
@@ -52,7 +52,7 @@ if(_adminMenu != 'true') exit;
         } else {
           $ins = db("UPDATE ".$db['glossar']."
                      SET `word`    = '".up($_POST['link'])."',
-                         `glossar` = '".up($_POST['beschreibung'],1)."'
+                         `glossar` = '".up($_POST['beschreibung'])."'
                      WHERE id = '".intval($_GET['id'])."'");
 
           $show = info(_admin_glossar_edited,'?admin=glossar');

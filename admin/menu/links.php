@@ -52,7 +52,7 @@ if(_adminMenu != 'true') exit;
                      SET `url`          = '".links($_POST['link'])."',
                          `text`         = '".up($_POST['text'])."',
                          `banner`       = '".up($_POST['banner'])."',
-                         `beschreibung` = '".up($_POST['beschreibung'], 1)."'");
+                         `beschreibung` = '".up($_POST['beschreibung'])."'");
 
           $show = info(_link_added, "?admin=links");
         }
@@ -99,7 +99,7 @@ if(_adminMenu != 'true') exit;
                        SET `url`          = '".links($_POST['link'])."',
                            `text`         = '".up($_POST['text'])."',
                            `banner`       = '".up($_POST['banner'])."',
-                           `beschreibung` = '".up($_POST['beschreibung'],1)."'
+                           `beschreibung` = '".up($_POST['beschreibung'])."'
                        WHERE id = '".intval($_GET['id'])."'");
 
           $show = info(_link_edited, "?admin=links");

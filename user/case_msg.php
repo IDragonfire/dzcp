@@ -130,7 +130,7 @@ if(defined('_UserMenu')) {
                                 `von`        = '".((int)$_POST['von'])."',
                              `an`         = '".((int)$_POST['an'])."',
                              `titel`      = '".up($_POST['titel'])."',
-                             `nachricht`  = '".up($_POST['eintrag'], 1)."',
+                             `nachricht`  = '".up($_POST['eintrag'])."',
                              `see`        = '1'");
 
               $qry = db("UPDATE ".$db['userstats']."
@@ -293,7 +293,7 @@ if(defined('_UserMenu')) {
                        `von`        = '".((int)$userid)."',
                        `an`         = '".((int)$to)."',
                        `titel`      = '".up($_POST['titel'])."',
-                       `nachricht`  = '".up($_POST['eintrag'], 1)."',
+                       `nachricht`  = '".up($_POST['eintrag'])."',
                        `see`        = '1'");
 
             $qry = db("UPDATE ".$db['userstats']."

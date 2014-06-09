@@ -323,7 +323,7 @@ switch ($action):
                         if(move_uploaded_file($tmpname, basePath."/inc/images/uploads/usergallery/".$userid."_".strtolower($_FILES['file']['name']))) {
                             db("INSERT INTO ".$db['usergallery']."
                                SET `user`         = '".((int)$userid)."',
-                                   `beschreibung` = '".up($_POST['beschreibung'],1)."',
+                                   `beschreibung` = '".up($_POST['beschreibung'])."',
                                    `pic`          = '".up(strtolower($_FILES['file']['name']))."'");
 
                             $index = info(_info_upload_success, "../user/?action=editprofile&show=gallery");
@@ -376,7 +376,7 @@ switch ($action):
                     if(empty($index))
                     {
                         db("UPDATE ".$db['usergallery']."
-                            SET ".$pic."`beschreibung` = '".up($_POST['beschreibung'],1)."'
+                            SET ".$pic."`beschreibung` = '".up($_POST['beschreibung'])."'
                             WHERE id = '".intval($_POST['id'])."'
                             AND `user` = '".((int)$userid)."'");
 

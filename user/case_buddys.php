@@ -74,7 +74,7 @@ if(defined('_UserMenu')) {
                         `von`       = '0',
                         `an`        = '".((int)$_POST['users'])."',
                         `titel`     = '".up($title)."',
-                        `nachricht` = '".up($msg, 1)."'");
+                        `nachricht` = '".up($msg)."'");
 
                 $index = info(_add_buddy_successful, "?action=buddys");
             }
@@ -99,7 +99,7 @@ if(defined('_UserMenu')) {
                         `von`       = '0',
                         `an`        = '".((int)$user)."',
                         `titel`     = '".up($title)."',
-                        `nachricht` = '".up($msg, 1)."'");
+                        `nachricht` = '".up($msg)."'");
 
                 $index = info(_add_buddy_successful, "?action=buddys");
             }
@@ -116,7 +116,7 @@ if(defined('_UserMenu')) {
                     `von`       = '0',
                     `an`        = '".((int)$_GET['id'])."',
                     `titel`     = '".up($title)."',
-                    `nachricht` = '".up($msg, 1)."'");
+                    `nachricht` = '".up($msg)."'");
 
             $index = info(_buddys_delete_successful, "../user/?action=buddys");
         }
