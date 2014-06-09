@@ -22,9 +22,14 @@ switch ($action):
         $qry = db("SELECT * FROM ".$db['sponsoren']." WHERE site = 1 ORDER BY pos");
         while($get = _fetch($qry)) {
             if(empty($get['slink'])) {
+                foreach($picformat AS $end) {
+                    if(file_exists(basePath.'/banner/sponsors/site_'.$get['id'].'.'.$end))
+                        break;
+                }
+
                 $banner = show(_sponsors_bannerlink, array("id" => $get['id'],
                                                            "title" => str_replace('http://', '', re($get['link'])),
-                                                           "banner" => "../banner/sponsors/site_".$get['id'].".".re($get['send'])));
+                                                           "banner" => "../banner/sponsors/site_".$get['id'].".".$end));
             } else {
                 $banner = show(_sponsors_bannerlink, array("id" => $get['id'],
                                                            "title" => str_replace('http://', '', re($get['link'])),
