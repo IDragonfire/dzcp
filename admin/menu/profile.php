@@ -40,7 +40,7 @@ if(_adminMenu != 'true') exit;
                      SET `feldname` = '".$feldname."'
                              WHERE id = '".intval($insID)."'");
 
-              $add = db("ALTER TABLE `".$db['users']."` ADD `".$feldname."` VARCHAR( 249 ) NOT NULL");
+              $add = db("ALTER TABLE `".$db['users']."` ADD `".$feldname."` varchar(249) NOT NULL DEFAULT ''");
 
               $show = info(_profile_added,"?admin=profile");
         }

@@ -1609,4 +1609,12 @@ function update_mysql_1_6_1()
       `dns` varchar(200) NOT NULL DEFAULT '',
       PRIMARY KEY (`id`),
       KEY `sessid` (`sessid`)) ENGINE=MEMORY;");
+
+    //Set default for profile
+    $qry = db("SELECT feldname FROM `".$db['profile']."` WHERE `feldname` LIKE '%custom_%'");
+    if(_rows($qry) >= 1) {
+        while($get = _fetch($qry)) {
+            db("ALTER TABLE `".$db['users']."` CHANGE `".$get['feldname']."` `".$get['feldname']."` VARCHAR(249) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
+        }
+    }
 }
