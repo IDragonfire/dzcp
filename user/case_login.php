@@ -7,8 +7,16 @@
 if(defined('_UserMenu')) {
     $where = _site_user_login;
     if($do == "yes") {
-        if(config('securelogin') && ($_POST['secure'] != $_SESSION['sec_login'] || empty($_SESSION['sec_login'])))
-            $index = error(_error_invalid_regcode, 1);
+
+        ## Prüfe ob der Secure Code aktiviert ist und richtig eingegeben wurde ##
+        switch (isset($_GET['from']) ? $_GET['from'] : 'default')
+        {
+            case 'menu': $securimage->namespace = 'menu_login'; break;
+            default: $securimage->namespace = 'default'; break;
+        }
+
+        if(settings('securelogin') && isset($_POST['secure']) && !$securimage->check($_POST['secure']))
+            $index = error(captcha_mathematic ? _error_invalid_regcode_mathematic : _error_invalid_regcode);
         else {
             if(checkpwd($_POST['user'], md5($_POST['pwd']))) {
                 $get = db_stmt("SELECT id,user,nick,pwd,email,level,time FROM ".$db['users']." WHERE user = ? AND pwd = ? AND level != '0'", array('ss', up($_POST['user']), md5($_POST['pwd'])),false,true);

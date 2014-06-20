@@ -8,7 +8,7 @@
 //-> DZCP Settings Start
 #########################################
 
-define('view_error_reporting', false); // Zeigt alle Fehler und Notices etc.
+define('view_error_reporting', true); // Zeigt alle Fehler und Notices etc.
 define('debug_all_sql_querys', false);
 define('debug_save_to_file', false);
 define('debug_dzcp_handler', true);
@@ -46,6 +46,9 @@ define('steam_infos_cache', true); //Sollen die Profil Daten zwischen gespeicher
 define('steam_only_proxy', false); //Sollen soll nur der Steam Proxy Server verwendet werden
 
 define('ts3dns_server', true); //Sollen Teamspeak 3 DNS Server erkannt werden
+
+define('captcha_case_sensitive', false); //Unterscheidet Groß und Kleinschreibung beim Captcha
+define('captcha_mathematic', false); //Stellt den Usern einfache Rechenaufgaben anstelle eines Captcha Codes
 
 /*
 * Bitte vor der Aktivierung der Persistent Connections lesen:
@@ -188,6 +191,7 @@ $db = array("host" =>           $sql_host,
             "cw" =>             $prefix."clanwars",
             "cw_comments" =>    $prefix."cw_comments",
             "cw_player" =>      $prefix."clanwar_players",
+            "captcha" =>        $prefix.'captcha',
             "downloads" =>      $prefix."downloads",
             "dl_kat" =>         $prefix."download_kat",
             "events" =>         $prefix."events",

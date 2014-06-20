@@ -27,8 +27,8 @@ if(defined('_UserMenu')) {
             $index = info(_lostpwd_valid, "../user/?action=login");
         } else {
             setIpcheck("trypwd(".$get['id'].")");
-            if($_POST['secure'] != $_SESSION['sec_lostpwd'] || empty($_SESSION['sec_lostpwd']))
-                $index = error(_error_invalid_regcode,1);
+            if(settings('securelogin') && isset($_POST['secure']) && !$securimage->check($_POST['secure']))
+                $index = error(captcha_mathematic ? _error_invalid_regcode_mathematic : _error_invalid_regcode,1);
             else
                 $index = error(_lostpwd_failed, 1);
             }

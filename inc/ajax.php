@@ -11,9 +11,9 @@ ob_implicit_flush(false);
     $ajaxJob = true;
 
     ## INCLUDES ##
-    include(basePath."/inc/debugger.php");
-    include(basePath."/inc/config.php");
-    include(basePath."/inc/bbcode.php");
+    require(basePath."/inc/debugger.php");
+    require(basePath."/inc/config.php");
+    require(basePath."/inc/bbcode.php");
 
     ## FUNCTIONS ##
     require_once(basePath."/inc/menu-functions/server.php");
@@ -54,13 +54,50 @@ ob_implicit_flush(false);
     }
 
     ## SECTIONS ##
-    switch (isset($_GET['i']) ? $_GET['i'] : ''):
+    //Hack for Audio Securimage
+    $mod = isset($_GET['i']) ? $_GET['i'] : '';
+    $mod_exp = @explode('@', $mod);
+    if(count($mod_exp) >= 2 && $mod_exp[0] == 'securimage_audio') {
+        $audio_namespace = $mod_exp[1];
+        $mod = $mod_exp[0];
+    }
+
+    if($mod != 'securimage' && $mod != 'securimage_audio')
+        header("Content-Type: text/xml; charset=".(!defined('_charset') ? 'iso-8859-1' : _charset));
+    else if($mod == 'server' || $mod == 'teamspeak')
+        header("Content-type: application/x-www-form-urlencoded;charset=utf-8");
+
+    switch ($mod):
         case 'kalender';  echo kalender($_GET['month'],$_GET['year']); break;
         case 'teams';     echo team($_GET['tID']); break;
         case 'server';    echo '<table class="hperc" cellspacing="0">'.server($_GET['serverID']).'</table>'; break;
         case 'shoutbox';  echo '<table class="hperc" cellspacing="1">'.shout(1).'</table>'; break;
         case 'teamspeak'; echo '<table class="hperc" cellspacing="0">'.teamspeak(1).'</table>'; break;
         case 'steam';     echo steamIMG(trim($_GET['steamid'])); break;
+        case 'securimage':
+            if(!headers_sent()) {
+                $securimage->background_directory = basePath.'/inc/images/securimage/background/';
+                $securimage->code_length  = rand(4, 6);
+                $securimage->image_height = isset($_GET['height']) ? ((int)$_GET['height']) : 40;
+                $securimage->image_width  = isset($_GET['width']) ? ((int)$_GET['width']) : 200;
+                $securimage->perturbation = .75;
+                $securimage->text_color   = new Securimage_Color("#CA0000");
+                $securimage->num_lines    = isset($_GET['lines']) ? ((int)$_GET['lines']) : 2;
+                $securimage->namespace    = isset($_GET['namespace']) ? $_GET['namespace'] : 'default';
+                if(isset($_GET['length'])) $securimage->code_length = ((int)$_GET['length']);
+                die($securimage->show());
+            }
+            break;
+
+        case 'securimage_audio':
+            if(!headers_sent()) {
+                if(file_exists(basePath.'/inc/securimage/audio/en/0.wav'))
+                    $securimage->audio_path = basePath.'/inc/additional-kernel/securimage/audio/en/';
+
+                $securimage->namespace = isset($audio_namespace) ? $audio_namespace : 'default';
+                die($securimage->outputAudioFile());
+            }
+            break;
     endswitch;
 
     if(!mysqli_persistconns)

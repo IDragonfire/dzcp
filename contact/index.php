@@ -128,8 +128,8 @@ switch ($action):
 case 'do';
     if($_GET['what'] == "contact")
     {
-        if($_POST['secure'] != $_SESSION['sec_contact'] || empty($_SESSION['sec_contact']))
-            $index = error(_error_invalid_regcode,1);
+        if(checkme() == "unlogged" && !$securimage->check($_POST['secure']))
+            $index = error((captcha_mathematic ? _error_invalid_regcode_mathematic : _error_invalid_regcode),1);
         elseif(empty($_POST['text']))
             $index = error(_error_empty_nachricht, 1);
         elseif(empty($_POST['email']))
@@ -182,8 +182,8 @@ case 'do';
             $index = info(_contact_sended, "../news/");
         }
     } elseif($_GET['what'] == "joinus") {
-    if($_POST['secure'] != $_SESSION['sec_joinus'] || empty($_SESSION['sec_joinus']))
-      $index = error(_error_invalid_regcode,1);
+    if(checkme() == "unlogged" && !$securimage->check($_POST['secure']))
+        $index = error((captcha_mathematic ? _error_invalid_regcode_mathematic : _error_invalid_regcode),1);
     elseif(empty($_POST['text']))
       $index = error(_error_empty_nachricht, 1);
     elseif(empty($_POST['age']))
@@ -245,8 +245,8 @@ case 'do';
       $index = info(_contact_joinus_sended, "../news/");
     }
   } elseif($_GET['what'] == "fightus") {
-    if($_POST['secure'] != $_SESSION['sec_fightus'] || empty($_SESSION['sec_fightus']))
-      $index = error(_error_invalid_regcode,1);
+    if(checkme() == "unlogged" && !$securimage->check($_POST['secure']))
+        $index = error((captcha_mathematic ? _error_invalid_regcode_mathematic : _error_invalid_regcode),1);
     elseif(empty($_POST['clan']))
       $index = error(_error_empty_clanname, 1);
     elseif(empty($_POST['email']))

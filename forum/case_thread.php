@@ -150,7 +150,7 @@ if(defined('_Forum')) {
       {
         $toCheck = empty($_POST['eintrag']);
       } else {
-        $toCheck = empty($_POST['topic']) || empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['eintrag']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
+        $toCheck = empty($_POST['topic']) || empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['eintrag']) || !$securimage->check($_POST['secure']);
       }
 
       if($toCheck)
@@ -162,7 +162,7 @@ if(defined('_Forum')) {
                                                    "von" => _autor));
 
         } else {
-          if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir])) $error = _error_invalid_regcode;
+          if(!$securimage->check($_POST['secure'])) $error = captcha_mathematic ? _error_invalid_regcode_mathematic : _error_invalid_regcode;
           elseif(empty($_POST['topic'])) $error = _empty_topic;
             elseif(empty($_POST['nick'])) $error = _empty_nick;
             elseif(empty($_POST['email'])) $error = _empty_email;
@@ -547,7 +547,7 @@ if(defined('_Forum')) {
             if($userid >= 1)
                 $toCheck = empty($_POST['eintrag']) || empty($_POST['topic']);
             else
-                $toCheck = empty($_POST['topic']) || empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['eintrag']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
+                $toCheck = empty($_POST['topic']) || empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['eintrag']) || !check_email($_POST['email']) || !$securimage->check($_POST['secure']);
             if($toCheck)
             {
                 if($userid >= 1)
@@ -555,7 +555,7 @@ if(defined('_Forum')) {
                     if(empty($_POST['eintrag'])) $error = _empty_eintrag;
                     elseif(empty($_POST['topic'])) $error = _empty_topic;
                 } else {
-                    if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir])) $error = _error_invalid_regcode;
+                    if(!$securimage->check($_POST['secure'])) $error = captcha_mathematic ? _error_invalid_regcode_mathematic : _error_invalid_regcode;
                     elseif(empty($_POST['topic'])) $error = _empty_topic;
                     elseif(empty($_POST['nick'])) $error = _empty_nick;
                     elseif(empty($_POST['email'])) $error = _empty_email;

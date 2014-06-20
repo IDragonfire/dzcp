@@ -354,11 +354,13 @@ switch ($do) {
 
         //Remove minimize
         $files = get_files(basePath."/inc/images/uploads/news/",false,true,$picformat);
-        foreach ($files as $file) {
-            if(preg_match("#".intval($_GET['id'])."(.*?).(gif|jpg|jpeg|png)#",strtolower($file))!= FALSE) {
-                $res = preg_match("#".intval($_GET['id'])."_(.*)#",$file,$match);
-                if(file_exists(basePath."/inc/images/uploads/news/".intval($_GET['id'])."_".$match[1]))
-                    @unlink(basePath."/inc/images/uploads/news/".intval($_GET['id'])."_".$match[1]);
+        if($files) {
+            foreach ($files as $file) {
+                if(preg_match("#".intval($_GET['id'])."(.*?).(gif|jpg|jpeg|png)#",strtolower($file))!= FALSE) {
+                    $res = preg_match("#".intval($_GET['id'])."_(.*)#",$file,$match);
+                    if(file_exists(basePath."/inc/images/uploads/news/".intval($_GET['id'])."_".$match[1]))
+                        @unlink(basePath."/inc/images/uploads/news/".intval($_GET['id'])."_".$match[1]);
+                }
             }
         }
 
@@ -415,6 +417,9 @@ switch ($do) {
                                                     "edit" => $edit,
                                                     "delete" => $delete));
         }
+
+        if(empty($show))
+            $show = '<tr><td colspan="3" class="contentMainSecond">'._no_entrys.'</td></tr>';
 
         $nav = nav($entrys,config('m_adminnews'),"?admin=newsadmin".(isset($_GET['show']) ? $_GET['show'].orderby_nav() : orderby_nav()));
         $show = show($dir."/admin_news", array("head" => _news_admin_head,

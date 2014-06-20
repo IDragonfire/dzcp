@@ -60,7 +60,7 @@ if(defined('_Forum')) {
       {
         $toCheck = empty($_POST['eintrag']);
       } else {
-        $toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['eintrag']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
+        $toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['eintrag']) || !$securimage->check($_POST['secure']);
       }
 
       if($toCheck)
@@ -71,11 +71,11 @@ if(defined('_Forum')) {
               $form = show("page/editor_regged", array("nick" => autor($userid),
                                                    "von" => _autor));
           } else {
-          if(($_POST['secure'] != $_SESSION['sec_'.$dir]) && !$userid) $error = _error_invalid_regcode;
+          if(!$securimage->check($_POST['secure']) && !userid()) $error = captcha_mathematic ? _error_invalid_regcode_mathematic : _error_invalid_regcode;
           elseif(empty($_POST['nick'])) $error = _empty_nick;
-              elseif(empty($_POST['email'])) $error = _empty_email;
-              elseif(!check_email($_POST['email'])) $error = _error_invalid_email;
-              elseif(empty($_POST['eintrag']))$error = _empty_eintrag;
+          elseif(empty($_POST['email'])) $error = _empty_email;
+          elseif(!check_email($_POST['email'])) $error = _error_invalid_email;
+          elseif(empty($_POST['eintrag']))$error = _empty_eintrag;
           $form = show("page/editor_notregged", array("nickhead" => _nick,
                                                       "emailhead" => _email,
                                                       "hphead" => _hp));
@@ -433,7 +433,7 @@ if(defined('_Forum')) {
                 }
 
                 if($userid >= 1) $toCheck = empty($_POST['eintrag']);
-                else $toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['eintrag']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
+                else $toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['eintrag']) || !check_email($_POST['email']) || !$securimage->check($_POST['secure']);
 
                 if($toCheck)
                 {
@@ -443,7 +443,7 @@ if(defined('_Forum')) {
                         $form = show("page/editor_regged", array("nick" => autor($userid),
                                                                                                          "von" => _autor));
                     } else {
-                        if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir])) $error = _error_invalid_regcode;
+                        if(!$securimage->check($_POST['secure'])) $error = captcha_mathematic ? _error_invalid_regcode_mathematic : _error_invalid_regcode;
                         elseif(empty($_POST['nick'])) $error = _empty_nick;
                         elseif(empty($_POST['email'])) $error = _empty_email;
                         elseif(!check_email($_POST['email'])) $error = _error_invalid_email;

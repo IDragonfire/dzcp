@@ -638,6 +638,7 @@ define('_pn_write' , '<a href="../user/?action=msg&amp;do=pn&amp;id=[id]"><img s
 define('_forum_new_thread' , '<a href="?action=thread&amp;do=add&amp;kid=[id]"><img src="../inc/images/forum_new.gif" alt="" title="Insert thread" class="icon" /></a>');
 //--------------------------------------------\\
 define('_error_invalid_regcode' , 'The entered safety code does not agree with the character sequence indicated in the diagram!');
+define('_error_invalid_regcode_mathematic', 'Your calculation result from security code is not correct!');
 define('_welcome_guest' , ' <img src="../inc/images/flaggen/nocountry.gif" alt="" class="icon" /> <a class="welcome" href="../user/?action=register">Guest</a>');
 define('_online_head' , 'User online');
 define('_online_whereami' , 'Area');

@@ -7,8 +7,8 @@
 if(defined('_UserMenu')) {
     $where = _site_reg;
     if(!$chkMe) {
-        $check_regcode = settings("regcode"); $regcode = "";
-        if($check_regcode) {
+        $regcode = "";
+        if(settings("regcode")) {
             $regcode = show($dir."/register_regcode", array("confirm" => _register_confirm,
                                                             "confirm_add" => _register_confirm_add,));
         }
@@ -43,9 +43,9 @@ if(defined('_UserMenu')) {
 
         $_POST['user'] = trim($_POST['user']); $_POST['nick'] = trim($_POST['nick']);
 
-        if(empty($_POST['user']) || empty($_POST['nick']) || empty($_POST['email']) || ($_POST['pwd'] != $_POST['pwd2']) || ($check_regcode && ($_POST['confirm'] != $_SESSION['sec_reg'] || $_SESSION['sec_reg'] == NULL)) || $check_user || $check_nick || $check_email) {
+        if(empty($_POST['user']) || empty($_POST['nick']) || empty($_POST['email']) || ($_POST['pwd'] != $_POST['pwd2']) || (settings("regcode") && !$securimage->check($_POST['secure'])) || $check_user || $check_nick || $check_email) {
 
-        if($check_regcode && ($_POST['confirm'] != $_SESSION['sec_reg'] || $_SESSION['sec_reg'] == NULL))
+        if(settings("regcode") && !$securimage->check($_POST['secure']))
             $error = show("errors/errortable", array("error" => _error_invalid_regcode));
 
         if($_POST['pwd2'] != $_POST['pwd'])
@@ -73,7 +73,7 @@ if(defined('_UserMenu')) {
             $error = show("errors/errortable", array("error" => _error_user_exists));
 
         $regcode = "";
-        if($check_regcode) {
+        if(settings("regcode")) {
             $regcode = show($dir."/register_regcode", array("confirm" => _register_confirm,
                                                             "confirm_add" => _register_confirm_add,));
         }

@@ -21,6 +21,8 @@ require_once(basePath."/inc/teamspeak_query.php");
 require_once(basePath."/inc/phpfastcache/phpfastcache.php");
 require_once(basePath.'/inc/steamapi.php');
 require_once(basePath.'/inc/sfs.php');
+require_once(basePath.'/inc/securimage/securimage_color.php');
+require_once(basePath.'/inc/securimage/securimage.php');
 
 ## Is AjaxJob ##
 $ajaxJob = (!isset($ajaxJob) ? false : $ajaxJob);
@@ -36,13 +38,15 @@ if(!is_dir($config_cache['path'])) //Check cache dir
 $config_cache['securityKey'] = settings('prev',false);
 phpFastCache::setup($config_cache);
 $cache = new phpFastCache();
+$securimage = new Securimage();
 dbc_index::init();
 
 //-> Automatische Datenbank Optimierung
 if(auto_db_optimize && settings('db_optimize',false) <= time() && !$installer && !$updater) {
     @ignore_user_abort(true);
-    sfs::cleanup_db(); db_optimize();
+    sfs::cleanup_db(); db_optimize(); $securimage->clearOldCodesFromDatabase();
     db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time()+auto_db_optimize_interval)."' WHERE `id` = 1;");
+    setIpcheck("db_optimize()");
     @ignore_user_abort(false);
 }
 

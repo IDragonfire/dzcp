@@ -302,7 +302,7 @@ if(defined('_Clanwars')) {
                         if($userid >= 1)
                             $toCheck = empty($_POST['comment']);
                         else
-                            $toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['comment']) || !check_email($_POST['email']) || $_POST['secure'] != $_SESSION['sec_'.$dir] || empty($_SESSION['sec_'.$dir]);
+                            $toCheck = empty($_POST['nick']) || empty($_POST['email']) || empty($_POST['comment']) || !check_email($_POST['email']) || !$securimage->check($_POST['secure']);
 
                         if($toCheck) {
                             if($userid >= 1) {
@@ -311,8 +311,8 @@ if(defined('_Clanwars')) {
 
                                 $form = show("page/editor_regged", array("nick" => autor($userid), "von" => _autor));
                             } else {
-                                if(($_POST['secure'] != $_SESSION['sec_'.$dir]) || empty($_SESSION['sec_'.$dir]))
-                                    $error = _error_invalid_regcode;
+                                if(!$securimage->check($_POST['secure']))
+                                    $error = captcha_mathematic ? _error_invalid_regcode_mathematic : _error_invalid_regcode;
                                 elseif(empty($_POST['nick']))
                                     $error = _empty_nick;
                                 elseif(empty($_POST['email']))

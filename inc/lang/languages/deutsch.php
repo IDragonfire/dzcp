@@ -637,6 +637,7 @@ define('_pn_write', '<a href="../user/?action=msg&amp;do=pn&amp;id=[id]"><img sr
 define('_forum_new_thread', '<a href="?action=thread&amp;do=add&amp;kid=[id]"><img src="../inc/images/forum_new.gif" alt="" title="Neuen Thread erstellen" class="icon" /></a>');
 //--------------------------------------------\\
 define('_error_invalid_regcode', 'Der eingegebene Sicherheitsscode stimmt nicht mit der in der Grafik angezeigten Zeichenfolge &uuml;berein!');
+define('_error_invalid_regcode_mathematic', 'Das Rechenergebnis vom Sicherheitscode ist nicht richtig!');
 define('_welcome_guest', ' <img src="../inc/images/flaggen/nocountry.gif" alt="" class="icon" /> <a class="welcome" href="../user/?action=register">Gast</a>');
 define('_online_head', 'User online');
 define('_online_whereami', 'Bereich');

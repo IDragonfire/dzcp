@@ -50,15 +50,14 @@ function set_ftp_chmod($file,$pfad,$host,$user,$pwd) {
 }
 
 function _m ($prefix, $host, $user, $pwd, $db) {
-    $fp = @fopen("../inc/mysql.php","w");
-    @fwrite($fp,"<?php
-                 \$sql_prefix = '".$prefix."';
-                 \$sql_host = '".$host."';
-                 \$sql_user =  '".$user."';
-                 \$sql_pass = '".$pwd."';
-                 \$sql_db = '".$db."';
-               ?>");
-    @fclose($fp);
+$fp = @fopen("../inc/mysql.php","w");
+@fwrite($fp,"<?php
+\$sql_prefix = '".$prefix."';
+\$sql_host = '".$host."';
+\$sql_user =  '".$user."';
+\$sql_pass = '".$pwd."';
+\$sql_db = '".$db."';");
+@fclose($fp);
 }
 
 function get_files($dir) {

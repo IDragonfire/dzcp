@@ -1617,4 +1617,16 @@ function update_mysql_1_6_1()
             db("ALTER TABLE `".$db['users']."` CHANGE `".$get['feldname']."` `".$get['feldname']."` VARCHAR(249) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
         }
     }
+
+    //-> Captcha
+    db("DROP TABLE IF EXISTS ".$db['captcha']);
+    db("CREATE TABLE IF NOT EXISTS `".$db['captcha']."` (
+        `id` varchar(40) NOT NULL,
+        `namespace` varchar(32) NOT NULL,
+        `code` varchar(32) NOT NULL,
+        `code_display` varchar(32) NOT NULL,
+        `created` int(11) NOT NULL,
+        PRIMARY KEY (`id`,`namespace`),
+        KEY `created` (`created`)
+        ) ENGINE=MEMORY;");
 }

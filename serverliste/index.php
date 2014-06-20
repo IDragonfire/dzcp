@@ -66,8 +66,8 @@ switch ($action):
 
     break;
     case 'addserver':
-        if($_POST['secure'] != $_SESSION['sec_slist'] || empty($_SESSION['sec_slist']))
-            $index = error(_error_invalid_regcode,1);
+        if(!$securimage->check($_POST['secure']))
+            $index = error(captcha_mathematic ? _error_invalid_regcode_mathematic : _error_invalid_regcode, 1);
         elseif(empty($_POST['clanname']))
             $index = error(_error_empty_clanname, 1);
         elseif(empty($_POST['ip']))
