@@ -30,13 +30,13 @@ if(defined('_UserMenu')) {
     } elseif($do == "edit")    {
 
         $check_user = db_stmt("SELECT id FROM ".$db['users']." WHERE `user`= ? AND id != ?",
-                array('is', $userid, up($_POST['user'])),true,false);
+                array('si', up($_POST['user'])), $userid,true,false);
 
         $check_nick = db_stmt("SELECT id FROM ".$db['users']." WHERE `nick`= ? AND id != ?",
-                array('is', $userid, up($_POST['nick'])),true,false);
+                array('si', up($_POST['nick'])), $userid,true,false);
 
         $check_email = db_stmt("SELECT id FROM ".$db['users']." WHERE `email`= ? AND id != ?",
-                array('is', $userid, up($_POST['email'])),true,false);
+                array('si', up($_POST['email'])), $userid,true,false);
 
       if(empty($_POST['user']))
       {
