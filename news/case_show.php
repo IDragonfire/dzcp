@@ -63,9 +63,7 @@ if(defined('_News')) {
                             LIMIT ".($page - 1)*config('m_comments').",".config('m_comments')."");
 
                 $entrys = cnt($db['newscomments'], " WHERE news = ".intval($_GET['id']));
-                $i = $entrys-($page - 1)*config('m_comments');
-
-                $comments = ''; $i = 0;
+                $i = ($entrys-($page - 1)*config('m_comments')); $comments = '';
                 while($getc = _fetch($qryc)) {
                     $edit = ""; $delete = "";
                     if(($chkMe >= 1 && $getc['reg'] == $userid) || permission("news")) {
