@@ -16,6 +16,7 @@ include(basePath."/inc/bbcode.php");
 $where = _site_artikel;
 $title = $pagetitle." - ".$where."";
 $dir = "artikel";
+
 ## SECTIONS ##
 switch ($action):
 default:
@@ -193,7 +194,7 @@ case 'show';
                                                     "icq" => "",
                                                     "add" => $add));
 
-            $artikelimage = '../inc/images/newskat/'.$getkat['katimg'];
+            $artikelimage = '../inc/images/newskat/'.re($getkat['katimg']);
             foreach($picformat as $tmpendung) {
                 if(file_exists(basePath."/inc/images/uploads/artikel/".$get['id'].".".$tmpendung)) {
                     $artikelimage = '../inc/images/uploads/artikel/'.$get['id'].'.'.$tmpendung;
@@ -207,7 +208,6 @@ case 'show';
                                                    "display" => "inline",
                                                    "nautor" => _autor,
                                                    "kat" => $artikelimage,
-                                                   "dir" => $designpath,
                                                    "ndatum" => _datum,
                                                    "showmore" => $showmore,
                                                    "icq" => "",
@@ -419,13 +419,20 @@ case 'preview';
       $links = "";
     }
 
+    $artikelimage = '../inc/images/newskat/'.re($getkat['katimg']);
+    foreach($picformat as $tmpendung) {
+        if(file_exists(basePath."/inc/images/uploads/artikel/".$get['id'].".".$tmpendung)) {
+            $artikelimage = '../inc/images/uploads/artikel/'.$get['id'].'.'.$tmpendung;
+            break;
+        }
+    }
+
     $index = show($dir."/show_more", array("titel" => re($_POST['titel']),
                                            "id" => $get['id'],
                                            "comments" => "",
                                            "display" => "inline",
                                            "nautor" => _autor,
-                                           "dir" => $designpath,
-                                           "kat" => re($getkat['katimg']),
+                                           "kat" => $artikelimage,
                                            "ndatum" => _datum,
                                            "showmore" => $showmore,
                                            "icq" => "",
@@ -433,6 +440,7 @@ case 'preview';
                                            "datum" => date("j.m.y H:i")._uhr,
                                            "links" => $links,
                                            "autor" => autor($userid)));
+
     echo '<table class="mainContent" cellspacing="1">'.$index.'</table>';
 
     if(!mysqli_persistconns)
