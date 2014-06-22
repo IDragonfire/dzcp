@@ -3,3 +3,6 @@ inc/mysql.php
 rss.xml
 rss.xml
 *.prefs
+*.txt
+*.jpg
+*.htaccess
