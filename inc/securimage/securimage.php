@@ -1243,7 +1243,7 @@ class Securimage {
      */
     public function clearOldCodesFromDatabase() {
         global $db;
-        $limit = (!is_numeric($this->$expiry_time) || $this->expiry_time < 1) ? 86400 : $this->expiry_time;
+        $limit = (!is_numeric($this->expiry_time) || $this->expiry_time < 1) ? 86400 : $this->expiry_time;
         db("DELETE FROM `".$db['captcha']."` WHERE ".time()." - created > ".$limit);
     }
 
