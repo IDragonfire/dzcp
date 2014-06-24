@@ -50,7 +50,7 @@ if(defined('_News')) {
 
         $newsimage = '../inc/images/newskat/'.re($getkat['katimg']);
         $viewed = show(_news_viewed, array("viewed" => '0'));
-        $index = show($dir."/news_show_full", array("titel" => re($_POST['titel']),
+        $index = show($dir."/news_show_full", array("titel" => $_POST['titel'],
                                                "kat" => $newsimage,
                                                "id" => '_prev',
                                                "comments" => _news_comments_prev,
@@ -63,9 +63,9 @@ if(defined('_News')) {
                                                "ndatum" => _datum,
                                                "ncomments" => _news_kommentare.":",
                                                "klapp" => $klapp,
-                                               "more" => bbcode(re($_POST['morenews']),true),
+                                               "more" => bbcode($_POST['morenews'],true),
                                                "viewed" => $viewed,
-                                               "text" => bbcode(re($_POST['newstext']),true),
+                                               "text" => bbcode($_POST['newstext'],true),
                                                "datum" => date("d.m.y H:i", time())._uhr,
                                                "links" => $links,
                                                "autor" => autor($_SESSION['id'])));

@@ -1214,7 +1214,7 @@ class TSStatus
                 $pfad = "../inc/images/tsicons/server/".$id.".png";
             }
             if(!file_exists($pfad) && $this->_showIcons)  {
-                $dl = $this->parseLine($this->sendCommand($this->_socket, "ftinitdownload clientftfid=".rand(1,99)." name=\/icon_".$id." cid=0 cpw= seekpos=0"));
+                $dl = $this->parseLine($this->sendCommand($this->_socket, "ftinitdownload clientftfid=".mt_rand(1,99)." name=\/icon_".$id." cid=0 cpw= seekpos=0"));
                 $ft = @fsockopen($this->_host, $dl[0]['port'], $errnum, $errstr, 2);
                 if($ft) {
                     fputs($ft, $dl[0]['ftkey']);

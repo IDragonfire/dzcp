@@ -378,11 +378,9 @@ case 'show';
   }
 break;
 case 'preview';
-    header("Content-type: text/html; charset=utf-8");
-
-    $qrykat = db("SELECT katimg FROM ".$db['newskat']."
-                  WHERE id = '".intval($_POST['kat'])."'");
-    $getkat = _fetch($qrykat);
+    header('Content-Type: text/html; charset=utf-8');
+    $getkat = db("SELECT katimg FROM ".$db['newskat']."
+                  WHERE id = '".intval($_POST['kat'])."'",false,true);
 
     if($_POST['url1'])
     {
@@ -427,7 +425,7 @@ case 'preview';
         }
     }
 
-    $index = show($dir."/show_more", array("titel" => re($_POST['titel']),
+    $index = show($dir."/show_more", array("titel" => $_POST['titel'],
                                            "id" => $get['id'],
                                            "comments" => "",
                                            "display" => "inline",
@@ -436,7 +434,7 @@ case 'preview';
                                            "ndatum" => _datum,
                                            "showmore" => $showmore,
                                            "icq" => "",
-                                           "text" => bbcode(re($_POST['artikel']),true),
+                                           "text" => trim(bbcode($_POST['artikel'],true)),
                                            "datum" => date("j.m.y H:i")._uhr,
                                            "links" => $links,
                                            "autor" => autor($userid)));

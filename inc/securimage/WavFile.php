@@ -41,7 +41,7 @@
 * @license BSD License
 *
 * Changelog:
-* 
+*
 *   1.0 (10/2/2012)
 *     - Fix insertSilence() creating invalid block size
 *
@@ -1756,9 +1756,9 @@ class WavFile
 
         for ($s = 0; $s < $numSamples; ++$s) {
             if ($bitDepth == 32) {
-                $val = rand(-$percent * 10000, $percent * 10000) / 1000000;
+                $val = mt_rand(-$percent * 10000, $percent * 10000) / 1000000;
             } else {
-                $val = rand($minAmp, $maxAmp);
+                $val = mt_rand($minAmp, $maxAmp);
                 $val = (int)($val * $percent / 100);
             }
 

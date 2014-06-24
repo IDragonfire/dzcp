@@ -77,7 +77,7 @@ ob_implicit_flush(false);
         case 'securimage':
             if(!headers_sent()) {
                 $securimage->background_directory = basePath.'/inc/images/securimage/background/';
-                $securimage->code_length  = rand(4, 6);
+                $securimage->code_length  = mt_rand(4, 6);
                 $securimage->image_height = isset($_GET['height']) ? ((int)$_GET['height']) : 40;
                 $securimage->image_width  = isset($_GET['width']) ? ((int)$_GET['width']) : 200;
                 $securimage->perturbation = .75;
@@ -92,7 +92,7 @@ ob_implicit_flush(false);
         case 'securimage_audio':
             if(!headers_sent()) {
                 if(file_exists(basePath.'/inc/securimage/audio/en/0.wav'))
-                    $securimage->audio_path = basePath.'/inc/additional-kernel/securimage/audio/en/';
+                    $securimage->audio_path = basePath.'/inc/securimage/audio/en/';
 
                 $securimage->namespace = isset($audio_namespace) ? $audio_namespace : 'default';
                 die($securimage->outputAudioFile());

@@ -75,7 +75,7 @@ function get_files($dir) {
 
 function makePrev() {
     $arr = array(0,1,2,3,4,5,6,7,8,9);
-    return $arr[rand(0,9)].$arr[rand(0,9)].$arr[rand(0,9)];
+    return $arr[mt_rand(0,9)].$arr[mt_rand(0,9)].$arr[mt_rand(0,9)];
 }
 
 /**

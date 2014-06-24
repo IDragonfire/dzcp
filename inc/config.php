@@ -266,7 +266,8 @@ function db($query='',$rows=false,$fetch=false) {
     if($updater) { $qry = $mysql->query($query); } else {
         if(!$qry = $mysql->query($query)) {
             DebugConsole::sql_error_handler($query);
-            die('<b>Upps...</b><br /><br />Entschuldige bitte! Das h&auml;tte nicht passieren d&uuml;rfen. Wir k&uuml;mmern uns so schnell wie m&ouml;glich darum.<br><br>'.$clanname.'<br><br>'._back);
+            include_once(basePath."/inc/lang/languages/english.php");
+            die(show('<b>Upps...</b><br /><br />Entschuldige bitte! Das h&auml;tte nicht passieren d&uuml;rfen. Wir k&uuml;mmern uns so schnell wie m&ouml;glich darum.<br><br>'.$clanname.'<br><br>[lang_back]'));
         }
     }
 

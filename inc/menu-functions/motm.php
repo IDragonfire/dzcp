@@ -22,7 +22,7 @@ function motm() {
             }
         }
 
-        $arrayID = rand(0, count($temparr) - 1);
+        $arrayID = mt_rand(0, count($temparr) - 1);
         $uid = $temparr[$arrayID];
 
         $get = db("SELECT `id`,`level`,`status`,`bday` FROM ".$db['users']." WHERE id = '".$uid."'",false,true);

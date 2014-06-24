@@ -413,7 +413,7 @@ function languages() {
 }
 
 //-> Userspezifiesche Dinge
-if($userid >= 1 && $ajaxJob != true)
+if($userid >= 1 && $ajaxJob != true && isset($_SESSION['lastvisit']))
     db("UPDATE ".$db['userstats']." SET `hits` = hits+1, `lastvisit` = '".((int)$_SESSION['lastvisit'])."' WHERE user = ".$userid);
 
 //-> Settings auslesen
@@ -778,7 +778,9 @@ function bbcode($txt, $tinymce=false, $no_vid=false, $ts=false, $nolink=false) {
     $txt = BadwordFilter($txt);
     $txt = replace($txt,$tinymce,$no_vid);
     $txt = highlight_text($txt);
-    $txt = re_bbcode($txt);
+
+    if(!$tinymce)
+        $txt = re_bbcode($txt);
 
     if(!$ts)
         $txt = strip_tags($txt,"<br><object><em><param><embed><strong><iframe><hr><table><tr><td><div><span><a><b><font><i><u><p><ul><ol><li><br /><img>");
@@ -1432,7 +1434,7 @@ function mkpwd() {
     $chars = '1234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
     $len = strlen($chars) - 1; $pw = '';
     for($i = 0; $i < 10; $i++)
-    { $pw .= $chars{rand(0, $len)}; }
+    { $pw .= $chars{mt_rand(0, $len)}; }
     return $pw;
 }
 
@@ -2565,6 +2567,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index')
         $pholdervars = explode("^",$pholdervars);
         for($i=0;$i<=count($pholdervars)-1;$i++)
         { $arr[$pholdervars[$i]] = $$pholdervars[$i]; }
+        $arr['sid'] = (mt_rand(1,10) / 100);
 
         //index output
         $index = (file_exists("../inc/_templates_/".$tmpdir."/".$index_templ.".html") ? show($index_templ, $arr) : show("index", $arr));
