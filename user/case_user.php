@@ -99,7 +99,7 @@ if(defined('_UserMenu')) {
             $qryperm = db("SELECT id,perm_gallery FROM ".$db['users']." WHERE id = ".$_GET['id'],false,true);
             $qryuser = db("SELECT level FROM ".$db['users']." WHERE id = ".$userid,false,true);
             $gal = '';
-            if($qryperm['perm_gallery'] < $qryuser['level'] || $qryperm['id'] == $userid) {
+            if(!$qryperm['perm_gallery'] || $qryperm['perm_gallery'] < $qryuser['level'] || $qryperm['id'] == $userid) {
                 while($getgl = _fetch($qrygl)) {
                     $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
                     $gal .= show($dir."/profil_gallery_show", array("picture" => img_size("inc/images/uploads/usergallery"."/".$qryperm['id']."_".$getgl['pic']),
