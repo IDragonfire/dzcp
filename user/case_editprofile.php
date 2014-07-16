@@ -10,7 +10,7 @@ if(defined('_UserMenu')) {
   {
       $index = error(_error_have_to_be_logged, 1);
   } else {
-    if($_GET['gallery'] == "delete")
+    if(isset($_GET['gallery']) && $_GET['gallery'] == "delete")
     {
       $qrygl = db("SELECT * FROM ".$db['usergallery']."
                    WHERE user = '".$userid."'
@@ -30,13 +30,13 @@ if(defined('_UserMenu')) {
     } elseif($do == "edit")    {
 
         $check_user = db_stmt("SELECT id FROM ".$db['users']." WHERE `user`= ? AND id != ?",
-                array('si', up($_POST['user'])), $userid,true,false);
+                array('si', up($_POST['user']), $userid),true,false);
 
         $check_nick = db_stmt("SELECT id FROM ".$db['users']." WHERE `nick`= ? AND id != ?",
-                array('si', up($_POST['nick'])), $userid,true,false);
+                array('si', up($_POST['nick']), $userid),true,false);
 
         $check_email = db_stmt("SELECT id FROM ".$db['users']." WHERE `email`= ? AND id != ?",
-                array('si', up($_POST['email'])), $userid,true,false);
+                array('si', up($_POST['email']), $userid),true,false);
 
       if(empty($_POST['user']))
       {
@@ -74,9 +74,9 @@ if(defined('_UserMenu')) {
             $icq = preg_replace("=-=Uis","",$_POST['icq']);
             $bday = ($_POST['t'] && $_POST['m'] && $_POST['j'] ? cal($_POST['t']).".".cal($_POST['m']).".".$_POST['j'] : 0);
 
-            $qrycustom = db("SELECT feldname,type FROM ".$db['profile']);
-          while($getcustom = _fetch($qrycustom))
-          {
+            $qrycustom = db("SELECT feldname,type FROM ".$db['profile']); $customfields = '';
+          	while($getcustom = _fetch($qrycustom))
+          	{
               if($getcustom['type'] == 2) $customfields .= " ".$getcustom['feldname']." = '".links($_POST[$getcustom['feldname']])."', ";
               else $customfields .= " ".$getcustom['feldname']." = '".up($_POST[$getcustom['feldname']])."', ";
             }
