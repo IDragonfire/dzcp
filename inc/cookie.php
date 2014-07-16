@@ -83,7 +83,7 @@ final class cookie
     public final static function save() {
         global $cache;
         if(array_key_exists('PHPSESSID', $_SESSION) && array_key_exists('PHPSESSID', $_COOKIE)) {
-            $cookie_val = (empty(self::$val) ? '' : $cache->encode(json_encode(self::$val, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_UNESCAPED_UNICODE),true));
+            $cookie_val = (empty(self::$val) ? '' : $cache->encode(json_encode(self::$val, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP),true));
             if(strlen($cookie_val)>4*1024)
                 trigger_error("The cookie ".self::$cname." exceeds the specification for the maximum cookie size.  Some data may be lost", E_USER_WARNING);
 
