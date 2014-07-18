@@ -6,13 +6,13 @@
 
 // Start session if no headers were sent
 if(!headers_sent()) {
-    session_start();
+    /** Start Sessions */
+    $session = new session();
+    if(!$session->init())
+        die('PHP-Sessions not started!');
 
-    if(!isset($_SESSION['PHPSESSID'])) {
-        @session_destroy();
-        @session_start();
+    if(!isset($_SESSION['PHPSESSID']))
         $_SESSION['PHPSESSID'] = true;
-    }
 }
 
 function mtime() {

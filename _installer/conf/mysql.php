@@ -1629,4 +1629,13 @@ function update_mysql_1_6_1()
         PRIMARY KEY (`id`,`namespace`),
         KEY `created` (`created`)
         ) ENGINE=MEMORY;");
+
+    //-> Sessions
+    db("DROP TABLE IF EXISTS ".$db['sessions']);
+    db("CREATE TABLE IF NOT EXISTS `".$db['sessions']."` (
+    `id` char(128) NOT NULL,
+    `set_time` char(10) NOT NULL,
+    `data` text NOT NULL,
+    `session_key` char(128) NOT NULL
+    ) ENGINE=MEMORY;");
 }

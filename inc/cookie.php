@@ -4,8 +4,7 @@
  * http://www.dzcp.de
  */
 
-final class cookie
-{
+final class cookie {
     private static $cname = "";
     private static $val = array();
     private static $expires;
@@ -16,7 +15,7 @@ final class cookie
     * Setzt die Werte für ein Cookie und erstellt es.
     */
     public final static function init($cname, $cexpires=false, $cdir="/", $csite="") {
-        if(array_key_exists('PHPSESSID', $_SESSION) && array_key_exists('PHPSESSID', $_COOKIE)) {
+        if(array_key_exists('PHPSESSID', $_SESSION)) {
             self::$cname=$cname;
             self::$expires = ($cexpires ? $cexpires : (time()+cookie_expires));
             self::$dir=$cdir;
@@ -31,7 +30,7 @@ final class cookie
     */
     public final static function extract($cname="") {
         global $cache;
-        if(array_key_exists('PHPSESSID', $_SESSION) && array_key_exists('PHPSESSID', $_COOKIE)) {
+        if(array_key_exists('PHPSESSID', $_SESSION)) {
             $cname=(empty($cname) ? self::$cname : $cname);
             if(!empty($_COOKIE[$cname])) {
                 $arr = json_decode($cache->decode(($_COOKIE[$cname]),true),true);
@@ -51,7 +50,7 @@ final class cookie
     * @return string
     */
     public final static function get($var) {
-        if(array_key_exists('PHPSESSID', $_SESSION) && array_key_exists('PHPSESSID', $_COOKIE)) {
+        if(array_key_exists('PHPSESSID', $_SESSION)) {
             if(!isset(self::$val) || empty(self::$val)) return false;
             if(!array_key_exists($var, self::$val)) return false;
             return self::$val[$var];
@@ -64,7 +63,7 @@ final class cookie
     * Setzt ein neuen Key und Wert im Cookie
     */
     public final static function put($var, $value) {
-        if(array_key_exists('PHPSESSID', $_SESSION) && array_key_exists('PHPSESSID', $_COOKIE)) {
+        if(array_key_exists('PHPSESSID', $_SESSION)) {
             self::$val[$var]=$value;
             $_COOKIE[$var]=self::$val[$var];
             if(empty($value)) unset(self::$val[$var]);
@@ -82,7 +81,7 @@ final class cookie
     */
     public final static function save() {
         global $cache;
-        if(array_key_exists('PHPSESSID', $_SESSION) && array_key_exists('PHPSESSID', $_COOKIE)) {
+        if(array_key_exists('PHPSESSID', $_SESSION)) {
             $cookie_val = (empty(self::$val) ? '' : $cache->encode(json_encode(self::$val, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP),true));
             if(strlen($cookie_val)>4*1024)
                 trigger_error("The cookie ".self::$cname." exceeds the specification for the maximum cookie size.  Some data may be lost", E_USER_WARNING);

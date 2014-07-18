@@ -8,7 +8,7 @@
 //-> DZCP Settings Start
 #########################################
 
-define('view_error_reporting', true); // Zeigt alle Fehler und Notices etc.
+define('view_error_reporting', false); // Zeigt alle Fehler und Notices etc.
 define('debug_all_sql_querys', false);
 define('debug_save_to_file', false);
 define('debug_dzcp_handler', true);
@@ -55,6 +55,27 @@ define('captcha_mathematic', false); //Stellt den Usern einfache Rechenaufgaben 
 * http://php.net/manual/de/features.persistent-connections.php
 */
 define('mysqli_persistconns', false);
+
+#########################################
+//-> Sessions Settings Start
+#########################################
+
+define('sessions_backend', 'php'); //php,mysql,memcache,apc
+define('sessions_encode_type', 'sha1');
+define('sessions_encode', true);
+define('sessions_ttl_maxtime', (2*60*60)); //Live-Time 2h
+define('sessions_memcache_host', 'localhost');
+define('sessions_memcache_port', 11211);
+
+define('sessions_mysql_sethost', false);
+define('sessions_mysql_host', 'localhost');
+define('sessions_mysql_user', 'user');
+define('sessions_mysql_pass', 'xxxx');
+define('sessions_mysql_db', 'test');
+
+#########################################
+//-> Cache Settings Start
+#########################################
 
 $config_cache = array();
 $config_cache['storage'] = "files"; //auto,memcache,files,sqlite,wincache,xcache oder apc
@@ -229,6 +250,7 @@ $db = array("host" =>           $sql_host,
             "squaduser" =>      $prefix."squaduser",
             "sponsoren" =>      $prefix."sponsoren",
             "slideshow" =>      $prefix."slideshow",
+            "sessions" =>       $prefix."sessions",
             "taktik" =>         $prefix."taktiken",
             "users" =>          $prefix."users",
             "usergallery" =>    $prefix."usergallery",
@@ -360,7 +382,7 @@ if(file_exists(basePath."/_installer/index.php") &&
     while($table = _fetch($sqlqry))
     { $table_data[$table['Name']] = true; }
 
-    if(!array_key_exists($db['ipban'],$table_data) && !$installer)
+    if(!array_key_exists($db['sessions'],$table_data) && !$installer)
         $global_index ? header('Location: _installer/update.php') :
                         header('Location: ../_installer/update.php');
     unset($user_check);
