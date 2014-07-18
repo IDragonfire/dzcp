@@ -646,8 +646,10 @@ function replace($txt,$type=false,$no_vid_tag=false) {
     $txt = preg_replace($var,$repl,$txt);
     $txt = preg_replace_callback("#\<img(.*?)\>#", create_function('$img','if(preg_match("#class#i",$img[1])) return "<img".$img[1].">"; else return "<img class=\"content\"".$img[1].">";'), $txt);
 
-    if(!$no_vid_tag)
-        $txt = preg_replace_callback("#\[youtube\]http\:\/\/www.youtube.com\/watch\?v\=(.*)\[\/youtube\]#Uis", create_function('$yt','$width = 425; $height = 344;return "<object width=\"".$width."\" height=\"".$height."\"><param name=\"movie\" value=\"http://www.youtube.com/v/".trim($yt[1])."&amp;hl=de&amp;fs=1\"></param><param name=\"allowFullScreen\" value=\"true\"></param><param name=\"allowscriptaccess\" value=\"always\"></param><embed src=\"http://www.youtube.com/v/".trim($yt[1])."&amp;hl=de&amp;fs=1\" type=\"application/x-shockwave-flash\" allowscriptaccess=\"always\" allowfullscreen=\"true\" width=\"".$width."\" height=\"".$height."\"></embed></object>";'), $txt);
+    if(!$no_vid_tag) {
+        $txt = preg_replace_callback("/\[youtube\](?:http?:\/\/)?(?:www\.)?youtu(?:\.be\/|be\.com\/watch\?v=)([A-Z0-9\-_]+)(?:&(.*?))?\[\/youtube\]/i",
+                create_function('$match','return \'<object width="425" height="344"><param name="movie" value="//www.youtube.com/v/\'.trim($match[1]).\'?hl=de_DE&amp;version=3&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="//www.youtube.com/v/\'.trim($match[1]).\'?hl=de_DE&amp;version=3&amp;rel=0" type="application/x-shockwave-flash" width="425" height="344" allowscriptaccess="always" allowfullscreen="true"></embed></object>\';'), $txt);
+    }
 
     $txt = str_replace("\"","&#34;",$txt);
     return preg_replace("#(\w){1,1}(&nbsp;)#Uis","$1 ",$txt);
