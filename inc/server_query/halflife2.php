@@ -17,6 +17,7 @@
                               'left4dead2' => array('Left 4 Dead 2',                     'LFD2'),
                               'insurgency' => array('Insurgency',                        'INS'),
                               'csgo'       => array('Counter-Strike: Global Offensive',  'CS:GO'),
+                              'garrysmod'  => array('Garry\'s Mod',                      'GMOD'),
   );
 
 ##############################################################################################################################
@@ -60,7 +61,7 @@
     if ($request == "info")
     {
       $data = array();
-      
+
       $tmp = substr($buffer, 2);
       $tmp = explode("\x00", $tmp);
 
@@ -88,7 +89,7 @@
     if($request == "players")
     {
       $player = array();
-      
+
       unset($player_key);
 
       $buffer = substr($buffer, 2);
