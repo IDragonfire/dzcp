@@ -595,21 +595,23 @@ function glossar($txt) {
     $txt = str_replace('&#91;','[',$txt);
 
     // mark words
-    foreach($gl_words as $gl_word) {
-        $w = addslashes(regexChars(html_entity_decode($gl_word)));
-        $txt = str_ireplace(' '.$w.' ', ' <tmp|'.$w.'|tmp> ', $txt);
-        $txt = str_ireplace('>'.$w.'<', '> <tmp|'.$w.'|tmp> <', $txt);
-        $txt = str_ireplace('>'.$w.' ', '> <tmp|'.$w.'|tmp> ', $txt);
-        $txt = str_ireplace(' '.$w.'<', ' <tmp|'.$w.'|tmp> <', $txt);
-    }
+    if(count($gl_words) >= 1) {
+        foreach($gl_words as $gl_word) {
+            $w = addslashes(regexChars(html_entity_decode($gl_word)));
+            $txt = str_ireplace(' '.$w.' ', ' <tmp|'.$w.'|tmp> ', $txt);
+            $txt = str_ireplace('>'.$w.'<', '> <tmp|'.$w.'|tmp> <', $txt);
+            $txt = str_ireplace('>'.$w.' ', '> <tmp|'.$w.'|tmp> ', $txt);
+            $txt = str_ireplace(' '.$w.'<', ' <tmp|'.$w.'|tmp> <', $txt);
+        }
 
-    // replace words
-    for($g=0;$g<=count($gl_words)-1;$g++) {
-        $desc = regexChars($gl_desc[$g]);
-        $info = 'onmouseover="DZCP.showInfo(\''.jsconvert($desc).'\')" onmouseout="DZCP.hideInfo()"';
-        $w = regexChars(html_entity_decode($gl_words[$g]));
-        $r = "<a class=\"glossar\" href=\"../glossar/?word=".$gl_words[$g]."\" ".$info.">".$gl_words[$g]."</a>";
-        $txt = str_ireplace('<tmp|'.$w.'|tmp>', $r, $txt);
+        // replace words
+        for($g=0;$g<=count($gl_words)-1;$g++) {
+            $desc = regexChars($gl_desc[$g]);
+            $info = 'onmouseover="DZCP.showInfo(\''.jsconvert($desc).'\')" onmouseout="DZCP.hideInfo()"';
+            $w = regexChars(html_entity_decode($gl_words[$g]));
+            $r = "<a class=\"glossar\" href=\"../glossar/?word=".$gl_words[$g]."\" ".$info.">".$gl_words[$g]."</a>";
+            $txt = str_ireplace('<tmp|'.$w.'|tmp>', $r, $txt);
+        }
     }
 
     $txt = str_replace(']','&#93;',$txt);
