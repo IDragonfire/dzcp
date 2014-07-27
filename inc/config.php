@@ -134,28 +134,34 @@ if(!isset($updater)) $updater = false;
 if(!isset($global_index)) $global_index = false;
 
 function show($tpl="", $array=array(), $array_lang_constant=array(), $array_block=array()) {
-    global $tmpdir,$chkMe,$cache;
+    global $tmpdir,$chkMe,$cache,$installation;
     if(!empty($tpl) && $tpl != null) {
         $template = basePath."/inc/_templates_/".$tmpdir."/".$tpl;
 
         //HTML Cache for Template Files
-        $cacheHash = md5($template);
-        if(template_cache && dbc_index::useMem() && $cache->isExisting('tpl_'.$cacheHash)) {
-            $tpl = string::decode($cache->get('tpl_'.$cacheHash));
-            if(show_dbc_debug)
-                DebugConsole::insert_info('template::show()', 'Get Template-Cache: "'.'tpl_'.$cacheHash.'"');
-        }
-        else {
-            if(file_exists($template.".html")) {
-                $tpl = file_get_contents($template.".html");
+        if(!$installation) {
+            $cacheHash = md5($template);
+            if(template_cache && dbc_index::useMem() && $cache->isExisting('tpl_'.$cacheHash)) {
+                $tpl = string::decode($cache->get('tpl_'.$cacheHash));
+                if(show_dbc_debug)
+                    DebugConsole::insert_info('template::show()', 'Get Template-Cache: "'.'tpl_'.$cacheHash.'"');
+            }
+            else {
+                if(file_exists($template.".html")) {
+                    $tpl = file_get_contents($template.".html");
 
-                if(template_cache && dbc_index::useMem()) {
-                    $cache->set('tpl_'.$cacheHash,string::encode($tpl),template_cache_time);
+                    if(template_cache && dbc_index::useMem()) {
+                        $cache->set('tpl_'.$cacheHash,string::encode($tpl),template_cache_time);
 
-                    if(show_dbc_debug)
-                        DebugConsole::insert_loaded('template::show()', 'Set Template-Cache: "'.'tpl_'.$cacheHash.'"');
+                        if(show_dbc_debug)
+                            DebugConsole::insert_loaded('template::show()', 'Set Template-Cache: "'.'tpl_'.$cacheHash.'"');
+                    }
                 }
             }
+        }
+        else {
+            if(file_exists($template.".html"))
+                $tpl = file_get_contents($template.".html");
         }
 
         //put placeholders in array

@@ -1636,6 +1636,5 @@ function update_mysql_1_6_1()
     `id` char(128) NOT NULL,
     `set_time` char(10) NOT NULL,
     `data` text NOT NULL,
-    `session_key` char(128) NOT NULL
-    ) ENGINE=MEMORY;");
+    `session_key` char(128) NOT NULL)");
 }

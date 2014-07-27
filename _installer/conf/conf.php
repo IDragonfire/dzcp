@@ -118,3 +118,23 @@ function visitorIp() {
 
     return '0.0.0.0';
 }
+
+//-> filter placeholders
+function pholderreplace($pholder) {
+    $search = array('@<script[^>]*?>.*?</script>@si','@<style[^>]*?>.*?</style>@siU','@<[\/\!][^<>]*?>@si','@<![\s\S]*?--[ \t\n\r]*>@');
+
+    //Replace
+    $pholder = preg_replace("#<script(.*?)</script>#is","",$pholder);
+    $pholder = preg_replace("#<style(.*?)</style>#is","",$pholder);
+    $pholder = preg_replace($search, '', $pholder);
+    $pholder = str_replace(" ","",$pholder);
+    $pholder = preg_replace("#&(.*?);#s","",$pholder);
+    $pholder = str_replace("\r","",$pholder);
+    $pholder = str_replace("\n","",$pholder);
+    $pholder = preg_replace("#\](.*?)\[#is","][",$pholder);
+    $pholder = str_replace("][","^",$pholder);
+    $pholder = preg_replace("#^(.*?)\[#s","",$pholder);
+    $pholder = preg_replace("#\](.*?)$#s","",$pholder);
+    $pholder = str_replace("[","",$pholder);
+    return str_replace("]","",$pholder);
+}
