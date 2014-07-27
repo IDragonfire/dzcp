@@ -155,7 +155,7 @@ function validateIpV4Range ($ip, $range) {
 function check_ip() {
     global $db,$ajaxJob,$isSpider,$userip;
     if(!$ajaxJob && !$isSpider) {
-        if($userip == '0.0.0.0' || $userip == false || empty($userip)) {
+        if((!isIPv6($userip) && !isIPv4($userip)) || $userip == false || empty($userip)) {
             dzcp_session_destroy();
             die('Deine IP ist ung&uuml;ltig!<p>Your IP is invalid!');
         }
@@ -181,6 +181,24 @@ function check_ip() {
             }
         }
     }
+}
+
+/**
+ * Check given ip for ipv6.
+ * @param    string        $ip
+ * @return    boolean
+ */
+function isIPv6($ip) {
+    return (preg_match('#^[0-9A-F]{0,4}(:([0-9A-F]{0,4})){0,7}$#s', $ip)) ? true : false;
+}
+
+/**
+ * Check given ip for ipv4.
+ * @param    string        $ip
+ * @return    boolean
+ */
+function isIPv4($ip) {
+    return (preg_match('#^[0-9]{1,3}(\.[0-9]{1,3}){3}$#', $ip)) ? true : false;
 }
 
 // IP Prüfung
