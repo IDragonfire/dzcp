@@ -109,7 +109,7 @@ final class session {
         if(empty($data)) return '';
 
         if(sessions_encode)
-            $data = self::decode($data, $id);
+            $data = self::decode($data,true);
 
         if(show_sessions_debug)
             DebugConsole::insert_successful("session::mem_read()", $data);
@@ -127,7 +127,7 @@ final class session {
             DebugConsole::insert_successful("session::mem_write()", $data);
 
         if(sessions_encode)
-            $data = self::encode($data, $id);
+            $data = self::encode($data,true);
 
         $result = $this->memcached->replace($this->_prefix.$id, $data, MEMCACHE_COMPRESSED, sessions_ttl_maxtime);
         if( $result == false )
@@ -197,7 +197,7 @@ final class session {
         $data = apc_fetch($key);
 
         if(sessions_encode)
-            $data = self::decode($data, $id);
+            $data = self::decode($data,true);
 
         if(show_sessions_debug)
             DebugConsole::insert_successful("session::apc_read()", $data);
@@ -223,7 +223,7 @@ final class session {
             DebugConsole::insert_successful("session::apc_write()", $data);
 
         if(sessions_encode)
-            $data = self::encode($data, $id);
+            $data = self::encode($data,true);
 
         return apc_store($this->_prefix.'/'.$id, $data, $this->_ttl);
     }
@@ -266,6 +266,9 @@ final class session {
     ###################################################
     public function sql_open() {
         global $db;
+
+        die('MySQL Session is buggy! Not Use!!!');
+
         if(show_sessions_debug)
             DebugConsole::insert_info("session::sql_open()", "Connect to MySQL Server");
 
@@ -314,10 +317,9 @@ final class session {
         $this->read_stmt->store_result();
         $this->read_stmt->bind_result($data);
         $this->read_stmt->fetch();
-        $key = $this->sql_getkey($id);
 
         if(sessions_encode)
-            $data = self::decode($data, $key);
+            $data = self::decode($data,true);
 
         if(show_sessions_debug)
             DebugConsole::insert_successful("session::sql_read()", $data);
@@ -332,20 +334,21 @@ final class session {
             DebugConsole::insert_info("session::sql_write()", "Select ID: '".$id."'");
         }
 
-        $key = $this->sql_getkey($id);
-
         if(show_sessions_debug)
             DebugConsole::insert_successful("session::sql_write()", $data);
 
         if(sessions_encode)
-            $data = self::encode($data, $key);
+            $data = self::encode($data,true);
 
         $time = time();
-        if(!isset($this->w_stmt))
-            $this->w_stmt = $this->db->prepare("REPLACE INTO ".$db['sessions']." (id, set_time, data, session_key) VALUES (?, ?, ?, ?)");
+        if(!isset($this->w_stmt)) {
+            $this->w_stmt = $this->db->prepare("UPDATE ".$db['sessions']." (id, set_time, data, session_key) VALUES (?, ?, ?, ?)");
+            $key = $this->sql_getkey($id);
+            $this->w_stmt->bind_param('siss', $id, $time, $data, $key);
+            return $this->w_stmt->execute();
+        }
 
-        $this->w_stmt->bind_param('siss', $id, $time, $data, $key);
-        return $this->w_stmt->execute();
+        return false;
     }
 
     public function sql_destroy($id) {
@@ -390,10 +393,8 @@ final class session {
             $this->key_stmt->bind_result($key);
             $this->key_stmt->fetch();
             return $key;
-        } else {
-            $random_key = hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
-            return $random_key;
-        }
+        } else
+            return hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
     }
 
     private function is_session_started() {
