@@ -63,6 +63,10 @@
 				case 'XP2_002': $nmap = 'Nansha Strike'; break;
 				case 'XP2_003': $nmap = 'Wave Breaker'; break;
 				case 'XP2_004': $nmap = 'Operation Mortar'; break;
+				case 'XP3_MarketPl': $nmap = 'Pearl Market'; break;
+				case 'XP3_Prpganda': $nmap = 'Propaganda'; break;
+				case 'XP3_UrbanGdn': $nmap = 'Lumphini Garden'; break;
+				case 'XP3_WtrFront': $nmap = 'Sunken Dragon'; break;
       }
 	  $data['mapname']    = $nmap;
     } else if($request == 'players') {
