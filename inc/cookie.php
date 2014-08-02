@@ -14,12 +14,12 @@ final class cookie {
     /**
     * Setzt die Werte für ein Cookie und erstellt es.
     */
-    public final static function init($cname, $cexpires=false, $cdir="/", $csite="") {
+    public final static function init($cname, $cexpires=false, $cdir="", $csite="") {
         if(array_key_exists('PHPSESSID', $_SESSION)) {
             self::$cname=$cname;
             self::$expires = ($cexpires ? $cexpires : (time()+cookie_expires));
-            self::$dir=$cdir;
-            self::$site=$csite;
+            self::$dir=(empty($cdir) ? '/' : cookie_dir);
+            self::$site=(empty($csite) ? '' : cookie_domain);
             self::$val=array();
             self::extract();
         }

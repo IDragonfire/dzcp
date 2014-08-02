@@ -25,8 +25,11 @@ define('template_cache', true); // Sollen das HTML-Template in den Memory Cache 
 define('template_cache_time', 30); // Wie lange soll das HTML-Template im Memory Cache verbleiben
 
 define('feed_update_time', 10*60); // Wann soll der Newsfeed aktualisiert werden
-define('cookie_expires', (60*60*24*30*12)); // Wie Lange die Cookies des CMS ihre Gueltigkeit behalten.
 define('file_get_contents_timeout', 10);
+
+define('cookie_expires', (60*60*24*30*12)); // Wie Lange die Cookies des CMS ihre Gueltigkeit behalten.
+define('cookie_domain', ''); // Die Domain, der das Cookie zur Verfügung steht.
+define('cookie_dir', '/'); // Der Pfad auf dem Server, für welchen das Cookie verfügbar sein wird.
 
 define('auto_db_optimize', true); // Soll in der Datenbank regelmaessig ein OPTIMIZE TABLE ausgefuehrt werden?
 define('auto_db_optimize_interval', (7*24*60*60)); // Wann soll der OPTIMIZE TABLE ausgefuehrt werden, alle 7 Tage.
