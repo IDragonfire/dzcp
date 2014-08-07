@@ -73,8 +73,8 @@ if(defined('_Forum')) {
           $edit = "";
         }
 
-        $ftxt = hl($getp['text'], $_GET['hl']);
-        if($_GET['hl']) $text = bbcode($ftxt['text']);
+        $ftxt = hl($getp['text'], (isset($_GET['hl']) ? $_GET['hl'] : ''));
+        if(isset($_GET['hl'])) $text = bbcode($ftxt['text']);
         else $text = bbcode($getp['text']);
 
         if($chkMe == 4) $posted_ip = $getp['ip'];
