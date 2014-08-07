@@ -9,9 +9,9 @@
 #########################################
 
 define('view_error_reporting', false); // Zeigt alle Fehler und Notices etc.
-define('debug_all_sql_querys', false);
-define('debug_save_to_file', false);
-define('debug_dzcp_handler', true);
+define('debug_all_sql_querys', false); // Speichert alle ausgefuehrten SQL-Querys in einer Datei
+define('debug_save_to_file', false); // Schreibt die die Ausgaben der Debug Console in eine Datei
+define('debug_dzcp_handler', true); // Verwende fur Notices, etc. die Debug Console
 define('fsockopen_support_bypass', false); //Umgeht die fsockopen pruefung
 
 define('use_default_timezone', true); // Verwendende die Zeitzone vom Server
@@ -25,7 +25,7 @@ define('template_cache', true); // Sollen das HTML-Template in den Memory Cache 
 define('template_cache_time', 30); // Wie lange soll das HTML-Template im Memory Cache verbleiben
 
 define('feed_update_time', 10*60); // Wann soll der Newsfeed aktualisiert werden
-define('file_get_contents_timeout', 10);
+define('file_get_contents_timeout', 10); // Nach wie viel Sekunden soll der Downloade externe quellen abgebrochen werden
 
 define('cookie_expires', (60*60*24*30*12)); // Wie Lange die Cookies des CMS ihre Gueltigkeit behalten.
 define('cookie_domain', ''); // Die Domain, der das Cookie zur Verfügung steht.
@@ -56,39 +56,51 @@ define('captcha_mathematic', false); //Stellt den Usern einfache Rechenaufgaben 
 /*
 * Bitte vor der Aktivierung der Persistent Connections lesen:
 * http://php.net/manual/de/features.persistent-connections.php
+* * Expert *
 */
 define('mysqli_persistconns', false);
 
 #########################################
-//-> Sessions Settings Start
+//-> Sessions Settings Start * Expert *
 #########################################
 
-define('sessions_backend', 'php'); //php,mysql,memcache,apc
-define('sessions_encode_type', 'sha1');
-define('sessions_encode', true);
-define('sessions_ttl_maxtime', (2*60*60)); //Live-Time 2h
-define('sessions_memcache_host', 'localhost');
-define('sessions_memcache_port', 11211);
+define('sessions_backend', 'php'); //Das zu verwendendes Backend: php,mysql,memcache,apc
+define('sessions_encode_type', 'sha1'); //Verwende die sha1 codierung fuer session ids
+define('sessions_encode', false); //Inhalt der Sessions zusatzlich verschlusseln
+define('sessions_ttl_maxtime', (2*60*60)); //Live-Time der Sessions * 2h
+define('sessions_memcache_host', 'localhost'); //Server Adresse fur das Sessions Backend: memcache
+define('sessions_memcache_port', 11211); //Server Port fur das Sessions Backend: memcache
 
-define('sessions_mysql_sethost', false);
-define('sessions_mysql_host', 'localhost');
-define('sessions_mysql_user', 'user');
-define('sessions_mysql_pass', 'xxxx');
-define('sessions_mysql_db', 'test');
+define('sessions_mysql_sethost', false); //Verwende eine externe Datenbank fur die Sessions
+define('sessions_mysql_host', 'localhost'); //MySQL Host
+define('sessions_mysql_user', 'user'); //MySQL Username
+define('sessions_mysql_pass', 'xxxx'); //MySQL Passwort
+define('sessions_mysql_db', 'test'); //MySQL Database
+/* SQL Tabelle */
+/*
+ CREATE TABLE IF NOT EXISTS `dzcp_sessions` (
+         `id` int(11) NOT NULL,
+         `ssid` varchar(200) NOT NULL DEFAULT '',
+         `time` int(11) NOT NULL,
+         `data` text) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
+ALTER TABLE `dzcp_sessions` ADD PRIMARY KEY (`id`), ADD KEY `ssid` (`ssid`), ADD KEY `time` (`time`);
+*/
 
 #########################################
-//-> Cache Settings Start
+//-> Cache Settings Start * Expert *
 #########################################
 
 $config_cache = array();
-$config_cache['storage'] = "files"; //auto,memcache,files,sqlite,wincache,xcache oder apc
-$config_cache['server'] = array(array("127.0.0.1",11211,1));
-$config_cache['dbc'] = true; //use database query caching * only use with memory cache
-$config_cache['dbc_auto_memcache'] = false; //use database querie caching * auto memcache check
+$config_cache['use_cache'] = true; // verwende einen Cache, um abfragen zwischenzuspeichern
+$config_cache['storage'] = "files"; // welcher Cache: auto,memcache,files,sqlite,wincache,xcache oder apc
+$config_cache['server'] = array(array("127.0.0.1",11211,1)); //adressen fur die memcache server
+$config_cache['dbc'] = true; //verwende database query caching * nur mit memory cache
+$config_cache['dbc_auto_memcache'] = false; //automatische memcache verfugbarkeisprufung
 
 //-> Legt die UserID des Rootadmins fest
 //-> (dieser darf bestimmte Dinge, den normale Admins nicht duerfen, z.B. andere Admins editieren)
 $rootAdmins = array(1); // Die ID/s der User die Rootadmins sein sollen, bei mehreren mit "," trennen '1,4,2,6' usw.
+#$rootAdmins = array(1,2,4,9); // etc.
 
 #########################################
 //-> DZCP Settings End
@@ -137,14 +149,14 @@ if(!isset($updater)) $updater = false;
 if(!isset($global_index)) $global_index = false;
 
 function show($tpl="", $array=array(), $array_lang_constant=array(), $array_block=array()) {
-    global $tmpdir,$chkMe,$cache,$installation;
+    global $tmpdir,$chkMe,$cache,$config_cache,$installation;
     if(!empty($tpl) && $tpl != null) {
         $template = basePath."/inc/_templates_/".$tmpdir."/".$tpl;
 
         //HTML Cache for Template Files
         if(!$installation) {
             $cacheHash = md5($template);
-            if(template_cache && dbc_index::useMem() && $cache->isExisting('tpl_'.$cacheHash)) {
+            if(template_cache && $config_cache['use_cache'] && dbc_index::useMem() && $cache->isExisting('tpl_'.$cacheHash)) {
                 $tpl = string::decode($cache->get('tpl_'.$cacheHash));
                 if(show_dbc_debug)
                     DebugConsole::insert_info('template::show()', 'Get Template-Cache: "'.'tpl_'.$cacheHash.'"');
@@ -153,7 +165,7 @@ function show($tpl="", $array=array(), $array_lang_constant=array(), $array_bloc
                 if(file_exists($template.".html")) {
                     $tpl = file_get_contents($template.".html");
 
-                    if(template_cache && dbc_index::useMem()) {
+                    if(template_cache && $config_cache['use_cache'] && dbc_index::useMem()) {
                         $cache->set('tpl_'.$cacheHash,string::encode($tpl),template_cache_time);
 
                         if(show_dbc_debug)

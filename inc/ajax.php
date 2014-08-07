@@ -27,18 +27,18 @@ ob_implicit_flush(false);
 
     //-> Steam Status
     function steamIMG($steamID='') {
-        global $cache;
+        global $cache, $config_cache;
         if(!allow_url_fopen_support()) return _fopen;
         if(empty($steamID) || !steam_enable) return '-';
         if(!$steam = SteamAPI::getUserInfos($steamID)) return '-'; //UserInfos
         if(!$steam || empty($steam)) return '-';
 
         //Avatar
-        if(!$cache->isExisting('steam_avatar_'.$steamID)) {
+        if(!$config_cache['use_cache'] || !$cache->isExisting('steam_avatar_'.$steamID)) {
             $ctx = stream_context_create(array('http'=>array('timeout' => file_get_contents_timeout)));
             if($img_stream = file_get_contents($steam['user']['avatarIcon_url'], false, $ctx)) {
                 $steam['user']['avatarIcon_url'] = 'data:image/png;base64,'.base64_encode($img_stream);
-                if(steam_avatar_cache)
+                if(steam_avatar_cache && $config_cache['use_cache'])
                     $cache->set('steam_avatar_'.$steamID, bin2hex($img_stream), steam_avatar_refresh);
             } else return '-';
         } else $steam['user']['avatarIcon_url'] = 'data:image/png;base64,'.base64_encode(hextobin($cache->get('steam_avatar_'.$steamID)));
