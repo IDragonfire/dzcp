@@ -5,7 +5,7 @@
  * Menu: Gameserver
  */
 function server($serverID = 0) {
-    global $db, $language, $cache;
+    global $db, $language, $cache, $config_cache;
 
     header('Content-Type: text/html; charset=iso-8859-1');
     if(!fsockopen_support()) return _fopen;
@@ -34,10 +34,11 @@ function server($serverID = 0) {
 
         unset($player_list);
 
-        if(!$cache->isExisting('nav_server_'.$serverID)) {
+        if(!$config_cache['use_cache'] || !$cache->isExisting('nav_server_'.$serverID)) {
             $server = gs_normalise(@call_user_func('server_query_'.$get['status'], $get['ip'], $get['port'], $get['qport'], 'info'));
             $player_list = call_user_func('server_query_'.$get['status'], $get['ip'], $get['port'], $get['qport'], 'players');
-            $cache->set('nav_server_'.$serverID, serialize(array('server' => $server, 'players' => $player_list)), config('cache_server'));
+            if($config_cache['use_cache'])
+                $cache->set('nav_server_'.$serverID, serialize(array('server' => $server, 'players' => $player_list)), config('cache_server'));
         } else {
             $server_cache = $cache->get('nav_server_'.$serverID);
             $server_cache = unserialize($server_cache);

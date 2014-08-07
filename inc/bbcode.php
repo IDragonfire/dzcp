@@ -2323,13 +2323,14 @@ final class dbc_index {
     }
 
     public static final function setIndex($index_key,$data) {
-        global $cache;
+        global $cache,$config_cache;
 
         if(self::MemSetIndex()) {
             if(show_dbc_debug)
                 DebugConsole::insert_info('dbc_index::setIndex()', 'Set index: "'.$index_key.'" to cache');
 
-            $cache->set('dbc_'.$index_key, serialize($data), 1.2);
+            if($config_cache['use_cache'])
+                $cache->set('dbc_'.$index_key, serialize($data), 1.2);
         }
 
         if(show_dbc_debug)
@@ -2363,9 +2364,9 @@ final class dbc_index {
     }
 
     public static final function issetIndex($index_key) {
-        global $cache;
+        global $cache,$config_cache;
         if(isset(self::$index[$index_key])) return true;
-        if(self::$is_mem && $cache->isExisting('dbc_'.$index_key)) {
+        if(self::$is_mem && $config_cache['use_cache'] && $cache->isExisting('dbc_'.$index_key)) {
 
             if(show_dbc_debug)
                 DebugConsole::insert_loaded('dbc_index::issetIndex()', 'Load index: "'.$index_key.'" from cache');

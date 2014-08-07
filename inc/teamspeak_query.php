@@ -1417,12 +1417,12 @@ function secure_dzcp($replace) {
 * @return boolean|ip
 */
 function tsdns($dns) {
-    global $cache;
+    global $cache,$config_cache;
 
     if(disable_functions('dns_get_record') || !fsockopen_support())
         return false;
 
-    if(!$cache->isExisting('ts3_dns_'.$dns)) {
+    if(!$config_cache['use_cache'] || !$cache->isExisting('ts3_dns_'.$dns)) {
         $tsdnsIP = $dns; $tsdnsPort = 41144;
         $result = dns_get_record("_tsdns._tcp.".$dns, DNS_ALL); //Check of TSDNS Record
         if(count($result) >= 1) {
@@ -1450,10 +1450,11 @@ function tsdns($dns) {
         if(show_teamspeak_debug && view_error_reporting)
             DebugConsole::insert_successful('TS3Renderer::tsdns()', 'Name resolution from DNS:"'.$dns.'" to IP:"'.$content.'"');
 
-        $epl = explode(':', $content);
-        $data = array('ip' => $epl[0], 'port' => $epl[1]);
-        $cache->set('ts3_dns_'.$dns,serialize($data),1800);
-        return $data;
+            $epl = explode(':', $content);
+            $data = array('ip' => $epl[0], 'port' => $epl[1]);
+            if($config_cache['use_cache'])
+                $cache->set('ts3_dns_'.$dns,serialize($data),1800);
+            return $data;
         }
     }
     else

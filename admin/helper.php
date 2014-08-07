@@ -5,11 +5,11 @@
  * @return array
  */
 function show_dzcp_version() {
-    global $cache;
+    global $cache,$config_cache;
     $dzcp_version_info = 'onmouseover="DZCP.showInfo(\'<tr><td colspan=2 align=center padding=3 class=infoTop>DZCP Versions Checker</td></tr><tr><td>'._dzcp_vcheck.'</td></tr>\')" onmouseout="DZCP.hideInfo()"';
     $return = array();
     if(dzcp_version_checker || allow_url_fopen_support()) {
-        if(!$cache->isExisting('dzcp_version')) {
+        if(!$config_cache['use_cache'] || !$cache->isExisting('dzcp_version')) {
             $ctx = stream_context_create(array('http'=>array('timeout' => file_get_contents_timeout)));
             switch (_edition) {
                 case 'dev': $url = 'bugfree'; break;
@@ -17,7 +17,8 @@ function show_dzcp_version() {
                 default: $url = 'final'; break;
             }
             if($dzcp_online_v = file_get_contents("https://raw.githubusercontent.com/DZCP-Community/dzcp/".$url."/dzcp_version.xml", false, $ctx))
-                $cache->set('dzcp_version', $dzcp_online_v, dzcp_version_checker_refresh);
+                if($config_cache['use_cache'])
+                    $cache->set('dzcp_version', $dzcp_online_v, dzcp_version_checker_refresh);
         }
         else
             $dzcp_online_v = $cache->get('dzcp_version');

@@ -28,6 +28,17 @@ $support .= "DZCP Template: ".$tmpdir."\r\n";
 $support .= "\r\n";
 
 $support .= "#####################\r\n";
+$support .= "DZCP Einstellungen \r\n";
+$support .= "#####################\r\n";
+$support .= "Session Backend: ".sessions_backend."\r\n";
+$support .= "Session Encode: ".(sessions_encode ? 'On' : 'Off')."\r\n";
+$support .= "Cache: ".($config_cache['use_cache'] ? 'On' : 'Off')."\r\n";
+$support .= "Cache Storage: ".$config_cache['storage']."\r\n";
+$support .= "Cookie Domain: ".cookie_domain."\r\n";
+$support .= "Cookie Dir: ".cookie_dir."\r\n";
+$support .= "\r\n";
+
+$support .= "#####################\r\n";
 $support .= "Domain & User\r\n";
 $support .= "#####################\r\n";
 $support .= "Domain: http://".$_SERVER['HTTP_HOST'].str_replace('/admin','/',dirname($_SERVER['PHP_SELF']))."\r\n";
@@ -48,6 +59,7 @@ $support .= "\r\n";
 $support .= "#####################\r\n";
 $support .= "Socket-Verbindungen \r\n";
 $support .= "#####################\r\n";
+$support .= "PHP fsockopen bypass: ".(fsockopen_support_bypass ? 'On' : 'Off')."\r\n";
 $support .= "PHP fsockopen: ".(fsockopen_support() ? 'On' : 'Off')."\r\n";
 $support .= "PHP allow_url_fopen: ".(allow_url_fopen_support() ? 'On' : 'Off')."\r\n";
 $support .= "PHP Sockets: ".(function_exists("socket_create") && $PhpInfo['sockets']['Sockets Support'] == "enabled" ? 'On' : 'Off')."\r\n";

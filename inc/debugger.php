@@ -16,9 +16,9 @@ define('show_loaded', true);
 define('show_info', true);
 define('show_warning', true);
 define('show_dbc_debug', false);
-define('show_deprecation_debug', true);
-define('show_teamspeak_debug', true);
-define('show_sessions_debug', true);
+define('show_deprecation_debug', false);
+define('show_teamspeak_debug', false);
+define('show_sessions_debug', false);
 
 #############################################
 ############### Debug Console ###############

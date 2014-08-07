@@ -95,10 +95,11 @@ else {
     $dzcp_news = '';
     if(allow_url_fopen_support()) {
         if(admin_view_dzcp_news) {
-            if(!$cache->isExisting("admin_news")) {
+            if(!$config_cache['use_cache'] || !$cache->isExisting("admin_news")) {
                 $dzcp_news = fileExists("http://www.dzcp.de/dzcp_news.php");
                 if(!empty($dzcp_news))
-                    $cache->set("admin_news", base64_encode($dzcp_news), 1200);
+                    if($config_cache['use_cache'])
+                        $cache->set("admin_news", base64_encode($dzcp_news), 1200);
                 else
                     $dzcp_news = false;
             }

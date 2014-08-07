@@ -491,7 +491,8 @@ class phpFastCache {
      */
 
     public function htaccessGen($path = "") {
-        if($this->option("htaccess") == true) {
+        global $config_cache;
+        if($this->option("htaccess") == true && $config_cache['use_cache']) {
 
             if(!file_exists($path."/.htaccess")) {
                 //   echo "write me";
@@ -507,8 +508,6 @@ allow from 127.0.0.1";
                 fclose($f);
 
 
-            } else {
-                //   echo "got me";
             }
         }
     }
