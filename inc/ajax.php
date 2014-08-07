@@ -27,18 +27,18 @@ ob_implicit_flush(false);
 
     //-> Steam Status
     function steamIMG($steamID='') {
-        global $cache, $config_cache;
+        global $cache;
         if(!allow_url_fopen_support()) return _fopen;
         if(empty($steamID) || !steam_enable) return '-';
         if(!$steam = SteamAPI::getUserInfos($steamID)) return '-'; //UserInfos
         if(!$steam || empty($steam)) return '-';
 
         //Avatar
-        if(!$config_cache['use_cache'] || !$cache->isExisting('steam_avatar_'.$steamID)) {
+        if(!$cache->isExisting('steam_avatar_'.$steamID)) {
             $ctx = stream_context_create(array('http'=>array('timeout' => file_get_contents_timeout)));
             if($img_stream = file_get_contents($steam['user']['avatarIcon_url'], false, $ctx)) {
                 $steam['user']['avatarIcon_url'] = 'data:image/png;base64,'.base64_encode($img_stream);
-                if(steam_avatar_cache && $config_cache['use_cache'])
+                if(steam_avatar_cache)
                     $cache->set('steam_avatar_'.$steamID, bin2hex($img_stream), steam_avatar_refresh);
             } else return '-';
         } else $steam['user']['avatarIcon_url'] = 'data:image/png;base64,'.base64_encode(hextobin($cache->get('steam_avatar_'.$steamID)));
@@ -86,7 +86,7 @@ ob_implicit_flush(false);
                 $securimage->namespace    = isset($_GET['namespace']) ? $_GET['namespace'] : 'default';
                 if(isset($_GET['length'])) $securimage->code_length = ((int)$_GET['length']);
                 die($securimage->show());
-            } else die('headers_sent!!!');
+            }
             break;
 
         case 'securimage_audio':
@@ -96,7 +96,7 @@ ob_implicit_flush(false);
 
                 $securimage->namespace = isset($audio_namespace) ? $audio_namespace : 'default';
                 die($securimage->outputAudioFile());
-            } else die('headers_sent!!!');
+            }
             break;
     endswitch;
 
