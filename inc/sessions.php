@@ -267,7 +267,7 @@ final class session {
     public function sql_open() {
         global $db;
 
-        die('MySQL Session is buggy! Not Use!!!');
+       # die('MySQL Session is buggy! Not Use!!!');
 
         if(show_sessions_debug)
             DebugConsole::insert_info("session::sql_open()", "Connect to MySQL Server");
@@ -309,7 +309,7 @@ final class session {
 
         $data = null;
         if(!isset($this->read_stmt))
-            $this->read_stmt = $this->db->prepare("SELECT `data` FROM ".$db['sessions']." WHERE `id` = ? LIMIT 1");
+            $this->read_stmt = $this->db->prepare("SELECT `data` FROM ".$db['sessions']." WHERE ssid = ? LIMIT 1");
 
         if(!$this->read_stmt) return false;
         $this->read_stmt->bind_param('s', $id);
@@ -317,6 +317,7 @@ final class session {
         $this->read_stmt->store_result();
         $this->read_stmt->bind_result($data);
         $this->read_stmt->fetch();
+        if(empty($data)) return '';
 
         if(sessions_encode)
             $data = self::decode($data,true);
@@ -341,11 +342,18 @@ final class session {
             $data = self::encode($data,true);
 
         $time = time();
-        if(!isset($this->w_stmt)) {
-            $this->w_stmt = $this->db->prepare("UPDATE ".$db['sessions']." (id, set_time, data, session_key) VALUES (?, ?, ?, ?)");
-            $key = $this->sql_getkey($id);
-            $this->w_stmt->bind_param('siss', $id, $time, $data, $key);
+
+        $result = $this->db->query("SELECT id FROM ".$db['sessions']." WHERE ssid = '".$id."' LIMIT 1");
+        if(!isset($this->w_stmt) && !$result->num_rows) {
+            $this->w_stmt = $this->db->prepare("INSERT INTO ".$db['sessions']." (id, ssid, time, data) VALUES (NULL, ?, ?, ?)");
+            $this->w_stmt->bind_param('sis', $id, $time, $data);
             return $this->w_stmt->execute();
+        } else {
+            if(!isset($this->w_stmt) && $result->num_rows) {
+                $this->w_stmt = $this->db->prepare("UPDATE ".$db['sessions']." SET time = ?, data = ? WHERE ssid = ?;");
+                $this->w_stmt->bind_param('iss', $time, $data, $id);
+                return $this->w_stmt->execute();
+            }
         }
 
         return false;
@@ -357,7 +365,7 @@ final class session {
             DebugConsole::insert_info("session::sql_destroy()", "Call Session destroy");
 
         if(!isset($this->delete_stmt))
-            $this->delete_stmt = $this->db->prepare("DELETE FROM ".$db['sessions']." WHERE id = ?");
+            $this->delete_stmt = $this->db->prepare("DELETE FROM ".$db['sessions']." WHERE ssid = ?");
 
         $this->delete_stmt->bind_param('s', $id);
         return $this->delete_stmt->execute();
@@ -369,33 +377,16 @@ final class session {
             DebugConsole::insert_info("session::sql_gc()", "Call Garbage-Collection");
 
         if(!isset($this->gc_stmt))
-            $this->gc_stmt = $this->db->prepare("DELETE FROM ".$db['sessions']." WHERE set_time < ?");
+            $this->gc_stmt = $this->db->prepare("DELETE FROM ".$db['sessions']." WHERE time < ?");
 
         $old = time() - $max;
-        $this->gc_stmt->bind_param('s', $old);
+        $this->gc_stmt->bind_param('i', $old);
         return $this->gc_stmt->execute();
     }
 
     ###################################################
     ##################### Private #####################
     ###################################################
-
-    private function sql_getkey($id) {
-        global $db;
-        if(!isset($this->key_stmt))
-            $this->key_stmt = $this->db->prepare("SELECT `session_key` FROM ".$db['sessions']." WHERE id = ? LIMIT 1");
-
-        $this->key_stmt->bind_param('s', $id);
-        $this->key_stmt->execute();
-        $this->key_stmt->store_result();
-        if($this->key_stmt->num_rows == 1) {
-            $key = null;
-            $this->key_stmt->bind_result($key);
-            $this->key_stmt->fetch();
-            return $key;
-        } else
-            return hash('sha512', uniqid(mt_rand(1, mt_getrandmax()), true));
-    }
 
     private function is_session_started() {
         if ( php_sapi_name() !== 'cli' ) {
