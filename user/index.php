@@ -36,9 +36,9 @@ function custom_content($kid=1) {
                         $custom_content .= show(_profil_custom, array("name" => re(pfields_name($getcustom['name'])), "value" => re($getcontent[$getcustom['feldname']])));
                         break;
                 }
-            }
 
-            $i++;
+                $i++;
+            }
         }
     }
 
