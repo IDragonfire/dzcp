@@ -44,7 +44,7 @@ final class session {
         }
     }
 
-    function init($destroy=false) {
+    public final function init($destroy=false) {
         if(!headers_sent() && !$this->is_session_started()) {
             if(show_sessions_debug)
                 DebugConsole::insert_info("session::init()", "Call session_start()");
@@ -71,7 +71,7 @@ final class session {
     ###################################################
     ################ Memcache Backend #################
     ###################################################
-    public function mem_open() {
+    public final function mem_open() {
         if(show_sessions_debug)
             DebugConsole::insert_info("session::mem_open()", "Connect to Memcache Server");
 
@@ -91,14 +91,14 @@ final class session {
         return !$this->memcached->getServerStatus(sessions_memcache_host, sessions_memcache_port) ? false : true;
     }
 
-    public function mem_close() {
+    public final function mem_close() {
         if(show_sessions_debug)
             DebugConsole::insert_info("session::mem_close()", "Disconnect Memcache Server");
 
         return $this->memcached->close();
     }
 
-    public function mem_read($id) {
+    public final function mem_read($id) {
         global $db_array;
         if(show_sessions_debug) {
             DebugConsole::insert_info("session::mem_read()", "Read Session-Data from Memcache");
@@ -117,7 +117,7 @@ final class session {
         return $data;
     }
 
-    public function mem_write($id, $data) {
+    public final function mem_write($id, $data) {
         if(show_sessions_debug) {
             DebugConsole::insert_info("session::mem_write()", "Write Session-Data to Memcache");
             DebugConsole::insert_info("session::mem_write()", "Select ID: '".$id."'");
@@ -136,17 +136,17 @@ final class session {
         return $result;
     }
 
-    public function mem_destroy($id) {
+    public final function mem_destroy($id) {
         return $this->memcached->delete($this->_prefix.$id);
     }
 
-    public function mem_gc($max)
+    public final function mem_gc($max)
     { return true; }
 
     ###################################################
     ################### APC Backend ###################
     ###################################################
-    public function apc_open($savePath, $sessionName) {
+    public final function apc_open($savePath, $sessionName) {
         $this->_prefix = 'BSession/'.$sessionName;
         if (!apc_fetch($this->_prefix.'/TS', $result)) {
             apc_store($this->_prefix.'/TS', array(''));
@@ -159,9 +159,9 @@ final class session {
         return true;
     }
 
-    public function apc_close() { return true; }
+    public final function apc_close() { return true; }
 
-    public function apc_read($id) {
+    public final function apc_read($id) {
         if(show_sessions_debug) {
             DebugConsole::insert_info("session::apc_read()", "Read Session-Data from APC");
             DebugConsole::insert_info("session::apc_read()", "Select ID: '".$id."'");
@@ -205,7 +205,7 @@ final class session {
         return $data;
     }
 
-    public function apc_write($id, $data) {
+    public final function apc_write($id, $data) {
         if(show_sessions_debug) {
             DebugConsole::insert_info("session::apc_write()", "Write Session-Data to APC");
             DebugConsole::insert_info("session::apc_write()", "Select ID: '".$id."'");
@@ -228,7 +228,7 @@ final class session {
         return apc_store($this->_prefix.'/'.$id, $data, $this->_ttl);
     }
 
-    public function apc_destroy($id) {
+    public final function apc_destroy($id) {
         if(show_sessions_debug)
             DebugConsole::insert_info("session::apc_destroy()", "Call Session destroy");
 
@@ -243,7 +243,7 @@ final class session {
         return apc_delete($this->_prefix.'/'.$id);
     }
 
-    public function apc_gc($lifetime) {
+    public final function apc_gc($lifetime) {
         if(show_sessions_debug)
             DebugConsole::insert_info("session::apc_gc()", "Call Garbage-Collection");
 
@@ -264,7 +264,7 @@ final class session {
     ###################################################
     ################## MySQL Backend ##################
     ###################################################
-    public function sql_open() {
+    public final function sql_open() {
         global $db;
 
        # die('MySQL Session is buggy! Not Use!!!');
@@ -293,14 +293,14 @@ final class session {
         return !$this->db ? false : true;
     }
 
-    public function sql_close() {
+    public final function sql_close() {
         if(show_sessions_debug)
             DebugConsole::insert_info("session::sql_close()", "Disconnect MySQL Server");
 
         return $this->db->close();
     }
 
-    public function sql_read($id) {
+    public final function sql_read($id) {
         global $db;
         if(show_sessions_debug) {
             DebugConsole::insert_info("session::sql_read()", "Read Session-Data from Database");
@@ -309,7 +309,7 @@ final class session {
 
         $data = null;
         if(!isset($this->read_stmt))
-            $this->read_stmt = $this->db->prepare("SELECT `data` FROM ".$db['sessions']." WHERE ssid = ? LIMIT 1");
+            $this->read_stmt = $this->db->prepare("SELECT `data` FROM `".$db['sessions']."` WHERE `ssid` = ? LIMIT 1;");
 
         if(!$this->read_stmt) return false;
         $this->read_stmt->bind_param('s', $id);
@@ -328,7 +328,7 @@ final class session {
         return $data;
     }
 
-    public function sql_write($id, $data) {
+    public final function sql_write($id, $data) {
         global $db;
         if(show_sessions_debug) {
             DebugConsole::insert_info("session::sql_write()", "Write Session-Data to Database");
@@ -343,14 +343,14 @@ final class session {
 
         $time = time();
 
-        $result = $this->db->query("SELECT id FROM ".$db['sessions']." WHERE ssid = '".$id."' LIMIT 1");
+        $result = $this->db->query("SELECT `id` FROM `".$db['sessions']."` WHERE `ssid` = '".$id."' LIMIT 1;");
         if(!isset($this->w_stmt) && !$result->num_rows) {
-            $this->w_stmt = $this->db->prepare("INSERT INTO ".$db['sessions']." (id, ssid, time, data) VALUES (NULL, ?, ?, ?)");
+            $this->w_stmt = $this->db->prepare("INSERT INTO `".$db['sessions']."` (id, ssid, time, data) VALUES (NULL, ?, ?, ?);");
             $this->w_stmt->bind_param('sis', $id, $time, $data);
             return $this->w_stmt->execute();
         } else {
             if(!isset($this->w_stmt) && $result->num_rows) {
-                $this->w_stmt = $this->db->prepare("UPDATE ".$db['sessions']." SET time = ?, data = ? WHERE ssid = ?;");
+                $this->w_stmt = $this->db->prepare("UPDATE `".$db['sessions']."` SET `time` = ?, `data` = ? WHERE `ssid` = ?;");
                 $this->w_stmt->bind_param('iss', $time, $data, $id);
                 return $this->w_stmt->execute();
             }
@@ -359,25 +359,25 @@ final class session {
         return false;
     }
 
-    public function sql_destroy($id) {
+    public final function sql_destroy($id) {
         global $db;
         if(show_sessions_debug)
             DebugConsole::insert_info("session::sql_destroy()", "Call Session destroy");
 
         if(!isset($this->delete_stmt))
-            $this->delete_stmt = $this->db->prepare("DELETE FROM ".$db['sessions']." WHERE ssid = ?");
+            $this->delete_stmt = $this->db->prepare("DELETE FROM `".$db['sessions']."` WHERE `ssid` = ?;");
 
         $this->delete_stmt->bind_param('s', $id);
         return $this->delete_stmt->execute();
     }
 
-    public function sql_gc($max) {
+    public final function sql_gc($max) {
         global $db;
         if(show_sessions_debug)
             DebugConsole::insert_info("session::sql_gc()", "Call Garbage-Collection");
 
         if(!isset($this->gc_stmt))
-            $this->gc_stmt = $this->db->prepare("DELETE FROM ".$db['sessions']." WHERE time < ?");
+            $this->gc_stmt = $this->db->prepare("DELETE FROM `".$db['sessions']."` WHERE `time` < ?;");
 
         $old = time() - $max;
         $this->gc_stmt->bind_param('i', $old);
@@ -388,7 +388,7 @@ final class session {
     ##################### Private #####################
     ###################################################
 
-    private function is_session_started() {
+    protected final function is_session_started() {
         if ( php_sapi_name() !== 'cli' ) {
             if ( version_compare(phpversion(), '5.4.0', '>=') )
                 return session_status() === PHP_SESSION_ACTIVE ? true : false;

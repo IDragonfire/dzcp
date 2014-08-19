@@ -94,7 +94,7 @@ if(defined('_News')) {
                                          "comments" => cnt($db['newscomments']),
                                          "com" => $com));
 
-        $qrykat = db("SELECT * FROM ".$db['newskat'].""); $kategorien = '';
+        $qrykat = db("SELECT `id`,`kategorie` FROM ".$db['newskat'].""); $kategorien = '';
         while($getkat = _fetch($qrykat)) {
             $kategorien .= '<option value="'.$getkat['id'].'">-> '.$getkat['kategorie'].'</option>';
         }

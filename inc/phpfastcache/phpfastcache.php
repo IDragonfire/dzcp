@@ -5,7 +5,6 @@
  * Example at our website, any bugs, problems, please visit http://www.codehelper.io
  */
 
-
 require_once(dirname(__FILE__)."/driver.php");
 
 // short function
@@ -68,7 +67,6 @@ class phpFastCache {
         "system"        =>  array(),
         "storage"       =>  "",
         "cachePath"     =>  "",
-
     );
 
     /*
@@ -194,7 +192,6 @@ class phpFastCache {
             return true;
         }
     }
-
 
     /*
     * Other Functions Built-int for phpFastCache since 1.3
@@ -322,34 +319,29 @@ class phpFastCache {
 
         $this->driver = new $driver($this->option);
         $this->driver->is_driver = true;
-
     }
 
     /*
      * For Auto Driver
      *
      */
-
     function autoDriver() {
-
         $driver = "files";
-
         if(extension_loaded('apc') && ini_get('apc.enabled') && strpos(PHP_SAPI,"CGI") === false)
-        {
             $driver = "apc";
-        }elseif(extension_loaded('pdo_sqlite') && is_writeable($this->getPath())) {
+        elseif(extension_loaded('pdo_sqlite') && is_writeable($this->getPath()))
             $driver = "sqlite";
-        }elseif(is_writeable($this->getPath())) {
+        elseif(is_writeable($this->getPath()))
             $driver = "files";
-        }else if(class_exists("memcached")) {
+        else if(class_exists("memcached"))
             $driver = "memcached";
-        }elseif(extension_loaded('wincache') && function_exists("wincache_ucache_set")) {
+        elseif(extension_loaded('wincache') && function_exists("wincache_ucache_set"))
             $driver = "wincache";
-        }elseif(extension_loaded('xcache') && function_exists("xcache_get")) {
+        elseif(extension_loaded('xcache') && function_exists("xcache_get"))
             $driver = "xcache";
-        }else if(function_exists("memcache_connect")) {
+        else if(function_exists("memcache_connect"))
             $driver = "memcache";
-        }else {
+        else {
             $path = dirname(__FILE__)."/drivers";
             $dir = opendir($path);
             while($file = readdir($dir)) {
@@ -426,58 +418,6 @@ class phpFastCache {
         return false;
     }
 
-    /*
-     * return System Information
-     */
-    public function systemInfo() {
-        if(count($this->option("system")) == 0 ) {
-            $this->option['system']['driver'] = "files";
-            $this->option['system']['drivers'] = array();
-            $dir = @opendir(dirname(__FILE__)."/drivers/");
-            if(!$dir) {
-                throw new Exception("Can't open file dir ext",100);
-            }
-
-            while($file = @readdir($dir)) {
-                if($file!="." && $file!=".." && strpos($file,".php") !== false) {
-                    require_once(dirname(__FILE__)."/drivers/".$file);
-                    $namex = str_replace(".php","",$file);
-                    $class = "phpfastcache_".$namex;
-                    $this->option['skipError'] = true;
-                    $driver = new $class($this->option);
-                    $driver->option = $this->option;
-                    if($driver->checkdriver()) {
-                        $this->option['system']['drivers'][$namex] = true;
-                        $this->option['system']['driver'] = $namex;
-                    } else {
-                        $this->option['system']['drivers'][$namex] = false;
-                    }
-                }
-            }
-
-            /*
-             * PDO is highest priority with SQLite
-             */
-            if($this->option['system']['drivers']['sqlite'] == true) {
-                $this->option['system']['driver'] = "sqlite";
-            }
-        }
-
-        $example = new phpfastcache_example($this->option);
-        $this->option("path",$example->getPath(true));
-        return $this->option;
-    }
-
-    public function getOS() {
-        $os = array(
-            "os" => PHP_OS,
-            "php" => PHP_SAPI,
-            "system"    => php_uname(),
-            "unique"    => md5(php_uname().PHP_OS.PHP_SAPI)
-        );
-        return $os;
-    }
-
     function encode($data='',$base64=false) {
         return session::encode($data,$base64,$this->option['securityKey_mcrypt']);
     }
@@ -489,25 +429,15 @@ class phpFastCache {
     /*
      * Auto Create .htaccess to protect cache folder
      */
-
     public function htaccessGen($path = "") {
         global $config_cache;
         if($this->option("htaccess") == true && $config_cache['use_cache']) {
-
             if(!file_exists($path."/.htaccess")) {
-                //   echo "write me";
-                $html = "order deny, allow \r\n
-deny from all \r\n
-allow from 127.0.0.1";
-
-                $f = @fopen($path."/.htaccess","w+");
-                if(!$f) {
-                    throw new Exception("Can't create .htaccess",97);
+                $html = "order deny, allow \r\ndeny from all \r\nallow from 127.0.0.1";
+                if(!file_put_contents($path."/.htaccess", $html)) {
+                    DebugConsole::insert_warning('phpFastCache::htaccessGen()', "Can't create .htaccess");
+                    $config_cache['use_cache'] = false;
                 }
-                fwrite($f,$html);
-                fclose($f);
-
-
             }
         }
     }
@@ -526,7 +456,6 @@ allow from 127.0.0.1";
         return false;
     }
 
-
     /*
      * return PATH for Files & PDO only
      */
@@ -535,10 +464,7 @@ allow from 127.0.0.1";
             $this->option("path", self::$config['path']);
         }
 
-
-        if ($this->option['path'] =='')
-        {
-            // revision 618
+        if ($this->option['path'] =='') {
             if($this->isPHPModule()) {
                 $tmp_dir = ini_get('upload_tmp_dir') ? ini_get('upload_tmp_dir') : sys_get_temp_dir();
                 $this->option("path",$tmp_dir);
@@ -562,7 +488,8 @@ allow from 127.0.0.1";
                     @chmod($full_path,0777);
                 }
                 if(!file_exists($full_path) || !is_writable($full_path)) {
-                    throw new Exception("Sorry, Please create ".$this->option("path")."/".$this->option("securityKey")."/ and SET Mode 0777 or any Writable Permission!" , 100);
+                    DebugConsole::insert_warning('phpFastCache::getPath()', "Sorry, Please create ".$this->option("path")."/".$this->option("securityKey")."/ and SET Mode 0777 or any Writable Permission!");
+                    $config_cache['use_cache'] = false;
                 }
             }
 
@@ -572,31 +499,5 @@ allow from 127.0.0.1";
 
         $this->option['cachePath'] = $full_path;
         return $this->option['cachePath'];
-    }
-
-    /*
-     * Read File
-     * Use file_get_contents OR ALT read
-     */
-
-    function readfile($file) {
-        if(function_exists("file_get_contents")) {
-            return file_get_contents($file);
-        } else {
-            $string = "";
-
-            $file_handle = @fopen($file, "r");
-            if(!$file_handle) {
-                throw new Exception("Can't Read File",96);
-
-            }
-            while (!feof($file_handle)) {
-                $line = fgets($file_handle);
-                $string .= $line;
-            }
-            fclose($file_handle);
-
-           return $string;
-        }
     }
 }

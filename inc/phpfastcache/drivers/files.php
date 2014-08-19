@@ -67,7 +67,7 @@ class phpfastcache_files extends  phpFastCache implements phpfastcache_driver  {
          * Skip if Existing Caching in Options
          */
         if(isset($option['skipExisting']) && $option['skipExisting'] == true && file_exists($file_path)) {
-            $content = $this->readfile($file_path);
+            $content = file_get_contents($file_path);
             $old = $this->decode($content);
             $toWrite = false;
             if($this->isExpired($old)) {
@@ -92,7 +92,7 @@ class phpfastcache_files extends  phpFastCache implements phpfastcache_driver  {
             return null;
         }
 
-        $content = $this->readfile($file_path);
+        $content = file_get_contents($file_path);
         $object = $this->decode($content);
         if($this->isExpired($object)) {
             @unlink($file_path);
@@ -142,7 +142,7 @@ class phpfastcache_files extends  phpFastCache implements phpfastcache_driver  {
                     if($f!="." && $f!="..") {
                         $file_path = $path."/".$file."/".$f;
                         $size = filesize($file_path);
-                        $object = $this->decode($this->readfile($file_path));
+                        $object = $this->decode(file_get_contents($file_path));
                         if($this->isExpired($object)) {
                             unlink($file_path);
                             $removed = $removed + $size;

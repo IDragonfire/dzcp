@@ -68,7 +68,11 @@ ob_implicit_flush(false);
         header("Content-type: application/x-www-form-urlencoded;charset=utf-8");
 
     switch ($mod):
-        case 'kalender';  echo kalender($_GET['month'],$_GET['year']); break;
+        case 'kalender';
+            $month = (isset($_GET['month']) ? $_GET['month'] : '');
+            $year = (isset($_GET['year']) ? $_GET['year'] : '');
+            echo kalender($month,$year,true);
+        break;
         case 'teams';     echo team($_GET['tID']); break;
         case 'server';    echo '<table class="hperc" cellspacing="0">'.server($_GET['serverID']).'</table>'; break;
         case 'shoutbox';  echo '<table class="hperc" cellspacing="1">'.shout(1).'</table>'; break;

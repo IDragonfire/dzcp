@@ -97,7 +97,7 @@ else {
         if(admin_view_dzcp_news) {
             if(!$config_cache['use_cache'] || !$cache->isExisting("admin_news")) {
                 $dzcp_news = fileExists("http://www.dzcp.de/dzcp_news.php");
-                if(!empty($dzcp_news))
+                if($dzcp_news && !empty($dzcp_news))
                     if($config_cache['use_cache'])
                         $cache->set("admin_news", base64_encode($dzcp_news), 1200);
                 else

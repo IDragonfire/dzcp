@@ -8,11 +8,12 @@
 //-> DZCP Settings Start
 #########################################
 
-define('view_error_reporting', false); // Zeigt alle Fehler und Notices etc.
+define('view_error_reporting', true); // Zeigt alle Fehler und Notices etc.
 define('debug_all_sql_querys', false); // Speichert alle ausgefuehrten SQL-Querys in einer Datei
 define('debug_save_to_file', false); // Schreibt die die Ausgaben der Debug Console in eine Datei
 define('debug_dzcp_handler', true); // Verwende fur Notices, etc. die Debug Console
 define('fsockopen_support_bypass', false); //Umgeht die fsockopen pruefung
+define('use_curl', true); // Verwendet die CURL PHP Erweiterung, anstelle von file_get_contents() für externe Zugriffe, wenn vorhanden.
 
 define('use_default_timezone', true); // Verwendende die Zeitzone vom Server
 define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selbst einstellen * 'use_default_timezone' auf false stellen *
@@ -51,7 +52,7 @@ define('steam_only_proxy', false); //Sollen soll nur der Steam Proxy Server verw
 define('ts3dns_server', true); //Sollen Teamspeak 3 DNS Server erkannt werden
 
 define('captcha_case_sensitive', false); //Unterscheidet Groß und Kleinschreibung beim Captcha
-define('captcha_mathematic', false); //Stellt den Usern einfache Rechenaufgaben anstelle eines Captcha Codes
+define('captcha_mathematic', true); //Stellt den Usern einfache Rechenaufgaben anstelle eines Captcha Codes
 
 /*
 * Bitte vor der Aktivierung der Persistent Connections lesen:
@@ -64,9 +65,9 @@ define('mysqli_persistconns', false);
 //-> Sessions Settings Start * Expert *
 #########################################
 
-define('sessions_backend', 'php'); //Das zu verwendendes Backend: php,mysql,memcache,apc
+define('sessions_backend', 'mysql'); //Das zu verwendendes Backend: php,mysql,memcache,apc
 define('sessions_encode_type', 'sha1'); //Verwende die sha1 codierung fuer session ids
-define('sessions_encode', false); //Inhalt der Sessions zusatzlich verschlusseln
+define('sessions_encode', true); //Inhalt der Sessions zusatzlich verschlusseln
 define('sessions_ttl_maxtime', (2*60*60)); //Live-Time der Sessions * 2h
 define('sessions_memcache_host', 'localhost'); //Server Adresse fur das Sessions Backend: memcache
 define('sessions_memcache_port', 11211); //Server Port fur das Sessions Backend: memcache
@@ -92,7 +93,7 @@ ALTER TABLE `dzcp_sessions` ADD PRIMARY KEY (`id`), ADD KEY `ssid` (`ssid`), ADD
 
 $config_cache = array();
 $config_cache['use_cache'] = true; // verwende einen Cache, um abfragen zwischenzuspeichern
-$config_cache['storage'] = "files"; // welcher Cache: auto,memcache,files,sqlite,wincache,xcache oder apc
+$config_cache['storage'] = "apc"; // welcher Cache: auto,memcache,files,sqlite,wincache,xcache oder apc
 $config_cache['server'] = array(array("127.0.0.1",11211,1)); //adressen fur die memcache server
 $config_cache['dbc'] = true; //verwende database query caching * nur mit memory cache
 $config_cache['dbc_auto_memcache'] = false; //automatische memcache verfugbarkeisprufung
@@ -396,7 +397,7 @@ function refValues($arr) {
 }
 
 //Auto Update Detect
-if(file_exists(basePath."/_installer/index.php") &&
+if(file_exists(basePath."/_installer/index.php1") &&
    file_exists(basePath."/inc/mysql.php") && !$installation && !$thumbgen) {
 
     $sqlqry = db('SHOW TABLE STATUS'); $table_data = array();

@@ -7,9 +7,15 @@
 // Start session if no headers were sent
 if(!headers_sent()) {
     /** Start Sessions */
-    $session = new session();
-    if(!$session->init())
-        die('PHP-Sessions not started!');
+    if(sessions_backend != 'php') {
+        $session = new session();
+        if(!$session->init())
+            die('PHP-Sessions not started!');
+        unset($session);
+    } else {
+        if(!session_start())
+            die('PHP-Sessions not started!');
+    }
 
     if(!isset($_SESSION['PHPSESSID']))
         $_SESSION['PHPSESSID'] = true;
