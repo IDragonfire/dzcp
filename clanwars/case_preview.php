@@ -100,7 +100,7 @@ if(defined('_Clanwars')) {
                                        "cw_result" => $result,
                                        "cw_bericht" => $bericht,
                                        "screenshots" => $screens));
-    echo '<table class="mainContent" cellspacing="1">'.$index.'</table>';
+    echo utf8_encode('<table class="mainContent" cellspacing="1">'.$index.'</table>');
 
     if(!mysqli_persistconns)
         $mysql->close(); //MySQL

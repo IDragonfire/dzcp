@@ -73,7 +73,7 @@ if(defined('_Clanwars')) {
                                             "rank" => getrank($get_userid),
                                             "ip" => $userip._only_for_admins));
 
-  echo '<table class="mainContent" cellspacing="1">'.$index.'</table>';
+  echo utf8_encode('<table class="mainContent" cellspacing="1">'.$index.'</table>');
 
   if(!mysqli_persistconns)
       $mysql->close(); //MySQL

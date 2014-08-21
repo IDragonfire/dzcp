@@ -53,7 +53,7 @@ if(defined('_Votes')) {
         {
             header("Content-type: text/html; charset=utf-8");
             require_once(basePath.'/inc/menu-functions/vote.php');
-            echo '<table class="navContent" cellspacing="0">'.vote(1).'</table>';
+            echo utf8_encode('<table class="navContent" cellspacing="0">'.vote(1).'</table>');
 
             cookie::save();
 
@@ -97,7 +97,7 @@ if(defined('_Votes')) {
     {
         require_once(basePath.'/inc/menu-functions/fvote.php');
         header("Content-type: text/html; charset=utf-8");
-        echo fvote($_GET['id'], 1);
+        echo utf8_encode(fvote($_GET['id'], 1));
 
         cookie::save();
         if(!mysqli_persistconns)

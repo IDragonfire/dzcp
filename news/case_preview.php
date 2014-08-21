@@ -5,6 +5,7 @@
  */
 
 if(defined('_News')) {
+
         header("Content-type: text/html; charset=utf-8");
         $getkat = db("SELECT katimg FROM ".$db['newskat']." WHERE id = '".intval($_POST['kat'])."'",false,true);
 
@@ -70,7 +71,7 @@ if(defined('_News')) {
                                                "links" => $links,
                                                "autor" => autor($_SESSION['id'])));
 
-        echo '<table class="mainContent" cellspacing="1">'.$index.'</table>';
+        echo utf8_encode('<table class="mainContent" cellspacing="1">'.$index.'</table>');
 
         if(!mysqli_persistconns)
             $mysql->close(); //MySQL

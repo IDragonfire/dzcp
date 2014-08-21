@@ -439,7 +439,7 @@ case 'preview';
                                            "links" => $links,
                                            "autor" => autor($userid)));
 
-    echo '<table class="mainContent" cellspacing="1">'.$index.'</table>';
+    echo utf8_encode('<table class="mainContent" cellspacing="1">'.$index.'</table>');
 
     if(!mysqli_persistconns)
         $mysql->close(); //MySQL
@@ -510,7 +510,7 @@ break;
                                                   "rank" => getrank($get_userid),
                                                   "ip" => $userip._only_for_admins));
 
-        echo '<table class="mainContent" cellspacing="1">'.$index.'</table>';
+        echo '<table class="mainContent" cellspacing="1">'.utf8_encode($index).'</table>';
 
         if(!mysqli_persistconns)
             $mysql->close(); //MySQL
