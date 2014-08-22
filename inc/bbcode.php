@@ -2430,6 +2430,17 @@ function get_elapsed_time( $timestamp, $aktuell = null, $anzahl_einheiten = null
     return $ret;
 }
 
+function CryptMailto($email='') {
+    $character_set = '+-.0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';
+    $key = str_shuffle($character_set); $cipher_text = ''; $id = 'e'.rand(1,999999999);
+    for ($i=0;$i<strlen($email);$i+=1) $cipher_text.= $key[strpos($character_set,$email[$i])];
+    $script = 'var a="'.$key.'";var b=a.split("").sort().join("");var c="'.$cipher_text.'";var d="";';
+    $script.= 'for(var e=0;e<c.length;e++)d+=b.charAt(a.indexOf(c.charAt(e)));';
+    $script.= 'document.getElementById("'.$id.'").innerHTML="<a href=\\"mailto:"+d+"\\">"+d+"</a>"';
+    $script = "eval(\"".str_replace(array("\\",'"'),array("\\\\",'\"'), $script)."\")";
+    $script = '<script type="text/javascript">/*<![CDATA[*/'.$script.'/*]]>*/</script>';
+    return '<span id="'.$id.'">[javascript protected email address]</span>'.$script;
+}
 
 //-> Neue Languages einbinden, sofern vorhanden
 if($language_files = get_files(basePath.'/inc/additional-languages/'.$language.'/',false,true,array('php'))) {
@@ -2547,13 +2558,12 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index') {
             if(strstr($pholder[$i], 'nav_'))
                 $arr[$pholder[$i]] = navi($pholder[$i]);
             else {
-                //optimize code * sparrt ~8ms
-                if(array_key_exists($pholder[$i], $menu_index) && $menu_index[$pholder[$i]]) {
+                //optimize code * spart ~8ms
+                if(array_key_exists($pholder[$i], $menu_index) && $menu_index[$pholder[$i]])
                     include_once(basePath.'/inc/menu-functions/'.$pholder[$i].'.php');
 
                 if(function_exists($pholder[$i]))
                     $arr[$pholder[$i]] = $pholder[$i]();
-                }
             }
         }
 
