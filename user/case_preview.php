@@ -33,10 +33,8 @@ if(defined('_UserMenu')) {
     $get_email = $_POST['email'];
     $get_nick = $_POST['nick'];
 
-    $onoff = "";
-    $avatar = "";
-    $nick = show(_link_mailto, array("nick" => re($get_nick),
-                                     "email" => eMailAddr($get_email)));
+    $onoff = ""; $avatar = "";
+    $nick = CryptMailto($get_email,_link_mailto,array("nick" => re($get_nick)));
   } else {
     $get_hp = data('hp');
     $email = data('email');
@@ -47,7 +45,7 @@ if(defined('_UserMenu')) {
   if($get_hp) $gbhp = show(_hpicon, array("hp" => links($get_hp)));
   else $gbhp = "";
 
-  if($get_email) $gbemail = show(_emailicon, array("email" => eMailAddr($get_email)));
+  if($get_email) $gbemail = CryptMailto($get_email,_emailicon);
   else $gbemail = "";
 
   $titel = show(_eintrag_titel, array("postid" => $get_id,

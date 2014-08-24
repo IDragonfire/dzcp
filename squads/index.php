@@ -62,10 +62,9 @@ $dir = "squads";
           $nick = '<b>'.$real[0].' &#x93;</b> '.$nick.' <b>&#x94; '.$real[1].'</b>';
         }
 
-
         $member .= show($dir."/squads_member", array("icqs" => $icq,
                                                      "icq" => $icqnr,
-                                                     "emails" => eMailAddr(re($getm['email'])),
+                                                     "emails" => CryptMailto(re($getm['email'])),
                                                      "id" => $getm['user'],
                                                      "psteam" => _steam,
                                                      "steam" => $steam,

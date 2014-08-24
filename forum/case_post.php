@@ -250,7 +250,7 @@ if(defined('_Forum')) {
                           WHERE id = '".$getl['reg']."'");
               $getu = _fetch($qryu);
 
-              $email = show(_emailicon_forum, array("email" => eMailAddr(re($getu['email']))));
+              $email = CryptMailto(re($getu['email']),_emailicon_forum);
               $pn = _forum_pn_preview;
               if(empty($getu['icq']) || $getu['icq'] == 0) $icq = "";
                   else {
@@ -263,7 +263,7 @@ if(defined('_Forum')) {
             } else {
               $icq = "";
               $pn = "";
-              $email = show(_emailicon_forum, array("email" => eMailAddr(re($getl['email']))));
+              $email = CryptMailto(re($getl['email']),_emailicon_forum);
               if(empty($getl['hp'])) $hp = "";
               else $hp = show(_hpicon_forum, array("hp" => $getl['hp']));
             }
@@ -324,7 +324,7 @@ if(defined('_Forum')) {
                           WHERE id = '".$gett['t_reg']."'");
               $getu = _fetch($qryu);
 
-              $email = show(_emailicon_forum, array("email" => eMailAddr(re($getu['email']))));
+              $email = CryptMailto(re($getu['email']),_emailicon_forum);
               $pn = show(_pn_write_forum, array("id" => $gett['t_reg'],
                                                                               "nick" => $getu['nick']));
               if(empty($getu['icq']) || $getu['icq'] == 0) $icq = "";
@@ -338,7 +338,8 @@ if(defined('_Forum')) {
             } else {
               $icq = "";
               $pn = "";
-              $email = show(_emailicon_forum, array("email" => eMailAddr($gett['t_email'])));
+
+              $email = CryptMailto(re($gett['email']),_emailicon_forum);
               if(empty($gett['t_hp'])) $hp = "";
               else $hp = show(_hpicon_forum, array("hp" => $gett['t_hp']));
             }
@@ -493,7 +494,7 @@ if(defined('_Forum')) {
                                                     WHERE id = '".$getl['reg']."'");
                             $getu = _fetch($qryu);
 
-                            $email = show(_emailicon_forum, array("email" => eMailAddr($getu['email'])));
+                            $email = CryptMailto(re($getu['email']),_emailicon_forum);
                             $pn = show(_pn_write_forum, array("id" => $getl['reg'],
                                                                                                 "nick" => $getu['nick']));
                             if(empty($getu['icq']) || $getu['icq'] == 0) $icq = "";
@@ -507,7 +508,7 @@ if(defined('_Forum')) {
                         } else {
                             $icq = "";
                             $pn = "";
-                            $email = show(_emailicon_forum, array("email" => eMailAddr($getl['email'])));
+                            $email = CryptMailto(re($getl['email']),_emailicon_forum);
                             if(empty($getl['hp'])) $hp = "";
                             else $hp = show(_hpicon_forum, array("hp" => $getl['hp']));
                         }
@@ -566,9 +567,8 @@ if(defined('_Forum')) {
                                                     WHERE id = '".$gett['t_reg']."'");
                             $getu = _fetch($qryu);
 
-                            $email = show(_emailicon_forum, array("email" => eMailAddr(re($getu['email']))));
-                            $pn = show(_pn_write_forum, array("id" => $gett['t_reg'],
-                                                                                                "nick" => $getu['nick']));
+                            $email = CryptMailto(re($getu['email']),_emailicon_forum);
+                            $pn = show(_pn_write_forum, array("id" => $gett['t_reg'], "nick" => $getu['nick']));
                             if(empty($getu['icq']) || $getu['icq'] == 0) $icq = "";
                             else {
                                 $uin = show(_icqstatus_forum, array("uin" => $getu['icq']));
@@ -580,7 +580,7 @@ if(defined('_Forum')) {
                         } else {
                             $icq = "";
                             $pn = "";
-                            $email = show(_emailicon_forum, array("email" => eMailAddr($gett['t_email'])));
+                            $email = CryptMailto(re($gett['t_email']),_emailicon_forum);
                             if(empty($gett['t_hp'])) $hp = "";
                             else $hp = show(_hpicon_forum, array("hp" => $gett['t_hp']));
                         }

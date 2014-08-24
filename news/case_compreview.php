@@ -32,7 +32,7 @@ if(defined('_News')) {
             $hp = show(_hpicon_forum, array("hp" => links($get_hp)));
 
         if(!empty($get_email))
-            $email = '<br />'.show(_emailicon_forum, array("email" => eMailAddr($get_email)));
+            $email = '<br />'.CryptMailto($get_email,_emailicon_forum);
 
         $onoff = "";
         $avatar = "";

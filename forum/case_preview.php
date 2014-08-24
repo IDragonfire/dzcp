@@ -46,7 +46,7 @@ if(defined('_Forum')) {
                   WHERE id = '".$pUId."'");
       $getu = _fetch($qryu);
 
-      $email = show(_emailicon_forum, array("email" => eMailAddr(re($getu['email']))));
+      $email = CryptMailto(re($getu['email']),_emailicon_forum);
       $pn = _forum_pn_preview;
       if(empty($getu['icq']) || $getu['icq'] == 0) $icq = "";
       else {
@@ -63,7 +63,7 @@ if(defined('_Forum')) {
     } else {
         $pn = "";
         $icq = "";
-        $email = show(_emailicon_forum, array("email" => eMailAddr($_POST['email'])));
+        $email = CryptMailto($_POST['email'],_emailicon_forum);
         if(empty($_POST['hp'])) $hp = "";
         else $hp = show(_hpicon_forum, array("hp" => links($_POST['hp'])));
       }
@@ -172,7 +172,7 @@ if(defined('_Forum')) {
                   WHERE id = '".intval($pUId)."'");
       $getu = _fetch($qryu);
 
-      $email = show(_emailicon_forum, array("email" => eMailAddr(re($getu['email']))));
+      $email = CryptMailto(re($getu['email']),_emailicon_forum);
       $pn = _forum_pn_preview;
       if(empty($getu['icq']) || $getu['icq'] == 0) $icq = "";
       else {
@@ -187,7 +187,7 @@ if(defined('_Forum')) {
     } else {
       $icq = "";
       $pn = "";
-      $email = show(_emailicon_forum, array("email" => eMailAddr($_POST['email'])));
+      $email = CryptMailto($_POST['email'],_emailicon_forum);
       if(empty($_POST['hp'])) $hp = "";
       else $hp = show(_hpicon_forum, array("hp" => links($_POST['hp'])));
     }

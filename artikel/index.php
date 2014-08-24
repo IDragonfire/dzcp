@@ -121,10 +121,9 @@ case 'show';
                 if(!$getc['reg'])
                 {
                     $hp = ($getc['hp'] ? show(_hpicon_forum, array("hp" => $getc['hp'])) : "");
-                    $email = ($getc['email'] ? '<br />'.show(_emailicon_forum, array("email" => eMailAddr(re($getc['email'])))) : "");
+                    $email = ($getc['email'] ? '<br />'.CryptMailto(re($getc['email']),_emailicon_forum) : "");
                     $onoff = ""; $avatar = "";
-                    $nick = show(_link_mailto, array("nick" =>re($getc['nick']),
-                                                     "email" => eMailAddr(re($getc['email']))));
+                    $nick = CryptMailto(re($getc['email']),_link_mailto,array('nick' => re($getc['nick'])));
                 } else {
                     $email = ""; $hp = "";
                     $onoff = onlinecheck($getc['reg']);
@@ -481,7 +480,7 @@ break;
             $get_nick = isset($_POST['nick']) ? $_POST['nick'] : '';
 
             $hp = $get_hp ? show(_hpicon_forum, array("hp" => links($get_hp))) : "";
-            $email = $get_email ? '<br />'.show(_emailicon_forum, array("email" => eMailAddr($get_email))) : "";
+            $email = $get_email ? '<br />'.CryptMailto($get_email,_emailicon_forum) : "";
             $onoff = "";
             $avatar = "";
             $nick = show(_link_mailto, array("nick" => re($get_nick),

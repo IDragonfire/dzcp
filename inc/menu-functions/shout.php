@@ -21,7 +21,7 @@ function shout($ajax = 0) {
         if($is_num && !check_email(re($get['email'])))
             $nick = autor(re($get['email']), "navShout",'','',config('l_shoutnick'));
         else
-            $nick = '<a class="navShout" href="mailto:'.eMailAddr(re($get['email'])).'" title="'.$get['nick'].'">'.cut($get['nick'], config('l_shoutnick')).'</a>';
+            $nick = CryptMailto(re($get['email']),_email_navShout,array('nick' => $get['nick'], 'nick_cut' => cut($get['nick'], config('l_shoutnick'))));
 
         $show .= show("menu/shout_part", array("nick" => $nick,
                                                "datum" => date("j.m.Y H:i", $get['datum'])._uhr,

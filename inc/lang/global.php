@@ -5,6 +5,8 @@
  */
 
 ## ADDED / REDEFINED FOR 1.6.1
+define('_user_mailto_texttop', '<img src=\\"../inc/images/mailto.gif\\" align=\\"texttop\\"> <a href=\\"mailto:"+d+"\\" target=\\"_blank\\">"+d+"</a>');
+define('_email_navShout', '<a class=\\"navShout\\" href=\\"mailto:"+d+"\\" title=\\"[nick]\\">[nick_cut]</a>');
 define('_ipban_menu_icon_enable', '<a href="[action]" title="[lang_ipban_disable]" rel="[info]" class="confirm"><img src="../inc/images/admin_lock_closed.jpg" alt="" class="icon" /></a>');
 define('_ipban_menu_icon_disable', '<a href="[action]" title="[lang_ipban_enable]" rel="[info]" class="confirm"><img src="../inc/images/admin_lock_open.jpg" alt="" class="icon" /></a>');
 
@@ -56,7 +58,7 @@ define('_buddys_noicon', '<img src="../inc/images/buddys_no.gif" alt="" class="i
 define('_closedicon_votes', '<img src="../inc/images/closed_votes.gif" alt="" class="icon" />');
 define('_icqstatus_forum', '<img src="../inc/images/forum_icq.gif" alt="" title="[uin]" class="icon" />');
 define('_hpicon_forum', '<a href="[hp]" target="_blank"><img src="../inc/images/forum_hp.gif" alt="" title="[hp]" class="icon" /></a>');
-define('_emailicon_forum', '<a href="mailto:[email]"><img src="../inc/images/forum_email.gif" alt="" title="[email]" class="icon" /></a>');
+define('_emailicon_forum', '<a href=\\"mailto:"+d+"\\"><img src=\\"../inc/images/forum_email.gif\\" title="+d+" class=\\"icon\\" /></a>');
 define('_server_menu_icon_yesno', '<a href="?admin=server&amp;do=menu&amp;id=[id]"><img src="../inc/images/server_yesno.gif" alt="" class="icon" /></a>');
 define('_forum_pn_preview', '<img src="../inc/images/forum_pn.gif" alt="" class="icon" style="cursor:pointer" />');
 define('_forum_zitat_preview', '<img src="../inc/images/zitat.gif" alt="" class="icon" style="cursor:pointer" />');
@@ -75,8 +77,8 @@ define('_no_userpic_small_link', '<a href="../user/?action=user&amp;id=[id]"><im
 ////////////////////
 ## Allgemein ##
 define('_user_link', '[country] <a class="[class]" href="../user/?action=user&amp;id=[id][get]">[nick]</a>');
-define('_user_link_noreg', '<a class="[class]" href="mailto:[email]">[nick]</a>');
-define('_link_mailto', '<a href="mailto:[email]">[nick]</a>');
+define('_user_link_noreg', '<a class=\\"[class]\\" href=\\"mailto:"+d+"\\">[nick]</a>');
+define('_link_mailto', '<a href=\\"mailto:"+d+"\\">[nick]</a>');
 define('_link_hp', '<a href="[hp]"><img src="../inc/images/hp.gif" alt="" title="[hp]" class="icon" /></a>');
 define('_userava_link', '<img src="../inc/images/uploads/useravatare/[id].[endung]" width="[width]" height="[height]" alt="" />');
 define('_no_userava', '<img src="../inc/images/noavatar.gif" width="[width]" height="[height]" alt="" />');
@@ -86,8 +88,8 @@ define('_no_userpic', '<img src="../inc/images/nopic.gif" width="[width]" height
 define('_closedicon', '<img src="../inc/images/closed.gif" alt="" class="icon" />');
 define('_icqstatus', '<img src="http://web.icq.com/whitepages/online?icq=[uin]&amp;img=5" alt="" title="[uin]" class="icon" />');
 define('_hpicon', '<a href="[hp]" target="_blank"><img src="../inc/images/hp.gif" alt="" title="[hp]" class="icon" /></a>');
-define('_email_mailto', '<a href="mailto:[email]">[email]</a>');
-define('_emailicon', '<a href="mailto:[email]"><img src="../inc/images/email.gif" alt="" title="[email]" class="icon" /></a>');
+define('_email_mailto', '<a href=\\"mailto:"+d+"\\">"+d+"</a>');
+define('_emailicon', '<a href=\\"mailto:"+d+"\\"><img src=\\"../inc/images/email.gif\\" title="+d+" class=\\"icon\\" /></a>');
 define('_steamicon_blank', '<img src="../inc/images/steam.gif" alt="" class="icon" />');
 define('_emailicon_blank', '<img src="../inc/images/email.gif" alt="" class="icon" />');
 define('_hlswicon_blank', '<img src="../inc/images/xfire.gif" alt="" class="icon" />');
@@ -380,7 +382,7 @@ define('_profil_custom', '
 define('_profil_custom_mail', '
 <tr>
   <td class="contentMainTop" width="20%"><span class="fontBold">[name]:</span></td>
-  <td class="contentMainFirst" align="center"><img src="../inc/images/mailto.gif" alt="" class="icon" /> <a href="mailto:[value]">[value]</a></td>
+  <td class="contentMainFirst" align="center"><img src="../inc/images/mailto.gif" alt="" class="icon" /> [value]</td>
 </tr>');
 ## Userprofil editieren ##
 define('_profil_head_cont', '

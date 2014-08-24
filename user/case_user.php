@@ -21,7 +21,7 @@ if(defined('_UserMenu')) {
             $sex = _female;
 
         $hp = empty($get['hp']) ? "-" : "<a href=\"".$get['hp']."\" target=\"_blank\">".$get['hp']."</a>";
-        $email = empty($get['email']) ? "-" : "<img src=\"../inc/images/mailto.gif\" alt=\"\" align=\"texttop\"> <a href=\"mailto:".eMailAddr($get['email'])."\" target=\"_blank\">".eMailAddr($get['email'])."</a>";
+        $email = empty($get['email']) ? "-" : CryptMailto(re($get['email']),_user_mailto_texttop);
         $pn = show(_pn_write, array("id" => $_GET['id'], "nick" => $get['nick']));
         $hlsw = empty($get['hlswid']) ? "-" : show(_hlswicon, array("id" => re($get['hlswid']), "img" => "1", "css" => ""));
         $xboxu = empty($get['xboxid']) ? "-" : show(_xboxicon, array("id" => str_replace(" ","%20",trim(re($get['xboxid']))), "img" => "1", "css" => ""));
@@ -67,7 +67,7 @@ if(defined('_UserMenu')) {
                     if($getcustom['type'] == 2)
                         $custom_clan .= show(_profil_custom_url, array("name" => re(pfields_name($getcustom['name'])), "value" => re($getcontent[$getcustom['feldname']])));
                     else if($getcustom['type'] == 3)
-                        $custom_clan .= show(_profil_custom_mail, array("name" => re(pfields_name($getcustom['name'])), "value" => eMailAddr(re($getcontent[$getcustom['feldname']]))));
+                        $custom_clan .= show(_profil_custom_mail, array("name" => re(pfields_name($getcustom['name'])), "value" => CryptMailto(re($getcontent[$getcustom['feldname']]),_link_mailto)));
                     else
                         $custom_clan .= show(_profil_custom, array("name" => re(pfields_name($getcustom['name'])), "value" => re($getcontent[$getcustom['feldname']])));
                 }
@@ -97,8 +97,7 @@ if(defined('_UserMenu')) {
                           ORDER BY id DESC");
 
             $qryperm = db("SELECT id,perm_gallery FROM ".$db['users']." WHERE id = ".$_GET['id'],false,true);
-            $qryuser = db("SELECT level FROM ".$db['users']." WHERE id = ".$userid,false,true);
-            $gal = '';
+            $qryuser = db("SELECT level FROM ".$db['users']." WHERE id = ".$userid,false,true); $gal = '';
             if(!$qryperm['perm_gallery'] || $qryperm['perm_gallery'] < $qryuser['level'] || $qryperm['id'] == $userid) {
                 while($getgl = _fetch($qrygl)) {
                     $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
@@ -133,8 +132,7 @@ if(defined('_UserMenu')) {
         $membergb = '';
         while($getgb = _fetch($qrygb)) {
             $gbhp = $getgb['hp'] ? show(_hpicon, array("hp" => $getgb['hp'])) : "";
-            $gbemail = $getgb['email'] ? show(_emailicon, array("email" => eMailAddr($getgb['email']))) : "";
-
+            $gbemail = $getgb['email'] ? CryptMailto(re($getgb['email']),_emailicon) : "";
             $edit = ""; $delete = "";
             if(permission('editusers') || $_GET['id'] == $userid) {
                 $edit = show("page/button_edit_single", array("id" => $get['id'],
@@ -150,14 +148,13 @@ if(defined('_UserMenu')) {
             if(!$getgb['reg']) {
                 $www = "";
                 $hp = $getgb['hp'] ? show(_hpicon_forum, array("hp" => $getgb['hp'])) : "";
-                $email = $getgb['email'] ? '<br />'.show(_emailicon_forum, array("email" => eMailAddr($getgb['email']))) : "";
+                $email = $getgb['email'] ? '<br />'.CryptMailto(re($getgb['email']),_emailicon_forum) : "";
                 $onoff = ""; $avatar = "";
-                $nick = show(_link_mailto, array("nick" => re($getgb['nick']),
-                                                 "email" => eMailAddr($getgb['email'])));
+                $nick = CryptMailto(re($getgb['email']),_link_mailto, array("nick" => re($getgb['nick'])));
             } else {
                 $www = data("hp",$getgb['reg']);
                 $hp = empty($www) ? '' : show(_hpicon_forum, array("hp" => $www));
-                $email = '<br />'.show(_emailicon_forum, array("email" => eMailAddr(data("email",$getgb['reg']))));
+                $email = '<br />'.CryptMailto(re(data("email",$getgb['reg'])),_emailicon_forum);
                 $onoff = onlinecheck($getgb['reg']);
                 $nick = autor($getgb['reg']);
             }

@@ -93,10 +93,8 @@ if(defined('_Forum')) {
                       WHERE id = '".$getp['reg']."'");
           $getu = _fetch($qryu);
 
-          $email = show(_emailicon_forum, array("email" => eMailAddr(re($getu['email']))));
-          $pn = show(_pn_write_forum, array("id" => $getp['reg'],
-                                                                          "nick" => $getu['nick']));
-
+          $email = CryptMailto(re($getu['email']),_emailicon_forum);
+          $pn = show(_pn_write_forum, array("id" => $getp['reg'],"nick" => $getu['nick']));
           if(empty($getu['icq']) || $getu['icq'] == 0) $icq = "";
               else {
             $uin = show(_icqstatus_forum, array("uin" => $getu['icq']));
@@ -108,7 +106,7 @@ if(defined('_Forum')) {
         } else {
           $icq = "";
           $pn = "";
-          $email = show(_emailicon_forum, array("email" => eMailAddr(re($getp['email']))));
+          $email = CryptMailto(re($getp['email']),_emailicon_forum);
           if(empty($getp['hp'])) $hp = "";
           else $hp = show(_hpicon_forum, array("hp" => $getp['hp']));
         }
@@ -261,7 +259,7 @@ if(defined('_Forum')) {
         $getu = db("SELECT nick,icq,hp,email FROM ".$db['users']."
                     WHERE id = '".$get['t_reg']."'",false,true);
 
-        $email = show(_emailicon_forum, array("email" => eMailAddr(re($getu['email']))));
+        $email = CryptMailto(re($getu['email']),_emailicon_forum);
         $pn = show(_pn_write_forum, array("id" => $get['t_reg'],
                                                                         "nick" => $getu['nick']));
         if(empty($getu['icq']) || $getu['icq'] == 0) $icq = "";
@@ -275,7 +273,7 @@ if(defined('_Forum')) {
       } else {
         $pn = "";
         $icq = "";
-        $email = show(_emailicon_forum, array("email" => eMailAddr($get['t_email'])));
+        $email = CryptMailto(re($get['t_email']),_emailicon_forum);
         if(empty($get['t_hp'])) $hp = "";
         else $hp = show(_hpicon_forum, array("hp" => $get['t_hp']));
       }

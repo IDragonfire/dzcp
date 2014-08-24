@@ -165,7 +165,7 @@ if(defined('_Clanwars')) {
             $hp = ""; $email = ""; $onoff = ""; $avatar = "";
             if(!$getc['reg']) {
                 $hp = $getc['hp'] ? show(_hpicon, array("hp" => $getc['hp'])) : '';
-                $email = $getc['email'] ? '<br />'.show(_emailicon_forum, array("email" => eMailAddr($getc['email']))) : '';
+                $email = $getc['email'] ? '<br />'.CryptMailto($getc['email'],_emailicon_forum) : '';
                 $nick = show(_link_mailto, array("nick" => re($getc['nick']), "email" => $getc['email']));
             } else {
                 $onoff = onlinecheck($getc['reg']);

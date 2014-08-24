@@ -694,17 +694,6 @@ function hl($text, $word) {
     return $ret;
 }
 
-//-> Emailadressen in Unicode umwandeln
-function eMailAddr($email) {
-    $address = trim($email);
-    $output = "";
-
-    for($i=0;$i<strlen($email);$i++)
-    { $output.=str_replace(substr($email,$i,1),"&#".ord(substr($email,$i,1)).";",substr($email,$i,1)); }
-
-    return $output;
-}
-
 //-> Leerzeichen mit + ersetzen (w3c)
 function convSpace($string) {
     return str_replace(" ","+",$string);
@@ -1594,7 +1583,7 @@ function autor($uid, $class="", $nick="", $email="", $cut="",$add="") {
             dbc_index::setIndex('user_'.$get['id'], $get);
         } else {
             $nickname = (!empty($cut)) ? cut(re($nick), $cut) : re($nick);
-            return show(_user_link_noreg, array("nick" => $nickname, "class" => $class, "email" => eMailAddr($email)));
+            return CryptMailto($email,_user_link_noreg,array("nick" => $nickname, "class" => $class));
         }
     }
 
@@ -1615,7 +1604,7 @@ function cleanautor($uid, $class="", $nick="", $email="", $cut="") {
             dbc_index::setIndex('user_'.$get['id'], $get);
         }
         else
-            return show(_user_link_noreg, array("nick" => re($nick), "class" => $class, "email" => eMailAddr($email)));
+            return CryptMailto($email,_user_link_noreg,array("nick" => re($nick), "class" => $class));
     }
 
     return show(_user_link_preview, array("id" => $uid, "country" => flag(dbc_index::getIndexKey('user_'.intval($uid), 'country')),
@@ -2430,13 +2419,21 @@ function get_elapsed_time( $timestamp, $aktuell = null, $anzahl_einheiten = null
     return $ret;
 }
 
-function CryptMailto($email='') {
+/**
+ * Verschlusselt eine E-Mail Adresse per Javascript
+ * @param string $email
+ * @param string $template
+ * @return string
+ */
+function CryptMailto($email='',$template=_emailicon,$custom=array()) {
+    if(empty($template) || empty($email)) return '';
     $character_set = '+-.0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';
     $key = str_shuffle($character_set); $cipher_text = ''; $id = 'e'.rand(1,999999999);
     for ($i=0;$i<strlen($email);$i+=1) $cipher_text.= $key[strpos($character_set,$email[$i])];
     $script = 'var a="'.$key.'";var b=a.split("").sort().join("");var c="'.$cipher_text.'";var d="";';
     $script.= 'for(var e=0;e<c.length;e++)d+=b.charAt(a.indexOf(c.charAt(e)));';
-    $script.= 'document.getElementById("'.$id.'").innerHTML="<a href=\\"mailto:"+d+"\\">"+d+"</a>"';
+    if(!empty($custom) && count($custom) >= 1) $template = show($template,$custom);
+    $script.= 'document.getElementById("'.$id.'").innerHTML="'.$template.'"';
     $script = "eval(\"".str_replace(array("\\",'"'),array("\\\\",'\"'), $script)."\")";
     $script = '<script type="text/javascript">/*<![CDATA[*/'.$script.'/*]]>*/</script>';
     return '<span id="'.$id.'">[javascript protected email address]</span>'.$script;

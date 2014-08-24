@@ -83,9 +83,9 @@ if(defined('_News')) {
                             $hp = show(_hpicon_forum, array("hp" => $getc['hp']));
 
                         if($getc['email'])
-                            $email = '<br />'.show(_emailicon_forum, array("email" => eMailAddr(re($getc['email']))));
+                            $email = '<br />'.CryptMailto(re($getc['email']),_emailicon_forum);
 
-                        $nick = show(_link_mailto, array("nick" => re($getc['nick']), "email" => eMailAddr(re($getc['email']))));
+                        $nick = show(_link_mailto, array("nick" => re($getc['nick']), "email" => $email));
                     }
 
                     $titel = show(_eintrag_titel, array("postid" => $i,
