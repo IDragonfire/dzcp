@@ -8,6 +8,10 @@
 if(version_compare(PHP_VERSION, '5.2.0', '>=') === false)
     die('DZCP required PHP 5.2.0 or newer!<p> Found PHP ' . PHP_VERSION);
 
+## Check MySQLi ##
+if(!function_exists('mysqli_connect'))
+    die('<b>DZCP required ( MySQLi )* MySQL Improved Extension *!</b>');
+
 #########################################
 //-> Debug Console Settings Start
 #########################################
