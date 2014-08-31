@@ -21,6 +21,7 @@ ob_implicit_flush(false);
     require_once(basePath."/inc/menu-functions/teamspeak.php");
     require_once(basePath."/inc/menu-functions/kalender.php");
     require_once(basePath."/inc/menu-functions/team.php");
+    require_once(basePath."/inc/menu-functions/counter.php");
 
     ## SETTINGS ##
     $dir = "sites";
@@ -73,6 +74,7 @@ ob_implicit_flush(false);
             $year = (isset($_GET['year']) ? $_GET['year'] : '');
             echo kalender($month,$year,true);
         break;
+        case 'counter';   echo counter(true); break;
         case 'teams';     echo team($_GET['tID']); break;
         case 'server';    echo '<table class="hperc" cellspacing="0">'.server($_GET['serverID']).'</table>'; break;
         case 'shoutbox';  echo '<table class="hperc" cellspacing="1">'.shout(1).'</table>'; break;
