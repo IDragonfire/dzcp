@@ -1299,7 +1299,7 @@ function permission($check,$uid=0) {
     if($chkMe == 4)
         return true;
     else {
-        if($userid) {
+        if($uid) {
             // check rank permission
             if(db("SELECT s1.`".$check."` FROM ".$db['permissions']." AS s1
                    LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
