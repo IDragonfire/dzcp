@@ -7,7 +7,7 @@
 ## Error Reporting ##
 if(!defined('DEBUG_LOADER'))
     exit('<b>Die Debug-Console wurde nicht geladen!<p>
-    Bitte überprüfen Sie ob die index.php einen "include(basePath."/inc/debugger.php");" Eintrag hat.</b>');
+    Bitte Ã¼berprÃ¼fen Sie ob die index.php einen "include(basePath."/inc/debugger.php");" Eintrag hat.</b>');
 
 ## INCLUDES/REQUIRES ##
 require_once(basePath.'/inc/sessions.php');
@@ -105,7 +105,7 @@ if($functions_files = get_files(basePath.'/inc/additional-kernel/',false,true,ar
 }
 
 /**
- * Prüft eine IP gegen eine IP-Range
+ * PrÃ¼ft eine IP gegen eine IP-Range
  * @param ipv4 $ip
  * @param ipv4 range $range
  * @return boolean
@@ -151,7 +151,7 @@ function validateIpV4Range ($ip, $range) {
     return true;
 }
 
-// -> Prüft ob die IP gesperrt und gültig ist
+// -> PrÃ¼ft ob die IP gesperrt und gÃ¼ltig ist
 function check_ip() {
     global $db,$ajaxJob,$isSpider,$userip;
     if(!$ajaxJob && !$isSpider) {
@@ -176,7 +176,7 @@ function check_ip() {
             if(sfs::is_spammer()) {
                 db("DELETE FROM `".$db['ip2dns']."` WHERE `sessid` = `".session_id()."`;");
                 dzcp_session_destroy();
-                die('Deine IP-Adresse ist auf <a href="http://www.stopforumspam.com/" target="_blank">http://www.stopforumspam.com/</a> gesperrt, die IP wurde zu oft für Spam Angriffe auf Webseiten verwendet.<p>
+                die('Deine IP-Adresse ist auf <a href="http://www.stopforumspam.com/" target="_blank">http://www.stopforumspam.com/</a> gesperrt, die IP wurde zu oft fÃ¼r Spam Angriffe auf Webseiten verwendet.<p>
                      Your IP address is known on <a href="http://www.stopforumspam.com/" target="_blank">http://www.stopforumspam.com/</a>, your IP has been used for spam attacks on websites.');
             }
         }
@@ -201,7 +201,7 @@ function isIPv4($ip) {
     return (preg_match('#^[0-9]{1,3}(\.[0-9]{1,3}){3}$#', $ip)) ? true : false;
 }
 
-// IP Prüfung
+// IP PrÃ¼fung
 check_ip();
 
 function dzcp_session_destroy() {
@@ -277,7 +277,7 @@ if(!$chkMe) {
     $_SESSION['lastvisit'] = '';
 }
 
-//-> Prueft ob der User gebannt ist, oder die IP des Clients warend einer offenen session verändert wurde.
+//-> Prueft ob der User gebannt ist, oder die IP des Clients warend einer offenen session verÃ¤ndert wurde.
 if($chkMe && $userid && !empty($_SESSION['ip'])) {
     if($_SESSION['ip'] != visitorIp() || isBanned($userid,false) ) {
         dzcp_session_destroy();
@@ -306,7 +306,7 @@ if(session_id()) {
 }
 
 /**
-* Gibt die IP des Besuchers / Users zurück
+* Gibt die IP des Besuchers / Users zurÃ¼ck
 * Forwarded IP Support
 */
 function visitorIp() {
@@ -1044,7 +1044,7 @@ function array_var_exists($var,$search)
 { foreach($search as $key => $var_) { if($var_==$var) return true; } return false; }
 
 /**
- * Funktion um eine Datei im Web auf Existenz zu prüfen und abzurufen
+ * Funktion um eine Datei im Web auf Existenz zu prÃ¼fen und abzurufen
  * Updated for DZCP-Extended Edition
  *
  * @return String
@@ -1092,7 +1092,7 @@ function fileExists($url,$timeout=2) {
  * @return string
  */
 function spChars($txt) {
-    $search  = array("Ä","ä","Ü","ü","Ö","ö","ß","€");
+    $search  = array("Ã„","Ã¤","Ãœ","Ã¼","Ã–","Ã¶","ÃŸ","Â€");
     $replace = array("&Auml;","&auml;","&Uuml;","&uuml;","&Ouml;","&ouml;","&szlig;","&euro;");
     return str_replace($search,$replace,$txt);
 }
@@ -1857,7 +1857,7 @@ function voteanswer($what, $vid) {
 
 //Profilfelder konvertieren
 function conv($txt) {
-    return str_replace(array("ä","ü","ö","Ä","Ü","Ö","ß"), array("ae","ue","oe","Ae","Ue","Oe","ss"), $txt);
+    return str_replace(array("Ã¤","Ã¼","Ã¶","Ã„","Ãœ","Ã–","ÃŸ"), array("ae","ue","oe","Ae","Ue","Oe","ss"), $txt);
 }
 
 //-> Geburtstag errechnen
@@ -2263,7 +2263,7 @@ final class string {
     { return trim(stripslashes(spChars(html_entity_decode(utf8_decode($txt), ENT_COMPAT, 'iso-8859-1'),true))); }
 }
 
-//-> Speichert Rückgaben der MySQL Datenbank zwischen um SQL-Queries einzusparen
+//-> Speichert RÃ¼ckgaben der MySQL Datenbank zwischen um SQL-Queries einzusparen
 final class dbc_index {
     private static $index = array();
     private static $is_mem = false;
@@ -2426,7 +2426,7 @@ function get_elapsed_time( $timestamp, $aktuell = null, $anzahl_einheiten = null
  * @return string
  */
 function CryptMailto($email='',$template=_emailicon,$custom=array()) {
-    if(empty($template) || empty($email)) return '';
+    if(empty($template) || empty($email) || !permission("editusers")) return '';
     $character_set = '+-.0123456789@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';
     $key = str_shuffle($character_set); $cipher_text = ''; $id = 'e'.rand(1,999999999);
     for ($i=0;$i<strlen($email);$i+=1) $cipher_text.= $key[strpos($character_set,$email[$i])];
