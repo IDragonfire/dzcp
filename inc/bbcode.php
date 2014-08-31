@@ -797,6 +797,31 @@ function bbcode_nletter_plain($txt) {
     return strip_tags($txt);
 }
 
+function convert_feed($txt) {
+    global $charset;
+    $txt = stripslashes($txt);
+    $txt = str_replace("&Auml;","Ae",$txt);
+    $txt = str_replace("&auml;","ae",$txt);
+    $txt = str_replace("&Uuml;","Ue",$txt);
+    $txt = str_replace("&uuml;","ue",$txt);
+    $txt = str_replace("&Ouml;","Oe",$txt);
+    $txt = str_replace("&ouml;","oe",$txt);
+    $txt = htmlentities($txt, ENT_QUOTES, $charset);
+    $txt = str_replace("&amp;","&",$txt);
+    $txt = str_replace("&lt;","<",$txt);
+    $txt = str_replace("&gt;",">",$txt);
+    $txt = str_replace("&#60;","<",$txt);
+    $txt = str_replace("&#62;",">",$txt);
+    $txt = str_replace("&#34;","\"",$txt);
+    $txt = str_replace("&nbsp;"," ",$txt);
+    $txt = str_replace("&szlig;","ss",$txt);
+    $txt = preg_replace("#&(.*?);#is","",$txt);
+    $txt = str_replace("&","&amp;",$txt);
+    $txt = str_replace("", "\"",$txt);
+    $txt = str_replace("", "\"",$txt);
+    return strip_tags($txt);
+}
+
 function bbcode_html($txt,$tinymce=0) {
     $txt = str_replace("&lt;","<",$txt);
     $txt = str_replace("&gt;",">",$txt);
@@ -1049,7 +1074,7 @@ function array_var_exists($var,$search)
  *
  * @return String
  **/
-function fileExists($url,$timeout=2) {
+function fileExists($url,$timeout=1) {
     if((!allow_url_fopen_support() && !use_curl || (use_curl && !extension_loaded('curl'))))
         return false;
 

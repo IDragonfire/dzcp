@@ -20,31 +20,6 @@ define('_News', true);
 
 ## SECTIONS ##
 //RSS News Feed erzeugen
-function convert_feed($txt) {
-    global $charset;
-    $txt = stripslashes($txt);
-    $txt = str_replace("&Auml;","Ae",$txt);
-    $txt = str_replace("&auml;","ae",$txt);
-    $txt = str_replace("&Uuml;","Ue",$txt);
-    $txt = str_replace("&uuml;","ue",$txt);
-    $txt = str_replace("&Ouml;","Oe",$txt);
-    $txt = str_replace("&ouml;","oe",$txt);
-    $txt = htmlentities($txt, ENT_QUOTES, $charset);
-    $txt = str_replace("&amp;","&",$txt);
-    $txt = str_replace("&lt;","<",$txt);
-    $txt = str_replace("&gt;",">",$txt);
-    $txt = str_replace("&#60;","<",$txt);
-    $txt = str_replace("&#62;",">",$txt);
-    $txt = str_replace("&#34;","\"",$txt);
-    $txt = str_replace("&nbsp;"," ",$txt);
-    $txt = str_replace("&szlig;","ss",$txt);
-    $txt = preg_replace("#&(.*?);#is","",$txt);
-    $txt = str_replace("&","&amp;",$txt);
-    $txt = str_replace("", "\"",$txt);
-    $txt = str_replace("", "\"",$txt);
-    return strip_tags($txt);
-}
-
 function feed() {
     global $db,$pagetitle,$charset;
     if(!file_exists(basePath.'/rss.xml') || time() - filemtime(basePath.'/rss.xml') > feed_update_time) {
