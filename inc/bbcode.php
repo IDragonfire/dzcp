@@ -1117,7 +1117,7 @@ function fileExists($url,$timeout=1) {
  * @return string
  */
 function spChars($txt) {
-    $search  = array("Ã„","Ã¤","Ãœ","Ã¼","Ã–","Ã¶","ÃŸ","Â€");
+    $search  = array("Ä","ä","Ü","ü","Ö","ö","ß","€");
     $replace = array("&Auml;","&auml;","&Uuml;","&uuml;","&Ouml;","&ouml;","&szlig;","&euro;");
     return str_replace($search,$replace,$txt);
 }
