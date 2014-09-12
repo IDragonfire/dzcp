@@ -11,6 +11,7 @@ include(basePath.'/inc/config.php');
 function install_mysql($login, $nick, $pwd, $email)
 {
   global $db;
+
 //-> Awards
   $qry = db("DROP TABLE IF EXISTS ".$db['awards']."");
   $qry = db("CREATE TABLE ".$db['awards']." (
@@ -1572,14 +1573,9 @@ function update_mysql_1_6()
     while($get = mysqli_fetch_assoc($qry)) {
         db("UPDATE ".$db['permissions']." SET slideshow = 1, gs_showpw = 1 WHERE id = '".$get['id']."'");
     }
-
-    if($updater) {
-        db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time()+auto_db_optimize_interval)."' WHERE `id` = 1;");
-        db_optimize();
-    }
 }
-function update_mysql_1_6_1()
-{
+
+function update_mysql_1_6_1() {
     global $db;
 
     db("ALTER TABLE `".$db['sponsoren']."` DROP `send`;");
@@ -1608,7 +1604,7 @@ function update_mysql_1_6_1()
       `ip` varchar(15) NOT NULL DEFAULT '',
       `dns` varchar(200) NOT NULL DEFAULT '',
       PRIMARY KEY (`id`),
-      KEY `sessid` (`sessid`)) ENGINE=MEMORY;");
+      KEY `sessid` (`sessid`));");
 
     //Set default for profile
     $qry = db("SELECT feldname FROM `".$db['profile']."` WHERE `feldname` LIKE '%custom_%'");
@@ -1628,7 +1624,7 @@ function update_mysql_1_6_1()
         `created` int(11) NOT NULL,
         PRIMARY KEY (`id`,`namespace`),
         KEY `created` (`created`)
-        ) ENGINE=MEMORY;");
+        );");
 
     //-> Sessions
     db("DROP TABLE IF EXISTS ".$db['sessions']);
@@ -1639,4 +1635,9 @@ function update_mysql_1_6_1()
     `data` blob NOT NULL
      ) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
     db("ALTER TABLE `".$db['sessions']."` ADD PRIMARY KEY (`id`), ADD KEY `ssid` (`ssid`), ADD KEY `time` (`time`);");
+
+    if($updater) {
+        db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time()+auto_db_optimize_interval)."' WHERE `id` = 1;");
+        db_optimize();
+    }
 }
