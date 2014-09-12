@@ -151,7 +151,7 @@ function validateIpV4Range ($ip, $range) {
     return true;
 }
 
-// -> Prüft ob die IP gesperrt und gültig ist
+// -> Pruft ob die IP gesperrt und gultig ist
 function check_ip() {
     global $db,$ajaxJob,$isSpider,$userip;
     if(!$ajaxJob && !$isSpider) {
@@ -186,7 +186,7 @@ function check_ip() {
 /**
  * Check given ip for ipv6.
  * @param    string        $ip
- * @return    boolean
+ * @return   boolean
  */
 function isIPv6($ip) {
     return (preg_match('#^[0-9A-F]{0,4}(:([0-9A-F]{0,4})){0,7}$#s', $ip)) ? true : false;
@@ -201,7 +201,7 @@ function isIPv4($ip) {
     return (preg_match('#^[0-9]{1,3}(\.[0-9]{1,3}){3}$#', $ip)) ? true : false;
 }
 
-// IP Prüfung
+// IP Prufung
 check_ip();
 
 function dzcp_session_destroy() {
@@ -306,7 +306,7 @@ if(session_id()) {
 }
 
 /**
-* Gibt die IP des Besuchers / Users zurück
+* Gibt die IP des Besuchers / Users zuruck
 * Forwarded IP Support
 */
 function visitorIp() {
@@ -655,7 +655,7 @@ function replace($txt,$type=false,$no_vid_tag=false) {
     $txt = preg_replace_callback("#\<img(.*?)\>#", create_function('$img','if(preg_match("#class#i",$img[1])) return "<img".$img[1].">"; else return "<img class=\"content\"".$img[1].">";'), $txt);
 
     if(!$no_vid_tag) {
-        $txt = preg_replace_callback("/\[youtube\](?:http?:\/\/)?(?:www\.)?youtu(?:\.be\/|be\.com\/watch\?v=)([A-Z0-9\-_]+)(?:&(.*?))?\[\/youtube\]/i",
+        $txt = preg_replace_callback("/\[youtube\](?:http?s?:\/\/)?(?:www\.)?youtu(?:\.be\/|be\.com\/watch\?v=)([A-Z0-9\-_]+)(?:&(.*?))?\[\/youtube\]/i",
                 create_function('$match','return \'<object width="425" height="344"><param name="movie" value="//www.youtube.com/v/\'.trim($match[1]).\'?hl=de_DE&amp;version=3&amp;rel=0"></param><param name="allowFullScreen" value="true"></param><param name="allowscriptaccess" value="always"></param><embed src="//www.youtube.com/v/\'.trim($match[1]).\'?hl=de_DE&amp;version=3&amp;rel=0" type="application/x-shockwave-flash" width="425" height="344" allowscriptaccess="always" allowfullscreen="true"></embed></object>\';'), $txt);
     }
 
