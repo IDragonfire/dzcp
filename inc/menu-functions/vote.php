@@ -14,9 +14,10 @@ function vote($ajax = false) {
         $qryv = db("SELECT `id`,`stimmen`,`sel` FROM ".$db['vote_results']." WHERE `vid` = '".$get['id']."' ORDER BY what");
         $results = '';
         while ($getv = _fetch($qryv)) {
+            $ipcheck = !count_clicks('vote',$get['id'],0,false);
             $stimmen = sum($db['vote_results'], " WHERE `vid` = '".$get['id']."'", "stimmen");
             if($stimmen != 0) {
-                if(ipcheck("vid_".$get['id']) || cookie::get('vid_'.$get['id']) != false || $get['closed'] == 1) {
+                if($ipcheck || cookie::get('vid_'.$get['id']) != false || $get['closed'] == 1) {
                     $percent = round($getv['stimmen']/$stimmen*100,1);
                     $rawpercent = round($getv['stimmen']/$stimmen*100,0);
 

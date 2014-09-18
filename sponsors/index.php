@@ -48,12 +48,9 @@ switch ($action):
                                               "show" => $show));
     break;
     case 'link';
-        $get = db("SELECT link FROM ".$db['sponsoren']."
-                   WHERE id = '".intval($_GET['id'])."'",false,true);
-
-        db("UPDATE ".$db['sponsoren']."
-            SET `hits` = hits+1
-            WHERE id = '".intval($_GET['id'])."'");
+        $get = db("SELECT link,id FROM ".$db['sponsoren']." WHERE id = '".intval($_GET['id'])."'",false,true);
+        if(count_clicks('sponsoren',$get['id']))
+            db("UPDATE ".$db['sponsoren']." SET `hits` = hits+1 WHERE id = '".$get['id']."'");
 
         header("Location: ".$get['link']);
     break;

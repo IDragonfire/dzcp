@@ -16,7 +16,9 @@ if(defined('_News')) {
                 $index = error(_id_dont_exist,1);
             else
             {
-                db("UPDATE ".$db['news']." SET `viewed` = viewed+1 WHERE id = '".intval($_GET['id'])."'");
+                //Update viewed
+                if(count_clicks('news',intval($_GET['id'])))
+                    db("UPDATE ".$db['news']." SET `viewed` = viewed+1 WHERE id = '".intval($_GET['id'])."'");
 
                 $get = _fetch($qry);
                 $getkat = db("SELECT katimg FROM ".$db['newskat']." WHERE id = '".$get['kat']."'",false,true);

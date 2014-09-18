@@ -170,6 +170,7 @@ if(defined('_UserMenu')) {
                     db("DELETE FROM ".$db['userpos']." WHERE user = '".intval($_GET['id'])."'");
                     db("DELETE FROM ".$db['users']." WHERE id = '".intval($_GET['id'])."'");
                     db("DELETE FROM ".$db['userstats']." WHERE user = '".intval($_GET['id'])."'");
+                    db("DELETE FROM ".$db['clicks_ips']." WHERE `uid` = ".intval($_GET['id']));
                     $index = info(_user_deleted, "?action=userlist");;
                 }
             }

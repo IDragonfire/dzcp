@@ -1629,12 +1629,25 @@ function update_mysql_1_6_1() {
     //-> Sessions
     db("DROP TABLE IF EXISTS ".$db['sessions']);
     db("CREATE TABLE IF NOT EXISTS `".$db['sessions']."` (
-    `id` int(11) NOT NULL,
+    `id` int(11) NOT NULL AUTO_INCREMENT,
     `ssid` varchar(200) NOT NULL DEFAULT '',
     `time` int(11) NOT NULL,
     `data` blob NOT NULL
      ) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
     db("ALTER TABLE `".$db['sessions']."` ADD PRIMARY KEY (`id`), ADD KEY `ssid` (`ssid`), ADD KEY `time` (`time`);");
+
+    //-> Click IP Counter
+    db("DROP TABLE IF EXISTS `".$db['clicks_ips']."`;");
+    db("CREATE TABLE IF NOT EXISTS `".$db['clicks_ips']."` (
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `ip` varchar(15) NOT NULL DEFAULT '000.000.000.000',
+    `uid` int(11) NOT NULL DEFAULT '0',
+    `ids` int(11) NOT NULL DEFAULT '0',
+    `side` varchar(30) NOT NULL DEFAULT '',
+    `time` int(20) NOT NULL DEFAULT '0',
+    PRIMARY KEY (`id`),
+    KEY `ip` (`ip`)
+    );",false,false,true);
 
     if($updater) {
         db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time()+auto_db_optimize_interval)."' WHERE `id` = 1;");

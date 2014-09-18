@@ -43,8 +43,10 @@ switch ($action):
         $index = show($dir."/links", array("head" => _links_head, "show" => $show));
     break;
     case 'link';
-        db("UPDATE ".$db['links']." SET `hits` = hits+1 WHERE `id` = '".intval($_GET['id'])."'");
-        $get = db("SELECT `url` FROM ".$db['links']." WHERE `id` = '".intval($_GET['id'])."'",false,true);
+        $get = db("SELECT `url`,`hits`,`id` FROM ".$db['links']." WHERE `id` = '".intval($_GET['id'])."'",false,true);
+        if(count_clicks('link',$get['id']))
+            db("UPDATE ".$db['links']." SET `hits` = ".($get['hits'] + 1)." WHERE `id` = '".$get['id']."'");
+
         header("Location: ".$get['url']);
     break;
 endswitch;

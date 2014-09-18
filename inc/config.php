@@ -54,6 +54,7 @@ define('ts3dns_server', true); //Sollen Teamspeak 3 DNS Server erkannt werden
 define('captcha_case_sensitive', false); //Unterscheidet Groß und Kleinschreibung beim Captcha
 define('captcha_mathematic', false); //Stellt den Usern einfache Rechenaufgaben anstelle eines Captcha Codes
 
+define('count_clicks_expires', (24*60*60)); // Wie Lange die IPs für den Click-Counter gespeichert bleiben.
 /*
 * Bitte vor der Aktivierung der Persistent Connections lesen:
 * http://php.net/manual/de/features.persistent-connections.php
@@ -224,6 +225,7 @@ $db = array("host" =>           $sql_host,
             "away" =>           $prefix."away",
             "buddys" =>         $prefix."userbuddys",
             "ipcheck" =>        $prefix."ipcheck",
+            "clicks_ips" =>     $prefix."clicks_ips",
             "clankasse" =>      $prefix."clankasse",
             "c_kats" =>         $prefix."clankasse_kats",
             "c_payed" =>        $prefix."clankasse_payed",

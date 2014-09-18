@@ -30,15 +30,14 @@ if(defined('_Votes')) {
         $vid = 'vid_' . (int)$get['id'];
         if($get['intern'] == 1) {
             $showVoted = '';
-            $check = db("SELECT id FROM ".$db['ipcheck']." WHERE what = '".$vid."' AND (user_id = '".$userid."' OR ip = '".$userip."')");
-            $ipcheck = _rows($check) == 1;
             $intern = _votes_intern;
         }
 
-        $hostIpcheck = ipcheck($vid); $results = ''; $color2 = 0;
+        $results = ''; $color2 = 0;
+        $ipcheck = !count_clicks('vote',$get['id'],0,false);
         while($getv = _fetch($qryv)) {
             $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-            if($hostIpcheck || $ipcheck || cookie::get('vid_'.$get['id']) != false || $get['closed'] == 1) {
+            if($ipcheck || cookie::get('vid_'.$get['id']) != false || $get['closed']) {
                 $percent = @round($getv['stimmen']/$stimmen*100,2);
                 $rawpercent = @round($getv['stimmen']/$stimmen*100,0);
                 $balken = show(_votes_balken, array("width" => $rawpercent));

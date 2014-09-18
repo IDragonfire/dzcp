@@ -36,6 +36,10 @@ if(defined('_UserMenu')) {
                     db("UPDATE ".$db['users']." SET `online` = '1', `sessid` = '".session_id()."', `ip` = '".$userip."', `pkey` = '".$permanent_key."' WHERE id = ".$get['id']);
                     setIpcheck("login(".$get['id'].")");
 
+                    //-> Aktualisiere Ip-Count Tabelle
+                    $qry = db("SELECT id FROM `".$db['clicks_ips']."` WHERE `ip` LIKE '".$userip."' AND `uid` = 0");
+                    if(_rows($qry)) while($get_ci = _fetch($qry)) { db("UPDATE `".$db['clicks_ips']."` SET `uid` = ".$get['id']." WHERE `id` = ".$get_ci['id'].";"); }
+
                     header("Location: ?action=userlobby");
                 }
                 else

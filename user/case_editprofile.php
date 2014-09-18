@@ -75,8 +75,8 @@ if(defined('_UserMenu')) {
             $bday = ($_POST['t'] && $_POST['m'] && $_POST['j'] ? cal($_POST['t']).".".cal($_POST['m']).".".$_POST['j'] : 0);
 
             $qrycustom = db("SELECT feldname,type FROM ".$db['profile']); $customfields = '';
-          	while($getcustom = _fetch($qrycustom))
-          	{
+              while($getcustom = _fetch($qrycustom))
+              {
               if($getcustom['type'] == 2) $customfields .= " ".$getcustom['feldname']." = '".links($_POST[$getcustom['feldname']])."', ";
               else $customfields .= " ".$getcustom['feldname']." = '".up($_POST[$getcustom['feldname']])."', ";
             }
@@ -173,6 +173,9 @@ if(defined('_UserMenu')) {
 
                 $del = db("DELETE FROM ".$db['userstats']."
                                      WHERE user = '".intval($getdel['id'])."'");
+
+                $del = db("DELETE FROM ".$db['clicks_ips']."
+                                     WHERE `uid` = ".intval($getdel['id']));
 
                 foreach($picformat as $tmpendung)
                 {

@@ -9,11 +9,11 @@ if(defined('_UserMenu')) {
     if(!db("SELECT id FROM ".$db['users']." WHERE id = '".intval($_GET['id'])."'",true) ? true : false)
         $index = error(_user_dont_exist, 1);
     else {
-        db("UPDATE ".$db['userstats']."
-            SET `profilhits` = profilhits+1
-            WHERE user = '".intval($_GET['id'])."'");
-
         $get = db("SELECT * FROM ".$db['users']." WHERE id = '".intval($_GET['id'])."'",false,true);
+
+        if(count_clicks('userprofil',$get['id']))
+            db("UPDATE ".$db['userstats']." SET `profilhits` = profilhits+1 WHERE user = '".$get['id']."'"); //Update Userstats
+
         $sex = '-';
         if($get['sex'] == "1")
             $sex = _male;
@@ -227,11 +227,11 @@ if(defined('_UserMenu')) {
             $custom_about = custom_content(1);
             $custom_contact = custom_content(3);
 
-            $custom_hardware = custom_content(5);
+            $custom_hardware = custom_content(5); $hardware_head = '';
             if($custom_hardware['count'] != 0)
                 $hardware_head = show(_profil_head_cont, array("what" => _profil_hardware));
 
-            $custom_favos = custom_content(4);
+            $custom_favos = custom_content(4); $favos_head = '';
             if($custom_favos['count'] != 0)
                 $favos_head = show(_profil_head_cont, array("what" => _profil_favos));
 

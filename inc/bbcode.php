@@ -245,6 +245,11 @@ if(cookie::get('id') != false && cookie::get('pkey') != false && empty($_SESSION
 
         //-> Aktualisiere die User-Statistik
         db("UPDATE ".$db['userstats']." SET `logins` = logins+1 WHERE user = '".$get['id']."'");
+
+        //-> Aktualisiere Ip-Count Tabelle
+        $qry = db("SELECT id FROM `".$db['clicks_ips']."` WHERE `ip` LIKE '".$userip."' AND `uid` = 0");
+        if(_rows($qry)) while($get_ci = _fetch($qry)) { db("UPDATE `".$db['clicks_ips']."` SET `uid` = ".$get['id']." WHERE `id` = ".$get_ci['id'].";"); }
+
         unset($get,$permanent_key);
     } else {
         $_SESSION['id']        = '';
@@ -2248,6 +2253,39 @@ function setIpcheck($what = '') {
     db("INSERT INTO ".$db['ipcheck']." SET `ip` = '".$userip."', `user_id` = '".userid()."', `what` = '".$what."', `time` = ".time().";");
 }
 
+//-> Preuft ob alle clicks nur einmal gezahlt werden *gast/user
+function count_clicks($side_tag='',$clickedID=0,$update=true) {
+    global $db,$userip,$userid,$chkMe;
+    $qry = db("SELECT id,side FROM ".$db['clicks_ips']." WHERE uid = 0 AND time <= ".time());
+    if(_rows($qry)) while($get = _fetch($qry)) { if($get['side'] != 'vote') db("DELETE FROM ".$db['clicks_ips']." WHERE `id` = ".$get['id']); }
+
+    if($chkMe != 'unlogged') {
+        if(db("SELECT id FROM ".$db['clicks_ips']." WHERE `uid` = '".$userid."' AND `ids` = '".$clickedID."' AND `side` = '".$side_tag."'",true))
+            return false;
+
+        if(db("SELECT id FROM ".$db['clicks_ips']." WHERE `ip` = '".$userip."' AND `ids` = '".$clickedID."' AND `side` = '".$side_tag."'",true)) {
+            if($update)
+                db("UPDATE `".$db['clicks_ips']."` SET `uid` = '".$userid."', `time` = '".(time()+count_clicks_expires)."' WHERE `ip` = '".$userip."' AND `ids` = '".$clickedID."' AND `side` = '".$side_tag."'");
+
+            return false;
+        } else {
+            if($update)
+                db("INSERT INTO ".$db['clicks_ips']." (`id` ,`ip` ,`uid` ,`ids`, `side`, `time`) VALUES (NULL , '".$userip."', '".$userid."', '".$clickedID."', '".$side_tag."', '".(time()+count_clicks_expires)."')");
+
+            return true;
+        }
+    } else {
+        if(!db("SELECT id FROM ".$db['clicks_ips']." WHERE `ip` = '".visitorIp()."' AND `ids` = '".$clickedID."' AND `side` = '".$side_tag."'",true)) {
+            if($update)
+                db("INSERT INTO ".$db['clicks_ips']." (`id` ,`ip` ,`uid` ,`ids`, `side`, `time`) VALUES (NULL , '".$userip."', '0', '".$clickedID."', '".$side_tag."', '".(time()+count_clicks_expires)."')");
+
+            return true;
+        }
+    }
+
+    return false;
+}
+
 function is_php($version='5.3.0')
 { return (floatval(phpversion()) >= $version); }
 
@@ -2288,7 +2326,7 @@ final class string {
     { return trim(stripslashes(spChars(html_entity_decode(utf8_decode($txt), ENT_COMPAT, 'iso-8859-1'),true))); }
 }
 
-//-> Speichert Rückgaben der MySQL Datenbank zwischen um SQL-Queries einzusparen
+//-> Speichert Ruckgaben der MySQL Datenbank zwischen um SQL-Queries einzusparen
 final class dbc_index {
     private static $index = array();
     private static $is_mem = false;
