@@ -181,7 +181,7 @@ switch ($action):
         if(settings("reg_dl") && !$chkMe)
             $index = error(_error_unregistered,1);
         else {
-            $get = db("SELECT url,id, FROM ".$db['downloads']."
+            $get = db("SELECT url,id FROM ".$db['downloads']."
                        WHERE id = '".intval($_GET['id'])."'",false,true);
 
             $file = preg_replace("#added...#Uis", "", $get['url']);
@@ -191,7 +191,7 @@ switch ($action):
                 $dlFile = $get['url'];
 
             if(count_clicks('download',$get['id']))
-                db("UPDATE ".$db['downloads']." SET `hits` = hits+1, `last_dl` = '".time()."' WHERE id = '".$get['id']."'");
+                db("UPDATE ".$db['downloads']." SET `hits` = hits+1, `last_dl` = ".time()." WHERE id = ".$get['id']);
 
             ## download file ##
             header("Location: ".$dlFile);
