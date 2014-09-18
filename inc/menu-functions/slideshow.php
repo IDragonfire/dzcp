@@ -17,7 +17,6 @@ function slideshow() {
             else
                 $slideroverlay = '<div class="slideroverlay"><h2>'.bbcode(wrap(re($get['bez']))).'</h2><span>'.bbcode(wrap(re($get['desc']))).'</span></div>';
 
-            $target = ($get['target'] == "1" ? ",1" : "");
             $pic .= show("menu/slideshowbild", array("image" => "<img src=\"../inc/images/slideshow/".$get['id'].".jpg\" alt=\"\" />",
                                                      "link" => "'".$get['url']."'",
                                                      "bez" => re(cut($get['bez'],32)),
