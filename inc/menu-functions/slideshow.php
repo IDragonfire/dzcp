@@ -6,7 +6,7 @@
  */
 function slideshow() {
     global $db;
-    $qry = db("SELECT `id`,`desc`,`showbez`,`bez`,`url` FROM ".$db['slideshow']." ORDER BY `pos` ASC LIMIT 4");
+    $qry = db("SELECT * FROM ".$db['slideshow']." ORDER BY `pos` ASC LIMIT 4");
     if(_rows($qry) >= 1) {
         $pic = ''; $tabs = '';
         while($get = _fetch($qry)) {
@@ -19,9 +19,10 @@ function slideshow() {
 
             $target = ($get['target'] == "1" ? ",1" : "");
             $pic .= show("menu/slideshowbild", array("image" => "<img src=\"../inc/images/slideshow/".$get['id'].".jpg\" alt=\"\" />",
-                                                     "link" => "'".$get['url']."'".$target,
+                                                     "link" => "'".$get['url']."'",
                                                      "bez" => re(cut($get['bez'],32)),
-                                                     "text" => $slideroverlay));
+                                                     "text" => $slideroverlay,
+                                                     "target" => $get['target']));
 
             $tabs .= '<a href="#" class="slidertabs" id="slider'.$get['id'].'"></a>';
         }
