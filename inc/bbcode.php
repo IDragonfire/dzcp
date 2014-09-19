@@ -2021,10 +2021,6 @@ function nonum($i) {
     return $i;
 }
 
-//-> maskiert Zeilenumbrueche fuer <textarea>
-function txtArea($txt)
-{ return $txt; }
-
 //-> Konvertiert Platzhalter in die jeweiligen bersetzungen
 function navi_name($name) {
     $name = trim($name);

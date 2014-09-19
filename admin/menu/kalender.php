@@ -108,6 +108,9 @@ if(_adminMenu != 'true') exit;
                                                       "delete" => $delete));
         }
 
+        if(empty($show_))
+            $show_ = '<tr><td colspan="4" class="contentMainSecond">'._no_entrys.'</td></tr>';
+
         $show = show($dir."/kalender", array("head" => _kalender_admin_head,
                                              "date" => _datum,
                                              "titel" => _kalender_event,

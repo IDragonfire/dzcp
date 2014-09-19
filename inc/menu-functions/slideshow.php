@@ -5,7 +5,7 @@
  * Menu: Slideshow
  */
 function slideshow() {
-    global $db;
+    global $db,$picformat;
     $qry = db("SELECT * FROM ".$db['slideshow']." ORDER BY `pos` ASC LIMIT 4");
     if(_rows($qry) >= 1) {
         $pic = ''; $tabs = '';
@@ -17,7 +17,15 @@ function slideshow() {
             else
                 $slideroverlay = '<div class="slideroverlay"><h2>'.bbcode(wrap(re($get['bez']))).'</h2><span>'.bbcode(wrap(re($get['desc']))).'</span></div>';
 
-            $pic .= show("menu/slideshowbild", array("image" => "<img src=\"../inc/images/slideshow/".$get['id'].".jpg\" alt=\"\" />",
+            $image = '';
+            foreach($picformat as $endung) {
+                if(file_exists(basePath."/inc/images/slideshow/".$get['id'].".".$endung)) {
+                    $image = "../inc/images/slideshow/".$get['id'].".".$endung;
+                    break;
+                }
+            }
+
+            $pic .= show("menu/slideshowbild", array("image" => "<img src=\"".$image."\" alt=\"\" />",
                                                      "link" => "'".$get['url']."'",
                                                      "bez" => re(cut($get['bez'],32)),
                                                      "text" => $slideroverlay,

@@ -1573,7 +1573,7 @@ define('_forum_no_last_post', 'Der letzte Post kann leider nicht angezeigt werde
 define('_config_maxwidth', 'Bilder autom. verkleinern');
 define('_config_maxwidth_info', 'Hier kannst du einstellen, ab wann ein zu breites Bild verkleinert werden soll!');
 define('_forum_top_posts', 'Top 5 Poster');
-define('_error_no_teamspeak', 'Der Teamspeakserver ist zur Zeit nicht erreichbar!');
+define('_error_no_teamspeak', 'Teamspeak Server nicht erreichbar!');
 define('_user_cant_delete_admin', 'Du darfst keine Member oder Admins l&ouml;schen!');
 define('_no_entrys_yet', '
 <tr>

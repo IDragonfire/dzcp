@@ -146,6 +146,9 @@ if(_adminMenu != 'true') exit;
                                                        ));
         }
 
+        if(empty($show_))
+            $show_ = '<tr><td colspan="3" class="contentMainSecond">'._no_entrys.'</td></tr>';
+
         $show = show($dir."/downloads", array("head" => _dl,
                                               "date" => _datum,
                                               "titel" => _dl_file,

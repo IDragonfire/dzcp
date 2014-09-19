@@ -104,6 +104,10 @@ if(_adminMenu != 'true') exit;
           $cnt++;
         }
 
+        if(empty($show_))
+            $show_ = '<tr><td class="contentMainSecond">'._no_entrys.'</td></tr>';
+
+
         $show = show($dir."/linkus", array("head" => _linkus_head,
                                            "show" => $show_,
                                            "add" => _linkus_admin_head));

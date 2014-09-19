@@ -100,7 +100,7 @@ switch($do) {
                 if(isset($_FILES['artikelpic']['tmp_name']) && !empty($_FILES['artikelpic']['tmp_name'])) {
                     $endung = explode(".", $_FILES['artikelpic']['name']);
                     $endung = strtolower($endung[count($endung)-1]);
-                    move_uploaded_file($_FILES['artikelpic']['tmp_name'], basePath."/inc/images/uploads/artikel/".mysqli_insert_id($mysql).".".strtolower($endung));
+                    move_uploaded_file($_FILES['artikelpic']['tmp_name'], basePath."/inc/images/uploads/artikel/"._insert_id().".".strtolower($endung));
                 }
             }
             $show = info(_artikel_added, "?admin=artikel");
@@ -278,7 +278,7 @@ switch($do) {
         }
 
         if(empty($show))
-            $show = '<tr><td colspan="3" class="contentMainSecond">'._no_entrys.'</td></tr>';
+            $show = '<tr><td colspan="6" class="contentMainSecond">'._no_entrys.'</td></tr>';
 
         $nav = nav($entrys,config('m_adminnews'),"?admin=artikel".(isset($_GET['show']) ? $_GET['show'] : '').orderby_nav());
         $show = show($dir."/admin_news", array("head" => _artikel,

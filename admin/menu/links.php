@@ -132,6 +132,9 @@ if(_adminMenu != 'true') exit;
                                                    ));
         }
 
+        if(empty($show1))
+            $show1 = '<tr><td colspan="3" class="contentMainSecond">'._no_entrys.'</td></tr>';
+
         $show = show($dir."/links", array("head1" => _links_head,
                                           "head2" => _sponsor_head,
                                           "titel" => _link,

@@ -112,7 +112,7 @@ if(defined('_UserMenu')) {
                     `time`     = '".time()."',
                     `status`   = '1'");
 
-            $insert_id = mysqli_insert_id($mysql);
+            $insert_id = _insert_id();
             db("INSERT INTO ".$db['permissions']." SET `user` = '".((int)$insert_id)."'");
             db("INSERT INTO ".$db['userstats']." SET `user` = '".((int)$insert_id)."', `lastvisit` = '".time()."'");
 

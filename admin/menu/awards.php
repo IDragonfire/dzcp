@@ -161,6 +161,9 @@ if(_adminMenu != 'true') exit;
                                                     "delete" => $delete));
         }
 
+        if(empty($show_))
+            $show_ = '<tr><td colspan="5" class="contentMainSecond">'._no_entrys.'</td></tr>';
+
         $show = show($dir."/awards", array("head" => _awards_head,
                                            "date" => _datum,
                                            "titel" => _award,

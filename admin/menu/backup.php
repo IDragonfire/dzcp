@@ -30,5 +30,6 @@ $show = show($dir."/backup", array("head" => _backup_head,
                                    "info" => _backup_info));
 if($do == "backup") {
     file_put_contents($file_name,sql_backup());
+    die();
     header("Location: ?admin=backup");
 }

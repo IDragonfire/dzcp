@@ -88,6 +88,9 @@ if(_adminMenu != 'true') exit;
                                                      "glossar" => bbcode($get['glossar'])));
         }
 
+        if(empty($show_))
+            $show_ = '<tr><td colspan="5" class="contentMainSecond">'._no_entrys.'</td></tr>';
+
         $show = show($dir."/glossar", array("head" => _glossar_head,
                                             "word" => _glossar_bez,
                                             "bez" => _glossar_erkl,

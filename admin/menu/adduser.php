@@ -132,7 +132,7 @@ if(_adminMenu != 'true') exit;
                                  `gmaps_koord`  = '".up($_POST['gmaps_koord'])."',
                                  `status`   = '1'");
 
-      $insert_id = mysqli_insert_id($mysql);
+      $insert_id = _insert_id();
       setIpcheck("createuser(".$_SESSION['id']."_".$insert_id.")");
 
     // permissions

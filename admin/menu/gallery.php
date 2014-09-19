@@ -23,7 +23,7 @@ switch ($do) {
             $show = show($dir."/form_gallery_step2", array("head" => _gallery_admin_head,
                                                            "what" => re($_POST['gallery']),
                                                            "addfile" => $addfile,
-                                                           "id" => mysqli_insert_id($mysql),
+                                                           "id" => _insert_id(),
                                                            "do" => "add",
                                                            "dowhat" => _button_value_add,
                                                            "anzahl" => $_POST['anzahl'],
@@ -197,6 +197,9 @@ switch ($do) {
                                                      "beschreibung" => bbcode($get['beschreibung']),
                                                      "cnt" => $cnt));
         }
+
+        if(empty($show))
+            $show = '<tr><td class="contentMainSecond">'._no_entrys.'</td></tr>';
 
         $show = show($dir."/gallery",array("show" => $show,
                                            "head" => _gallery_head,

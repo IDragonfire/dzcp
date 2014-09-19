@@ -316,7 +316,7 @@ if(defined('_Forum')) {
                                      `forum`  = 1,
                          `von`    = '".((int)$userid)."'");
 
-          $vid = mysqli_insert_id($mysql);
+          $vid = _insert_id();
 
           $qry = db("INSERT INTO ".$db['vote_results']."
                     SET `vid`   = '".((int)$vid)."',
@@ -670,7 +670,7 @@ if(defined('_Forum')) {
                                                      `forum`  = 1,
                                                      `von`    = '".((int)$userid)."'");
 
-                        $vid = mysqli_insert_id($mysql);
+                        $vid = _insert_id();
 
                         $qry = db("INSERT INTO ".$db['vote_results']."
                                             SET `vid`   = '".((int)$vid)."',
@@ -756,7 +756,7 @@ if(defined('_Forum')) {
                                                 `lp`       = '".time()."',
                                                 `vote`     = '".$vid."',
                                                 `first`    = '1'");
-                $thisFID = mysqli_insert_id($mysql);
+                $thisFID = _insert_id();
                 setIpcheck("fid(".$_GET['kid'].")");
 
                 $update = db("UPDATE ".$db['userstats']."

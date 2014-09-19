@@ -95,4 +95,4 @@ $support .= "sendmail_from: ".$PhpInfo['Core']['sendmail_from'][0]."\r\n";
 $support .= "sendmail_path: ".$PhpInfo['Core']['sendmail_path'][0];
 $support .= "\r\n";
 
-$show = show($dir."/support", array("info" => _admin_support_info,"head" => _admin_support_head,"support" => txtArea($support)));
+$show = show($dir."/support", array("info" => _admin_support_info,"head" => _admin_support_head,"support" => $support));

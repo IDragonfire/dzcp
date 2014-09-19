@@ -205,7 +205,7 @@ ORDER BY game");
             `matchadmins` = '".up($_POST['match_admins'])."',
             `bericht` = '".up($_POST['bericht'])."'");
 
-          $cwid = mysqli_insert_id($mysql);
+          $cwid = _insert_id();
 
         //Logo Upload
         $tmpname = $_FILES['logo']['tmp_name'];
@@ -387,6 +387,9 @@ if($gets['id'] == $_GET['squad']) { $sel = ' class="dropdownKat"'; } else { $sel
                                                       "delete" => $delete
                                                       ));
         }
+
+        if(empty($show_))
+            $show_ = '<tr><td colspan="5" class="contentMainSecond">'._no_entrys.'</td></tr>';
 
         $show = show($dir."/clanwars", array("head" => _clanwars,
                                              "add" => _cw_admin_head,

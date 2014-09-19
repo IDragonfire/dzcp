@@ -33,7 +33,7 @@ if(_adminMenu != 'true') exit;
                      SET `name` = '".up($name)."',
                                    `type` = '".((int)$_POST['type'])."',
                          `kid`  = '".((int)$_POST['kat'])."'");
-              $insID = mysqli_insert_id($mysql);
+              $insID = _insert_id();
 
           $feldname = "custom_".$insID;
               $add = db("UPDATE ".$db['profile']."

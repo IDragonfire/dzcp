@@ -183,7 +183,7 @@ switch ($do) {
             if(isset($_FILES['newspic']['tmp_name']) && !empty($_FILES['newspic']['tmp_name'])) {
                 $endung = explode(".", $_FILES['newspic']['name']);
                 $endung = strtolower($endung[count($endung)-1]);
-                move_uploaded_file($_FILES['newspic']['tmp_name'], basePath."/inc/images/uploads/news/".mysqli_insert_id($mysql).".".strtolower($endung));
+                move_uploaded_file($_FILES['newspic']['tmp_name'], basePath."/inc/images/uploads/news/"._insert_id().".".strtolower($endung));
             }
 
             $show = info(_news_sended, "?admin=newsadmin");

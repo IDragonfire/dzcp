@@ -97,7 +97,7 @@ if($do == "add") {
             SET `titel` = '".up($_POST['titel'])."',
                 `text`  = '".up($_POST['inhalt'])."',
                 `html`  = '".((int)$_POST['html'])."'");
-        $insert_id = mysqli_insert_id($mysql);
+        $insert_id = _insert_id();
 
         $sign = (isset($_POST['pos']) && ($_POST['pos'] == "1" || $_POST['pos'] == "2")) ? ">= " : "> ";
         $kat = preg_replace('/-(\d+)/','',$_POST['pos']);
