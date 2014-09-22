@@ -1628,15 +1628,15 @@ function update_mysql_1_6_1() {
 
     //-> Sessions
     db("DROP TABLE IF EXISTS ".$db['sessions']);
-    db("CREATE TABLE IF NOT EXISTS `".$db['sessions']."` (
-    `id` int(11) NOT NULL AUTO_INCREMENT,
-    `ssid` varchar(200) NOT NULL DEFAULT '',
-    `time` int(11) NOT NULL,
-    `data` blob NOT NULL,
-    PRIMARY KEY (`id`),
-     ) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
-
-    db("ALTER TABLE `".$db['sessions']."` ADD KEY `ssid` (`ssid`), ADD KEY `time` (`time`);");
+    db("CREATE TABLE `".$db['sessions']."` (
+          `id` int(11) NOT NULL,
+          `ssid` varchar(200) NOT NULL DEFAULT '',
+          `time` int(11) NOT NULL DEFAULT '0',
+          `data` blob,
+          PRIMARY KEY (`id`),
+          KEY `ssid` (`ssid`),
+          KEY `time` (`time`)
+        ) DEFAULT CHARSET=latin1;");
 
     //-> Click IP Counter
     db("DROP TABLE IF EXISTS `".$db['clicks_ips']."`;");
