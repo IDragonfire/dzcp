@@ -1632,9 +1632,11 @@ function update_mysql_1_6_1() {
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `ssid` varchar(200) NOT NULL DEFAULT '',
     `time` int(11) NOT NULL,
-    `data` blob NOT NULL
+    `data` blob NOT NULL,
+    PRIMARY KEY (`id`),
      ) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;");
-    db("ALTER TABLE `".$db['sessions']."` ADD PRIMARY KEY (`id`), ADD KEY `ssid` (`ssid`), ADD KEY `time` (`time`);");
+
+    db("ALTER TABLE `".$db['sessions']."` ADD KEY `ssid` (`ssid`), ADD KEY `time` (`time`);");
 
     //-> Click IP Counter
     db("DROP TABLE IF EXISTS `".$db['clicks_ips']."`;");
