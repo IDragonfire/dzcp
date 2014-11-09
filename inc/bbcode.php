@@ -334,7 +334,6 @@ function visitorIp() {
 
 /**
  * Funktion um notige Erweiterungen zu prufen
- *
  * @return boolean
  **/
 function fsockopen_support() {
@@ -366,7 +365,10 @@ function allow_url_fopen_support() {
     return false;
 }
 
-//-> Auslesen der UserID
+/**
+ * Auslesen der UserID
+ * @return integer
+ **/
 function userid() {
     global $db;
 
