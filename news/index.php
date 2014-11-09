@@ -75,7 +75,8 @@ function feed() {
     }
 }
 
-feed(); //NewsFeed
+if(!view_error_reporting || (feed_enable_on_debug && view_error_reporting))
+    feed(); //NewsFeed
 
 $action = empty($action) ? 'default' : $action;
 if(file_exists(basePath."/news/case_".$action.".php"))

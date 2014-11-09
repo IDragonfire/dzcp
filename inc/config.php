@@ -26,6 +26,7 @@ define('template_cache', true); // Sollen das HTML-Template in den Memory Cache 
 define('template_cache_time', 30); // Wie lange soll das HTML-Template im Memory Cache verbleiben
 
 define('feed_update_time', 10*60); // Wann soll der Newsfeed aktualisiert werden
+define('feed_enable_on_debug', false); // Soll der Newsfeed im Debugmodus generiert werden
 define('file_get_contents_timeout', 10); // Nach wie viel Sekunden soll der Downloade externe quellen abgebrochen werden
 
 define('cookie_expires', (60*60*24*30*12)); // Wie Lange die Cookies des CMS ihre Gueltigkeit behalten.
