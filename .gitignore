@@ -1,8 +1,10 @@
 *.project
 inc/mysql.php
-rss.xml
-rss.xml
 *.prefs
 *.txt
 *.jpg
 *.htaccess
+nbproject/project.xml
+nbproject/project.properties
+nbproject/private/private.xml
+nbproject/private/private.properties
