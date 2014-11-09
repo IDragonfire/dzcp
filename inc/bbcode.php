@@ -7,7 +7,7 @@
 ## Error Reporting ##
 if(!defined('DEBUG_LOADER'))
     exit('<b>Die Debug-Console wurde nicht geladen!<p>
-    Bitte überprüfen Sie ob die index.php einen "include(basePath."/inc/debugger.php");" Eintrag hat.</b>');
+    Bitte &Uuml;berpr&uuml;fen Sie ob die index.php einen "include(basePath."/inc/debugger.php");" Eintrag hat.</b>');
 
 ## INCLUDES/REQUIRES ##
 require_once(basePath.'/inc/sessions.php');
