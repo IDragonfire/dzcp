@@ -218,48 +218,66 @@ function dzcp_session_destroy() {
 
 //-> Auslesen der Cookies und automatisch anmelden
 if(cookie::get('id') != false && cookie::get('pkey') != false && empty($_SESSION['id']) && !checkme()) {
-    //-> User aus der Datenbank suchen
-    $sql = db_stmt("SELECT id,user,nick,pwd,email,level,time,pkey FROM ".$db['users']." WHERE id = ? AND pkey = ? AND level != '0'",array('is', cookie::get('id'), cookie::get('pkey')));
+    //-> Permanent Key aus der Datenbank suchen
+    $sql = db_stmt("SELECT `id`,`uid`,`update`,`expires` FROM `".$db['autologin']."` WHERE `pkey` = ? AND `host` = ?",array('ss', cookie::get('pkey'), getenv('COMPUTERNAME')));
     if(_rows($sql)) {
-        $get = _fetch($sql);
+        $get_almgr = _fetch($sql);
+        if(time() < ($get_almgr['update'] + $get_almgr['expires']) && $get_almgr['uid'] == cookie::get('id')) {
+            //-> User aus der Datenbank suchen
+            $sql = db_stmt("SELECT `id`,`user`,`nick`,`pwd`,`email`,`level`,`time` FROM ".$db['users']." WHERE id = ? AND level != '0'",array('i', cookie::get('id')));
+            if(_rows($sql)) {
+                $get = _fetch($sql);
+              
+                //-> Generiere neuen permanent-key
+                $permanent_key = md5(mkpwd(8));
+                cookie::put('pkey', $permanent_key);
+                cookie::save();
+                
+                //Update Autologin
+                db("UPDATE `".$db['autologin']."` SET `ssid` = '".session_id()."',
+                                                      `pkey` = '".$permanent_key."',
+                                                      `ip` = '".visitorIp()."',
+                                                      `update` = ".time().",
+                                                      `expires` = ".autologin_expire." WHERE `id` = ".$get_almgr['id'].";");
 
-        //-> Generiere neuen permanent-key
-        $permanent_key = md5(mkpwd(8));
-        cookie::put('pkey', $permanent_key);
-        cookie::save();
+                //-> Schreibe Werte in die Server Sessions
+                $_SESSION['id']         = $get['id'];
+                $_SESSION['pwd']        = $get['pwd'];
+                $_SESSION['lastvisit']  = $get['time'];
+                $_SESSION['ip']         = visitorIp();
 
-        //-> Schreibe Werte in die Server Sessions
-        $_SESSION['id']         = $get['id'];
-        $_SESSION['pwd']        = $get['pwd'];
-        $_SESSION['lastvisit']  = $get['time'];
-        $_SESSION['ip']         = visitorIp();
+                if(data("ip",$get['id']) != $_SESSION['ip'])
+                    $_SESSION['lastvisit'] = data("time",$get['id']);
 
-        if(data("ip",$get['id']) != $_SESSION['ip'])
-            $_SESSION['lastvisit'] = data("time",$get['id']);
+                if(empty($_SESSION['lastvisit']))
+                    $_SESSION['lastvisit'] = data("time",$get['id']);
 
-        if(empty($_SESSION['lastvisit']))
-            $_SESSION['lastvisit'] = data("time",$get['id']);
+                //-> Aktualisiere Datenbank
+                db("UPDATE ".$db['users']." SET `online` = '1', `sessid` = '".session_id()."', `ip` = '".$_SESSION['ip']."' WHERE id = '".$get['id']."'");
 
-        //-> Aktualisiere Datenbank
-        db("UPDATE ".$db['users']." SET `online` = '1', `sessid` = '".session_id()."', `ip` = '".$_SESSION['ip']."', `pkey` = '".$permanent_key."' WHERE id = '".$get['id']."'");
+                //-> Aktualisiere die User-Statistik
+                db("UPDATE ".$db['userstats']." SET `logins` = logins+1 WHERE user = '".$get['id']."'");
 
-        //-> Aktualisiere die User-Statistik
-        db("UPDATE ".$db['userstats']." SET `logins` = logins+1 WHERE user = '".$get['id']."'");
+                //-> Aktualisiere Ip-Count Tabelle
+                $qry = db("SELECT id FROM `".$db['clicks_ips']."` WHERE `ip` LIKE '".$userip."' AND `uid` = 0");
+                if(_rows($qry)) while($get_ci = _fetch($qry)) { db("UPDATE `".$db['clicks_ips']."` SET `uid` = ".$get['id']." WHERE `id` = ".$get_ci['id'].";"); }
 
-        //-> Aktualisiere Ip-Count Tabelle
-        $qry = db("SELECT id FROM `".$db['clicks_ips']."` WHERE `ip` LIKE '".$userip."' AND `uid` = 0");
-        if(_rows($qry)) while($get_ci = _fetch($qry)) { db("UPDATE `".$db['clicks_ips']."` SET `uid` = ".$get['id']." WHERE `id` = ".$get_ci['id'].";"); }
+                unset($get,$permanent_key,$get_almgr);
+            } else {
+                dzcp_session_destroy();
+                $_SESSION['id']        = '';
+                $_SESSION['pwd']       = '';
+                $_SESSION['ip']        = '';
+                $_SESSION['lastvisit'] = '';
+                $_SESSION['pkey']      = '';
+            }
 
-        unset($get,$permanent_key);
-    } else {
-        $_SESSION['id']        = '';
-        $_SESSION['pwd']       = '';
-        $_SESSION['ip']        = '';
-        $_SESSION['lastvisit'] = '';
-        $_SESSION['pkey']      = '';
+            unset($sql);
+        } else {
+            db("DELETE FROM `".$db['autologin']."` WHERE `id` = ".$get_almgr['id'].";");
+            dzcp_session_destroy();
+        }
     }
-
-    unset($sql);
 }
 
 //-> Sprache aendern

@@ -17,12 +17,31 @@ if(defined('_UserMenu')) {
             $index = error(captcha_mathematic ? _error_invalid_regcode_mathematic : _error_invalid_regcode);
         else {
             if(checkpwd($_POST['user'], md5($_POST['pwd']))) {
-                $get = db_stmt("SELECT id,user,nick,pwd,email,level,time FROM ".$db['users']." WHERE user = ? AND pwd = ? AND level != '0'", array('ss', up($_POST['user']), md5($_POST['pwd'])),false,true);
+                $get = db_stmt("SELECT `id`,`user`,`nick`,`pwd`,`email`,`level`,`time` FROM ".$db['users']." WHERE `user` = ? AND `pwd` = ? AND `level` != '0'", array('ss', up($_POST['user']), md5($_POST['pwd'])),false,true);
                 if(!isBanned($get['id'])) {
                     $permanent_key = '';
                     if(isset($_POST['permanent'])) {
                         cookie::put('id', $get['id']);
                         $permanent_key = md5(mkpwd(8));
+                        if(db_stmt("SELECT `id` FROM `".$db['autologin']."` WHERE `host` = ?", array('s', getenv('COMPUTERNAME')),true) >= 1) {
+                            //Update Autologin
+                            db_stmt("UPDATE `".$db['autologin']."` SET `ssid` = '".session_id()."',
+                                                                       `pkey` = '".$permanent_key."',
+                                                                       `ip` = '".$userip."',
+                                                                       `date` = ".time().",
+                                                                       `update` = ".time().",
+                                                                       `expires` = ".autologin_expire." WHERE `host` = ?", array('s', getenv('COMPUTERNAME')));
+                        } else {
+                            //Insert Autologin
+                            db_stmt("INSERT INTO `".$db['autologin']."` SET `uid` = ".$get['id'].",
+                                                                     `ssid` = '".session_id()."',
+                                                                     `pkey` = '".$permanent_key."',
+                                                                     `ip` = '".$userip."',
+                                                                     `host` = ?,
+                                                                     `date` = ".time().",
+                                                                     `update` = ".time().",
+                                                                     `expires` = ".autologin_expire.";",array('s', getenv('COMPUTERNAME')));
+                        }                        
                         cookie::put('pkey', $permanent_key);
                         cookie::save();
                     }
@@ -33,7 +52,7 @@ if(defined('_UserMenu')) {
                     $_SESSION['ip']         = $userip;
 
                     db("UPDATE ".$db['userstats']." SET `logins` = logins+1 WHERE user = ".$get['id']);
-                    db("UPDATE ".$db['users']." SET `online` = '1', `sessid` = '".session_id()."', `ip` = '".$userip."', `pkey` = '".$permanent_key."' WHERE id = ".$get['id']);
+                    db("UPDATE ".$db['users']." SET `online` = '1', `sessid` = '".session_id()."', `ip` = '".$userip."' WHERE id = ".$get['id']);
                     setIpcheck("login(".$get['id'].")");
 
                     //-> Aktualisiere Ip-Count Tabelle
@@ -65,10 +84,7 @@ if(defined('_UserMenu')) {
                                                "lostpwd" => _login_lostpwd,
                                                "permanent" => _login_permanent,
                                                "pwd" => _pwd));
-        } else {
+        } else
             $index = error(_error_user_already_in, 1);
-            cookie::put('id', '');
-            cookie::put('pkey', '');
-        }
     }
 }

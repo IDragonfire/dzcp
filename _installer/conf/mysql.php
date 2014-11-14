@@ -1666,8 +1666,8 @@ function update_mysql_1_6_1() {
      PRIMARY KEY (`id`),
      ADD KEY `uid` (`uid`), 
      ADD KEY `pkey` (`pkey`), 
-     ADD KEY `ssid` (`ssid`)
-   );",false,false,true);
+     ADD KEY `ssid` (`ssid`));",false,false,true);
+    db("ALTER TABLE `".$db['users']."` DROP `pkey`;",false,false,true);
 
     if($updater) {
         db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time()+auto_db_optimize_interval)."' WHERE `id` = 1;");

@@ -53,7 +53,7 @@ if(defined('_UserMenu')) {
                 $index = error(_identy_admin, 1);
             else {
                 $msg = show(_admin_user_get_identy, array("nick" => autor($_GET['id'])));
-                db("UPDATE ".$db['users']." SET `online` = '0', `sessid` = '', `pkey` = '' WHERE id = ".$userid); //Logout
+                db("UPDATE ".$db['users']." SET `online` = '0', `sessid` = '' WHERE id = ".$userid); //Logout
                 session_regenerate_id();
 
                 $_SESSION['id'] = $_GET['id'];

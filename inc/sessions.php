@@ -399,6 +399,7 @@ final class session {
         return false;
     }
 
+    //Buggy!!!
     public static function encode($data='',$base64=false,$mcryptkey='') {
         $data = serialize($data);
         if(function_exists('mcrypt_encrypt')) {
@@ -412,6 +413,7 @@ final class session {
             return base64_encode($data);
     }
 
+    //Buggy!!!
     public static function decode($value,$base64=false,$mcryptkey='') {
         if(function_exists('mcrypt_decrypt')) {
             if($base64) $value = base64_decode($value);
