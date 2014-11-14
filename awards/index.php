@@ -14,7 +14,6 @@ include(basePath."/inc/bbcode.php");
 
 ## SETTINGS ##
 $where = _site_awards;
-$title = $pagetitle." - ".$where."";
 $dir = "awards";
 
 ## SECTIONS ##
@@ -237,4 +236,5 @@ switch ($action):
 endswitch;
 
 ## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

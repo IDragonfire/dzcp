@@ -14,7 +14,6 @@ include(basePath."/inc/bbcode.php");
 
 ## SETTINGS ##
 $where = _site_clankasse;
-$title = $pagetitle." - ".$where."";
 $dir = "clankasse";
 
 ## SECTIONS ##
@@ -304,4 +303,5 @@ switch ($action):
 endswitch;
 
 ## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

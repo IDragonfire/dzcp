@@ -14,7 +14,6 @@ include(basePath."/inc/bbcode.php");
 
 ## SETTINGS ##
 $where = _site_votes;
-$title = $pagetitle." - ".$where."";
 $dir = "votes";
 define('_Votes', true);
 
@@ -24,4 +23,5 @@ if(file_exists(basePath."/votes/case_".$action.".php"))
     require_once(basePath."/votes/case_".$action.".php");
 
 ## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

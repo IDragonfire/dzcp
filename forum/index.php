@@ -14,7 +14,6 @@ include(basePath."/inc/bbcode.php");
 
 ## SETTINGS ##
 $where = _site_forum;
-$title = $pagetitle." - ".$where."";
 $dir = "forum";
 define('_Forum', true);
 
@@ -24,4 +23,5 @@ if(file_exists(basePath."/forum/case_".$action.".php"))
     require_once(basePath."/forum/case_".$action.".php");
 
 ## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

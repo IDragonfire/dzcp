@@ -14,7 +14,6 @@ include(basePath."/inc/bbcode.php");
 
 ## SETTINGS ##
 $where = _site_online;
-$title = $pagetitle." - ".$where."";
 $dir = "online";
 
 ## SECTIONS ##
@@ -86,4 +85,5 @@ $index = show($dir."/online", array("show" => $show,
                                     "where" => _online_whereami));
 
 ## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

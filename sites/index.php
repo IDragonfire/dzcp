@@ -30,7 +30,6 @@ default:
       $index = error(_error_wrong_permissions, 1);
     else {
       $where = re($get['titel']);
-      $title = $pagetitle." - ".$where."";
 
       if($get['html'] == "1") $inhalt = bbcode_html($get['text']);
       else $inhalt = bbcode($get['text']);
@@ -56,5 +55,7 @@ case 'preview';
   exit();
 break;
 endswitch;
+
 ## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

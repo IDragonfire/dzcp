@@ -15,7 +15,6 @@ include(basePath."/stats/helper.php");
 
 ## SETTINGS ##
 $where = _site_stats;
-$title = $pagetitle." - ".$where."";
 $dir = "stats";
 
 ## SECTIONS ##
@@ -241,5 +240,5 @@ $dir = "stats";
                                      "forum" => _site_forum));
 
 ## INDEX OUTPUT ##
-$title = $pagetitle." - ".$where."";
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

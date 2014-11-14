@@ -14,7 +14,6 @@ include(basePath."/inc/bbcode.php");
 
 ## SETTINGS ##
 $where = _site_upload;
-$title = $pagetitle." - ".$where."";
 $dir = "upload";
 $index = '';
 
@@ -393,4 +392,5 @@ switch ($action):
 endswitch;
 
 ## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

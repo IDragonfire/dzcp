@@ -75,8 +75,6 @@ case 'admin';
 break;
 case 'archiv';
   $where = _site_shoutbox;
-  $title = $pagetitle." - ".$where."";
-
   $entrys = cnt($db['shout']);
   $i = $entrys-($page - 1)*config('maxshoutarchiv');
 
@@ -121,4 +119,5 @@ break;
 endswitch;
 
 ## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

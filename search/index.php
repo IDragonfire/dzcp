@@ -15,7 +15,6 @@ include(basePath."/inc/bbcode.php");
 ## SETTINGS ##
 $dir = "search";
 $where = /*_search_head*/_forum_search_head;
-$title = $pagetitle." - ".$where."";
 
 ## SECTIONS ##
 switch ($action):
@@ -362,4 +361,5 @@ break;
 endswitch;
 
 ## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

@@ -14,8 +14,8 @@ include(basePath."/inc/bbcode.php");
 
 ## SETTINGS ##
 $where = _site_kalender;
-$title = $pagetitle." - ".$where."";
 $dir = "kalender";
+
 ## SECTIONS ##
 switch ($action):
 default:
@@ -191,4 +191,5 @@ break;
 endswitch;
 
 ## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

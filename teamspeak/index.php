@@ -14,7 +14,6 @@ include(basePath."/inc/bbcode.php");
 
 ## SETTINGS ##
 $where = _site_teamspeak;
-$title = $pagetitle." - ".$where."";
 $dir = "teamspeak";
 
 ## SECTIONS ##
@@ -306,4 +305,5 @@ $dir = "teamspeak";
   }
 
 ## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

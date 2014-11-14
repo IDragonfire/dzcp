@@ -14,7 +14,6 @@ include(basePath."/inc/bbcode.php");
 
 ## SETTINGS ##
 $where = _site_contact;
-$title = $pagetitle." - ".$where."";
 $dir = "news";
 
 ## SECTIONS ##
@@ -163,5 +162,5 @@ $dir = "news";
     endswitch;
 
 ## INDEX OUTPUT ##
-$title = $pagetitle." - ".$where."";
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

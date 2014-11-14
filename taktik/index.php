@@ -14,7 +14,6 @@ include(basePath."/inc/bbcode.php");
 
 ## SETTINGS ##
 $where = _site_taktiken;
-$title = $pagetitle." - ".$where."";
 $dir = "taktik";
 
 ## SECTIONS ##
@@ -243,5 +242,5 @@ break;
 endswitch;
 
 ## INDEX OUTPUT ##
-$title = $pagetitle." - ".$where."";
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

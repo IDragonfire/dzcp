@@ -14,7 +14,6 @@ include(basePath."/inc/bbcode.php");
 
 ## SETTINGS ##
 $where = _site_gb;
-$title = $pagetitle." - ".$where."";
 $dir = "gb";
 
 ## SECTIONS ##
@@ -473,4 +472,5 @@ break;
 endswitch;
 
 ## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

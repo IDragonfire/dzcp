@@ -14,7 +14,6 @@ include(basePath."/inc/bbcode.php");
 
 ## SETTINGS ##
 $where = _site_news;
-$title = $pagetitle." - ".$where."";
 $dir = "news";
 define('_News', true);
 
@@ -83,5 +82,5 @@ if(file_exists(basePath."/news/case_".$action.".php"))
     require_once(basePath."/news/case_".$action.".php");
 
 ## INDEX OUTPUT ##
-$title = $pagetitle." - ".$where."";
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

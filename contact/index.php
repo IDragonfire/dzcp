@@ -14,8 +14,8 @@ include(basePath."/inc/bbcode.php");
 
 ## SETTINGS ##
 $where = _site_contact;
-$title = $pagetitle." - ".$where."";
 $dir = "contact";
+
 ## SECTIONS ##
 switch ($action):
     default:
@@ -325,4 +325,5 @@ break;
 endswitch;
 
 ## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

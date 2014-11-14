@@ -26,5 +26,5 @@ $index = show($dir."/impressum", array("head" => _impressum_head,
                                        "show_autor" => bbcode(re(settings('i_autor')))));
 
 ## INDEX OUTPUT ##
-$title = $pagetitle." - ".$where."";
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

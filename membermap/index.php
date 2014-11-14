@@ -74,5 +74,5 @@ $index = show($dir."/membermap", array('mm_coords' => $mm_coords,
                                        'mm_markerIcon' => $mm_markerIcon,
                                        'nav' => $seiten));
 ## INDEX OUTPUT ##
-$title = $pagetitle." - ".$where."";
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

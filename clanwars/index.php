@@ -23,5 +23,5 @@ if(file_exists(basePath."/clanwars/case_".$action.".php"))
     require_once(basePath."/clanwars/case_".$action.".php");
 
 ## INDEX OUTPUT ##
-$title = $pagetitle." - ".$where."";
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

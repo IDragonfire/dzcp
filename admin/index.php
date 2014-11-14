@@ -134,5 +134,5 @@ else {
 }
 
 ## INDEX OUTPUT ##
-$title = $pagetitle." - ".$where."";
+$title = $pagetitle." - ".$where;
 page($index, $title, $where, $wysiwyg);

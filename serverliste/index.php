@@ -14,7 +14,6 @@ include(basePath."/inc/bbcode.php");
 
 ## SETTINGS ##
 $where = _site_serverlist;
-$title = $pagetitle." - ".$where."";
 $dir = "serverliste";
 
 ## SECTIONS ##
@@ -102,4 +101,5 @@ switch ($action):
 endswitch;
 
 ## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);

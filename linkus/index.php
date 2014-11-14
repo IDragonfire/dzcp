@@ -15,7 +15,6 @@ include(basePath."/inc/bbcode.php");
 ## SETTINGS ##
 $dir = "linkus";
 $where = _linkus;
-$title = $pagetitle." - ".$where."";
 
 ## SECTIONS ##
 switch ($action):
@@ -59,5 +58,5 @@ switch ($action):
 endswitch;
 
 ## INDEX OUTPUT ##
-$title = $pagetitle." - ".$where."";
+$title = $pagetitle." - ".$where;
 page($index, $title, $where);
