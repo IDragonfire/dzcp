@@ -14,7 +14,7 @@ final class session {
 
     function __construct() {
         $this->_prefix = self::$securityKey_mcrypt.'_';
-
+        
         switch(sessions_backend) {
             case 'memcache':
                 if(show_sessions_debug)
@@ -267,8 +267,6 @@ final class session {
     public final function sql_open() {
         global $db;
 
-       # die('MySQL Session is buggy! Not Use!!!');
-
         if(show_sessions_debug)
             DebugConsole::insert_info("session::sql_open()", "Connect to MySQL Server");
 
@@ -399,36 +397,35 @@ final class session {
         return false;
     }
 
-    //Buggy!!!
-    public static function encode($data='',$base64=false,$mcryptkey='') {
-        $data = serialize($data);
-        if(function_exists('mcrypt_encrypt')) {
-            $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
-            $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-            $decrypttext = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, 'mcr_'.(!empty($mcryptkey) ? $mcryptkey : self::$securityKey_mcrypt), $data, MCRYPT_MODE_ECB, $iv);
-            if($base64) $decrypttext = base64_encode($decrypttext);
-            return $decrypttext;
-        }
+    public static function encode($data,$mcryptkey='',$binary=false,$hex=false) {
+        $crypt = new Crypt(CRYPT_MODE_BASE64,CRYPT_HASH_SHA1);
+        
+        if(empty($mcryptkey)) 
+            $crypt->__set('Key',self::$securityKey_mcrypt);
         else
-            return base64_encode($data);
+            $crypt->__set('Key',$mcryptkey);
+        
+        if($binary && !$hex) { $crypt->__set('Hash',CRYPT_MODE_BINARY); }
+        if(!$binary && $hex) { $crypt->__set('Hash',CRYPT_MODE_HEXADECIMAL); }
+        $is_array = is_array($data);
+        $data = serialize(array('data' => $data, 'array' => $is_array));
+        return $crypt->Encrypt($data);
     }
 
-    //Buggy!!!
-    public static function decode($value,$base64=false,$mcryptkey='') {
-        if(function_exists('mcrypt_decrypt')) {
-            if($base64) $value = base64_decode($value);
-            $iv_size = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_ECB);
-            $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-            $decrypttext = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, 'mcr_'.(!empty($mcryptkey) ? $mcryptkey : self::$securityKey_mcrypt), $value, MCRYPT_MODE_ECB, $iv);
-        }
+    public static function decode($data,$mcryptkey='',$binary=false,$hex=false) {
+        $crypt = new Crypt(CRYPT_MODE_BASE64,CRYPT_HASH_SHA1);
+        
+        if(empty($mcryptkey)) 
+            $crypt->__set('Key',self::$securityKey_mcrypt);
         else
-            $decrypttext = base64_decode($value);
-
-        $x = @unserialize(trim($decrypttext));
-        if($x == false) {
-            return $value;
-        } else {
-            return $x;
-        }
+            $crypt->__set('Key',$mcryptkey);
+        
+        if($binary && !$hex) { $crypt->__set('Hash',CRYPT_MODE_BINARY); }
+        if(!$binary && $hex) { $crypt->__set('Hash',CRYPT_MODE_HEXADECIMAL); }
+        $data = $crypt->Decrypt($data);
+        if(!is_array($data)) return null;
+        
+        if($data['array']) { $data['data'] = unserialize($data['data']); }
+        return $data['data'];
     }
 }

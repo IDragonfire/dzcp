@@ -10,6 +10,7 @@ if(!defined('DEBUG_LOADER'))
     Bitte &Uuml;berpr&uuml;fen Sie ob die index.php einen "include(basePath."/inc/debugger.php");" Eintrag hat.</b>');
 
 ## INCLUDES/REQUIRES ##
+require_once(basePath.'/inc/crypt.php');
 require_once(basePath.'/inc/sessions.php');
 require_once(basePath.'/inc/secure.php');
 require_once(basePath.'/inc/_version.php');

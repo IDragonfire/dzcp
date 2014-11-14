@@ -33,8 +33,7 @@ final class cookie {
         if(array_key_exists('PHPSESSID', $_SESSION)) {
             $cname=(empty($cname) ? self::$cname : $cname);
             if(!empty($_COOKIE[$cname])) {
-                //$arr = json_decode($cache->decode(($_COOKIE[$cname]),true),true); //Bug
-                $arr = json_decode($_COOKIE[$cname],true);
+                $arr = unserialize($_COOKIE[$cname]);
                 if($arr!==false && is_array($arr)) {
                     foreach($arr as $var => $val)
                     { $_COOKIE[$var]=$val; }
@@ -83,8 +82,7 @@ final class cookie {
     public final static function save() {
         global $cache;
         if(array_key_exists('PHPSESSID', $_SESSION)) {
-            //$cookie_val = (empty(self::$val) ? '' : $cache->encode(json_encode(self::$val, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP),true)); //Bug
-            $cookie_val = (empty(self::$val) ? '' : json_encode(self::$val, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP));
+            $cookie_val = (empty(self::$val) ? '' : serialize(self::$val));
             if(strlen($cookie_val)>4*1024)
                 trigger_error("The cookie ".self::$cname." exceeds the specification for the maximum cookie size.  Some data may be lost", E_USER_WARNING);
 

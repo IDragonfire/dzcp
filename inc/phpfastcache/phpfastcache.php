@@ -418,12 +418,12 @@ class phpFastCache {
         return false;
     }
 
-    function encode($data='',$base64=false) {
-        return session::encode($data,$base64,$this->option['securityKey_mcrypt']);
+    function encode($data,$binary=false,$hex=false) {
+        return session::encode($data,$this->option['securityKey_mcrypt'],$binary,$hex);
     }
 
-    function decode($value,$base64=false) {
-        return session::decode($value,$base64,$this->option['securityKey_mcrypt']);
+    function decode($data,$binary=false,$hex=false) {
+        return session::decode($data,$this->option['securityKey_mcrypt'],$binary,$hex);
     }
 
     /*
