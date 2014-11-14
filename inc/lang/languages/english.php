@@ -1207,7 +1207,6 @@ define('_slist_serverip' , 'Serverip');
 define('_slist_slots' , 'Slots');
 define('_slist_add' , 'Insert server');
 define('_slist_serverport' , 'Serverport');
-define('_slist_serverport' , 'Click in the serverip to add it to hlsw.');
 define('_slist_added_msg' , 'New entry in the serverlist!');
 define('_slist_title' , 'Serverlist');
 define('_server_password' , 'Serverpassword');
@@ -1215,8 +1214,6 @@ define('_error_server_saved' , 'Your server was successfully registered!<br /> A
 define('_error_empty_slots' , 'You have to indicate the amount of your slots!');
 define('_error_empty_ip' , 'You have to indicate your serverip!');
 define('_error_empty_port' , 'You have to indicate your serverport!');
-define('_slist_added_msg' , 'New entry in the serverlist!');
-define('_slist_title' , 'Serverlist');
 define('_gallery_head' , 'Galleries');
 define('_subgallery_head' , 'Gallery');
 define('_gallery_images' , 'Pictures');
