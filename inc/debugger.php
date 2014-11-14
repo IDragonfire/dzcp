@@ -67,8 +67,8 @@ class DebugConsole {
         '#####################################################################'.EOL.EOL;
 
         $fp = fopen(basePath."/inc/_logs/sql_error_log.log", "a+");
-        fwrite($fp, $message);
-        fclose($fp);
+        fwrite($fp, $message); fclose($fp);
+        return $message;
     }
 
     public static final function save_log() {

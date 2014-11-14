@@ -171,7 +171,7 @@ function check_ip() {
         }
 
         unset($banned_ip,$banned_ip_sql);
-        if(allow_url_fopen_support()) {
+        if(allow_url_fopen_support() && !isIPv6($userip)) {
             sfs::check(); //SFS Update
             if(sfs::is_spammer()) {
                 db("DELETE FROM `".$db['ip2dns']."` WHERE `sessid` = `".session_id()."`;");
