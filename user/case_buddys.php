@@ -63,8 +63,8 @@ if(defined('_UserMenu')) {
                 $index = error(_error_buddy_already_in, 1);
             } else {
                 $qry = db("INSERT INTO ".$db['buddys']."
-                           SET `user`   = '".((int)$userid)."',
-                               `buddy`  = '".((int)$_POST['users'])."'");
+                           SET `user`   = '".intval($userid)."',
+                               `buddy`  = '".intval($_POST['users'])."'");
 
                 $msg = show(_buddy_added_msg, array("user" => autor($userid)));
                 $title = _buddy_title;
@@ -72,7 +72,7 @@ if(defined('_UserMenu')) {
                 db("INSERT INTO ".$db['msg']."
                     SET `datum`     = '".time()."',
                         `von`       = '0',
-                        `an`        = '".((int)$_POST['users'])."',
+                        `an`        = '".intval($_POST['users'])."',
                         `titel`     = '".up($title)."',
                         `nachricht` = '".up($msg)."'");
 
@@ -88,8 +88,8 @@ if(defined('_UserMenu')) {
                 $index = error(_error_buddy_already_in, 1);
             } else {
                 db("INSERT INTO ".$db['buddys']."
-                    SET `user`   = '".((int)$userid)."',
-                        `buddy`  = '".((int)$user)."'");
+                    SET `user`   = '".intval($userid)."',
+                        `buddy`  = '".intval($user)."'");
 
                 $msg = show(_buddy_added_msg, array("user" => addslashes(autor($userid))));
                 $title = _buddy_title;
@@ -97,7 +97,7 @@ if(defined('_UserMenu')) {
                 db("INSERT INTO ".$db['msg']."
                     SET `datum`     = '".time()."',
                         `von`       = '0',
-                        `an`        = '".((int)$user)."',
+                        `an`        = '".intval($user)."',
                         `titel`     = '".up($title)."',
                         `nachricht` = '".up($msg)."'");
 
@@ -105,7 +105,7 @@ if(defined('_UserMenu')) {
             }
         } elseif($do == "delete") {
             db("DELETE FROM ".$db['buddys']."
-                WHERE buddy = ".((int)$_GET['id'])."
+                WHERE buddy = ".intval($_GET['id'])."
                 AND user = '".$userid."'");
 
             $msg = show(_buddy_del_msg, array("user" => addslashes(autor($userid))));
@@ -114,7 +114,7 @@ if(defined('_UserMenu')) {
             db("INSERT INTO ".$db['msg']."
                 SET `datum`     = '".time()."',
                     `von`       = '0',
-                    `an`        = '".((int)$_GET['id'])."',
+                    `an`        = '".intval($_GET['id'])."',
                     `titel`     = '".up($title)."',
                     `nachricht` = '".up($msg)."'");
 

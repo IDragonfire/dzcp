@@ -187,15 +187,15 @@ ORDER BY game");
           $qry = db("INSERT INTO ".$db['cw']."
             SET ".$kid."
             ".$xonx."
-            `datum` = '".((int)$datum)."',
-            `squad_id` = '".((int)$_POST['squad'])."',
+            `datum` = '".intval($datum)."',
+            `squad_id` = '".intval($_POST['squad'])."',
             `clantag` = '".up($_POST['clantag'])."',
             `gegner` = '".up($_POST['gegner'])."',
             `url` = '".links($_POST['url'])."',
             `liga` = '".up($_POST['liga'])."',
             `gametype` = '".up($_POST['gametype'])."',
-            `punkte` = '".((int)$_POST['punkte'])."',
-            `gpunkte` = '".((int)$_POST['gpunkte'])."',
+            `punkte` = '".intval($_POST['punkte'])."',
+            `gpunkte` = '".intval($_POST['gpunkte'])."',
             `maps` = '".up($_POST['maps'])."',
             `serverip` = '".up($_POST['serverip'])."',
             `servername` = '".up($_POST['servername'])."',
@@ -255,15 +255,15 @@ ORDER BY game");
           $qry = db("UPDATE ".$db['cw']."
 SET ".$xonx."
 ".$kid."
-`datum` = '".((int)$datum)."',
-`squad_id` = '".((int)$_POST['squad'])."',
+`datum` = '".intval($datum)."',
+`squad_id` = '".intval($_POST['squad'])."',
 `clantag` = '".up($_POST['clantag'])."',
 `gegner` = '".up($_POST['gegner'])."',
 `url` = '".links($_POST['url'])."',
 `liga` = '".up($_POST['liga'])."',
 `gametype` = '".up($_POST['gametype'])."',
-`punkte` = '".((int)$_POST['punkte'])."',
-`gpunkte` = '".((int)$_POST['gpunkte'])."',
+`punkte` = '".intval($_POST['punkte'])."',
+`gpunkte` = '".intval($_POST['gpunkte'])."',
 `maps` = '".up($_POST['maps'])."',
 `serverip` = '".up($_POST['serverip'])."',
 `servername` = '".up($_POST['servername'])."',

@@ -15,14 +15,14 @@ if(defined('_Clanwars')) {
     if(_rows($qry))
     {
       $upd = db("UPDATE ".$db['cw_player']."
-                 SET `status` = '".((int)$_POST['status'])."'
+                 SET `status` = '".intval($_POST['status'])."'
                  WHERE cwid = '".intval($_GET['id'])."'
                  AND member = '".$userid."'");
     } else {
       $ins = db("INSERT INTO ".$db['cw_player']."
-                 SET `cwid`   = '".((int)$_GET['id'])."',
-                     `member` = '".((int)$userid)."',
-                     `status` = '".((int)$_POST['status'])."'");
+                 SET `cwid`   = '".intval($_GET['id'])."',
+                     `member` = '".intval($userid)."',
+                     `status` = '".intval($_POST['status'])."'");
     }
 
     $index = info(_cw_status_set, "?action=details&amp;id=".$_GET['id']."");

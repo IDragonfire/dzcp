@@ -212,7 +212,7 @@ case 'do';
                      `nick`       = '".up($_POST['nick'])."',
                      `email`      = '".up($_POST['email'])."',
                      `hp`         = '".links($_POST['hp'])."',
-                     `reg`        = '".((int)$userid)."',
+                     `reg`        = '".intval($userid)."',
                      `nachricht`  = '".up($_POST['eintrag'])."',
                      `ip`         = '".$userip."'");
 
@@ -311,7 +311,7 @@ case 'do';
         $upd = db("UPDATE ".$db['gb']."
                    SET ".$addme."
                        `nachricht`  = '".up($_POST['eintrag'])."',
-                       `reg`        = '".((int)$_POST['reg'])."',
+                       `reg`        = '".intval($_POST['reg'])."',
                        `editby`     = '".addslashes($editedby)."'
                    WHERE id = '".intval($_GET['id'])."'");
 

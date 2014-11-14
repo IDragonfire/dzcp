@@ -41,7 +41,7 @@ if(_adminMenu != 'true') exit;
                      SET `league`   = '".up($_POST['league'])."',
                          `squad`    = '".up($_POST['squad'])."',
                          `url`      = '".links($_POST['url'])."',
-                         `rank`     = '".((int)$_POST['rank'])."',
+                         `rank`     = '".intval($_POST['rank'])."',
                          `postdate` = '".time()."'");
 
           $show = info(_ranking_added, "?admin=rankings");
@@ -89,8 +89,8 @@ if(_adminMenu != 'true') exit;
                      SET `league`       = '".up($_POST['league'])."',
                          `squad`        = '".up($_POST['squad'])."',
                          `url`          = '".links($_POST['url'])."',
-                         `rank`         = '".((int)$_POST['rank'])."',
-                         `lastranking`  = '".((int)$get['rank'])."',
+                         `rank`         = '".intval($_POST['rank'])."',
+                         `lastranking`  = '".intval($get['rank'])."',
                          `postdate`     = '".time()."'
                      WHERE id = '".intval($_GET['id'])."'");
 

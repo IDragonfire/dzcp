@@ -92,9 +92,9 @@ switch ($action):
                               `clanname`  = '".up($_POST['clanname'])."',
                               `clanurl`   = '".links($_POST['clanurl'])."',
                               `ip`        = '".up($_POST['ip'])."',
-                              `port`      = '".((int)$_POST['port'])."',
+                              `port`      = '".intval($_POST['port'])."',
                               `pwd`       = '".up($_POST['pwd'])."',
-                              `slots`     = '".((int)$_POST['slots'])."'");
+                              `slots`     = '".intval($_POST['slots'])."'");
 
           $index = info(_error_server_saved, "../serverliste/");
       }

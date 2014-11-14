@@ -158,12 +158,12 @@ switch ($do) {
                 $timeshifttime = mktime($_POST['h_ts'],$_POST['min_ts'],0,$_POST['m_ts'],$_POST['t_ts'],$_POST['j_ts']);
                 $timeshift = "`timeshift` = '1',";
                 $public = "`public` = '1',";
-                $datum = "`datum` = '".((int)$timeshifttime)."',";
+                $datum = "`datum` = '".intval($timeshifttime)."',";
             }
 
             db("INSERT INTO ".$db['news']."
-                SET `autor`      = '".((int)$userid)."',
-                    `kat`        = '".((int)$_POST['kat'])."',
+                SET `autor`      = '".intval($userid)."',
+                    `kat`        = '".intval($_POST['kat'])."',
                     `titel`      = '".up($_POST['titel'])."',
                     `text`       = '".up($_POST['newstext'])."',
                     `klapplink`  = '".up($_POST['klapptitel'])."',
@@ -174,11 +174,11 @@ switch ($do) {
                     `url1`       = '".links($_POST['url1'])."',
                     `url2`       = '".links($_POST['url2'])."',
                     `url3`       = '".links($_POST['url3'])."',
-                    `intern`     = '".((int)$_POST['intern'])."',
+                    `intern`     = '".intval($_POST['intern'])."',
                     ".$timeshift."
                     ".$public."
                     ".$datum."
-                    `sticky`     = '".((int)$stickytime)."'");
+                    `sticky`     = '".intval($stickytime)."'");
 
             if(isset($_FILES['newspic']['tmp_name']) && !empty($_FILES['newspic']['tmp_name'])) {
                 $endung = explode(".", $_FILES['newspic']['name']);
@@ -288,11 +288,11 @@ switch ($do) {
                 $timeshifttime = mktime($_POST['h_ts'],$_POST['min_ts'],0,$_POST['m_ts'],$_POST['t_ts'],$_POST['j_ts']);
                 $timeshift = "`timeshift` = '1',";
                 $public = "`public` = '1',";
-                $datum = "`datum` = '".((int)$timeshifttime)."',";
+                $datum = "`datum` = '".intval($timeshifttime)."',";
             }
 
             db("UPDATE ".$db['news']."
-                SET `kat`        = '".((int)$_POST['kat'])."',
+                SET `kat`        = '".intval($_POST['kat'])."',
                     `titel`      = '".up($_POST['titel'])."',
                     `text`       = '".up($_POST['newstext'])."',
                     `klapplink`  = '".up($_POST['klapptitel'])."',
@@ -302,12 +302,12 @@ switch ($do) {
                     `link2`      = '".up($_POST['link2'])."',
                     `url2`       = '".links($_POST['url2'])."',
                     `link3`      = '".up($_POST['link3'])."',
-                    `intern`     = '".((int)$_POST['intern'])."',
+                    `intern`     = '".intval($_POST['intern'])."',
                     `url3`       = '".links($_POST['url3'])."',
                     ".$timeshift."
                     ".$public."
                     ".$datum."
-                    `sticky`     = '".((int)$stickytime)."'
+                    `sticky`     = '".intval($stickytime)."'
                 WHERE id = '".intval($_GET['id'])."'");
 
             if(isset($_FILES['newspic']['tmp_name']) && !empty($_FILES['newspic']['tmp_name'])) {

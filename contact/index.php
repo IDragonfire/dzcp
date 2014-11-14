@@ -160,7 +160,7 @@ case 'do';
                 $qrys = db("INSERT INTO ".$db['msg']."
                             SET `datum`     = '".time()."',
                                 `von`       = '0',
-                                `an`        = '".((int)$get['id'])."',
+                                `an`        = '".intval($get['id'])."',
                                 `titel`     = '"._contact_title."',
                                 `nachricht` = '".up($text)."'");
             }
@@ -174,7 +174,7 @@ case 'do';
                 $qrys = db("INSERT INTO ".$db['msg']."
                             SET `datum`     = '".time()."',
                                 `von`       = '0',
-                                `an`        = '".((int)$get['user'])."',
+                                `an`        = '".intval($get['user'])."',
                                 `titel`     = '"._contact_title."',
                                 `nachricht` = '".up($text)."'");
             }
@@ -224,7 +224,7 @@ case 'do';
         $qrys = db("INSERT INTO ".$db['msg']."
                     SET `datum`     = '".time()."',
                         `von`       = '0',
-                        `an`        = '".((int)$get['id'])."',
+                        `an`        = '".intval($get['id'])."',
                         `titel`     = '"._contact_title_joinus."',
                         `nachricht` = '".up($text)."'");
       }
@@ -237,7 +237,7 @@ case 'do';
         $qrys = db("INSERT INTO ".$db['msg']."
                     SET `datum`     = '".time()."',
                         `von`       = '0',
-                        `an`        = '".((int)$get['user'])."',
+                        `an`        = '".intval($get['user'])."',
                         `titel`     = '"._contact_title_joinus."',
                         `nachricht` = '".up($text)."'");
       }
@@ -299,7 +299,7 @@ case 'do';
         $qry = db("INSERT INTO ".$db['msg']."
                    SET `datum`      = '".time()."',
                        `von`        = '0',
-                       `an`         = '".((int)$get['user'])."',
+                       `an`         = '".intval($get['user'])."',
                        `titel`      = '"._contact_title_fightus."',
                        `nachricht`  = '".up($msg)."'");
 
@@ -314,7 +314,7 @@ case 'do';
         $qry = db("INSERT INTO ".$db['msg']."
                    SET `datum`      = '".time()."',
                        `von`        = '0',
-                       `an`         = '".((int)$get['user'])."',
+                       `an`         = '".intval($get['user'])."',
                        `titel`      = '"._contact_title_fightus."',
                        `nachricht`  = '".up($msg)."'");
       }

@@ -118,9 +118,9 @@ if(_adminMenu != 'true') exit;
                         WHERE kid ".$sign." '".intval($_POST['kid'])."'");
 
             $qry = db("INSERT INTO ".$db['f_kats']."
-                       SET `kid`    = '".((int)$_POST['kid'])."',
+                       SET `kid`    = '".intval($_POST['kid'])."',
                            `name`   = '".up($_POST['kat'])."',
-                           `intern` = '".((int)$_POST['intern'])."'");
+                           `intern` = '".intval($_POST['intern'])."'");
 
             $show = info(_config_forum_kat_added, "?admin=forum");
           } else {
@@ -183,7 +183,7 @@ if(_adminMenu != 'true') exit;
             if($_POST['kid'] == "lazy"){
               $kid = "";
             }else{
-              $kid = "`kid` = '".((int)$_POST['kid'])."',";
+              $kid = "`kid` = '".intval($_POST['kid'])."',";
 
               if($_POST['kid'] == "1" || "2") $sign = ">= ";
               else  $sign = "> ";
@@ -196,7 +196,7 @@ if(_adminMenu != 'true') exit;
             $qry = db("UPDATE ".$db['f_kats']."
                        SET `name`    = '".up($_POST['kat'])."',
                            ".$kid."
-                           `intern`  = '".((int)$_POST['intern'])."'
+                           `intern`  = '".intval($_POST['intern'])."'
                        WHERE id = '".intval($_GET['id'])."'");
 
             $show = info(_config_forum_kat_edited, "?admin=forum");
@@ -234,8 +234,8 @@ if(_adminMenu != 'true') exit;
                         WHERE `pos` ".$sign." '".intval($_POST['order'])."'");
 
             $qry = db("INSERT INTO ".$db['f_skats']."
-                       SET `sid`      = '".((int)$_GET['id'])."',
-                           `pos`    = '".((int)$_POST['order'])."',
+                       SET `sid`      = '".intval($_GET['id'])."',
+                           `pos`    = '".intval($_POST['order'])."',
                            `kattopic` = '".up($_POST['skat'])."',
                            `subtopic` = '".up($_POST['stopic'])."'");
 
@@ -279,7 +279,7 @@ if(_adminMenu != 'true') exit;
             if($_POST['order'] == "lazy"){
               $order = "";
             }else{
-              $order = "`pos` = '".((int)$_POST['order'])."',";
+              $order = "`pos` = '".intval($_POST['order'])."',";
 
               if($_POST['order'] == "1" || "2") $sign = ">= ";
               else  $sign = "> ";

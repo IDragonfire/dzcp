@@ -16,7 +16,7 @@ switch ($do) {
             }
 
             db("INSERT INTO ".$db['gallery']." SET `kat` = '".up($_POST['gallery'])."',
-                                                   `intern`   = '".((int)$_POST['intern'])."',
+                                                   `intern`   = '".intval($_POST['intern'])."',
                                                    `beschreibung`   = '".up($_POST['beschreibung'])."',
                                                    `datum`          = '".time()."'");
 
@@ -89,7 +89,7 @@ switch ($do) {
     break;
     case 'editgallery':
         db("UPDATE ".$db['gallery']." SET `kat` = '".up($_POST['gallery'])."',
-                                          `intern` = '".((int)$_POST['intern'])."',
+                                          `intern` = '".intval($_POST['intern'])."',
                                           `beschreibung` = '".up($_POST['beschreibung'])."'
                                       WHERE id = '".intval($_GET['id'])."'");
 

@@ -706,8 +706,8 @@ if(defined('_Forum')) {
                                                  WHERE id = '".$gettdp['id']."'");
                 } else {
                     $qry = db("INSERT INTO ".$db['f_posts']."
-                                         SET `kid`   = '".((int)$get_threadkid['kid'])."',
-                                                 `sid`   = '".((int)$_GET['id'])."',
+                                         SET `kid`   = '".intval($get_threadkid['kid'])."',
+                                                 `sid`   = '".intval($_GET['id'])."',
                                                  `date`  = '".time()."',
                                                  `nick`  = '".up($_POST['nick'])."',
                                                  `email` = '".up($_POST['email'])."',
@@ -730,7 +730,7 @@ if(defined('_Forum')) {
 
                     $checkabo = db("SELECT s1.user,s1.fid,s2.nick,s2.id,s2.email FROM ".$db['f_abo']." AS s1
                                     LEFT JOIN ".$db['users']." AS s2 ON s2.id = s1.user
-                                                    WHERE s1.fid = '".((int)$_GET['id'])."'");
+                                                    WHERE s1.fid = '".intval($_GET['id'])."'");
                     while($getabo = _fetch($checkabo))
                     {
                         if($userid != $getabo['user'])
@@ -785,7 +785,7 @@ if(defined('_Forum')) {
 
       $fposts = userstats("forumposts",$get['reg'])-1;
       $upd = db("UPDATE ".$db['userstats']."
-                 SET `forumposts` = '".((int)$fposts)."'
+                 SET `forumposts` = '".intval($fposts)."'
                  WHERE user = '".$get['reg']."'");
 
       $entrys = cnt($db['f_posts'], " WHERE `sid` = ".$get['sid']);

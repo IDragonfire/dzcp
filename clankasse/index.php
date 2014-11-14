@@ -171,10 +171,10 @@ switch ($action):
                     $betrag = preg_replace("#,#iUs",".",$betrag);
                     $datum = mktime(0,0,0,$_POST['m'],$_POST['t'],$_POST['j']);
                     db("INSERT INTO ".$db['clankasse']."
-                        SET `datum`        = '".((int)$datum)."',
+                        SET `datum`        = '".intval($datum)."',
                             `member`       = '".$_POST['member']."',
                             `transaktion`  = '".up($_POST['transaktion'])."',
-                            `pm`           = '".((int)$_POST['pm'])."',
+                            `pm`           = '".intval($_POST['pm'])."',
                             `betrag`       = '".up($betrag)."'");
 
                     $index = info(_clankasse_saved, "../clankasse/");
@@ -192,9 +192,9 @@ switch ($action):
                 else
                 {
                     db("UPDATE ".$db['clankasse']."
-                        SET `datum`        = '".((int)$_POST['datum'])."',
+                        SET `datum`        = '".intval($_POST['datum'])."',
                             `transaktion`  = '".up($_POST['transaktion'])."',
-                            `pm`           = '".((int)$_POST['pm'])."',
+                            `pm`           = '".intval($_POST['pm'])."',
                             `betrag`       = '".up($_POST['betrag'])."'
                         WHERE id = ".intval($_POST['id']));
 
@@ -249,10 +249,10 @@ switch ($action):
                     $datum = mktime(0,0,0,$_POST['m'],$_POST['t'],$_POST['j']);
 
                     db("UPDATE ".$db['clankasse']."
-                        SET `datum`        = '".((int)$datum)."',
+                        SET `datum`        = '".intval($datum)."',
                             `member`       = '".up($_POST['member'])."',
                             `transaktion`  = '".up($_POST['transaktion'])."',
-                            `pm`           = '".((int)$_POST['pm'])."',
+                            `pm`           = '".intval($_POST['pm'])."',
                             `betrag`       = '".up($betrag)."'
                         WHERE id = '".intval($_GET['id'])."'");
 
@@ -287,12 +287,12 @@ switch ($action):
                 if(_rows($qry))
                 {
                     db("UPDATE ".$db['c_payed']."
-                        SET `payed` = '".((int)$datum)."'
+                        SET `payed` = '".intval($datum)."'
                         WHERE user = '".intval($_GET['id'])."'");
                 } else {
                     db("INSERT INTO ".$db['c_payed']."
-                        SET `user`  = '".((int)$_GET['id'])."',
-                            `payed` = '".((int)$datum)."'");
+                        SET `user`  = '".intval($_GET['id'])."',
+                            `payed` = '".intval($datum)."'");
                 }
 
                 $index = info(_info_clankass_status_edited, "../clankasse/");

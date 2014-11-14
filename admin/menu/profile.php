@@ -31,8 +31,8 @@ if(_adminMenu != 'true') exit;
 
           $add = db("INSERT INTO ".$db['profile']."
                      SET `name` = '".up($name)."',
-                                   `type` = '".((int)$_POST['type'])."',
-                         `kid`  = '".((int)$_POST['kat'])."'");
+                                   `type` = '".intval($_POST['type'])."',
+                         `kid`  = '".intval($_POST['kat'])."'");
               $insID = _insert_id();
 
           $feldname = "custom_".$insID;
@@ -81,9 +81,9 @@ if(_adminMenu != 'true') exit;
 
               $add = db("UPDATE ".$db['profile']."
                      SET `name`  = '".up($name)."',
-                                   `kid`   = '".((int)$_POST['kat'])."',
-                                   `type`  = '".((int)$_POST['type'])."',
-                                   `shown` = '".((int)$_POST['shown'])."'
+                                   `kid`   = '".intval($_POST['kat'])."',
+                                   `type`  = '".intval($_POST['type'])."',
+                                   `shown` = '".intval($_POST['shown'])."'
                              WHERE id = '".intval($_GET['id'])."'");
 
               $show = info(_profile_edited,"?admin=profile");

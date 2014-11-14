@@ -349,12 +349,12 @@ if(defined('_Clanwars')) {
                                                                      "eintraghead" => _eintrag));
                         } else {
                             db("INSERT INTO ".$db['cw_comments']."
-                                SET `cw`       = '".((int)$_GET['id'])."',
+                                SET `cw`       = '".intval($_GET['id'])."',
                                     `datum`    = '".time()."',
                                     `nick`     = '".(isset($_POST['nick']) ? up($_POST['nick']) : up(data('nick')))."',
                                     `email`    = '".(isset($_POST['email']) ? up($_POST['email']) : up(data('email')))."',
                                     `hp`       = '".(isset($_POST['hp']) ? links($_POST['hp']) : links(data('hp')))."',
-                                    `reg`      = '".((int)$userid)."',
+                                    `reg`      = '".intval($userid)."',
                                     `comment`  = '".up($_POST['comment'])."',
                                     `ip`       = '".$userip."'");
 

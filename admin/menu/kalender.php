@@ -35,7 +35,7 @@ if(_adminMenu != 'true') exit;
         $time = mktime($_POST['h'],$_POST['min'],0,$_POST['m'],$_POST['t'],$_POST['j']);
 
         $insert = db("INSERT INTO ".$db['events']."
-                      SET `datum` = '".((int)$time)."',
+                      SET `datum` = '".intval($time)."',
                           `title` = '".up($_POST['title'])."',
                           `event` = '".up($_POST['event'])."'");
 
@@ -72,7 +72,7 @@ if(_adminMenu != 'true') exit;
         $time = mktime($_POST['h'],$_POST['min'],0,$_POST['m'],$_POST['t'],$_POST['j']);
 
         $update = db("UPDATE ".$db['events']."
-                      SET `datum` = '".((int)$time)."',
+                      SET `datum` = '".intval($time)."',
                           `title` = '".up($_POST['title'])."',
                           `event` = '".up($_POST['event'])."'
                       WHERE id = '".intval($_GET['id'])."'");

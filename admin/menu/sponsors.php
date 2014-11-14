@@ -160,13 +160,13 @@ if(_adminMenu != 'true') exit;
                      SET `name`         = '".up($_POST['name'])."',
                                      `link`         = '".links($_POST['link'])."',
                                      `beschreibung` = '".up($_POST['beschreibung'])."',
-                                     `site`         = '".((int)$_POST['site'])."',
+                                     `site`         = '".intval($_POST['site'])."',
                                      `slink`        = '".$_POST['slink']."',
-                                     `banner`       = '".((int)$_POST['banner'])."',
+                                     `banner`       = '".intval($_POST['banner'])."',
                          `blink`        = '".$_POST['blink']."',
-                         `box`           = '".((int)$_POST['box'])."',
+                         `box`           = '".intval($_POST['box'])."',
                          `xlink`         = '".up($_POST['xlink'])."',
-                                     `pos`            = '".((int)$_POST['position'])."'");
+                                     `pos`            = '".intval($_POST['position'])."'");
 
           $id = _insert_id();
 
@@ -474,17 +474,17 @@ if(_adminMenu != 'true') exit;
           }
 
           if($_POST['position'] == "lazy") $newpos = "";
-          else $newpos = "`pos` = '".((int)$_POST['position'])."'";
+          else $newpos = "`pos` = '".intval($_POST['position'])."'";
 
             $qry = db("UPDATE ".$db['sponsoren']."
                        SET      `name`         = '".up($_POST['name'])."',
                              `link`         = '".links($_POST['link'])."',
                              `beschreibung` = '".up($_POST['beschreibung'])."',
-                             `site`         = '".((int)$_POST['site'])."',
+                             `site`         = '".intval($_POST['site'])."',
                              `slink`        = '".$_POST['slink']."',
-                             `banner`       = '".((int)$_POST['banner'])."',
+                             `banner`       = '".intval($_POST['banner'])."',
                              `blink`        = '".$_POST['blink']."',
-                             `box`           = '".((int)$_POST['box'])."',
+                             `box`           = '".intval($_POST['box'])."',
                              `xlink`         = '".up($_POST['xlink'])."',
                              ".$newpos."
                        WHERE id = '".intval($_GET['id'])."'");

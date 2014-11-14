@@ -96,15 +96,15 @@ if(defined('_UserMenu')) {
                 while($getsq = _fetch($sq)) {
                     if(isset($_POST['squad'.$getsq['id']])) {
                         db("INSERT INTO ".$db['squaduser']."
-                            SET `user`   = '".((int)$_GET['user'])."',
-                                `squad`  = '".((int)$_POST['squad'.$getsq['id']])."'");
+                            SET `user`   = '".intval($_GET['user'])."',
+                                `squad`  = '".intval($_POST['squad'.$getsq['id']])."'");
                     }
 
                     if(isset($_POST['squad'.$getsq['id']])) {
                         db("INSERT INTO ".$db['userpos']."
-                            SET `user`   = '".((int)$_GET['user'])."',
-                                `posi`   = '".((int)$_POST['sqpos'.$getsq['id']])."',
-                                `squad`  = '".((int)$getsq['id'])."'");
+                            SET `user`   = '".intval($_GET['user'])."',
+                                `posi`   = '".intval($_POST['sqpos'.$getsq['id']])."',
+                                `squad`  = '".intval($getsq['id'])."'");
                     }
                 }
 
@@ -116,9 +116,9 @@ if(defined('_UserMenu')) {
                         `nick`   = '".up($_POST['nick'])."',
                         `email`  = '".up($_POST['email'])."',
                         `user`   = '".up($_POST['loginname'])."',
-                        `listck` = '".(isset($_POST['listck']) ? ((int)$_POST['listck']) : 0)."',
-                        `level`  = '".((int)$update_level)."',
-                        `banned`  = '".((int)$update_banned)."'
+                        `listck` = '".(isset($_POST['listck']) ? intval($_POST['listck']) : 0)."',
+                        `level`  = '".intval($update_level)."',
+                        `banned`  = '".intval($update_banned)."'
                     WHERE id = '".intval($_GET['user'])."'");
 
                 setIpcheck("upduser(".$userid."_".intval($_GET['user']).")");
@@ -133,15 +133,15 @@ if(defined('_UserMenu')) {
             while($getsq = _fetch($squads)) {
                 if(isset($_POST['squad'.$getsq['id']])) {
                     db("INSERT INTO ".$db['squaduser']."
-                        SET `user`  = '".((int)$userid)."',
-                            `squad` = '".((int)$_POST['squad'.$getsq['id']])."'");
+                        SET `user`  = '".intval($userid)."',
+                            `squad` = '".intval($_POST['squad'.$getsq['id']])."'");
                 }
 
                 if(isset($_POST['squad'.$getsq['id']])) {
                     db("INSERT INTO ".$db['userpos']."
-                        SET `user`   = '".((int)$userid)."',
-                            `posi`   = '".((int)$_POST['sqpos'.$getsq['id']])."',
-                            `squad`  = '".((int)$getsq['id'])."'");
+                        SET `user`   = '".intval($userid)."',
+                            `posi`   = '".intval($_POST['sqpos'.$getsq['id']])."',
+                            `squad`  = '".intval($getsq['id'])."'");
                 }
             }
 

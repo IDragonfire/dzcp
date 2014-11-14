@@ -61,12 +61,12 @@ if(defined('_UserMenu')) {
                 if ($qryperm['perm_gb'] == 1)
                 {
                     $qry = db("INSERT INTO ".$db['usergb']."
-                                         SET `user`       = '".((int)$_GET['id'])."',
+                                         SET `user`       = '".intval($_GET['id'])."',
                                                  `datum`      = '".time()."',
                                                  `nick`       = '".up($_POST['nick'])."',
                                                  `email`      = '".up($_POST['email'])."',
                                                  `hp`         = '".links($_POST['hp'])."',
-                                                 `reg`        = '".((int)$userid)."',
+                                                 `reg`        = '".intval($userid)."',
                                                  `nachricht`  = '".up($_POST['eintrag'])."',
                                                  `ip`         = '".$userip."'");
 
@@ -91,7 +91,7 @@ if(defined('_UserMenu')) {
                     $upd = db("UPDATE ".$db['usergb']."
                                          SET ".$addme."
                                                  `nachricht`  = '".up($_POST['eintrag'])."',
-                                                 `reg`        = '".((int)$_POST['reg'])."',
+                                                 `reg`        = '".intval($_POST['reg'])."',
                                                  `editby`     = '".addslashes($editedby)."'
                                          WHERE id = '".intval($_GET['gbid'])."'");
 

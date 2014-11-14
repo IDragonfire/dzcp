@@ -84,13 +84,13 @@ ob_implicit_flush(false);
             if(!headers_sent()) {
                 $securimage->background_directory = basePath.'/inc/images/securimage/background/';
                 $securimage->code_length  = mt_rand(4, 6);
-                $securimage->image_height = isset($_GET['height']) ? ((int)$_GET['height']) : 40;
-                $securimage->image_width  = isset($_GET['width']) ? ((int)$_GET['width']) : 200;
+                $securimage->image_height = isset($_GET['height']) ? intval($_GET['height']) : 40;
+                $securimage->image_width  = isset($_GET['width']) ? intval($_GET['width']) : 200;
                 $securimage->perturbation = .75;
                 $securimage->text_color   = new Securimage_Color("#CA0000");
-                $securimage->num_lines    = isset($_GET['lines']) ? ((int)$_GET['lines']) : 2;
+                $securimage->num_lines    = isset($_GET['lines']) ? intval($_GET['lines']) : 2;
                 $securimage->namespace    = isset($_GET['namespace']) ? $_GET['namespace'] : 'default';
-                if(isset($_GET['length'])) $securimage->code_length = ((int)$_GET['length']);
+                if(isset($_GET['length'])) $securimage->code_length = intval($_GET['length']);
                 die($securimage->show());
             }
             break;

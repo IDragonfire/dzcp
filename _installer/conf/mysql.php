@@ -1217,7 +1217,7 @@ $eml_nletter =
 [ Diese Email wurde automatisch generiert, bitte nicht antworten! ]';
 
   $qry = db("UPDATE ".$db['settings']."
-             SET `prev` = '".((int)makePrev())."',
+             SET `prev` = '".intval(makePrev())."',
                  `eml_reg_subj`  = 'Deine Registrierung',
                  `eml_pwd_subj` = 'Deine Zugangsdaten',
                  `eml_nletter_subj` = 'Newsletter',

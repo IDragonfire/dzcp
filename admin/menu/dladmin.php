@@ -59,8 +59,8 @@ if(_adminMenu != 'true') exit;
                          `url`          = '".$dl."',
                          `date`         = '".time()."',
                          `beschreibung` = '".up($_POST['beschreibung'])."',
-                         `kat`          = '".((int)$_POST['kat'])."',
-                         `intern`          = '".((int)$_POST['intern'])."'");
+                         `kat`          = '".intval($_POST['kat'])."',
+                         `intern`          = '".intval($_POST['intern'])."'");
 
           $show = info(_downloads_added, "?admin=dladmin");
         }
@@ -113,8 +113,8 @@ if(_adminMenu != 'true') exit;
                      SET `download`     = '".up($_POST['download'])."',
                          `url`          = '".$dl."',
                          `beschreibung` = '".up($_POST['beschreibung'])."',
-                         `kat`          = '".((int)$_POST['kat'])."',
-                         `intern`          = '".((int)$_POST['intern'])."'
+                         `kat`          = '".intval($_POST['kat'])."',
+                         `intern`          = '".intval($_POST['intern'])."'
                      WHERE id = '".intval($_GET['id'])."'");
 
           $show = info(_downloads_edited, "?admin=dladmin");

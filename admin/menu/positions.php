@@ -71,7 +71,7 @@ if(_adminMenu != 'true') exit;
               {
                     $pid = "";
               } else {
-                    $pid = ",`pid` = '".((int)$_POST['pos'])."'";
+                    $pid = ",`pid` = '".intval($_POST['pos'])."'";
 
             if($_POST['pos'] == "1" || "2") $sign = ">= ";
             else $sign = "> ";
@@ -147,7 +147,7 @@ if(_adminMenu != 'true') exit;
                       WHERE pid ".$sign." '".intval($_POST['pos'])."'");
 
           $qry = db("INSERT INTO ".$db['pos']."
-                     SET `pid`        = '".((int)$_POST['pos'])."',
+                     SET `pid`        = '".intval($_POST['pos'])."',
                          `position`  = '".up($_POST['kat'])."'");
           $posID = _insert_id();
     // permissions

@@ -276,12 +276,12 @@ case 'show';
                                                                                                          "eintraghead" => _eintrag));
                     } else {
                         $qry = db("INSERT INTO ".$db['acomments']."
-                                             SET `artikel`  = '".((int)$_GET['id'])."',
+                                             SET `artikel`  = '".intval($_GET['id'])."',
                                                      `datum`    = '".time()."',
                                                      `nick`     = '".(isset($_POST['nick']) ? up($_POST['nick']) : data('nick'))."',
                                                      `email`    = '".(isset($_POST['email']) ? up($_POST['email']) : data('email'))."',
                                                      `hp`       = '".(isset($_POST['hp']) ? links($_POST['hp']) : links(data('hp')))."',
-                                                     `reg`      = '".((int)$userid)."',
+                                                     `reg`      = '".intval($userid)."',
                                                      `comment`  = '".up($_POST['comment'])."',
                                                      `ip`       = '".$userip."'");
 

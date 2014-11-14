@@ -1098,7 +1098,7 @@ class Securimage {
         $fsize = filesize($this->wordlist_file);
         if ($fsize < 128) return false; // too small of a list to be effective
 
-        if ((int)$numWords < 1 || (int)$numWords > 5) $numWords = 1;
+        if (intval($numWords) < 1 || intval($numWords) > 5) $numWords = 1;
 
         $words = array();
         $i = 0;

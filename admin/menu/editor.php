@@ -96,7 +96,7 @@ if($do == "add") {
         db("INSERT INTO ".$db['sites']."
             SET `titel` = '".up($_POST['titel'])."',
                 `text`  = '".up($_POST['inhalt'])."',
-                `html`  = '".((int)$_POST['html'])."'");
+                `html`  = '".intval($_POST['html'])."'");
         $insert_id = _insert_id();
 
         $sign = (isset($_POST['pos']) && ($_POST['pos'] == "1" || $_POST['pos'] == "2")) ? ">= " : "> ";
@@ -106,13 +106,13 @@ if($do == "add") {
 
         db("UPDATE ".$db['navi']." SET `pos` = pos+1 WHERE pos ".$sign." '".intval($pos)."'");
         db("INSERT INTO ".$db['navi']."
-            SET `pos`     = '".((int)$pos)."',
+            SET `pos`     = '".intval($pos)."',
                 `kat`     = '".up($kat)."',
                 `name`    = '".up($_POST['name'])."',
                 `url`     = '".up($url)."',
                 `shown`   = '1',
                 `type`    = '3',
-                `editor`  = '".((int)$insert_id)."',
+                `editor`  = '".intval($insert_id)."',
                 `wichtig` = '0'");
 
         $show = info(_site_added, "?admin=editor");
@@ -207,7 +207,7 @@ if($do == "add") {
     } else {
         db("UPDATE ".$db['sites']." SET `titel` = '".up($_POST['titel'])."',
                                         `text`  = '".up($_POST['inhalt'])."',
-                                        `html`   = '".((int)$_POST['html'])."'
+                                        `html`   = '".intval($_POST['html'])."'
                                     WHERE id = '".intval($_GET['id'])."'");
 
         $sign = (isset($_POST['pos']) && ($_POST['pos'] == "1" || $_POST['pos'] == "2")) ? ">= " : "> ";
@@ -216,7 +216,7 @@ if($do == "add") {
 
         $url = "../sites/?show=".$_GET['id'];
         db("UPDATE ".$db['navi']." SET `pos`  = pos+1 WHERE pos ".$sign." '".intval($pos)."'");
-        db("UPDATE ".$db['navi']." SET `pos`  = '".((int)$pos)."',
+        db("UPDATE ".$db['navi']." SET `pos`  = '".intval($pos)."',
                                        `kat`  = '".up($kat)."',
                                        `name` = '".up($_POST['name'])."',
                                        `url`  = '".up($url)."'

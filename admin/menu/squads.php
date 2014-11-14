@@ -94,13 +94,13 @@ switch ($do) {
                     `game`         = '".up($_POST['game'])."',
                     `icon`         = '".up($_POST['icon'])."',
                     `beschreibung` = '".up($_POST['beschreibung'])."',
-                    `shown`        = '".(isset($_POST['show']) ? ((int)$_POST['show']) : 0)."',
-                    `navi`         = '".((int)$_POST['roster'])."',
-                    `team_show`    = '".((int)$_POST['team_show'])."',
-                    `team_joinus`  = '".((int)$_POST['team_joinus'])."',
-                    `team_fightus` = '".((int)$_POST['team_fightus'])."',
-                    `status`       = '".(isset($_POST['status']) ? ((int)$_POST['status']) : 0)."',
-                    `pos`          = '".((int)$_POST['position'])."'");
+                    `shown`        = '".(isset($_POST['show']) ? intval($_POST['show']) : 0)."',
+                    `navi`         = '".intval($_POST['roster'])."',
+                    `team_show`    = '".intval($_POST['team_show'])."',
+                    `team_joinus`  = '".intval($_POST['team_joinus'])."',
+                    `team_fightus` = '".intval($_POST['team_fightus'])."',
+                    `status`       = '".(isset($_POST['status']) ? intval($_POST['status']) : 0)."',
+                    `pos`          = '".intval($_POST['position'])."'");
 
             $insert_id = _insert_id();
 
@@ -113,7 +113,7 @@ switch ($do) {
 
                 db("UPDATE ".$db['navi']." SET `pos` = pos+1 WHERE pos ".$signnav." '".intval($pos)."'");
                 db("INSERT INTO ".$db['navi']."
-                    SET `pos`   = '".((int)$pos)."',
+                    SET `pos`   = '".intval($pos)."',
                         `kat`       = '".up($kat)."',
                         `name`      = '".up($_POST['squad'])."',
                         `url`       = '../squads/?action=shows&amp;id=".$insert_id."',
@@ -166,7 +166,7 @@ switch ($do) {
             }
 
             if($_POST['position'] == "lazy") $newpos = "";
-            else $newpos = "`pos` = '".((int)$_POST['position'])."',";
+            else $newpos = "`pos` = '".intval($_POST['position'])."',";
 
             if($_POST['icon'] == "lazy") $newicon = "";
             else $newicon = "`icon` = '".up($_POST['icon'])."',";
@@ -177,12 +177,12 @@ switch ($do) {
                     ".$newpos."
                     ".$newicon."
                     `beschreibung` = '".up($_POST['beschreibung'])."',
-                    `shown`        = '".(isset($_POST['show']) ? ((int)$_POST['show']) : 0)."',
-                    `navi`         = '".((int)$_POST['roster'])."',
-                    `team_show`    = '".((int)$_POST['team_show'])."',
-                    `team_joinus`  = '".((int)$_POST['team_joinus'])."',
-                    `team_fightus` = '".((int)$_POST['team_fightus'])."',
-                    `status`       = '".(isset($_POST['status']) ? ((int)$_POST['status']) : 0)."'
+                    `shown`        = '".(isset($_POST['show']) ? intval($_POST['show']) : 0)."',
+                    `navi`         = '".intval($_POST['roster'])."',
+                    `team_show`    = '".intval($_POST['team_show'])."',
+                    `team_joinus`  = '".intval($_POST['team_joinus'])."',
+                    `team_fightus` = '".intval($_POST['team_fightus'])."',
+                    `status`       = '".(isset($_POST['status']) ? intval($_POST['status']) : 0)."'
                 WHERE id = '".intval($_GET['id'])."'");
 
             if(isset($_POST['navi']) && $_POST['navi'] != "lazy") {
@@ -196,7 +196,7 @@ switch ($do) {
                     $pos = preg_replace("=nav_(.+)-=","",$_POST['navi']);
 
                     db("UPDATE ".$db['navi']." SET pos = pos+1 WHERE pos ".$sign." '".intval($pos)."'");
-                    db("UPDATE ".$db['navi']." SET `pos` = '".((int)$pos)."',
+                    db("UPDATE ".$db['navi']." SET `pos` = '".intval($pos)."',
                                                    `kat`       = '".up($kat)."',
                                                    `name`      = '".up($_POST['squad'])."',
                                                    `url`       = '../squads/?action=shows&amp;id=".intval($_GET['id'])."'
@@ -211,7 +211,7 @@ switch ($do) {
                     db("UPDATE ".$db['navi']." SET `pos` = pos+1 WHERE pos ".$signnav." '".intval($pos)."'");
 
                     db("INSERT INTO ".$db['navi']."
-                        SET `pos`       = '".((int)$pos)."',
+                        SET `pos`       = '".intval($pos)."',
                             `kat`       = '".up($kat)."',
                             `name`      = '".up($_POST['squad'])."',
                             `url`       = '../squads/?action=shows&amp;id=".intval($_GET['id'])."',

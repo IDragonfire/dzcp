@@ -86,8 +86,8 @@ switch($do) {
         } else {
             if(isset($_POST)) {
                 db("INSERT INTO ".$db['artikel']."
-                    SET `autor`  = '".((int)$userid)."',
-                        `kat`    = '".((int)$_POST['kat'])."',
+                    SET `autor`  = '".intval($userid)."',
+                        `kat`    = '".intval($_POST['kat'])."',
                         `titel`  = '".up($_POST['titel'])."',
                         `text`   = '".up($_POST['artikel'])."',
                         `link1`  = '".up($_POST['link1'])."',
@@ -153,7 +153,7 @@ switch($do) {
     case 'editartikel':
         if(isset($_POST)) {
             db("UPDATE ".$db['artikel']."
-                SET `kat`    = '".((int)$_POST['kat'])."',
+                SET `kat`    = '".intval($_POST['kat'])."',
                     `titel`  = '".up($_POST['titel'])."',
                     `text`   = '".up($_POST['artikel'])."',
                     `link1`  = '".up($_POST['link1'])."',

@@ -122,12 +122,12 @@ if(_adminMenu != 'true') exit;
                                  `email`    = '".up($_POST['email'])."',
                                  `pwd`      = '".up($pwd)."',
                                  `rlname`   = '".up($_POST['rlname'])."',
-                                 `sex`      = '".((int)$_POST['sex'])."',
+                                 `sex`      = '".intval($_POST['sex'])."',
                                  `bday`     = '".(!$bday ? 0 : strtotime($bday))."',
                                  `city`     = '".up($_POST['city'])."',
                                  `country`  = '".up($_POST['land'])."',
                                  `regdatum` = '".time()."',
-                                 `level`    = '".((int)$_POST['level'])."',
+                                 `level`    = '".intval($_POST['level'])."',
                                  `time`     = '".time()."',
                                  `gmaps_koord`  = '".up($_POST['gmaps_koord'])."',
                                  `status`   = '1'");
@@ -159,16 +159,16 @@ if(_adminMenu != 'true') exit;
         if(isset($_POST['squad'.$getsq['id']]))
         {
           $qry = db("INSERT INTO ".$db['squaduser']."
-                     SET `user`  = '".((int)$insert_id)."',
-                         `squad` = '".((int)$_POST['squad'.$getsq['id']])."'");
+                     SET `user`  = '".intval($insert_id)."',
+                         `squad` = '".intval($_POST['squad'.$getsq['id']])."'");
         }
 
         if(isset($_POST['squad'.$getsq['id']]))
         {
           $qry = db("INSERT INTO ".$db['userpos']."
-                     SET `user`   = '".((int)$insert_id)."',
-                         `posi`   = '".((int)$_POST['sqpos'.$getsq['id']])."',
-                         `squad`  = '".((int)$getsq['id'])."'");
+                     SET `user`   = '".intval($insert_id)."',
+                         `posi`   = '".intval($_POST['sqpos'.$getsq['id']])."',
+                         `squad`  = '".intval($getsq['id'])."'");
         }
       }
 
@@ -224,7 +224,7 @@ if(_adminMenu != 'true') exit;
     }
 
       $qry = db("INSERT INTO ".$db['userstats']."
-                       SET `user`       = '".((int)$insert_id)."',
+                       SET `user`       = '".intval($insert_id)."',
                    `lastvisit`    = '".time()."'");
 
       $show = info(_uderadd_info, "../admin/");

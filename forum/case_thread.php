@@ -269,8 +269,8 @@ if(defined('_Forum')) {
 
         $upd = db("UPDATE ".$db['votes']."
                    SET `titel`  = '".up($_POST['question'])."',
-                       `intern` = '".((int)$_POST['intern'])."',
-                       `closed` = '".((int)$_POST['closed'])."'
+                       `intern` = '".intval($_POST['intern'])."',
+                       `closed` = '".intval($_POST['closed'])."'
                    WHERE id = '".$gett['vote']."'");
 
         $upd1 = db("UPDATE ".$db['vote_results']."
@@ -312,75 +312,75 @@ if(defined('_Forum')) {
           $qry = db("INSERT INTO ".$db['votes']."
                      SET `datum`  = '".time()."',
                          `titel`  = '".up($_POST['question'])."',
-                         `intern` = '".((int)$_POST['intern'])."',
+                         `intern` = '".intval($_POST['intern'])."',
                                      `forum`  = 1,
-                         `von`    = '".((int)$userid)."'");
+                         `von`    = '".intval($userid)."'");
 
           $vid = _insert_id();
 
           $qry = db("INSERT INTO ".$db['vote_results']."
-                    SET `vid`   = '".((int)$vid)."',
+                    SET `vid`   = '".intval($vid)."',
                         `what`  = 'a1',
                         `sel`   = '".up($_POST['a1'])."'");
 
           $qry = db("INSERT INTO ".$db['vote_results']."
-                     SET `vid`  = '".((int)$vid)."',
+                     SET `vid`  = '".intval($vid)."',
                          `what` = 'a2',
                          `sel`  = '".up($_POST['a2'])."'");
 
           if(!empty($_POST['a3']))
           {
             $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
+                       SET `vid`  = '".intval($vid)."',
                            `what` = 'a3',
                            `sel`  = '".up($_POST['a3'])."'");
           }
           if(!empty($_POST['a4']))
           {
             $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
+                       SET `vid`  = '".intval($vid)."',
                            `what` = 'a4',
                            `sel`  = '".up($_POST['a4'])."'");
           }
           if(!empty($_POST['a5']))
           {
             $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
+                       SET `vid`  = '".intval($vid)."',
                            `what` = 'a5',
                            `sel`  = '".up($_POST['a5'])."'");
           }
           if(!empty($_POST['a6']))
           {
             $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
+                       SET `vid`  = '".intval($vid)."',
                            `what` = 'a6',
                            `sel`  = '".up($_POST['a6'])."'");
           }
           if(!empty($_POST['a7']))
           {
             $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
+                       SET `vid`  = '".intval($vid)."',
                            `what` = 'a7',
                            `sel`  = '".up($_POST['a7'])."'");
           }
           if(!empty($_POST['a8']))
           {
             $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
+                       SET `vid`  = '".intval($vid)."',
                            `what` = 'a8',
                            `sel`  = '".up($_POST['a8'])."'");
           }
           if(!empty($_POST['a9']))
           {
             $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
+                       SET `vid`  = '".intval($vid)."',
                            `what` = 'a9',
                            `sel`  = '".up($_POST['a9'])."'");
           }
           if(!empty($_POST['a10']))
           {
             $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
+                       SET `vid`  = '".intval($vid)."',
                            `what` = 'a10',
                            `sel`  = '".up($_POST['a10'])."'");
           }
@@ -407,15 +407,15 @@ if(defined('_Forum')) {
                        `t_email`  = '".up($_POST['email'])."',
                        `t_hp`     = '".links($_POST['hp'])."',
                        `t_text`   = '".up($_POST['eintrag'])."',
-                       `sticky`   = '".((int)$_POST['sticky'])."',
-                       `global`   = '".((int)$_POST['global'])."',
+                       `sticky`   = '".intval($_POST['sticky'])."',
+                       `global`   = '".intval($_POST['global'])."',
                                             `vote`     = '".$vid."',
                        `edited`   = '".addslashes($editedby)."'
                    WHERE id = '".intval($_GET['id'])."'");
 
       $checkabo = db("SELECT s1.user,s1.fid,s2.nick,s2.id,s2.email FROM ".$db['f_abo']." AS s1
                         LEFT JOIN ".$db['users']." AS s2 ON s2.id = s1.user
-                      WHERE s1.fid = '".((int)$_GET['id'])."'");
+                      WHERE s1.fid = '".intval($_GET['id'])."'");
         while($getabo = _fetch($checkabo))
         {
         if($userid != $getabo['user'])
@@ -661,97 +661,97 @@ if(defined('_Forum')) {
                                                                      WHERE s2.`id` = '".intval($_GET['kid'])."'"));
 
                         if($fgetvote['intern'] == 1) $ivote = "`intern` = '1',";
-                        else $ivote = "`intern` = '".((int)$_POST['intern'])."',";
+                        else $ivote = "`intern` = '".intval($_POST['intern'])."',";
 
                         $qry = db("INSERT INTO ".$db['votes']."
                                              SET `datum`  = '".time()."',
                                                      `titel`  = '".up($_POST['question'])."',
                                                      ".$ivote."
                                                      `forum`  = 1,
-                                                     `von`    = '".((int)$userid)."'");
+                                                     `von`    = '".intval($userid)."'");
 
                         $vid = _insert_id();
 
                         $qry = db("INSERT INTO ".$db['vote_results']."
-                                            SET `vid`   = '".((int)$vid)."',
+                                            SET `vid`   = '".intval($vid)."',
                                                     `what`  = 'a1',
                                                     `sel`   = '".up($_POST['a1'])."'");
 
                         $qry = db("INSERT INTO ".$db['vote_results']."
-                                             SET `vid`  = '".((int)$vid)."',
+                                             SET `vid`  = '".intval($vid)."',
                                                      `what` = 'a2',
                                                      `sel`  = '".up($_POST['a2'])."'");
 
                         if(!empty($_POST['a3']))
                         {
                             $qry = db("INSERT INTO ".$db['vote_results']."
-                                                 SET `vid`  = '".((int)$vid)."',
+                                                 SET `vid`  = '".intval($vid)."',
                                                          `what` = 'a3',
                                                          `sel`  = '".up($_POST['a3'])."'");
                         }
                         if(!empty($_POST['a4']))
                         {
                             $qry = db("INSERT INTO ".$db['vote_results']."
-                                                 SET `vid`  = '".((int)$vid)."',
+                                                 SET `vid`  = '".intval($vid)."',
                                                          `what` = 'a4',
                                                          `sel`  = '".up($_POST['a4'])."'");
                         }
                         if(!empty($_POST['a5']))
                         {
                             $qry = db("INSERT INTO ".$db['vote_results']."
-                                                 SET `vid`  = '".((int)$vid)."',
+                                                 SET `vid`  = '".intval($vid)."',
                                                          `what` = 'a5',
                                                          `sel`  = '".up($_POST['a5'])."'");
                         }
                         if(!empty($_POST['a6']))
                         {
                             $qry = db("INSERT INTO ".$db['vote_results']."
-                                                 SET `vid`  = '".((int)$vid)."',
+                                                 SET `vid`  = '".intval($vid)."',
                                                          `what` = 'a6',
                                                          `sel`  = '".up($_POST['a6'])."'");
                         }
                         if(!empty($_POST['a7']))
                         {
                             $qry = db("INSERT INTO ".$db['vote_results']."
-                                                 SET `vid`  = '".((int)$vid)."',
+                                                 SET `vid`  = '".intval($vid)."',
                                                          `what` = 'a7',
                                                          `sel`  = '".up($_POST['a7'])."'");
                         }
                         if(!empty($_POST['a8']))
                         {
                             $qry = db("INSERT INTO ".$db['vote_results']."
-                                                 SET `vid`  = '".((int)$vid)."',
+                                                 SET `vid`  = '".intval($vid)."',
                                                          `what` = 'a8',
                                                          `sel`  = '".up($_POST['a8'])."'");
                         }
                         if(!empty($_POST['a9']))
                         {
                             $qry = db("INSERT INTO ".$db['vote_results']."
-                                                 SET `vid`  = '".((int)$vid)."',
+                                                 SET `vid`  = '".intval($vid)."',
                                                          `what` = 'a9',
                                                          `sel`  = '".up($_POST['a9'])."'");
                         }
                         if(!empty($_POST['a10']))
                         {
                             $qry = db("INSERT INTO ".$db['vote_results']."
-                                                 SET `vid`  = '".((int)$vid)."',
+                                                 SET `vid`  = '".intval($vid)."',
                                                          `what` = 'a10',
                                                          `sel`  = '".up($_POST['a10'])."'");
                         }
             } else { $vid = ""; }
 
             $qry = db("INSERT INTO ".$db['f_threads']."
-                                 SET     `kid`      = '".((int)$_GET['kid'])."',
+                                 SET     `kid`      = '".intval($_GET['kid'])."',
                                                 `t_date`   = '".time()."',
                                                 `topic`    = '".up($_POST['topic'])."',
                                                 `subtopic` = '".up($_POST['subtopic'])."',
                                                 `t_nick`   = '".up($_POST['nick'])."',
                                                 `t_email`  = '".up($_POST['email'])."',
                                                 `t_hp`     = '".links($_POST['hp'])."',
-                                                `t_reg`    = '".((int)$userid)."',
+                                                `t_reg`    = '".intval($userid)."',
                                                 `t_text`   = '".up($_POST['eintrag'])."',
-                                                `sticky`   = '".((int)$_POST['sticky'])."',
-                                                `global`   = '".((int)$_POST['global'])."',
+                                                `sticky`   = '".intval($_POST['sticky'])."',
+                                                `global`   = '".intval($_POST['global'])."',
                                                 `ip`       = '".$userip."',
                                                 `lp`       = '".time()."',
                                                 `vote`     = '".$vid."',

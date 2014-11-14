@@ -8,7 +8,7 @@ if(defined('_UserMenu')) {
     if($userid) {
         $_SESSION['lastvisit'] = data("time");
         db("UPDATE ".$db['userstats']."
-            SET `lastvisit` = '".((int)$_SESSION['lastvisit'])."'
+            SET `lastvisit` = '".intval($_SESSION['lastvisit'])."'
             WHERE user = '".$userid."'");
     }
 

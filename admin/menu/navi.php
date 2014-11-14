@@ -59,15 +59,15 @@ if(_adminMenu != 'true') exit;
                       WHERE pos ".$sign." '".intval($pos)."'");
 
           $posi = db("INSERT INTO ".$db['navi']."
-                      SET `pos`       = '".((int)$pos)."',
+                      SET `pos`       = '".intval($pos)."',
                           `kat`       = '".up($kat)."',
                           `name`      = '".up($_POST['name'])."',
                           `url`       = '".up($_POST['url'])."',
                           `shown`     = '1',
-                          `target`    = '".((int)$_POST['target'])."',
-                          `internal`  = '".((int)$_POST['internal'])."',
+                          `target`    = '".intval($_POST['target'])."',
+                          `internal`  = '".intval($_POST['internal'])."',
                           `type`      = '2',
-                          `wichtig`   = '".((int)$_POST['wichtig'])."'");
+                          `wichtig`   = '".intval($_POST['wichtig'])."'");
           $show = info(_navi_added,"?admin=navi");
         }
       } elseif($do == "delete") {
@@ -153,26 +153,26 @@ if(_adminMenu != 'true') exit;
                     WHERE pos ".$sign." '".intval($pos)."'");
 
         $posi = db("UPDATE ".$db['navi']."
-                    SET `pos`       = '".((int)$pos)."',
+                    SET `pos`       = '".intval($pos)."',
                         `kat`       = '".up($kat)."',
                         `name`      = '".up($_POST['name'])."',
                         `url`       = '".up($_POST['url'])."',
-                        `target`    = '".((int)$_POST['target'])."',
-                        `shown`     = '".((int)$_POST['sichtbar'])."',
-                        `internal`  = '".((int)$_POST['internal'])."',
-                        `wichtig`   = '".((int)$_POST['wichtig'])."'
+                        `target`    = '".intval($_POST['target'])."',
+                        `shown`     = '".intval($_POST['sichtbar'])."',
+                        `internal`  = '".intval($_POST['internal'])."',
+                        `wichtig`   = '".intval($_POST['wichtig'])."'
                     WHERE id = '".intval($_GET['id'])."'");
 
         $show = info(_navi_edited,"?admin=navi");
       } elseif($do == "menu") {
         $posi = db("UPDATE ".$db['navi']."
-                    SET `shown`     = '".((int)$_GET['set'])."'
+                    SET `shown`     = '".intval($_GET['set'])."'
                     WHERE id = '".intval($_GET['id'])."'");
 
         header("Location: ?admin=navi");
       } else if($do == 'intern') {
         $posi = db("UPDATE ".$db['navi_kats']."
-                    SET `intern` = '".((int)$_GET['set'])."'
+                    SET `intern` = '".intval($_GET['set'])."'
                     WHERE id = '".intval($_GET['id'])."'");
 
         header("Location: ?admin=navi");

@@ -113,8 +113,8 @@ if(defined('_UserMenu')) {
                     `status`   = '1'");
 
             $insert_id = _insert_id();
-            db("INSERT INTO ".$db['permissions']." SET `user` = '".((int)$insert_id)."'");
-            db("INSERT INTO ".$db['userstats']." SET `user` = '".((int)$insert_id)."', `lastvisit` = '".time()."'");
+            db("INSERT INTO ".$db['permissions']." SET `user` = '".intval($insert_id)."'");
+            db("INSERT INTO ".$db['userstats']." SET `user` = '".intval($insert_id)."', `lastvisit` = '".time()."'");
 
             setIpcheck("reg(".$insert_id.")");
             $message = show(bbcode_email(settings('eml_reg')), array("user" => $_POST['user'], "pwd" => $mkpwd));

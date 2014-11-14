@@ -43,7 +43,7 @@ if(defined('_UserMenu')) {
             case 'sendnewsdone':
                 $qry = db("SELECT id FROM ".$db['msg']." WHERE id = '".intval($_GET['id'])."'");
                 while($get = _fetch($qry)) {
-                    db("UPDATE ".$db['msg']." SET `sendnews` = 3, `sendnewsuser` = '".((int)$userid)."', `readed`= 1
+                    db("UPDATE ".$db['msg']." SET `sendnews` = 3, `sendnewsuser` = '".intval($userid)."', `readed`= 1
                         WHERE datum = '".intval($_GET['datum'])."'");
 
                     $index = info(_send_news_done, "?action=msg&do=show&id=".$get['id']."");
@@ -107,18 +107,18 @@ if(defined('_UserMenu')) {
                 } else {
                     db("INSERT INTO ".$db['msg']."
                          SET `datum`      = ".time().",
-                             `von`        = ".((int)$_POST['von']).",
-                             `an`         = ".((int)$_POST['an']).",
+                             `von`        = ".intval($_POST['von']).",
+                             `an`         = ".intval($_POST['an']).",
                              `titel`      = '".up($_POST['titel'])."',
                              `nachricht`  = '".up($_POST['eintrag'])."',
                              `see`        = 1");
 
-                    db("UPDATE ".$db['userstats']." SET `writtenmsg` = writtenmsg+1 WHERE `user` = ".((int)$userid));
+                    db("UPDATE ".$db['userstats']." SET `writtenmsg` = writtenmsg+1 WHERE `user` = ".intval($userid));
                     $index = info(_msg_answer_done, "?action=msg");
                 }
             break;
             case 'delete':
-                $qry = db("SELECT id,see FROM ".$db['msg']." WHERE `an` = '".((int)$userid)."' AND `see_u` = 0");
+                $qry = db("SELECT id,see FROM ".$db['msg']." WHERE `an` = '".intval($userid)."' AND `see_u` = 0");
                 while($get = _fetch($qry)) {
                     if(isset($_POST['pe'.$get['id']])) {
                         if(!$get['see'])
@@ -140,7 +140,7 @@ if(defined('_UserMenu')) {
                 $index = info(_msg_deleted, "?action=msg");
             break;
             case 'deletesended':
-                $qry = db("SELECT id,see_u FROM ".$db['msg']." WHERE `von` = '".((int)$userid)."' AND `see` = 1");
+                $qry = db("SELECT id,see_u FROM ".$db['msg']." WHERE `von` = '".intval($userid)."' AND `see` = 1");
                 while($get = _fetch($qry)) {
                     if(isset($_POST['pa'.$get['id']])) {
                         if($get['see_u'])
@@ -153,14 +153,14 @@ if(defined('_UserMenu')) {
                 header("Location: ?action=msg");
             break;
             case 'new':
-                $qry = db("SELECT id,nick FROM ".$db['users']." WHERE id != '".((int)$userid)."' ORDER BY nick"); $users = '';
+                $qry = db("SELECT id,nick FROM ".$db['users']." WHERE id != '".intval($userid)."' ORDER BY nick"); $users = '';
                 while($get = _fetch($qry)) {
                     $users .= show(_to_users, array("id" => $get['id'],
                                                     "selected" => "",
                                                     "nick" => data("nick",$get['id'])));
                 }
 
-                $qry = db("SELECT id,user,buddy FROM ".$db['buddys']." WHERE user = ".((int)$userid)." ORDER BY user"); $buddys = '';
+                $qry = db("SELECT id,user,buddy FROM ".$db['buddys']." WHERE user = ".intval($userid)." ORDER BY user"); $buddys = '';
                 while($get = _fetch($qry)) {
                     $buddys .= show(_to_buddys, array("id" => $get['buddy'],
                                                       "selected" => "",
@@ -199,7 +199,7 @@ if(defined('_UserMenu')) {
 
                     $error = show("errors/errortable", array("error" => $error));
 
-                    $qry = db("SELECT id FROM ".$db['users']." WHERE id != '".((int)$userid)."' ORDER BY nick"); $users = '';
+                    $qry = db("SELECT id FROM ".$db['users']." WHERE id != '".intval($userid)."' ORDER BY nick"); $users = '';
                     while($get = _fetch($qry)) {
                         $selected = isset($_POST['users']) && $get['id'] == $_POST['users'] ? 'selected="selected"' : '';
                         $users .= show(_to_users, array("id" => $get['id'],
@@ -207,7 +207,7 @@ if(defined('_UserMenu')) {
                                                         "selected" => $selected));
                     }
 
-                    $qry = db("SELECT id,user,buddy FROM ".$db['buddys']." WHERE user = ".((int)$userid)); $buddys = '';
+                    $qry = db("SELECT id,user,buddy FROM ".$db['buddys']." WHERE user = ".intval($userid)); $buddys = '';
                     while($get = _fetch($qry)) {
                         $selected = isset($_POST['buddys']) && $get['buddy'] == $_POST['buddys'] ? 'selected="selected"' : '';
                         $buddys .= show(_to_buddys, array("id" => $get['buddy'],
@@ -234,18 +234,18 @@ if(defined('_UserMenu')) {
                     $to = ($_POST['buddys'] == "-" ? $_POST['users'] : $_POST['buddys']);
                     db("INSERT INTO ".$db['msg']."
                         SET `datum`      = ".time().",
-                            `von`        = ".((int)$userid).",
-                            `an`         = ".((int)$to).",
+                            `von`        = ".intval($userid).",
+                            `an`         = ".intval($to).",
                             `titel`      = '".up($_POST['titel'])."',
                             `nachricht`  = '".up($_POST['eintrag'])."',
                             `see`        = 1");
 
-                    db("UPDATE ".$db['userstats']." SET `writtenmsg` = writtenmsg+1 WHERE `user` = ".((int)$userid));
+                    db("UPDATE ".$db['userstats']." SET `writtenmsg` = writtenmsg+1 WHERE `user` = ".intval($userid));
                     $index = info(_msg_answer_done, "?action=msg");
                 }
             break;
             default:
-                $qry = db("SELECT * FROM ".$db['msg']." WHERE `an` = ".((int)$userid)." AND `see_u` = 0 ORDER BY datum DESC");
+                $qry = db("SELECT * FROM ".$db['msg']." WHERE `an` = ".intval($userid)." AND `see_u` = 0 ORDER BY datum DESC");
                 $posteingang = '';
                 while($get = _fetch($qry)) {
                     $titel = "-"; $absender = "-"; $date = "-"; $delete = ""; $new = "";

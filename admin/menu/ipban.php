@@ -27,11 +27,11 @@ switch ($do) {
         }
     break;
     case 'delete':
-        db("DELETE FROM ".$db['ipban']." WHERE id = '".((int)$_GET['id'])."'");
+        db("DELETE FROM ".$db['ipban']." WHERE id = '".intval($_GET['id'])."'");
         $show = info(_ipban_admin_deleted, "?admin=ipban");
     break;
     case 'edit':
-        $get = db("SELECT * FROM ".$db['ipban']." WHERE id = '".((int)$_GET['id'])."'",false,true);
+        $get = db("SELECT * FROM ".$db['ipban']." WHERE id = '".intval($_GET['id'])."'",false,true);
         $data_array = unserialize($get['data']);
         $show = show($dir."/ipban_form", array("newhead" => _ipban_edit_head,"do" => "edit_save&amp;id=".$_GET['id']."","ip_set" => re($get['ip']),"info" => re($data_array['banned_msg']),"what" => _button_value_edit));
     break;
@@ -39,15 +39,15 @@ switch ($do) {
         if(empty($_POST['ip']))
             $show = error(_ip_empty);
         else {
-            $get = db("SELECT id,data FROM ".$db['ipban']." WHERE id = '".((int)$_GET['id'])."'",false,true);
+            $get = db("SELECT id,data FROM ".$db['ipban']." WHERE id = '".intval($_GET['id'])."'",false,true);
             $data_array = unserialize($get['data']);
             $data_array['banned_msg'] = re($_POST['info']);
-            db("UPDATE ".$db['ipban']." SET `ip` = '"._real_escape_string($_POST['ip'])."', `time` = '".time()."', `data` = '".serialize($data_array)."' WHERE id = '".((int)$get['id'])."'");
+            db("UPDATE ".$db['ipban']." SET `ip` = '"._real_escape_string($_POST['ip'])."', `time` = '".time()."', `data` = '".serialize($data_array)."' WHERE id = '".intval($get['id'])."'");
             $show = info(_ipban_admin_edited, "?admin=ipban");
         }
     break;
     case 'enable':
-        $get = db("SELECT id,enable FROM ".$db['ipban']." WHERE `id` = ".((int)$_GET['id']),false,true);
+        $get = db("SELECT id,enable FROM ".$db['ipban']." WHERE `id` = ".intval($_GET['id']),false,true);
         db("UPDATE ".$db['ipban']." SET `enable` = '".($get['enable'] == '1' ? '0' : '1')."' WHERE `id` = ".$get['id'].";");
         $show = header("Location: ?admin=ipban&sfs_side=".(isset($_GET['sfs_side']) ? $_GET['sfs_side'] : 1)."&ub_side=".(isset($_GET['ub_side']) ? $_GET['ub_side'] : 1));
     break;

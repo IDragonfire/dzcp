@@ -182,7 +182,7 @@ case 'do':
                        `sparct`     = '".up($_POST['sparct'])."',
                        `standardt`  = '".up($_POST['standardt'])."',
                        `standardct` = '".up($_POST['standardct'])."',
-                       `autor`      = '".((int)$userid)."'");
+                       `autor`      = '".intval($userid)."'");
 
         $index = info(_taktik_added, "../taktik/");
       }

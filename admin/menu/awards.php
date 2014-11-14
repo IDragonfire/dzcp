@@ -95,9 +95,9 @@ if(_adminMenu != 'true') exit;
           $datum = mktime(0,0,0,$_POST['m'],$_POST['t'],$_POST['j']);
 
           $qry = db("INSERT INTO ".$db['awards']."
-                     SET `date`     = '".((int)$datum)."',
+                     SET `date`     = '".intval($datum)."',
                          `postdate` = '".time()."',
-                                   `squad`    = '".((int)$_POST['squad'])."',
+                                   `squad`    = '".intval($_POST['squad'])."',
                                  `event`    = '".up($_POST['event'])."',
                          `url`      = '".links($_POST['url'])."',
                                    `place`    = '".up($place)."',
@@ -125,7 +125,7 @@ if(_adminMenu != 'true') exit;
             $datum = mktime(0,0,0,$_POST['m'],$_POST['t'],$_POST['j']);
 
             $qry = db("UPDATE ".$db['awards']."
-                   SET `date`   = '".((int)$datum)."',
+                   SET `date`   = '".intval($datum)."',
                                  `squad`  = '".(int)($_POST['squad'])."',
                                  `event`  = '".up($_POST['event'])."',
                        `url`    = '".links($_POST['url'])."',

@@ -439,7 +439,7 @@ function languages() {
 
 //-> Userspezifiesche Dinge
 if($userid >= 1 && $ajaxJob != true && isset($_SESSION['lastvisit']))
-    db("UPDATE ".$db['userstats']." SET `hits` = hits+1, `lastvisit` = '".((int)$_SESSION['lastvisit'])."' WHERE user = ".$userid);
+    db("UPDATE ".$db['userstats']." SET `hits` = hits+1, `lastvisit` = '".intval($_SESSION['lastvisit'])."' WHERE user = ".$userid);
 
 //-> Settings auslesen
 function settings($what,$use_dbc=true) {
@@ -1223,14 +1223,14 @@ function updateCounter() {
             else
                 db("INSERT INTO `".$db['counter']."` SET `visitors` = '1', `today` = '".$today."';");
 
-            db("INSERT INTO `".$db['c_ips']."` SET `ip` = '".$userip."', `datum` = '".((int)$datum)."';");
+            db("INSERT INTO `".$db['c_ips']."` SET `ip` = '".$userip."', `datum` = '".intval($datum)."';");
         }
     } else {
         if(_rows($count))
             db("UPDATE `".$db['counter']."` SET `visitors` = visitors+1 WHERE `today` = '".$today."';");
        else
             db("INSERT INTO `".$db['counter']."` SET `visitors` = '1', `today` = '".$today."';");
-        db("INSERT INTO `".$db['c_ips']."` SET `ip` = '".$userip."', `datum` = '".((int)$datum)."';");
+        db("INSERT INTO `".$db['c_ips']."` SET `ip` = '".$userip."', `datum` = '".intval($datum)."';");
     }
 }
 
@@ -1251,9 +1251,9 @@ function online_guests($where='') {
         db("DELETE FROM `".$db['c_who']."` WHERE `online` < ".time().";");
         db("REPLACE INTO `".$db['c_who']."`
                SET `ip`       = '".$userip."',
-                   `online`   = ".((int)(time()+$useronline)).",
+                   `online`   = ".intval((time()+$useronline)).",
                    `whereami` = '".up($where,true)."',
-                   `login`    = ".((int)$logged).";");
+                   `login`    = ".intval($logged).";");
         return cnt($db['c_who']);
     }
 }

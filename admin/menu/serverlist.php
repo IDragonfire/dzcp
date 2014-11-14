@@ -52,7 +52,7 @@ if(_adminMenu != 'true') exit;
     if($do == "accept")
     {
       $qry = db("UPDATE ".$db['serverliste']."
-                 SET `checked` = '".((int)$_POST['checked'])."'
+                 SET `checked` = '".intval($_POST['checked'])."'
                  WHERE id = '".intval($_POST['id'])."'");
 
       if($_POST['checked'] == "1") $show = info(_error_server_accept, "?admin=serverlist");

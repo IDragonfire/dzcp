@@ -10,7 +10,7 @@ $where = $where.': '._server_admin_head;
 switch ($do)
 {
     case 'ts':
-        switch (((int)$_POST['ts_version'])) {
+        switch (intval($_POST['ts_version'])) {
             case "3": //TS3
                 $tsport = 9987;
                 $tsqport = 10011;
@@ -23,13 +23,13 @@ switch ($do)
 
         $tsport = empty($_POST['ts_port']) ? $tsport : $_POST['ts_port'];
         $tsqport = empty($_POST['ts_sport']) ? $tsqport : $_POST['ts_sport'];
-        db("UPDATE ".$db['settings']." SET `ts_port`        = '".((int)$tsport)."',
-                                           `ts_sport`          = '".((int)$tsqport)."',
-                                           `ts_width`       = '".((int)$_POST['ts_width'])."',
-                                           `ts_version`     = '".((int)$_POST['ts_version'])."',
+        db("UPDATE ".$db['settings']." SET `ts_port`        = '".intval($tsport)."',
+                                           `ts_sport`          = '".intval($tsqport)."',
+                                           `ts_width`       = '".intval($_POST['ts_width'])."',
+                                           `ts_version`     = '".intval($_POST['ts_version'])."',
                                            `ts_ip`          = '".up($_POST['ts_ip'])."',
-                                           `ts_customicon`  = '".((int)$_POST['ts_customicon'])."',
-                                           `ts_showchannel` = '".((int)$_POST['ts_showchannel'])."'
+                                           `ts_customicon`  = '".intval($_POST['ts_customicon'])."',
+                                           `ts_showchannel` = '".intval($_POST['ts_showchannel'])."'
                                        WHERE id = 1");
 
         $show = info(_config_server_ts_updated,"?admin=server");
@@ -94,7 +94,7 @@ switch ($do)
             $game = ($_POST['game'] == "lazy") ? "" : "`game` = '".up($_POST['game'])."',";
             $status =  ($_POST['status'] == "lazy") ? "" : "`status` = '".up($_POST['status'])."',";
             db("UPDATE ".$db['server']." SET `ip` = '".up($_POST['ip'])."',
-                                             `port` = '".((int)$_POST['port'])."',
+                                             `port` = '".intval($_POST['port'])."',
                                              `qport` = '".up($_POST['qport'])."',
                                              `name`  = '".up($_POST['name'])."',
                                              ".$game."
@@ -142,7 +142,7 @@ switch ($do)
             $show = error(_empty_servername,1);
         else {
             db("INSERT INTO ".$db['server']." SET `ip` = '".up($_POST['ip'])."',
-                                              `port` = '".((int)$_POST['port'])."',
+                                              `port` = '".intval($_POST['port'])."',
                                               `qport`= '".up($_POST['qport'])."',
                                               `name` = '".up($_POST['name'])."',
                                               `pwd`  = '".up($_POST['pwd'])."',
