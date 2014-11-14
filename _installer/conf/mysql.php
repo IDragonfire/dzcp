@@ -1650,6 +1650,24 @@ function update_mysql_1_6_1() {
     PRIMARY KEY (`id`),
     KEY `ip` (`ip`)
     );",false,false,true);
+    
+    //Autologin manager
+    db("DROP TABLE IF EXISTS `".$db['autologin']."`;");
+    db("CREATE TABLE IF NOT EXISTS `".$db['autologin']."` (
+     `id` int(11) NOT NULL AUTO_INCREMENT,
+     `uid` int(11) NOT NULL DEFAULT '0',
+     `ssid` varchar(50) NOT NULL DEFAULT '',
+     `pkey` varchar(50) NOT NULL DEFAULT '',
+     `ip` varchar(15) NOT NULL DEFAULT '0.0.0.0',
+     `host` varchar(150) NOT NULL DEFAULT '',
+     `date` int(11) NOT NULL DEFAULT '0',
+     `update` int(11) NOT NULL DEFAULT '0',
+     `expires` int(11) NOT NULL DEFAULT '0',
+     PRIMARY KEY (`id`),
+     ADD KEY `uid` (`uid`), 
+     ADD KEY `pkey` (`pkey`), 
+     ADD KEY `ssid` (`ssid`)
+   );",false,false,true);
 
     if($updater) {
         db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time()+auto_db_optimize_interval)."' WHERE `id` = 1;");
