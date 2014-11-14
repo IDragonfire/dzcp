@@ -2519,7 +2519,7 @@ include_once(basePath.'/inc/menu-functions/navi.php');
 
 //-> Ausgabe des Indextemplates
 function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index') {
-    global $db,$userid,$userip,$tmpdir,$chkMe,$charset,$mysql;
+    global $db,$userid,$userip,$tmpdir,$chkMe,$charset,$mysql,$dir;
     global $designpath,$language,$cp_color,$copyright,$time_start;
 
     // Timer Stop
@@ -2573,7 +2573,6 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index') {
         $time = show(_generated_time, array("time" => $time));
         $headtitle = show(_index_headtitle, array("clanname" => $clanname));
         $rss = $clanname;
-        $dir = $designpath;
         $title = re(strip_tags($title));
 
         if(check_internal_url())
@@ -2586,10 +2585,14 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index') {
         //default placeholders
         $arr = array("idir" => '../inc/images/admin', "dir" => $designpath);
 
+        //template index autodetect
+        $index_templ = ($index_templ == 'index' && file_exists($designpath.'/index_'.$dir.'.html') ? 'index_'.$dir : $index_templ);
+        
         //check if placeholders are given
-        $pholder = file_get_contents($designpath."/index.html");
+        $pholder = file_get_contents($designpath."/".$index_templ.".html");
 
         //filter placeholders
+        $dir = $designpath; //after template index autodetect!!!
         $blArr = array("[clanname]","[title]","[copyright]","[java_vars]","[login]", "[template_switch]","[headtitle]","[index]", "[time]","[rss]","[dir]","[charset]","[where]","[lang]");
         $pholdervars = '';
         for($i=0;$i<=count($blArr)-1;$i++) {
@@ -2631,7 +2634,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index') {
         $arr['sid'] = (mt_rand(1,10) / 100);
 
         //index output
-        $index = (file_exists("../inc/_templates_/".$tmpdir."/".$index_templ.".html") ? show($index_templ, $arr) : show("index", $arr));
+        $index = (file_exists(basePath."/inc/_templates_/".$tmpdir."/".$index_templ.".html") ? show($index_templ, $arr) : show("index", $arr));
         if(!mysqli_persistconns) $mysql->close(); //MySQL
         cookie::save(); //Save Cookie
         if(debug_save_to_file) DebugConsole::save_log(); //Debug save to file
