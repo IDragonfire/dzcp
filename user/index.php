@@ -45,6 +45,21 @@ function custom_content($kid=1) {
     return array('count' => $i, 'content' => $custom_content);
 }
 
+function getcustom($kid=1,$user=0) {
+    global $db,$userid;
+    if (!$kid) { return ""; }
+    $set_id = ($user != 0 ? intval($user) : $userid);
+    $qrycustom = db("SELECT `feldname`,`name` FROM `" . $db['profile'] . "` WHERE `kid` = " . intval($kid) . " AND `shown` = 1 ORDER BY id ASC"); $custom = "";
+    while ($getcustom = _fetch($qrycustom)) {
+        $getcontent = db("SELECT `" . $getcustom['feldname'] . "` FROM `" . $db['users'] . "` WHERE `id` = " . $set_id . " LIMIT 1",false,true);
+        $custom .= show(_profil_edit_custom, array("name" => re(pfields_name($getcustom['name'])) . ":",
+                                                   "feldname" => $getcustom['feldname'],
+                                                   "value" => re($getcontent[$getcustom['feldname']])));
+    }
+                            
+    return $custom;
+}
+
 if(file_exists(basePath."/user/case_".$action.".php"))
     require_once(basePath."/user/case_".$action.".php");
 
