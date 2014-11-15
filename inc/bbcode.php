@@ -445,7 +445,7 @@ function lang($lng,$pfad='') {
 //-> Sprachdateien auflisten
 function languages() {
     $lang="";
-    $files = get_files('../inc/lang/languages/',false,true,array('php'));
+    $files = get_files(basePath.'/inc/lang/languages/',false,true,array('php'));
     for($i=0;$i<=count($files)-1;$i++) {
         $file = str_replace('.php','',$files[$i]);
         $upFile = strtoupper(substr($file,0,1)).substr($file,1);
@@ -903,7 +903,7 @@ function re_entry($txt) {
  */
 function smileys($txt) {
     if(!dbc_index::issetIndex('smileys')) {
-        $smileys = get_files('../inc/images/smileys',false,true);
+        $smileys = get_files(basePath.'/inc/images/smileys',false,true);
         dbc_index::setIndex('smileys', $smileys);
     } else $smileys = dbc_index::getIndex('smileys');
 
@@ -2579,7 +2579,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index') {
         }
 
         //init templateswitch
-        $tmpldir=""; $tmps = get_files('../inc/_templates_/',true);
+        $tmpldir=""; $tmps = get_files(basePath.'/inc/_templates_/',true);
         foreach ($tmps as $tmp) {
             $selt = ($tmpdir == $tmp ? 'selected="selected"' : '');
             $tmpldir .= show(_select_field, array("value" => "?tmpl_set=".$tmp,  "what" => $tmp,  "sel" => $selt));

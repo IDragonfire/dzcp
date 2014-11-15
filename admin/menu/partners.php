@@ -9,7 +9,7 @@ if(_adminMenu != 'true') exit;
     $where = $where.': '._partners_head;
       if($do == "add")
       {
-        $files = get_files('../banner/partners/',false,true);
+        $files = get_files(basePath.'/banner/partners/',false,true);
         for($i=0; $i<count($files); $i++)
         {
           $banners .= show(_partners_select_icons, array("icon" => $files[$i],
@@ -43,7 +43,7 @@ if(_adminMenu != 'true') exit;
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
 
-        $files = get_files('../banner/partners/',false,true);
+        $files = get_files(basePath.'/banner/partners/',false,true);
         for($i=0; $i<count($files); $i++)
         {
           if(re($get['banner']) == $files[$i]) $sel = 'selected="selected"';

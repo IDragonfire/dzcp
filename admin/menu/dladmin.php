@@ -18,7 +18,7 @@ if(_adminMenu != 'true') exit;
                                              "sel" => ""));
         }
 
-        $files = get_files('../downloads/files/',false,true);
+        $files = get_files(basePath.'/downloads/files/',false,true);
         for($i=0; $i<count($files); $i++)
         {
           $dl .= show(_downloads_files_exists, array("dl" => $files[$i],

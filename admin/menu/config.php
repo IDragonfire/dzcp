@@ -121,13 +121,13 @@ switch ($do) {
         $get = dbc_index::getIndex('config');
         $gets = dbc_index::getIndex('settings');
 
-        $files = get_files('../inc/lang/languages/',false,true,array('php')); $lang = '';
+        $files = get_files(basePath.'/inc/lang/languages/',false,true,array('php')); $lang = '';
         foreach($files as $file) {
             $lng = preg_replace("#.php#", "",$file);
             $lang .= show(_select_field, array("value" => $lng, "what" => $lng, "sel" => re($gets['language']) == $lng ? 'selected="selected"' : ''));
         }
 
-        $tmps = get_files('../inc/_templates_/',true); $tmpldir = '';
+        $tmps = get_files(basePath.'/inc/_templates_/',true); $tmpldir = '';
         foreach ($tmps as $tmp) {
             $tmpldir .= show(_select_field, array("value" => $tmp, "what" => $tmp, "sel" => re($gets['tmpdir']) == $tmp ? 'selected="selected"' : ''));
         }

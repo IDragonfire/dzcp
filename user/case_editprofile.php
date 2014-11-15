@@ -9,24 +9,35 @@ if(defined('_UserMenu')) {
     if (!$chkMe) {
         $index = error(_error_have_to_be_logged, 1);
     } else {
-        //ToDO: Neu schreiben * Thumbgen *
         if (isset($_GET['gallery']) && $_GET['gallery'] == "delete") {
-            $qrygl = db("SELECT * FROM " . $db['usergallery'] . " WHERE user = '" . $userid . "' AND id = '" . intval($_GET['gid']) . "'");
-            while ($getgl = _fetch($qrygl)) {
-                db("DELETE FROM " . $db['usergallery'] . " WHERE id = '" . intval($_GET['gid']) . "'");
-                $unlinkgallery = show(_gallery_edit_unlink, array("img" => $getgl['pic'], "user" => $userid));
-                if (file_exists($unlinkgallery)) {
-                    unlink($unlinkgallery);
+            $qrygl = db("SELECT * FROM `" . $db['usergallery'] . "` WHERE `user` = " . $userid . " AND `id` = " . intval($_GET['gid']) . ";");
+            if(_rows($qrygl)) {
+                $getgl = _fetch($qrygl);
+                $files = get_files(basePath."/inc/images/uploads/usergallery/",false,true,$picformat);
+                foreach ($files as $file) {
+                    $pic = explode('.', $getgl['pic']); $pic = $pic[0];
+                    if(preg_match("#".$userid."_".$pic."_(.*?).(gif|jpg|jpeg|png)#",strtolower($file))!= FALSE) {
+                        $res = preg_match("#".$userid."_".$pic."_(.*)#",$file,$match);
+                        if (file_exists(basePath."/inc/images/uploads/usergallery/".$userid."_".$pic."_".$match[1])) {
+                            unlink(basePath."/inc/images/uploads/usergallery/".$userid."_".$pic."_".$match[1]);
+                        }
+                    }
                 }
+
+                if (file_exists(basePath . '/inc/images/uploads/usergallery/'.$userid.'_'.$getgl['pic'])) {
+                    unlink(basePath . '/inc/images/uploads/usergallery/'.$userid.'_'.$getgl['pic']);
+                }
+                
+                db("DELETE FROM `" . $db['usergallery'] . "` WHERE `id` = " . intval($_GET['gid']) . ";");
             }
 
             $index = info(_info_edit_gallery_done, "?action=editprofile&show=gallery");
         } else {
             switch ($do) {
                 case 'edit':
-                    $check_user = db_stmt("SELECT id FROM " . $db['users'] . " WHERE `user`= ? AND id != ?", array('si', up($_POST['user']), $userid), true, false);
-                    $check_nick = db_stmt("SELECT id FROM " . $db['users'] . " WHERE `nick`= ? AND id != ?", array('si', up($_POST['nick']), $userid), true, false);
-                    $check_email = db_stmt("SELECT id FROM " . $db['users'] . " WHERE `email`= ? AND id != ?", array('si', up($_POST['email']), $userid), true, false);
+                    $check_user = db_stmt("SELECT id FROM " . $db['users'] . " WHERE `user`= ? AND `id` != ?", array('si', up($_POST['user']), $userid), true, false);
+                    $check_nick = db_stmt("SELECT id FROM " . $db['users'] . " WHERE `nick`= ? AND `id` != ?", array('si', up($_POST['nick']), $userid), true, false);
+                    $check_email = db_stmt("SELECT id FROM " . $db['users'] . " WHERE `email`= ? AND `id` != ?", array('si', up($_POST['email']), $userid), true, false);
 
                     if(!isset($_POST['user']) || empty($_POST['user'])) {
                         $index = error(_empty_user, 1);
@@ -134,7 +145,48 @@ if(defined('_UserMenu')) {
                         db("DELETE FROM " . $db['userstats'] . " WHERE `user` = " . $getdel['id'] . ";");
                         db("DELETE FROM " . $db['clicks_ips'] . " WHERE `uid` = " . $getdel['id']. ";");
 
-                        //ToDO: Neu schreiben * Thumbgen *
+                        $qrygl = db("SELECT * FROM `" . $db['usergallery'] . "` WHERE `user` = " . $getdel['id'] . ";");
+                        if(_rows($qrygl)) {
+                            while ($getgl = _fetch($qrygl)) {
+                                $files = get_files(basePath."/inc/images/uploads/usergallery/",false,true,$picformat);
+                                foreach ($files as $file) {
+                                    $pic = explode('.', $getgl['pic']); $pic = $pic[0];
+                                    if(preg_match("#".$getdel['id']."_".$pic."_(.*?).(gif|jpg|jpeg|png)#",strtolower($file))!= FALSE) {
+                                        $res = preg_match("#".$getdel['id']."_".$pic."_(.*)#",$file,$match);
+                                        if (file_exists(basePath."/inc/images/uploads/usergallery/".$getdel['id']."_".$pic."_".$match[1])) {
+                                            unlink(basePath."/inc/images/uploads/usergallery/".$getdel['id']."_".$pic."_".$match[1]);
+                                        }
+                                    }
+                                }
+
+                                if (file_exists(basePath . '/inc/images/uploads/usergallery/'.$getdel['id'].'_'.$getgl['pic'])) {
+                                    unlink(basePath . '/inc/images/uploads/usergallery/'.$getdel['id'].'_'.$getgl['pic']);
+                                }
+                                
+                                db("DELETE FROM `" . $db['usergallery'] . "` WHERE `id` = " . $getgl['id'] . ";");
+                            }
+                        }
+                        
+                        $files = get_files(basePath."/inc/images/uploads/userpics/",false,true,$picformat);
+                        foreach ($files as $file) {
+                            if(preg_match("#".$getdel['id']."_(.*?).(gif|jpg|jpeg|png)#",strtolower($file))!= FALSE) {
+                                $res = preg_match("#".$getdel['id']."_(.*)#",$file,$match);
+                                if (file_exists(basePath."/inc/images/uploads/userpics/".$getdel['id']."_".$match[1])) {
+                                    unlink(basePath."/inc/images/uploads/userpics/".$getdel['id']."_".$match[1]);
+                                }
+                            }
+                        }
+                        
+                        $files = get_files(basePath."/inc/images/uploads/useravatare/",false,true,$picformat);
+                        foreach ($files as $file) {
+                            if(preg_match("#".$getdel['id']."_(.*?).(gif|jpg|jpeg|png)#",strtolower($file))!= FALSE) {
+                                $res = preg_match("#".$getdel['id']."_(.*)#",$file,$match);
+                                if (file_exists(basePath."/inc/images/uploads/useravatare/".$getdel['id']."_".$match[1])) {
+                                    unlink(basePath."/inc/images/uploads/useravatare/".$getdel['id']."_".$match[1]);
+                                }
+                            }
+                        }
+                        
                         foreach ($picformat as $tmpendung) {
                             if (file_exists(basePath . "/inc/images/uploads/userpics/" . intval($getdel['id']) . "." . $tmpendung)) {
                                 @unlink(basePath . "/inc/images/uploads/userpics/" . intval($getdel['id']) . "." . $tmpendung);
@@ -150,10 +202,10 @@ if(defined('_UserMenu')) {
                     }
                 break;
                 default:
-                    $get = db("SELECT * FROM " . $db['users'] . " WHERE `id` = " . $userid . ";", false, true);
+                    $get = db("SELECT * FROM `" . $db['users'] . "` WHERE `id` = " . $userid . ";", false, true);
                     switch(isset($_GET['show']) ? $_GET['show'] : '') {
                         case 'gallery':
-                            $qrygl = db("SELECT * FROM " . $db['usergallery'] . " WHERE user = '" . $userid . "' ORDER BY id DESC"); $gal = ""; $color = 0;
+                            $qrygl = db("SELECT * FROM `" . $db['usergallery'] . "` WHERE `user` = " . $userid . " ORDER BY id DESC"); $gal = ""; $color = 0;
                             while ($getgl = _fetch($qrygl)) {
                                 $pic = show(_gallery_pic_link, array("img" => $getgl['pic'], "user" => $userid));
                                 $delete = show(_gallery_deleteicon, array("id" => $getgl['id']));
@@ -165,6 +217,9 @@ if(defined('_UserMenu')) {
                                                                                 "delete" => $delete,
                                                                                 "edit" => $edit));
                             }
+                            
+                            if(empty($gal))
+                                $gal = '<tr><td colspan="3" class="contentMainSecond">'._no_entrys.'</td></tr>';
 
                             $show = show($dir . "/edit_gallery", array("galleryhead" => _gallery_head,
                                                                        "pic" => _gallery_pic,

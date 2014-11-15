@@ -50,7 +50,7 @@ switch ($do) {
     break;
     case 'delgal':
         db("DELETE FROM ".$db['gallery']." WHERE id = '".intval($_GET['id'])."'");
-        $files = get_files("../gallery/images/",false,true,$picformat);
+        $files = get_files(basePath."/gallery/images/",false,true,$picformat);
         foreach ($files as $file) {
             if(preg_match("#".$_GET['id']."_(.*?).(gif|jpg|jpeg|png)#",strtolower($file))!= FALSE) {
                 $res = preg_match("#".$_GET['id']."_(.*)#",$file,$match);
@@ -64,7 +64,7 @@ switch ($do) {
     case 'delete':
         $pic = $_GET['pic'];
         $file_d = explode('.',$pic);
-        $files = get_files("../gallery/images/",false,true,$picformat);
+        $files = get_files(basePath."/gallery/images/",false,true,$picformat);
         foreach ($files as $file) {
             $file_exp_minimize = explode('_minimize_',$file);
             $file_exp = explode('.',$file);
@@ -129,7 +129,7 @@ switch ($do) {
     case 'editpics':
         $galid = $_GET['id'];
         $anzahl = $_POST['anzahl'];
-        $files = get_files("../gallery/images/",false,true,$picformat); $cnt = 0;
+        $files = get_files(basePath."/gallery/images/",false,true,$picformat); $cnt = 0;
         foreach ($files as $file) {
             if(preg_match("#".$galid."_(.*?).(gif|GIF|JPG|jpg|JPEG|jpeg|png)#",$file)!=FALSE)
                 $cnt++;
@@ -168,7 +168,7 @@ switch ($do) {
         $qry = db("SELECT * FROM ".$db['gallery']." ORDER BY id DESC");
         while($get = _fetch($qry))
         {
-            $files = get_files("../gallery/images/",false,true,$picformat,false,array(),'minimize'); $cnt = 0;
+            $files = get_files(basePath."/gallery/images/",false,true,$picformat,false,array(),'minimize'); $cnt = 0;
             foreach ($files as $file) {
                 if(preg_match("#^".$get['id']."_(.*?).(gif|jpg|jpeg|png)#",strtolower($file))!=FALSE)
                     $cnt++;

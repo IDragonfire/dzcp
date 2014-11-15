@@ -55,7 +55,7 @@ switch ($do)
     break;
     case 'edit':
         $get = db("SELECT * FROM ".$db['server']." WHERE id = '".intval($_GET['id'])."'",false,true);
-        $files = get_files('../inc/images/gameicons/',false,true,$picformat); $game = '';
+        $files = get_files(basePath.'/inc/images/gameicons/',false,true,$picformat); $game = '';
         foreach($files as $file) {
             if($file == 'unknown.gif') continue;
             $sel = ($file == $get['game']) ? 'selected="selected"' : '';
@@ -110,7 +110,7 @@ switch ($do)
         $show = info(_server_admin_deleted, "?admin=server");
     break;
     case 'new':
-        $files = get_files('../inc/images/gameicons/',false,true,$picformat); $game = '';
+        $files = get_files(basePath.'/inc/images/gameicons/',false,true,$picformat); $game = '';
         foreach ($files as $file) {
             if($file == 'unknown.gif')
                 continue;

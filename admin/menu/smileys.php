@@ -62,7 +62,7 @@ if(_adminMenu != 'true') exit;
           }
         }
       } else {
-        $files = get_files('../inc/images/smileys',false,true);
+        $files = get_files(basePath.'/inc/images/smileys',false,true);
         for($i=0; $i<count($files); $i++)
         {
           if($files[$i] != '^^.gif')
