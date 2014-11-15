@@ -77,6 +77,12 @@ final class cookie {
     { self::$val=array(); self::save(); }
 
     /**
+    * Loscht einen Wert aus dem Cookie
+    */
+    public final static function delete($var)
+    { unset(self::$val[$var]); self::save(); }
+    
+    /**
     * Speichert das Cookie
     */
     public final static function save() {

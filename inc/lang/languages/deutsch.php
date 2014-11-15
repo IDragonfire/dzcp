@@ -9,6 +9,18 @@ header("Content-type: text/html; charset=".$charset);
 
 ## ADDED / REDEFINED FOR 1.6.1 Final
 define('_no_entrys', 'Keine Eintr&auml;ge');
+define('_profil_edit_almgr_link', '<a href="?action=editprofile&amp;show=almgr">Autologin editieren</a>');
+define('_almgrhead', 'Automatische Anmeldungen verwalten');
+define('_almgr_host', 'Host');
+define('_almgr_ip', 'IP-Adresse');
+define('_almgr_create', 'Angelegt');
+define('_almgr_lused', 'Verwendet am');
+define('_almgr_expires', 'G&uuml;ltig bis');
+define('_almgr_add', '<a href="?action=editprofile&amp;show=almgr&amp;do=self_add">Dieses Ger&auml;t hinzuf&uuml;gen</a>');
+define('_almgr_remove', '<a href="?action=editprofile&amp;show=almgr&amp;do=self_remove">Dieses Ger&auml;t entfernen</a>');
+define('_info_almgr_deletet', 'Automatische Anmeldung wurde erfolgreich entfernt');
+define('_info_almgr_self_deletet', 'Dieses Ger&auml;t wurde erfolgreich entfernt');
+define('_info_almgr_self_added', 'Dieses Ger&auml;t wurde erfolgreich eingetragen');
 
 //IP Blocker
 define('_ipban_admin_head', 'IP Blocker');

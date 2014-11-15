@@ -23,14 +23,14 @@ if(defined('_UserMenu')) {
                     if(isset($_POST['permanent'])) {
                         cookie::put('id', $get['id']);
                         $permanent_key = md5(mkpwd(8));
-                        if(db_stmt("SELECT `id` FROM `".$db['autologin']."` WHERE `host` = ?", array('s', getenv('COMPUTERNAME')),true) >= 1) {
+                        if(db_stmt("SELECT `id` FROM `".$db['autologin']."` WHERE `host` = ?", array('s', gethostbyaddr($userip)),true) >= 1) {
                             //Update Autologin
                             db_stmt("UPDATE `".$db['autologin']."` SET `ssid` = '".session_id()."',
                                                                        `pkey` = '".$permanent_key."',
                                                                        `ip` = '".$userip."',
                                                                        `date` = ".time().",
                                                                        `update` = ".time().",
-                                                                       `expires` = ".autologin_expire." WHERE `host` = ?", array('s', getenv('COMPUTERNAME')));
+                                                                       `expires` = ".autologin_expire." WHERE `host` = ?", array('s', gethostbyaddr($userip)));
                         } else {
                             //Insert Autologin
                             db_stmt("INSERT INTO `".$db['autologin']."` SET `uid` = ".$get['id'].",
@@ -39,8 +39,8 @@ if(defined('_UserMenu')) {
                                                                      `ip` = '".$userip."',
                                                                      `host` = ?,
                                                                      `date` = ".time().",
-                                                                     `update` = ".time().",
-                                                                     `expires` = ".autologin_expire.";",array('s', getenv('COMPUTERNAME')));
+                                                                     `update` = 0,
+                                                                     `expires` = ".autologin_expire.";",array('s', gethostbyaddr($userip)));
                         }                        
                         cookie::put('pkey', $permanent_key);
                         cookie::save();

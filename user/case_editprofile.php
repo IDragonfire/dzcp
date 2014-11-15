@@ -95,234 +95,308 @@ if(defined('_UserMenu')) {
             }
                 break;
                 case 'delete':
-                    $getdel = db("SELECT `id`,`nick`,`email`,`hp` FROM " . $db['users'] . " WHERE `id` = '" . intval($userid) . "'",false,true);
+                    if(!rootAdmin($userid)) {
+                        $getdel = db("SELECT `id`,`nick`,`email`,`hp` FROM " . $db['users'] . " WHERE `id` = '" . intval($userid) . "'",false,true);
+                        db("UPDATE " . $db['f_threads'] . " SET `t_nick`   = '" . $getdel['nick'] . "',
+                                                                `t_email`  = '" . $getdel['email'] . "',
+                                                                `t_hp`     = '" . links($getdel['hp']) . "',
+                                                                `t_reg`    = 0,
+                                                           WHERE t_reg     = " . $getdel['id'] . ";");
 
-                    db("UPDATE " . $db['f_threads'] . " SET `t_nick`   = '" . $getdel['nick'] . "',
-                                                            `t_email`  = '" . $getdel['email'] . "',
-                                                            `t_hp`     = '" . links($getdel['hp']) . "',
-                                                            `t_reg`    = 0
-                                                       WHERE t_reg     = " . $getdel['id'] . ";");
+                        db("UPDATE " . $db['f_posts'] . " SET `nick`   = '" . $getdel['nick'] . "',
+                                                              `email`  = '" . $getdel['email'] . "',
+                                                              `hp`     = '" . links($getdel['hp']) . "',
+                                                        WHERE `reg`    = " . $getdel['id'] . ";");
 
-                    db("UPDATE " . $db['f_posts'] . " SET `nick`   = '" . $getdel['nick'] . "',
-                                                          `email`  = '" . $getdel['email'] . "',
-                                                          `hp`     = '" . links($getdel['hp']) . "',
-                                                    WHERE `reg`    = " . $getdel['id'] . ";");
+                        db("UPDATE " . $db['newscomments'] . " SET `nick`     = '" . $getdel['nick'] . "',
+                                                                   `email`    = '" . $getdel['email'] . "',
+                                                                   `hp`       = '" . links($getdel['hp']) . "',
+                                                                   `reg`      = 0,
+                                                             WHERE `reg`      = " . $getdel['id'] . ";");
 
-                    db("UPDATE " . $db['newscomments'] . " SET `nick`     = '" . $getdel['nick'] . "',
-                                                               `email`    = '" . $getdel['email'] . "',
-                                                               `hp`       = '" . links($getdel['hp']) . "',
-                                                               `reg`      = 0
-                                                         WHERE `reg`      = " . $getdel['id'] . ";");
+                        db("UPDATE " . $db['acomments'] . " SET `nick`     = '" . $getdel['nick'] . "',
+                                                                `email`    = '" . $getdel['email'] . "',
+                                                                `hp`       = '" . links($getdel['hp']) . "',
+                                                                `reg`      = 0,
+                                                          WHERE `reg`      = " . $getdel['id'] . ";");
 
-                    db("UPDATE " . $db['acomments'] . " SET `nick`     = '" . $getdel['nick'] . "',
-                                                            `email`    = '" . $getdel['email'] . "',
-                                                            `hp`       = '" . links($getdel['hp']) . "',
-                                                            `reg`      = 0
-                                                      WHERE `reg`      = " . $getdel['id'] . ";");
+                        db("DELETE FROM " . $db['msg'] . " WHERE `von` = " . $getdel['id'] . "
+                                                            OR   `an`  = " . $getdel['id'] . ";");
 
-                    db("DELETE FROM " . $db['msg'] . " WHERE `von` = " . $getdel['id'] . "
-                                                        OR   `an`  = " . $getdel['id'] . ";");
+                        db("UPDATE " . $db['usergb'] . " SET `reg` = 0 WHERE `reg` = " . $getdel['id'] . ";");
+                        db("DELETE FROM " . $db['news'] . " WHERE `autor` = " . $getdel['id'] . ";");
+                        db("DELETE FROM " . $db['permissions'] . " WHERE `user` = " . $getdel['id'] . ";");
+                        db("DELETE FROM " . $db['squaduser'] . " WHERE `user` = " . $getdel['id'] . ";");
+                        db("DELETE FROM " . $db['buddys'] . " WHERE `user` = " . $getdel['id'] . "
+                                                                OR `buddy` = " . $getdel['id'] . ";");
+                        db("DELETE FROM " . $db['userpos'] . " WHERE `user` = " . $getdel['id'] . ";");
+                        db("DELETE FROM " . $db['users'] . " WHERE `id` = " . $getdel['id'] . ";");
+                        db("DELETE FROM " . $db['userstats'] . " WHERE `user` = " . $getdel['id'] . ";");
+                        db("DELETE FROM " . $db['clicks_ips'] . " WHERE `uid` = " . $getdel['id']. ";");
 
-                    db("UPDATE " . $db['usergb'] . " SET `reg` = 0 WHERE `reg` = " . $getdel['id'] . ";");
-                    db("DELETE FROM " . $db['news'] . " WHERE `autor` = " . $getdel['id'] . ";");
-                    db("DELETE FROM " . $db['permissions'] . " WHERE `user` = " . $getdel['id'] . ";");
-                    db("DELETE FROM " . $db['squaduser'] . " WHERE `user` = " . $getdel['id'] . ";");
-                    db("DELETE FROM " . $db['buddys'] . " WHERE `user` = " . $getdel['id'] . "
-                                                            OR `buddy` = " . $getdel['id'] . ";");
-                    db("DELETE FROM " . $db['userpos'] . " WHERE `user` = " . $getdel['id'] . ";");
-                    db("DELETE FROM " . $db['users'] . " WHERE `id` = " . $getdel['id'] . ";");
-                    db("DELETE FROM " . $db['userstats'] . " WHERE `user` = " . $getdel['id'] . ";");
-                    db("DELETE FROM " . $db['clicks_ips'] . " WHERE `uid` = " . $getdel['id']. ";");
+                        //ToDO: Neu schreiben * Thumbgen *
+                        foreach ($picformat as $tmpendung) {
+                            if (file_exists(basePath . "/inc/images/uploads/userpics/" . intval($getdel['id']) . "." . $tmpendung)) {
+                                @unlink(basePath . "/inc/images/uploads/userpics/" . intval($getdel['id']) . "." . $tmpendung);
+                            }
 
-                    //ToDO: Neu schreiben * Thumbgen *
-                    foreach ($picformat as $tmpendung) {
-                        if (file_exists(basePath . "/inc/images/uploads/userpics/" . intval($getdel['id']) . "." . $tmpendung)) {
-                            @unlink(basePath . "/inc/images/uploads/userpics/" . intval($getdel['id']) . "." . $tmpendung);
+                            if (file_exists(basePath . "/inc/images/uploads/useravatare/" . intval($getdel['id']) . "." . $tmpendung)) {
+                                @unlink(basePath . "/inc/images/uploads/useravatare/" . intval($getdel['id']) . "." . $tmpendung);
+                            }
                         }
-                        
-                        if (file_exists(basePath . "/inc/images/uploads/useravatare/" . intval($getdel['id']) . "." . $tmpendung)) {
-                            @unlink(basePath . "/inc/images/uploads/useravatare/" . intval($getdel['id']) . "." . $tmpendung);
-                        }
+
+                        dzcp_session_destroy();
+                        $index = info(_info_account_deletet, '../news/');
                     }
-
-                    $index = info(_info_account_deletet, '../news/');
                 break;
                 default:
                     $get = db("SELECT * FROM " . $db['users'] . " WHERE `id` = " . $userid . ";", false, true);
-                    $sex = ($get['sex'] == 1 ? _pedit_male : ($get['sex'] == 2 ? _pedit_female : _pedit_sex_ka));
-                    $perm_gb = ($get['perm_gb'] ? _pedit_perm_allow : _pedit_perm_deny);
-                    $status = ($get['status'] ? _pedit_aktiv : _pedit_inaktiv);
+                    switch(isset($_GET['show']) ? $_GET['show'] : '') {
+                        case 'gallery':
+                            $qrygl = db("SELECT * FROM " . $db['usergallery'] . " WHERE user = '" . $userid . "' ORDER BY id DESC"); $gal = ""; $color = 0;
+                            while ($getgl = _fetch($qrygl)) {
+                                $pic = show(_gallery_pic_link, array("img" => $getgl['pic'], "user" => $userid));
+                                $delete = show(_gallery_deleteicon, array("id" => $getgl['id']));
+                                $edit = show(_gallery_editicon, array("id" => $getgl['id']));
+                                $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+                                $gal .= show($dir . "/edit_gallery_show", array("picture" => img_size("inc/images/uploads/usergallery" . "/" . $userid . "_" . $getgl['pic']),
+                                                                                "beschreibung" => bbcode($getgl['beschreibung']),
+                                                                                "class" => $class,
+                                                                                "delete" => $delete,
+                                                                                "edit" => $edit));
+                            }
 
-                    switch ($get['perm_gallery']) {
-                        case 0: $perm_gallery = _pedit_perm_public;
-                            break;
-                        case 1: $perm_gallery = _pedit_perm_user;
-                            break;
-                        case 2: $perm_gallery = _pedit_perm_member;
-                            break;
+                            $show = show($dir . "/edit_gallery", array("galleryhead" => _gallery_head,
+                                                                       "pic" => _gallery_pic,
+                                                                       "new" => _gallery_edit_new,
+                                                                       "del" => _deleteicon_blank,
+                                                                       "edit" => _editicon_blank,
+                                                                       "beschr" => _gallery_beschr,
+                                                                       "showgallery" => $gal));
+                        break;
+                        case 'almgr':
+                            switch ($do) {
+                                case 'self_add':
+                                    $permanent_key = md5(mkpwd(8));
+                                    if(db_stmt("SELECT `id` FROM `".$db['autologin']."` WHERE `host` = ?", array('s', gethostbyaddr($userip)),true) >= 1) {
+                                        //Update Autologin
+                                        db_stmt("UPDATE `".$db['autologin']."` SET `ssid` = '".session_id()."',
+                                                                                   `pkey` = '".$permanent_key."',
+                                                                                   `ip` = '".$userip."',
+                                                                                   `date` = ".time().",
+                                                                                   `update` = ".time().",
+                                                                                   `expires` = ".autologin_expire." WHERE `host` = ?", array('s', gethostbyaddr($userip)));
+                                    } else {
+                                        //Insert Autologin
+                                        db_stmt("INSERT INTO `".$db['autologin']."` SET `uid` = ".$get['id'].",
+                                                                                        `ssid` = '".session_id()."',
+                                                                                        `pkey` = '".$permanent_key."',
+                                                                                        `ip` = '".$userip."',
+                                                                                        `host` = ?,
+                                                                                        `date` = ".time().",
+                                                                                        `update` = 0,
+                                                                                        `expires` = ".autologin_expire.";",array('s', gethostbyaddr($userip)));
+                                    }
+                                    
+                                    cookie::put('id', $get['id']);
+                                    cookie::put('pkey', $permanent_key);
+                                    cookie::save(); unset($permanent_key);
+                                    $index = info(_info_almgr_self_added, '../user/?action=editprofile&show=almgr');
+                                break;
+                                case 'self_remove':
+                                    if(db_stmt("SELECT `id` FROM `".$db['autologin']."` WHERE `host` = ? AND `ssid` = ?", array('ss', gethostbyaddr($userip), session_id()),true) >= 1) {
+                                        db("DELETE FROM `".$db['autologin']."` WHERE `ssid` = '".session_id()."';");
+                                        cookie::delete('pkey');
+                                        cookie::delete('id');
+                                        cookie::save();
+                                        $index = info(_info_almgr_self_deletet, '../user/?action=editprofile&show=almgr');
+                                    }
+                                break;
+                                case 'almgr_delete':
+                                    if(db_stmt("SELECT `id` FROM `".$db['autologin']."` WHERE `id` = ?", array('i', $_GET['id']),true) >= 1) {
+                                        db("DELETE FROM `".$db['autologin']."` WHERE `id` = '".  intval($_GET['id'])."';");
+                                        cookie::delete('pkey');
+                                        cookie::delete('id');
+                                        cookie::save();
+                                        $index = info(_info_almgr_deletet, '../user/?action=editprofile&show=almgr');
+                                    }
+                                break;
+                            }
+                            
+                            $qry = db("SELECT * FROM `".$db['autologin']."` WHERE `uid` = ".$userid.";"); $almgr = ""; $color = 0;
+                            if(_rows($qry)) {
+                                while($get = _fetch($qry)) { 
+                                    $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+                                    $almgr .= show($dir . "/edit_almgr_show", array("delete" => show(_almgr_deleteicon, array("id" => $get['id'])),
+                                                                                    "class" => $class,
+                                                                                    "host" => $get['host'],
+                                                                                    "ip" => $get['ip'],
+                                                                                    "create" => date('d.m.Y',$get['date']),
+                                                                                    "lused" => !$get['update'] ? '-' : date('d.m.Y - H:i',$get['update']),
+                                                                                    "expires" => date('d.m.Y',((!$get['update'] ? time() : $get['update'])+$get['expires']))));
+                                }
+                            }
+
+                            //Empty
+                            if(empty($almgr))
+                                $almgr = '<tr><td colspan="6" class="contentMainSecond">'._no_entrys.'</td></tr>';
+                            
+                            $show = show($dir . "/edit_almgr", array("del" => _deleteicon_blank,"edit" => _editicon_blank,"showalmgr" => $almgr));
+                        break;
+                        default:
+                            $sex = ($get['sex'] == 1 ? _pedit_male : ($get['sex'] == 2 ? _pedit_female : _pedit_sex_ka));
+                            $perm_gb = ($get['perm_gb'] ? _pedit_perm_allow : _pedit_perm_deny);
+                            $status = ($get['status'] ? _pedit_aktiv : _pedit_inaktiv);
+
+                            switch ($get['perm_gallery']) {
+                                case 0: $perm_gallery = _pedit_perm_public;
+                                    break;
+                                case 1: $perm_gallery = _pedit_perm_user;
+                                    break;
+                                case 2: $perm_gallery = _pedit_perm_member;
+                                    break;
+                            }
+
+                            if ($get['level'] == 1) {
+                                $clan = '<input type="hidden" name="status" value="1" />';
+                            } else {
+                                $qrycustom = db("SELECT `feldname`,`name` FROM " . $db['profile'] . " WHERE kid = 2 AND shown = 1 ORDER BY id ASC"); $custom_clan = "";
+                                while ($getcustom = _fetch($qrycustom)) {
+                                    $getcontent = db("SELECT " . $getcustom['feldname'] . " FROM " . $db['users'] . " WHERE id = " . $userid . ";",false,true);
+                                    $custom_clan .= show(_profil_edit_custom, array("name" => pfields_name($getcustom['name']) . ":", 
+                                                                                    "feldname" => $getcustom['feldname'],
+                                                                                    "value" => re($getcontent[$getcustom['feldname']])));
+                                }
+
+                                $clan = show($dir . "/edit_clan", array("clan" => _profil_clan,
+                                                                        "pstatus" => _profil_status,
+                                                                        "pexclans" => _profil_exclans,
+                                                                        "status" => $status,
+                                                                        "exclans" => re($get['ex']),
+                                                                        "custom_clan" => $custom_clan));
+                            }
+
+                            $bdayday = 0; $bdaymonth = 0; $bdayyear = 0;
+                            if (!empty($get['bday']) && $get['bday'])
+                                list($bdayday, $bdaymonth, $bdayyear) = explode('.', date('d.m.Y', $get['bday']));
+
+                            $dropdown_age = show(_dropdown_date, array("day" => dropdown("day", $bdayday, 1),
+                                                                       "month" => dropdown("month", $bdaymonth, 1),
+                                                                       "year" => dropdown("year", $bdayyear, 1)));
+
+                            $icq = (!empty($get['icq']) && $get['icq'] != 0 ? $get['icq'] : "");
+                            $pnl = ($get['nletter'] ? 'checked="checked"' : '');
+                            $pnm = ($get['pnmail'] ? 'checked="checked"' : '');
+                            $gmaps = show('membermap/geocoder', array('form' => 'editprofil'));
+
+                            $pic = userpic($get['id']); $deletepic = '';
+                            if (!preg_match("#nopic#", $pic))
+                                $deletepic = "| " . _profil_delete_pic;
+
+                            $avatar = useravatar($get['id']); $deleteava = '';
+                            if (!preg_match("#noavatar#", $avatar))
+                                $deleteava = "| " . _profil_delete_ava;
+
+                            if (rootAdmin($userid))
+                                $delete = _profil_del_admin;
+                            else
+                                $delete = show("page/button_delete_account", array("id" => $get['id'],
+                                                                                   "action" => "action=editprofile&amp;do=delete",
+                                                                                   "value" => _button_title_del_account,
+                                                                                   "del" => convSpace(_confirm_del_account)));
+
+                            $show = show($dir . "/edit_profil", array("hardware" => _profil_hardware,
+                                                                      "hphead" => _profil_hp,
+                                                                      "visibility" => _pedit_visibility,
+                                                                      "pvisibility_gb" => _pedit_visibility_gb,
+                                                                      "pvisibility_gallery" => _pedit_visibility_gallery,
+                                                                      "country" => show_countrys($get['country']),
+                                                                      "pcountry" => _profil_country,
+                                                                      "about" => _profil_about,
+                                                                      "picturehead" => _profil_pic,
+                                                                      "contact" => _profil_contact,
+                                                                      "preal" => _profil_real,
+                                                                      "pnick" => _nick,
+                                                                      "pemail1" => _email,
+                                                                      "php" => _hp,
+                                                                      "pava" => _profil_avatar,
+                                                                      "pbday" => _profil_bday,
+                                                                      "psex" => _profil_sex,
+                                                                      "pname" => _loginname,
+                                                                      "ppwd" => _new_pwd,
+                                                                      "cppwd" => _pwd2,
+                                                                      "picq" => _icq,
+                                                                      "psig" => _profil_sig,
+                                                                      "ppic" => _profil_ppic,
+                                                                      "phlswid" => _hlswid,
+                                                                      "xboxidl" => _xboxid,
+                                                                      "psnidl" => _psnid,
+                                                                      "skypeidl" => _skypeid,
+                                                                      "originidl" => _originid,
+                                                                      "battlenetidl" => _battlenetid,
+                                                                      "pcity" => _profil_city,
+                                                                      "city" => re($get['city']),
+                                                                      "psteamid" => _steamid,
+                                                                      "v_steamid" => re($get['steamid']),
+                                                                      "skypename" => $get['skypename'],
+                                                                      "nletter" => _profil_nletter,
+                                                                      "pnmail" => _profil_pnmail,
+                                                                      "pnl" => $pnl,
+                                                                      "pnm" => $pnm,
+                                                                      "pwd" => "",
+                                                                      "dropdown_age" => $dropdown_age,
+                                                                      "ava" => $avatar,
+                                                                      "hp" => re($get['hp']),
+                                                                      "gmaps" => $gmaps,
+                                                                      "nick" => re($get['nick']),
+                                                                      "name" => re($get['user']),
+                                                                      "gmaps_koord" => re($get['gmaps_koord']),
+                                                                      "rlname" => re($get['rlname']),
+                                                                      "bdayday" => $bdayday,
+                                                                      "bdaymonth" => $bdaymonth,
+                                                                      "bdayyear" => $bdayyear,
+                                                                      "sex" => $sex,
+                                                                      "email" => re($get['email']),
+                                                                      "visibility_gb" => $perm_gb,
+                                                                      "visibility_gallery" => $perm_gallery,
+                                                                      "icqnr" => $icq,
+                                                                      "sig" => re_bbcode($get['signatur']),
+                                                                      "hlswid" => $get['hlswid'],
+                                                                      "xboxid" => $get['xboxid'],
+                                                                      "psnid" => $get['psnid'],
+                                                                      "originid" => $get['originid'],
+                                                                      "battlenetid" => $get['battlenetid'],
+                                                                      "clan" => $clan,
+                                                                      "pic" => $pic,
+                                                                      "editpic" => _profil_edit_pic,
+                                                                      "editava" => _profil_edit_ava,
+                                                                      "deleteava" => $deleteava,
+                                                                      "deletepic" => $deletepic,
+                                                                      "favos" => _profil_favos,
+                                                                      "pich" => _profil_ich,
+                                                                      "pposition" => _profil_position,
+                                                                      "pstatus" => _profil_status,
+                                                                      "position" => getrank($get['id']),
+                                                                      "value" => _button_value_edit,
+                                                                      "status" => $status,
+                                                                      "sonst" => _profil_sonst,
+                                                                      "custom_about" => getcustom(1),
+                                                                      "custom_contact" => getcustom(3),
+                                                                      "custom_favos" => getcustom(4),
+                                                                      "custom_hardware" => getcustom(5),
+                                                                      "ich" => re_bbcode($get['beschreibung']),
+                                                                      "del" => _profil_del_account,
+                                                                      "delete" => $delete));
+                        break;
                     }
 
-                    if ($get['level'] == 1) {
-                        $clan = '<input type="hidden" name="status" value="1" />';
-                    } else {
-                        $qrycustom = db("SELECT `feldname`,`name` FROM " . $db['profile'] . " WHERE kid = 2 AND shown = 1 ORDER BY id ASC"); $custom_clan = "";
-                        while ($getcustom = _fetch($qrycustom)) {
-                            $getcontent = db("SELECT " . $getcustom['feldname'] . " FROM " . $db['users'] . " WHERE id = " . $userid . ";",false,true);
-                            $custom_clan .= show(_profil_edit_custom, array("name" => pfields_name($getcustom['name']) . ":", 
-                                                                            "feldname" => $getcustom['feldname'],
-                                                                            "value" => re($getcontent[$getcustom['feldname']])));
-                        }
-
-                        $clan = show($dir . "/edit_clan", array("clan" => _profil_clan,
-                                                                "pstatus" => _profil_status,
-                                                                "pexclans" => _profil_exclans,
-                                                                "status" => $status,
-                                                                "exclans" => re($get['ex']),
-                                                                "custom_clan" => $custom_clan));
-                    }
-
-                    $bdayday = 0; $bdaymonth = 0; $bdayyear = 0;
-                    if (!empty($get['bday']) && $get['bday'])
-                        list($bdayday, $bdaymonth, $bdayyear) = explode('.', date('d.m.Y', $get['bday']));
-
-                    if (isset($_GET['show']) && $_GET['show'] == "gallery") {
-                        $qrygl = db("SELECT * FROM " . $db['usergallery'] . " WHERE user = '" . $userid . "' ORDER BY id DESC"); $gal = "";
-                        while ($getgl = _fetch($qrygl)) {
-                            $pic = show(_gallery_pic_link, array("img" => $getgl['pic'], "user" => $userid));
-                            $delete = show(_gallery_deleteicon, array("id" => $getgl['id']));
-                            $edit = show(_gallery_editicon, array("id" => $getgl['id']));
-                            $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst";
-                            $color++;
-
-                            $gal .= show($dir . "/edit_gallery_show", array("picture" => img_size("inc/images/uploads/usergallery" . "/" . $userid . "_" . $getgl['pic']),
-                                                                            "beschreibung" => bbcode($getgl['beschreibung']),
-                                                                            "class" => $class,
-                                                                            "delete" => $delete,
-                                                                            "edit" => $edit));
-                        }
-                        
-                        $show = show($dir . "/edit_gallery", array("galleryhead" => _gallery_head,
-                                                                   "pic" => _gallery_pic,
-                                                                   "new" => _gallery_edit_new,
-                                                                   "del" => _deleteicon_blank,
-                                                                   "edit" => _editicon_blank,
-                                                                   "beschr" => _gallery_beschr,
-                                                                   "showgallery" => $gal));
-                    } else {
-                        $dropdown_age = show(_dropdown_date, array("day" => dropdown("day", $bdayday, 1),
-                                                                   "month" => dropdown("month", $bdaymonth, 1),
-                                                                   "year" => dropdown("year", $bdayyear, 1)));
-
-                        $icq = (!empty($get['icq']) && $get['icq'] != 0 ? $get['icq'] : "");
-                        $pnl = ($get['nletter'] ? 'checked="checked"' : '');
-                        $pnm = ($get['pnmail'] ? 'checked="checked"' : '');
-                        $gmaps = show('membermap/geocoder', array('form' => 'editprofil'));
-
-                        $pic = userpic($get['id']); $deletepic = '';
-                        if (!preg_match("#nopic#", $pic))
-                            $deletepic = "| " . _profil_delete_pic;
-
-                        $avatar = useravatar($get['id']); $deleteava = '';
-                        if (!preg_match("#noavatar#", $avatar))
-                            $deleteava = "| " . _profil_delete_ava;
-
-                        if (rootAdmin($userid))
-                            $delete = _profil_del_admin;
-                        else
-                            $delete = show("page/button_delete_account", array("id" => $get['id'],
-                                                                               "action" => "action=editprofile&amp;do=delete",
-                                                                               "value" => _button_title_del_account,
-                                                                               "del" => convSpace(_confirm_del_account)));
-
-                        $show = show($dir . "/edit_profil", array("hardware" => _profil_hardware,
-                                                                  "hphead" => _profil_hp,
-                                                                  "visibility" => _pedit_visibility,
-                                                                  "pvisibility_gb" => _pedit_visibility_gb,
-                                                                  "pvisibility_gallery" => _pedit_visibility_gallery,
-                                                                  "country" => show_countrys($get['country']),
-                                                                  "pcountry" => _profil_country,
-                                                                  "about" => _profil_about,
-                                                                  "picturehead" => _profil_pic,
-                                                                  "contact" => _profil_contact,
-                                                                  "preal" => _profil_real,
-                                                                  "pnick" => _nick,
-                                                                  "pemail1" => _email,
-                                                                  "php" => _hp,
-                                                                  "pava" => _profil_avatar,
-                                                                  "pbday" => _profil_bday,
-                                                                  "psex" => _profil_sex,
-                                                                  "pname" => _loginname,
-                                                                  "ppwd" => _new_pwd,
-                                                                  "cppwd" => _pwd2,
-                                                                  "picq" => _icq,
-                                                                  "psig" => _profil_sig,
-                                                                  "ppic" => _profil_ppic,
-                                                                  "phlswid" => _hlswid,
-                                                                  "xboxidl" => _xboxid,
-                                                                  "psnidl" => _psnid,
-                                                                  "skypeidl" => _skypeid,
-                                                                  "originidl" => _originid,
-                                                                  "battlenetidl" => _battlenetid,
-                                                                  "pcity" => _profil_city,
-                                                                  "city" => re($get['city']),
-                                                                  "psteamid" => _steamid,
-                                                                  "v_steamid" => re($get['steamid']),
-                                                                  "skypename" => $get['skypename'],
-                                                                  "nletter" => _profil_nletter,
-                                                                  "pnmail" => _profil_pnmail,
-                                                                  "pnl" => $pnl,
-                                                                  "pnm" => $pnm,
-                                                                  "pwd" => "",
-                                                                  "dropdown_age" => $dropdown_age,
-                                                                  "ava" => $avatar,
-                                                                  "hp" => re($get['hp']),
-                                                                  "gmaps" => $gmaps,
-                                                                  "nick" => re($get['nick']),
-                                                                  "name" => re($get['user']),
-                                                                  "gmaps_koord" => re($get['gmaps_koord']),
-                                                                  "rlname" => re($get['rlname']),
-                                                                  "bdayday" => $bdayday,
-                                                                  "bdaymonth" => $bdaymonth,
-                                                                  "bdayyear" => $bdayyear,
-                                                                  "sex" => $sex,
-                                                                  "email" => re($get['email']),
-                                                                  "visibility_gb" => $perm_gb,
-                                                                  "visibility_gallery" => $perm_gallery,
-                                                                  "icqnr" => $icq,
-                                                                  "sig" => re_bbcode($get['signatur']),
-                                                                  "hlswid" => $get['hlswid'],
-                                                                  "xboxid" => $get['xboxid'],
-                                                                  "psnid" => $get['psnid'],
-                                                                  "originid" => $get['originid'],
-                                                                  "battlenetid" => $get['battlenetid'],
-                                                                  "clan" => $clan,
-                                                                  "pic" => $pic,
-                                                                  "editpic" => _profil_edit_pic,
-                                                                  "editava" => _profil_edit_ava,
-                                                                  "deleteava" => $deleteava,
-                                                                  "deletepic" => $deletepic,
-                                                                  "favos" => _profil_favos,
-                                                                  "pich" => _profil_ich,
-                                                                  "pposition" => _profil_position,
-                                                                  "pstatus" => _profil_status,
-                                                                  "position" => getrank($get['id']),
-                                                                  "value" => _button_value_edit,
-                                                                  "status" => $status,
-                                                                  "sonst" => _profil_sonst,
-                                                                  "custom_about" => getcustom(1),
-                                                                  "custom_contact" => getcustom(3),
-                                                                  "custom_favos" => getcustom(4),
-                                                                  "custom_hardware" => getcustom(5),
-                                                                  "ich" => re_bbcode($get['beschreibung']),
-                                                                  "del" => _profil_del_account,
-                                                                  "delete" => $delete));
-                    }
-
-                    $index = show($dir . "/edit", array("profilhead" => _profil_edit_head,
-                                                        "editgallery" => _profil_edit_gallery_link,
-                                                        "editprofil" => _profil_edit_profil_link,
-                                                        "nick" => autor($get['id']),
-                                                        "show" => $show));
+                    if(empty($index))
+                        $index = show($dir . "/edit", array("profilhead" => _profil_edit_head,
+                                                            "editgallery" => _profil_edit_gallery_link,
+                                                            "editprofil" => _profil_edit_profil_link,
+                                                            "editalmgr" => _profil_edit_almgr_link,
+                                                            "nick" => autor($get['id']),
+                                                            "show" => $show));
                 break;
             }
         }

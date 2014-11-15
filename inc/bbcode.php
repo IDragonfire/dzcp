@@ -220,10 +220,10 @@ function dzcp_session_destroy() {
 //-> Auslesen der Cookies und automatisch anmelden
 if(cookie::get('id') != false && cookie::get('pkey') != false && empty($_SESSION['id']) && !checkme()) {
     //-> Permanent Key aus der Datenbank suchen
-    $sql = db_stmt("SELECT `id`,`uid`,`update`,`expires` FROM `".$db['autologin']."` WHERE `pkey` = ? AND `host` = ?",array('ss', cookie::get('pkey'), getenv('COMPUTERNAME')));
+    $sql = db_stmt("SELECT `id`,`uid`,`update`,`expires` FROM `".$db['autologin']."` WHERE `pkey` = ? AND `host` = ?",array('ss', cookie::get('pkey'), gethostbyaddr($userip)));
     if(_rows($sql)) {
         $get_almgr = _fetch($sql);
-        if(time() < ($get_almgr['update'] + $get_almgr['expires']) && $get_almgr['uid'] == cookie::get('id')) {
+        if((!$get_almgr['update'] || (time() < ($get_almgr['update'] + $get_almgr['expires'])) && $get_almgr['uid'] == cookie::get('id'))) {
             //-> User aus der Datenbank suchen
             $sql = db_stmt("SELECT `id`,`user`,`nick`,`pwd`,`email`,`level`,`time` FROM ".$db['users']." WHERE id = ? AND level != '0'",array('i', cookie::get('id')));
             if(_rows($sql)) {
