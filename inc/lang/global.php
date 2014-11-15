@@ -9,7 +9,8 @@ define('_user_mailto_texttop', '<img src=\\"../inc/images/mailto.gif\\" align=\\
 define('_email_navShout', '<a class=\\"navShout\\" href=\\"mailto:"+d+"\\" title=\\"[nick]\\">[nick_cut]</a>');
 define('_ipban_menu_icon_enable', '<a href="[action]" title="[lang_ipban_disable]" rel="[info]" class="confirm"><img src="../inc/images/admin_lock_closed.jpg" alt="" class="icon" /></a>');
 define('_ipban_menu_icon_disable', '<a href="[action]" title="[lang_ipban_enable]" rel="[info]" class="confirm"><img src="../inc/images/admin_lock_open.jpg" alt="" class="icon" /></a>');
-define('_almgr_deleteicon', '<a href="?action=editprofile&show=almgr&do=almgr_delete&id=[id]"><img alt="" src="../inc/images/delete.gif" title="Delete" class="icon" /></a>');
+define('_almgr_deleteicon', '<a href="?action=editprofile&amp;show=almgr&amp;do=almgr_delete&amp;id=[id]"><img alt="" src="../inc/images/delete.gif" title="Delete" class="icon" /></a>');
+define('_almgr_editicon', '<a href="?action=editprofile&amp;show=almgr&amp;do=almgr_edit&amp;id=[id]"><img alt="" src="../inc/images/edit.gif" title="Edit" class="icon" /></a>');
 
 ## ADDED / REDEFINED FOR 1.6
 define('_steamicon', '<a target="_blank" onmouseover="DZCP.showSteamBox(\'[username]\',\'[avatar_url]\',\'[text1]\',\'[text2]\',[status])" onmouseout="DZCP.hideInfo()" href="[profile_url]"><img height="16" width="16" src="../inc/images/steam.gif" alt="" class="icon" /> [username]</a>');

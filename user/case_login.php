@@ -37,10 +37,11 @@ if(defined('_UserMenu')) {
                                                                      `ssid` = '".session_id()."',
                                                                      `pkey` = '".$permanent_key."',
                                                                      `ip` = '".$userip."',
+                                                                     `name` = ?,
                                                                      `host` = ?,
                                                                      `date` = ".time().",
                                                                      `update` = 0,
-                                                                     `expires` = ".autologin_expire.";",array('s', gethostbyaddr($userip)));
+                                                                     `expires` = ".autologin_expire.";",array('ss', cut(gethostbyaddr($userip),20), gethostbyaddr($userip)));
                         }                        
                         cookie::put('pkey', $permanent_key);
                         cookie::save();

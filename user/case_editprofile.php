@@ -28,7 +28,7 @@ if(defined('_UserMenu')) {
                     $check_nick = db_stmt("SELECT id FROM " . $db['users'] . " WHERE `nick`= ? AND id != ?", array('si', up($_POST['nick']), $userid), true, false);
                     $check_email = db_stmt("SELECT id FROM " . $db['users'] . " WHERE `email`= ? AND id != ?", array('si', up($_POST['email']), $userid), true, false);
 
-                    if(isset($_POST['user']) || empty($_POST['user'])) {
+                    if(!isset($_POST['user']) || empty($_POST['user'])) {
                         $index = error(_empty_user, 1);
                     } elseif (!isset($_POST['nick']) || empty($_POST['nick'])) {
                         $index = error(_empty_nick, 1);
@@ -192,10 +192,11 @@ if(defined('_UserMenu')) {
                                                                                         `ssid` = '".session_id()."',
                                                                                         `pkey` = '".$permanent_key."',
                                                                                         `ip` = '".$userip."',
+                                                                                        `name` = ?, 
                                                                                         `host` = ?,
                                                                                         `date` = ".time().",
                                                                                         `update` = 0,
-                                                                                        `expires` = ".autologin_expire.";",array('s', gethostbyaddr($userip)));
+                                                                                        `expires` = ".autologin_expire.";",array('ss', cut(gethostbyaddr($userip),20), gethostbyaddr($userip)));
                                     }
                                     
                                     cookie::put('id', $get['id']);
@@ -221,27 +222,51 @@ if(defined('_UserMenu')) {
                                         $index = info(_info_almgr_deletet, '../user/?action=editprofile&show=almgr');
                                     }
                                 break;
+                                case 'almgr_edit':
+                                    $qry = db_stmt("SELECT * FROM `".$db['autologin']."` WHERE `id` = ?", array('i', $_GET['id']));
+                                    if(_rows($qry) >= 1) {
+                                        $get = _fetch($qry);
+                                        $show = show($dir . "/edit_almgr_from", array("name" => re($get['name']),
+                                                                                      "id" => $get['id'],
+                                                                                      "host" => $get['host'],
+                                                                                      "ip" => $get['ip'],
+                                                                                      "ssid" => $get['ssid'],
+                                                                                      "pkey" => $get['pkey'],
+                                                                                      "value" => _button_value_edit));
+                                    }
+                                break;
+                                case 'almgr_edit_save':
+                                    if(db_stmt("SELECT id FROM `".$db['autologin']."` WHERE `id` = ?", array('i', $_GET['id']),true) >= 1) {
+                                        db_stmt("UPDATE `".$db['autologin']."` SET `name` = ? WHERE `id` = ?", array('si', up($_POST['name']), $_GET['id']));
+                                        $index = info(_almgr_editd, '../user/?action=editprofile&show=almgr');
+                                    }
+                                break;
                             }
                             
-                            $qry = db("SELECT * FROM `".$db['autologin']."` WHERE `uid` = ".$userid.";"); $almgr = ""; $color = 0;
-                            if(_rows($qry)) {
-                                while($get = _fetch($qry)) { 
-                                    $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-                                    $almgr .= show($dir . "/edit_almgr_show", array("delete" => show(_almgr_deleteicon, array("id" => $get['id'])),
-                                                                                    "class" => $class,
-                                                                                    "host" => $get['host'],
-                                                                                    "ip" => $get['ip'],
-                                                                                    "create" => date('d.m.Y',$get['date']),
-                                                                                    "lused" => !$get['update'] ? '-' : date('d.m.Y - H:i',$get['update']),
-                                                                                    "expires" => date('d.m.Y',((!$get['update'] ? time() : $get['update'])+$get['expires']))));
+                            if(empty($index)) {
+                                $qry = db("SELECT * FROM `".$db['autologin']."` WHERE `uid` = ".$userid.";"); $almgr = ""; $color = 0;
+                                if(_rows($qry)) {
+                                    while($get = _fetch($qry)) { 
+                                        $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+                                        $almgr .= show($dir . "/edit_almgr_show", array("delete" => show(_almgr_deleteicon, array("id" => $get['id'])),
+                                                                                        "edit" => show(_almgr_editicon, array("id" => $get['id'])),                                            
+                                                                                        "class" => $class,
+                                                                                        "name" => re($get['name']),
+                                                                                        "host" => $get['host'],
+                                                                                        "ip" => $get['ip'],
+                                                                                        "create" => date('d.m.Y',$get['date']),
+                                                                                        "lused" => !$get['update'] ? '-' : date('d.m.Y',$get['update']),
+                                                                                        "expires" => date('d.m.Y',((!$get['update'] ? time() : $get['update'])+$get['expires']))));
+                                    }
                                 }
-                            }
 
-                            //Empty
-                            if(empty($almgr))
-                                $almgr = '<tr><td colspan="6" class="contentMainSecond">'._no_entrys.'</td></tr>';
-                            
-                            $show = show($dir . "/edit_almgr", array("del" => _deleteicon_blank,"edit" => _editicon_blank,"showalmgr" => $almgr));
+                                //Empty
+                                if(empty($almgr))
+                                    $almgr = '<tr><td colspan="6" class="contentMainSecond">'._no_entrys.'</td></tr>';
+
+                                if(empty($show))
+                                    $show = show($dir . "/edit_almgr", array("del" => _deleteicon_blank,"edit" => _editicon_blank,"showalmgr" => $almgr));
+                            }
                         break;
                         default:
                             $sex = ($get['sex'] == 1 ? _pedit_male : ($get['sex'] == 2 ? _pedit_female : _pedit_sex_ka));
