@@ -1096,41 +1096,54 @@ function array_var_exists($var,$search)
 
 /**
  * Funktion um eine Datei im Web auf Existenz zu prÃ¼fen und abzurufen
- * Updated for DZCP-Extended Edition
- *
  * @return String
  **/
 function fileExists($url,$timeout=1) {
     if((!allow_url_fopen_support() && !use_curl || (use_curl && !extension_loaded('curl'))))
         return false;
-
+    
     $url_p = @parse_url($url);
     $host = $url_p['host'];
     $port = isset($url_p['port']) ? $url_p['port'] : 80;
-    unset($url_p);
-
-    if(!ping_port($host,$port,$timeout))
-        return false;
-
+    
+    if(!ping_port($host,$port,$timeout)) return false;
     unset($host,$port);
+   
+    if(class_exists('Snoopy')) { //Use Snoopy HTTP Client
+        $snoopy = new Snoopy;
+        if(!$snoopy->fetch($url))
+            return false;
+        
+        return ((string)(trim($snoopy->results)));
+    }
+
     if(use_curl && extension_loaded('curl')) {
         if(!$curl = curl_init())
             return false;
-
+        
         curl_setopt($curl, CURLOPT_URL, $url);
         curl_setopt($curl, CURLOPT_HEADER, false);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_CONNECTTIMEOUT , $timeout);
         curl_setopt($curl, CURLOPT_TIMEOUT, $timeout * 2); // x 2
 
+        if($url_p['scheme'] == 'https') { //SSL
+            curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+        }
+        
         if(!$content = curl_exec($curl))
             return false;
 
         @curl_close($curl);
         unset($curl);
     } else {
-        ini_set('default_socket_timeout', $timeout * 2);
-        if(!$content = @file_get_contents($url))
+        if($url_p['scheme'] == 'https') //HTTPS not Supported!
+            $url = str_replace('https', 'http', $url);
+        
+        $context = stream_context_create(array('http' => array('method'=>"GET", 
+        'header'=>"Content-Type: text/html; charset=utf-8" , 'timeout' => $timeout * 2)));
+        if(!$content = @file_get_contents($url, false, $context, -1, 40000))
             return false;
     }
 
@@ -1908,7 +1921,7 @@ function voteanswer($what, $vid) {
 
 //Profilfelder konvertieren
 function conv($txt) {
-    return str_replace(array("Ã¤","Ã¼","Ã¶","Ã„","Ãœ","Ã–","ÃŸ"), array("ae","ue","oe","Ae","Ue","Oe","ss"), $txt);
+    return str_replace(array("ä","ü","ö","Ä","Ü","Ö","ß"), array("ae","ue","oe","Ae","Ue","Oe","ss"), $txt);
 }
 
 //-> Geburtstag errechnen

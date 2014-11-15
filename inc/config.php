@@ -13,7 +13,7 @@ define('debug_all_sql_querys', false); // Speichert alle ausgefuehrten SQL-Query
 define('debug_save_to_file', false); // Schreibt die die Ausgaben der Debug Console in eine Datei
 define('debug_dzcp_handler', true); // Verwende fur Notices, etc. die Debug Console
 define('fsockopen_support_bypass', false); //Umgeht die fsockopen pruefung
-define('use_curl', false); // Verwendet die CURL PHP Erweiterung, anstelle von file_get_contents() fur externe Zugriffe, wenn vorhanden.
+define('use_curl', true); // Verwendet die CURL PHP Erweiterung, anstelle von file_get_contents() fur externe Zugriffe, wenn vorhanden.
 
 define('use_default_timezone', true); // Verwendende die Zeitzone vom Server
 define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selbst einstellen * 'use_default_timezone' auf false stellen *

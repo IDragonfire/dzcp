@@ -16,7 +16,7 @@ function show_dzcp_version() {
                 default: $url = 'final'; break;
             }
             if($dzcp_online_v = fileExists("https://raw.githubusercontent.com/DZCP-Community/dzcp/".$url."/dzcp_version.xml"))
-                if($config_cache['use_cache'])
+                if($config_cache['use_cache'] && $dzcp_online_v && !empty($dzcp_online_v))
                     $cache->set('dzcp_version', $dzcp_online_v, dzcp_version_checker_refresh);
         }
         else

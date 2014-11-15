@@ -1658,6 +1658,7 @@ function update_mysql_1_6_1() {
      `uid` int(11) NOT NULL DEFAULT '0',
      `ssid` varchar(50) NOT NULL DEFAULT '',
      `pkey` varchar(50) NOT NULL DEFAULT '',
+     `name` varchar(60) NOT NULL DEFAULT '',
      `ip` varchar(15) NOT NULL DEFAULT '0.0.0.0',
      `host` varchar(150) NOT NULL DEFAULT '',
      `date` int(11) NOT NULL DEFAULT '0',
