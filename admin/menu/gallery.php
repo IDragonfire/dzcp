@@ -143,7 +143,7 @@ switch ($do) {
             $imginfo = getimagesize($tmp);
 
             if($_FILES['file'.$i]) {
-                if(($type == "image/gif" || $type == "image/pjpeg" || $type == "image/jpeg") && $imginfo[0])
+                if(($type == "image/gif" || $type == "image/pjpeg" || $type == "image/jpeg" || $type == "image/png") && $imginfo[0])
                     move_uploaded_file($tmp, basePath."/gallery/images/".$galid."_".str_pad($i+$cnt, 3, '0', STR_PAD_LEFT).".".strtolower($end));
             }
         }
