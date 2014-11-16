@@ -1,6 +1,6 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6 Final
+ * DZCP - deV!L`z ClanPortal 1.6.1 Final
  * http://www.dzcp.de
  */
 
@@ -53,7 +53,7 @@ define('_total_bans', 'Total Bans');
 define('_ipban_head_admin', 'IP-Bans');
 define('_perm_ipban', 'Manage IP-Bans');
 
-## ADDED / REDEFINED FOR 1.6 Final
+## ADDED / REDEFINED FOR 1.6.1 Final
 define('_txt_navi_main', 'Main Navigation');
 define('_txt_navi_clan', 'Clan Navigation');
 define('_txt_navi_server', 'Server Navigation');

@@ -1,6 +1,6 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6 Final
+ * DZCP - deV!L`z ClanPortal 1.6.1 Final
  * http://www.dzcp.de
  *
  * The Steam APIClass is exported from DZCP-Extended Edition
