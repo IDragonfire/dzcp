@@ -200,6 +200,7 @@ case 'show';
                 }
             }
 
+            $where = $where." - ".re($get['titel']);
             $index = show($dir."/show_more", array("titel" => re($get['titel']),
                                                    "id" => $get['id'],
                                                    "comments" => "",
@@ -508,7 +509,8 @@ break;
                                                   "rank" => getrank($get_userid),
                                                   "ip" => $userip._only_for_admins));
 
-        echo '<table class="mainContent" cellspacing="1">'.utf8_encode($index).'</table>';
+        header('Content-Type: text/html; charset=utf-8');
+        echo utf8_encode('<table class="mainContent" cellspacing="1">'.$index.'</table>');
 
         if(!mysqli_persistconns)
             $mysql->close(); //MySQL

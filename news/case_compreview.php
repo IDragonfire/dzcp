@@ -5,7 +5,6 @@
  */
 
 if(defined('_News')) {
-    header("Content-type: text/html; charset=utf-8");
     if($do == 'edit') {
         $get = db("SELECT * FROM ".$db['newscomments']." WHERE `id` = '".intval($_GET['cid'])."'",false,true);
         $get_id = '?';
@@ -60,6 +59,7 @@ if(defined('_News')) {
                                               "rank" => getrank($get_userid),
                                               "ip" => $userip._only_for_admins));
 
+    header('Content-Type: text/html; charset=utf-8');
     echo utf8_encode('<table class="mainContent" cellspacing="1">'.$index.'</table>');
 
     if(!mysqli_persistconns)

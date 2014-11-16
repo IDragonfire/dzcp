@@ -158,7 +158,7 @@ if(defined('_News')) {
                 }
             }
 
-            $title = re($get['titel']).' - '.$title;
+            $where = $where." - ".re($get['titel']);
             $index = show($dir."/news_show_full", array("titel" => re($get['titel']),
                                                    "kat" => $newsimage,
                                                    "id" => $get['id'],

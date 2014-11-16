@@ -1668,8 +1668,11 @@ function update_mysql_1_6_1() {
      ADD KEY `uid` (`uid`), 
      ADD KEY `pkey` (`pkey`), 
      ADD KEY `ssid` (`ssid`));",false,false,true);
+    
     db("ALTER TABLE `".$db['users']."` DROP `pkey`;",false,false,true);
-
+    db("ALTER TABLE `".$db['newscomments']."` CHANGE `nick` `nick` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
+    db("ALTER TABLE `".$db['acomments']."` CHANGE `nick` `nick` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
+        
     if($updater) {
         db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time()+auto_db_optimize_interval)."' WHERE `id` = 1;");
         db_optimize();
