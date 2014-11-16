@@ -26,6 +26,8 @@ define('_almgr_remove', '<a href="?action=editprofile&amp;show=almgr&amp;do=self
 define('_info_almgr_deletet', 'Automatische Anmeldung wurde erfolgreich entfernt');
 define('_info_almgr_self_deletet', 'Dieses Ger&auml;t wurde erfolgreich entfernt');
 define('_info_almgr_self_added', 'Dieses Ger&auml;t wurde erfolgreich eingetragen');
+define('_profile_access_error', 'This profile is accessible only to members');
+define('_pedit_visibility_profile', 'My Profile');
 
 //IP Blocker
 define('_ipban_admin_head', 'IP Blocker');
@@ -1382,9 +1384,10 @@ define('_profil_pagehits' , 'Pagehits');
 define('_pedit_visibility', 'Visibility/Permissions');
 define('_pedit_visibility_gb', 'Guestbook Posts');
 define('_pedit_visibility_gallery', 'Gallery');
-define('_pedit_perm_public', '<option value="0" selected="selected">Public</option><option value="1">User only</option><option value="2">Member only</option>');
-define('_pedit_perm_user', '<option value="0">Public</option><option value="1" selected="selected">User only</option><option value="2">Member only</option>');
-define('_pedit_perm_member', '<option value="0">Public</option><option value="1">User only</option><option value="2" selected="selected">Member only</option>');
+define('_pedit_perm_public', 'Public');
+define('_pedit_perm_user', 'User only');
+define('_pedit_perm_member', 'Member only');
+define('_pedit_perm_admin', 'Admin only');
 define('_pedit_perm_allow', '<option value="1" selected="selected">Allow</option><option value="0">Deny</option>');
 define('_pedit_perm_deny', '<option value="1">Allow</option><option value="0" selected="selected">Deny</option>');
 define('_gallery_no_perm', '<div align="center">'+"<br/>You don't have permissions for this gallery</div>");

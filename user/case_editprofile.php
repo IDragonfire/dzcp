@@ -327,14 +327,27 @@ if(defined('_UserMenu')) {
                             $sex = ($get['sex'] == 1 ? _pedit_male : ($get['sex'] == 2 ? _pedit_female : _pedit_sex_ka));
                             $perm_gb = ($get['perm_gb'] ? _pedit_perm_allow : _pedit_perm_deny);
                             $status = ($get['status'] ? _pedit_aktiv : _pedit_inaktiv);
-
-                            switch ($get['perm_gallery']) {
-                                case 0: $perm_gallery = _pedit_perm_public;
-                                    break;
-                                case 1: $perm_gallery = _pedit_perm_user;
-                                    break;
-                                case 2: $perm_gallery = _pedit_perm_member;
-                                    break;
+ 
+                            $levels = array(0,1,2); $perm_gallery = "";
+                            foreach ($levels as &$level) {
+                                $selected = ($level == $get['perm_gallery'] ? ' selected="selected"' : '');
+                                switch ($level) {
+                                    case 0: $perm_gallery .= '<option value="'.$level.'">'._pedit_perm_public.'</option>'; break;
+                                    case 1: $perm_gallery .= '<option value="'.$level.'">'._pedit_perm_user.'</option>'; break;
+                                    case 2: $perm_gallery .= '<option value="'.$level.'">'._pedit_perm_member.'</option>'; break;
+                                    case 3: $perm_gallery .= '<option value="'.$level.'">'._pedit_perm_admin.'</option>'; break;
+                                }
+                            }
+                            
+                            $levels = array(0,1,2,3); $perm_profile = "";
+                            foreach ($levels as &$level) {
+                                $selected = ($level == $get['profile_access'] ? ' selected="selected"' : '');
+                                switch ($level) {
+                                    case 0: $perm_profile .= '<option value="'.$level.'">'._pedit_perm_public.'</option>'; break;
+                                    case 1: $perm_profile .= '<option value="'.$level.'">'._pedit_perm_user.'</option>'; break;
+                                    case 2: $perm_profile .= '<option value="'.$level.'">'._pedit_perm_member.'</option>'; break;
+                                    case 3: $perm_profile .= '<option value="'.$level.'">'._pedit_perm_admin.'</option>'; break;
+                                }
                             }
 
                             if ($get['level'] == 1) {
@@ -390,6 +403,7 @@ if(defined('_UserMenu')) {
                                                                       "visibility" => _pedit_visibility,
                                                                       "pvisibility_gb" => _pedit_visibility_gb,
                                                                       "pvisibility_gallery" => _pedit_visibility_gallery,
+                                                                      "pvisibility_profile" =>  _pedit_visibility_profile,
                                                                       "country" => show_countrys($get['country']),
                                                                       "pcountry" => _profil_country,
                                                                       "about" => _profil_about,
@@ -439,6 +453,7 @@ if(defined('_UserMenu')) {
                                                                       "email" => re($get['email']),
                                                                       "visibility_gb" => $perm_gb,
                                                                       "visibility_gallery" => $perm_gallery,
+                                                                      "visibility_profile" => $perm_profile,
                                                                       "icqnr" => $icq,
                                                                       "sig" => re_bbcode($get['signatur']),
                                                                       "hlswid" => $get['hlswid'],
