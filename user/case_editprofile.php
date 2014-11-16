@@ -57,7 +57,7 @@ if(defined('_UserMenu')) {
                         $index = info(_info_edit_profile_done, "?action=user&amp;id=" . $userid . "");
                         $newpwd = "";
                         
-                        if (isset($_POST['pwd'])) {
+                        if (isset($_POST['pwd']) && !empty($_POST['pwd'])) {
                             if ($_POST['pwd'] == $_POST['cpwd']) {
                                 $_SESSION['pwd'] = md5($_POST['pwd']);
                                 $newpwd = "pwd = '" . $_SESSION['pwd'] . "',";
