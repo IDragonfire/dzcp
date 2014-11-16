@@ -46,8 +46,8 @@ dbc_index::init();
 //-> Automatische Datenbank Optimierung
 if(auto_db_optimize && settings('db_optimize',false) <= time() && !$installer && !$updater) {
     @ignore_user_abort(true);
-    sfs::cleanup_db(); db_optimize(); $securimage->clearOldCodesFromDatabase();
     db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time()+auto_db_optimize_interval)."' WHERE `id` = 1;");
+    sfs::cleanup_db(); db_optimize(); $securimage->clearOldCodesFromDatabase();
     setIpcheck("db_optimize()");
     @ignore_user_abort(false);
 }

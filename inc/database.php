@@ -124,6 +124,15 @@ function db_stmt($query,$params=array('si', 'hallo', '4'),$rows=false,$fetch=fal
 function db_optimize() {
     global $db,$mysql;
     if ($mysql instanceof mysqli) {
+        $sql = db("SELECT `id`,`update`,`expires` FROM `".$db['autologin']."`");
+        if(_rows($sql)) {
+            while ($get = _fetch($sql)) {
+                if(($get_almgr['update'] && (($get_almgr['update'] + $get_almgr['expires']) >= time()))) {
+                    db("DELETE FROM `".$db['autologin']."` WHERE `id` = ".$get['id'].";");
+                }
+            }
+        }
+        
         $sql = ''; $blacklist = array('host','user','pass','db','prefix');
         foreach ($db as $key => $tb) {
             if(!in_array($key,$blacklist))
