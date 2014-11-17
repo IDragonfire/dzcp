@@ -1545,7 +1545,6 @@ function mkpwd($passwordLength=8,$specialcars=true) {
     return $password;
 }
 
-
 //-> Passwortabfrage
 function checkpwd($user, $pwd) {
     global $db;

@@ -68,8 +68,7 @@ define('mysqli_persistconns', false);
 #########################################
 //-> Sessions Settings Start * Expert *
 #########################################
-
-define('sessions_backend', 'php'); //Das zu verwendendes Backend: php,mysql,memcache,apc
+define('sessions_backend', 'mysql'); //Das zu verwendendes Backend: php,mysql,memcache,apc
 define('sessions_encode_type', 'sha1'); //Verwende die sha1 codierung fuer session ids
 define('sessions_encode', true); //Inhalt der Sessions zusatzlich verschlusseln
 define('sessions_ttl_maxtime', (2*60*60)); //Live-Time der Sessions * 2h
@@ -81,14 +80,17 @@ define('sessions_mysql_host', 'localhost'); //MySQL Host
 define('sessions_mysql_user', 'user'); //MySQL Username
 define('sessions_mysql_pass', 'xxxx'); //MySQL Passwort
 define('sessions_mysql_db', 'test'); //MySQL Database
-/* SQL Tabelle */
-/*
- CREATE TABLE IF NOT EXISTS `dzcp_sessions` (
-         `id` int(11) NOT NULL,
-         `ssid` varchar(200) NOT NULL DEFAULT '',
-         `time` int(11) NOT NULL,
-         `data` text) DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
-ALTER TABLE `dzcp_sessions` ADD PRIMARY KEY (`id`), ADD KEY `ssid` (`ssid`), ADD KEY `time` (`time`);
+
+/* SQL Tabelle fur externe Datenbank */ /*
+ CREATE TABLE IF NOT EXISTS `[prefix]_sessions` (
+         `id` int(11) NOT NULL AUTO_INCREMENT,
+          `ssid` varchar(200) NOT NULL DEFAULT '',
+          `time` int(11) NOT NULL DEFAULT '0',
+          `data` blob,
+          PRIMARY KEY (`id`),
+          KEY `ssid` (`ssid`),
+          KEY `time` (`time`)
+        ) DEFAULT CHARSET=latin1;
 */
 
 #########################################

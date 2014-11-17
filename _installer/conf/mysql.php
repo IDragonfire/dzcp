@@ -1629,7 +1629,7 @@ function update_mysql_1_6_1() {
     //-> Sessions
     db("DROP TABLE IF EXISTS ".$db['sessions']);
     db("CREATE TABLE `".$db['sessions']."` (
-          `id` int(11) NOT NULL,
+          `id` int(11) NOT NULL AUTO_INCREMENT,
           `ssid` varchar(200) NOT NULL DEFAULT '',
           `time` int(11) NOT NULL DEFAULT '0',
           `data` blob,
@@ -1672,7 +1672,13 @@ function update_mysql_1_6_1() {
     db("ALTER TABLE `".$db['users']."` DROP `pkey`;",false,false,true);
     db("ALTER TABLE `".$db['newscomments']."` CHANGE `nick` `nick` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
     db("ALTER TABLE `".$db['acomments']."` CHANGE `nick` `nick` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
-        
+
+    if(!file_exists(basePath.'/inc/cryptkey.php')) {
+        $fp = @fopen("../inc/cryptkey.php","w");
+        @fwrite($fp,"<?php \$cryptkey = '".makeCryptkey()."';");
+        @fclose($fp);
+    }
+    
     if($updater) {
         db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time()+auto_db_optimize_interval)."' WHERE `id` = 1;");
         db_optimize();

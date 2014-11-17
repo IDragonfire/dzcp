@@ -50,14 +50,18 @@ function set_ftp_chmod($file,$pfad,$host,$user,$pwd) {
 }
 
 function _m ($prefix, $host, $user, $pwd, $db) {
-$fp = @fopen("../inc/mysql.php","w");
-@fwrite($fp,"<?php
-\$sql_prefix = '".$prefix."';
-\$sql_host = '".$host."';
-\$sql_user =  '".$user."';
-\$sql_pass = '".$pwd."';
-\$sql_db = '".$db."';");
-@fclose($fp);
+    $fp = @fopen("../inc/mysql.php","w");
+    @fwrite($fp,"<?php
+    \$sql_prefix = '".$prefix."';
+    \$sql_host = '".$host."';
+    \$sql_user =  '".$user."';
+    \$sql_pass = '".$pwd."';
+    \$sql_db = '".$db."';");
+    @fclose($fp);
+    
+    $fp = @fopen("../inc/cryptkey.php","w");
+    @fwrite($fp,"<?php \$cryptkey = '".makeCryptkey()."';");
+    @fclose($fp);
 }
 
 function get_files($dir) {
@@ -76,6 +80,28 @@ function get_files($dir) {
 function makePrev() {
     $arr = array(0,1,2,3,4,5,6,7,8,9);
     return $arr[mt_rand(0,9)].$arr[mt_rand(0,9)].$arr[mt_rand(0,9)];
+}
+
+function makeCryptkey($passwordLength=12,$specialcars=true) {
+    $passwordComponents = array("ABCDEFGHIJKLMNOPQRSTUVWXYZ" , 
+    "abcdefghijklmnopqrstuvwxyz" , "0123456789" , "#$@!");
+    $componentsCount = count($passwordComponents);
+
+    if(!$specialcars && $componentsCount == 4) {
+        unset($passwordComponents[3]);
+        $componentsCount = count($passwordComponents);
+    }
+
+    shuffle($passwordComponents); $password = '';
+    for ($pos = 0; $pos < $passwordLength; $pos++) {
+        $componentIndex = ($pos % $componentsCount);
+        $componentLength = strlen($passwordComponents[$componentIndex]);
+        $random = rand(0, $componentLength-1);
+        $password .= $passwordComponents[$componentIndex]{ $random };
+    }
+
+    unset($random,$componentLength,$componentIndex);
+    return $password;
 }
 
 /**

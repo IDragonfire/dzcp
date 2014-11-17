@@ -13,8 +13,9 @@ final class session {
     public static $securityKey_mcrypt = '(fk2N7S!(Bd';
 
     function __construct() {
-        $this->_prefix = self::$securityKey_mcrypt.'_';
-        
+        $this->_prefix = '_';
+        $this->_skcrypt = '';
+
         switch(sessions_backend) {
             case 'memcache':
                 if(show_sessions_debug)
@@ -48,6 +49,22 @@ final class session {
         if(!headers_sent() && !$this->is_session_started()) {
             if(show_sessions_debug)
                 DebugConsole::insert_info("session::init()", "Call session_start()");
+
+            $cryptkey = false;
+            if(file_exists(basePath.'/inc/cryptkey.php')) {
+                require_once(basePath.'/inc/cryptkey.php');
+                
+                if(show_sessions_debug) {
+                    DebugConsole::insert_info("session::init()", "Found 'inc/cryptkey.php'");
+                    DebugConsole::insert_successful("session::init()", "Use Crypt Key for data encode");
+                }
+            } else
+                if(show_sessions_debug)
+                    DebugConsole::insert_error("session::init()", "Not found 'inc/cryptkey.php'");    
+
+            self::$securityKey_mcrypt = (!$cryptkey ? self::$securityKey_mcrypt : $cryptkey);
+            $this->_prefix = self::$securityKey_mcrypt.'_';
+            $this->_skcrypt = (!$cryptkey ? self::$securityKey_mcrypt : $cryptkey);
 
             if(session_start())
                 if(show_sessions_debug)
@@ -109,7 +126,7 @@ final class session {
         if(empty($data)) return '';
 
         if(sessions_encode)
-            $data = self::decode($data,true);
+            $data = self::decode($data,$this->_skcrypt,true);
 
         if(show_sessions_debug)
             DebugConsole::insert_successful("session::mem_read()", $data);
@@ -127,7 +144,7 @@ final class session {
             DebugConsole::insert_successful("session::mem_write()", $data);
 
         if(sessions_encode)
-            $data = self::encode($data,true);
+            $data = self::encode($data,$this->_skcrypt,true);
 
         $result = $this->memcached->replace($this->_prefix.$id, $data, MEMCACHE_COMPRESSED, sessions_ttl_maxtime);
         if( $result == false )
@@ -197,7 +214,7 @@ final class session {
         $data = apc_fetch($key);
 
         if(sessions_encode)
-            $data = self::decode($data,true);
+            $data = self::decode($data,$this->_skcrypt,true);
 
         if(show_sessions_debug)
             DebugConsole::insert_successful("session::apc_read()", $data);
@@ -223,7 +240,7 @@ final class session {
             DebugConsole::insert_successful("session::apc_write()", $data);
 
         if(sessions_encode)
-            $data = self::encode($data,true);
+            $data = self::encode($data,$this->_skcrypt,true);
 
         return apc_store($this->_prefix.'/'.$id, $data, $this->_ttl);
     }
@@ -266,7 +283,6 @@ final class session {
     ###################################################
     public final function sql_open() {
         global $db;
-
         if(show_sessions_debug)
             DebugConsole::insert_info("session::sql_open()", "Connect to MySQL Server");
 
@@ -318,7 +334,7 @@ final class session {
         if(empty($data)) return '';
 
         if(sessions_encode)
-            $data = self::decode($data,true);
+            $data = self::decode($data,$this->_skcrypt,true);
 
         if(show_sessions_debug)
             DebugConsole::insert_successful("session::sql_read()", $data);
@@ -337,7 +353,7 @@ final class session {
             DebugConsole::insert_successful("session::sql_write()", $data);
 
         if(sessions_encode)
-            $data = self::encode($data,true);
+            $data = self::encode($data,$this->_skcrypt,true);
 
         $time = time();
 
@@ -419,13 +435,12 @@ final class session {
             $crypt->__set('Key',self::$securityKey_mcrypt);
         else
             $crypt->__set('Key',$mcryptkey);
-        
+
         if($binary && !$hex) { $crypt->__set('Hash',CRYPT_MODE_BINARY); }
         if(!$binary && $hex) { $crypt->__set('Hash',CRYPT_MODE_HEXADECIMAL); }
         $data = $crypt->Decrypt($data);
+        $data = unserialize($data);
         if(!is_array($data)) return null;
-        
-        if($data['array']) { $data['data'] = unserialize($data['data']); }
         return $data['data'];
     }
 }
