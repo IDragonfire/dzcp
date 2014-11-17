@@ -1648,26 +1648,25 @@ function update_mysql_1_6_1() {
     `side` varchar(30) NOT NULL DEFAULT '',
     `time` int(20) NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`),
-    KEY `ip` (`ip`)
-    );",false,false,true);
+    KEY `ip` (`ip`));",false,false,true);
     
     //Autologin manager
     db("DROP TABLE IF EXISTS `".$db['autologin']."`;");
     db("CREATE TABLE IF NOT EXISTS `".$db['autologin']."` (
-     `id` int(11) NOT NULL AUTO_INCREMENT,
-     `uid` int(11) NOT NULL DEFAULT '0',
-     `ssid` varchar(50) NOT NULL DEFAULT '',
-     `pkey` varchar(50) NOT NULL DEFAULT '',
-     `name` varchar(60) NOT NULL DEFAULT '',
-     `ip` varchar(15) NOT NULL DEFAULT '0.0.0.0',
-     `host` varchar(150) NOT NULL DEFAULT '',
-     `date` int(11) NOT NULL DEFAULT '0',
-     `update` int(11) NOT NULL DEFAULT '0',
-     `expires` int(11) NOT NULL DEFAULT '0',
-     PRIMARY KEY (`id`),
-     ADD KEY `uid` (`uid`), 
-     ADD KEY `pkey` (`pkey`), 
-     ADD KEY `ssid` (`ssid`));",false,false,true);
+    `id` int(11) NOT NULL AUTO_INCREMENT,
+    `uid` int(11) NOT NULL DEFAULT '0',
+    `ssid` varchar(50) NOT NULL DEFAULT '',
+    `pkey` varchar(50) NOT NULL DEFAULT '',
+    `name` varchar(60) NOT NULL DEFAULT '',
+    `ip` varchar(15) NOT NULL DEFAULT '0.0.0.0',
+    `host` varchar(150) NOT NULL DEFAULT '',
+    `date` int(11) NOT NULL DEFAULT '0',
+    `update` int(11) NOT NULL DEFAULT '0',
+    `expires` int(11) NOT NULL DEFAULT '0',
+    PRIMARY KEY (`id`),
+    KEY `ssid` (`ssid`),
+    KEY `pkey` (`pkey`),
+    KEY `uid` (`uid`));",false,false,true);
     
     db("ALTER TABLE `".$db['users']."` DROP `pkey`;",false,false,true);
     db("ALTER TABLE `".$db['newscomments']."` CHANGE `nick` `nick` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
