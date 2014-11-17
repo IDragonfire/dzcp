@@ -1524,13 +1524,27 @@ function links($hp) {
 }
 
 //-> Funktion um Passwoerter generieren zu lassen
-function mkpwd() {
-    $chars = '1234567890abcdefghijkmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $len = strlen($chars) - 1; $pw = '';
-    for($i = 0; $i < 10; $i++)
-    { $pw .= $chars{mt_rand(0, $len)}; }
-    return $pw;
+function mkpwd($passwordLength=8,$specialcars=true) {
+    global $passwordComponents;
+    $componentsCount = count($passwordComponents);
+
+    if(!$specialcars && $componentsCount == 4) {
+        unset($passwordComponents[3]);
+        $componentsCount = count($passwordComponents);
+    }
+
+    shuffle($passwordComponents); $password = '';
+    for ($pos = 0; $pos < $passwordLength; $pos++) {
+        $componentIndex = ($pos % $componentsCount);
+        $componentLength = strlen($passwordComponents[$componentIndex]);
+        $random = rand(0, $componentLength-1);
+        $password .= $passwordComponents[$componentIndex]{ $random };
+    }
+
+    unset($random,$componentLength,$componentIndex);
+    return $password;
 }
+
 
 //-> Passwortabfrage
 function checkpwd($user, $pwd) {

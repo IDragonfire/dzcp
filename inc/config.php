@@ -107,6 +107,10 @@ $config_cache['dbc_auto_memcache'] = false; //automatische memcache verfugbarkei
 $rootAdmins = array(1); // Die ID/s der User die Rootadmins sein sollen, bei mehreren mit "," trennen '1,4,2,6' usw.
 #$rootAdmins = array(1,2,4,9); // etc.
 
+// -> Zeichen fur den Passwort Generator
+// ->                       Alphabet:                       Alphabet klein:               Zahlen:        Sonderzeichen:
+$passwordComponents = array("ABCDEFGHIJKLMNOPQRSTUVWXYZ" , "abcdefghijklmnopqrstuvwxyz" , "0123456789" , "#$@!");
+
 #########################################
 //-> DZCP Settings End
 #########################################
