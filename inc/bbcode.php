@@ -282,7 +282,7 @@ if(cookie::get('id') != false && cookie::get('pkey') != false && empty($_SESSION
 }
 
 //-> Sprache aendern
-if(isset($_GET['set_language'])) {
+if(isset($_GET['set_language']) && !empty($_GET['set_language'])) {
     if(file_exists(basePath."/inc/lang/languages/".$_GET['set_language'].".php")) {
         cookie::put('language', $_GET['set_language']);
         cookie::save();
@@ -330,25 +330,36 @@ if(session_id()) {
 }
 
 /**
+* DZCP V1.6.1
 * Gibt die IP des Besuchers / Users zuruck
 * Forwarded IP Support
 */
 function visitorIp() {
-    $TheIp=$_SERVER['REMOTE_ADDR'];
-    if(isset($_SERVER['HTTP_X_FORWARDED_FOR']) && !empty($_SERVER['HTTP_X_FORWARDED_FOR']))
-        $TheIp = $_SERVER['HTTP_X_FORWARDED_FOR'];
-
-    if(isset($_SERVER['HTTP_CLIENT_IP']) && !empty($_SERVER['HTTP_CLIENT_IP']))
-        $TheIp = $_SERVER['HTTP_CLIENT_IP'];
-
-    if(isset($_SERVER['HTTP_FROM']) && !empty($_SERVER['HTTP_FROM']))
-        $TheIp = $_SERVER['HTTP_FROM'];
-
-    $TheIp_X = explode('.',$TheIp);
-    if(count($TheIp_X) == 4 && $TheIp_X[0]<=255 && $TheIp_X[1]<=255 && $TheIp_X[2]<=255 && $TheIp_X[3]<=255 && preg_match("!^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$!",$TheIp))
-        return trim($TheIp);
-
+    $ServerVars = array('REMOTE_ADDR','HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED',
+    'HTTP_FORWARDED_FOR','HTTP_FORWARDED','HTTP_VIA','HTTP_X_COMING_FROM','HTTP_COMING_FROM');
+    foreach ($ServerVars as $ServerVar) {
+        if($IP=detectIP($ServerVar))
+            return $IP;
+    }
+ 
     return '0.0.0.0';
+}
+
+function detectIP($var) {
+    if(!empty($var) && ($REMOTE_ADDR = GetServerVars($var)) && !empty($REMOTE_ADDR)) {
+        $REMOTE_ADDR = trim($REMOTE_ADDR);
+        if(CheckIP($REMOTE_ADDR))
+             return $REMOTE_ADDR;
+    }
+    
+    return false;
+}
+
+function CheckIP($TheIp) {
+    if(empty($var)) return false;
+    $TheIp_X = explode('.',$TheIp);
+    return (count($TheIp_X) == 4 && $TheIp_X[0]<=255 && $TheIp_X[1]<=255 && $TheIp_X[2]<=255 && $TheIp_X[3]<=255 && 
+    preg_match("!^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$!",$TheIp));
 }
 
 /**
@@ -442,7 +453,10 @@ function lang($lng,$pfad='') {
     include(basePath."/inc/lang/languages/".$lng.".php");
 }
 
-//-> Sprachdateien auflisten
+/**
+ * Sprachdateien auflisten
+ * @return string/html
+ **/
 function languages() {
     $lang="";
     $files = get_files(basePath.'/inc/lang/languages/',false,true,array('php'));
@@ -1171,6 +1185,22 @@ function spChars($txt) {
  */
 function up($txt = '') {
     return string::encode($txt);
+}
+
+/**
+ * DZCP V1.6.1
+ * Gibt Informationen uber Server und Ausfuhrungsumgebung zuruck
+ *
+ * @param string $var
+ * @return string
+ */
+function GetServerVars($var) {
+    if(array_key_exists($var, $_SERVER) && !empty($_SERVER[$var]))
+        return string::encode($_SERVER[$var]);
+    else if(array_key_exists($var, $_ENV) && !empty($_ENV[$var]))
+        return string::encode($_ENV[$var]);
+    
+    return false;
 }
 
 //-> Funktion um diverse Dinge aus Tabellen auszaehlen zu lassen
