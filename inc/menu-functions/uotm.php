@@ -6,12 +6,9 @@
  */
 function uotm() {
     global $db,$picformat;
-
-    $files = get_files(basePath.'/inc/images/uploads/userpics',false,true,$picformat,false,array(),'minimize');
-    shuffle($files);
-
-    $uotm = '';
-    if(count($files) != 0) {
+    $files = get_files(basePath.'/inc/images/uploads/userpics',false,true,$picformat,false,array(),'minimize'); $uotm = '';
+    if(count($files) >= 1 && $files) {
+        shuffle($files);
         $userid = intval($files[mt_rand(0, count($files) - 1)]);
         $qry = db("SELECT `id`,`bday` FROM ".$db['users']." WHERE `id` = '".$userid."'");
         if(_rows($qry)) {
