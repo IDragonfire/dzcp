@@ -238,6 +238,7 @@ if(cookie::get('id') != false && cookie::get('pkey') != false && empty($_SESSION
                 db("UPDATE `".$db['autologin']."` SET `ssid` = '".session_id()."',
                                                       `pkey` = '".$permanent_key."',
                                                       `ip` = '".visitorIp()."',
+                                                      `host` = '".gethostbyaddr(visitorIp())."',
                                                       `update` = ".time().",
                                                       `expires` = ".autologin_expire." WHERE `id` = ".$get_almgr['id'].";");
 

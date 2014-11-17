@@ -127,7 +127,7 @@ function db_optimize() {
         $sql = db("SELECT `id`,`update`,`expires` FROM `".$db['autologin']."`");
         if(_rows($sql)) {
             while ($get = _fetch($sql)) {
-                if(($get_almgr['update'] && (($get_almgr['update'] + $get_almgr['expires']) >= time()))) {
+                if(($get['update'] && (($get['update'] + $get['expires']) >= time()))) {
                     db("DELETE FROM `".$db['autologin']."` WHERE `id` = ".$get['id'].";");
                 }
             }

@@ -7,11 +7,12 @@
 //MySQL-Daten einlesen
 $installation = true;
 include(basePath.'/inc/config.php');
+$prev = intval(makePrev());
 
 function install_mysql($login, $nick, $pwd, $email)
 {
   global $db;
-
+  
 //-> Awards
   $qry = db("DROP TABLE IF EXISTS ".$db['awards']."");
   $qry = db("CREATE TABLE ".$db['awards']." (
@@ -926,17 +927,6 @@ function install_mysql($login, $nick, $pwd, $email)
                                               ADD INDEX (`lp`),
                                               ADD INDEX (`topic`),
                                               ADD INDEX (`first`)");
-//-> Sessionvariabeln setzen
-  $_SESSION['id'] = "1";
-  $_SESSION['pwd'] = md5($pwd);
-  $_SESSION['ip'] = visitorIp();
-
-  if($login || $nick || $pwd || $email)
-  {
-    $_SESSION['id'] = "1";
-    $_SESSION['pwd'] = md5($pwd);
-    $_SESSION['ip'] = visitorIp();
-  }
 }
 
 function update_mysql()
@@ -1126,7 +1116,7 @@ function update_mysql_1_3()
 }
 function update_mysql_1_4()
 {
-  global $db;
+  global $db,$prev;
 
   $qry = db("ALTER TABLE ".$db['config']." ADD `id` int(1) NOT NULL default '1' FIRST,
                                            ADD `securelogin` int(1) NOT NULL default '0',
@@ -1217,7 +1207,7 @@ $eml_nletter =
 [ Diese Email wurde automatisch generiert, bitte nicht antworten! ]';
 
   $qry = db("UPDATE ".$db['settings']."
-             SET `prev` = '".intval(makePrev())."',
+             SET `prev` = '".$prev."',
                  `eml_reg_subj`  = 'Deine Registrierung',
                  `eml_pwd_subj` = 'Deine Zugangsdaten',
                  `eml_nletter_subj` = 'Newsletter',
@@ -1576,11 +1566,11 @@ function update_mysql_1_6()
 }
 
 function update_mysql_1_6_1() {
-    global $db;
+    global $db,$prev;
 
-    db("ALTER TABLE `".$db['sponsoren']."` DROP `send`;");
-    db("ALTER TABLE `".$db['permissions']."` ADD `ipban` INT(1) NOT NULL DEFAULT '0' AFTER `dlintern`;");
-    db("DROP TABLE ".$db['prefix']."banned");
+    db("ALTER TABLE `".$db['sponsoren']."` DROP `send`;",false,false,true);
+    db("ALTER TABLE `".$db['permissions']."` ADD `ipban` INT(1) NOT NULL DEFAULT '0' AFTER `dlintern`;",false,false,true);
+    db("DROP TABLE ".$db['prefix']."banned",false,false,true);
 
     //-> IP-Ban
     db("DROP TABLE IF EXISTS ".$db['ipban']);
@@ -1592,7 +1582,7 @@ function update_mysql_1_6_1() {
        `typ` int(1) NOT NULL DEFAULT '0',
        `enable` int(1) NOT NULL DEFAULT '1',
       PRIMARY KEY (`id`),
-      KEY `ip` (`ip`));");
+      KEY `ip` (`ip`));",false,false,true);
 
     //-> IP-ToDNS
     db("DROP TABLE IF EXISTS ".$db['ip2dns']);
@@ -1604,13 +1594,13 @@ function update_mysql_1_6_1() {
       `ip` varchar(15) NOT NULL DEFAULT '',
       `dns` varchar(200) NOT NULL DEFAULT '',
       PRIMARY KEY (`id`),
-      KEY `sessid` (`sessid`));");
+      KEY `sessid` (`sessid`));",false,false,true);
 
     //Set default for profile
     $qry = db("SELECT feldname FROM `".$db['profile']."` WHERE `feldname` LIKE '%custom_%'");
     if(_rows($qry) >= 1) {
         while($get = _fetch($qry)) {
-            db("ALTER TABLE `".$db['users']."` CHANGE `".$get['feldname']."` `".$get['feldname']."` VARCHAR(249) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
+            db("ALTER TABLE `".$db['users']."` CHANGE `".$get['feldname']."` `".$get['feldname']."` VARCHAR(249) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
         }
     }
 
@@ -1624,7 +1614,7 @@ function update_mysql_1_6_1() {
         `created` int(11) NOT NULL,
         PRIMARY KEY (`id`,`namespace`),
         KEY `created` (`created`)
-        );");
+        );",false,false,true);
 
     //-> Sessions
     db("DROP TABLE IF EXISTS ".$db['sessions']);
@@ -1636,7 +1626,7 @@ function update_mysql_1_6_1() {
           PRIMARY KEY (`id`),
           KEY `ssid` (`ssid`),
           KEY `time` (`time`)
-        ) DEFAULT CHARSET=latin1;");
+        ) DEFAULT CHARSET=latin1;",false,false,true);
 
     //-> Click IP Counter
     db("DROP TABLE IF EXISTS `".$db['clicks_ips']."`;");
@@ -1669,8 +1659,9 @@ function update_mysql_1_6_1() {
     KEY `uid` (`uid`));",false,false,true);
     
     db("ALTER TABLE `".$db['users']."` DROP `pkey`;",false,false,true);
-    db("ALTER TABLE `".$db['newscomments']."` CHANGE `nick` `nick` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
-    db("ALTER TABLE `".$db['acomments']."` CHANGE `nick` `nick` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';");
+    db("ALTER TABLE `".$db['newscomments']."` CHANGE `nick` `nick` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['acomments']."` CHANGE `nick` `nick` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['users']."` ADD `profile_access` INT(1) NOT NULL DEFAULT '0' AFTER `perm_gb`;",false,false,true);
 
     if(!file_exists(basePath.'/inc/cryptkey.php')) {
         $fp = @fopen("../inc/cryptkey.php","w");
@@ -1682,4 +1673,28 @@ function update_mysql_1_6_1() {
         db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time()+auto_db_optimize_interval)."' WHERE `id` = 1;");
         db_optimize();
     }
+
+    //-> Cookie initialisierung * Autologin *
+    if(!headers_sent()) {
+        /** Start Sessions */
+        if(sessions_backend != 'php') {
+            $session = new session();
+            if(!$session->init())
+                die('PHP-Sessions not started!');
+            unset($session);
+        } else {
+            if(!session_start())
+                die('PHP-Sessions not started!');
+        }
+
+        if(!isset($_SESSION['PHPSESSID']))
+            $_SESSION['PHPSESSID'] = true;
+    }
+
+    cookie::init('dzcp_'.$prev);
+    cookie::put('id', 1);
+    $permanent_key = md5(makeCryptkey(8,false));
+    cookie::put('pkey', $permanent_key);
+    db("INSERT INTO `".$db['autologin']."` SET `uid` = 1, `pkey` = '".$permanent_key."', `date` = ".time().", `update` = 0, `expires` = 600, `name` = 'Created by DZCP Installer';");
+    cookie::save();
 }

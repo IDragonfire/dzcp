@@ -18,6 +18,9 @@ $installer = true; $updater = false;
 
 require_once(basePath.'/inc/_version.php');
 require_once(basePath."/inc/debugger.php");
+require_once(basePath.'/inc/cookie.php');
+require_once(basePath.'/inc/crypt.php');
+require_once(basePath.'/inc/sessions.php');
 require_once(basePath.'/_installer/conf/conf.php');
 require_once(basePath.'/_installer/conf/mysql.php');
 
