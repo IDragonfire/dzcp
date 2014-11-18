@@ -90,7 +90,7 @@ define('_no_userpic', '<img src="../inc/images/nopic.gif" width="[width]" height
 define('_closedicon', '<img src="../inc/images/closed.gif" alt="" class="icon" />');
 define('_icqstatus', '<img src="http://web.icq.com/whitepages/online?icq=[uin]&amp;img=5" alt="" title="[uin]" class="icon" />');
 define('_hpicon', '<a href="[hp]" target="_blank"><img src="../inc/images/hp.gif" alt="" title="[hp]" class="icon" /></a>');
-define('_email_mailto', '<a href=\\"mailto:"+d+"\\">"+d+"</a>');
+define('_email_mailto', '<a href="mailto:[email]">[email]</a>');
 define('_emailicon', '<a href=\\"mailto:"+d+"\\"><img src=\\"../inc/images/email.gif\\" title="+d+" class=\\"icon\\" /></a>');
 define('_steamicon_blank', '<img src="../inc/images/steam.gif" alt="" class="icon" />');
 define('_emailicon_blank', '<img src="../inc/images/email.gif" alt="" class="icon" />');
