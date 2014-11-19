@@ -1684,6 +1684,9 @@ function update_mysql_1_6_1() {
     db("ALTER TABLE `".$db['sponsoren']."` ADD INDEX(`banner`);");
     db("ALTER TABLE `".$db['sponsoren']."` ADD INDEX(`pos`);");
     db("ALTER TABLE `".$db['sponsoren']."` ADD INDEX(`site`);");
+    db("ALTER TABLE `".$db['cw']."` ADD INDEX(`squad_id`);");
+    db("ALTER TABLE `".$db['cw']."` ADD INDEX(`top`);");
+    db("ALTER TABLE `".$db['cw']."` ADD INDEX(`datum`);");
     
     //-> Cookie initialisierung * Autologin *
     if(!headers_sent()) {

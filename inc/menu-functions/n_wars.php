@@ -7,11 +7,11 @@
 function n_wars() {
     global $db;
 
-    $qry = db("SELECT s1.id,s1.datum,s1.clantag,s1.maps,s1.gegner,s1.squad_id,s2.icon,s1.xonx,s2.name FROM ".$db['cw']." AS s1
-               LEFT JOIN ".$db['squads']." AS s2 ON s1.squad_id = s2.id
-               WHERE s1.datum > ".time()."
-               ORDER BY s1.datum
-               LIMIT ".config('m_nwars'));
+    $qry = db("SELECT s1.`id`,s1.`datum`,s1.`clantag`,s1.`maps`,s1.`gegner`,s1.`squad_id`,s2.`icon`,s1.`xonx`,s2.`name` FROM `".$db['cw']."` AS `s1`
+               LEFT JOIN `".$db['squads']."` AS `s2` ON s1.`squad_id` = s2.`id`
+               WHERE s1.`datum` > ".time()."
+               ORDER BY s1.`datum`
+               LIMIT ".config('m_nwars').";");
 
     $nwars = '';
     if(_rows($qry)) {

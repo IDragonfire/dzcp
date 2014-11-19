@@ -54,7 +54,7 @@ if(defined('_Clanwars')) {
                                            "ges_wars" => $anz_ges_wars,
                                            "ges_points" => $anz_ges_points));
 
-    $qry = db("SELECT * FROM ".$db['squads']." WHERE status = '1' ORDER BY pos");
+    $qry = db("SELECT * FROM `".$db['squads']."` WHERE `status` = 1 ORDER BY `pos`;");
     while($get = _fetch($qry)) {
         if(isset($_GET['showsquad']) && $_GET['showsquad'] == $get['id'] ||
            isset($_GET['show']) && $_GET['show'] == $get['id']) {
@@ -66,14 +66,14 @@ if(defined('_Clanwars')) {
         }
 
         $img = show(_gameicon, array("icon" => $get['icon']));
-        $qrym = db("SELECT s1.id,s1.datum,s1.clantag,s1.gegner,s1.url,s1.xonx,s1.liga,s1.punkte,s1.gpunkte,s1.maps,s1.serverip,
-                    s1.servername,s1.serverpwd,s1.bericht,s1.squad_id,s1.gametype,s1.gcountry,s2.icon,s2.name
-                    FROM ".$db['cw']." AS s1
-                    LEFT JOIN ".$db['squads']." AS s2 ON s1.squad_id = s2.id
-                    WHERE s1.squad_id='".$get['id']."'
-                    AND s1.datum < ".time()."
-                    ORDER BY s1.datum DESC
-                    LIMIT ".config('m_clanwars')."");
+        $qrym = db("SELECT s1.`id`,s1.`datum`,s1.`clantag`,s1.`gegner`,s1.`url`,s1.`xonx`,s1.`liga`,s1.`punkte`,s1.`gpunkte`,s1.`maps`,s1.`serverip`,
+                    s1.`servername`,s1.`serverpwd`,s1.`bericht`,s1.`squad_id`,s1.`gametype`,s1.`gcountry`,s2.`icon`,s2.`name`
+                    FROM `".$db['cw']."` AS `s1`
+                    LEFT JOIN `".$db['squads']."` AS `s2` ON s1.`squad_id` = s2.`id`
+                    WHERE s1.`squad_id` = ".$get['id']."
+                    AND s1.`datum` < ".time()."
+                    ORDER BY s1.`datum` DESC
+                    LIMIT ".config('m_clanwars').";");
 
         $wars = "";
         while($getm = _fetch($qrym)) {
@@ -100,14 +100,17 @@ if(defined('_Clanwars')) {
                                                         "result" => cw_result_nopic($getm['punkte'], $getm['gpunkte']),
                                                         "details" => $details));
         }
-
-        $sum_punkte = sum($db['cw'], ' WHERE squad_id = '.$get['id'], 'punkte');
-        $sum_gpunkte = sum($db['cw'], ' WHERE squad_id = '.$get['id'], 'gpunkte');
+            
+        $sum_punkte_get = db("SELECT SUM(punkte) AS `num_punkte`, SUM(gpunkte) AS `num_gpunkte`
+        FROM `".$db['cw']."` WHERE `squad_id` = ".$get['id'].";",false,true);
+        $sum_punkte = $sum_punkte_get['num_punkte'];
+        $sum_gpunkte = $sum_punkte_get['num_gpunkte'];
+        unset($sum_punkte_get);
         $anz_ges_points = show(_cw_stats_ges_points, array("ges_won" => $sum_punkte,
                                                            "ges_lost" => $sum_gpunkte));
 
         if(cnt($db['cw'], " WHERE squad_id = ".$get['id']." AND datum < ".time()."") != "0") {
-              $anz_wo_wars = cnt($db['cw'], " WHERE punkte > gpunkte AND squad_id = ".$get['id']."");
+            $anz_wo_wars = cnt($db['cw'], " WHERE punkte > gpunkte AND squad_id = ".$get['id']."");
             $anz_lo_wars = cnt($db['cw'], " WHERE punkte < gpunkte AND squad_id = ".$get['id']."");
             $anz_dr_wars = cnt($db['cw'], " WHERE datum < ".time()." && punkte = gpunkte AND squad_id = ".$get['id']."");
             $anz_ge_wars = cnt($db['cw'], " WHERE datum < ".time()." AND squad_id = ".$get['id']."");
