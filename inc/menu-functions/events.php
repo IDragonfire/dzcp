@@ -6,11 +6,10 @@
  */
 function events() {
     global $db;
-
-    $qry = db("SELECT `id`,`datum`,`title`,`event` FROM ".$db['events']."
+    $qry = db("SELECT `id`,`datum`,`title`,`event` FROM `".$db['events']."`
                WHERE `datum` > ".time()."
-               ORDER BY datum
-               LIMIT ".config('m_events')."");
+               ORDER BY `datum`
+               LIMIT ".config('m_events').";");
 
     $eventbox = '';
     if(_rows($qry)) {

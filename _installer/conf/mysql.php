@@ -1687,6 +1687,13 @@ function update_mysql_1_6_1() {
     db("ALTER TABLE `".$db['cw']."` ADD INDEX(`squad_id`);");
     db("ALTER TABLE `".$db['cw']."` ADD INDEX(`top`);");
     db("ALTER TABLE `".$db['cw']."` ADD INDEX(`datum`);");
+    db("ALTER TABLE `".$db['permissions']."` ADD INDEX(`user`);");
+    db("ALTER TABLE `".$db['userpos']."` ADD INDEX(`posi`);");
+    db("ALTER TABLE `".$db['msg']."` ADD INDEX(`page`);");
+    db("ALTER TABLE `".$db['f_skats']."` ADD INDEX(`sid`);");
+    db("ALTER TABLE `".$db['f_access']."` ADD INDEX(`pos`);");
+    db("ALTER TABLE `".$db['vote_results']."` ADD INDEX(`vid`);");
+    db("ALTER TABLE `".$db['vote_results']."` ADD INDEX(`what`);");
     
     //-> Cookie initialisierung * Autologin *
     if(!headers_sent()) {

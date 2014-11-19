@@ -13,7 +13,7 @@ function counter($js=false) {
     } else {
         if(!$isSpider) {
             $v_today = 0;
-            $qry2day = db("SELECT `visitors` FROM ".$db['counter']." WHERE `today` = '".$today."'");
+            $qry2day = db("SELECT `visitors` FROM `".$db['counter']."` WHERE `today` = ".$today.";");
             if(_rows($qry2day)) {
                 $get2day = _fetch($qry2day);
                 $v_today = $get2day['visitors'];
@@ -26,25 +26,25 @@ function counter($js=false) {
             $yesterday = $tag.".".$monat.".".$jahr;
 
             $yDay = 0;
-            $qryyday = db("SELECT `visitors` FROM ".$db['counter']." WHERE `today` = '".$yesterday."'");
+            $qryyday = db("SELECT `visitors` FROM `".$db['counter']."` WHERE `today` = ".$yesterday.";");
             if(_rows($qryyday)) {
                 $getyday = _fetch($qryyday);
                 $yDay = $getyday['visitors'];
             }
 
-            $getstats = db("SELECT SUM(visitors) AS allvisitors,
-                            MAX(visitors) AS maxvisitors,
-                            MAX(maxonline) AS maxonline,
-                            AVG(visitors) AS avgvisitors,
-                            SUM(visitors) AS allvisitors
-                            FROM ".$db['counter'],false,true);
+            $getstats = db("SELECT SUM(visitors) AS `allvisitors`,
+                            MAX(visitors) AS `maxvisitors`,
+                            MAX(maxonline) AS `maxonline`,
+                            AVG(visitors) AS `avgvisitors`,
+                            SUM(visitors) AS `allvisitors`
+                            FROM `".$db['counter']."`;",false,true);
 
             $info = '';
             if(abs(online_reg()) != 0) {
-                $qryo = db("SELECT `id` FROM ".$db['users']."
-                    WHERE time+'".$useronline."'>'".time()."'
+                $qryo = db("SELECT `id` FROM `".$db['users']."`
+                    WHERE time+".$useronline.">".time()."
                     AND `online` = 1
-                    ORDER BY nick");
+                    ORDER BY `nick`;");
 
                 $kats = ''; $text = '';
                 if(_rows($qryo)) {

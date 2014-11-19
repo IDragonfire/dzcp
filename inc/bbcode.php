@@ -46,7 +46,7 @@ dbc_index::init();
 //-> Automatische Datenbank Optimierung
 if(auto_db_optimize && settings('db_optimize',false) <= time() && !$installer && !$updater) {
     @ignore_user_abort(true);
-    db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time()+auto_db_optimize_interval)."' WHERE `id` = 1;");
+    db("UPDATE `".$db['settings']."` SET `db_optimize` = ".(time()+auto_db_optimize_interval)." WHERE `id` = 1;");
     sfs::cleanup_db(); db_optimize(); $securimage->clearOldCodesFromDatabase();
     setIpcheck("db_optimize()");
     @ignore_user_abort(false);
@@ -206,7 +206,6 @@ function isIPv4($ip) {
 check_ip();
 
 function dzcp_session_destroy() {
-    global $db;
     $_SESSION['id']        = '';
     $_SESSION['pwd']       = '';
     $_SESSION['ip']        = '';
@@ -220,12 +219,12 @@ function dzcp_session_destroy() {
 //-> Auslesen der Cookies und automatisch anmelden
 if(cookie::get('id') != false && cookie::get('pkey') != false && empty($_SESSION['id']) && !checkme()) {
     //-> Permanent Key aus der Datenbank suchen
-    $sql = db_stmt("SELECT `id`,`uid`,`update`,`expires` FROM `".$db['autologin']."` WHERE `pkey` = ? AND `uid` = ?",array('ss', cookie::get('pkey'), cookie::get('id')));
+    $sql = db_stmt("SELECT `id`,`uid`,`update`,`expires` FROM `".$db['autologin']."` WHERE `pkey` = ? AND `uid` = ?;",array('ss', cookie::get('pkey'), cookie::get('id')));
     if(_rows($sql)) {
         $get_almgr = _fetch($sql);
         if((!$get_almgr['update'] || (time() < ($get_almgr['update'] + $get_almgr['expires'])))) {
             //-> User aus der Datenbank suchen
-            $sql = db_stmt("SELECT `id`,`user`,`nick`,`pwd`,`email`,`level`,`time` FROM ".$db['users']." WHERE id = ? AND level != '0'",array('i', cookie::get('id')));
+            $sql = db_stmt("SELECT `id`,`user`,`nick`,`pwd`,`email`,`level`,`time` FROM `".$db['users']."` WHERE `id` = ? AND `level` != 0;",array('i', cookie::get('id')));
             if(_rows($sql)) {
                 $get = _fetch($sql);
               
@@ -255,13 +254,13 @@ if(cookie::get('id') != false && cookie::get('pkey') != false && empty($_SESSION
                     $_SESSION['lastvisit'] = data("time",$get['id']);
 
                 //-> Aktualisiere Datenbank
-                db("UPDATE ".$db['users']." SET `online` = '1', `sessid` = '".session_id()."', `ip` = '".$_SESSION['ip']."' WHERE id = '".$get['id']."'");
+                db("UPDATE `".$db['users']."` SET `online` = '1', `sessid` = '".session_id()."', `ip` = '".$_SESSION['ip']."' WHERE `id` = ".$get['id'].";");
 
                 //-> Aktualisiere die User-Statistik
-                db("UPDATE ".$db['userstats']." SET `logins` = logins+1 WHERE user = '".$get['id']."'");
+                db("UPDATE `".$db['userstats']."` SET `logins` = logins+1 WHERE `user` = ".$get['id'].";");
 
                 //-> Aktualisiere Ip-Count Tabelle
-                $qry = db("SELECT id FROM `".$db['clicks_ips']."` WHERE `ip` LIKE '".$userip."' AND `uid` = 0");
+                $qry = db("SELECT `id` FROM `".$db['clicks_ips']."` WHERE `ip` = '".$userip."' AND `uid` = 0;");
                 if(_rows($qry)) while($get_ci = _fetch($qry)) { db("UPDATE `".$db['clicks_ips']."` SET `uid` = ".$get['id']." WHERE `id` = ".$get_ci['id'].";"); }
 
                 unset($get,$permanent_key,$get_almgr);
@@ -402,10 +401,9 @@ function allow_url_fopen_support() {
  **/
 function userid() {
     global $db;
-
     if(empty($_SESSION['id']) || empty($_SESSION['pwd'])) return 0;
     if(!dbc_index::issetIndex('user_'.$_SESSION['id'])) {
-        $sql = db("SELECT * FROM ".$db['users']." WHERE id = '".$_SESSION['id']."' AND pwd = '".$_SESSION['pwd']."'");
+        $sql = db("SELECT * FROM `".$db['users']."` WHERE `id` = ".intval($_SESSION['id'])." AND `pwd` = '".$_SESSION['pwd']."';");
         if(!_rows($sql)) return 0;
         $get = _fetch($sql);
         dbc_index::setIndex('user_'.$get['id'], $get);
@@ -473,7 +471,7 @@ function languages() {
 
 //-> Userspezifiesche Dinge
 if($userid >= 1 && $ajaxJob != true && isset($_SESSION['lastvisit']))
-    db("UPDATE ".$db['userstats']." SET `hits` = hits+1, `lastvisit` = '".intval($_SESSION['lastvisit'])."' WHERE user = ".$userid);
+    db("UPDATE `".$db['userstats']."` SET `hits` = hits+1, `lastvisit` = ".intval($_SESSION['lastvisit'])." WHERE `user` = ".$userid.";");
 
 //-> Settings auslesen
 function settings($what,$use_dbc=true) {
@@ -511,7 +509,7 @@ function config($what,$use_dbc=true) {
         if($use_dbc)
             $dbd = dbc_index::getIndex('config');
         else
-            $dbd = db("SELECT * FROM ".$db['config'],false,true);
+            $dbd = db("SELECT * FROM `".$db['config']."`;",false,true);
 
         $return = array();
         foreach ($dbd as $key => $var) {
@@ -526,7 +524,7 @@ function config($what,$use_dbc=true) {
         if($use_dbc)
             return dbc_index::getIndexKey('config', $what);
 
-        $get = db("SELECT `".$what."` FROM ".$db['config'],false,true);
+        $get = db("SELECT `".$what."` FROM `".$db['config']."`;",false,true);
         return $get[$what];
     }
 }
@@ -618,7 +616,7 @@ function glossar_load_index() {
     if(!$use_glossar) return false;
 
     $gl_words = array(); $gl_desc = array();
-    $qryglossar = db("SELECT `word`,`glossar` FROM ".$db['glossar']);
+    $qryglossar = db("SELECT `word`,`glossar` FROM `".$db['glossar']."`;");
     while($getglossar = _fetch($qryglossar)) {
         $gl_words[] = re($getglossar['word']);
         $gl_desc[]  = $getglossar['glossar'];
@@ -1171,8 +1169,8 @@ function fileExists($url,$timeout=1) {
  * @return string
  */
 function spChars($txt) {
-    $search  = array("Ä","ä","Ü","ü","Ö","ö","ß","€");
-    $replace = array("&Auml;","&auml;","&Uuml;","&uuml;","&Ouml;","&ouml;","&szlig;","&euro;");
+    $search  = array("Ä","ä","Ü","ü","Ö","ö","ß");
+    $replace = array("&Auml;","&auml;","&Uuml;","&uuml;","&Ouml;","&ouml;","&szlig;");
     return str_replace($search,$replace,$txt);
 }
 
@@ -1205,25 +1203,53 @@ function GetServerVars($var) {
 }
 
 //-> Funktion um diverse Dinge aus Tabellen auszaehlen zu lassen
-function cnt($count, $where = "", $what = "id") {
-    $cnt_sql = db("SELECT COUNT(".$what.") AS num FROM ".$count." ".$where.";");
+//-> Single & Multi Version
+function cnt($db, $where = "", $what = "id") {
+    $cnt_sql = db("SELECT COUNT(".$what.") AS `cnt` FROM `".$db."` ".$where.";");
     if(_rows($cnt_sql)) {
         $cnt = _fetch($cnt_sql);
-        return $cnt['num'];
+        return $cnt['cnt'];
     }
 
     return 0;
 }
 
+function cnt_multi($db, $where = "", $whats = array('id')) {
+    $cnt_sql = "";
+    foreach ($whats as $what) {
+        $cnt_sql .= "COUNT(".$what.") AS `cnt_".$what."`,";
+    }
+    $cnt_sql = substr($cnt_sql, 0, -1);
+    $cnt_sql = db("SELECT ".$cnt_sql." FROM `".$db."` ".$where.";");
+    if(_rows($cnt_sql))
+        return _fetch($cnt_sql);
+
+    return array();
+}
+
 //-> Funktion um diverse Dinge aus Tabellen zusammenzaehlen zu lassen
-function sum($db, $where = "", $what) {
-    $cnt_sql = db("SELECT SUM(".$what.") AS num FROM ".$db.$where.";");
-    if(_rows($cnt_sql)) {
-        $cnt = _fetch($cnt_sql);
-        return $cnt['num'];
+//-> Single & Multi Version
+function sum($db, $where = "", $what = "id") {
+    $sum_sql = db("SELECT SUM(".$what.") AS `sum` FROM `".$db."` ".$where.";");
+    if(_rows($sum_sql)) {
+        $sum = _fetch($sum_sql);
+        return $sum['sum'];
     }
 
     return 0;
+}
+
+function sum_multi($db, $where = "", $whats = array('id')) {
+    $sum_sql = "";
+    foreach ($whats as $what) {
+        $sum_sql .= "SUM(".$what.") AS `sum_".$what."`,";
+    }
+    $sum_sql = substr($sum_sql, 0, -1);
+    $sum_sql = db("SELECT ".$sum_sql." FROM `".$db."` ".$where.";");
+    if(_rows($sum_sql))
+        return _fetch($sum_sql);
+
+    return array();
 }
 
 function orderby($sort) {
@@ -1303,7 +1329,7 @@ function update_maxonline() {
     $count = cnt($db['c_who']);
     $get = db("SELECT `maxonline` FROM `".$db['counter']."` WHERE `today` = '".$today."';",false,true);
     if($get['maxonline'] < $count)
-        db("UPDATE `".$db['counter']."` SET `maxonline` = ".$count." WHERE today = '".$today."';");
+        db("UPDATE `".$db['counter']."` SET `maxonline` = ".$count." WHERE `today` = '".$today."';");
 }
 
 //-> Prueft, wieviele Besucher gerade online sind
@@ -1323,7 +1349,7 @@ function online_guests($where='') {
 //-> Prueft, wieviele registrierte User gerade online sind
 function online_reg() {
     global $db,$useronline;
-    return cnt($db['users'], " WHERE time+".$useronline.">".time()." AND `online` = '1';");
+    return cnt($db['users'], " WHERE time+".$useronline.">".time()." AND `online` = 1");
 }
 
 //-> Prueft, ob der User eingeloggt ist und wenn ja welches Level besitzt er
@@ -1332,7 +1358,7 @@ function checkme($userid_set=0) {
     if(!$userid = ($userid_set != 0 ? intval($userid_set) : userid())) return 0;
     if(empty($_SESSION['id']) || empty($_SESSION['pwd'])) return 0;
     if(!dbc_index::issetIndex('user_'.$userid)) {
-        $qry = db("SELECT * FROM ".$db['users']." WHERE id = ".$userid." AND pwd = '".$_SESSION['pwd']."' AND ip = '".$_SESSION['ip']."'");
+        $qry = db("SELECT * FROM `".$db['users']."` WHERE `id` = ".$userid." AND `pwd` = '".$_SESSION['pwd']."' AND `ip` = '".$_SESSION['ip']."';");
         if(!_rows($qry)) return 0;
         $get = _fetch($qry);
         dbc_index::setIndex('user_'.$get['id'], $get);
@@ -1347,7 +1373,7 @@ function isBanned($userid_set=0,$logout=true) {
     global $db,$userid;
     $userid_set = $userid_set ? $userid_set : $userid;
     if(checkme($userid_set) >= 1 || $userid_set) {
-        $get = db("SELECT banned FROM ".$db['users']." WHERE `id` = ".intval($userid_set)." LIMIT 1",false,true);
+        $get = db("SELECT `banned` FROM `".$db['users']."` WHERE `id` = ".intval($userid_set)." LIMIT 1;",false,true);
         if($get['banned']) {
             if($logout) {
                 dzcp_session_destroy();
@@ -1371,14 +1397,14 @@ function permission($check,$uid=0) {
     else {
         if($uid) {
             // check rank permission
-            if(db("SELECT s1.`".$check."` FROM ".$db['permissions']." AS s1
-                   LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi`
-                   WHERE s2.`user` = '".intval($uid)."' AND s1.`".$check."` = '1' AND s2.`posi` != '0'",true))
+            if(db("SELECT s1.`".$check."` FROM `".$db['permissions']."` AS `s1`
+                   LEFT JOIN `".$db['userpos']."` AS `s2` ON s1.`pos` = s2.`posi`
+                   WHERE s2.`user` = ".intval($uid)." AND s1.`".$check."` = 1 AND s2.`posi` != 0;",true))
                 return true;
 
             // check user permission
             if(!dbc_index::issetIndex('user_permission_'.$uid)) {
-                $permissions = db("SELECT * FROM ".$db['permissions']." WHERE user = '".intval($uid)."'",false,true);
+                $permissions = db("SELECT * FROM `".$db['permissions']."` WHERE `user` = ".intval($uid).";",false,true);
                 dbc_index::setIndex('user_permission_'.$uid, $permissions);
             }
 
@@ -1392,24 +1418,24 @@ function permission($check,$uid=0) {
 //-> Checkt, ob neue Nachrichten vorhanden sind
 function check_msg() {
     global $db;
-    if(db("SELECT page FROM ".$db['msg']." WHERE an = '".$_SESSION['id']."' AND page = 0",true)) {
-        db("UPDATE ".$db['msg']." SET `page` = '1' WHERE an = '".$_SESSION['id']."'");
+    if(db("SELECT `page` FROM `".$db['msg']."` WHERE `an` = ".intval($_SESSION['id'])." AND `page` = 0;",true)) {
+        db("UPDATE `".$db['msg']."` SET `page` = 1 WHERE `an` = ".intval($_SESSION['id']).";");
         return show("user/new_msg", array("new" => _site_msg_new));
     }
 
-    return '';
+    return false;
 }
 
 //-> Prueft sicherheitsrelevante Gegebenheiten im Forum
 function forumcheck($tid, $what) {
     global $db;
-    return db("SELECT ".$what." FROM ".$db['f_threads']." WHERE id = '".intval($tid)."' AND ".$what." = '1'",true) ? true : false;
+    return db("SELECT `".$what."` FROM `".$db['f_threads']."` WHERE `id` = ".intval($tid)." AND ".$what." = 1;",true) ? true : false;
 }
 
 //-> Prueft ob ein User schon in der Buddyliste vorhanden ist
 function check_buddy($buddy) {
     global $db,$userid;
-    return !db("SELECT buddy FROM ".$db['buddys']." WHERE user = '".intval($userid)."' AND buddy = '".intval($buddy)."'",true) ? true : false;
+    return !db("SELECT `buddy` FROM `".$db['buddys']."` WHERE `user` = ".intval($userid)." AND `buddy` = ".intval($buddy).";",true) ? true : false;
 }
 
 //-> Funktion um bei Clanwars Endergebnisse auszuwerten
@@ -1549,11 +1575,11 @@ function mkpwd($passwordLength=8,$specialcars=true) {
 //-> Passwortabfrage
 function checkpwd($user, $pwd) {
     global $db;
-    return db("SELECT id,user,nick,pwd
-               FROM ".$db['users']."
-               WHERE user = '".up($user)."'
-               AND pwd = '".up($pwd)."'
-               AND level != '0'",true) ? true : false;
+    return db("SELECT `id`,`user`,`nick`,`pwd`
+               FROM `".$db['users']."`
+               WHERE `user` = '".up($user)."'
+               AND `pwd` = '".up($pwd)."'
+               AND `level` != 0;",true) ? true : false;
 }
 
 //-> Infomeldung ausgeben
@@ -1607,16 +1633,6 @@ function img_cw($folder="", $img="") {
 
 function gallery_size($img="") {
     return "<a href=\"../gallery/images/".$img."\" rel=\"lightbox[gallery_".intval($img)."]\"><img src=\"../thumbgen.php?img=gallery/images/".$img."\" alt=\"\" /></a>";
-}
-
-//-> URL wird auf Richtigkeit ueberprueft
-function check_url($url) {
-    if($url && $fp = @fopen($url, "r")) {
-        return true;
-        @fclose($fp);
-    }
-
-    return false;
 }
 
 //-> Blaetterfunktion
@@ -1685,7 +1701,7 @@ function artikelSites($sites, $id) {
 function autor($uid, $class="", $nick="", $email="", $cut="",$add="") {
     global $db;
     if(!dbc_index::issetIndex('user_'.intval($uid))) {
-        $qry = db("SELECT * FROM ".$db['users']." WHERE id = '".intval($uid)."'");
+        $qry = db("SELECT * FROM `".$db['users']."` WHERE `id` = ".intval($uid).";");
         if(_rows($qry)) {
             $get = _fetch($qry);
             dbc_index::setIndex('user_'.$get['id'], $get);
@@ -1706,7 +1722,7 @@ function autor($uid, $class="", $nick="", $email="", $cut="",$add="") {
 function cleanautor($uid, $class="", $nick="", $email="", $cut="") {
     global $db;
     if(!dbc_index::issetIndex('user_'.intval($uid))) {
-        $qry = db("SELECT * FROM ".$db['users']." WHERE id = '".intval($uid)."'");
+        $qry = db("SELECT * FROM `".$db['users']."` WHERE `id` = ".intval($uid).";");
         if(_rows($qry)) {
             $get = _fetch($qry);
             dbc_index::setIndex('user_'.$get['id'], $get);
@@ -1722,7 +1738,7 @@ function cleanautor($uid, $class="", $nick="", $email="", $cut="") {
 function rawautor($uid) {
     global $db;
     if(!dbc_index::issetIndex('user_'.intval($uid))) {
-        $qry = db("SELECT * FROM ".$db['users']." WHERE id = '".intval($uid)."'");
+        $qry = db("SELECT * FROM `".$db['users']."` WHERE `id` = ".intval($uid).";");
         if(_rows($qry)) {
             $get = _fetch($qry);
             dbc_index::setIndex('user_'.$get['id'], $get);
@@ -1738,7 +1754,7 @@ function rawautor($uid) {
 //-> Nickausgabe ohne Profillink oder Emaillink fr das ForenAbo
 function fabo_autor($uid) {
     global $db;
-    $qry = db("SELECT nick FROM ".$db['users']." WHERE id = '".$uid."'");
+    $qry = db("SELECT `nick` FROM `".$db['users']."` WHERE `id` = ".intval($uid).";");
     if(_rows($qry)) {
         $get = _fetch($qry);
         return show(_user_link_fabo, array("id" => $uid, "nick" => re($get['nick'])));
@@ -1749,7 +1765,7 @@ function fabo_autor($uid) {
 
 function blank_autor($uid) {
     global $db;
-    $qry = db("SELECT nick FROM ".$db['users']." WHERE id = '".$uid."'");
+    $qry = db("SELECT `nick` FROM `".$db['users']."` WHERE `id` = ".intval($uid).";");
     if(_rows($qry)) {
         $get = _fetch($qry);
         return show(_user_link_blank, array("id" => $uid, "nick" => re($get['nick'])));
@@ -1765,30 +1781,24 @@ function jsconvert($txt)
 //-> interner Forencheck
 function fintern($id) {
     global $db,$userid,$chkMe;
-    $fget = _fetch(db("SELECT s1.intern,s2.id FROM ".$db['f_kats']." AS s1 LEFT JOIN ".$db['f_skats']." AS s2 ON s2.`sid` = s1.id WHERE s2.`id` = '".intval($id)."'"));
-
-    if(!$chkMe)
+    if(!$chkMe) {
+        $fget = db("SELECT s1.`intern`,s2.`id` FROM `".$db['f_kats']."` AS `s1` LEFT JOIN `".$db['f_skats']."` AS `s2` ON s2.`sid` = s1.`id` WHERE s2.`id` = ".intval($id).";",false,true);
         return empty($fget['intern']) ? true : false;
-    else
-    {
-      $team = db("SELECT * FROM ".$db['f_access']." AS s1 LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi` WHERE s2.`user` = '".intval($userid)."' AND s2.`posi` != '0' AND s1.`forum` = '".intval($id)."'");
-      $user = db("SELECT * FROM ".$db['f_access']." WHERE `user` = '".intval($userid)."' AND `forum` = '".intval($id)."'");
-
-      if(_rows($user) || _rows($team) || $chkMe == 4 || !$fget['intern'])
-          return true;
-      else if(!$chkMe)
-          return false;
-      else
-          return false;
     }
+    
+    $team = db("SELECT s1.`id` FROM `".$db['f_access']."` AS `s1` LEFT JOIN `".$db['userpos']."` AS `s2` ON s1.`pos` = s2.`posi` WHERE s2.`user` = ".intval($userid)." AND s2.`posi` != 0 AND s1.`forum` = ".intval($id).";",true);
+    $user = db("SELECT `id` FROM `".$db['f_access']."` WHERE `user` = ".intval($userid)." AND `forum` = ".intval($id).";",true);
+    if($user || $team || $chkMe == 4 || !$fget['intern']) return true;
+    else if(!$chkMe) return false;
+    else return false;
 }
 
 //-> Einzelne Userdaten ermitteln
-function data($what,$tid=0) {
+function data($what='id',$tid=0) {
     global $db,$userid;
     if(!$tid) $tid = $userid;
     if(!dbc_index::issetIndex('user_'.$tid)) {
-        $get = db("SELECT * FROM ".$db['users']." WHERE id = '".intval($tid)."'",false,true);
+        $get = db("SELECT * FROM `".$db['users']."` WHERE `id` = ".intval($tid).";",false,true);
         dbc_index::setIndex('user_'.$tid, $get);
     }
 
@@ -1796,11 +1806,11 @@ function data($what,$tid=0) {
 }
 
 //-> Einzelne Userstatistiken ermitteln
-function userstats($what,$tid=0) {
+function userstats($what='id',$tid=0) {
     global $db,$userid;
     if(!$tid) $tid = $userid;
     if(!dbc_index::issetIndex('userstats_'.$tid)) {
-        $get = db("SELECT * FROM ".$db['userstats']." WHERE user = '".intval($tid)."'",false,true);
+        $get = db("SELECT * FROM `".$db['userstats']."` WHERE `user` = ".intval($tid).";",false,true);
         dbc_index::setIndex('userstats_'.$tid, $get);
     }
 
@@ -1822,20 +1832,25 @@ function sendMail($mailto,$subject,$content) {
 }
 
 function check_msg_emal() {
-    global $db,$httphost;
-    $qry = db("SELECT s1.an,s1.page,s1.titel,s1.sendmail,s1.id AS mid,s2.id,s2.nick,s2.email,s2.pnmail FROM ".$db['msg']." AS s1 LEFT JOIN ".$db['users']." AS s2 ON s2.id = s1.an WHERE page = 0 AND sendmail = 0");
-    while($get = _fetch($qry)) {
-        if($get['pnmail']) {
-            db("UPDATE ".$db['msg']." SET `sendmail` = '1' WHERE id = '".$get['mid']."'");
-            $subj = show(settings('eml_pn_subj'), array("domain" => $httphost));
-            $message = show(bbcode_email(settings('eml_pn')), array("nick" => re($get['nick']), "domain" => $httphost, "titel" => $get['titel'], "clan" => settings('clanname')));
-            sendMail(re($get['email']), $subj, $message);
+    global $db,$httphost,$ajaxJob;
+    if(!$ajaxJob) {
+        $qry = db("SELECT s1.`an`,s1.`page`,s1.`titel`,s1.`sendmail`,s1.`id` AS `mid`, "
+                . "s2.`id`,s2.`nick`,s2.`email`,s2.`pnmail` FROM `".$db['msg']."` AS `s1` "
+                . "LEFT JOIN `".$db['users']."` AS `s2` ON s2.`id` = s1.`an` WHERE `page` = 0 AND `sendmail` = 0;");
+        if(_rows($qry)) {
+            while($get = _fetch($qry)) {
+                if($get['pnmail']) {
+                    db("UPDATE `".$db['msg']."` SET `sendmail` = 1 WHERE `id` = ".$get['mid'].";");
+                    $subj = show(settings('eml_pn_subj'), array("domain" => $httphost));
+                    $message = show(bbcode_email(settings('eml_pn')), array("nick" => re($get['nick']), "domain" => $httphost, "titel" => $get['titel'], "clan" => settings('clanname')));
+                    sendMail(re($get['email']), $subj, $message);
+                }
+            }
         }
     }
 }
 
-if(!$ajaxJob)
-    check_msg_emal();
+check_msg_emal(); //CALL
 
 //-> Checkt ob ein Ereignis neu ist
 function check_new($datum,$new = "",$datum2 = "") {
@@ -1959,7 +1974,7 @@ function sgames($game = '') {
 //Umfrageantworten selektieren
 function voteanswer($what, $vid) {
     global $db;
-    $get = db("SELECT sel FROM ".$db['vote_results']." WHERE what = '".up($what)."' AND vid = '".$vid."'",false,true);
+    $get = db("SELECT `sel` FROM `".$db['vote_results']."` WHERE `what` = '".up($what)."' AND `vid` = ".intval($vid).";",false,true);
     return $get['sel'];
 }
 
@@ -1991,19 +2006,19 @@ function getrank($tid, $squad="", $profil=false) {
     global $db;
     if($squad) {
         if($profil)
-            $qry = db("SELECT * FROM ".$db['userpos']." AS s1 LEFT JOIN ".$db['squads']." AS s2 ON s1.squad = s2.id WHERE s1.user = '".intval($tid)."' AND s1.squad = '".intval($squad)."' AND s1.posi != '0'");
+            $qry = db("SELECT s1.`posi`,s1.`name` FROM `".$db['userpos']."` AS `s1` LEFT JOIN `".$db['squads']."` AS `s2` ON s1.`squad` = s2.`id` WHERE s1.`user` = ".intval($tid)." AND s1.`squad` = ".intval($squad)." AND s1.`posi` != 0;");
         else
-            $qry = db("SELECT * FROM ".$db['userpos']." WHERE user = '".intval($tid)."' AND squad = '".intval($squad)."' AND posi != '0'");
+            $qry = db("SELECT `posi` FROM `".$db['userpos']."` WHERE `user` = ".intval($tid)." AND `squad` = ".intval($squad)." AND `posi` != 0;");
 
         if(_rows($qry)) {
             while($get = _fetch($qry)) {
-                $getp = db("SELECT * FROM ".$db['pos']." WHERE id = '".intval($get['posi'])."'",false,true);
+                $getp = db("SELECT `position` FROM `".$db['pos']."` WHERE `id` = ".intval($get['posi']).";",false,true);
                 if(!empty($get['name'])) $squadname = '<b>'.$get['name'].':</b> ';
                 else $squadname = '';
                 return $squadname.$getp['position'];
             }
         } else {
-            $get = _fetch(db("SELECT level,banned FROM ".$db['users']." WHERE id = '".intval($tid)."'"));
+            $get = _fetch(db("SELECT `level`,`banned` FROM `".$db['users']."` WHERE `id` = ".intval($tid).";"));
             if(!$get['level'] && !$get['banned'])     return _status_unregged;
             else if($get['level'] == 1)               return _status_user;
             else if($get['level'] == 2)               return _status_trial;
@@ -2013,12 +2028,12 @@ function getrank($tid, $squad="", $profil=false) {
             else return _gast;
         }
     } else {
-        $qry = db("SELECT s1.*,s2.position FROM ".$db['userpos']." AS s1 LEFT JOIN ".$db['pos']." AS s2 ON s1.posi = s2.id WHERE s1.user = '".intval($tid)."' AND s1.posi != '0' ORDER BY s2.pid ASC");
+        $qry = db("SELECT s1.*,s2.`position` FROM `".$db['userpos']."` AS `s1` LEFT JOIN `".$db['pos']."` AS `s2` ON s1.`posi` = s2.`id` WHERE s1.`user` = ".intval($tid)." AND s1.`posi` != 0 ORDER BY s2.pid ASC");
         if(_rows($qry)) {
             $get = _fetch($qry);
             return $get['position'];
         } else {
-            $get = _fetch(db("SELECT level,banned FROM ".$db['users']." WHERE id = '".intval($tid)."'"));
+            $get = db("SELECT `level`,`banned` FROM `".$db['users']."` WHERE `id` = ".intval($tid).";",false,true);
             if(!$get['level'] && !$get['banned'])    return _status_unregged;
             elseif($get['level'] == 1)               return _status_user;
             elseif($get['level'] == 2)               return _status_trial;
@@ -2034,7 +2049,7 @@ function getrank($tid, $squad="", $profil=false) {
 function set_lastvisit() {
     global $db,$useronline,$userid;
     if($userid) {
-        if(!db("SELECT id FROM ".$db['users']." WHERE id = ".intval($userid)." AND time+'".$useronline."'>'".time()."'",true)) {
+        if(!db("SELECT `id` FROM `".$db['users']."` WHERE `id` = ".intval($userid)." AND time+".$useronline.">".time().";",true)) {
             $_SESSION['lastvisit'] = data("time");
         }
     }
@@ -2050,7 +2065,7 @@ function onlinecheck($tid) {
     if(array_key_exists($tid, $users_id_index)) {
         $row = dbc_index::getIndexKey('onlinecheck', $tid);
     } else {
-        $row = db("SELECT id FROM ".$db['users']." WHERE id = '".intval($tid)."' AND time+'".$useronline."'>'".time()."' AND online = 1",true);
+        $row = db("SELECT `id` FROM `".$db['users']."` WHERE `id` = '".intval($tid)."' AND time+".$useronline.">".time()." AND `online` = 1;",true);
         $users_id_index[$tid] = $row;
         dbc_index::setIndex('onlinecheck', $users_id_index);
     }
@@ -2076,17 +2091,14 @@ function pfields_name($name) {
 //-> Checkt versch. Dinge anhand der Hostmaske eines Users
 function ipcheck($what,$time = "") {
     global $db,$userip;
-    $get = db("SELECT time,what FROM ".$db['ipcheck']." WHERE what = '".$what."' AND ip = '".$userip."' ORDER BY time DESC",false,true);
+    $get = db("SELECT `time`,`what` FROM `".$db['ipcheck']."` WHERE `what` = '".$what."' AND `ip` = '".$userip."' ORDER BY `time` DESC;",false,true);
     if(preg_match("#vid#", $get['what']))
         return true;
     else {
         if($get['time']+$time<time())
-            db("DELETE FROM ".$db['ipcheck']." WHERE what = '".$what."' AND ip = '".$userip."' AND time+'".$time."'<'".time()."'");
+            db("DELETE FROM `".$db['ipcheck']."` WHERE `what` = '".$what."' AND `ip` = '".$userip."' AND time+".$time."<".time().";");
 
-        if($get['time']+$time>time())
-            return true;
-        else
-            return false;
+        return ($get['time']+$time>time() ? true : false);
     }
 }
 
@@ -2179,7 +2191,7 @@ function admin_perms($userid) {
     $e = array('gb', 'shoutbox', 'editusers', 'votes', 'contact', 'joinus', 'intnews', 'forum', 'gs_showpw');
 
    // check user permission
-    $c = db("SELECT * FROM ".$db['permissions']." WHERE user = '".intval($userid)."'",false,true);
+    $c = db("SELECT * FROM `".$db['permissions']."` WHERE `user` = ".intval($userid).";",false,true);
     if(!empty($c)) {
         foreach($c AS $v => $k) {
             if($v != 'id' && $v != 'user' && $v != 'pos' && !in_array($v, $e)) {
@@ -2192,7 +2204,7 @@ function admin_perms($userid) {
     }
 
    // check rank permission
-    $qry = db("SELECT s1.* FROM ".$db['permissions']." AS s1 LEFT JOIN ".$db['userpos']." AS s2 ON s1.`pos` = s2.`posi` WHERE s2.`user` = '".intval($userid)."' AND s2.`posi` != '0'");
+    $qry = db("SELECT s1.* FROM `".$db['permissions']."` AS `s1` LEFT JOIN `".$db['userpos']."` AS `s2` ON s1.`pos` = s2.`posi` WHERE s2.`user` = ".intval($userid)." AND s2.`posi` != 0;");
     while($r = _fetch($qry)) {
         foreach($r AS $v => $k) {
             if($v != 'id' && $v != 'user' && $v != 'pos' && !in_array($v, $e)) {
@@ -2209,7 +2221,7 @@ function admin_perms($userid) {
 
 //-> blacklist um spider/crawler von der Besucherstatistik auszuschliessen
 function isSpider() {
-    $uagent = $_SERVER['HTTP_USER_AGENT'];
+    $uagent = GetServerVars('HTTP_USER_AGENT');
     $ex = explode("\n", file_get_contents(basePath.'/inc/_spiders.txt'));
     for($i=0;$i<=count($ex)-1;$i++) {
         if(stristr($uagent, trim($ex[$i])))
@@ -2262,7 +2274,7 @@ function check_internal_url() {
     if(strpos($pfad, "index.php") !== false)
         $pfad = str_replace('index.php','',$pfad);
 
-    $qry_navi = db("SELECT `internal` FROM ".$db['navi']." WHERE `url` = '".$pfad."' OR `url` = '".$pfad.'index.php'."'");
+    $qry_navi = db("SELECT `internal` FROM `".$db['navi']."` WHERE `url` = '".$pfad."' OR `url` = '".$pfad.'index.php'."';");
     if(_rows($qry_navi)) {
         $get_navi = _fetch($qry_navi);
         if($get_navi['internal'])
@@ -2312,16 +2324,16 @@ function getBoardPermissions($checkID = 0, $pos = 0) {
     global $db, $dir;
 
     $break = 0; $i_forum = ''; $fkats = '';
-    $qry = db("SELECT id,name FROM ".$db['f_kats']." WHERE intern = '1' ORDER BY `kid` ASC");
+    $qry = db("SELECT `id`,`name` FROM `".$db['f_kats']."` WHERE `intern` = 1 ORDER BY `kid` ASC;");
     while($get = _fetch($qry)) {
         unset($kats, $fkats, $break);
         $kats = (empty($katbreak) ? '' : '<div style="clear:both">&nbsp;</div>').'<table class="hperc" cellspacing="1"><tr><td class="contentMainTop"><b>'.re($get["name"]).'</b></td></tr></table>';
         $katbreak = 1;
 
-        $qry2 = db("SELECT kattopic,id FROM ".$db['f_skats']." WHERE `sid` = '".$get['id']."' ORDER BY `kattopic` ASC"); $break = 0; $fkats = '';
+        $qry2 = db("SELECT `kattopic`,`id` FROM `".$db['f_skats']."` WHERE `sid` = ".$get['id']." ORDER BY `kattopic` ASC;"); $break = 0; $fkats = '';
         while($get2 = _fetch($qry2)) {
             $br = ($break % 2) ? '<br />' : ''; $break++;
-            $check =  db("SELECT * FROM ".$db['f_access']." WHERE `".(empty($pos) ? 'user' : 'pos')."` = '".intval($checkID)."' AND ".(empty($pos) ? 'user' : 'pos')." != '0' AND `forum` = '".$get2['id']."'");
+            $check =  db("SELECT `id` FROM `".$db['f_access']."` WHERE `".(empty($pos) ? 'user' : 'pos')."` = ".intval($checkID)." AND ".(empty($pos) ? 'user' : 'pos')." != 0 AND `forum` = ".$get2['id'].";");
             $chk = _rows($check) ? ' checked="checked"' : '';
             $fkats .= '<input type="checkbox" class="checkbox" id="board_'.$get2['id'].'" name="board['.$get2['id'].']" value="'.$get2['id'].'"'.$chk.' /><label for="board_'.$get2['id'].'"> '.re($get2['kattopic']).'</label> '.$br;
         }
@@ -2335,34 +2347,34 @@ function getBoardPermissions($checkID = 0, $pos = 0) {
 //-> schreibe in dei IPCheck Tabelle
 function setIpcheck($what = '') {
     global $db, $userip;
-    db("INSERT INTO ".$db['ipcheck']." SET `ip` = '".$userip."', `user_id` = '".userid()."', `what` = '".$what."', `time` = ".time().";");
+    db("INSERT INTO `".$db['ipcheck']."` SET `ip` = '".$userip."', `user_id` = ".userid().", `what` = '".$what."', `time` = ".time().";");
 }
 
 //-> Preuft ob alle clicks nur einmal gezahlt werden *gast/user
 function count_clicks($side_tag='',$clickedID=0,$update=true) {
     global $db,$userip,$userid,$chkMe;
-    $qry = db("SELECT id,side FROM ".$db['clicks_ips']." WHERE uid = 0 AND time <= ".time());
-    if(_rows($qry)) while($get = _fetch($qry)) { if($get['side'] != 'vote') db("DELETE FROM ".$db['clicks_ips']." WHERE `id` = ".$get['id']); }
+    $qry = db("SELECT `id`,`side` FROM `".$db['clicks_ips']."` WHERE `uid` = 0 AND `time` <= ".time().";");
+    if(_rows($qry)) while($get = _fetch($qry)) { if($get['side'] != 'vote') db("DELETE FROM `".$db['clicks_ips']."` WHERE `id` = ".$get['id'].";"); }
 
     if($chkMe != 'unlogged') {
-        if(db("SELECT id FROM ".$db['clicks_ips']." WHERE `uid` = '".$userid."' AND `ids` = '".$clickedID."' AND `side` = '".$side_tag."'",true))
+        if(db("SELECT `id` FROM `".$db['clicks_ips']."` WHERE `uid` = ".$userid." AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';",true))
             return false;
 
-        if(db("SELECT id FROM ".$db['clicks_ips']." WHERE `ip` = '".$userip."' AND `ids` = '".$clickedID."' AND `side` = '".$side_tag."'",true)) {
+        if(db("SELECT `id` FROM `".$db['clicks_ips']."` WHERE `ip` = ".$userip." AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';",true)) {
             if($update)
-                db("UPDATE `".$db['clicks_ips']."` SET `uid` = '".$userid."', `time` = '".(time()+count_clicks_expires)."' WHERE `ip` = '".$userip."' AND `ids` = '".$clickedID."' AND `side` = '".$side_tag."'");
+                db("UPDATE `".$db['clicks_ips']."` SET `uid` = ".$userid.", `time` = '".(time()+count_clicks_expires)."' WHERE `ip` = '".$userip."' AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';");
 
             return false;
         } else {
             if($update)
-                db("INSERT INTO ".$db['clicks_ips']." (`id` ,`ip` ,`uid` ,`ids`, `side`, `time`) VALUES (NULL , '".$userip."', '".$userid."', '".$clickedID."', '".$side_tag."', '".(time()+count_clicks_expires)."')");
+                db("INSERT INTO `".$db['clicks_ips']."` (`id` ,`ip` ,`uid` ,`ids`, `side`, `time`) VALUES (NULL , '".$userip."', ".$userid.", ".$clickedID.", '".$side_tag."', '".(time()+count_clicks_expires)."');");
 
             return true;
         }
     } else {
-        if(!db("SELECT id FROM ".$db['clicks_ips']." WHERE `ip` = '".visitorIp()."' AND `ids` = '".$clickedID."' AND `side` = '".$side_tag."'",true)) {
+        if(!db("SELECT id FROM `".$db['clicks_ips']."` WHERE `ip` = '".visitorIp()."' AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';",true)) {
             if($update)
-                db("INSERT INTO ".$db['clicks_ips']." (`id` ,`ip` ,`uid` ,`ids`, `side`, `time`) VALUES (NULL , '".$userip."', '0', '".$clickedID."', '".$side_tag."', '".(time()+count_clicks_expires)."')");
+                db("INSERT INTO `".$db['clicks_ips']."` (`id` ,`ip` ,`uid` ,`ids`, `side`, `time`) VALUES (NULL , '".$userip."', 0, ".$clickedID.", '".$side_tag."', '".(time()+count_clicks_expires)."');");
 
             return true;
         }
@@ -2602,12 +2614,13 @@ if($functions_files = get_files(basePath.'/inc/additional-functions/',false,true
 }
 
 //-> Navigation einbinden
-include_once(basePath.'/inc/menu-functions/navi.php');
+if(file_exists(basePath.'/inc/menu-functions/navi.php'))
+    include_once(basePath.'/inc/menu-functions/navi.php');
 
 //-> Ausgabe des Indextemplates
 function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index') {
     global $db,$userid,$userip,$tmpdir,$chkMe,$charset,$mysql,$dir;
-    global $designpath,$language,$cp_color,$copyright,$time_start;
+    global $designpath,$language,$cp_color,$time_start;
 
     // Timer Stop
     $time = round(generatetime() - $time_start,4);
@@ -2643,7 +2656,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index') {
             include_once(basePath.'/inc/menu-functions/login.php');
         else {
             $check_msg = check_msg(); set_lastvisit(); $login = "";
-            db("UPDATE ".$db['users']." SET `time` = '".time()."', `whereami` = '".up($where)."' WHERE id = '".intval($userid)."'");
+            db("UPDATE `".$db['users']."` SET `time` = ".time().", `whereami` = '".up($where)."' WHERE `id` = ".intval($userid).";");
         }
 
         //init templateswitch
@@ -2666,7 +2679,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index') {
             $index = error(_error_have_to_be_logged, 1);
 
         $where = preg_replace_callback("#autor_(.*?)$#",create_function('$id', 'return re(data("nick","$id[1]"));'),$where);
-        $index = empty($index) ? '' : (empty($check_msg) ? '' : $check_msg).'<table class="mainContent" cellspacing="1">'.$index.'</table>';
+        $index = empty($index) ? '' : (!$check_msg ? '' : $check_msg).'<table class="mainContent" cellspacing="1">'.$index.'</table>';
 
         //-> Sort & filter placeholders
         //default placeholders
@@ -2680,7 +2693,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index') {
 
         //filter placeholders
         $dir = $designpath; //after template index autodetect!!!
-        $blArr = array("[clanname]","[title]","[copyright]","[java_vars]","[login]", "[template_switch]","[headtitle]","[index]", "[time]","[rss]","[dir]","[charset]","[where]","[lang]");
+        $blArr = array("[clanname]","[title]","[java_vars]","[login]","[template_switch]","[headtitle]","[index]","[time]","[rss]","[dir]","[charset]","[where]","[lang]");
         $pholdervars = '';
         for($i=0;$i<=count($blArr)-1;$i++) {
             if(preg_match("#".$blArr[$i]."#",$pholder))

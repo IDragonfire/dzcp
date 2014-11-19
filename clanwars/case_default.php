@@ -100,11 +100,10 @@ if(defined('_Clanwars')) {
                                                         "result" => cw_result_nopic($getm['punkte'], $getm['gpunkte']),
                                                         "details" => $details));
         }
-            
-        $sum_punkte_get = db("SELECT SUM(punkte) AS `num_punkte`, SUM(gpunkte) AS `num_gpunkte`
-        FROM `".$db['cw']."` WHERE `squad_id` = ".$get['id'].";",false,true);
-        $sum_punkte = $sum_punkte_get['num_punkte'];
-        $sum_gpunkte = $sum_punkte_get['num_gpunkte'];
+
+        $sum_punkte_get = sum_multi($db['cw'], "WHERE `squad_id` = ".$get['id'], array('punkte','gpunkte'));
+        $sum_punkte = $sum_punkte_get['sum_punkte'];
+        $sum_gpunkte = $sum_punkte_get['sum_gpunkte'];
         unset($sum_punkte_get);
         $anz_ges_points = show(_cw_stats_ges_points, array("ges_won" => $sum_punkte,
                                                            "ges_lost" => $sum_gpunkte));

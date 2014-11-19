@@ -6,8 +6,5 @@
  */
 function avatar() {
     global $chkMe;
-    if($chkMe >= 1)
-        return show("menu/avatars", array("avatar_show" => useravatar(0,70,70)));
-
-    return '';
+    return $chkMe >= 1 ? show("menu/avatars", array("avatar_show" => useravatar(0,70,70))) : '';
 }
