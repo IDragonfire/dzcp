@@ -123,7 +123,7 @@ if(defined('_Forum')) {
                                              "vote" => $vote,
                                              "f_abo" => "",
                                              "show" => $show));
-
+    
     echo utf8_encode('<table class="mainContent" cellspacing="1" style="margin-top:17px">'.$index.'</table>');
 
     if(!mysqli_persistconns)
@@ -212,7 +212,7 @@ if(defined('_Forum')) {
                                                   "onoff" => $onoff,
                                                   "p" => ""));
 
-    echo '<table class="mainContent" cellspacing="1" style="margin-top:17px">'.$index.'</table>';
+    echo utf8_encode('<table class="mainContent" cellspacing="1" style="margin-top:17px">'.$index.'</table>');
 
     if(!mysqli_persistconns)
         $mysql->close(); //MySQL
