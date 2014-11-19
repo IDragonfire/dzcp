@@ -1673,7 +1673,15 @@ function update_mysql_1_6_1() {
         db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time()+auto_db_optimize_interval)."' WHERE `id` = 1;");
         db_optimize();
     }
-
+    
+    /**************** MySQL-Query Optimize ****************
+     * Step #1 -> Add Table Indexes
+     * ****************************************************/
+    db("ALTER TABLE `".$db['navi']."` ADD INDEX(`kat`);");
+    db("ALTER TABLE `".$db['navi']."` ADD INDEX(`shown`);");
+    db("ALTER TABLE `".$db['navi']."` ADD INDEX(`pos`);");
+    db("ALTER TABLE `".$db['navi_kats']."` ADD INDEX(`placeholder`);");
+    
     //-> Cookie initialisierung * Autologin *
     if(!headers_sent()) {
         /** Start Sessions */

@@ -8,12 +8,11 @@ function navi($kat) {
     global $db,$chkMe,$userid,$designpath;
 
     $navi="";
-    if($k = db("SELECT `level` FROM ".$db['navi_kats']." WHERE `placeholder` = '".up($kat)."'",false,true)) {
-
-        $permissions = ($kat == 'nav_admin' && admin_perms($userid)) ? "" : ($chkMe >= 2 ? '' : " AND s1.`internal` = '0'")." AND ".intval($chkMe)." >= '".intval($k['level'])."'";
-        $qry = db("SELECT s1.* FROM ".$db['navi']." AS s1 LEFT JOIN ".$db['navi_kats']." AS s2 ON s1.kat = s2.placeholder
-                   WHERE s1.kat = '".up($kat)."' AND s1.`shown` = '1' ".$permissions."
-                   ORDER BY s1.pos");
+    if($k = db("SELECT `level` FROM `".$db['navi_kats']."` WHERE `placeholder` = '".up($kat)."';",false,true)) {
+        $permissions = ($kat == 'nav_admin' && admin_perms($userid)) ? "" : ($chkMe >= 2 ? '' : " AND s1.`internal` = 0")." AND ".intval($chkMe)." >= ".intval($k['level']);
+        $qry = db("SELECT s1.* FROM `".$db['navi']."` AS `s1` LEFT JOIN `".$db['navi_kats']."` AS `s2` ON s1.`kat` = s2.`placeholder`
+                   WHERE s1.`kat` = '".up($kat)."' AND s1.`shown` = 1 ".$permissions."
+                   ORDER BY s1.`pos`;");
 
         if(_rows($qry)) {
             while($get = _fetch($qry)) {
