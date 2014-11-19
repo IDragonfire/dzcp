@@ -19,7 +19,7 @@ $where = _site_sponsor;
 ## SECTIONS ##
 switch ($action):
     default:
-        $qry = db("SELECT * FROM ".$db['sponsoren']." WHERE site = 1 ORDER BY pos");
+        $qry = db("SELECT `id`,`link`,`slink`,`beschreibung`,`hits` FROM `".$db['sponsoren']."` WHERE `site` = 1 ORDER BY `pos`;");
         while($get = _fetch($qry)) {
             if(empty($get['slink'])) {
                 foreach($picformat AS $end) {

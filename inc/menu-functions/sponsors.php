@@ -7,7 +7,7 @@
 function sponsors() {
     global $db;
 
-    $qry = db("SELECT `id`,`xlink`,`xend`,`link` FROM ".$db['sponsoren']." WHERE `box` = 1 ORDER BY pos");
+    $qry = db("SELECT `id`,`xlink`,`xend`,`link` FROM `".$db['sponsoren']."` WHERE `box` = 1 ORDER BY `pos`;");
     $sponsors = '';
     if(_rows($qry)) {
         while($get = _fetch($qry))

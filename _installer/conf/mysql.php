@@ -1681,6 +1681,9 @@ function update_mysql_1_6_1() {
     db("ALTER TABLE `".$db['navi']."` ADD INDEX(`shown`);");
     db("ALTER TABLE `".$db['navi']."` ADD INDEX(`pos`);");
     db("ALTER TABLE `".$db['navi_kats']."` ADD INDEX(`placeholder`);");
+    db("ALTER TABLE `".$db['sponsoren']."` ADD INDEX(`banner`);");
+    db("ALTER TABLE `".$db['sponsoren']."` ADD INDEX(`pos`);");
+    db("ALTER TABLE `".$db['sponsoren']."` ADD INDEX(`site`);");
     
     //-> Cookie initialisierung * Autologin *
     if(!headers_sent()) {
