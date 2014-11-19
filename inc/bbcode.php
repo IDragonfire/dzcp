@@ -2043,7 +2043,18 @@ function set_lastvisit() {
 //-> Checkt welcher User gerade noch online ist
 function onlinecheck($tid) {
     global $db,$useronline;
-    $row = db("SELECT id FROM ".$db['users']." WHERE id = '".intval($tid)."' AND time+'".$useronline."'>'".time()."' AND online = 1",true);
+    $users_id_index = array();
+    if(dbc_index::issetIndex('onlinecheck'))
+        $users_id_index = dbc_index::getIndex('onlinecheck');
+    
+    if(array_key_exists($tid, $users_id_index)) {
+        $row = dbc_index::getIndexKey('onlinecheck', $tid);
+    } else {
+        $row = db("SELECT id FROM ".$db['users']." WHERE id = '".intval($tid)."' AND time+'".$useronline."'>'".time()."' AND online = 1",true);
+        $users_id_index[$tid] = $row;
+        dbc_index::setIndex('onlinecheck', $users_id_index);
+    }
+
     return $row ? "<img src=\"../inc/images/online.gif\" alt=\"\" class=\"icon\" />" : "<img src=\"../inc/images/offline.gif\" alt=\"\" class=\"icon\" />";
 }
 
