@@ -2652,8 +2652,10 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index') {
         update_maxonline();
 
         //check permissions
-        if(!$chkMe)
+        if(!$chkMe) {
             include_once(basePath.'/inc/menu-functions/login.php');
+            $check_msg = '';
+        }
         else {
             $check_msg = check_msg(); set_lastvisit(); $login = "";
             db("UPDATE `".$db['users']."` SET `time` = ".time().", `whereami` = '".up($where)."' WHERE `id` = ".intval($userid).";");
