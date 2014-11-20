@@ -13,7 +13,7 @@ function counter($js=false) {
     } else {
         if(!$isSpider) {
             $v_today = 0;
-            $qry2day = db("SELECT `visitors` FROM `".$db['counter']."` WHERE `today` = ".$today.";");
+            $qry2day = db("SELECT `visitors` FROM `".$db['counter']."` WHERE `today` = '".$today."';");
             if(_rows($qry2day)) {
                 $get2day = _fetch($qry2day);
                 $v_today = $get2day['visitors'];
@@ -26,7 +26,7 @@ function counter($js=false) {
             $yesterday = $tag.".".$monat.".".$jahr;
 
             $yDay = 0;
-            $qryyday = db("SELECT `visitors` FROM `".$db['counter']."` WHERE `today` = ".$yesterday.";");
+            $qryyday = db("SELECT `visitors` FROM `".$db['counter']."` WHERE `today` = '".$yesterday."';");
             if(_rows($qryyday)) {
                 $getyday = _fetch($qryyday);
                 $yDay = $getyday['visitors'];
