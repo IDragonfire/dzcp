@@ -2360,7 +2360,7 @@ function count_clicks($side_tag='',$clickedID=0,$update=true) {
         if(db("SELECT `id` FROM `".$db['clicks_ips']."` WHERE `uid` = ".$userid." AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';",true))
             return false;
 
-        if(db("SELECT `id` FROM `".$db['clicks_ips']."` WHERE `ip` = ".$userip." AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';",true)) {
+        if(db("SELECT `id` FROM `".$db['clicks_ips']."` WHERE `ip` = '".$userip."' AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';",true)) {
             if($update)
                 db("UPDATE `".$db['clicks_ips']."` SET `uid` = ".$userid.", `time` = '".(time()+count_clicks_expires)."' WHERE `ip` = '".$userip."' AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';");
 
@@ -2372,7 +2372,7 @@ function count_clicks($side_tag='',$clickedID=0,$update=true) {
             return true;
         }
     } else {
-        if(!db("SELECT id FROM `".$db['clicks_ips']."` WHERE `ip` = '".visitorIp()."' AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';",true)) {
+        if(!db("SELECT id FROM `".$db['clicks_ips']."` WHERE `ip` = '".$userip."' AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';",true)) {
             if($update)
                 db("INSERT INTO `".$db['clicks_ips']."` (`id` ,`ip` ,`uid` ,`ids`, `side`, `time`) VALUES (NULL , '".$userip."', 0, ".$clickedID.", '".$side_tag."', '".(time()+count_clicks_expires)."');");
 
