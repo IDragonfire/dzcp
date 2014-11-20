@@ -157,7 +157,7 @@ function refValues($arr) {
 }
 
 //Auto Update Detect
-if(file_exists(basePath."/_installer/index.php") &&
+if(file_exists(basePath."/_installer/index.php") && !view_error_reporting &&
 file_exists(basePath."/inc/mysql.php") && !$installation && !$thumbgen) {
     $sqlqry = db('SHOW TABLE STATUS'); $table_data = array();
     while($table = _fetch($sqlqry))
