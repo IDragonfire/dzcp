@@ -266,6 +266,7 @@ function show($tpl="", $array=array(), $array_lang_constant=array(), $array_bloc
 
         //put placeholders in array
         $array['dir'] = '../inc/_templates_/'.$tmpdir;
+        $array['idir'] = '../inc/images';
         $pholder = explode("^",pholderreplace($tpl));
         for($i=0;$i<=count($pholder)-1;$i++) {
             if(in_array($pholder[$i],$array_block))

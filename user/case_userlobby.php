@@ -55,7 +55,7 @@ if(defined('_UserMenu')) {
 
                             $nthread = $gettopic['first'] == 1 ? _no_new_thread : _new_thread;
 
-                            if(check_new($gettopic['lp'],1)) {
+                            if(check_new($gettopic['lp'])) {
                                 $intern = ($getkat['intern'] != 1 ? '' : '<span class="fontWichtig">'._internal.':</span>&nbsp;&nbsp;&nbsp;');
                                 $wichtig = ($gettopic['sticky'] != 1 ? '' : '<span class="fontWichtig">'._sticky.':</span> ');
 
@@ -91,7 +91,7 @@ if(defined('_UserMenu')) {
         $cws = '';
         if(_rows($qrycw) >= 1) {
             while($getcw = _fetch($qrycw)) {
-                if(!empty($getcw) && check_new($getcw['datum'],1)) {
+                if(!empty($getcw) && check_new($getcw['datum'])) {
                     $check = cnt($db['cw'], " WHERE datum >".$lastvisit."");
 
                     if($check == 1) {
@@ -113,7 +113,7 @@ if(defined('_UserMenu')) {
 
         /** Neue Registrierte User anzeigen */
         $getu = db("SELECT id,regdatum FROM ".$db['users']." ORDER BY id DESC",false,true); $user = '';
-        if(!empty($getu) && check_new($getu['regdatum'],1)) {
+        if(!empty($getu) && check_new($getu['regdatum'])) {
             $check = cnt($db['users'], " WHERE regdatum > ".$lastvisit."");
 
             if($check == 1) {
@@ -136,7 +136,7 @@ if(defined('_UserMenu')) {
 
         $gb = '';
         $getgb = db("SELECT id,datum FROM ".$db['gb']." ".$activ." ORDER BY id DESC",false,true);
-        if(!empty($getgb) && check_new($getgb['datum'],1)) {
+        if(!empty($getgb) && check_new($getgb['datum'])) {
             $cntgb = "";
             if(!$permission_gb && settings('gb_activ'))
                 $cntgb = "AND public = 1";
@@ -160,7 +160,7 @@ if(defined('_UserMenu')) {
         $getmember = db("SELECT id,datum FROM ".$db['usergb']." WHERE user = '".$userid."' ORDER BY datum DESC",false,true);
 
         $membergb = '';
-        if(!empty($getmember) && check_new($getmember['datum'],1)) {
+        if(!empty($getmember) && check_new($getmember['datum'])) {
             $check = cnt($db['usergb'], " WHERE datum > ".$lastvisit." AND user = '".$userid."'");
             if($check == "1") {
                 $cnt = "1";
@@ -208,7 +208,7 @@ if(defined('_UserMenu')) {
         $news = '';
         if(_rows($qrynews) >= 1) {
             while($getnews  = _fetch($qrynews)) {
-                if(check_new($getnews['datum'],1)) {
+                if(check_new($getnews['datum'])) {
                     $check = cnt($db['news'], " WHERE datum > ".$lastvisit." AND public = 1");
                     $cnt = $check == "1" ? "1" : $check;
                     $can_erase = true;
@@ -223,7 +223,7 @@ if(defined('_UserMenu')) {
         if(_rows($qrycheckn) >= 1) {
             while($getcheckn = _fetch($qrycheckn)) {
                 $getnewsc = db("SELECT id,news,datum FROM ".$db['newscomments']." WHERE news = '".$getcheckn['id']."' ORDER BY datum DESC",false,true);
-                if(check_new($getnewsc['datum'],1)) {
+                if(check_new($getnewsc['datum'])) {
                     $check = cnt($db['newscomments'], " WHERE datum > ".$lastvisit." AND news = '".$getnewsc['news']."'");
                     if($check == "1") {
                         $cnt = "1";
@@ -247,7 +247,7 @@ if(defined('_UserMenu')) {
         if(_rows($qrycheckcw) >= 1) {
             while($getcheckcw = _fetch($qrycheckcw)) {
                 $getcwc = db("SELECT id,cw,datum FROM ".$db['cw_comments']." WHERE cw = '".$getcheckcw['id']."' ORDER BY datum DESC",false,true);
-                if(!empty($getcwc) && check_new($getcwc['datum'],1))
+                if(!empty($getcwc) && check_new($getcwc['datum']))
                 {
                     $check = cnt($db['cw_comments'], " WHERE datum > ".$lastvisit." AND cw = '".$getcwc['cw']."'");
                     if($check == 1) {
@@ -279,7 +279,7 @@ if(defined('_UserMenu')) {
         }
 
         $newv = '';
-        if(!empty($getnewv) && check_new($getnewv['datum'],1)) {
+        if(!empty($getnewv) && check_new($getnewv['datum'])) {
             $check = cnt($db['votes'], " WHERE datum > ".$lastvisit." AND forum = 0");
             if($check == "1") {
                 $cnt = "1";
@@ -297,7 +297,7 @@ if(defined('_UserMenu')) {
         /** Kalender Events anzeigen */
         $getkal = db("SELECT * FROM ".$db['events']." WHERE datum > '".time()."' ORDER BY datum",false,true);
         $nextkal = '';
-        if(!empty($getkal) && check_new($getkal['datum'],1)) {
+        if(!empty($getkal) && check_new($getkal['datum'])) {
             if(date("d.m.Y",$getkal['datum']) == date("d.m.Y", time())) {
               $nextkal = show(_userlobby_kal_today, array("time" => mktime(0,0,0,date("m",$getkal['datum']), date("d",$getkal['datum']),date("Y",$getkal['datum'])),
                                                           "event" => $getkal['title']));
@@ -310,7 +310,7 @@ if(defined('_UserMenu')) {
 
         /** Neue Awards anzeigen */
         $getaw = db("SELECT id,postdate FROM ".$db['awards']." ORDER BY id DESC",false,true); $awards = '';
-        if(!empty($getaw) && check_new($getaw['postdate'],1)) {
+        if(!empty($getaw) && check_new($getaw['postdate'])) {
             $check = cnt($db['awards'], " WHERE postdate > ".$lastvisit);
             if($check == "1") {
                 $cnt = "1";
@@ -328,7 +328,7 @@ if(defined('_UserMenu')) {
         /** Neue Rankings anzeigen */
         $getra = db("SELECT id,postdate FROM ".$db['rankings']." ORDER BY id DESC",false,true);
         $rankings = '';
-        if(!empty($getra) && check_new($getra['postdate'],1)) {
+        if(!empty($getra) && check_new($getra['postdate'])) {
             $check = cnt($db['rankings'], " WHERE postdate > ".$lastvisit);
             if($check == "1") {
                 $cnt = "1";
@@ -347,7 +347,7 @@ if(defined('_UserMenu')) {
         $qryart = db("SELECT id,datum FROM ".$db['artikel']." WHERE public = 1 ORDER BY id DESC"); $artikel = '';
         if(_rows($qryart) >= 1) {
             while($getart  = _fetch($qryart)) {
-                if(check_new($getart['datum'],1)) {
+                if(check_new($getart['datum'])) {
                     $check = cnt($db['artikel'], " WHERE datum > ".$lastvisit." AND public = 1");
                     if($check == "1") {
                           $cnt = "1";
@@ -372,7 +372,7 @@ if(defined('_UserMenu')) {
                                WHERE artikel = '".$getchecka['id']."'
                                ORDER BY datum DESC",false,true);
 
-                if(!empty($getartc) && check_new($getartc['datum'],1)) {
+                if(!empty($getartc) && check_new($getartc['datum'])) {
                     $check = cnt($db['acomments'], " WHERE datum > ".$lastvisit." AND artikel = '".$getartc['artikel']."'");
                     if($check == "1") {
                         $cnt = "1";
@@ -392,7 +392,7 @@ if(defined('_UserMenu')) {
 
         /** Neue Bilder in der Gallery anzeigen */
         $getgal = db("SELECT id,datum FROM ".$db['gallery']." ORDER BY id DESC",false,true); $gal = '';
-        if(!empty($getgal) && check_new($getgal['datum'],1)) {
+        if(!empty($getgal) && check_new($getgal['datum'])) {
             $check = cnt($db['gallery'], " WHERE datum > ".$lastvisit);
             if($check == "1") {
                 $cnt = "1";
@@ -412,7 +412,7 @@ if(defined('_UserMenu')) {
         if(_rows($qryawayn) >= 1) {
             $awayn = '';
             while($getawayn = _fetch($qryawayn)) {
-                if(check_new($getawayn['date'],1) && data('level') >= 2) {
+                if(check_new($getawayn['date']) && data('level') >= 2) {
                     $awayn .= show(_user_away_new, array("id" => $getawayn['id'],
                                                          "user" => autor($getawayn['userid']),
                                                          "ab" => date("d.m.y",$getawayn['start']),

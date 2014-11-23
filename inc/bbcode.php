@@ -1332,24 +1332,50 @@ function update_maxonline() {
         db("UPDATE `".$db['counter']."` SET `maxonline` = ".$count." WHERE `today` = '".$today."';");
 }
 
-//-> Prueft, wieviele Besucher gerade online sind
-function online_guests($where='') {
-    global $db,$useronline,$userip,$chkMe,$isSpider;
-    if(!$isSpider) {
-        $logged = !$chkMe ? 0 : 1;
+//-> Aktualisiert die Position der Gaste & User
+function update_online($where='') {
+    global $db,$useronline,$userip,$chkMe,$isSpider,$userid;
+    if(!$isSpider && !empty($where)) {
         db("DELETE FROM `".$db['c_who']."` WHERE `online` < ".time().";");
-        db("REPLACE INTO `".$db['c_who']."`
-               SET `ip`       = '".$userip."',
-                   `online`   = ".intval((time()+$useronline)).",
-                   `whereami` = '".up($where,true)."',
-                   `login`    = ".intval($logged).";");
-        return cnt($db['c_who']);
+        $sql = db("SELECT `id` FROM `".$db['c_who']."` WHERE `ip` = '".$userip."';");
+        if(_rows($sql)) {
+            $get = _fetch($sql);
+            db("UPDATE `".$db['c_who']."` SET `whereami` = '".up($where)."', 
+                                              `online` = ".(time()+$useronline).", 
+                                              `login`    = ".(!$chkMe ? 0 : 1)." 
+                                          WHERE `id` = '".$get['id']."';");
+        } else {
+            db("INSERT INTO `".$db['c_who']."` SET `ip`  = '".$userip."',
+                                                   `online`   = ".(time()+$useronline).",
+                                                   `whereami` = '".up($where)."',
+                                                   `login`    = ".(!$chkMe ? 0 : 1).";");
+        }
+        
+        if($chkMe)
+            db("UPDATE `".$db['users']."` SET `time` = ".time().", `whereami` = '".up($where)."' WHERE `id` = ".intval($userid).";");
     }
 }
+
+//-> Prueft, wieviele Besucher gerade online sind
+function online_guests($where='') {
+    global $db,$useronline,$isSpider;
+    if(!$isSpider) {
+        $whereami = (empty($where) ? '' : " AND `whereami` = '".$where."'");
+        return cnt($db['c_who']," WHERE online+".$useronline.">".time()."".$whereami." AND `login` = 0");
+    }
+    
+    return 0;
+}
+
 //-> Prueft, wieviele registrierte User gerade online sind
-function online_reg() {
-    global $db,$useronline;
-    return cnt($db['users'], " WHERE time+".$useronline.">".time()." AND `online` = 1");
+function online_reg($where='') {
+    global $db,$useronline,$isSpider;
+    if(!$isSpider) {
+        $whereami = (empty($where) ? '' : " AND `whereami` = '".$where."'");
+        return cnt($db['users'], " WHERE time+".$useronline.">".time()."".$whereami." AND `online` = 1");
+    }
+    
+    return 0;
 }
 
 //-> Prueft, ob der User eingeloggt ist und wenn ja welches Level besitzt er
@@ -1853,14 +1879,15 @@ function check_msg_emal() {
 check_msg_emal(); //CALL
 
 //-> Checkt ob ein Ereignis neu ist
-function check_new($datum,$new = "",$datum2 = "") {
+function check_new($datum = 0, $output=false, $datum2 = 0) {
     global $db,$userid;
     if($userid) {
-        if($datum >= userstats('lastvisit') || $datum2 >= userstats('lastvisit'))
-            return (empty($new) ? _newicon : $new);
+        $lastvisit = userstats('lastvisit', $userid);
+        if($datum >= $lastvisit || $datum2 >= $lastvisit)
+            return (!$output ? true : $output);
     }
-
-    return empty($new) ? false : '';
+    
+    return (!$output ? false : '');
 }
 
 //-> DropDown Mens Date/Time
@@ -2658,7 +2685,6 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index') {
         }
         else {
             $check_msg = check_msg(); set_lastvisit(); $login = "";
-            db("UPDATE `".$db['users']."` SET `time` = ".time().", `whereami` = '".up($where)."' WHERE `id` = ".intval($userid).";");
         }
 
         //init templateswitch
@@ -2682,10 +2708,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index') {
 
         $where = preg_replace_callback("#autor_(.*?)$#",create_function('$id', 'return re(data("nick","$id[1]"));'),$where);
         $index = empty($index) ? '' : (!$check_msg ? '' : $check_msg).'<table class="mainContent" cellspacing="1">'.$index.'</table>';
-
-        //-> Sort & filter placeholders
-        //default placeholders
-        $arr = array("idir" => '../inc/images/admin', "dir" => $designpath);
+        update_online($where); //Update Stats
 
         //template index autodetect
         $index_templ = ($index_templ == 'index' && file_exists($designpath.'/index_'.$dir.'.html') ? 'index_'.$dir : $index_templ);
@@ -2716,6 +2739,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index') {
         } unset($menu_functions_index);
 
         //put placeholders in array
+        $arr = array();
         $pholder = explode("^",$pholder);
         for($i=0;$i<=count($pholder)-1;$i++) {
             if(strstr($pholder[$i], 'nav_'))
