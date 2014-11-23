@@ -30,7 +30,7 @@
                             map: map
                           });
             if(markerIcon[coord]) {
-                marker.setIcon('../inc/images/mappin.png');
+                marker.setIcon('[idir]/mappin.png');
             }
             google.maps.event.addListener(marker, "mouseover", function(userInfo) { return function() {DZCP.showInfo(userInfo);}}(userInfo[coord]));
             google.maps.event.addListener(marker, "mouseout", function() { DZCP.hideInfo(); });
