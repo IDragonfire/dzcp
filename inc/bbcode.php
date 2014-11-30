@@ -335,14 +335,22 @@ if(session_id()) {
 * Forwarded IP Support
 */
 function visitorIp() {
+    $SetIP = '0.0.0.0';
     $ServerVars = array('REMOTE_ADDR','HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED',
     'HTTP_FORWARDED_FOR','HTTP_FORWARDED','HTTP_VIA','HTTP_X_COMING_FROM','HTTP_COMING_FROM');
     foreach ($ServerVars as $ServerVar) {
-        if($IP=detectIP($ServerVar))
-            return $IP;
+        if($IP=detectIP($ServerVar)) {
+		   if(!validateIpV4Range($IP, '[192].[168].[0-255].[0-255]') && 
+			  !validateIpV4Range($IP, '[127].[0].[0-255].[0-255]') && 
+			  !validateIpV4Range($IP, '[10].[0-255].[0-255].[0-255]') && 
+			  !validateIpV4Range($IP, '[172].[16-31].[0-255].[0-255]'))
+              return $IP;
+		} else {
+			$SetIP = $IP;
+		}
     }
  
-    return '0.0.0.0';
+    return $SetIP;
 }
 
 function detectIP($var) {
@@ -356,7 +364,7 @@ function detectIP($var) {
 }
 
 function CheckIP($TheIp) {
-    if(empty($var)) return false;
+    if(empty($TheIp)) return false;
     $TheIp_X = explode('.',$TheIp);
     return (count($TheIp_X) == 4 && $TheIp_X[0]<=255 && $TheIp_X[1]<=255 && $TheIp_X[2]<=255 && $TheIp_X[3]<=255 && 
     preg_match("!^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$!",$TheIp));
