@@ -10,7 +10,7 @@ if(defined('_UserMenu')) {
         $index = error(_user_dont_exist, 1);
     else {
         $get = db("SELECT * FROM ".$db['users']." WHERE id = '".intval($_GET['id'])."'",false,true);
-        if(($get['profile_access'] >= 1 && checkme() == 'unlogged') || ($get['profile_access'] >= 2 && checkme() <= 1) || ($get['profile_access'] >= 3 && checkme() != 4))
+        if(($userid != $get['id']) && (($get['profile_access'] >= 1 && checkme() == 'unlogged') || ($get['profile_access'] >= 2 && checkme() <= 1) || ($get['profile_access'] >= 3 && checkme() != 4)))
             $index = error(_profile_access_error,1);
         else {
             if(count_clicks('userprofil',$get['id']))
