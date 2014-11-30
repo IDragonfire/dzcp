@@ -101,7 +101,8 @@ if(defined('_UserMenu')) {
                                                             `signatur`     = '" . up($_POST['sig']) . "',
                                                             `beschreibung` = '" . up($_POST['ich']) . "',
                                                             `perm_gb`      = '" . up($_POST['visibility_gb']) . "',
-                                                            `perm_gallery` = '" . up($_POST['visibility_gallery']) . "'
+                                                            `perm_gallery` = '" . up($_POST['visibility_gallery']) . "',
+                                                            `profile_access` = " . intval($_POST['visibility_profile']) . "
                                                         WHERE id = " . $userid);
             }
                 break;
