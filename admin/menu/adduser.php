@@ -86,13 +86,13 @@ if(_adminMenu != 'true') exit;
       if($do == "add")
       {
         $check_user = db_stmt("SELECT id FROM ".$db['users']." WHERE `user`= ?",
-                  array('s', up($_POST['user'])));
+                  array('s', up($_POST['user'])),true);
 
         $check_nick = db_stmt("SELECT id FROM ".$db['users']." WHERE `nick`= ?",
-                  array('s', up($_POST['nick'])));
+                  array('s', up($_POST['nick'])),true);
 
         $check_email = db_stmt("SELECT id FROM ".$db['users']." WHERE `email`= ?",
-                  array('s', up($_POST['email'])));
+                  array('s', up($_POST['email'])),true);
 
         if(empty($_POST['user']))
         {
