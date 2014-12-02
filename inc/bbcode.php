@@ -340,14 +340,13 @@ function visitorIp() {
     'HTTP_FORWARDED_FOR','HTTP_FORWARDED','HTTP_VIA','HTTP_X_COMING_FROM','HTTP_COMING_FROM');
     foreach ($ServerVars as $ServerVar) {
         if($IP=detectIP($ServerVar)) {
-		   if(!validateIpV4Range($IP, '[192].[168].[0-255].[0-255]') && 
-			  !validateIpV4Range($IP, '[127].[0].[0-255].[0-255]') && 
-			  !validateIpV4Range($IP, '[10].[0-255].[0-255].[0-255]') && 
-			  !validateIpV4Range($IP, '[172].[16-31].[0-255].[0-255]'))
-              return $IP;
-		} else {
-			$SetIP = $IP;
-		}
+            if(!validateIpV4Range($IP, '[192].[168].[0-255].[0-255]') && 
+		!validateIpV4Range($IP, '[127].[0].[0-255].[0-255]') && 
+		!validateIpV4Range($IP, '[10].[0-255].[0-255].[0-255]') && 
+		!validateIpV4Range($IP, '[172].[16-31].[0-255].[0-255]')) {
+                    return $IP;
+            } else $SetIP = $IP;
+        }
     }
  
     return $SetIP;
