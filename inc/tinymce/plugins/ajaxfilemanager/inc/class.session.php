@@ -3,7 +3,6 @@
     {
         die('Permission denied');
     }
-?><?php
 
     /**
      * this class provide a function like session handling engine
@@ -14,7 +13,7 @@
      */
 
 require_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . "class.file.php");
-class Session
+class Session_AFM
 {
     var $lifeTime;
     var $fp = null;
@@ -231,4 +230,3 @@ class Session
 
 
 }
-?>
