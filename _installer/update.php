@@ -10,6 +10,7 @@ if(version_compare(PHP_VERSION, '5.2.0', '>=') === false)
 
 ob_start();
 session_start();
+
 define('basePath', dirname(dirname(__FILE__).'../'));
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 $do = isset($_GET['do']) ? $_GET['do'] : '';
@@ -17,6 +18,9 @@ $installer = true; $updater = true;
 
 require_once(basePath.'/inc/_version.php');
 require_once(basePath."/inc/debugger.php");
+require_once(basePath.'/inc/cookie.php');
+require_once(basePath.'/inc/crypt.php');
+require_once(basePath.'/inc/sessions.php');
 require_once(basePath.'/_installer/conf/conf.php');
 require_once(basePath.'/_installer/conf/mysql.php');
 
