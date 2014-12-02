@@ -155,7 +155,10 @@ function validateIpV4Range ($ip, $range) {
 // -> Pruft ob die IP gesperrt und gultig ist
 function check_ip() {
     global $db,$ajaxJob,$isSpider,$userip;
-    if(!$ajaxJob && !$isSpider) {
+    if(!$ajaxJob && !$isSpider && !validateIpV4Range($userip, '[192].[168].[0-255].[0-255]') && 
+	!validateIpV4Range($userip, '[127].[0].[0-255].[0-255]') && 
+	!validateIpV4Range($userip, '[10].[0-255].[0-255].[0-255]') && 
+	!validateIpV4Range($userip, '[172].[16-31].[0-255].[0-255]')) {
         if((!isIPv6($userip) && !isIPv4($userip)) || $userip == false || empty($userip)) {
             dzcp_session_destroy();
             die('Deine IP ist ung&uuml;ltig!<p>Your IP is invalid!');
