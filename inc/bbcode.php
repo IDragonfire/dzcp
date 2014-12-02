@@ -155,10 +155,7 @@ function validateIpV4Range ($ip, $range) {
 // -> Pruft ob die IP gesperrt und gultig ist
 function check_ip() {
     global $db,$ajaxJob,$isSpider,$userip;
-    if(!$ajaxJob && !$isSpider && !validateIpV4Range($userip, '[192].[168].[0-255].[0-255]') && 
-	!validateIpV4Range($userip, '[127].[0].[0-255].[0-255]') && 
-	!validateIpV4Range($userip, '[10].[0-255].[0-255].[0-255]') && 
-	!validateIpV4Range($userip, '[172].[16-31].[0-255].[0-255]')) {
+    if(!$ajaxJob && !$isSpider) {
         if((!isIPv6($userip) && !isIPv4($userip)) || $userip == false || empty($userip)) {
             dzcp_session_destroy();
             die('Deine IP ist ung&uuml;ltig!<p>Your IP is invalid!');
@@ -175,7 +172,10 @@ function check_ip() {
         }
 
         unset($banned_ip,$banned_ip_sql);
-        if(allow_url_fopen_support() && !isIPv6($userip)) {
+        if(allow_url_fopen_support() && !isIPv6($userip) && !validateIpV4Range($userip, '[192].[168].[0-255].[0-255]') && 
+	!validateIpV4Range($userip, '[127].[0].[0-255].[0-255]') && 
+	!validateIpV4Range($userip, '[10].[0-255].[0-255].[0-255]') && 
+	!validateIpV4Range($userip, '[172].[16-31].[0-255].[0-255]')) {
             sfs::check(); //SFS Update
             if(sfs::is_spammer()) {
                 db("DELETE FROM `".$db['ip2dns']."` WHERE `sessid` = `".session_id()."`;");
