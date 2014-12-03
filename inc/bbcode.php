@@ -2043,7 +2043,7 @@ function getrank($tid, $squad="", $profil=false) {
     global $db;
     if($squad) {
         if($profil)
-            $qry = db("SELECT s1.`posi`,s1.`name` FROM `".$db['userpos']."` AS `s1` LEFT JOIN `".$db['squads']."` AS `s2` ON s1.`squad` = s2.`id` WHERE s1.`user` = ".intval($tid)." AND s1.`squad` = ".intval($squad)." AND s1.`posi` != 0;");
+            $qry = db("SELECT s1.`posi`,s2.`name` FROM `".$db['userpos']."` AS `s1` LEFT JOIN `".$db['squads']."` AS `s2` ON s1.`squad` = s2.`id` WHERE s1.`user` = ".intval($tid)." AND s1.`squad` = ".intval($squad)." AND s1.`posi` != 0;");
         else
             $qry = db("SELECT `posi` FROM `".$db['userpos']."` WHERE `user` = ".intval($tid)." AND `squad` = ".intval($squad)." AND `posi` != 0;");
 

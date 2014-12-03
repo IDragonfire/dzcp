@@ -1,0 +1,13 @@
+#####################################################################
+   Datum   = 03.12.14 22:06
+   URL     = http://localhost/DZCP-1.6/user/?action=user&id=1
+
+   MySQLi-Query failed:
+   ConnectErrorNo = 0
+   ConnectError   = 
+
+   QueryError   = Unknown column 's1.name' in 'field list'
+
+   Query   = SELECT s1.`posi`,s1.`name` FROM `dzcp_userposis` AS `s1` LEFT JOIN `dzcp_squads` AS `s2` ON s1.`squad` = s2.`id` WHERE s1.`user` = 1 AND s1.`squad` = 1 AND s1.`posi` != 0;
+#####################################################################
+
