@@ -55,7 +55,7 @@ define('steam_only_proxy', false); //Sollen soll nur der Steam Proxy Server verw
 define('ts3dns_server', true); //Sollen Teamspeak 3 DNS Server erkannt werden
 
 define('captcha_case_sensitive', false); //Unterscheidet Groﬂ und Kleinschreibung beim Captcha
-define('captcha_mathematic', false); //Stellt den Usern einfache Rechenaufgaben anstelle eines Captcha Codes
+define('captcha_mathematic', true); //Stellt den Usern einfache Rechenaufgaben anstelle eines Captcha Codes
 
 define('count_clicks_expires', (24*60*60)); // Wie Lange die IPs fur den Click-Counter gespeichert bleiben.
 /*
