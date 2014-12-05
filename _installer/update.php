@@ -152,7 +152,7 @@ case 'prepare';
   $c .= check_file_dir('../upload',1);
   $c .= check_file_dir('../upload/index.php');
   $c .= check_file_dir('../inc',1);
-  $c =  check_file_dir('../inc/_cache_',1);
+  $c .=  check_file_dir('../inc/_cache_',1);
   $c .= check_file_dir('../inc/images',1);
   $c .= check_file_dir('../inc/images/tsicons',1);
   $c .= check_file_dir('../inc/images/tsicons/server',1);
