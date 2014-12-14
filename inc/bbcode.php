@@ -173,9 +173,9 @@ function check_ip() {
 
         unset($banned_ip,$banned_ip_sql);
         if(allow_url_fopen_support() && !isIPv6($userip) && !validateIpV4Range($userip, '[192].[168].[0-255].[0-255]') && 
-	!validateIpV4Range($userip, '[127].[0].[0-255].[0-255]') && 
-	!validateIpV4Range($userip, '[10].[0-255].[0-255].[0-255]') && 
-	!validateIpV4Range($userip, '[172].[16-31].[0-255].[0-255]')) {
+        !validateIpV4Range($userip, '[127].[0].[0-255].[0-255]') && 
+        !validateIpV4Range($userip, '[10].[0-255].[0-255].[0-255]') && 
+        !validateIpV4Range($userip, '[172].[16-31].[0-255].[0-255]')) {
             sfs::check(); //SFS Update
             if(sfs::is_spammer()) {
                 db("DELETE FROM `".$db['ip2dns']."` WHERE `sessid` = `".session_id()."`;");
@@ -315,10 +315,10 @@ if($chkMe && $userid && !empty($_SESSION['ip'])) {
 //-> Update Client DNS
 if(session_id()) {
     if(db("SELECT `id` FROM `".$db['ip2dns']."` WHERE `update` <= ".time()." AND `sessid` = '".session_id()."';",true))
-        db("UPDATE `".$db['ip2dns']."` SET `time` = ".(time()+10*60).", `update` = ".(time()+60).", `ip` = '".$userip."', `dns` = '"._real_escape_string(up(gethostbyaddr($userip)))."' WHERE `sessid` = '".session_id()."';");
+        db("UPDATE `".$db['ip2dns']."` SET `time` = ".(time()+10*60).", `update` = ".(time()+60).", `ip` = '".$userip."', `agent` = '".up($_SERVER['HTTP_USER_AGENT'])."', `dns` = '"._real_escape_string(up(gethostbyaddr($userip)))."' WHERE `sessid` = '".session_id()."';");
     else {
         if(!db("SELECT `id` FROM `".$db['ip2dns']."` WHERE `sessid` = '".session_id()."';",true) )
-            db("INSERT INTO `".$db['ip2dns']."` SET `sessid` = '".session_id()."', `time` = ".(time()+10*60).", `ip` = '".$userip."', `dns` = '"._real_escape_string(up(gethostbyaddr($userip)))."';");
+            db("INSERT INTO `".$db['ip2dns']."` SET `sessid` = '".session_id()."', `time` = ".(time()+10*60).", `ip` = '".$userip."', `agent` = '".up($_SERVER['HTTP_USER_AGENT'])."', `dns` = '"._real_escape_string(up(gethostbyaddr($userip)))."';");
     }
 
     //-> Cleanup DNS DB
@@ -330,6 +330,19 @@ if(session_id()) {
         unset($getDNS);
     }
     unset($qryDNS);
+}
+
+
+/**
+* DZCP V1.6.1
+* Browser-Cache nicht verwenden -> Ajax
+*/
+function addNoCacheHeaders() {
+    header('Expires: '.gmdate('D, d M Y H:i:s \G\M\T', time() + 3600));
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+    header("Cache-Control: no-store, no-cache, must-revalidate");
+    header("Cache-Control: post-check=0, pre-check=0", false);
+    header("Pragma: no-cache");
 }
 
 /**
@@ -2256,16 +2269,50 @@ function admin_perms($userid) {
     return ($chkMe == 4) ? true : false;
 }
 
-//-> blacklist um spider/crawler von der Besucherstatistik auszuschliessen
+/**
+ * Erkennt Spider und Crawler um sie von der Besucherstatistik auszuschliessen.
+ * @return boolean
+ */
 function isSpider() {
-    $uagent = GetServerVars('HTTP_USER_AGENT');
-    $ex = explode("\n", file_get_contents(basePath.'/inc/_spiders.txt'));
-    for($i=0;$i<=count($ex)-1;$i++) {
-        if(stristr($uagent, trim($ex[$i])))
+    $bots_basic = array('bot', 'b o t', 'spider', 'spyder', 'crawl', 'slurp', 'robo', 'yahoo', 'ask', 'google', '80legs', 'acoon',
+            'altavista', 'al_viewer', 'appie', 'appengine-google', 'arachnoidea', 'archiver', 'asterias', 'ask jeeves', 'beholder',
+            'bildsauger', 'bingsearch', 'bingpreview', 'bumblebee', 'bramptonmoose', 'cherrypicker', 'crescent', 'coccoc', 'cosmos',
+            'docomo', 'drupact', 'emailsiphon', 'emailwolf', 'extractorpro', 'exalead ng', 'ezresult', 'feedfetcher', 'fido', 'fireball',
+            'flipboardproxy', 'gazz', 'getweb', 'gigabaz', 'gulliver', 'harvester', 'hcat', 'heritrix', 'hloader', 'hoge', 'httrack',
+            'incywincy', 'infoseek', 'infohelfer', 'inktomi', 'indy library', 'informant', 'internetami', 'internetseer', 'link', 'larbin',
+            'jakarta', 'mata hari', 'medicalmatrix', 'mercator', 'miixpc', 'moget', 'msnptc', 'muscatferret', 'netcraftsurveyagent',
+            'openxxx', 'picmole', 'piranha', 'pldi.net', 'p357x', 'quosa', 'rambler', 'rippers', 'rganalytics', 'scan', 'scooter', 'ScoutJet',
+            'siclab', 'siteexplorer', 'sly', 'suchen', 'searchme', 'spy', 'swisssearch', 'sqworm', 'trivial', 't-h-u-n-d-e-r-s-t-o-n-e', 'teoma',
+            'twiceler', 'ultraseek', 'validator', 'webbandit', 'webmastercoffee', 'webwhacker', 'wevika', 'wisewire', 'yandex', 'zyborg', 'agentname');
+
+	$BotList = array("Teoma", "alexa", "froogle", "Gigabot", "inktomi", "looksmart", "URL_Spider_SQL", "Firefly", 
+				 "NationalDirectory", "Ask Jeeves", "TECNOSEEK", "InfoSeek", "WebFindBot", "girafabot", "crawler", 
+				 "www.galaxy.com", "Googlebot", "Googlebot/2.1", "Google Webmaster", "Scooter", "James Bond", "Slurp", 
+				 "msnbot", "appie", "FAST", "WebBug", "Spade", "ZyBorg", "rabaz", "Baiduspider", "Feedfetcher-Google", 
+				 "TechnoratiSnoop", "Rankivabot", "Mediapartners-Google", "Sogou web spider", "WebAlta Crawler", "MJ12bot",
+				 "Yandex/", "YaDirectBot", "StackRambler","DotBot","dotbot");
+			
+    $spiders = file_get_contents(basePath.'/inc/_spiders.txt');
+    $UserAgent = $_SERVER['HTTP_USER_AGENT'];
+    if(empty($UserAgent)) return false;
+    foreach ($bots_basic as $bot) {
+        if(stristr($UserAgent, $bot) !== FALSE)
             return true;
     }
 
-    return false;
+    $ex = explode("\n", $spiders);
+    for($i=0;$i<=count($ex)-1;$i++) {
+        if(stristr($UserAgent, trim($ex[$i])))
+            return true;
+    }
+
+   foreach($BotList as $bot) {
+      if(strpos($bot, $UserAgent)) {
+         return true;
+      }
+    }
+	
+	return false;
 }
 
 //-> filter placeholders
