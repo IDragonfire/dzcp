@@ -152,7 +152,7 @@ $dir = "news";
                                                           `titel`     = '".$titel."',
                                                           `nachricht` = '".up($text)."',
                                                           `sendnews`  = '".$sendnews."',
-                                                          `senduser`  = '".$user."'");
+                                                          `senduser`  = '".up($user)."'");
                     }
                 }
           $index = info(_news_send_done, "../news/");
