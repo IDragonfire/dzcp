@@ -25,7 +25,9 @@ ob_implicit_flush(false);
 
     ## SETTINGS ##
     $dir = "sites";
+    addNoCacheHeaders(); //No Browser-Cache
 
+    ## SECTIONS ##
     //-> Steam Status
     function steamIMG($steamID='') {
         global $cache, $config_cache;
@@ -34,7 +36,7 @@ ob_implicit_flush(false);
         if(!$steam = SteamAPI::getUserInfos($steamID)) return '-'; //UserInfos
         if(!$steam || empty($steam)) return '-';
 
-        //Avatar
+        //Steam Avatar
         if(!$config_cache['use_cache'] || !$cache->isExisting('steam_avatar_'.$steamID)) {
             $ctx = stream_context_create(array('http'=>array('timeout' => file_get_contents_timeout)));
             if($img_stream = file_get_contents($steam['user']['avatarIcon_url'], false, $ctx)) {
@@ -54,7 +56,6 @@ ob_implicit_flush(false);
                'text1' => $text_1,'text2' => $text_2,'status' => $status_set));
     }
 
-    ## SECTIONS ##
     //Hack for Audio Securimage
     $mod = isset($_GET['i']) ? $_GET['i'] : '';
     $mod_exp = @explode('@', $mod);
