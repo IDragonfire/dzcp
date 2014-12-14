@@ -156,7 +156,7 @@ function validateIpV4Range ($ip, $range) {
 function check_ip() {
     global $db,$ajaxJob,$isSpider,$userip;
     if(!$ajaxJob && !$isSpider) {
-        if((!isIPv6($userip) && !isIPv4($userip)) || $userip == false || empty($userip)) {
+        if((!isIP($userip) && !isIP($userip,true)) || $userip == false || empty($userip)) {
             dzcp_session_destroy();
             die('Deine IP ist ung&uuml;ltig!<p>Your IP is invalid!');
         }
@@ -172,7 +172,7 @@ function check_ip() {
         }
 
         unset($banned_ip,$banned_ip_sql);
-        if(allow_url_fopen_support() && !isIPv6($userip) && !validateIpV4Range($userip, '[192].[168].[0-255].[0-255]') && 
+        if(allow_url_fopen_support() && !isIP($userip) && !validateIpV4Range($userip, '[192].[168].[0-255].[0-255]') && 
         !validateIpV4Range($userip, '[127].[0].[0-255].[0-255]') && 
         !validateIpV4Range($userip, '[10].[0-255].[0-255].[0-255]') && 
         !validateIpV4Range($userip, '[172].[16-31].[0-255].[0-255]')) {
@@ -188,26 +188,20 @@ function check_ip() {
 }
 
 /**
- * Check given ip for ipv6.
+ * Check given ip for ipv6 or ipv4.
  * @param    string        $ip
+ * @param    boolean       $v6
  * @return   boolean
  */
-function isIPv6($ip) {
-    return (preg_match('#^[0-9A-F]{0,4}(:([0-9A-F]{0,4})){0,7}$#s', $ip)) ? true : false;
+function isIP($ip,$v6=false) {
+    if(!$v6 && substr_count($ip,":") < 1) {
+        return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ? true : false;
+    }
+    
+    return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ? true : false;
 }
 
-/**
- * Check given ip for ipv4.
- * @param    string        $ip
- * @return    boolean
- */
-function isIPv4($ip) {
-    return (preg_match('#^[0-9]{1,3}(\.[0-9]{1,3}){3}$#', $ip)) ? true : false;
-}
-
-// IP Prufung
-check_ip();
-
+check_ip(); // IP Prufung
 function dzcp_session_destroy() {
     $_SESSION['id']        = '';
     $_SESSION['pwd']       = '';
