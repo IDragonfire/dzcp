@@ -91,6 +91,7 @@ $userip = visitorIp();
 $maxpicwidth = 90;
 $maxadmincw = 10;
 $maxfilesize = @ini_get('upload_max_filesize');
+$UserAgent = trim(GetServerVars('HTTP_USER_AGENT'));
 
 //-> Global
 $action = isset($_GET['action']) ? $_GET['action'] : '';
@@ -202,6 +203,7 @@ function isIP($ip,$v6=false) {
 }
 
 check_ip(); // IP Prufung
+
 function dzcp_session_destroy() {
     $_SESSION['id']        = '';
     $_SESSION['pwd']       = '';
@@ -306,13 +308,24 @@ if($chkMe && $userid && !empty($_SESSION['ip'])) {
     }
 }
 
-//-> Update Client DNS
+/*
+ * DZCP V1.6.1
+ * Aktualisiere die Client DNS & User Agent
+ */
 if(session_id()) {
-    if(db("SELECT `id` FROM `".$db['ip2dns']."` WHERE `update` <= ".time()." AND `sessid` = '".session_id()."';",true))
-        db("UPDATE `".$db['ip2dns']."` SET `time` = ".(time()+10*60).", `update` = ".(time()+60).", `ip` = '".$userip."', `agent` = '".up($_SERVER['HTTP_USER_AGENT'])."', `dns` = '"._real_escape_string(up(gethostbyaddr($userip)))."' WHERE `sessid` = '".session_id()."';");
-    else {
-        if(!db("SELECT `id` FROM `".$db['ip2dns']."` WHERE `sessid` = '".session_id()."';",true) )
-            db("INSERT INTO `".$db['ip2dns']."` SET `sessid` = '".session_id()."', `time` = ".(time()+10*60).", `ip` = '".$userip."', `agent` = '".up($_SERVER['HTTP_USER_AGENT'])."', `dns` = '"._real_escape_string(up(gethostbyaddr($userip)))."';");
+    if(!function_exists('SearchBotDetect')) { function SearchBotDetect(){ return array('fullname'=>"","name"=>"","bot"=>false); } }
+    if(db("SELECT `id` FROM `".$db['ip2dns']."` WHERE `update` <= ".time()." AND `sessid` = '".session_id()."';",true)) {
+        $bot = SearchBotDetect();
+        db("UPDATE `".$db['ip2dns']."` SET `time` = ".(time()+10*60).", `update` = ".(time()+60).", `ip` = '".$userip."', "
+        . "`agent` = '".up($UserAgent)."', `dns` = '".up(gethostbyaddr($userip))."', `bot` = ".($bot['bot'] ? 1 : 0).", "
+        . "`bot_name` = '".up($bot['name'])."', `bot_fullname` = '".up($bot['fullname'])."' WHERE `sessid` = '".session_id()."';"); unset($bot);
+    } else {
+        if(!db("SELECT `id` FROM `".$db['ip2dns']."` WHERE `sessid` = '".session_id()."';",true) ) {
+            $bot = SearchBotDetect();
+            db("INSERT INTO `".$db['ip2dns']."` SET `sessid` = '".session_id()."', `time` = ".(time()+10*60).", `ip` = '".$userip."', "
+            . "`agent` = '".up($UserAgent)."', `dns` = '".up(gethostbyaddr($userip))."', `bot` = ".($bot['bot'] ? 1 : 0).", "
+            . "`bot_name` = '".up($bot['name'])."', `bot_fullname` = '".up($bot['fullname'])."';"); unset($bot);
+        }
     }
 
     //-> Cleanup DNS DB
@@ -320,12 +333,9 @@ if(session_id()) {
     if(_rows($qryDNS) >= 1) {
         while($getDNS = _fetch($qryDNS)) {
             db("DELETE FROM `".$db['ip2dns']."` WHERE `id` = ".$getDNS['id'].";");
-        }
-        unset($getDNS);
-    }
-    unset($qryDNS);
+        } unset($getDNS);
+    } unset($qryDNS);
 }
-
 
 /**
 * DZCP V1.6.1
@@ -757,10 +767,9 @@ function convSpace($string) {
 
 //-> BBCode
 function re_bbcode($txt) {
-    $txt = spChars($txt);
     $search  = array("'","[","]","&lt;","&gt;");
     $replace = array("&#39;","&#91;","&#93;","&#60;","&#62;");
-    return stripslashes(str_replace($search, $replace, $txt));
+    return stripslashes(str_replace($search, $replace, spChars($txt)));
 }
 
 /* START # from wordpress under GBU GPL license
@@ -2268,6 +2277,7 @@ function admin_perms($userid) {
  * @return boolean
  */
 function isSpider() {
+    global $UserAgent;
     $bots_basic = array('bot', 'b o t', 'spider', 'spyder', 'crawl', 'slurp', 'robo', 'yahoo', 'ask', 'google', '80legs', 'acoon',
             'altavista', 'al_viewer', 'appie', 'appengine-google', 'arachnoidea', 'archiver', 'asterias', 'ask jeeves', 'beholder',
             'bildsauger', 'bingsearch', 'bingpreview', 'bumblebee', 'bramptonmoose', 'cherrypicker', 'crescent', 'coccoc', 'cosmos',
@@ -2287,7 +2297,6 @@ function isSpider() {
 				 "Yandex/", "YaDirectBot", "StackRambler","DotBot","dotbot");
 			
     $spiders = file_get_contents(basePath.'/inc/_spiders.txt');
-    $UserAgent = $_SERVER['HTTP_USER_AGENT'];
     if(empty($UserAgent)) return false;
     foreach ($bots_basic as $bot) {
         if(stristr($UserAgent, $bot) !== FALSE)
@@ -2430,31 +2439,33 @@ function setIpcheck($what = '') {
 
 //-> Preuft ob alle clicks nur einmal gezahlt werden *gast/user
 function count_clicks($side_tag='',$clickedID=0,$update=true) {
-    global $db,$userip,$userid,$chkMe;
-    $qry = db("SELECT `id`,`side` FROM `".$db['clicks_ips']."` WHERE `uid` = 0 AND `time` <= ".time().";");
-    if(_rows($qry)) while($get = _fetch($qry)) { if($get['side'] != 'vote') db("DELETE FROM `".$db['clicks_ips']."` WHERE `id` = ".$get['id'].";"); }
+    global $db,$userip,$userid,$chkMe,$isSpider;
+    if(!$isSpider) {
+        $qry = db("SELECT `id`,`side` FROM `".$db['clicks_ips']."` WHERE `uid` = 0 AND `time` <= ".time().";");
+        if(_rows($qry)) while($get = _fetch($qry)) { if($get['side'] != 'vote') db("DELETE FROM `".$db['clicks_ips']."` WHERE `id` = ".$get['id'].";"); }
 
-    if($chkMe != 'unlogged') {
-        if(db("SELECT `id` FROM `".$db['clicks_ips']."` WHERE `uid` = ".$userid." AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';",true))
-            return false;
+        if($chkMe != 'unlogged') {
+            if(db("SELECT `id` FROM `".$db['clicks_ips']."` WHERE `uid` = ".$userid." AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';",true))
+                return false;
 
-        if(db("SELECT `id` FROM `".$db['clicks_ips']."` WHERE `ip` = '".$userip."' AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';",true)) {
-            if($update)
-                db("UPDATE `".$db['clicks_ips']."` SET `uid` = ".$userid.", `time` = '".(time()+count_clicks_expires)."' WHERE `ip` = '".$userip."' AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';");
+            if(db("SELECT `id` FROM `".$db['clicks_ips']."` WHERE `ip` = '".$userip."' AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';",true)) {
+                if($update)
+                    db("UPDATE `".$db['clicks_ips']."` SET `uid` = ".$userid.", `time` = '".(time()+count_clicks_expires)."' WHERE `ip` = '".$userip."' AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';");
 
-            return false;
+                return false;
+            } else {
+                if($update)
+                    db("INSERT INTO `".$db['clicks_ips']."` (`id` ,`ip` ,`uid` ,`ids`, `side`, `time`) VALUES (NULL , '".$userip."', ".$userid.", ".$clickedID.", '".$side_tag."', '".(time()+count_clicks_expires)."');");
+
+                return true;
+            }
         } else {
-            if($update)
-                db("INSERT INTO `".$db['clicks_ips']."` (`id` ,`ip` ,`uid` ,`ids`, `side`, `time`) VALUES (NULL , '".$userip."', ".$userid.", ".$clickedID.", '".$side_tag."', '".(time()+count_clicks_expires)."');");
+            if(!db("SELECT id FROM `".$db['clicks_ips']."` WHERE `ip` = '".$userip."' AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';",true)) {
+                if($update)
+                    db("INSERT INTO `".$db['clicks_ips']."` (`id` ,`ip` ,`uid` ,`ids`, `side`, `time`) VALUES (NULL , '".$userip."', 0, ".$clickedID.", '".$side_tag."', '".(time()+count_clicks_expires)."');");
 
-            return true;
-        }
-    } else {
-        if(!db("SELECT id FROM `".$db['clicks_ips']."` WHERE `ip` = '".$userip."' AND `ids` = ".$clickedID." AND `side` = '".$side_tag."';",true)) {
-            if($update)
-                db("INSERT INTO `".$db['clicks_ips']."` (`id` ,`ip` ,`uid` ,`ids`, `side`, `time`) VALUES (NULL , '".$userip."', 0, ".$clickedID.", '".$side_tag."', '".(time()+count_clicks_expires)."');");
-
-            return true;
+                return true;
+            }
         }
     }
 
