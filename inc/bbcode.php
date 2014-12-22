@@ -2277,11 +2277,6 @@ function admin_perms($userid) {
  * @return boolean
  */
 function isSpider() {
-    global $UserAgent;
-    if(empty($UserAgent)) { 
-        return true; 
-    }
-    
     $bots_basic = array('bot', 'b o t', 'spider', 'spyder', 'crawl', 'slurp', 'robo', 'yahoo', 'ask', 'google', '80legs', 'acoon',
             'altavista', 'al_viewer', 'appie', 'appengine-google', 'arachnoidea', 'archiver', 'asterias', 'ask jeeves', 'beholder',
             'bildsauger', 'bingsearch', 'bingpreview', 'bumblebee', 'bramptonmoose', 'cherrypicker', 'crescent', 'coccoc', 'cosmos',
@@ -2298,6 +2293,7 @@ function isSpider() {
             'TechnoratiSnoop', 'Rankivabot', 'Mediapartners-Google', 'Sogou web spider', 'WebAlta Crawler', 'MJ12bot',
             'Yandex', 'YaDirectBot', 'StackRambler','DotBot','dotbot');
 
+    $UserAgent = trim(GetServerVars('HTTP_USER_AGENT'));
     foreach ($bots_basic as $bot) {
         if(stristr($UserAgent, $bot) !== FALSE || strpos($bot, $UserAgent)) {
             return true;
@@ -2308,8 +2304,9 @@ function isSpider() {
     if(file_exists(basePath.'/inc/_spiders.txt')) {
         $ex = explode("\n", file_get_contents(basePath.'/inc/_spiders.txt'));
         for($i=0;$i<=count($ex)-1;$i++) {
-            if(stristr($UserAgent, trim($ex[$i])))
+            if(stristr($UserAgent, trim($ex[$i]))) {
                 return true;
+            }
         }
     }
 	

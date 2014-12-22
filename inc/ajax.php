@@ -26,7 +26,7 @@ ob_implicit_flush(false);
     ## SETTINGS ##
     $dir = "sites";
     addNoCacheHeaders(); //No Browser-Cache
-
+    
     ## SECTIONS ##
     //-> Steam Status
     function steamIMG($steamID='') {
@@ -70,17 +70,17 @@ ob_implicit_flush(false);
         header("Content-type: application/x-www-form-urlencoded;charset=utf-8");
 
     switch ($mod):
-        case 'kalender';
+        case 'kalender':
             $month = (isset($_GET['month']) ? $_GET['month'] : '');
             $year = (isset($_GET['year']) ? $_GET['year'] : '');
             echo kalender($month,$year,true);
         break;
-        case 'counter';   echo counter(true); break;
-        case 'teams';     echo team($_GET['tID']); break;
-        case 'server';    echo '<table class="hperc" cellspacing="0">'.server($_GET['serverID']).'</table>'; break;
-        case 'shoutbox';  echo '<table class="hperc" cellspacing="1">'.shout(1).'</table>'; break;
-        case 'teamspeak'; echo '<table class="hperc" cellspacing="0">'.teamspeak(1).'</table>'; break;
-        case 'steam';     echo steamIMG(trim($_GET['steamid'])); break;
+        case 'counter':   echo counter(true); break;
+        case 'teams':     echo team($_GET['tID']); break;
+        case 'server':    echo '<table class="hperc" cellspacing="0">'.server($_GET['serverID']).'</table>'; break;
+        case 'shoutbox':  echo '<table class="hperc" cellspacing="1">'.shout(1).'</table>'; break;
+        case 'teamspeak': echo '<table class="hperc" cellspacing="0">'.teamspeak(1).'</table>'; break;
+        case 'steam':     echo steamIMG(trim($_GET['steamid'])); break;
         case 'securimage':
             if(!headers_sent()) {
                 $securimage->background_directory = basePath.'/inc/images/securimage/background/';

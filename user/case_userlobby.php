@@ -10,8 +10,7 @@ if(defined('_UserMenu')) {
         $can_erase = false;
 
         //Get Userinfos
-        $lastvisit = userstats('lastvisit');
-        $lastvisit = empty($lastvisit) ? "0" : $lastvisit;
+        $lastvisit = $_SESSION['lastvisit'];
 
         /** Neue Foreneintraege anzeigen */
         $qrykat = db("SELECT s1.id,s2.kattopic,s1.intern,s2.id FROM ".$db['f_kats']." AS s1
