@@ -1297,8 +1297,8 @@ function orderby($sort) {
     return $url."orderby=".$sort."&order=ASC";
 }
 
-function orderby_sql($sort_by=array(), $default_order='',$join='') {
-    if(!isset($_GET['order']) || empty($_GET['order'])) return $default_order;
+function orderby_sql($sort_by=array(), $default_order='',$join='', $order_by = array('ASC','DESC')) {
+    if(!isset($_GET['order']) || empty($_GET['order']) || !in_array($_GET['order'],$order_by)) return $default_order;
     if(!isset($_GET['orderby']) || empty($_GET['orderby']) || !in_array($_GET['orderby'],$sort_by)) return $default_order;
     $orderby_real = _real_escape_string($_GET['orderby']);
     $order_real = _real_escape_string($_GET['order']);
@@ -2278,6 +2278,10 @@ function admin_perms($userid) {
  */
 function isSpider() {
     global $UserAgent;
+    if(empty($UserAgent)) { 
+        return true; 
+    }
+    
     $bots_basic = array('bot', 'b o t', 'spider', 'spyder', 'crawl', 'slurp', 'robo', 'yahoo', 'ask', 'google', '80legs', 'acoon',
             'altavista', 'al_viewer', 'appie', 'appengine-google', 'arachnoidea', 'archiver', 'asterias', 'ask jeeves', 'beholder',
             'bildsauger', 'bingsearch', 'bingpreview', 'bumblebee', 'bramptonmoose', 'cherrypicker', 'crescent', 'coccoc', 'cosmos',
@@ -2286,36 +2290,30 @@ function isSpider() {
             'incywincy', 'infoseek', 'infohelfer', 'inktomi', 'indy library', 'informant', 'internetami', 'internetseer', 'link', 'larbin',
             'jakarta', 'mata hari', 'medicalmatrix', 'mercator', 'miixpc', 'moget', 'msnptc', 'muscatferret', 'netcraftsurveyagent',
             'openxxx', 'picmole', 'piranha', 'pldi.net', 'p357x', 'quosa', 'rambler', 'rippers', 'rganalytics', 'scan', 'scooter', 'ScoutJet',
-            'siclab', 'siteexplorer', 'sly', 'suchen', 'searchme', 'spy', 'swisssearch', 'sqworm', 'trivial', 't-h-u-n-d-e-r-s-t-o-n-e', 'teoma',
-            'twiceler', 'ultraseek', 'validator', 'webbandit', 'webmastercoffee', 'webwhacker', 'wevika', 'wisewire', 'yandex', 'zyborg', 'agentname');
+            'siclab', 'siteexplorer', 'sly', 'searchme', 'spy', 'swisssearch', 'sqworm', 'trivial', 't-h-u-n-d-e-r-s-t-o-n-e', 'teoma',
+            'twiceler', 'ultraseek', 'validator', 'webbandit', 'webmastercoffee', 'webwhacker', 'wevika', 'wisewire', 'yandex', 'zyborg',
+            'Teoma', 'alexa', 'froogle', 'Gigabot', 'inktomi', 'looksmart', 'URL_Spider_SQL', 'Firefly', 'NationalDirectory', 'Ask Jeeves', 'TECNOSEEK', 
+            'InfoSeek', 'WebFindBot', 'girafabot', 'crawler', 'www.galaxy.com', 'Googlebot', 'Googlebot/2.1', 'Google', 'Google Webmaster', 'Scooter', 
+            'James Bond', 'Slurp', 'msnbot', 'appie', 'FAST', 'WebBug', 'Spade', 'ZyBorg', 'rabaz', 'Baiduspider', 'Feedfetcher-Google',
+            'TechnoratiSnoop', 'Rankivabot', 'Mediapartners-Google', 'Sogou web spider', 'WebAlta Crawler', 'MJ12bot',
+            'Yandex', 'YaDirectBot', 'StackRambler','DotBot','dotbot');
 
-	$BotList = array("Teoma", "alexa", "froogle", "Gigabot", "inktomi", "looksmart", "URL_Spider_SQL", "Firefly", 
-				 "NationalDirectory", "Ask Jeeves", "TECNOSEEK", "InfoSeek", "WebFindBot", "girafabot", "crawler", 
-				 "www.galaxy.com", "Googlebot", "Googlebot/2.1", "Google Webmaster", "Scooter", "James Bond", "Slurp", 
-				 "msnbot", "appie", "FAST", "WebBug", "Spade", "ZyBorg", "rabaz", "Baiduspider", "Feedfetcher-Google", 
-				 "TechnoratiSnoop", "Rankivabot", "Mediapartners-Google", "Sogou web spider", "WebAlta Crawler", "MJ12bot",
-				 "Yandex/", "YaDirectBot", "StackRambler","DotBot","dotbot");
-			
-    $spiders = file_get_contents(basePath.'/inc/_spiders.txt');
-    if(empty($UserAgent)) return false;
     foreach ($bots_basic as $bot) {
-        if(stristr($UserAgent, $bot) !== FALSE)
+        if(stristr($UserAgent, $bot) !== FALSE || strpos($bot, $UserAgent)) {
             return true;
+        }
     }
 
-    $ex = explode("\n", $spiders);
-    for($i=0;$i<=count($ex)-1;$i++) {
-        if(stristr($UserAgent, trim($ex[$i])))
-            return true;
-    }
-
-   foreach($BotList as $bot) {
-      if(strpos($bot, $UserAgent)) {
-         return true;
-      }
+    //Old DZCP Spiders Text
+    if(file_exists(basePath.'/inc/_spiders.txt')) {
+        $ex = explode("\n", file_get_contents(basePath.'/inc/_spiders.txt'));
+        for($i=0;$i<=count($ex)-1;$i++) {
+            if(stristr($UserAgent, trim($ex[$i])))
+                return true;
+        }
     }
 	
-	return false;
+    return false;
 }
 
 //-> filter placeholders
