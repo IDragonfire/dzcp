@@ -188,20 +188,6 @@ function check_ip() {
     }
 }
 
-/**
- * Check given ip for ipv6 or ipv4.
- * @param    string        $ip
- * @param    boolean       $v6
- * @return   boolean
- */
-function isIP($ip,$v6=false) {
-    if(!$v6 && substr_count($ip,":") < 1) {
-        return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ? true : false;
-    }
-    
-    return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ? true : false;
-}
-
 check_ip(); // IP Prufung
 
 function dzcp_session_destroy() {
@@ -313,7 +299,6 @@ if($chkMe && $userid && !empty($_SESSION['ip'])) {
  * Aktualisiere die Client DNS & User Agent
  */
 if(session_id()) {
-    if(!function_exists('SearchBotDetect')) { function SearchBotDetect(){ return array('fullname'=>"","name"=>"","bot"=>false); } }
     if(db("SELECT `id` FROM `".$db['ip2dns']."` WHERE `update` <= ".time()." AND `sessid` = '".session_id()."';",true)) {
         $bot = SearchBotDetect();
         db("UPDATE `".$db['ip2dns']."` SET `time` = ".(time()+10*60).", `update` = ".(time()+60).", `ip` = '".$userip."', "
@@ -339,6 +324,18 @@ if(session_id()) {
 
 /**
 * DZCP V1.6.1
+* Erkennt Bots am User Agenten
+*/
+function SearchBotDetect() { 
+    global $UserAgent;
+    $fullname = ''; $name = ''; $bot = false;
+    
+    
+    return array('fullname'=>$fullname,"name"=>$name,"bot"=>$bot); 
+}
+
+/**
+* DZCP V1.6.1
 * Browser-Cache nicht verwenden -> Ajax
 */
 function addNoCacheHeaders() {
@@ -360,33 +357,43 @@ function visitorIp() {
     'HTTP_FORWARDED_FOR','HTTP_FORWARDED','HTTP_VIA','HTTP_X_COMING_FROM','HTTP_COMING_FROM');
     foreach ($ServerVars as $ServerVar) {
         if($IP=detectIP($ServerVar)) {
-            if(!validateIpV4Range($IP, '[192].[168].[0-255].[0-255]') && 
+            if(isIP($IP) && !validateIpV4Range($IP, '[192].[168].[0-255].[0-255]') && 
 		!validateIpV4Range($IP, '[127].[0].[0-255].[0-255]') && 
 		!validateIpV4Range($IP, '[10].[0-255].[0-255].[0-255]') && 
 		!validateIpV4Range($IP, '[172].[16-31].[0-255].[0-255]')) {
                     return $IP;
             } else $SetIP = $IP;
+            
+            if(isIP($IP,true))
+                return $IP;
         }
     }
- 
+    
     return $SetIP;
 }
 
 function detectIP($var) {
     if(!empty($var) && ($REMOTE_ADDR = GetServerVars($var)) && !empty($REMOTE_ADDR)) {
         $REMOTE_ADDR = trim($REMOTE_ADDR);
-        if(CheckIP($REMOTE_ADDR))
+        if(isIP($REMOTE_ADDR) || isIP($REMOTE_ADDR,true))
              return $REMOTE_ADDR;
     }
     
     return false;
 }
 
-function CheckIP($TheIp) {
-    if(empty($TheIp)) return false;
-    $TheIp_X = explode('.',$TheIp);
-    return (count($TheIp_X) == 4 && $TheIp_X[0]<=255 && $TheIp_X[1]<=255 && $TheIp_X[2]<=255 && $TheIp_X[3]<=255 && 
-    preg_match("!^([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})\.([0-9]{1,3})$!",$TheIp));
+/**
+ * Check given ip for ipv6 or ipv4.
+ * @param    string        $ip
+ * @param    boolean       $v6
+ * @return   boolean
+ */
+function isIP($ip,$v6=false) {
+    if(!$v6 && substr_count($ip,":") < 1) {
+        return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ? true : false;
+    }
+    
+    return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV6) ? true : false;
 }
 
 /**
