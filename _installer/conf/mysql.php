@@ -1594,6 +1594,9 @@ function update_mysql_1_6_1() {
       `ip` varchar(15) NOT NULL DEFAULT '',
       `dns` varchar(200) NOT NULL DEFAULT '',
       `agent` varchar(250) NOT NULL DEFAULT '',
+      `bot` int(1) NOT NULL DEFAULT '0',
+      `bot_name` varchar(250) NOT NULL DEFAULT '',
+      `bot_fullname` varchar(250) NOT NULL DEFAULT '',
       PRIMARY KEY (`id`),
       KEY `sessid` (`sessid`));",false,false,true);
 
