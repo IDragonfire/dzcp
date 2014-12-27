@@ -174,7 +174,7 @@ function check_ip() {
         }
 
         unset($banned_ip,$banned_ip_sql);
-        if(allow_url_fopen_support() && !isIP($userip) && !validateIpV4Range($userip, '[192].[168].[0-255].[0-255]') && 
+        if(allow_url_fopen_support() && isIP($userip) && !validateIpV4Range($userip, '[192].[168].[0-255].[0-255]') && 
         !validateIpV4Range($userip, '[127].[0].[0-255].[0-255]') && 
         !validateIpV4Range($userip, '[10].[0-255].[0-255].[0-255]') && 
         !validateIpV4Range($userip, '[172].[16-31].[0-255].[0-255]')) {

@@ -79,6 +79,12 @@ class sfs {
 
     protected static function call_json() {
         $ctx = stream_context_create(array('http'=>array('timeout' => file_get_contents_timeout)));
+        if(view_error_reporting && debug_save_to_file) {
+            $fp = fopen(basePath."/inc/_logs/fsf_ips.log", "a+");
+            fwrite($fp, self::$url); 
+            fclose($fp);
+        }
+
         if(!(self::$json = file_get_contents(self::$url, false, $ctx))) return false;
         if(empty(self::$json)) return false;
 
