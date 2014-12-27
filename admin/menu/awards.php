@@ -1,6 +1,6 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1 Final
+ * DZCP - deV!L`z ClanPortal 1.6.1
  * http://www.dzcp.de
  */
 
@@ -9,8 +9,7 @@ if(_adminMenu != 'true') exit;
     $where = $where.': '._awards_head;
         if($do == "new")
       {
-          $qry = db("SELECT * FROM ".$db['squads']."
-                   ORDER BY game ASC");
+          $qry = db("SELECT * FROM ".$db['squads']." ORDER BY game ASC");
           while($get = _fetch($qry))
         {
           $squads .= show(_awards_admin_add_select_field_squads, array("name" => $get['name'],

@@ -1,6 +1,6 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1 Final
+ * DZCP - deV!L`z ClanPortal 1.6.1
  * http://www.dzcp.de
  */
 
@@ -113,7 +113,7 @@ function makeCryptkey($passwordLength=12,$specialcars=true) {
  * @return uft8 string
  */
 function up($txt = '') {
-    return utf8_encode(stripcslashes(spChars(htmlentities($txt, ENT_COMPAT, 'iso-8859-1'))));;
+    return utf8_encode(stripcslashes(spChars(htmlentities($txt, ENT_COMPAT, 'iso-8859-1'))));
 }
 
 function spChars($txt) {

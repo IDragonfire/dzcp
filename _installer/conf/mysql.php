@@ -1,18 +1,17 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1 Final
+ * DZCP - deV!L`z ClanPortal 1.6.1
  * http://www.dzcp.de
  */
 
 //MySQL-Daten einlesen
 $installation = true;
 include(basePath.'/inc/config.php');
+include(basePath.'/_installer/conf/dbu.php');
 $prev = intval(makePrev());
 
-function install_mysql($login, $nick, $pwd, $email)
-{
+function install_mysql($login, $nick, $pwd, $email) {
   global $db;
-  
 //-> Awards
   $qry = db("DROP TABLE IF EXISTS ".$db['awards']."");
   $qry = db("CREATE TABLE ".$db['awards']." (
@@ -24,8 +23,7 @@ function install_mysql($login, $nick, $pwd, $email)
             `place` varchar(5) NOT NULL default '',
             `prize` text NOT NULL,
             `url` text NOT NULL,
-            PRIMARY KEY  (`id`)
-            )");
+            PRIMARY KEY  (`id`))");
   //-> Bannliste
   $qry = db("DROP TABLE IF EXISTS ".$db['prefix']."banned");
   $qry = db("CREATE TABLE ".$db['prefix']."banned (
@@ -1116,7 +1114,7 @@ function update_mysql_1_3()
 }
 function update_mysql_1_4()
 {
-  global $db,$prev;
+  global $db,$prev,$prefix;
 
   $qry = db("ALTER TABLE ".$db['config']." ADD `id` int(1) NOT NULL default '1' FIRST,
                                            ADD `securelogin` int(1) NOT NULL default '0',
@@ -1164,7 +1162,7 @@ function update_mysql_1_4()
                                              ADD `gmaps_who` int(1) NOT NULL default '1',
                                              ADD `prev` int(3) NOT NULL default '0'");
 
-  $qry = db("DROP TABLE IF EXISTS ".$db['reg']."");
+  $qry = db("DROP TABLE IF EXISTS ".$sql_prefix.'reg'."");
 
   $qry = db("ALTER TABLE ".$db['permissions']." ADD `receivecws` int(1) NOT NULL default '0',
                                                 ADD `editor` int(1) NOT NULL default '0',
@@ -1471,7 +1469,7 @@ function update_mysql_1_6()
     db("ALTER TABLE `".$db['settings']."` ADD `steam_api_key` VARCHAR(50) NOT NULL DEFAULT '' AFTER `urls_linked`;");
     db("ALTER TABLE `".$db['settings']."` ADD `db_optimize` INT(20) NOT NULL DEFAULT '0' AFTER `steam_api_key`;");
     db("ALTER TABLE `".$db['f_access']."` ADD `id` INT(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`);");
-
+    
     //->Add new Indexes * MySQL optimize
     db("ALTER TABLE `".$db['users']."` ADD INDEX(`pwd`);");
     db("ALTER TABLE `".$db['users']."` ADD INDEX(`time`);");
@@ -1547,7 +1545,7 @@ function update_mysql_1_6()
      }
 
      //-> Slideshow
-     db("DROP TABLE IF EXISTS ".$db['slideshow']."");
+     db("DROP TABLE IF EXISTS ".$db['slideshow'],false,false,true);
      db("CREATE TABLE ".$db['slideshow']." (
         `id` int(11) NOT NULL auto_increment,
         `pos` int(5) NOT NULL default '0',
@@ -1556,7 +1554,7 @@ function update_mysql_1_6()
         `desc` varchar(249) NOT NULL default '',
         `url` varchar(200) NOT NULL default '',
         `target` int(1) NOT NULL default '0',
-        PRIMARY KEY  (`id`))");
+        PRIMARY KEY  (`id`))",false,false,true);
 
     $qry = db("SELECT id FROM ".$db['users']." WHERE level = 4");
     if(mysqli_num_rows($qry)>= 1)
@@ -1573,32 +1571,32 @@ function update_mysql_1_6_1() {
     db("DROP TABLE ".$db['prefix']."banned",false,false,true);
 
     //-> IP-Ban
-    db("DROP TABLE IF EXISTS ".$db['ipban']);
+    db("DROP TABLE IF EXISTS ".$db['ipban'],false,false,true);
     db("CREATE TABLE IF NOT EXISTS `".$db['ipban']."` (
        `id` int(11) NOT NULL AUTO_INCREMENT,
-       `ip` varchar(15) NOT NULL DEFAULT '255.255.255.255',
+       `ip` varchar(15) NOT NULL DEFAULT '0.0.0.0',
        `time` int(11) NOT NULL DEFAULT '0',
        `data` text,
        `typ` int(1) NOT NULL DEFAULT '0',
        `enable` int(1) NOT NULL DEFAULT '1',
       PRIMARY KEY (`id`),
-      KEY `ip` (`ip`));",false,false,true);
+      KEY `ip` (`ip`)) DEFAULT CHARSET=utf8;",false,false,true);
 
     //-> IP-ToDNS
-    db("DROP TABLE IF EXISTS ".$db['ip2dns']);
+    db("DROP TABLE IF EXISTS ".$db['ip2dns'],false,false,true);
     db("CREATE TABLE IF NOT EXISTS `".$db['ip2dns']."` (
       `id` int(11) NOT NULL AUTO_INCREMENT,
       `sessid` varchar(50) NOT NULL DEFAULT '',
       `time` int(11) NOT NULL DEFAULT '0',
       `update` int(11) NOT NULL DEFAULT '0',
-      `ip` varchar(15) NOT NULL DEFAULT '',
+      `ip` varchar(15) NOT NULL DEFAULT '0.0.0.0',
       `dns` varchar(200) NOT NULL DEFAULT '',
       `agent` varchar(250) NOT NULL DEFAULT '',
       `bot` int(1) NOT NULL DEFAULT '0',
       `bot_name` varchar(250) NOT NULL DEFAULT '',
       `bot_fullname` varchar(250) NOT NULL DEFAULT '',
       PRIMARY KEY (`id`),
-      KEY `sessid` (`sessid`));",false,false,true);
+      KEY `sessid` (`sessid`)) DEFAULT CHARSET=utf8;",false,false,true);
 
     //Set default for profile
     $qry = db("SELECT feldname FROM `".$db['profile']."` WHERE `feldname` LIKE '%custom_%'");
@@ -1609,7 +1607,7 @@ function update_mysql_1_6_1() {
     }
 
     //-> Captcha
-    db("DROP TABLE IF EXISTS ".$db['captcha']);
+    db("DROP TABLE IF EXISTS ".$db['captcha'],false,false,true);
     db("CREATE TABLE IF NOT EXISTS `".$db['captcha']."` (
         `id` varchar(40) NOT NULL,
         `namespace` varchar(32) NOT NULL,
@@ -1618,10 +1616,10 @@ function update_mysql_1_6_1() {
         `created` int(11) NOT NULL,
         PRIMARY KEY (`id`,`namespace`),
         KEY `created` (`created`)
-        );",false,false,true);
+        ) DEFAULT CHARSET=utf8;",false,false,true);
 
     //-> Sessions
-    db("DROP TABLE IF EXISTS ".$db['sessions']);
+    db("DROP TABLE IF EXISTS ".$db['sessions'],false,false,true);
     db("CREATE TABLE `".$db['sessions']."` (
           `id` int(11) NOT NULL AUTO_INCREMENT,
           `ssid` varchar(200) NOT NULL DEFAULT '',
@@ -1630,22 +1628,22 @@ function update_mysql_1_6_1() {
           PRIMARY KEY (`id`),
           KEY `ssid` (`ssid`),
           KEY `time` (`time`)
-        ) DEFAULT CHARSET=latin1;",false,false,true);
+        ) DEFAULT CHARSET=utf8;",false,false,true);
 
     //-> Click IP Counter
-    db("DROP TABLE IF EXISTS `".$db['clicks_ips']."`;");
+    db("DROP TABLE IF EXISTS `".$db['clicks_ips']."`;",false,false,true);
     db("CREATE TABLE IF NOT EXISTS `".$db['clicks_ips']."` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
-    `ip` varchar(15) NOT NULL DEFAULT '000.000.000.000',
+    `ip` varchar(15) NOT NULL DEFAULT '0.0.0.0',
     `uid` int(11) NOT NULL DEFAULT '0',
     `ids` int(11) NOT NULL DEFAULT '0',
     `side` varchar(30) NOT NULL DEFAULT '',
     `time` int(20) NOT NULL DEFAULT '0',
     PRIMARY KEY (`id`),
-    KEY `ip` (`ip`));",false,false,true);
+    KEY `ip` (`ip`)) DEFAULT CHARSET=utf8;",false,false,true);
     
     //Autologin manager
-    db("DROP TABLE IF EXISTS `".$db['autologin']."`;");
+    db("DROP TABLE IF EXISTS `".$db['autologin']."`;",false,false,true);
     db("CREATE TABLE IF NOT EXISTS `".$db['autologin']."` (
     `id` int(11) NOT NULL AUTO_INCREMENT,
     `uid` int(11) NOT NULL DEFAULT '0',
@@ -1660,23 +1658,128 @@ function update_mysql_1_6_1() {
     PRIMARY KEY (`id`),
     KEY `ssid` (`ssid`),
     KEY `pkey` (`pkey`),
-    KEY `uid` (`uid`));",false,false,true);
+    KEY `uid` (`uid`)) DEFAULT CHARSET=utf8;",false,false,true);
     
     db("ALTER TABLE `".$db['users']."` DROP `pkey`;",false,false,true);
     db("ALTER TABLE `".$db['newscomments']."` CHANGE `nick` `nick` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
     db("ALTER TABLE `".$db['acomments']."` CHANGE `nick` `nick` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
     db("ALTER TABLE `".$db['users']."` ADD `profile_access` INT(1) NOT NULL DEFAULT '0' AFTER `perm_gb`;",false,false,true);
-
-    if(!file_exists(basePath.'/inc/cryptkey.php')) {
-        $fp = @fopen("../inc/cryptkey.php","w");
-        @fwrite($fp,"<?php \$cryptkey = '".makeCryptkey()."';");
-        @fclose($fp);
-    }
-    
-    if($updater) {
-        db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time()+auto_db_optimize_interval)."' WHERE `id` = 1;");
-        db_optimize();
-    }
+    db("ALTER TABLE `".$db['artikel']."` CHANGE `autor` `autor` INT(11) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['artikel']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['artikel']."` CHANGE `datum` `datum` INT(20) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['artikel']."` CHANGE `kat` `kat` INT(5) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['acomments']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['acomments']."` CHANGE `artikel` `artikel` INT(11) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['acomments']."` CHANGE `ip` `ip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0.0.0.0';",false,false,true);
+    db("ALTER TABLE `".$db['awards']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['awards']."` CHANGE `squad` `squad` INT(11) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['awards']."` CHANGE `date` `date` INT(20) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['awards']."` CHANGE `postdate` `postdate` INT(20) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['awards']."` CHANGE `prize` `prize` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;",false,false,true);
+    db("ALTER TABLE `".$db['awards']."` CHANGE `url` `url` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;",false,false,true);
+    db("ALTER TABLE `".$db['away']."` CHANGE `reason` `reason` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;",false,false,true);
+    db("ALTER TABLE `".$db['away']."` CHANGE `titel` `titel` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['away']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['away']."` CHANGE `userid` `userid` INT(11) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['away']."` CHANGE `date` `date` INT(20) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['ipcheck']."` CHANGE `ip` `ip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0.0.0.0';",false,false,true);
+    db("ALTER TABLE `".$db['clankasse']."` CHANGE `datum` `datum` INT(11) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['clankasse']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['c_payed']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['counter']."` CHANGE `today` `today` VARCHAR(10) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['counter']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['c_ips']."` CHANGE `ip` `ip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0.0.0.0';",false,false,true);
+    db("ALTER TABLE `".$db['c_who']."` CHANGE `ip` `ip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0.0.0.0';",false,false,true);
+    db("ALTER TABLE `".$db['c_who']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['c_who']."` CHANGE `whereami` `whereami` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;",false,false,true);
+    db("ALTER TABLE `".$db['cw']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['cw']."` CHANGE `squad_id` `squad_id` INT(11) NOT NULL;",false,false,true);
+    db("ALTER TABLE `".$db['cw_comments']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['cw_comments']."` CHANGE `cw` `cw` INT(11) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['cw_comments']."` CHANGE `nick` `nick` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['cw_comments']."` CHANGE `email` `email` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['cw_comments']."` CHANGE `comment` `comment` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;",false,false,true);
+    db("ALTER TABLE `".$db['cw_comments']."` CHANGE `ip` `ip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0.0.0.0';",false,false,true);
+    db("ALTER TABLE `".$db['cw_player']."` ADD `id` INT(11) NOT NULL AUTO_INCREMENT FIRST, ADD PRIMARY KEY (`id`) ;",false,false,true);
+    db("ALTER TABLE `".$db['downloads']."` CHANGE `hits` `hits` INT(20) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['events']."` CHANGE `event` `event` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;",false,false,true);
+    db("ALTER TABLE `".$db['events']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['f_abo']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['f_kats']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['f_posts']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['f_posts']."` CHANGE `email` `email` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['f_posts']."` CHANGE `nick` `nick` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['f_posts']."` CHANGE `text` `text` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;",false,false,true);
+    db("ALTER TABLE `".$db['f_posts']."` CHANGE `ip` `ip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0.0.0.0';",false,false,true);
+    db("ALTER TABLE `".$db['f_skats']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['f_threads']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['f_threads']."` CHANGE `ip` `ip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0.0.0.0';",false,false,true);
+    db("ALTER TABLE `".$db['f_threads']."` CHANGE `t_nick` `t_nick` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['f_threads']."` CHANGE `t_email` `t_email` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['f_threads']."` CHANGE `t_text` `t_text` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;",false,false,true);
+    db("ALTER TABLE `".$db['gallery']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['gb']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['gb']."` CHANGE `nick` `nick` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['gb']."` CHANGE `email` `email` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['gb']."` CHANGE `hp` `hp` VARCHAR(249) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;",false,false,true);
+    db("ALTER TABLE `".$db['gb']."` CHANGE `nachricht` `nachricht` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;",false,false,true);
+    db("ALTER TABLE `".$db['gb']."` CHANGE `ip` `ip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0.0.0.0';",false,false,true);
+    db("ALTER TABLE `".$db['links']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['links']."` CHANGE `hits` `hits` INT(11) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['linkus']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['msg']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['news']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['news']."` CHANGE `autor` `autor` INT(5) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['news']."` CHANGE `datum` `datum` INT(20) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['navi_kats']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['navi_kats']."` CHANGE `name` `name` VARCHAR(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['navi_kats']."` CHANGE `placeholder` `placeholder` VARCHAR(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['navi_kats']."` CHANGE `level` `level` INT(2) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['newscomments']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['newscomments']."` CHANGE `email` `email` VARCHAR(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['newscomments']."` CHANGE `comment` `comment` TEXT CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL;",false,false,true);
+    db("ALTER TABLE `".$db['newscomments']."` CHANGE `ip` `ip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0.0.0.0';",false,false,true);
+    db("ALTER TABLE `".$db['newskat']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['newskat']."` CHANGE `katimg` `katimg` VARCHAR(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['newskat']."` CHANGE `kategorie` `kategorie` VARCHAR(60) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['partners']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['partners']."` CHANGE `link` `link` VARCHAR(150) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['permissions']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['profile']."` CHANGE `id` `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['profile']."` CHANGE `feldname` `feldname` VARCHAR(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['profile']."` CHANGE `name` `name` VARCHAR(200) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['rankings']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['rankings']."` CHANGE `league` `league` VARCHAR(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['rankings']."` CHANGE `rank` `rank` INT(10) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['rankings']."` CHANGE `squad` `squad` INT(5) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['rankings']."` CHANGE `url` `url` VARCHAR(249) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['server']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['server']."` CHANGE `status` `status` VARCHAR(30) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['server']."` CHANGE `ip` `ip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0.0.0.0';",false,false,true);
+    db("ALTER TABLE `".$db['server']."` CHANGE `pwd` `pwd` VARCHAR(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['serverliste']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['serverliste']."` CHANGE `datum` `datum` INT(20) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['serverliste']."` CHANGE `ip` `ip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0.0.0.0';",false,false,true);
+    db("ALTER TABLE `".$db['serverliste']."` CHANGE `port` `port` INT(10) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['serverliste']."` CHANGE `pwd` `pwd` VARCHAR(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['settings']."` CHANGE `ts_ip` `ts_ip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0.0.0.0';",false,false,true);
+    db("ALTER TABLE `".$db['settings']."` CHANGE `k_waehrung` `k_waehrung` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['shout']."` CHANGE `ip` `ip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0.0.0.0';",false,false,true);
+    db("ALTER TABLE `".$db['sponsoren']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['sponsoren']."` CHANGE `hits` `hits` INT(11) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['squads']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['squaduser']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['taktik']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['buddys']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['users']."` CHANGE `sessid` `sessid` VARCHAR(32) CHARACTER SET latin1 COLLATE latin1_swedish_ci NULL DEFAULT '';",false,false,true);
+    db("ALTER TABLE `".$db['usergallery']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['usergb']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['usergb']."` CHANGE `ip` `ip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0.0.0.0';",false,false,true);
+    db("ALTER TABLE `".$db['userstats']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['userstats']."` CHANGE `logins` `logins` INT(11) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['userstats']."` CHANGE `hits` `hits` INT(11) NOT NULL DEFAULT '0';",false,false,true);
+    db("ALTER TABLE `".$db['votes']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
+    db("ALTER TABLE `".$db['vote_results']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
     
     /**************** MySQL-Query Optimize ****************
      * Step #1 -> Add Table Indexes
@@ -1698,7 +1801,160 @@ function update_mysql_1_6_1() {
     db("ALTER TABLE `".$db['f_access']."` ADD INDEX(`pos`);");
     db("ALTER TABLE `".$db['vote_results']."` ADD INDEX(`vid`);");
     db("ALTER TABLE `".$db['vote_results']."` ADD INDEX(`what`);");
+    db("ALTER TABLE `".$db['acomments']."` ADD INDEX(`artikel`);");
+    db("ALTER TABLE `".$db['awards']."` ADD INDEX(`squad`);");
+    db("ALTER TABLE `".$db['away']."` ADD INDEX(`userid`);");
+    db("ALTER TABLE `".$db['cw_comments']."` ADD INDEX(`cw`);");
+    db("ALTER TABLE `".$db['cw_player']."` ADD INDEX(`cwid`);");
+    db("ALTER TABLE `".$db['profile']."` ADD INDEX(`kid`);");
+        
+    if(!file_exists(basePath.'/inc/cryptkey.php')) {
+        $fp = @fopen("../inc/cryptkey.php","w");
+        @fwrite($fp,"<?php \$cryptkey = '".makeCryptkey()."';");
+        @fclose($fp);
+    }
     
+    if($updater) {
+        db("UPDATE `".$db['settings']."` SET `db_optimize` = '".(time()+auto_db_optimize_interval)."' WHERE `id` = 1;");
+        db_optimize();
+    }
+
+    //BotListe
+    db("DROP TABLE IF EXISTS `".$db['botlist']."`;",false,false,true);
+    db("CREATE TABLE IF NOT EXISTS `".$db['botlist']."` (
+    `id` int(11) NOT NULL,
+      `name` varchar(50) NOT NULL DEFAULT '',
+      `name_extra` varchar(150) NOT NULL DEFAULT '',
+      `regexpattern` varchar(255) NOT NULL DEFAULT '',
+      `type` int(1) NOT NULL DEFAULT '0',
+      `enabled` int(1) NOT NULL DEFAULT '1'
+    ) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=utf8;",false,false,true);
+
+    db("INSERT INTO `".$db['botlist']."` VALUES
+    (1, 'Exabot', '', '%.*Exabot/([0-9.]*).*%i', 1, 1),
+    (2, 'PHP', '', '%PHP/([0-9.]*)%i', 1, 1),
+    (3, 'Seznam', '', '%SeznamBot%i', 0, 1),
+    (4, 'Mixrank', '', '%MixrankBot%i', 0, 1),
+    (5, 'Xovi', '', '%XoviBot%i', 0, 1),
+    (6, 'UCBrowser', '', '%.*UCBrowser.*%i', 0, 1),
+    (7, 'Wordpress', '', '%.*WordPress/([0-9.]*);.*%i', 1, 1),
+    (8, 'Ares/Nutch', '', '%.*Ares/Nutch-([0-9.]*).*%i', 1, 1),
+    (9, 'Icarus6', '', '%.*Icarus6(?:j){0,1}.*%i', 0, 1),
+    (10, 'GrapeshotCrawler', '', '%.*GrapeshotCrawler/([0-9.]*);.*%i', 1, 1),
+    (11, 'PagesInventory', '', '%.*PagesInventory \\(robot \\+http://www\\.pagesinventory\\.com\\).*%i', 0, 1),
+    (12, 'Aboundex', '', '%Aboundex/([0-9.]*) \\(.*\\)%i', 1, 1),
+    (13, 'Synapse', '', '%.*Synapse.*%i', 0, 1),
+    (14, 'Lipperhey', 'Lipperhey SEO Service', '%.*Lipperhey SEO Service.*%i', 0, 1),
+    (15, 'WeSEE', 'WeSee Ads Page', '%WeSEE:Ads/PageBot.*%i', 0, 1),
+    (16, 'Proximic', '', '%proximic.*spider%i', 0, 1),
+    (17, 'Link-Counter', '', '%(?:link-counter|geek-tools)%i', 0, 1),
+    (18, 'Semrush', '', '%SemrushBot/([0-9.]*)%i', 1, 1),
+    (19, 'NetFront', '', '%NetFront/([0-9.]*).*%i', 1, 1),
+    (20, 'Google', '', '%.*Googlebot/([0-9.]*)(?:;){0,1}.*%i', 1, 1),
+    (21, 'PycURL', '', '%.*PycURL/([0-9.]*).*%i', 1, 1),
+    (22, 'SPBot', '', '%.*spbot/([0-9.]*).*%i', 1, 1),
+    (23, 'Yeti', '', '%.*Yeti/([0-9.]*).*%i', 1, 1),
+    (24, 'Beta', '', '%betaBot%i', 0, 1),
+    (25, 'Daumoa', '', '%.*Daumoa/([0-9.]*).*%i', 1, 1),
+    (26, 'iBrowser', '', '%.*iBrowser/([0-9.]*).*%i', 1, 1),
+    (27, 'FDM', 'Free Download Manager', '%FDM ([0-9]{1,2})\\.x%i', 1, 1),
+    (28, 'Google', 'Google App Engine', '%.*AppEngine-Google.*%i', 0, 1),
+    (29, 'Nerdy', '', '%.*NerdyBot.*%i', 0, 1),
+    (30, 'R6_FeedFetcher', '', '%.*R6_FeedFetcher.*%i', 0, 1),
+    (31, 'WASALive', '', '%.*WASALive-Bot.*%i', 0, 1),
+    (32, 'CA-Crawler', '', '%.*ca-crawler/([0-9.]*).*%i', 1, 1),
+    (33, 'Genieo', '', '%.*Genieo/([0-9.]*).*%i', 1, 1),
+    (34, 'Baiduspider', '', '%.*Baiduspider/([0-9.]*).*%i', 1, 1),
+    (35, 'MeanPathBot', '', '%.*meanpathbot/([0-9.]*).*%i', 1, 1),
+    (36, 'EasouSpider', '', '%.*EasouSpider/([0-9.]*).*%i', 1, 1),
+    (37, 'WBSearch', '', '%.*WBSearchBot/([0-9.]*).*%i', 1, 1),
+    (38, 'AhrefsBot', '', '%.*AhrefsBot/([0-9.]*).*%i', 1, 1),
+    (39, 'Niki', '', '%.*niki-bot.*%i', 0, 1),
+    (40, '200PleaseBot', '', '%.*200PleaseBot/([0-9.]*).*%i', 1, 1),
+    (41, 'Abonti', '', '%.*Abonti/([0-9.]*).*%i', 1, 1),
+    (42, 'Nutch', '', '%.*nutch-([0-9.]*).*%i', 1, 1),
+    (43, 'Xenu Link Sleuth', '', '%.*Xenu Link Sleuth/([0-9.]*).*%i', 1, 1),
+    (44, 'Yandex', '', '%.*YandexBot/([0-9.]*).*%i', 1, 1),
+    (45, 'CocCoc', '', '%.*coccoc/([0-9.]*).*%i', 1, 1),
+    (46, 'CCBot', '', '%.*CCBot/([0-9.]*).*%i', 1, 1),
+    (47, 'ContextAd', '', '%.*ContextAd Bot ([0-9.]*).*%i', 1, 1),
+    (48, 'MSNBot-Products', '', '%.*msnbot-Products/([0-9.]*).*%i', 1, 1),
+    (49, 'URLAppend', '', '%.*URLAppendBot/([0-9.]*).*%i', 1, 1),
+    (50, 'CrazyWebCrawler', '', '%.*CRAZYWEBCRAWLER ([0-9.]*).*%i', 1, 1),
+    (51, 'BNF.FR', '', '%.*bnf.fr_bot.*%i', 1, 1),
+    (52, 'YandexFavicons', '', '%.*YandexFavicons/([0-9.]*).*%i', 1, 1),
+    (53, 'SiteExplorer', '', '%.*SiteExplorer/([0-9.]*).*%i', 1, 1),
+    (54, 'DotBot', '', '%.*DotBot/([0-9.]*).*%i', 1, 1),
+    (55, 'Sogou', '', '%.*Sogou web spider/([0-9.]*).*%i', 1, 1),
+    (56, 'Mail.RU_Bot', '', '%.*Mail\\.RU_Bot/([0-9.]*).*%i', 1, 1),
+    (57, 'uMBot-LN', '', '%.*uMBot-LN/([0-9.]*).*%i', 1, 1),
+    (58, 'Ezooms', '', '%.*Ezooms/([0-9.]*).*%i', 1, 1),
+    (59, 'FeedDemon', '', '%.*FeedDemon/([0-9.]*).*%i', 1, 1),
+    (60, 'Pinterest', '', '%.*Pinterest/([0-9.]*).*%i', 1, 1),
+    (61, 'LSSRocketCrawler', '', '%.*LSSRocketCrawler/([0-9.]*).*%i', 1, 1),
+    (62, 'Jetpack', '', '%.*Jetpack.*%i', 0, 1),
+    (63, 'Wordpress', '', '%.*Wordpress.*%i', 0, 1),
+    (64, 'OpenWebSpider', '', '%.*OpenWebSpider v([0-9.]*).*%i', 3, 1),
+    (65, 'Comodo-Webinspector', '', '%.*Comodo-Webinspector-Crawler ([0-9.]*).*%i', 2, 1),
+    (66, 'Curl', '', '%.*curl/([0-9.]*).*%i', 3, 1),
+    (67, 'Feedly', '', '%.*Feedly/([0-9.]*).*%i', 2, 1),
+    (68, 'Indy Library', '', '%.*Indy Library.*%i', 0, 1),
+    (69, 'WSR-Agent', '', '%.*wsr-agent/([0-9.]*).*%i', 2, 1),
+    (70, 'Perl', '', '%.*libwww-perl/([0-9.]*).*%i', 1, 1),
+    (71, 'WebTarantula', '', '%.*WebTarantula.com Crawler.*%i', 0, 1),
+    (72, 'Apache', '', '%.*Apache-HttpClient/([0-9.]*) \\(java [0-9.]*\\).*%i', 1, 1),
+    (73, 'Netcraft Survey Agent', '', '%.*NetcraftSurveyAgent/([0-9.]*).*%i', 1, 1),
+    (74, 'Mail.ru', '', '%.*Mail.RU_Bot/Robots.*%i', 0, 1),
+    (75, 'Twisted', '', '%.*Twisted PageGetter.*%i', 0, 1),
+    (76, 'Unrulymedia', '', '%.*unrulymedia.*%i', 0, 1),
+    (77, 'Manticore', '', '%.*Manticore ([0-9.]*).*%i', 3, 1),
+    (78, 'Baiduspider', '', '%.*Baiduspider.*%i', 0, 1),
+    (79, 'Bing', '', '%.*bingbot/([0-9.]*).*%i', 2, 1),
+    (80, 'ABACHO', '', '%.*ABACHOBot.*%i', 0, 1),
+    (81, 'Magpie-Crawler', '', '%.*magpie-crawler/([0-9.]*).*%i', 1, 1),
+    (82, 'Jakarta', '', '%.*Jakarta Commons-HttpClient/([0-9.]*).*%i', 1, 1),
+    (83, 'FR-Crawler', '', '%.*fr-crawler/([0-9.]*).*%i', 2, 1),
+    (84, 'Python', '', '%.*python-requests/(?<pythonRequestVersion>[0-9.]*) (?:C){0,1}Python/(?<pythonVersion>[0-9.]*).*%i', 0, 1),
+    (85, 'RogerBot', '', '%.*rogerbot/([0-9.]*).*%i', 1, 1),
+    (86, 'SMTBot', '', '%.*SMTBot/([0-9.]*).*%i', 1, 1),
+    (87, 'KomodiaBot', '', '%.*KomodiaBot/([0-9.]*).*%i', 1, 1),
+    (88, 'LinkpadBot', '', '%.*LinkpadBot/([0-9.]*).*%i', 1, 1),
+    (89, '80legs', '', '%.*008/.*%i', 0, 1),
+    (90, 'EasouSpider', '', '%.*EasouSpider.*%i', 0, 1),
+    (91, 'Mechanize', '', '%.*Mechanize/(?<mechVer>[0-9.]*) Ruby/(?<rubyVer>[0-9.]*).*%i', 0, 1),
+    (92, 'WebCapture', '', '%.*WebCapture ([0-9.]*).*%i', 2, 1),
+    (93, 'Netscape', '', '%.*Netscape(?:6){0,1}/([0-9.]*).*%i', 2, 1),
+    (94, 'PSBot-Page', '', '%.*psbot-page.*%i', 0, 1),
+    (95, 'SEOkicks-Robot', '', '%.*SEOkicks-Robot.*%i', 0, 1),
+    (96, 'Seznam', '', '%.*Seznam screenshot-generator ([0-9.]*).*%i', 1, 1),
+    (97, 'Ruby', '', '%\\ARuby\\Z%i', 0, 1),
+    (98, 'WordPress', '', '%\\AWordPress\\Z%i', 0, 1),
+    (99, 'FlipTop', '', '%fliptop%i', 0, 1),
+    (100, 'Feedspot', '', '%.*Feedspot.*%i', 0, 1),
+    (101, 'Riddler', '', '%.*Riddler.*%i', 0, 1),
+    (102, 'oBot', '', '%.*oBot/([0-9.]*).*%i', 1, 1),
+    (103, 'Wotbox', '', '%.*Wotbox/([0-9.]*).*%i', 1, 1),
+    (104, 'Apache', '', '%Apache-HttpAsyncClient/(?P<mainVer>[0-9.]*) \\(java (?P<javaVer>[0-9.]*)\\)%i', 0, 1),
+    (105, 'ScreenerBot', '', '%.*ScreenerBot Crawler (?:Beta ){0,1}([0-9.]*).*%i', 1, 1),
+    (106, 'netEstate', '', '%.*netEstate NE Crawler.*%i', 0, 1),
+    (107, 'DoCoMo', '', '%.*DoCoMo/([0-9.]*).*%i', 1, 1),
+    (108, 'Microsoft WebDAV', '', '%.*Microsoft-WebDAV(?:-MiniRedir){0,1}/([0-9.]*).*%i', 3, 1),
+    (109, 'Add Catalog', '', '%.*Add Catalog/([0-9.]*).*%i', 1, 1),
+    (110, 'Yahoo', '', '%.*Slurp.*%i', 0, 1),
+    (111, 'Accoona-AI-Agent', '', '%.*Accoona-AI-Agent/([0-9.]*).*%i', 1, 1),
+    (112, 'AddSugarSpiderBot', '', '%.*AddSugarSpiderBot.*%i', 0, 1),
+    (113, 'AnyApexBot', '', '%.*AnyApexBot/([0-9.]*).*%i', 1, 1),
+    (114, 'Arachmo', '', '%.*Arachmo.*%i', 0, 1),
+    (115, 'YaCy', '', '%.*yacybot.*%i', 0, 1);",false,false,true);
+    
+    db("ALTER TABLE `".$db['botlist']."` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `regexpattern` (`regexpattern`);",false,false,true);
+    db("ALTER TABLE `".$db['botlist']."` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=116;",false,false,true);
+    
+    /*
+     * Datenbank in das neue UTF8 Format umschreiben
+     */
+    databaseUpdater::run();
+
     //-> Cookie initialisierung * Autologin *
     if(!headers_sent()) {
         /** Start Sessions */

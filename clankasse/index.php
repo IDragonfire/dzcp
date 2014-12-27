@@ -1,6 +1,6 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1 Final
+ * DZCP - deV!L`z ClanPortal 1.6.1
  * http://www.dzcp.de
  */
 
@@ -171,7 +171,7 @@ switch ($action):
                     $datum = mktime(0,0,0,$_POST['m'],$_POST['t'],$_POST['j']);
                     db("INSERT INTO ".$db['clankasse']."
                         SET `datum`        = '".intval($datum)."',
-                            `member`       = '".$_POST['member']."',
+                            `member`       = '".up($_POST['member'])."',
                             `transaktion`  = '".up($_POST['transaktion'])."',
                             `pm`           = '".intval($_POST['pm'])."',
                             `betrag`       = '".up($betrag)."'");

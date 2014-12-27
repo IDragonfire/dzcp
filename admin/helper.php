@@ -1,7 +1,11 @@
 <?php
 /**
- * Prüft online ob DZCP aktuell ist.
- *
+ * DZCP - deV!L`z ClanPortal 1.6.1
+ * http://www.dzcp.de
+ */
+
+/**
+ * Pruft online ob DZCP aktuell ist.
  * @return array
  */
 function show_dzcp_version() {
@@ -49,7 +53,7 @@ function show_dzcp_version() {
     return $return;
 }
 
-//PHPInfo in array lesen
+//PHPInfo in ein Array einlesen
 function parsePHPInfo() {
     ob_start();
     phpinfo();

@@ -1,6 +1,6 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1 Final
+ * DZCP - deV!L`z ClanPortal 1.6.1
  * http://www.dzcp.de
  */
 
@@ -107,7 +107,7 @@ if($functions_files = get_files(basePath.'/inc/additional-kernel/',false,true,ar
 }
 
 /**
- * Prüft eine IP gegen eine IP-Range
+ * Pruft eine IP gegen eine IP-Range
  * @param ipv4 $ip
  * @param ipv4 range $range
  * @return boolean
@@ -156,7 +156,7 @@ function validateIpV4Range ($ip, $range) {
 // -> Pruft ob die IP gesperrt und gultig ist
 function check_ip() {
     global $db,$ajaxJob,$isSpider,$userip;
-    if(!$ajaxJob && !$isSpider) {
+    if(!$ajaxJob && !$isSpider && !isIP($userip, true)) {
         if((!isIP($userip) && !isIP($userip,true)) || $userip == false || empty($userip)) {
             dzcp_session_destroy();
             die('Deine IP ist ung&uuml;ltig!<p>Your IP is invalid!');
@@ -188,7 +188,7 @@ function check_ip() {
     }
 }
 
-check_ip(); // IP Prufung
+check_ip(); // IP Prufung * No IPV6 Support *
 
 function dzcp_session_destroy() {
     $_SESSION['id']        = '';
@@ -324,14 +324,42 @@ if(session_id()) {
 
 /**
 * DZCP V1.6.1
-* Erkennt Bots am User Agenten
+* Erkennt bekannte Bots am User Agenten
 */
 function SearchBotDetect() { 
-    global $UserAgent;
-    $fullname = ''; $name = ''; $bot = false;
+    global $UserAgent,$db;
+    $sql = db("SELECT * FROM `".$db['botlist']."` WHERE `enabled` = 1;");
+    if(_rows($sql) >= 1) {
+        while ($botdata = _fetch($sql)) {
+            switch ($botdata['type']) {
+                case 1:
+                    if(preg_match(re($botdata['regexpattern']), $UserAgent, $matches)) {
+                        return array('fullname' => re($botdata['name'])." V".trim($matches[1]), 'name' =>re($botdata['name']), 'bot' => true); 
+                    }
+                break;
+                case 2:
+                    if(preg_match(re($botdata['regexpattern']), $UserAgent, $matches)) {
+                        list($majorVer, $minorVer) = explode(".", $matches[1]);
+                        return array('fullname' => re($botdata['name'])." V".trim($majorVer).'.'.trim($minorVer), 'name' =>re($botdata['name']), 'bot' => true); 
+                    } 
+                break;
+                case 3:
+                    if(preg_match(re($botdata['regexpattern']), $UserAgent, $matches)) {
+                        list($majorVer, $minorVer, $build) = explode(".", $matches[1]);
+                        return array('fullname' => re($botdata['name'])." V".trim($majorVer).'.'.trim($minorVer).'.'.trim($build), 'name' =>re($botdata['name']), 'bot' => true); 
+                    } 
+                break;
+                default:
+                     if(preg_match(re($botdata['regexpattern']), $UserAgent)) {
+                        if(empty($botdata['name_extra'])) $botdata['name_extra'] = $botdata['name'];
+                        return array('fullname' => re($botdata['name_extra']), 'name' => re($botdata['name']), 'bot' => true); 
+                    }
+                break;
+            }
+        }
+    }
     
-    
-    return array('fullname'=>$fullname,"name"=>$name,"bot"=>$bot); 
+    return array('fullname'=>'',"name"=>'',"bot"=>false); 
 }
 
 /**
@@ -364,7 +392,7 @@ function visitorIp() {
                     return $IP;
             } else $SetIP = $IP;
             
-            if(isIP($IP,true))
+            if(isIP($IP,true)) //IPV6
                 return $IP;
         }
     }
@@ -566,7 +594,7 @@ function config($what,$use_dbc=true) {
 //-> Prueft ob der User ein Rootadmin ist
 function rootAdmin($userid=0) {
     global $rootAdmins;
-    $userid = !$userid ? userid() : $userid;
+    $userid = (!$userid ? userid() : $userid);
     if(!count($rootAdmins)) return false;
     return in_array($userid, $rootAdmins);
 }
@@ -1141,7 +1169,7 @@ function array_var_exists($var,$search)
 { foreach($search as $key => $var_) { if($var_==$var) return true; } return false; }
 
 /**
- * Funktion um eine Datei im Web auf Existenz zu prüfen und abzurufen
+ * Funktion um eine Datei im Web auf Existenz zu prufen und abzurufen
  * @return String
  **/
 function fileExists($url,$timeout=1) {
@@ -1694,66 +1722,68 @@ function gallery_size($img="") {
     return "<a href=\"../gallery/images/".$img."\" rel=\"lightbox[gallery_".intval($img)."]\"><img src=\"../thumbgen.php?img=gallery/images/".$img."\" alt=\"\" /></a>";
 }
 
-//-> Blaetterfunktion
-function nav($entrys, $perpage, $urlpart='', $icon=true) {
+/**
+* DZCP V1.6.1
+* CSS Basierend - Blaetterfunktion
+* [Previous][1][Next]
+* [Previous][1][2][3][4][Next]
+* [Previous][1][2][3][4][...][20][Next]
+* [Previous][1][...][16][17][18][19][20][Next]
+* [Previous][1][...][13][14][15][16][...][20][Next]
+*/
+function nav($entrys, $perpage, $urlpart='', $recall = 0) {
     global $page;
-    if($perpage == 0)
-        return "&#xAB; <span class=\"fontSites\">0</span> &#xBB;";
+    if(!$entrys || !$perpage) { 
+        $entrys = 1; 
+        $perpage = 10; 
+    }
+    
+    $total_pages  = ceil($entrys / $perpage);
+    $maximum_links = ((9 - $recall) / 2);
+    $no_recall = !$recall ? false : true;
+    $offset_izq = ($page - $maximum_links) < 0 ? $page - $maximum_links : 0;
+    $offset_der = ($total_pages - $page) < $maximum_links ? $maximum_links - ($total_pages - $page) : 0;
+    $pagination =""; $urlpart_extended = empty($urlpart) ? '?' : '&amp;'; $recall = 0;
 
-    if($icon == true)
-        $icon = '<img src="../inc/images/multipage.gif" alt="" class="icon" /> '._seiten;
-
-    if($entrys <= $perpage)
-        return $icon.' &#xAB; <span class="fontSites">1</span> &#xBB;';
-
-    if(!$page || $page < 1)
-        $page = 2;
-
-    $pages = ceil($entrys/$perpage);
-    $urlpart_ext = empty($urlpart) ? '?' : '&amp;';
-
-    if(($page-5) <= 2 && $page != 1)
-        $first = '<a class="sites" href="'.$urlpart.$urlpart_ext.'page='.($page-1).'">&#xAB;</a><span class="fontSitesMisc">&#xA0;</span> <a  class="sites" href="'.$urlpart.$urlpart_ext.'page=1">1</a> ';
-    else if($page > 1)
-        $first = '<a class="sites" href="'.$urlpart.$urlpart_ext.'page='.($page-1).'">&#xAB;</a><span class="fontSitesMisc">&#xA0;</span> <a class="sites" href="'.$urlpart.$urlpart_ext.'page=1">1</a>...';
-    else
-        $first = '<span class="fontSitesMisc">&#xAB;&#xA0;</span>';
-
-    if($page == $pages)
-        $last = '<span class="fontSites">'.$pages.'</span><span class="fontSitesMisc">&#xA0;&#xBB;<span>';
-    else if(($page+5) >= $pages)
-        $last = '<a class="sites" href="'.$urlpart.$urlpart_ext.'page='.($pages).'">'.$pages.'</a>&#xA0;<a class="sites" href="'.$urlpart.$urlpart_ext.'page='.($page+1).'">&#xBB;</a>';
-    else
-        $last = '...<a class="sites" href="'.$urlpart.$urlpart_ext.'page='.($pages).'">'.$pages.'</a>&#xA0;<a class="sites" href="'.$urlpart.$urlpart_ext.'page='.($page+1).'">&#xBB;</a>';
-
-    $result = ''; $resultm = '';
-    for($i = $page;$i<=($page+5) && $i<=($pages-1);$i++) {
-        if($i == $page)
-            $result .= '<span class="fontSites">'.$i.'</span><span class="fontSitesMisc">&#xA0;</span>';
-        else
-            $result .= '<a class="sites" href="'.$urlpart.$urlpart_ext.'page='.$i.'">'.$i.'</a><span class="fontSitesMisc">&#xA0;</span>';
+    if ($page == 1) {
+        $pagination.= "<div class='pagination active'>"._paginator_previous."</div>";
+    } else {
+        $pagina_anterior = $page - 1;
+        $pagination .= "<a href='".$urlpart.$urlpart_extended."page=".$pagina_anterior."' class='pagination'>"._paginator_previous."</a>";
+    }
+    
+    $pager = array(); $pagination_f = '';
+    for ($i = 1; $i <= $total_pages; $i++) {
+        if ($i <= ($page - $maximum_links) - $offset_der || $i > ($page + $maximum_links) - $offset_izq) { $pager[$i] = false; continue; }
+        $pagination_f .= ($i == $page ? "<div class='pagination active'>" .$i. "</div>" : "<a href='".$urlpart.$urlpart_extended."page=".$i."' class='pagination'>".$i."</a>");
+        $pager[$i] = true;
+    }
+    
+    if(!$pager[1]) {
+        $pagination.= "<a href='".$urlpart.$urlpart_extended."page=1' class='pagination'>1</a>";
+        $pagination.= "<div class='pagination active'>...</div>";
+        $recall = ($recall+1);
+    }
+    
+    $pagination.= $pagination_f;
+    if(!$pager[$total_pages]) {
+        $pagination.= "<div class='pagination active'>...</div>";
+        $pagination.= "<a href='".$urlpart.$urlpart_extended."page=".$total_pages."' class='pagination'>".$total_pages."</a>";
+        $recall = ($recall+1);
+    }
+    
+    if($recall && !$no_recall) {
+        return nav($entrys, $perpage, $urlpart, $recall);
+    }
+            
+    if ($page == $total_pages) {
+        $pagination.= "<div class='pagination active'>"._paginator_next."</div>";
+    } else {
+        $pagina_posterior = $page + 1;
+        $pagination.= "<a href='".$urlpart.$urlpart_extended."page=".$pagina_posterior."' class='pagination'>"._paginator_next."</a>";
     }
 
-    for($i=($page-5);$i<=($page-1);$i++) {
-        if($i >= 2)
-            $resultm .= '<a class="sites" href="'.$urlpart.$urlpart_ext.'page='.$i.'">'.$i.'</a> ';
-    }
-
-    return $icon.' '.$first.$resultm.$result.$last;
-}
-
-//-> Funktion um Seiten-Anzahl der Artikel zu erhalten
-function artikelSites($sites, $id) {
-    global $part;
-    $i = 0; $seiten = '';
-    for($i=0;$i<$sites;$i++) {
-        if ($i == $part)
-            $seiten .= show(_page, array("num" => ($i+1)));
-        else
-            $seiten .= show(_artike_sites, array("part" => $i,"id" => $id,"num" => ($i+1)));
-    }
-
-    return $seiten;
+    return $pagination."</div>";
 }
 
 //-> Nickausgabe mit Profillink oder Emaillink (reg/nicht reg)
@@ -1880,6 +1910,15 @@ function userstats($what='id',$tid=0) {
 function sendMail($mailto,$subject,$content) {
     global $language;
     $mail = new PHPMailer;
+    if(phpmailer_use_smtp) {
+        $mail->isSMTP();
+        $mail->Host = phpmailer_smtp_host;
+        $mail->Port = phpmailer_smtp_port;
+        $mail->SMTPAuth = phpmailer_use_auth;
+        $mail->Username = phpmailer_smtp_user;
+        $mail->Password = phpmailer_smtp_password;
+    }
+    
     $mail->From = ($mailfrom =settings('mailfrom'));
     $mail->FromName = $mailfrom;
     $mail->AddAddress(preg_replace('/(\\n+|\\r+|%0A|%0D)/i', '',$mailto));
@@ -2503,7 +2542,7 @@ final class string {
      * @param string $txt
      */
     public static function encode($txt='')
-    { return utf8_encode(stripcslashes(spChars(htmlentities($txt, ENT_COMPAT, 'iso-8859-1')))); }
+    { global $charset; return utf8_encode(stripcslashes(spChars(htmlentities($txt, ENT_COMPAT, $charset)))); }
 
     /**
      * Decodiert UTF8 Text in das aktuelle Charset der Seite.
@@ -2511,7 +2550,7 @@ final class string {
      * @param utf8 string $txt
      */
     public static function decode($txt='')
-    { return trim(stripslashes(spChars(html_entity_decode(utf8_decode($txt), ENT_COMPAT, 'iso-8859-1'),true))); }
+    { global $charset; return trim(stripslashes(spChars(html_entity_decode(utf8_decode($txt), ENT_COMPAT, $charset),true))); }
 }
 
 //-> Speichert Ruckgaben der MySQL Datenbank zwischen um SQL-Queries einzusparen

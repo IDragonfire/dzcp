@@ -1,6 +1,6 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1 Final
+ * DZCP - deV!L`z ClanPortal 1.6.1
  * http://www.dzcp.de
  */
 
@@ -398,21 +398,6 @@ final class session {
         return $this->gc_stmt->execute();
     }
 
-    ###################################################
-    ##################### Private #####################
-    ###################################################
-
-    protected final function is_session_started() {
-        if ( php_sapi_name() !== 'cli' ) {
-            if ( version_compare(phpversion(), '5.4.0', '>=') )
-                return session_status() === PHP_SESSION_ACTIVE ? true : false;
-            else
-                return session_id() === '' ? false : true;
-        }
-
-        return false;
-    }
-
     public static function encode($data,$mcryptkey='',$binary=false,$hex=false) {
         $crypt = new Crypt(CRYPT_MODE_BASE64,CRYPT_HASH_SHA1);
         
@@ -442,5 +427,20 @@ final class session {
         $data = unserialize($data);
         if(!is_array($data)) return null;
         return $data['data'];
+    }
+    
+    ###################################################
+    ##################### Private #####################
+    ###################################################
+
+    protected final function is_session_started() {
+        if ( php_sapi_name() !== 'cli' ) {
+            if ( version_compare(phpversion(), '5.4.0', '>=') )
+                return session_status() === PHP_SESSION_ACTIVE ? true : false;
+            else
+                return session_id() === '' ? false : true;
+        }
+
+        return false;
     }
 }

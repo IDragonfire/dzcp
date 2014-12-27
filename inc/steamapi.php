@@ -1,9 +1,7 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1 Final
+ * DZCP - deV!L`z ClanPortal 1.6.1
  * http://www.dzcp.de
- *
- * The Steam APIClass is exported from DZCP-Extended Edition
  */
 
 class SteamAPI {
@@ -18,7 +16,7 @@ class SteamAPI {
     static private $games_data = array();
 
     /**
-     * Setzt einige Einstellungen für die Steam API
+     * Setzt einige Einstellungen fur die Steam API
      *
      * @param string $key
      * @param string $var

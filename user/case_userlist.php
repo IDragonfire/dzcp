@@ -1,6 +1,6 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1 Final
+ * DZCP - deV!L`z ClanPortal 1.6.1
  * http://www.dzcp.de
  */
 
@@ -125,8 +125,8 @@ if(defined('_UserMenu')) {
                                                          "battlenetu" => $battlenetu,
                                                          "hlsw" => $hlsw));
     }
-
-    $seiten = nav($entrys,config('m_userlist'),"?action=userlist&show=".$show_sql.orderby_nav());
+    
+    $seiten = nav($entrys,config('m_userlist'),"?action=userlist".(!empty($show_sql) ? "&show=".$show_sql : "").orderby_nav());
     $edel = permission("editusers") ? '<td class="contentMainTop" colspan="2">&nbsp;</td>' : "";
     $search = isset($_GET['search']) && !empty($_GET['search']) ? $_GET['search'] : _nick;
     $index = show($dir."/userliste", array("userlistehead" => _userlist,

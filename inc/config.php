@@ -1,13 +1,12 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1 Final
+ * DZCP - deV!L`z ClanPortal 1.6.1
  * http://www.dzcp.de
  */
 
 #########################################
 //-> DZCP Settings Start
 #########################################
-
 define('view_error_reporting', true); // Zeigt alle Fehler und Notices etc.
 define('debug_all_sql_querys', false); // Speichert alle ausgefuehrten SQL-Querys in einer Datei
 define('debug_save_to_file', false); // Schreibt die die Ausgaben der Debug Console in eine Datei
@@ -17,7 +16,7 @@ define('use_curl', true); // Verwendet die CURL PHP Erweiterung, anstelle von fi
 
 define('use_default_timezone', true); // Verwendende die Zeitzone vom Server
 define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selbst einstellen * 'use_default_timezone' auf false stellen *
-define('admin_view_dzcp_news', true); // Entscheidet ob der Newstricker in der Administration angezeigt wird
+define('admin_view_dzcp_news', true); // Entscheidet ob der DZCP Newstricker in der Administration angezeigt wird
 
 define('thumbgen_cache', true); // Sollen die verkleinerten Bilder der Thumbgen gespeichert werden
 define('thumbgen_cache_time', 60*60); // Wie lange sollen die verkleinerten Bilder der Thumbgen im Cache verbleiben
@@ -27,13 +26,13 @@ define('template_cache_time', 30); // Wie lange soll das HTML-Template im Memory
 
 define('feed_update_time', 10*60); // Wann soll der Newsfeed aktualisiert werden
 define('feed_enable_on_debug', false); // Soll der Newsfeed im Debugmodus generiert werden
-define('file_get_contents_timeout', 10); // Nach wie viel Sekunden soll der Downloade externe quellen abgebrochen werden
+define('file_get_contents_timeout', 10); // Nach wie viel Sekunden soll der Download externer Quellen abgebrochen werden
 
 define('cookie_expires', (60*60*24*30*12)); // Wie Lange die Cookies des CMS ihre Gueltigkeit behalten.
 define('cookie_domain', ''); // Die Domain, der das Cookie zur Verfugung steht.
 define('cookie_dir', '/'); // Der Pfad auf dem Server, fur welchen das Cookie verfugbar sein wird.
 
-define('autologin_expire', (14*24*60*60)); // Wie lange die Autologins gultigbleiben bis zum erneuten login, bis zu 14 Tage
+define('autologin_expire', (14*24*60*60)); // Wie lange die Autologins gultig bleiben bis zum erneuten login, bis zu 14 Tage
 
 define('auto_db_optimize', true); // Soll in der Datenbank regelmaessig ein OPTIMIZE TABLE ausgefuehrt werden?
 define('auto_db_optimize_interval', (7*24*60*60)); // Wann soll der OPTIMIZE TABLE ausgefuehrt werden, alle 7 Tage.
@@ -64,6 +63,16 @@ define('count_clicks_expires', (24*60*60)); // Wie Lange die IPs fur den Click-C
 * * Expert *
 */
 define('mysqli_persistconns', false);
+
+/*
+ * Use SMTP connection with authentication for Mailing
+ */
+define('phpmailer_use_smtp', false); //Use SMTP for Mailing
+define('phpmailer_use_auth', true); //Use SMTP authentication
+define('phpmailer_smtp_host', 'localhost'); //Hostname of the mail server
+define('phpmailer_smtp_port', 25); //SMTP port number
+define('phpmailer_smtp_user', ''); //Username to use for SMTP authentication
+define('phpmailer_smtp_password', '');//Password to use for SMTP authentication
 
 #########################################
 //-> Sessions Settings Start * Expert *
@@ -171,6 +180,7 @@ $db = array("host" =>           $sql_host,
             "awards" =>         $prefix."awards",
             "away" =>           $prefix."away",
             "autologin" =>      $prefix."autologin",
+            "botlist" =>        $prefix."botlist",
             "buddys" =>         $prefix."userbuddys",
             "ipcheck" =>        $prefix."ipcheck",
             "clicks_ips" =>     $prefix."clicks_ips",
@@ -212,7 +222,6 @@ $db = array("host" =>           $sql_host,
             "pos" =>            $prefix."positions",
             "profile" =>        $prefix."profile",
             "rankings" =>       $prefix."rankings",
-            "reg" =>            $prefix."reg",
             "server" =>         $prefix."server",
             "serverliste" =>    $prefix."serverliste",
             "settings" =>       $prefix."settings",

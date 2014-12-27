@@ -1,6 +1,6 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1 Final
+ * DZCP - deV!L`z ClanPortal 1.6.1
  * http://www.dzcp.de
  */
 
@@ -200,7 +200,7 @@ if(defined('_News')) {
 
         $index = show($dir."/news", array("show" => $show,
                                           "show_sticky" => $show_sticky,
-                                          "nav" => nav(cnt($db['news'],$navWhere),config('m_news'),"?kat=".$navKat,false),
+                                          "nav" => nav(cnt($db['news'],$navWhere),config('m_news'),"?kat=".$navKat),
                                           "kategorien" => $kategorien,
                                           "choose" => _news_kat_choose,
                                           "archiv" => _news_archiv));

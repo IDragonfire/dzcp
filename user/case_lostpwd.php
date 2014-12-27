@@ -1,6 +1,6 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1 Final
+ * DZCP - deV!L`z ClanPortal 1.6.1
  * http://www.dzcp.de
  */
 
@@ -14,14 +14,15 @@ if(defined('_UserMenu')) {
                                              "email" => _email));
 
         if($do == "sended") {
-            $get = db_stmt("SELECT id,user,level,pwd FROM ".$db['users']." WHERE `user`= ? AND `email` = ?",
-                            array('ss', up($_POST['user']), up($_POST['email'])),false,true);
+            $qry = db_stmt("SELECT id,user,level,pwd FROM ".$db['users']." WHERE `user`= ? AND `email` = ?",
+                            array('ss', up($_POST['user']), up($_POST['email'])));
+             $get = _fetch($qry);
 
-        if(_rows($qry) && ($_POST['secure'] == $_SESSION['sec_lostpwd'] && $_SESSION['sec_lostpwd'] != NULL)) {
+        if(_rows($qry) && (isset($_POST['secure']) || $securimage->check($_POST['secure']))) {
             $pwd = mkpwd();
             db("UPDATE ".$db['users']." SET `pwd` = '".md5($pwd)."' WHERE id = '".$get['id']."'");
             setIpcheck("pwd(".$get['id'].")");
-            $message = show(bbcode_email(settings('eml_pwd')), array("user" => $_POST['user'],"pwd" => $pwd));
+            $message = show(bbcode_email(re(settings('eml_pwd'))), array("user" => $_POST['user'],"pwd" => $pwd));
             $subject = re(settings('eml_pwd_subj'));
             sendMail($_POST['email'],$subject,$message);
             $index = info(_lostpwd_valid, "../user/?action=login");

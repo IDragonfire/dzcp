@@ -1,6 +1,6 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1 Final
+ * DZCP - deV!L`z ClanPortal 1.6.1
  * http://www.dzcp.de
  */
 
@@ -211,8 +211,7 @@ if(defined('_UserMenu')) {
                     $check = cnt($db['news'], " WHERE datum > ".$lastvisit." AND public = 1");
                     $cnt = $check == "1" ? "1" : $check;
                     $can_erase = true;
-                    $news = show(_user_new_news, array("cnt" => $cnt,
-                                                       "eintrag" => _lobby_new_news));
+                    $news = show(_user_new_news, array("cnt" => $cnt, "eintrag" => _lobby_new_news));
                 }
             }
         }
@@ -227,16 +226,18 @@ if(defined('_UserMenu')) {
                     if($check == "1") {
                         $cnt = "1";
                         $eintrag = _lobby_new_newsc_1;
-                    } else {
+                    } else if($check >= 2) {
                         $cnt = $check;
                         $eintrag = _lobby_new_newsc_2;
                     }
 
-                    $can_erase = true;
-                    $newsc .= show(_user_new_newsc, array("cnt" => $cnt,
-                                                          "id" => $getnewsc['news'],
-                                                          "news" => re($getcheckn['titel']),
-                                                          "eintrag" => $eintrag));
+                    if($check) {
+                        $can_erase = true;
+                        $newsc .= show(_user_new_newsc, array("cnt" => $cnt,
+                                                              "id" => $getnewsc['news'],
+                                                              "news" => re($getcheckn['titel']),
+                                                              "eintrag" => $eintrag));
+                    }
                 }
             }
         }

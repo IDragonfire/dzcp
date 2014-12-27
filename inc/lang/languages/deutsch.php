@@ -1,6 +1,6 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1 Final
+ * DZCP - deV!L`z ClanPortal 1.6.1
  * http://www.dzcp.de
  */
 
@@ -28,6 +28,8 @@ define('_info_almgr_self_deletet', 'Dieses Ger&auml;t wurde erfolgreich entfernt
 define('_info_almgr_self_added', 'Dieses Ger&auml;t wurde erfolgreich eingetragen');
 define('_profile_access_error', 'Dieses Profil ist nur Mitgliedern zug&auml;nglich');
 define('_pedit_visibility_profile', 'Eigenes Profil');
+define('_paginator_previous', 'Zur&uuml;ck');
+define('_paginator_next', 'Weiter');
 
 //IP Blocker
 define('_ipban_admin_head', 'IP Blocker');
