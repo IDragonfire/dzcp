@@ -507,7 +507,7 @@ function install_mysql($login, $nick, $pwd, $email) {
              `viewed` int(10) NOT NULL default 0,
              PRIMARY KEY  (`id`)
              ) ");
-  $qry = db("INSERT INTO ".$db['news']." (`id`, `autor`, `datum`, `kat`, `titel`, `text`, `klapplink`, `klapptext`, `link1`, `url1`, `link2`, `url2`, `link3`, `url3`, `viewed`) VALUES (1, '1', ".time().", 1, 'deV!L`z Clanportal', '<p>deV!L`z Clanportal wurde erfolgreich installiert!</p><p>Bei Fragen oder Problemen kannst du gerne das Forum unter <a href=\"http://www.dzcp.de/\" target=\"_blank\">www.dzcp.de</a> kontaktieren.</p><p>Mehr Designtemplates und Modifikationen findest du unter <a href=\"http://www.templatebar.de/\" target=\"_blank\" title=\"Templates, Designs &amp; Modifikationen\">www.templatebar.de</a>.</p><p><br /></p><p>Viel Spass mit dem DZCP w&uuml;nscht dir das Team von www.dzcp.de.</p>', '', '', 'www.dzcp.de', 'http://www.dzcp.de', 'TEMPLATEbar.de', 'http://www.templatebar.de', '', '', 0)");
+  $qry = db("INSERT INTO ".$db['news']." (`id`, `autor`, `datum`, `kat`, `titel`, `text`, `klapplink`, `klapptext`, `link1`, `url1`, `link2`, `url2`, `link3`, `url3`, `viewed`) VALUES (1, '1', ".time().", 1, 'deV!L`z Clanportal', '&lt;p&gt;deV!L`z Clanportal wurde erfolgreich installiert!&lt;/p&gt;&lt;p&gt;Bei Fragen oder Problemen kannst du gerne das Forum unter &lt;a href=&quot;http://www.dzcp.de/&quot; target=&quot;_blank&quot;&gt;www.dzcp.de&lt;/a&gt; kontaktieren.&lt;/p&gt;&lt;p&gt;Mehr Designtemplates und Modifikationen findest du unter &lt;a href=&quot;http://www.templatebar.de/&quot; target=&quot;_blank&quot; title=&quot;Templates, Designs &amp;amp; Modifikationen&quot;&gt;www.templatebar.de&lt;/a&gt;.&lt;/p&gt;&lt;p&gt;&lt;/p&gt;&lt;p&gt;Viel Spass mit dem DZCP w&uuml;nscht dir das Team von www.dzcp.de.&lt;/p&gt;', '', '', 'www.dzcp.de', 'http://www.dzcp.de', 'TEMPLATEbar.de', 'http://www.templatebar.de', '', '', 0)");
 //-> Newskommentare
   $qry = db("DROP TABLE IF EXISTS ".$db['newscomments']."");
   $qry = db("CREATE TABLE ".$db['newscomments']." (
@@ -1780,7 +1780,10 @@ function update_mysql_1_6_1() {
     db("ALTER TABLE `".$db['userstats']."` CHANGE `hits` `hits` INT(11) NOT NULL DEFAULT '0';",false,false,true);
     db("ALTER TABLE `".$db['votes']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
     db("ALTER TABLE `".$db['vote_results']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
-    
+    db("ALTER TABLE `".$db['users']."` ADD `startpage` INT(11) NOT NULL DEFAULT '0' AFTER `profile_access`;",false,false,true);
+    db("ALTER TABLE `".$db['permissions']."` ADD `startpage` INT(1) NOT NULL DEFAULT '0' AFTER `ipban`;",false,false,true);
+    db("ALTER TABLE `".$db['settings']."` ADD `dbversion` VARCHAR(20) NOT NULL DEFAULT '1.6.1.0' AFTER `db_optimize`;",false,false,true);
+        
     /**************** MySQL-Query Optimize ****************
      * Step #1 -> Add Table Indexes
      * ****************************************************/
@@ -1828,7 +1831,7 @@ function update_mysql_1_6_1() {
       `regexpattern` varchar(255) NOT NULL DEFAULT '',
       `type` int(1) NOT NULL DEFAULT '0',
       `enabled` int(1) NOT NULL DEFAULT '1'
-    ) ENGINE=InnoDB AUTO_INCREMENT=116 DEFAULT CHARSET=utf8;",false,false,true);
+    ) AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;",false,false,true);
 
     db("INSERT INTO `".$db['botlist']."` VALUES
     (1, 'Exabot', '', '%.*Exabot/([0-9.]*).*%i', 1, 1),
@@ -1949,6 +1952,20 @@ function update_mysql_1_6_1() {
     
     db("ALTER TABLE `".$db['botlist']."` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `regexpattern` (`regexpattern`);",false,false,true);
     db("ALTER TABLE `".$db['botlist']."` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=116;",false,false,true);
+    
+    //Startpage
+    db("DROP TABLE IF EXISTS `".$db['startpage']."`;",false,false,true);
+    db("CREATE TABLE IF NOT EXISTS `".$db['startpage']."` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `name` varchar(200) NOT NULL,
+        `url` varchar(200) NOT NULL,
+        `level` int(1) NOT NULL DEFAULT '1',
+        PRIMARY KEY (`id`)
+    ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",false,false,true);
+    
+    db("INSERT INTO `".$db['startpage']."` SET `name` = 'Artikel', `url` = 'artikel/', `level` = 1;",false,false,true);
+    db("INSERT INTO `".$db['startpage']."` SET `name` = 'News', `url` = 'news/', `level` = 1;",false,false,true);
+    db("INSERT INTO `".$db['startpage']."` SET `name` = 'Forum', `url` = 'forum/', `level` = 1;",false,false,true);
     
     /*
      * Datenbank in das neue UTF8 Format umschreiben

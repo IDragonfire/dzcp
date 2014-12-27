@@ -23,6 +23,7 @@ $support .= "#####################\r\n";
 $support .= "DZCP Version: "._version."\r\n";
 $support .= "DZCP Release: "._release."\r\n";
 $support .= "DZCP Build: "._build."\r\n";
+$support .= "DZCP Datenbank: ".settings('dbversion')."\r\n";
 $support .= "DZCP Edition: ".$edition."\r\n";
 $support .= "DZCP Template: ".$tmpdir."\r\n";
 $support .= "\r\n";

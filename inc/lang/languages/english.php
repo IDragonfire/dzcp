@@ -30,6 +30,24 @@ define('_profile_access_error', 'This profile is accessible only to members');
 define('_pedit_visibility_profile', 'My Profile');
 define('_paginator_previous', 'Previous');
 define('_paginator_next', 'Next');
+define('_admin_bezeichnung', 'Description');
+
+//Startpage
+define('_profil_startpage', 'Startseite');
+define('_config_startpage', 'Startseiten');
+define('_admin_startpage', 'Startseiten');
+define('_perm_startpage', 'Startseiten verwalten');
+define('_admin_startpage_url', 'Ziel URL');
+define('_admin_startpage_level', 'Sichtbar ab Level');
+define('_admin_startpage_name', 'Name');
+define('_admin_startpage_add_head', 'Neue Startseite anlegen');
+define('_admin_startpage_edit', 'Startseite bearbeiten');
+define('_admin_startpage_added', 'Startseite wurde erfogreich eingetragen');
+define('_admin_startpage_deleted', 'Startseite wurde erfogreich gel&ouml;scht');
+define('_admin_startpage_editd', 'Startseite wurde erfogreich editiert');
+define('_admin_startpage_no_name', 'Du hast keinen Namen eingegeben');
+define('_admin_startpage_no_url', 'Du hast keine URL eingegeben');
+define('_admin_startpage_add', 'Neue Startseite hinzufügen');
 
 //IP Blocker
 define('_ipban_admin_head', 'IP Blocker');

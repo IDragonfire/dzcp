@@ -18,6 +18,6 @@ ob_start();
         include(basePath."/inc/debugger.php");
         include(basePath."/inc/config.php");
         include(basePath."/inc/bbcode.php");
-        header('Location: '.($userid && $chkMe ? 'user/?action=userlobby' : 'news/'));
+        header('Location: '.($chkMe ? startpage() : 'news/'));
     }
 ob_end_flush();

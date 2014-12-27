@@ -96,7 +96,7 @@ if(defined('_News')) {
                                                                   "klapp" => $klapp,
                                                                   "more" => bbcode($get['klapptext']),
                                                                   "viewed" => $viewed,
-                                                                  "text" => bbcode($get['text']),
+                                                                  "text" => bbcode(re($get['text'])),
                                                                   "datum" => date("d.m.y H:i", $get['datum'])._uhr,
                                                                   "links" => $links,
                                                                   "autor" => autor($get['autor'])));

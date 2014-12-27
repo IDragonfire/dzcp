@@ -489,7 +489,6 @@ class databaseUpdater {
                             self::$txt = $data[$update_key];
                             self::$bbcode = $bbcode[2];
                             self::recode(); //Decode to Orginal
-                            self::spCharsRe(); //Decode to Orginal
                             self::encode(); //Encode to new Format
                             $data[$update_key] = self::$txt;
                         }
@@ -528,6 +527,7 @@ class databaseUpdater {
     
     //Private
     private static function recode() { //Old Recode * DZCP 1.5.x / 1.6.0.x
+        self::spCharsRe();
         self::$txt = str_replace(array("&amp; ","&#34;"),array("& ","\""),self::$txt);
 
         if(!self::$bbcode) {

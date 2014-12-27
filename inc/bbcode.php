@@ -1745,6 +1745,10 @@ function nav($entrys, $perpage, $urlpart='', $recall = 0) {
     $offset_der = ($total_pages - $page) < $maximum_links ? $maximum_links - ($total_pages - $page) : 0;
     $pagination =""; $urlpart_extended = empty($urlpart) ? '?' : '&amp;'; $recall = 0;
 
+    if(!show_empty_paginator && $total_pages == 1) {
+        return '';
+    }
+    
     if ($page == 1) {
         $pagination.= "<div class='pagination active'>"._paginator_previous."</div>";
     } else {
@@ -1784,6 +1788,23 @@ function nav($entrys, $perpage, $urlpart='', $recall = 0) {
     }
 
     return $pagination."</div>";
+}
+
+//-> Startseite fur einen User abrufen
+function startpage() {
+    global $db,$userid,$chkMe;
+    $startpageID = ($userid >= 1 ? data('startpage') : 0);
+    if(!$startpageID) { return 'user/?action=userlobby'; }
+
+    $sql = db("SELECT `url`,`level` FROM `".$db['startpage']."` WHERE `id` = ".$startpageID." LIMIT 1");
+    if(!_rows($sql)) {
+        db("UPDATE `".$db['users']."` SET `startpage` = 0 WHERE `id` = ".$userid.";");
+        return 'user/?action=userlobby';
+    }
+
+    $get = _fetch($sql);
+    $page = $get['level'] <= $chkMe ? re($get['url']) : 'user/?action=userlobby';
+    return (!empty($page) ? $page : 'news/');
 }
 
 //-> Nickausgabe mit Profillink oder Emaillink (reg/nicht reg)

@@ -77,31 +77,32 @@ if(defined('_UserMenu')) {
 
                         db("UPDATE " . $db['users'] . " SET " . $newpwd . "
                                                             " . $customfields . "
-                                                            `country`      = '" . $_POST['land'] . "',
-                                                            `user`         = '" . up($_POST['user']) . "',
-                                                            `nick`         = '" . up($_POST['nick']) . "',
-                                                            `rlname`       = '" . up($_POST['rlname']) . "',
-                                                            `sex`          = '" . intval( $_POST['sex']) . "',
-                                                            `status`       = '" . intval( $_POST['status']) . "',
-                                                            `bday`         = '" . (!$bday ? 0 : strtotime($bday)) . "',
-                                                            `email`        = '" . up($_POST['email']) . "',
-                                                            `nletter`      = '" . intval( $_POST['nletter']) . "',
-                                                            `pnmail`       = '" . intval( $_POST['pnmail']) . "',
-                                                            `city`         = '" . up($_POST['city']) . "',
-                                                            `gmaps_koord`  = '" . up($_POST['gmaps_koord']) . "',
-                                                            `hp`           = '" . links($_POST['hp']) . "',
-                                                            `icq`          = '" . intval( $icq) . "',
-                                                            `hlswid`       = '" . up(trim($_POST['hlswid'])) . "',
-                                                            `xboxid`       = '" . up(trim($_POST['xboxid'])) . "',
-                                                            `psnid`        = '" . up(trim($_POST['psnid'])) . "',
-                                                            `originid`     = '" . up(trim($_POST['originid'])) . "',
-                                                            `battlenetid`  = '" . up(trim($_POST['battlenetid'])) . "',
-                                                            `steamid`      = '" . up(trim($_POST['steamid'])) . "',
-                                                            `skypename`    = '" . up(trim($_POST['skypename'])) . "',
-                                                            `signatur`     = '" . up($_POST['sig']) . "',
-                                                            `beschreibung` = '" . up($_POST['ich']) . "',
-                                                            `perm_gb`      = '" . up($_POST['visibility_gb']) . "',
-                                                            `perm_gallery` = '" . up($_POST['visibility_gallery']) . "',
+                                                            `country`        = '" . $_POST['land'] . "',
+                                                            `user`           = '" . up($_POST['user']) . "',
+                                                            `nick`           = '" . up($_POST['nick']) . "',
+                                                            `rlname`         = '" . up($_POST['rlname']) . "',
+                                                            `sex`            = '" . intval( $_POST['sex']) . "',
+                                                            `status`         = '" . intval( $_POST['status']) . "',
+                                                            `bday`           = '" . (!$bday ? 0 : strtotime($bday)) . "',
+                                                            `email`          = '" . up($_POST['email']) . "',
+                                                            `nletter`        = '" . intval( $_POST['nletter']) . "',
+                                                            `pnmail`         = '" . intval( $_POST['pnmail']) . "',
+                                                            `city`           = '" . up($_POST['city']) . "',
+                                                            `gmaps_koord`    = '" . up($_POST['gmaps_koord']) . "',
+                                                            `hp`             = '" . links($_POST['hp']) . "',
+                                                            `icq`            = '" . intval( $icq) . "',
+                                                            `hlswid`         = '" . up(trim($_POST['hlswid'])) . "',
+                                                            `xboxid`         = '" . up(trim($_POST['xboxid'])) . "',
+                                                            `psnid`          = '" . up(trim($_POST['psnid'])) . "',
+                                                            `originid`       = '" . up(trim($_POST['originid'])) . "',
+                                                            `battlenetid`    = '" . up(trim($_POST['battlenetid'])) . "',
+                                                            `steamid`        = '" . up(trim($_POST['steamid'])) . "',
+                                                            `skypename`      = '" . up(trim($_POST['skypename'])) . "',
+                                                            `signatur`       = '" . up($_POST['sig']) . "',
+                                                            `beschreibung`   = '" . up($_POST['ich']) . "',
+                                                            `perm_gb`        = '" . up($_POST['visibility_gb']) . "',
+                                                            `perm_gallery`   = '" . up($_POST['visibility_gallery']) . "',
+                                                            `startpage`      = " . intval($_POST['startpage']).",
                                                             `profile_access` = " . intval($_POST['visibility_profile']) . "
                                                         WHERE id = " . $userid);
             }
@@ -350,6 +351,14 @@ if(defined('_UserMenu')) {
                                     case 3: $perm_profile .= '<option value="'.$level.'">'._pedit_perm_admin.'</option>'; break;
                                 }
                             }
+                            
+                            // Startpage
+                            $sql_startpage = db("SELECT `name`,`id` FROM `".$db['startpage']."`");
+                            $startpage = '<option value="0">'._userlobby.'</option>';
+                            if(_rows($sql_startpage) >= 1) {
+                                while($get_startpage = _fetch($sql_startpage))
+                                { $startpage .= show(_select_field,array('value' => $get_startpage['id'], 'sel' => ($get_startpage['id'] == $get['startpage'] ? 'selected="selected"' : ''), 'what' => $get_startpage['name'])); }
+                            }
 
                             if ($get['level'] == 1) {
                                 $clan = '<input type="hidden" name="status" value="1" />';
@@ -468,6 +477,7 @@ if(defined('_UserMenu')) {
                                                                       "editava" => _profil_edit_ava,
                                                                       "deleteava" => $deleteava,
                                                                       "deletepic" => $deletepic,
+                                                                      "startpage" => $startpage,
                                                                       "favos" => _profil_favos,
                                                                       "pich" => _profil_ich,
                                                                       "pposition" => _profil_position,
