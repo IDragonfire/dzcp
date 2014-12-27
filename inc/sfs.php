@@ -25,12 +25,14 @@ class sfs {
                     if($stopforumspam['success']) {
                         $stopforumspam = $stopforumspam['ip']; // Array ( [lastseen] => 2013-04-26 19:57:51 [frequency] => 1327 [appears] => 1 [confidence] => 99.89 )
                         $stopforumspam_data_db = unserialize($get['data']);
-                        if($stopforumspam['appears'] == '1' && $stopforumspam['confidence'] >= self::$confidence && $stopforumspam['frequency'] >= self::$frequency && self::$autoblock) {
+                        if($stopforumspam['appears'] == '1' && ($stopforumspam['confidence'] >= self::$confidence || $stopforumspam['frequency'] >= self::$frequency) && self::$autoblock) {
                             $stopforumspam_data_db['confidence'] = $stopforumspam['confidence'];
                             $stopforumspam_data_db['frequency'] = $stopforumspam['frequency'];
                             $stopforumspam_data_db['lastseen'] = $stopforumspam['lastseen'];
                             $stopforumspam_data_db['banned_msg'] = 'Autoblock by stopforumspam.com';
                             db("UPDATE `".$db['ipban']."` SET `time` = ".time().", `typ` = '1', `data` = '".serialize($stopforumspam_data_db)."' WHERE `id` = '".$get['id']."';");
+                            db("DELETE FROM `".$db['c_ips']."` WHERE `ip` = '".$userip."';");
+                            db("DELETE FROM `".$db['c_who']."` WHERE `ip` = '".$userip."';");
                             self::$blockuser = true;
                         } else {
                             $stopforumspam_data_db['appears'] = $stopforumspam['appears'];
@@ -51,6 +53,8 @@ class sfs {
                     $stopforumspam = $stopforumspam['ip']; // Array ( [lastseen] => 2013-04-26 19:57:51 [frequency] => 1327 [appears] => 1 [confidence] => 99.89 )
                     if($stopforumspam['appears'] == '1' && $stopforumspam['confidence'] >= self::$confidence && $stopforumspam['frequency'] >= self::$frequency && self::$autoblock) {
                         $stopforumspam['banned_msg'] = 'Autoblock by stopforumspam.com';
+                        db("DELETE FROM `".$db['c_ips']."` WHERE `ip` = '".$userip."';");
+                        db("DELETE FROM `".$db['c_who']."` WHERE `ip` = '".$userip."';");
                         db("INSERT INTO `".$db['ipban']."` SET `ip` = '".$userip."', `time` = ".time().", `typ` = '1', `data` = '".serialize($stopforumspam)."';"); //Banned
                         self::$blockuser = true;
                     } else {
@@ -68,7 +72,7 @@ class sfs {
         $sql = db("SELECT id,time FROM `".$db['ipban']."` WHERE `typ` = 0 ORDER BY `id` ASC");
         while($get = _fetch($sql)) {
             if($get['time']+86400 <= time()) //Clanup nach 24h
-                db("DELETE FROM `".$db['ipban']."` WHERE `id` = ".$get['id']);
+                db("DELETE FROM `".$db['ipban']."` WHERE `id` = '".$get['id']."';");
         }
     }
 

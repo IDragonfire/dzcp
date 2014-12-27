@@ -163,12 +163,13 @@ function check_ip() {
         }
 
         //Banned IP
-        $banned_ip_sql = db("SELECT `id`,`typ` FROM `".$db['ipban']."` WHERE `ip` = '".$userip."' AND `enable` = 1;");
+        $banned_ip_sql = db("SELECT `id`,`typ`,`data` FROM `".$db['ipban']."` WHERE `ip` = '".$userip."' AND `enable` = 1;");
         if(_rows($banned_ip_sql) >= 1) {
             while($banned_ip = _fetch($banned_ip_sql))
             if($banned_ip['typ'] == '2' || $banned_ip['typ'] == '3') {
                 dzcp_session_destroy();
-                die('Deine IP ist gesperrt!<p>Your IP is banned!');
+                $banned_ip['data'] = unserialize($banned_ip['data']);
+                die('Deine IP ist gesperrt!<p>Your IP is banned!<p>MSG: '.$banned_ip['data']['banned_msg']);
             }
         }
 
@@ -179,7 +180,7 @@ function check_ip() {
         !validateIpV4Range($userip, '[172].[16-31].[0-255].[0-255]')) {
             sfs::check(); //SFS Update
             if(sfs::is_spammer()) {
-                db("DELETE FROM `".$db['ip2dns']."` WHERE `sessid` = `".session_id()."`;");
+                db("DELETE FROM `".$db['ip2dns']."` WHERE `sessid` = '".session_id()."';");
                 dzcp_session_destroy();
                 die('Deine IP-Adresse ist auf <a href="http://www.stopforumspam.com/" target="_blank">http://www.stopforumspam.com/</a> gesperrt, die IP wurde zu oft für Spam Angriffe auf Webseiten verwendet.<p>
                      Your IP address is known on <a href="http://www.stopforumspam.com/" target="_blank">http://www.stopforumspam.com/</a>, your IP has been used for spam attacks on websites.');
@@ -299,17 +300,34 @@ if($chkMe && $userid && !empty($_SESSION['ip'])) {
  * Aktualisiere die Client DNS & User Agent
  */
 if(session_id()) {
+    $userdns = gethostbyaddr($userip);
     if(db("SELECT `id` FROM `".$db['ip2dns']."` WHERE `update` <= ".time()." AND `sessid` = '".session_id()."';",true)) {
         $bot = SearchBotDetect();
         db("UPDATE `".$db['ip2dns']."` SET `time` = ".(time()+10*60).", `update` = ".(time()+60).", `ip` = '".$userip."', "
-        . "`agent` = '".up($UserAgent)."', `dns` = '".up(gethostbyaddr($userip))."', `bot` = ".($bot['bot'] ? 1 : 0).", "
+        . "`agent` = '".up($UserAgent)."', `dns` = '".up($userdns)."', `bot` = ".($bot['bot'] ? 1 : 0).", "
         . "`bot_name` = '".up($bot['name'])."', `bot_fullname` = '".up($bot['fullname'])."' WHERE `sessid` = '".session_id()."';"); unset($bot);
     } else {
         if(!db("SELECT `id` FROM `".$db['ip2dns']."` WHERE `sessid` = '".session_id()."';",true) ) {
             $bot = SearchBotDetect();
             db("INSERT INTO `".$db['ip2dns']."` SET `sessid` = '".session_id()."', `time` = ".(time()+10*60).", `ip` = '".$userip."', "
-            . "`agent` = '".up($UserAgent)."', `dns` = '".up(gethostbyaddr($userip))."', `bot` = ".($bot['bot'] ? 1 : 0).", "
+            . "`agent` = '".up($UserAgent)."', `dns` = '".up($userdns)."', `bot` = ".($bot['bot'] ? 1 : 0).", "
             . "`bot_name` = '".up($bot['name'])."', `bot_fullname` = '".up($bot['fullname'])."';"); unset($bot);
+        }
+    }
+    
+    /*
+     * Pruft ob mehrere Session IDs von der gleichen DNS kommen, sollte der Useragent keinen Bot Tag enthalten, wird ein Spambot angenommen.
+     */
+    $sql_sb = db("SELECT `id`,`ip`,`bot` FROM `".$db['ip2dns']."` WHERE `dns` LIKE '".up($userdns)."';");
+    if(_rows($sql_sb) >= 3) {
+        $get_sb = _fetch($sql_sb);
+        if(!$get_sb['bot'] && !isSpider(re($get_sb['agent']))) {
+            $data_array = array();
+            $data_array['confidence'] = ''; $data_array['frequency'] = ''; $data_array['lastseen'] = '';
+            $data_array['banned_msg'] = up('SpamBot detected by System * No BotAgent *');
+            $data_array['agent'] = $get_sb['agent'];
+            db("INSERT INTO `".$db['ipban']."` SET `time` = ".time().", `ip` = '".$get_sb['ip']."', `data` = '".serialize($data_array)."', `typ` = 3;");
+            check_ip(); // IP Prufung * No IPV6 Support *
         }
     }
 
@@ -380,6 +398,9 @@ function addNoCacheHeaders() {
 * Forwarded IP Support
 */
 function visitorIp() {
+    if(isset($_GET['ipset']))
+        return $_GET['ipset'];
+    
     $SetIP = '0.0.0.0';
     $ServerVars = array('REMOTE_ADDR','HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED',
     'HTTP_FORWARDED_FOR','HTTP_FORWARDED','HTTP_VIA','HTTP_X_COMING_FROM','HTTP_COMING_FROM');
@@ -2343,7 +2364,7 @@ function admin_perms($userid) {
  * Erkennt Spider und Crawler um sie von der Besucherstatistik auszuschliessen.
  * @return boolean
  */
-function isSpider() {
+function isSpider($SetUserAgent=false) {
     $bots_basic = array('bot', 'b o t', 'spider', 'spyder', 'crawl', 'slurp', 'robo', 'yahoo', 'ask', 'google', '80legs', 'acoon',
             'altavista', 'al_viewer', 'appie', 'appengine-google', 'arachnoidea', 'archiver', 'asterias', 'ask jeeves', 'beholder',
             'bildsauger', 'bingsearch', 'bingpreview', 'bumblebee', 'bramptonmoose', 'cherrypicker', 'crescent', 'coccoc', 'cosmos',
@@ -2360,7 +2381,7 @@ function isSpider() {
             'TechnoratiSnoop', 'Rankivabot', 'Mediapartners-Google', 'Sogou web spider', 'WebAlta Crawler', 'MJ12bot',
             'Yandex', 'YaDirectBot', 'StackRambler','DotBot','dotbot');
 
-    $UserAgent = trim(GetServerVars('HTTP_USER_AGENT'));
+    $UserAgent = ($SetUserAgent ? $SetUserAgent : trim(GetServerVars('HTTP_USER_AGENT')));
     foreach ($bots_basic as $bot) {
         if(stristr($UserAgent, $bot) !== FALSE || strpos($bot, $UserAgent)) {
             return true;
