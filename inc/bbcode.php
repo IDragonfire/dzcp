@@ -47,7 +47,7 @@ dbc_index::init();
 if(auto_db_optimize && settings('db_optimize',false) <= time() && !$installer && !$updater) {
     @ignore_user_abort(true);
     db("UPDATE `".$db['settings']."` SET `db_optimize` = ".(time()+auto_db_optimize_interval)." WHERE `id` = 1;");
-    sfs::cleanup_db(); db_optimize(); $securimage->clearOldCodesFromDatabase();
+    db_optimize(); $securimage->clearOldCodesFromDatabase();
     setIpcheck("db_optimize()");
     @ignore_user_abort(false);
 }
@@ -322,12 +322,14 @@ if(session_id()) {
     if(_rows($sql_sb) >= 3) {
         $get_sb = _fetch($sql_sb);
         if(!$get_sb['bot'] && !isSpider(re($get_sb['agent']))) {
-            $data_array = array();
-            $data_array['confidence'] = ''; $data_array['frequency'] = ''; $data_array['lastseen'] = '';
-            $data_array['banned_msg'] = up('SpamBot detected by System * No BotAgent *');
-            $data_array['agent'] = $get_sb['agent'];
-            db("INSERT INTO `".$db['ipban']."` SET `time` = ".time().", `ip` = '".$get_sb['ip']."', `data` = '".serialize($data_array)."', `typ` = 3;");
-            check_ip(); // IP Prufung * No IPV6 Support *
+            if(!db("SELECT `id` FROM `".$db['ipban']."` WHERE `ip` = '".$userip."' LIMIT 1",true)) {
+                $data_array = array();
+                $data_array['confidence'] = ''; $data_array['frequency'] = ''; $data_array['lastseen'] = '';
+                $data_array['banned_msg'] = up('SpamBot detected by System * No BotAgent *');
+                $data_array['agent'] = $get_sb['agent'];
+                db("INSERT INTO `".$db['ipban']."` SET `time` = ".time().", `ip` = '".$get_sb['ip']."', `data` = '".serialize($data_array)."', `typ` = 3;");
+                check_ip(); // IP Prufung * No IPV6 Support *
+            }
         }
     }
 

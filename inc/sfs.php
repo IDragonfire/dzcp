@@ -33,6 +33,7 @@ class sfs {
                             db("UPDATE `".$db['ipban']."` SET `time` = ".time().", `typ` = '1', `data` = '".serialize($stopforumspam_data_db)."' WHERE `id` = '".$get['id']."';");
                             db("DELETE FROM `".$db['c_ips']."` WHERE `ip` = '".$userip."';");
                             db("DELETE FROM `".$db['c_who']."` WHERE `ip` = '".$userip."';");
+                            db("DELETE FROM `".$db['ip2dns']."` WHERE `ip` = '".$userip."';");
                             self::$blockuser = true;
                         } else {
                             $stopforumspam_data_db['appears'] = $stopforumspam['appears'];
@@ -55,6 +56,7 @@ class sfs {
                         $stopforumspam['banned_msg'] = 'Autoblock by stopforumspam.com';
                         db("DELETE FROM `".$db['c_ips']."` WHERE `ip` = '".$userip."';");
                         db("DELETE FROM `".$db['c_who']."` WHERE `ip` = '".$userip."';");
+                        db("DELETE FROM `".$db['ip2dns']."` WHERE `ip` = '".$userip."';");
                         db("INSERT INTO `".$db['ipban']."` SET `ip` = '".$userip."', `time` = ".time().", `typ` = '1', `data` = '".serialize($stopforumspam)."';"); //Banned
                         self::$blockuser = true;
                     } else {
@@ -64,15 +66,6 @@ class sfs {
                     }
                 }
             }
-        }
-    }
-
-    public static function cleanup_db() {
-        global $db;
-        $sql = db("SELECT id,time FROM `".$db['ipban']."` WHERE `typ` = 0 ORDER BY `id` ASC");
-        while($get = _fetch($sql)) {
-            if($get['time']+86400 <= time()) //Clanup nach 24h
-                db("DELETE FROM `".$db['ipban']."` WHERE `id` = '".$get['id']."';");
         }
     }
 
