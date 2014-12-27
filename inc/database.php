@@ -132,6 +132,11 @@ function db_optimize() {
                 }
             }
         }
+
+        db("TRUNCATE ".$db['ip2dns'].";");
+        if(sessions_backend == 'mysql') {
+            db("TRUNCATE ".$db['sessions'].";");
+        }
         
         $sql = ''; $blacklist = array('host','user','pass','db','prefix');
         foreach ($db as $key => $tb) {
