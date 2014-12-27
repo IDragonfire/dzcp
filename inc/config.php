@@ -17,7 +17,7 @@ define('use_curl', true); // Verwendet die CURL PHP Erweiterung, anstelle von fi
 define('use_default_timezone', true); // Verwendende die Zeitzone vom Server
 define('default_timezone', 'Europe/Berlin'); // Die zu verwendende Zeitzone selbst einstellen * 'use_default_timezone' auf false stellen *
 define('admin_view_dzcp_news', true); // Entscheidet ob der DZCP Newstricker in der Administration angezeigt wird
-define('show_empty_paginator', false); //Soll der Paginator automatisch ausgeblendet werden
+define('show_empty_paginator', false); //Die Paginatoren sind immer sichtbar
 
 define('thumbgen_cache', true); // Sollen die verkleinerten Bilder der Thumbgen gespeichert werden
 define('thumbgen_cache_time', 60*60); // Wie lange sollen die verkleinerten Bilder der Thumbgen im Cache verbleiben
