@@ -27,7 +27,7 @@ if(defined('_Upload')) {
             else if($size > config('upicsize')."000")
                 $index = error(_upload_wrong_size, 1);
             else {
-                if(move_uploaded_file($tmpname, basePath."/inc/images/gameicons/".$_FILES['file']['name'])) {
+                if(move_uploaded_file($tmpname, basePath."/inc/images/gameicons/custom/".$_FILES['file']['name'])) {
                     $link_to = isset($_GET['edit']) && isset($_GET['id']) ? "edit&id=".$_GET['id'] : "new";
                     $index = info(_info_upload_success, "../admin/?admin=server&amp;do=".$link_to);
                 }

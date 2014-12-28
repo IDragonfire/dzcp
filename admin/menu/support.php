@@ -49,6 +49,7 @@ $support .= "\r\n";
 $support .= "#####################\r\n";
 $support .= "Server Versionen\r\n";
 $support .= "#####################\r\n";
+$support .= "GameQ: ".GameQ::VERSION."\r\n";
 $support .= "Server OS: ".@php_uname()."\r\n";
 $support .= "Webserver: ".(array_key_exists('apache2handler', $PhpInfo) ? (array_key_exists('Apache Version', $PhpInfo['apache2handler']) ? $PhpInfo['apache2handler']['Apache Version'] : 'PHP l&auml;uft als CGI <Keine Info>' ) : 'PHP l&auml;uft als CGI <Keine Info>')."\r\n";
 $support .= "PHP-Version: ".phpversion()." (".php_sapi_type().")"."\r\n";

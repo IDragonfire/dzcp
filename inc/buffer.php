@@ -28,7 +28,6 @@ function gz_output($output='') {
         }
 
         $licence_bar = '<div class="licencebar"> <table style="width:100%;margin:auto" cellspacing="0"> <tr> <td class="licencebar" nowrap="nowrap">Powered by <a class="licencebar" href="http://www.dzcp.de" target="_blank" title="deV!L`z Clanportal">DZCP - deV!L`z&nbsp;Clanportal V'._version.'</a>'.$dev_info.'</td></tr> </table> </div>';
-
         if(!file_exists(basePath.'/_codeking.licence'))
             $output = str_ireplace('</body>',$licence_bar."\r\n</body>",$output);
     }

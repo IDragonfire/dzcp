@@ -39,5 +39,5 @@ function motm() {
         }
     }
 
-    return empty($member) ? '' : '<table class="navContent" cellspacing="0">'.$member.'</table>';
+    return empty($member) ? '<center style="margin:2px 0">'._no_entrys.'</center>' : '<table class="navContent" cellspacing="0">'.$member.'</table>';
 }

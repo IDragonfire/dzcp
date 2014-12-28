@@ -29,5 +29,5 @@ function l_artikel() {
         }
     }
 
-    return empty($l_articles) ? '' : '<table class="navContent" cellspacing="0">'.$l_articles.'</table>';
+    return empty($l_articles) ? '<center style="margin:2px 0">'._no_entrys.'</center>' : '<table class="navContent" cellspacing="0">'.$l_articles.'</table>';
 }

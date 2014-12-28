@@ -26,5 +26,5 @@ function random_gallery() {
         }
     }
 
-    return empty($gallery) ? '' : '<table class="navContent" cellspacing="0">'.$gallery.'</table>';
+    return empty($gallery) ? '<center style="margin:2px 0">'._no_entrys.'</center>' : '<table class="navContent" cellspacing="0">'.$gallery.'</table>';
 }

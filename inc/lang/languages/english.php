@@ -31,6 +31,34 @@ define('_pedit_visibility_profile', 'My Profile');
 define('_paginator_previous', 'Previous');
 define('_paginator_next', 'Next');
 define('_admin_bezeichnung', 'Description');
+define('_custom_game_icon', 'Custom-Icon');
+define('_custom_game_icon_none', 'Not use custom icon');
+define('_server_gtype', '<span class="fontBold">Gamemode:</span> [type]<br />');
+define('_server_bots', '<span class="fontBold">Bots:</span> [bots]<br />');
+
+//TS
+define('_ts_fport', 'File Port');
+define('_ts_port', 'Voice Port');
+define('_ts_version', 'Version');
+define('_ts_ip_dns', 'IP oder DNS');
+define('_ts_sport', 'Query Port');
+define('_config_teamspeak', 'Teamspeak');
+define('_perm_editteamspeak', 'Teamspeak Server management');
+define('_teamspekadmin_head', 'Teamspeak Server');
+define('_ts_head_extra', 'Teamspeak 3 Zusatzeinstellungen');
+define('_teamspeak_admin_head', 'Teamspeak Server');
+define('_ts_empty_fport', 'Du hast keinen Server File Port angegeben!');
+define('_ts_empty_port', 'Du hast keinen Server Voice Port angegeben!');
+define('_ts_empty_qport', 'Du hast keinen Server Query Port angegeben!');
+define('_ts_empty_ip_dns', 'IP oder DNS fehlt!');
+define('_ts_settings_default_server', 'Standard Server');
+define('_ts_settings_default_server_desc', 'Diesen Server als Standard eintragen, der aktuelle Standard Server wird mit dem neuen &uuml;berschrieben.');
+define('_teamspeak_legendemenu', 'Server ist im Menu eingetragen? (auf das Icon klicken um den Status zu &auml;ndern)');
+define('_teamspeak_default_legendemenu', 'Server als Standard eingetragen? (auf das Icon klicken um den Status zu &auml;ndern)');
+define('_config_ts_updated', 'Der Teamspeak Server wurde erfogreich editiert!');
+define('_config_ts_added', 'Der Teamspeak Server wurde erfogreich eingetragen!');
+define('_no_ts_page', 'Es ist kein Teamspeak 3 Server eingetragen');
+define('_no_connect_to_ts', 'Teamspeak 3 Server is offline!');
 
 //Startpage
 define('_profil_startpage', 'Startseite');
@@ -75,7 +103,16 @@ define('_total_bans', 'Total Bans');
 define('_ipban_head_admin', 'IP-Bans');
 define('_perm_ipban', 'Manage IP-Bans');
 
-## ADDED / REDEFINED FOR 1.6.1 Final
+## Navigation / Server ##
+define('_navi_gsv_players_online', 'Online');
+define('_navi_gsv_on_the_game', 'Players');
+define('_navi_gsv_view_players', 'View Players');
+define('_navi_gsv_game', 'Game');
+define('_navi_gsv_no_name_available', 'no Name available');
+define('_navi_gsv_no_players_available', 'no Players online');
+define('_navi_gsv_password', 'Password');
+
+## ADDED / REDEFINED FOR 1.6.0 Final
 define('_txt_navi_main', 'Main Navigation');
 define('_txt_navi_clan', 'Clan Navigation');
 define('_txt_navi_server', 'Server Navigation');
@@ -1535,7 +1572,7 @@ define('_lobby_votes' , 'Votes');
 define('_new_vote_1' , 'new Vote');
 define('_new_vote_2' , 'new Votes');
 define('_lobby_cw' , 'Clanwars');
-define('_user_new_cw' , '<tr><td style="width:22px;text-align:center"><img src="../inc/images/gameicons/[icon]" class="icon" alt="" /></td><td style="vertical-align:middle"><a href="../clanwars/?action=details&amp;id=[id]">Clanwar at <span class="fontWichtig">[datum]</span> againstgen <span class="fontWichtig">[gegner]</span></a></td></tr>');
+define('_user_new_cw' , '<tr><td style="width:22px;text-align:center"><img src="../inc/images/gameicons/custom/[icon]" class="icon" alt="" /></td><td style="vertical-align:middle"><a href="../clanwars/?action=details&amp;id=[id]">Clanwar at <span class="fontWichtig">[datum]</span> againstgen <span class="fontWichtig">[gegner]</span></a></td></tr>');
 define('_user_delete_verify' , '
 <tr>
   <td class="contentHead"><span class="fontBold">Delete user</span></td>
@@ -1870,8 +1907,6 @@ define('_clankasse_kat_edited' , 'The in-/outpayment label was successfully edit
 define('_clankasse_kat_deleted' , 'The in-/outpayment label was successfully deleted!');
 define('_config_c_gallery' , 'Gallery ');
 define('_config_info_gallery' , 'Amount of pictures which will be maximum shown in a row');
-define('_config_server_ts_updated' , 'The teamspeak`s ip was successfully updated!');
-define('_ts_sport' , 'Server queryport');
 define('_config_c_awards' , 'Awards');
 define('_counter_start' , 'Counter');
 define('_counter_start_info' , 'Here you can enter a number which will be added to the counter.');

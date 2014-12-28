@@ -127,6 +127,12 @@ var DZCP = {
         var request = $.ajax({ url: "../inc/ajax.php?i=" + menu + options, type: "GET", data: {}, cache:true, dataType: "html", contentType: "application/x-www-form-urlencoded; charset=iso-8859-1" });
         request.done(function(msg) { $('#' + tag).html( msg ).hide().fadeIn("normal"); });
     },
+    
+    // init Ajax DynLoader Sides via Ajax
+    initPageDynLoader: function(tag,url) {
+            var request = $.ajax({ url: url, type: "GET", data: {}, cache:true, dataType: "html", contentType: "application/x-www-form-urlencoded; charset=iso-8859-1" });
+            request.done(function(msg) { $('#' + tag).html( msg ).hide().fadeIn("normal"); });
+    },
 
     // submit shoutbox
     shoutSubmit: function() {
@@ -267,31 +273,34 @@ var DZCP = {
       }
     },
 
-  // toggle object
+    // toggle object
     toggle: function(id) {
-      if(id == 0) return;
-      else {
+        if(id == 0) return;
+
         if($('#more' + id).css('display') == 'none')
         {
-            $('#more' + id).css('display', '');
+            $("#more" + id).fadeIn("normal");
             $('#img' + id).prop('src', '../inc/images/collapse.gif');
-        } else {
-            $('#more' + id).css('display', 'none');
-          $('#img' + id).prop('src', '../inc/images/expand.gif');
         }
-      }
+        else
+        {
+            $("#more" + id).fadeOut("normal");
+            $('#img' + id).prop('src', '../inc/images/expand.gif');
+        }
     },
-  // toggle with effect
-      fadetoggle: function(id) {
+
+    // toggle with effect *TS3
+    fadetoggle: function(id) {
+        if(id == 0) return;
+
         $("#more_"+id).fadeToggle("slow", "swing");
-        if($('#img_'+id).prop('alt') == "hidden") {
-            $('#img_'+id).prop({alt: 'normal',
-                                src: '../inc/images/toggle_normal.png'});
-        } else {
-            $('#img_'+id).prop({alt: 'hidden',
-                                src: '../inc/images/toggle_hidden.png'});
-        }
+
+        if($('#img_'+id).prop('alt') == "hidden")
+            $('#img_'+id).prop({alt: 'normal', src: '../inc/images/toggle_normal.png'});
+        else
+            $('#img_'+id).prop({alt: 'hidden', src: '../inc/images/toggle_hidden.png'});
     },
+    
   // resize images
     resizeImages: function() {
         for(var i=0;i<doc.images.length;i++)

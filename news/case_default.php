@@ -197,7 +197,7 @@ if(defined('_News')) {
                 $kategorien .= "<option value='".$getkat['id']."' ".$sel.">".$getkat['kategorie']."</option>";
             }
         }
-
+        
         $index = show($dir."/news", array("show" => $show,
                                           "show_sticky" => $show_sticky,
                                           "nav" => nav(cnt($db['news'],$navWhere),config('m_news'),"?kat=".$navKat),

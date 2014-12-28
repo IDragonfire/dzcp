@@ -21,5 +21,5 @@ function l_reg() {
         }
     }
 
-    return empty($lreg) ? '' : '<table class="navContent" cellspacing="0">'.$lreg.'</table>';
+    return empty($lreg) ? '<center style="margin:2px 0">'._no_entrys.'</center>' : '<table class="navContent" cellspacing="0">'.$lreg.'</table>';
 }

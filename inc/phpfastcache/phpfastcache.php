@@ -323,7 +323,6 @@ class phpFastCache {
 
     /*
      * For Auto Driver
-     *
      */
     function autoDriver() {
         $driver = "files";

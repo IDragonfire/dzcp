@@ -105,10 +105,12 @@ class phpfastcache_files extends  phpFastCache implements phpfastcache_driver  {
 
     function driver_delete($keyword, $option = array()) {
         $file_path = $this->getFilePath($keyword,true);
-        if(@unlink($file_path)) {
-            return true;
-        } else {
-            return false;
+        if(file_exists($file_path)) {
+            if(@unlink($file_path)) {
+                return true;
+            } else {
+                return false;
+            }
         }
     }
 

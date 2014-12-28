@@ -44,6 +44,9 @@ switch ($action):
                                                        "banner" => $banner));
         }
 
+        if(empty($show))
+            $show = '<tr><td colspan="2" class="contentMainSecond">'._no_entrys.'</td></tr>';
+
         $index = show($dir."/sponsors", array("head" => _sponsor_head,
                                               "show" => $show));
     break;

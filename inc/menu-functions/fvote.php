@@ -47,5 +47,5 @@ function fvote($id, $ajax=false) {
                                          "stimmen" => $stimmen));
     }
 
-    return empty($vote) ? '' : ($ajax ? $vote : '<div id="navFVote">'.$vote.'</div>');
+    return empty($vote) ? '<center style="margin:2px 0">'._no_entrys.'</center>' : ($ajax ? $vote : '<div id="navFVote">'.$vote.'</div>');
 }

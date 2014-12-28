@@ -24,5 +24,5 @@ function partners() {
         }
     }
 
-    return empty($partners) ? '' : ($table ? '<table class="navContent" cellspacing="0">'.$partners.'</table>' : $partners);
+    return empty($partners) ? '<center style="margin:2px 0">'._no_entrys.'</center>' : ($table ? '<table class="navContent" cellspacing="0">'.$partners.'</table>' : $partners);
 }

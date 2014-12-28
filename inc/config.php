@@ -52,7 +52,7 @@ define('steam_api_refresh', 30); // Wann sollen die Daten der Steam API aktualis
 define('steam_infos_cache', true); //Sollen die Profil Daten zwischen gespeichert werden, * Cache Use
 define('steam_only_proxy', false); //Sollen soll nur der Steam Proxy Server verwendet werden
 
-define('ts3dns_server', true); //Sollen Teamspeak 3 DNS Server erkannt werden
+define('server_show_empty_players', false); //Alle Spieler anzeigen, die deren Namen nicht angezeigt werden können, User werden sonst entfernt.
 
 define('captcha_case_sensitive', false); //Unterscheidet Groß und Kleinschreibung beim Captcha
 define('captcha_mathematic', true); //Stellt den Usern einfache Rechenaufgaben anstelle eines Captcha Codes
@@ -235,6 +235,7 @@ $db = array("host" =>           $sql_host,
             "sessions" =>       $prefix."sessions",
             "startpage" =>      $prefix."startpage",
             "taktik" =>         $prefix."taktiken",
+            "ts" =>             $prefix."teamspeak",
             "users" =>          $prefix."users",
             "usergallery" =>    $prefix."usergallery",
             "usergb" =>         $prefix."usergb",
@@ -253,7 +254,7 @@ function show($tpl="", $array=array(), $array_lang_constant=array(), $array_bloc
         if(!$installation) {
             $cacheHash = md5($template);
             if(template_cache && $config_cache['use_cache'] && dbc_index::useMem() && $cache->isExisting('tpl_'.$cacheHash)) {
-                $tpl = string::decode($cache->get('tpl_'.$cacheHash));
+                $tpl = re($cache->get('tpl_'.$cacheHash));
                 if(show_dbc_debug)
                     DebugConsole::insert_info('template::show()', 'Get Template-Cache: "'.'tpl_'.$cacheHash.'"');
             }
@@ -262,7 +263,7 @@ function show($tpl="", $array=array(), $array_lang_constant=array(), $array_bloc
                     $tpl = file_get_contents($template.".html");
 
                     if(template_cache && $config_cache['use_cache'] && dbc_index::useMem()) {
-                        $cache->set('tpl_'.$cacheHash,string::encode($tpl),template_cache_time);
+                        $cache->set('tpl_'.$cacheHash,up($tpl),template_cache_time);
 
                         if(show_dbc_debug)
                             DebugConsole::insert_loaded('template::show()', 'Set Template-Cache: "'.'tpl_'.$cacheHash.'"');

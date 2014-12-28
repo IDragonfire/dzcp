@@ -293,7 +293,6 @@ $data_dbu['settings']  = array('clanname'            => array('TEXT','NULL DEFAU
                                'k_waehrung'          => array('VARCHAR(15)','NOT NULL DEFAULT \'\'',false),
                                'language'            => array('VARCHAR(50)','NOT NULL DEFAULT \'\'',false),
                                'domain'              => array('VARCHAR(200)','NOT NULL DEFAULT \'\'',false),
-                               'ts_ip'               => array('VARCHAR(15)','NOT NULL DEFAULT \'0.0.0.0\'',false),
                                'mailfrom'            => array('VARCHAR(200)','NOT NULL DEFAULT \'\'',false),
                                'eml_reg_subj'        => array('VARCHAR(200)','NOT NULL DEFAULT \'\'',false),
                                'eml_pwd_subj'        => array('VARCHAR(200)','NOT NULL DEFAULT \'\'',false),

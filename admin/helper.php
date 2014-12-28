@@ -91,3 +91,19 @@ function php_sapi_type() {
             "apache2handler" => 'Apache 2: Handler', "cgi" => 'CGI', "cgi-fcgi" => 'Fast-CGI', "cli" => 'CLI', "isapi" => 'ISAPI', "nsapi" => 'NSAPI');
     return(empty($sapi_types[substr($sapi_type, 0, 3)]) ? substr($sapi_type, 0, 3) : $sapi_types[substr($sapi_type, 0, 3)]);
 }
+
+/**
+* Gibt eine Liste der Live Games aus
+* @return string/options
+*/
+function listgames($game = '') {
+    $protocols_array = GameQ::getGames(); $games = '';
+    $block = array('teamspeak3','gamespy','gamespy2','gamespy3','source');
+    foreach ($protocols_array AS $gameq => $info) {
+        if(in_array($gameq,$block)) { continue; }
+        $selected = (!empty($game) && $game != false && $game == $gameq ? 'selected="selected" ' : '');
+        $games .= '<option '.$selected.'value="'.$gameq.'">'.htmlentities($info['name']).'</option>';
+    }
+
+    return $games;
+}

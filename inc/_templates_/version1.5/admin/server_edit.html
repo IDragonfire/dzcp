@@ -3,10 +3,10 @@
 <form name="server" action="?admin=server&amp;do=editserver&amp;id=[id]" method="post" onsubmit="return(DZCP.submitButton())">
 <table class="hperc" cellspacing="1">
 <tr>
-  <td class="contentHead" align="center" colspan="2"><span class="fontBold">[edithead]</span></td>
+  <td class="contentHead" align="center" colspan="2"><span class="fontBold">[lang_admin_server_edit]</span></td>
 </tr>
 <tr>
-  <td class="contentMainTop" width="30%"><span class="fontBold">[ip]:</span></td>
+  <td class="contentMainTop" width="30%"><span class="fontBold">[lang_server_ip]:</span></td>
   <td class="contentMainFirst" align="center">
     <input type="text" name="ip" value="[sip]" class="inputField_dis"
     onfocus="this.className='inputField_en';"
@@ -17,7 +17,7 @@
   </td>
 </tr>
 <tr>
-  <td class="contentMainTop"><span class="fontBold">[port]:</span></td>
+  <td class="contentMainTop"><span class="fontBold">[lang_server_admin_qport]:</span></td>
   <td class="contentMainFirst" align="center">
     <input type="text" name="qport" value="[qport]" class="inputField_dis_mid"
     onfocus="this.className='inputField_en_mid';"
@@ -25,7 +25,7 @@
   </td>
 </tr>
 <tr>
-  <td class="contentMainTop"><span class="fontBold">[name]:</span></td>
+  <td class="contentMainTop"><span class="fontBold">[lang_server_name]:</span></td>
   <td class="contentMainFirst" align="center">
     <input type="text" name="name" value="[sname]" class="inputField_dis"
     onfocus="this.className='inputField_en';"
@@ -33,7 +33,7 @@
   </td>
 </tr>
 <tr>
-  <td class="contentMainTop"><span class="fontBold">[pwd]:</span></td>
+  <td class="contentMainTop"><span class="fontBold">[lang_pwd]:</span></td>
   <td class="contentMainFirst" align="center">
     <input type="text" name="pwd" value="[spwd]" class="inputField_dis"
     onfocus="this.className='inputField_en';"
@@ -41,25 +41,25 @@
   </td>
 </tr>
 <tr>
-  <td class="contentMainTop"><span class="fontBold">[game]-Icon:</span></td>
+  <td class="contentMainTop"><span class="fontBold">[lang_custom_game_icon]:</span></td>
   <td class="contentMainFirst" align="center">
-    <select name="game" class="dropdown">
-      [sgame]
+    <select name="custom_game_icon" class="dropdown">
+      [custom_icon]
     </select>
-    <br /><a href="../upload/?action=servericons&edit=1&id=[id]">upload</a>
+    <br /><a href="../upload/">upload</a>
   </td>
 </tr>
 <tr>
-  <td class="contentMainTop"><span class="fontBold">[status]:</span></td>
+  <td class="contentMainTop"><span class="fontBold">[lang_admin_status]:</span></td>
   <td class="contentMainFirst" align="center">
     <select name="status" class="dropdown" style="width:180px">
-      <option value="nope" class="dropdownKat">[no_status]</option>
+      <option value="nope" class="dropdownKat">[lang_admin_server_nostatus]</option>
       [games]
     </select>
   </td>
 </tr>
 <tr>
-  <td class="contentBottom" colspan="2"><input id="contentSubmit"  type="submit" value="[value]" class="submit" /></td>
+  <td class="contentBottom" colspan="2"><input id="contentSubmit"  type="submit" value="[lang_button_value_edit]" class="submit" /> | <script language="JavaScript1.2">document.writeln('<input type="button" value="Zur&uuml;ck" class="submit" onclick="document.forms[0].action=\'?admin=server\';document.forms[0].submit()" tabindex="6">');</script></td>
 </tr>
 </table>
 </form>

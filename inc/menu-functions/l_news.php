@@ -29,5 +29,5 @@ function l_news() {
         }
     }
 
-    return empty($l_news) ? '' : '<table class="navContent" cellspacing="0">'.$l_news.'</table>';
+    return empty($l_news) ? '<center style="margin:2px 0">'._no_entrys.'</center>' : '<table class="navContent" cellspacing="0">'.$l_news.'</table>';
 }

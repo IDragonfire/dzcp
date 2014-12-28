@@ -30,13 +30,13 @@ ob_start();
     echo "}";
   }
 //Gameicons
-  $games = getIcons('../../../images/gameicons/');
+  $games = getIcons('../../../images/gameicons/custom/');
   for($i=0; $i<count($games); $i++)
   {
     if(preg_match("=\.gif|.jpg=Uis",$games[$i]))
     {
       echo "option[value=".preg_replace("#\.#","\.",$games[$i])."]:before {";
-      echo "  content: url(\"../../../images/gameicons/".$games[$i]."\");";
+      echo "  content: url(\"../../../images/gameicons/custom/".$games[$i]."\");";
       echo "}";
     }
   }

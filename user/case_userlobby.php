@@ -491,6 +491,9 @@ if(defined('_UserMenu')) {
         elseif($lvl == 2) $mylevel = _status_trial;
         elseif($lvl == 3) $mylevel = _status_member;
         elseif($lvl == 4) $mylevel = _status_admin;
+        
+        if(empty($ftopics))
+            $ftopics = '<tr><td colspan="2" class="contentMainSecond">'._no_entrys.'</td></tr>';
 
         $erase = $can_erase ? _user_new_erase : '';
         $index = show($dir."/userlobby", array("userlobbyhead" => _userlobby,

@@ -18,8 +18,8 @@ require_once(basePath.'/inc/pop3.php');
 require_once(basePath.'/inc/smtp.php');
 require_once(basePath.'/inc/phpmailer.php');
 require_once(basePath."/inc/cookie.php");
-require_once(basePath.'/inc/server_query/_functions.php');
-require_once(basePath."/inc/teamspeak_query.php");
+require_once(basePath.'/inc/gameq.php');
+require_once(basePath."/inc/teamspeak.php");
 require_once(basePath."/inc/phpfastcache/phpfastcache.php");
 require_once(basePath.'/inc/steamapi.php');
 require_once(basePath.'/inc/sfs.php');
@@ -44,10 +44,10 @@ $securimage = new Securimage();
 dbc_index::init();
 
 //-> Automatische Datenbank Optimierung
-if(auto_db_optimize && settings('db_optimize',false) <= time() && !$installer && !$updater) {
+if(auto_db_optimize && settings('db_optimize',false) < time() && !$installer && !$updater) {
     @ignore_user_abort(true);
     db("UPDATE `".$db['settings']."` SET `db_optimize` = ".(time()+auto_db_optimize_interval)." WHERE `id` = 1;");
-    db_optimize(); $securimage->clearOldCodesFromDatabase();
+    db_optimize();
     setIpcheck("db_optimize()");
     @ignore_user_abort(false);
 }
@@ -72,6 +72,9 @@ cookie::init('dzcp_'.settings('prev'));
 //-> SteamAPI
 SteamAPI::set('apikey',re(settings('steam_api_key')));
 
+//-> GameQ
+spl_autoload_register(array('GameQ', 'auto_load'));
+
 //-> Language auslesen
 $language = (cookie::get('language') != false ? (file_exists(basePath.'/inc/lang/languages/'.cookie::get('language').'.php') ? cookie::get('language') : re(settings('language'))) : re(settings('language')));
 
@@ -94,7 +97,7 @@ $maxfilesize = @ini_get('upload_max_filesize');
 $UserAgent = trim(GetServerVars('HTTP_USER_AGENT'));
 
 //-> Global
-$action = isset($_GET['action']) ? $_GET['action'] : '';
+$action = isset($_GET['action']) ? $_GET['action'] : 'default';
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $do = isset($_GET['do']) ? $_GET['do'] : '';
 $index = ''; $show = ''; $color = 0;
@@ -155,21 +158,27 @@ function validateIpV4Range ($ip, $range) {
 
 // -> Pruft ob die IP gesperrt und gultig ist
 function check_ip() {
-    global $db,$ajaxJob,$isSpider,$userip;
-    if(!$ajaxJob && !$isSpider && !isIP($userip, true)) {
+    global $db,$ajaxJob,$isSpider,$userip,$UserAgent;
+    if(!isIP($userip, true)) {
         if((!isIP($userip) && !isIP($userip,true)) || $userip == false || empty($userip)) {
             dzcp_session_destroy();
             die('Deine IP ist ung&uuml;ltig!<p>Your IP is invalid!');
         }
-
+        
+        if(empty($UserAgent)) {
+            dzcp_session_destroy();
+            die("Script wird nicht ausgef&uuml;hrt, da kein User Agent &uuml;bermittelt wurde.\n");
+        }
+        
         //Banned IP
         $banned_ip_sql = db("SELECT `id`,`typ`,`data` FROM `".$db['ipban']."` WHERE `ip` = '".$userip."' AND `enable` = 1;");
         if(_rows($banned_ip_sql) >= 1) {
-            while($banned_ip = _fetch($banned_ip_sql))
-            if($banned_ip['typ'] == '2' || $banned_ip['typ'] == '3') {
-                dzcp_session_destroy();
-                $banned_ip['data'] = unserialize($banned_ip['data']);
-                die('Deine IP ist gesperrt!<p>Your IP is banned!<p>MSG: '.$banned_ip['data']['banned_msg']);
+            while($banned_ip = _fetch($banned_ip_sql)) {
+                if($banned_ip['typ'] == 2 || $banned_ip['typ'] == 3) {
+                    dzcp_session_destroy();
+                    $banned_ip['data'] = unserialize($banned_ip['data']);
+                    die('Deine IP ist gesperrt!<p>Your IP is banned!<p>MSG: '.$banned_ip['data']['banned_msg']);
+                }
             }
         }
 
@@ -300,7 +309,7 @@ if($chkMe && $userid && !empty($_SESSION['ip'])) {
  * Aktualisiere die Client DNS & User Agent
  */
 if(session_id()) {
-    $userdns = gethostbyaddr($userip);
+    $userdns = DNSToIp($userip);
     if(db("SELECT `id` FROM `".$db['ip2dns']."` WHERE `update` <= ".time()." AND `sessid` = '".session_id()."';",true)) {
         $bot = SearchBotDetect();
         db("UPDATE `".$db['ip2dns']."` SET `time` = ".(time()+10*60).", `update` = ".(time()+60).", `ip` = '".$userip."', "
@@ -314,11 +323,11 @@ if(session_id()) {
             . "`bot_name` = '".up($bot['name'])."', `bot_fullname` = '".up($bot['fullname'])."';"); unset($bot);
         }
     }
-    
+
     /*
      * Pruft ob mehrere Session IDs von der gleichen DNS kommen, sollte der Useragent keinen Bot Tag enthalten, wird ein Spambot angenommen.
      */
-    $sql_sb = db("SELECT `id`,`ip`,`bot` FROM `".$db['ip2dns']."` WHERE `dns` LIKE '".up($userdns)."';");
+    $sql_sb = db("SELECT `id`,`ip`,`bot`,`agent` FROM `".$db['ip2dns']."` WHERE `dns` LIKE '".up($userdns)."';");
     if(_rows($sql_sb) >= 3) {
         $get_sb = _fetch($sql_sb);
         if(!$get_sb['bot'] && !isSpider(re($get_sb['agent']))) {
@@ -332,6 +341,17 @@ if(session_id()) {
             }
         }
     }
+    
+    $get = db("SELECT `bot`,`agent` FROM `".$db['ip2dns']."` WHERE `ip` = '".up($userip)."';",false,true);
+    if(!$get['bot'] && stristr(re($get['agent']), 'Gecko/20100101')) {
+        db("DELETE FROM `".$db['c_ips']."` WHERE `ip` = '".up($userip)."';");
+        db("DELETE FROM `".$db['c_who']."` WHERE `ip` = '".up($userip)."';");
+        db("DELETE FROM `".$db['ip2dns']."` WHERE `ip` = '".up($userip)."';");
+        dzcp_session_destroy();
+        exit('Die Verwendete Browser Version ist veraltet!<p>Sollte es sich um einen Bot handeln, bitte verwende einen Bot Tag im Useragenten!');
+    }
+    
+    unset($get_sb,$get,$data_array,$bot);
 
     //-> Cleanup DNS DB
     $qryDNS = db("SELECT `id` FROM `".$db['ip2dns']."` WHERE `time` <= ".time().";");
@@ -785,6 +805,31 @@ function replace($txt,$type=false,$no_vid_tag=false) {
 
     $txt = str_replace("\"","&#34;",$txt);
     return preg_replace("#(\w){1,1}(&nbsp;)#Uis","$1 ",$txt);
+}
+
+/**
+ * Führt den BBCode des TS3 Servers aus.
+ *
+ * @param string $string
+ * @return string
+ */
+function parse_ts3($string='') {
+    $string = (string)$string;
+    if(empty($string)) return $string;
+
+    $string = preg_replace('/\[url\=([^(http)].+?)\](.*?)\[\/url\]/i', '[url=http://$1]$2[/url]', $string);
+    $string = preg_replace('/\[url\]([^(http)].+?)\[\/url\]/i', '[url=http://$1]$1[/url]', $string);
+
+        // Remove the trash made by previous
+      #  $string = preg_replace(self::$lineBreaks_search, self::$lineBreaks_replace, $string);
+
+        // Parse bbcode
+      #  $string = preg_replace(self::$simple_search, self::$simple_replace, $string);
+
+        // Parse [list] tags
+    $string = preg_replace('/\[list\](.*?)\[\/list\]/sie', '"<ul>\n".self::process_list_items("$1")."\n</ul>"', $string);
+    return preg_replace('/\[list\=(disc|circle|square|decimal|decimal-leading-zero|lower-roman|upper-roman|lower-greek|lower-alpha|lower-latin|upper-alpha|upper-latin|hebrew|armenian|georgian|cjk-ideographic|hiragana|katakana|hiragana-iroha|katakana-iroha|none)\](.*?)\[\/list\]/sie',
+           '"<ol style=\"list-style-type: $1;\">\n".self::process_list_items("$2")."\n</ol>"', $string);
 }
 
 //-> Badword Filter
@@ -1279,9 +1324,9 @@ function up($txt = '') {
  */
 function GetServerVars($var) {
     if(array_key_exists($var, $_SERVER) && !empty($_SERVER[$var]))
-        return string::encode($_SERVER[$var]);
+        return up($_SERVER[$var]);
     else if(array_key_exists($var, $_ENV) && !empty($_ENV[$var]))
-        return string::encode($_ENV[$var]);
+        return up($_ENV[$var]);
     
     return false;
 }
@@ -1382,28 +1427,31 @@ function highlight($word) {
 //-> Counter updaten
 function updateCounter() {
     global $db,$reload,$today,$datum,$userip;
-    $ipcheck = db("SELECT `id`,`ip`,`datum` FROM `".$db['c_ips']."` WHERE `ip` = '".$userip."' AND FROM_UNIXTIME(datum,'%d.%m.%Y') = '".date("d.m.Y")."';");
-    db("DELETE FROM `".$db['c_ips']."` WHERE datum+".$reload." <= ".time()." OR FROM_UNIXTIME(datum,'%d.%m.%Y') != '".date("d.m.Y")."';");
-    $count = db("SELECT `id`,`visitors`,`today` FROM `".$db['counter']."` WHERE `today` = '".$today."';");
-    if(_rows($ipcheck)>=1) {
-        $get = _fetch($ipcheck);
-        $sperrzeit = $get['datum']+$reload;
-        if($sperrzeit <= time()) {
-            db("DELETE FROM `".$db['c_ips']."` WHERE `ip` = '".$userip."';");
+    $get_agent = db("SELECT `agent`,`bot` FROM `".$db['ip2dns']."` WHERE `ip` = '".up($userip)."';",false,true);
+    if(!$get_agent['bot'] && !isSpider(re($get_agent['agent']))) {
+        $ipcheck = db("SELECT `id`,`ip`,`datum` FROM `".$db['c_ips']."` WHERE `ip` = '".up($userip)."' AND FROM_UNIXTIME(datum,'%d.%m.%Y') = '".date("d.m.Y")."';");
+        db("DELETE FROM `".$db['c_ips']."` WHERE datum+".$reload." <= ".time()." OR FROM_UNIXTIME(datum,'%d.%m.%Y') != '".date("d.m.Y")."';");
+        $count = db("SELECT `id`,`visitors`,`today` FROM `".$db['counter']."` WHERE `today` = '".$today."';");
+        if(_rows($ipcheck)>=1) {
+            $get = _fetch($ipcheck);
+            $sperrzeit = $get['datum']+$reload;
+            if($sperrzeit <= time()) {
+                db("DELETE FROM `".$db['c_ips']."` WHERE `ip` = '".up($userip)."';");
 
+                if(_rows($count))
+                    db("UPDATE `".$db['counter']."` SET `visitors` = visitors+1 WHERE `today` = '".$today."';");
+                else
+                    db("INSERT INTO `".$db['counter']."` SET `visitors` = '1', `today` = '".$today."';");
+
+                db("INSERT INTO `".$db['c_ips']."` SET `ip` = '".up($userip)."', `datum` = '".intval($datum)."';");
+            }
+        } else {
             if(_rows($count))
                 db("UPDATE `".$db['counter']."` SET `visitors` = visitors+1 WHERE `today` = '".$today."';");
             else
                 db("INSERT INTO `".$db['counter']."` SET `visitors` = '1', `today` = '".$today."';");
-
-            db("INSERT INTO `".$db['c_ips']."` SET `ip` = '".$userip."', `datum` = '".intval($datum)."';");
+            db("INSERT INTO `".$db['c_ips']."` SET `ip` = '".up($userip)."', `datum` = '".intval($datum)."';");
         }
-    } else {
-        if(_rows($count))
-            db("UPDATE `".$db['counter']."` SET `visitors` = visitors+1 WHERE `today` = '".$today."';");
-       else
-            db("INSERT INTO `".$db['counter']."` SET `visitors` = '1', `today` = '".$today."';");
-        db("INSERT INTO `".$db['c_ips']."` SET `ip` = '".$userip."', `datum` = '".intval($datum)."';");
     }
 }
 
@@ -1642,17 +1690,17 @@ function show_countrys($i="") {
 function squad($code) {
     global $picformat;
     if(empty($code))
-        return '<img src="../inc/images/gameicons/nogame.gif" alt="" class="icon" />';
+        return '<img src="../inc/images/gameicons/custom/unknown.gif" alt="" class="icon" />';
 
     $code = str_replace(array('.png','.gif','.jpg'),'',$code);
     foreach($picformat as $end) {
-        if(file_exists(basePath."/inc/images/gameicons/".$code.".".$end)) break;
+        if(file_exists(basePath."/inc/images/gameicons/custom/".$code.".".$end)) break;
     }
 
-    if(file_exists(basePath."/inc/images/gameicons/".$code.".".$end))
-        return'<img src="../inc/images/gameicons/'.$code.'.'.$end.'" alt="" class="icon" />';
+    if(file_exists(basePath."/inc/images/gameicons/custom/".$code.".".$end))
+        return'<img src="../inc/images/gameicons/custom/'.$code.'.'.$end.'" alt="" class="icon" />';
 
-    return '<img src="../inc/images/gameicons/nogame.gif" alt="" class="icon" />';
+    return '<img src="../inc/images/gameicons/custom/unknown.gif" alt="" class="icon" />';
 }
 
 //-> Funktion um bei DB-Eintraegen URLs einem http:// zuzuweisen
@@ -1938,6 +1986,36 @@ function data($what='id',$tid=0) {
     return re_entry(dbc_index::getIndexKey('user_'.$tid, $what));
 }
 
+function ping_port($address='',$port=0000,$timeout=2,$udp=false) {
+    if(!fsockopen_support())
+        return false;
+
+    $errstr = NULL; $errno = NULL;
+    if(!$ip = DNSToIp($address))
+        return false;
+
+    if($fp = @fsockopen(($udp ? "udp://".$ip : $ip), $port, $errno, $errstr, $timeout)) {
+        unset($ip,$port,$errno,$errstr,$timeout);
+        @fclose($fp);
+        return true;
+    }
+
+    return false;
+}
+
+function DNSToIp($address='') {
+    if(!preg_match('#^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$#', $address)) {
+        if(!($result = gethostbyname($address)))
+            return false;
+
+        if ($result === $address)
+            $result = false;
+    } else
+        $result = $address;
+
+    return $result;
+}
+
 //-> Einzelne Userstatistiken ermitteln
 function userstats($what='id',$tid=0) {
     global $db,$userid;
@@ -2066,54 +2144,6 @@ function dropdown($what, $wert, $age = 0) {
     return $return;
 }
 
-//Games fuer den Livestatus
-function sgames($game = '') {
-    $protocols = get_files(basePath.'/inc/server_query/',false,true,array('php')); $games = '';
-    foreach($protocols AS $protocol) {
-        unset($gamemods, $server_name_config);
-        $protocol = str_replace('.php', '', $protocol);
-        if(substr($protocol, 0, 1) != '_') {
-            $explode = '##############################################################################################################################';
-            $protocol_config = explode($explode, file_get_contents(basePath.'/inc/server_query/'.$protocol.'.php'));
-            eval(str_replace('<?php', '', $protocol_config[0]));
-
-            if(!empty($server_name_config) && count($server_name_config) > 2) {
-                $gamemods = '';
-                foreach($server_name_config AS $slabel => $sconfig)
-                    $gamemods .= $sconfig[1].', ';
-            }
-
-            $gamemods = empty($gamemods) ? '' : ' ('.substr($gamemods, 0, strlen($gamemods) - 2).')';
-            $games .= '<option value="'.$protocol.'">';
-
-            switch($protocol):
-                case 'bf1942'; case 'bf2142'; case 'bf2'; case 'bfvietnam'; case 'bfbc2';
-                    $protocol = strtr($protocol, array('bfbc2' => 'Battlefield Bad Company 2', 'bfv' => 'Battlefield V', 'bf' => 'Battlefield '));
-                break;
-                case 'bf3'; $protocol = 'Battlefield 3'; break;
-                case 'bf4'; $protocol = 'Battlefield 4'; break;
-                case 'swat4'; $protocol = strtoupper($protocol); break;
-                case 'aarmy'; $protocol = 'Americas Army'; break;
-                case 'arma'; $protocol = 'Armed Assault'; break;
-                case 'wet'; $protocol = 'Wolfenstein: Enemy Territory'; break;
-                case 'mta'; $protocol = 'Multi-Theft-Auto'; break;
-                case 'cnc'; $protocol = 'Command &amp; Conquer'; break;
-                case 'sof2'; $protocol = 'Soldiers of Fortune 2'; break;
-                case 'ut'; $protocol = 'Unreal Tournament'; break;
-                default;
-                    $protocol = ucfirst(str_replace('_', ' ', $protocol));
-                    $protocol = (strlen($protocol) < 4) ? strtoupper($protocol) : $protocol;
-                break;
-            endswitch;
-
-            $games .= $protocol.$gamemods;
-            $games .= '</option>';
-        }
-    }
-
-    return str_replace("value=\"".$game."\"","value=\"".$game."\" selected=\"selected\"",$games);
-}
-
 //Umfrageantworten selektieren
 function voteanswer($what, $vid) {
     global $db;
@@ -2213,7 +2243,7 @@ function onlinecheck($tid) {
         dbc_index::setIndex('onlinecheck', $users_id_index);
     }
 
-    return $row ? "<img src=\"../inc/images/online.gif\" alt=\"\" class=\"icon\" />" : "<img src=\"../inc/images/offline.gif\" alt=\"\" class=\"icon\" />";
+    return $row ? "<img src=\"../inc/images/online.png\" alt=\"\" class=\"icon\" />" : "<img src=\"../inc/images/offline.png\" alt=\"\" class=\"icon\" />";
 }
 
 //Funktion fuer die Sprachdefinierung der Profilfelder

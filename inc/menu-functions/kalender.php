@@ -75,7 +75,7 @@ function kalender($month="",$year="",$js=false) {
                     if(_rows($qry)) {
                         while($get = _fetch($qry)) {
                             $event = "set";
-                            $titleev .= '&lt;img src=../inc/images/event.gif class=icon alt= /&gt;'.'&nbsp;'.jsconvert(_kal_event.re($get['title'])).'&lt;br />';
+                            $titleev .= '&lt;img src=../inc/images/event.png class=icon alt= /&gt;'.'&nbsp;'.jsconvert(_kal_event.re($get['title'])).'&lt;br />';
                         }
                     }
 

@@ -122,7 +122,7 @@ function db_stmt($query,$params=array('si', 'hallo', '4'),$rows=false,$fetch=fal
 }
 
 function db_optimize() {
-    global $db,$mysql;
+    global $db,$mysql,$securimage;
     if ($mysql instanceof mysqli) {
         $sql = db("SELECT `id`,`update`,`expires` FROM `".$db['autologin']."`");
         if(_rows($sql)) {
@@ -133,6 +133,7 @@ function db_optimize() {
             }
         }
 
+        $securimage->clearOldCodesFromDatabase();
         db("TRUNCATE ".$db['ip2dns'].";");
         if(sessions_backend == 'mysql') {
             db("TRUNCATE ".$db['sessions'].";");

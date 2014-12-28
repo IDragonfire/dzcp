@@ -20,5 +20,5 @@ function sponsors() {
         }
     }
 
-    return empty($sponsors) ? '' : '<table class="navContent" cellspacing="0">'.$sponsors.'</table>';
+    return empty($sponsors) ? '<center style="margin:2px 0">'._no_entrys.'</center>' : '<table class="navContent" cellspacing="0">'.$sponsors.'</table>';
 }

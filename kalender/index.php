@@ -114,10 +114,10 @@ default:
         if(_rows($qry))
         {
           $infoEvent = '';
-          while($get = _fetch($qry)) $infoEvent .='&lt;img src=../inc/images/event.gif class=icon alt= /&gt;'.'&nbsp;'.jsconvert(_kal_event.re($get['title'])).'<br />';
+          while($get = _fetch($qry)) $infoEvent .='&lt;img src=../inc/images/event.png class=icon alt= /&gt;'.'&nbsp;'.jsconvert(_kal_event.re($get['title'])).'<br />';
 
           $info = ' onmouseover="DZCP.showInfo(\''.$infoEvent.'\')" onmouseout="DZCP.hideInfo()"';
-          $event = '<a href="?action=show&amp;time='.$datum.'"'.$info.'><img src="../inc/images/event.gif" alt="" /></a>';
+          $event = '<a href="?action=show&amp;time='.$datum.'"'.$info.'><img src="../inc/images/event.png" alt="" /></a>';
         } else {
           $event = "";
         }

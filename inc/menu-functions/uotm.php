@@ -23,5 +23,5 @@ function uotm() {
         }
     }
 
-    return empty($uotm) ? '' : '<table class="navContent" cellspacing="0">'.$uotm.'</table>';
+    return empty($uotm) ? '<center style="margin:2px 0">'._no_entrys.'</center>' : '<table class="navContent" cellspacing="0">'.$uotm.'</table>';
 }

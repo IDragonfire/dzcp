@@ -23,5 +23,5 @@ function top_dl() {
         }
     }
 
-    return empty($top_dl) ? '' : '<table class="navContent" cellspacing="0">'.$top_dl.'</table>';
+    return empty($top_dl) ? '<center style="margin:2px 0">'._no_entrys.'</center>' : '<table class="navContent" cellspacing="0">'.$top_dl.'</table>';
 }

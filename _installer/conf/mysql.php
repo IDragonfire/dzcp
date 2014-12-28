@@ -1780,9 +1780,6 @@ function update_mysql_1_6_1() {
     db("ALTER TABLE `".$db['userstats']."` CHANGE `hits` `hits` INT(11) NOT NULL DEFAULT '0';",false,false,true);
     db("ALTER TABLE `".$db['votes']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
     db("ALTER TABLE `".$db['vote_results']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
-    db("ALTER TABLE `".$db['users']."` ADD `startpage` INT(11) NOT NULL DEFAULT '0' AFTER `profile_access`;",false,false,true);
-    db("ALTER TABLE `".$db['permissions']."` ADD `startpage` INT(1) NOT NULL DEFAULT '0' AFTER `ipban`;",false,false,true);
-    db("ALTER TABLE `".$db['settings']."` ADD `dbversion` VARCHAR(20) NOT NULL DEFAULT '1.6.1.0' AFTER `db_optimize`;",false,false,true);
         
     /**************** MySQL-Query Optimize ****************
      * Step #1 -> Add Table Indexes
@@ -1952,6 +1949,13 @@ function update_mysql_1_6_1() {
     
     db("ALTER TABLE `".$db['botlist']."` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `regexpattern` (`regexpattern`);",false,false,true);
     db("ALTER TABLE `".$db['botlist']."` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=116;",false,false,true);
+    db("ALTER TABLE `".$db['settings']."` DROP `ts_port`, DROP `ts_sport`, DROP `ts_version`, DROP `ts_customicon`, DROP `ts_showchannel`, DROP `ts_width`;",false,false,true);
+    db("ALTER TABLE `".$db['settings']."` DROP `last_backup`;",false,false,true);
+    
+    /*
+     * Datenbank in das neue UTF8 Format umschreiben
+     */
+    databaseUpdater::run();
     
     //Startpage
     db("DROP TABLE IF EXISTS `".$db['startpage']."`;",false,false,true);
@@ -1963,15 +1967,31 @@ function update_mysql_1_6_1() {
         PRIMARY KEY (`id`)
     ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",false,false,true);
     
+    db("ALTER TABLE `".$db['server']."` ADD `custom_icon` VARCHAR(100) NOT NULL DEFAULT '' AFTER `qport`;",false,false,true);
+    db("ALTER TABLE `".$db['users']."` ADD `startpage` INT(11) NOT NULL DEFAULT '0' AFTER `profile_access`;",false,false,true);
+    db("ALTER TABLE `".$db['permissions']."` ADD `startpage` INT(1) NOT NULL DEFAULT '0' AFTER `ipban`;",false,false,true);
+    db("ALTER TABLE `".$db['settings']."` ADD `dbversion` VARCHAR(20) NOT NULL DEFAULT '1.6.1.0' AFTER `db_optimize`;",false,false,true);
     db("INSERT INTO `".$db['startpage']."` SET `name` = 'Artikel', `url` = 'artikel/', `level` = 1;",false,false,true);
     db("INSERT INTO `".$db['startpage']."` SET `name` = 'News', `url` = 'news/', `level` = 1;",false,false,true);
     db("INSERT INTO `".$db['startpage']."` SET `name` = 'Forum', `url` = 'forum/', `level` = 1;",false,false,true);
+    db("ALTER TABLE `".$db['server']."` CHANGE `name` `name` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';",false,false,true);
+        
+    db("DROP TABLE IF EXISTS `".$db['ts']."`;",false,false,true);
+    db("CREATE TABLE IF NOT EXISTS `".$db['ts']."` (
+      `id` int(11) NOT NULL AUTO_INCREMENT,
+      `host_ip_dns` varchar(200) NOT NULL DEFAULT '',
+      `server_port` int(8) NOT NULL DEFAULT '9987',
+      `query_port` int(8) NOT NULL DEFAULT '10011',
+      `file_port` int(8) NOT NULL DEFAULT '30033',
+      `username` varchar(100) NOT NULL DEFAULT '',
+      `passwort` varchar(100) NOT NULL DEFAULT '',
+      `customicon` int(1) NOT NULL DEFAULT '1',
+      `showchannel` int(1) NOT NULL DEFAULT '0',
+      `default_server` int(1) NOT NULL DEFAULT '0',
+      `show_navi` int(1) NOT NULL DEFAULT '0',
+      PRIMARY KEY (`id`)
+    ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;",false,false,true);
     
-    /*
-     * Datenbank in das neue UTF8 Format umschreiben
-     */
-    databaseUpdater::run();
-
     //-> Cookie initialisierung * Autologin *
     if(!headers_sent()) {
         /** Start Sessions */

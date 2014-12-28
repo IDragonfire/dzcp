@@ -37,5 +37,5 @@ function ftopics() {
         }
     }
 
-    return empty($ftopics) ? '' : '<table class="navContent" cellspacing="0">'.$ftopics.'</table>';
+    return empty($ftopics) ? '<center style="margin:2px 0">'._no_entrys.'</center>' : '<table class="navContent" cellspacing="0">'.$ftopics.'</table>';
 }

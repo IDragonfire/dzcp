@@ -22,7 +22,7 @@ ob_start();
     $hoehe      = $size[1];
 
     $neueBreite = empty($_GET['width']) ? 100 : intval($_GET['width']);
-    $neueHoehe = intval($hoehe*$neueBreite/$breite);
+    $neueHoehe = empty($_GET['height']) ? intval($hoehe*$neueBreite/$breite) : intval($_GET['height']);
     $file_cache = basePath.'/'.$file_exp[0].'_minimize_'.$neueBreite.'x'.$neueHoehe;
     $picture_build = false;
 
