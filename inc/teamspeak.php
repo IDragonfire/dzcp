@@ -272,10 +272,12 @@ class TS3Renderer {
         else if(self::$AllowDownloadIcons) {
             if(!$cache->isExisting('ts_icon_'.$id) && !in_array($id, self::$nf_pic_ids)) {
                 // Sende Download-Anforderung zum TS3 Server
-                if(show_teamspeak_debug)
+                if(show_teamspeak_debug) {
                     DebugConsole::insert_info('TS3Renderer::icon()', 'Download Icon: "icon_'.$id.'"');
+                }
 
-                $ftInitDownload = self::ftInitDownload(((string)('/icon_'.$id)),$cid);
+                $ftInitDownload = self::ftInitDownload('/icon_'.$id,$cid);
+                if(!$ftInitDownload) { self::$nf_pic_ids[$id] = true; return ''; }
                 if(is_array($ftInitDownload) && array_key_exists('ftkey', $ftInitDownload) && $ftInitDownload['size']) {
                     if(show_teamspeak_debug)
                         DebugConsole::insert_info('TS3Renderer::icon()', 'Download Icon: "icon_'.$id.'" with FTKey: "'.$ftInitDownload['ftkey'].'"');
@@ -287,12 +289,14 @@ class TS3Renderer {
 
                         $cache->set('ts_icon_'.$id,bin2hex($file_stream),(24*60*60));//24h
                         $image = 'data:image/png;base64,'.base64_encode($file_stream);
+                        self::$nf_pic_ids[$id] = true;
                     } else
                         self::$nf_pic_ids[$id] = true;
                 } else
                     self::$nf_pic_ids[$id] = true;
-            } else
-                $image = 'data:image/png;base64,'.base64_encode(hextobin($cache->get('ts_icon_'.$id)));
+            } else {
+                $image = ($cache->isExisting('ts_icon_'.$id) ? 'data:image/png;base64,'.base64_encode(hextobin($cache->get('ts_icon_'.$id))) : '');
+            }
         }
 
         return empty($image) ? '' : '<img src="'.$image.'" alt="" class="tsicon"'.(empty($title) ? '' : ' title="'.$title.'"').' />';
@@ -334,60 +338,109 @@ class TS3Renderer {
      * @return Ambigous <multitype:Ambigous, boolean, multitype:Ambigous <multitype:, boolean, multitype:boolean string mixed > >
      */
     private static function ftInitDownload($name, $cid=0, $cpw='', $seekpos=0) {
-        $server = self::gethost();
+        $server = self::gethost(); $content = null;
         if(!fsockopen_support() || !ping_port($server['host'],self::$data['sql']['query_port'],4) || empty($name))
             return false;
 
         DebugConsole::insert_info('TS3Renderer::ftInitDownload()', 'Connect to TS3 Server on "'.$server['host'].':'.self::$data['sql']['query_port'].'" for Download');
         if($fp = @fsockopen($server['host'], self::$data['sql']['query_port'], $errnum, $errstr, 10)) {
-            if(show_teamspeak_debug)
-                DebugConsole::insert_info('TS3Renderer::ftInitDownload()', 'Connected to TS3 Server on "'.$server['host'].':'.self::$data['sql']['query_port'].'"');
-
-            $find = array('\\\\',"\/","\s","\p","\a","\b","\f","\n","\r","\t","\v");
-            $rplc = array(chr(92),chr(47),chr(32),chr(124),chr(7),chr(8),chr(12),chr(10),chr(3),chr(9),chr(11));
-            $packet = "use port=%d\x0Aftinitdownload clientftfid=%d name=\%s cid=%d cpw=%s seekpos=%d\x0A";
-            $packet = sprintf($packet, $server['port'], rand(1,99), $name, $cid, $cpw, $seekpos);
-
-            if(show_teamspeak_debug)
-                DebugConsole::insert_info('TS3Renderer::ftInitDownload()', 'Send Query Command: '.$packet);
-
-            @fputs($fp, $packet); $content = '';
-
-            while(strpos($content, 'msg=') === false) { 
-                $content .= @fread($fp, 8096); 
+            if(strpos(fgets($fp), 'TS3') === false) {
+                DebugConsole::insert_error('TS3Renderer::ftInitDownload()', 'No connect to TS3 Server on "'.$server['host'].':'.self::$data['sql']['query_port'].'"');
+                return false;
+            } else {
+                if(show_teamspeak_debug) {
+                    DebugConsole::insert_successful('TS3Renderer::ftInitDownload()', 'Connected to TS3 Server on "'.$server['host'].':'.self::$data['sql']['query_port'].'"');
+                }
             }
+
+            $packet = "use port=%d\x0Aftinitdownload clientftfid=%d name=%s cid=%d cpw=%s seekpos=%d\x0A";
+            $packet = sprintf($packet, $server['port'], rand(1,99), self::escape($name), $cid, self::escape($cpw), $seekpos);
 
             if(show_teamspeak_debug) {
-                $ext = explode('specific command.', $content);
-                DebugConsole::insert_info('TS3Renderer::ftInitDownload()', 'Reserved: '.$ext[1]);
+                DebugConsole::insert_info('TS3Renderer::ftInitDownload()', 'Send Query Command: '.$packet);
             }
 
-            if(!empty($content) && !strstr($content, 'error id=0'))
-                return false;
-
-            $datas = array();
-            $rawItems = explode("|", $content);
-            foreach ($rawItems as $rawItem) {
-                $rawDatas = explode(" ", $rawItem);
-                $tempDatas = array();
-                foreach($rawDatas as $rawData) {
-                    $ar = explode("=", $rawData, 2);
-                    $tempDatas[$ar[0]] = isset($ar[1]) ? str_replace($find, $rplc, $ar[1]) : "";
+            ## Send Command ##
+            $splittedPacket = str_split($packet, 1024);
+            $splittedPacket[(count($splittedPacket) - 1)] .= "\n";
+            foreach($splittedPacket as $PacketPart) {
+                @fputs($fp, $PacketPart);
+            } 
+            
+            ## Get Response ##
+            do {
+                $content .= @fread($fp, 4096);
+                if(strpos($content, 'error id=3329 msg=connection') !== false) {
+                    DebugConsole::insert_error('TS3Renderer::ftInitDownload()', 'You got banned from server on "'.$server['host'].':'.self::$data['sql']['query_port'].'"');
+                    return false;
                 }
+            } while(strpos($content, 'msg=') === false || strpos($content, 'error id=') === false);
 
-                $datas[] = $tempDatas;
+            if(strpos($content, 'error id=0 msg=ok') === false) {
+                $splittedResponse = explode('error id=', $content);
+                $chooseEnd = count($splittedResponse) - 1;
+                $cutIdAndMsg = explode(' msg=', $splittedResponse[$chooseEnd]);
+		DebugConsole::insert_error('TS3Renderer::ftInitDownload()', 'ErrorID: '.$cutIdAndMsg[0].' | Message: '.$this->unEscapeText($cutIdAndMsg[1]));
+		return false;
+            }
+                
+            $content = str_replace(array('error id=0 msg=ok', chr('01')), '', $content);
+            $content = explode('command.', $content);
+            $datasets = explode(' ', trim($content[1]));
+            if(show_teamspeak_debug) {
+                DebugConsole::insert_info('TS3Renderer::ftInitDownload()', 'Reserved: '.trim($content[1]));
+            }
+            
+            $output = array();
+            foreach($datasets as $dataset) {
+                $dataset = explode('=', $dataset);
+                if(count($dataset) > 2) {
+                    for($i = 2; $i < count($dataset); $i++) {
+                        $dataset[1] .= '='.$dataset[$i];
+                    }
+                    
+                    $output[self::unescape($dataset[0])] = self::unescape($dataset[1]);
+                } else {
+                    if(count($dataset) == 1)
+                        $output[self::unescape($dataset[0])] = '';
+                    else
+                        $output[self::unescape($dataset[0])] = self::unescape($dataset[1]);		
+                }
+            }
+
+            if(array_key_exists('status', $output) && intval($output['status']) != 0) {
+                DebugConsole::insert_error('TS3Renderer::ftInitDownload()', 'ErrorID: '.$output['status'].' | Message: '.$output['msg']. ' | Packet: '.$packet);
+                return false;
             }
 
             $content = array(); //Filter
-            foreach ($datas[0] as $key => $data) {
-                if($key == 'ftkey' || $key == 'port' || $key == 'size' )
-                    $content[$key] = ($key == 'size' || $key == 'port' ? intval(str_replace('error', '', $data)) : $data);
+            foreach ($output as $key => $data) {
+                if($key == 'ftkey' || $key == 'port' || $key == 'size' ) {
+                    $content[$key] = $data;
+                }
             }
 
             return $content;
         }
 
         return false;
+    }
+    
+    private static function escape($text) {
+        $text = str_replace("\t", '\t', $text);
+        $text = str_replace("\v", '\v', $text);
+        $text = str_replace("\r", '\r', $text);
+        $text = str_replace("\n", '\n', $text);
+        $text = str_replace("\f", '\f', $text);
+        $text = str_replace(' ', '\s', $text);
+        $text = str_replace('|', '\p', $text);
+        return str_replace('/', '\/', $text);
+    }
+    
+    private static function unescape($text) {
+        $escapedChars = array("\t", "\v", "\r", "\n", "\f", "\s", "\p", "\/");
+        $unEscapedChars = array('', '', '', '', '', ' ', '|', '/');
+        return str_replace($escapedChars, $unEscapedChars, $text);
     }
 
     /**
