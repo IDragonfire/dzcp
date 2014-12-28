@@ -43,5 +43,5 @@ function navi($kat) {
         }
     }
 
-    return empty($navi) ? '<center style="margin:2px 0">'._no_entrys.'</center>' : ($table ? '<table class="navContent" cellspacing="0">'.$navi.'</table>' : $navi);
+    return empty($navi) ? '' : ($table ? '<table class="navContent" cellspacing="0">'.$navi.'</table>' : $navi);
 }

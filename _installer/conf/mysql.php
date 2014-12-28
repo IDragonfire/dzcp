@@ -697,7 +697,7 @@ function install_mysql($login, $nick, $pwd, $email) {
              `game` varchar(30) NOT NULL default '',
              PRIMARY KEY  (`id`)
              ) ");
-  $qry = db("INSERT INTO ".$db['server']." (`id`, `navi`, `status`, `name`, `ip`, `port`, `pwd`, `game`) VALUES (1, 1, 'bf2', 'Battlefield-Basis.de II von Hogibo.net', '80.190.178.115', 9260, '', 'bf2.gif')");
+  $qry = db("INSERT INTO ".$db['server']." (`id`, `navi`, `status`, `name`, `ip`, `port`, `pwd`, `game`) VALUES (1, 1, 'tf2', 'SourceOP.com TF2 24/7 2fort [INSTANT RESPAWN]', '67.228.59.146', 27015, '', 'tf2')");
 //-> Serverliste
   $qry = db("DROP TABLE IF EXISTS ".$db['serverliste']."");
   $qry = db("CREATE TABLE ".$db['serverliste']." (
@@ -1762,7 +1762,6 @@ function update_mysql_1_6_1() {
     db("ALTER TABLE `".$db['serverliste']."` CHANGE `ip` `ip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0.0.0.0';",false,false,true);
     db("ALTER TABLE `".$db['serverliste']."` CHANGE `port` `port` INT(10) NOT NULL DEFAULT '0';",false,false,true);
     db("ALTER TABLE `".$db['serverliste']."` CHANGE `pwd` `pwd` VARCHAR(40) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '';",false,false,true);
-    db("ALTER TABLE `".$db['settings']."` CHANGE `ts_ip` `ts_ip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0.0.0.0';",false,false,true);
     db("ALTER TABLE `".$db['settings']."` CHANGE `k_waehrung` `k_waehrung` VARCHAR(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';",false,false,true);
     db("ALTER TABLE `".$db['shout']."` CHANGE `ip` `ip` VARCHAR(15) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT '0.0.0.0';",false,false,true);
     db("ALTER TABLE `".$db['sponsoren']."` CHANGE `id` `id` INT(11) NOT NULL AUTO_INCREMENT;",false,false,true);
@@ -1975,7 +1974,8 @@ function update_mysql_1_6_1() {
     db("INSERT INTO `".$db['startpage']."` SET `name` = 'News', `url` = 'news/', `level` = 1;",false,false,true);
     db("INSERT INTO `".$db['startpage']."` SET `name` = 'Forum', `url` = 'forum/', `level` = 1;",false,false,true);
     db("ALTER TABLE `".$db['server']."` CHANGE `name` `name` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';",false,false,true);
-        
+    db("ALTER TABLE `".$db['server']."` DROP `status`;",false,false,true);  
+    
     db("DROP TABLE IF EXISTS `".$db['ts']."`;",false,false,true);
     db("CREATE TABLE IF NOT EXISTS `".$db['ts']."` (
       `id` int(11) NOT NULL AUTO_INCREMENT,

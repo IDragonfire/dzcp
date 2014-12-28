@@ -34,7 +34,7 @@ switch ($do) {
                                                     "what" => _nach.' '.re($get['name'])));
         }
 
-        $files = get_files(basePath.'/inc/images/gameicons/custom/',false,true,array('gif','png','jpg'));
+        $files = get_files(basePath.'/inc/images/gameicons/custom/',false,true,$picformat);
         $gameicons = '';
         foreach ($files as $file) {
             $gameicons .= show(_select_field, array("value" => $file,
@@ -343,7 +343,7 @@ switch ($do) {
         $team_joinus = $get['team_joinus'] ? 'selected="selected"' : '';
         $team_fightus= $get['team_fightus'] ? 'selected="selected"' : '';
 
-        $files = get_files(basePath.'/inc/images/gameicons/custom/',false,true,array('gif','png','jpg')); $gameicons = '';
+        $files = get_files(basePath.'/inc/images/gameicons/custom/',false,true,$picformat); $gameicons = '';
         foreach ($files as $file)
         {
             $sel = $file == $get['icon'] ? 'selected="selected"' : '';

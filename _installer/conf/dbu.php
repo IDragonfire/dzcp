@@ -274,7 +274,7 @@ $data_dbu['serverliste']  = array('clanname' => array('VARCHAR(200)','NOT NULL D
 
 /************** Settings **************/
 $lines_dbu['settings'] = array('clanname','tmpdir','iban','bic','badwords','pagetitel','i_domain','i_autor',
-    'k_nr','k_inhaber','k_blz','k_bank','k_waehrung','language','domain','ts_ip','mailfrom','eml_reg_subj',
+    'k_nr','k_inhaber','k_blz','k_bank','k_waehrung','language','domain','mailfrom','eml_reg_subj',
     'eml_pwd_subj','eml_nletter_subj','eml_reg','eml_pwd','eml_nletter','eml_fabo_npost_subj','eml_fabo_tedit_subj',
     'eml_fabo_pedit_subj','eml_pn_subj','eml_fabo_npost','eml_fabo_tedit','eml_fabo_pedit','eml_pn','k_vwz','steam_api_key');
 
