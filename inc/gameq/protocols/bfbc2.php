@@ -296,7 +296,7 @@ class GameQ_Protocols_Bfbc2 extends GameQ_Protocols
         }
 
         $this->server_data_stream['map'] = str_ireplace('Levels/', '', $this->server_data_stream['map']);
-        $this->server_data_stream['gamevariant'] = empty($this->server_data_stream['mod']) ? 'bfbc2' : $this->server_data_stream['mod'];
+        $this->server_data_stream['gamevariant'] = empty($this->server_data_stream['mod']) ? $this->basic_game_dir : $this->server_data_stream['mod'];
         $mod_name_long = ''; $mod_name_short = ''; $is_mod_ml = false;
         if(!$this->is_mod && count($this->modlist) && array_key_exists($this->server_data_stream['gamevariant'], $this->modlist))
         {

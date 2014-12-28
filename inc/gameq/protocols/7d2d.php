@@ -17,30 +17,38 @@
  */
 
 /**
- * America's Army 3 Protocol Class (Version >= 3.2)
+ * 7 Days to Die Protocol Class
  *
  * @author Austin Bischoff <austin@codebeard.com>
  */
-class GameQ_Protocols_Aa3 extends GameQ_Protocols_Source
+class GameQ_Protocols_7d2d extends GameQ_Protocols_Source
 {
     //Game or Mod
-    protected $name = "aa3";
-    protected $name_long = "America's Army 3";
-    protected $name_short = "AA3";
-    protected $port = 27020;
+    protected $name = "7d2d";
+    protected $name_long = "7 Days to Die";
+    protected $name_short = "7DtD";
 
     //Basic Game
-    protected $basic_game_dir = 'aa3game';
-    
-    /**
-     * Quick join link for specific games
-     *
-     * @var string
-     */
-    protected $link_join = "aa3://%s:%d/";
+    protected $basic_game_dir = '7d2d';
 
     //Settings
     protected $goldsource = false;
     protected $is_mod = false;
     protected $modlist = array();
+    
+    /**
+     * Overload for client port
+     *
+     * @param string $ip
+     * @param integer $port
+     * @param array $options
+     */
+    public function __construct($ip = FALSE, $port = FALSE, $options = array())
+    {
+        // Got to do this first
+        parent::__construct($ip, $port, $options);
+
+        // Correct the client port since query_port = client_port + 1
+       $this->port_client(($this->port_client() - 1));
+    }
 }

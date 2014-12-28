@@ -212,17 +212,14 @@ final class GameQ {
             // Now let's validate the IPv6 value sent, remove the square brackets ([]) first
             if(!filter_var(trim($server_ip, '[]'), FILTER_VALIDATE_IP, array('flags' => FILTER_FLAG_IPV6)))
             { DebugConsole::insert_warning('inc\gameq.php', "Die IPv6 Adresse '{$server_ip}' ist ung&uuml;ltig!"); return false; }
-        }
-        else // IPv4
-        {
+        } else  {
             if(strstr($server_info['host'], ':')) // We have a port defined
                 list($server_ip, $server_port) = explode(':', $server_info['host']);
             else // No port, just IPv4
                 $server_ip = $server_info['host'];
 
             // Validate the IPv4 value, if FALSE is not a valid IP, maybe a hostname.  Try to resolve
-            if(!filter_var($server_ip, FILTER_VALIDATE_IP, array('flags' => FILTER_FLAG_IPV4)))
-            {
+            if(!filter_var($server_ip, FILTER_VALIDATE_IP, array('flags' => FILTER_FLAG_IPV4))) {
                 // When gethostbyname() fails it returns the original string
                 // so if ip and the result from gethostbyname() are equal this failed.
                 if($server_ip === DNSToIp($server_ip))
@@ -345,8 +342,7 @@ final class GameQ {
             $socket_id = (int) $socket; // Socket id
 
             // See if we have challenges to send off
-            if($instance->hasChallenge())
-            {
+            if($instance->hasChallenge()) {
                 fwrite($socket, $instance->getPacket('challenge')); // Now send off the challenge packet
                 $instance->challengeResponse(array(fread($socket, 4096))); // Read in the challenge response
                 $instance->challengeVerifyAndParse(); // Now we need to parse and apply the challenge response to all the packets that require it
@@ -359,8 +355,7 @@ final class GameQ {
             $packets = $instance->getPacket('!challenge');
 
             // Now loop the packets, begin the slowness
-            foreach($packets AS $packet_type => $packet)
-            {
+            foreach($packets AS $packet_type => $packet) {
                 // Add the socket information so we can retreive it easily
                 self::$sockets = array($socket_id => array('server_id' => $server_id, 'packet_type' => $packet_type, 'socket' => $socket));
 
@@ -546,6 +541,10 @@ final class GameQ {
         $read = $sockets;
         $write = NULL;
         $except = NULL;
+        
+        if(empty($read)) {
+            return $responses;
+        }
 
         // This is when it should stop
         $time_stop = microtime(true) + self::$timeout;
@@ -642,8 +641,7 @@ final class GameQ {
      * @return array
      */
     public static function record_sort($named_recs, $order_by, $rev=false, $flags=0) {
-        if(is_array($named_recs) && !empty($order_by))
-        {
+        if(is_array($named_recs) && !empty($order_by)) {
             $named_hash = array();
             foreach($named_recs as $key=>$fields)
                 $named_hash["$key"] = $fields[$order_by];

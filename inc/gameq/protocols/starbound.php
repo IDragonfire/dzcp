@@ -17,27 +17,22 @@
  */
 
 /**
- * America's Army 3 Protocol Class (Version >= 3.2)
+ * Starbound Protocol Class
+ * 
+ * Unable to test if player information is returned.  Also appears the challenge procedure
+ * is ignored.
  *
  * @author Austin Bischoff <austin@codebeard.com>
  */
-class GameQ_Protocols_Aa3 extends GameQ_Protocols_Source
+class GameQ_Protocols_Starbound extends GameQ_Protocols_Source
 {
     //Game or Mod
-    protected $name = "aa3";
-    protected $name_long = "America's Army 3";
-    protected $name_short = "AA3";
-    protected $port = 27020;
+    protected $name = "starbound";
+    protected $name_long = "Starbound";
+    protected $name_short = "SB";
 
     //Basic Game
-    protected $basic_game_dir = 'aa3game';
-    
-    /**
-     * Quick join link for specific games
-     *
-     * @var string
-     */
-    protected $link_join = "aa3://%s:%d/";
+    protected $basic_game_dir = 'starbound';
 
     //Settings
     protected $goldsource = false;

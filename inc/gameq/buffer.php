@@ -344,8 +344,7 @@ class GameQ_Buffer
         if (strlen($string) !== ($bits / 8))  return false;
 
         // Convert
-        switch($bits)
-        {
+        switch($bits) {
             case 8: $int = ord($string); break; // 8 bit unsigned
             case 16: $int = unpack('Sint', $string); $int = $int['int']; break; // 16 bit unsigned
             case 32: $int = unpack('Lint', $string); $int = $int['int']; break; // 32 bit unsigned
