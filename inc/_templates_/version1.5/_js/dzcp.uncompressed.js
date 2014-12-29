@@ -115,6 +115,25 @@ var DZCP = {
         var request = $.ajax({ url: "../inc/ajax.php?i=" + menu + options, type: "GET", data: {}, cache:true, dataType: "html", contentType: "application/x-www-form-urlencoded; charset=iso-8859-1" });
         request.done(function(msg) { $('#' + tag).html( msg ).hide().fadeIn("normal"); });
     },
+    
+    // init Ajax DynLoader Sides via Ajax
+    initPageDynLoader: function(tag,url) {
+        var request = $.ajax({ url: url, type: "GET", data: {}, cache:true, dataType: "html", contentType: "application/x-www-form-urlencoded; charset=iso-8859-1" });
+        request.done(function(msg) { $('#' + tag).html( msg ); });
+    },
+    
+    autocomplete: function(type,change) {
+        var selected_game = $('#status :selected').val();
+        $( document ).load('../inc/ajax.php?i=autocomplete&type='+type+'&game='+selected_game, function(data) {
+            var json = jQuery.parseJSON(data);
+            if(json.qport != '') {
+                if(change || $("#qport").val() == '') {
+                    $("#qport").val(json.qport);
+                    $("#autochanged").show();
+                }
+            }
+        });
+    },
 
     // submit shoutbox
     shoutSubmit: function() {

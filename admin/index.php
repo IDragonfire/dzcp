@@ -111,6 +111,9 @@ else {
             }
             else
                 $dzcp_news = base64_decode($cache->get("admin_news"));
+            
+            $dzcp_news = '<td><div style="padding:3px">'.(empty($dzcp_news) ? '' : '<b>DZCP News:</b><br />').'<div id="dzcpticker">'.$dzcp_news.'</div></div>
+            <script language="javascript" type="text/javascript">DZCP.addEvent(window, \'load\', function() { DZCP.initTicker(\'dzcpticker\', \'h\', 30); });</script></td>';
         }
     }
 
@@ -125,7 +128,7 @@ else {
                                            "einst" => _config_einst,
                                            "content" => _content,
                                            "addons" => _addons,
-                                           "newsticker" => '<div style="padding:3px">'.(empty($dzcp_news) ? '' : '<b>DZCP News:</b><br />').'<div id="dzcpticker">'.$dzcp_news.'</div></div>',
+                                           "newsticker" => $dzcp_news,
                                            "rootadmin" => _rootadmin,
                                            "rootmenu" => $rootmenu,
                                            "settingsmenu" => $settingsmenu,

@@ -19,9 +19,9 @@
 <tr>
   <td class="contentMainTop"><span class="fontBold">[lang_server_admin_qport]:</span></td>
   <td class="contentMainFirst" align="center">
-    <input type="text" name="qport" value="" class="inputField_dis_mid"
+    <input type="text" name="qport" id="qport" value="" class="inputField_dis_mid"
     onfocus="this.className='inputField_en_mid';"
-    onblur="this.className='inputField_dis_mid';" />
+    onblur="this.className='inputField_dis_mid';" /><span style="color:#0000FF; display: none;" id="autochanged"> * Autocomplete * </span>
   </td>
 </tr>
 <tr>
@@ -43,7 +43,7 @@
 <tr>
   <td class="contentMainTop"><span class="fontBold">[lang_custom_game_icon]:</span></td>
   <td class="contentMainFirst" align="center">
-    <select name="game" class="dropdown">
+    <select name="custom_game_icon" class="dropdown">
       [custom_icon]
     </select>
     <br /><a href="../upload/">upload</a>
@@ -52,7 +52,7 @@
 <tr>
   <td class="contentMainTop"><span class="fontBold">[lang_admin_status]:</span></td>
   <td class="contentMainFirst" align="center">
-    <select name="status" class="dropdown" style="width:180px">
+    <select id="status" name="status" class="dropdown" onchange="DZCP.autocomplete('srv',true)" style="width:180px">
       <option value="nope" class="dropdownKat">[lang_admin_server_nostatus]</option>
       [games]
     </select>
