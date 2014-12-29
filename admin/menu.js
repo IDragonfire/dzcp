@@ -5,7 +5,7 @@
 */
 
 var POS = [{
-	'height': 18,
+	'height': 20,
 	'width': 110,
 	'block_top': 0,
 	'block_left': 0,
@@ -20,9 +20,9 @@ var POS = [{
 },{
 	'height': 21,
 	'width': 221,
-	'block_top': 19,
+	'block_top': 21,
 	'block_left': 0,
-	'top': 21,
+	'top': 22,
 	'left': 0,
 	'css' : {
 		'outer' : ['adminMenuOuter', 'adminMenuOuterOver'],

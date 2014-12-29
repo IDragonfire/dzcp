@@ -117,11 +117,24 @@ select,
 textarea,
 .mceEditor,
 .mceLayout,
+.navServerPic,
+.newsImage,
+.ServerPic,
+.adminBarOuter,.adminBarOuterOver,
+.adminBarInner,.adminBarInnerOver,
+.adminMenuOuter,.adminMenuOuterOver,
+.adminMenuInner,.adminMenuInnerOver,
 table.mainContent td {
     -moz-border-radius: 3px;
     -webkit-border-radius: 3px;
     border-radius: 3px;
     behavior: url(border-radius.htc);
+}
+.navServerPic,
+.ServerPic {
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
 }
 /* Clear Fix */
 .clearFix {

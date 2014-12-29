@@ -19,6 +19,7 @@ $dir = "admin";
 $rootmenu = null;
 $settingsmenu = null;
 $contentmenu = null;
+$addonsmenu = null;
 $amenu = array();
 $wysiwyg = false;
 $use_glossar = false;
@@ -91,6 +92,11 @@ else {
     if(empty($contentmenu)) {
         $cdminc1 = '/*'; $cdminc2 = '*/';
     }
+    
+    $addons1 = ''; $addons2 = '';
+    if(empty($addonsmenu)) {
+        $addons1 = '/*'; $addons2 = '*/';
+    }
 
     $dzcp_news = '';
     if(allow_url_fopen_support()) {
@@ -118,17 +124,21 @@ else {
                                            "dbase" => _stats_mysql,
                                            "einst" => _config_einst,
                                            "content" => _content,
+                                           "addons" => _addons,
                                            "newsticker" => '<div style="padding:3px">'.(empty($dzcp_news) ? '' : '<b>DZCP News:</b><br />').'<div id="dzcpticker">'.$dzcp_news.'</div></div>',
                                            "rootadmin" => _rootadmin,
                                            "rootmenu" => $rootmenu,
                                            "settingsmenu" => $settingsmenu,
                                            "contentmenu" => $contentmenu,
+                                           "addonsmenu" => $addonsmenu,
                                            "radmin1" => $radmin1,
                                            "radmin2" => $radmin2,
                                            "adminc1" => $adminc1,
                                            "adminc2" => $adminc2,
                                            "cdminc1" => $cdminc1,
                                            "cdminc2" => $cdminc2,
+                                           "addons1" => $addons1,
+                                           "addons2" => $addons2,
                                            "show" => $show));
     }
 }
