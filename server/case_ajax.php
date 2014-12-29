@@ -53,15 +53,7 @@ function server_show($sID = 0, $showID = 0) {
                 GameQ::mkdir_img('gameicons/'.$server['game_engine']);
             break;
             case 'gamespy': //BF1942,BF2,BF2142,etc
-                    $icon_basic = $server['game_protocol'].'/'.$server['game_engine'].'/'.$server['game_dir'];
-                    $icon_mod = $server['game_protocol'].'/'.$server['game_engine'].'/'.$server['game_mod'];
-                    GameQ::mkdir_img('gameicons/'.$server['game_protocol'].'/'.$server['game_engine']);
-            break;
             case 'gamespy2': //Arma 2
-                $icon_basic = $server['game_protocol'].'/'.$server['game_engine'].'/'.$server['game_dir'];
-                $icon_mod = $server['game_protocol'].'/'.$server['game_engine'].'/'.$server['game_mod'];
-                GameQ::mkdir_img('gameicons/'.$server['game_protocol'].'/'.$server['game_engine']);
-            break;
             case 'gamespy3': //Arma 3,BF2,UT3
                 $icon_basic = $server['game_protocol'].'/'.$server['game_engine'].'/'.$server['game_dir'];
                 $icon_mod = $server['game_protocol'].'/'.$server['game_engine'].'/'.$server['game_mod'];
@@ -128,6 +120,10 @@ function server_show($sID = 0, $showID = 0) {
 
         //Admin MSG
         $icon_basic_inp = GameQ::search_game_icon($icon_basic);
+        if(stristr($icon_basic_inp, 'unknown') === FALSE && empty($get['icon'])) {
+            db("UPDATE `".$db['server']."` SET `icon` = '".up($icon_basic)."' WHERE `id` = ".$get['id'].";");
+        }
+        
         if((checkme() == 4 || permission('editserver')) && !$icon_basic_inp['found']) {
             $admin_msg = (empty($admin_msg) ? '<p>' : $admin_msg);
             $admin_msg .= '<span style="color:#000;background-color:#FFF"><b style="color:red">Admin:</b> <b>Game-Iconpath:</b> "inc/images/gameicons/'.$icon_basic.'.jpg"'.' oder <br />';
@@ -146,10 +142,13 @@ function server_show($sID = 0, $showID = 0) {
                 $admin_msg .= '<span style="color:#000;background-color:#FFF"><b style="color:red">Admin:</b> <b>GameMod-Iconpath:</b> "inc/images/gameicons/'.$icon_mod.'.png"'.' oder <br />';
                 $admin_msg .= '<span style="color:#000;background-color:#FFF"><b style="color:red">Admin:</b> <b>GameMod-Iconpath:</b> "inc/images/gameicons/'.$icon_mod.'.gif"'.'<br />';
             }
+
+            if($icon_mod_inp['found']) {
+                db("UPDATE `".$db['server']."` SET `icon` = '".up($icon_mod)."' WHERE `id` = ".$get['id'].";");
+            }
             $icon_mod = $icon_mod_inp['image'];
             unset($icon_mod_inp);
-        }
-        else $icon_mod = '';
+        } else $icon_mod = '';
 
         // Userliste & Stats
         $colspan = 1; $show_score_td = ''; $show_deaths_td = ''; $show_ranks_td = ''; $show_skill_td = ''; $show_goal_td = ''; $show_honor_td = '';

@@ -26,10 +26,11 @@ class GameQ_Protocols_7d2d extends GameQ_Protocols_Source
     //Game or Mod
     protected $name = "7d2d";
     protected $name_long = "7 Days to Die";
-    protected $name_short = "7DtD";
+    protected $name_short = "7D2D";
 
     //Basic Game
-    protected $basic_game_dir = '7d2d';
+    protected $basic_game_dir = '7DTD';
+    protected $port = 25001;
 
     //Settings
     protected $goldsource = false;

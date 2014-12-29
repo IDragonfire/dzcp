@@ -81,6 +81,23 @@ ob_implicit_flush(false);
         case 'shoutbox':  echo '<table class="hperc" cellspacing="1">'.shout(1).'</table>'; break;
         case 'teamspeak': echo '<table class="hperc" cellspacing="0">'.teamspeak(1).'</table>'; break;
         case 'steam':     echo steamIMG(trim($_GET['steamid'])); break;
+        case 'autocomplete':
+            if($_GET['type'] == 'srv') {
+                if($_GET['game'] == 'nope') {
+                    exit(json_encode(array('qport' => '')));
+                } else {
+                    $protocols_array = GameQ::getGames();
+                    foreach ($protocols_array AS $gameq => $info) {
+                        if($gameq == $_GET['game']) {
+                            exit(json_encode(array('qport' => $info['port']))); 
+                            break; 
+                        }
+                    }
+
+                    exit(json_encode(array('qport' => '')));
+                }
+            }
+            break;
         case 'securimage':
             if(!headers_sent()) {
                 $securimage->background_directory = basePath.'/inc/images/securimage/background/';
@@ -95,7 +112,6 @@ ob_implicit_flush(false);
                 die($securimage->show());
             }
             break;
-
         case 'securimage_audio':
             if(!headers_sent()) {
                 if(file_exists(basePath.'/inc/securimage/audio/en/0.wav'))

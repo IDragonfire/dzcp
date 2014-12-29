@@ -1974,7 +1974,8 @@ function update_mysql_1_6_1() {
     db("INSERT INTO `".$db['startpage']."` SET `name` = 'News', `url` = 'news/', `level` = 1;",false,false,true);
     db("INSERT INTO `".$db['startpage']."` SET `name` = 'Forum', `url` = 'forum/', `level` = 1;",false,false,true);
     db("ALTER TABLE `".$db['server']."` CHANGE `name` `name` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';",false,false,true);
-    db("ALTER TABLE `".$db['server']."` DROP `status`;",false,false,true);  
+    db("ALTER TABLE `".$db['server']."` DROP `status`;",false,false,true);
+    db("ALTER TABLE `".$db['server']."` ADD `icon` VARCHAR(150) NOT NULL DEFAULT '' AFTER `custom_icon`;",false,false,true);
     
     db("DROP TABLE IF EXISTS `".$db['ts']."`;",false,false,true);
     db("CREATE TABLE IF NOT EXISTS `".$db['ts']."` (

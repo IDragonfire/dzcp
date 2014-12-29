@@ -35,6 +35,7 @@ define('_custom_game_icon', 'Custom-Icon');
 define('_custom_game_icon_none', 'Not use custom icon');
 define('_server_gtype', '<span class="fontBold">Gamemode:</span> [type]<br />');
 define('_server_bots', '<span class="fontBold">Bots:</span> [bots]<br />');
+define('_addons', 'Add-ons');
 
 //TS
 define('_ts_fport', 'File Port');

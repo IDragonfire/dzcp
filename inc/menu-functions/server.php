@@ -52,15 +52,7 @@ function server($serverID = 0) {
                         GameQ::mkdir_img('gameicons/'.$server['game_engine']);
                     break;
                     case 'gamespy': //BF1942,BF2,BF2142,etc
-                        $game_icon = $server['game_protocol'].'/'.$server['game_engine'].'/'.$server['game_dir'];
-                        $icon_mod = $server['game_protocol'].'/'.$server['game_engine'].'/'.$server['game_mod'];
-                        GameQ::mkdir_img('gameicons/'.$server['game_protocol'].'/'.$server['game_engine']);
-                    break;
                     case 'gamespy2': //Arma 2
-                        $game_icon = $server['game_protocol'].'/'.$server['game_engine'].'/'.$server['game_dir'];
-                        $icon_mod = $server['game_protocol'].'/'.$server['game_engine'].'/'.$server['game_mod'];
-                        GameQ::mkdir_img('gameicons/'.$server['game_protocol'].'/'.$server['game_engine']);
-                    break;
                     case 'gamespy3': //Arma 3,BF2,UT3
                         $game_icon = $server['game_protocol'].'/'.$server['game_engine'].'/'.$server['game_dir'];
                         $icon_mod = $server['game_protocol'].'/'.$server['game_engine'].'/'.$server['game_mod'];
@@ -97,8 +89,22 @@ function server($serverID = 0) {
                 }
 
                 $game_icon_inp = GameQ::search_game_icon($game_icon);
+                if($game_icon_inp['found'] && empty($get['icon'])) {
+                    db("UPDATE `".$db['server']."` SET `icon` = '".up($game_icon)."' WHERE `id` = ".$get['id'].";");
+                }
+                
                 $game_icon = $game_icon_inp['image'];
                 unset($game_icon_inp);
+                
+                if(!empty($server['game_mod'])) {
+                    $icon_mod_inp = GameQ::search_game_icon($icon_mod);
+                    if($icon_mod_inp['found']) {
+                        db("UPDATE `".$db['server']."` SET `icon` = '".up($icon_mod)."' WHERE `id` = ".$get['id'].";");
+                    }
+                    $icon_mod = $icon_mod_inp['image'];
+                    unset($icon_mod_inp);
+                }
+                else $icon_mod = '';
 
                 ## List Player ##
                 $players = '-';
@@ -144,7 +150,6 @@ function server($serverID = 0) {
             $image_pwd = ($server['game_password'] ? '<img src="../inc/images/closed.png" alt="" alt="" title="Server Password" class="icon" />' : ''); //Server Password
             $dedicated = ($server['game_dedicated'] ? '<img src="../inc/images/dedicated.png" alt="" title="Dedicated Server" class="icon" />' : ''); //Dedicated Server
             $os = ($server['game_os'] ? '<img src="../inc/images/'.$server['game_os'].'_os.png" alt="" title="'.($server['game_os'] == 'windows' ? 'Windows' : 'Linux').' Server" class="icon" />' : ''); //Server OS
-            $mod = (!empty($server['game_mod_name_long']) ? '<span class="fontBold">Mod:</span> '.$server['game_mod_name_long'].' <img src="'.$icon_mod.'" alt="" class="icon" /><br />' : '');
             $pwds = (!empty($get['pwd']) && permission("gs_showpw") && $server['game_password'] ? show(_server_pwd, array("pwd" => re($get['pwd']))) : '');
             $gtype = (!empty($server['game_type']) ? show(_server_gtype, array("type" => re($server['game_type']))) : '');
             $bots = (!empty($server['game_num_bot']) ? show(_server_bots, array("bots" => re($server['game_num_bot']))) : '');
@@ -152,13 +157,14 @@ function server($serverID = 0) {
             $servername = jsconvert(re(cut($server['hostname'],($servermenu=config('l_servernavi')))));
             $servernameout = (!empty($server['game_hostname'])) ? $server['game_hostname'] : _navi_gsv_no_name_available;
 
-            $info = 'onmouseover="DZCP.showInfo(\''.$servernameout.'\', \'IP/Port:;;'._navi_gsv_game.':;Map:;'._navi_gsv_players_online.':;'._navi_gsv_on_the_game.':\', \''.$get['ip'].':'.$get['port'].';;'.jsconvert(re('<img src="'.$game_icon.'" alt=""  class="icon" />')).' '.$server['game_name_long'].';'.(array_key_exists('game_maptitle', $server) ? $server['game_maptitle'] : (empty($server['game_map']) ? '-' : $server['game_map'])).';'.$server['game_num_players'].' / '.$server['game_max_players'].';'.jsconvert(re($players)).'\')" onmouseout="DZCP.hideInfo()"';
+            $info = 'onmouseover="DZCP.showInfo(\''.$servernameout.'\', \'IP/Port:;;'._navi_gsv_game.':;Map:;'._navi_gsv_players_online.':;'._navi_gsv_on_the_game.':\', \''.$get['ip'].':'.$get['port'].';;'.jsconvert(re('<img src="'.(!empty($server['game_mod_name_short']) ? $icon_mod : $game_icon).'" alt=""  class="icon" />')).
+            ' '.(!empty($server['game_mod_name_long']) ? $server['game_mod_name_long'] : $server['game_name_long']).';'.(array_key_exists('game_maptitle', $server) ? $server['game_maptitle'] : (empty($server['game_map']) ? '-' : $server['game_map'])).';'.$server['game_num_players'].' / '.$server['game_max_players'].';'.jsconvert(re($players)).'\')" onmouseout="DZCP.hideInfo()"';
             return show("menu/server", array("host" => cut(re($server['game_hostname']),$servermenu,true),
                                              "ip" => $get['ip'],
                                              "map" =>  (array_key_exists('game_maptitle', $server) ? $server['game_maptitle'] : (empty($server['game_map']) ? '-' : $server['game_map'])),
                                              "image_map" => $image_map,
-                                             "data_gamemod" => $server['game_name_short'],
-                                             "icon" => $game_icon,
+                                             "data_gamemod" => !empty($server['game_mod_name_short']) ? $server['game_mod_name_short'] : $server['game_name_short'],
+                                             "icon" => !empty($server['game_mod_name_short']) ? $icon_mod : $game_icon,
                                              "pwd" => $pwds,
                                              "launch" => (empty($server['game_join_link']) ? '-' : $server['game_join_link']),
                                              "port" => $get['port'],

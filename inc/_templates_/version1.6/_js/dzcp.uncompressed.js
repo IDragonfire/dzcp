@@ -156,6 +156,19 @@ var DZCP = {
       var url = doc.form.tempswitch.options[doc.form.tempswitch.selectedIndex].value;
       if(url != 'lazy') DZCP.goTo(url);
     },
+    
+    autocomplete: function(type,change) {
+        var selected_game = $('#status :selected').val();
+        $( document ).load('../inc/ajax.php?i=autocomplete&type='+type+'&game='+selected_game, function(data) {
+            var json = jQuery.parseJSON(data);
+            if(json.qport != '') {
+                if(change || $("#qport").val() == '') {
+                    $("#qport").val(json.qport);
+                    $("#autochanged").show();
+                }
+            }
+        });
+    },
 
   // go to defined url
     goTo: function(url, n) {
@@ -486,7 +499,7 @@ var DZCP = {
       if(tickerTo[subID] == 'h') thisObj.style.left = (parseInt(thisObj.style.left) <= (0-(width/2)+2)) ? 0 : parseInt(thisObj.style.left)-1 + 'px';
       else thisObj.style.top = (thisObj.style.top == '' || (parseInt(thisObj.style.top)<(0-(width/2)+6))) ? 0 : parseInt(thisObj.style.top)-1 + 'px';
     },
-
+    
     //TS3 Settings
     TS3Settings: function(id) {
         if(id == 3) {

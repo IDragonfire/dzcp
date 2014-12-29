@@ -60,6 +60,7 @@ switch ($do) {
                          `qport`      = '".up($_POST['qport'])."',
                          `name`       = '".up($_POST['name'])."',
                          `custom_icon`= '".up($_POST['custom_game_icon'])."',
+                         `icon`       = '',
                          ".$game."
                          `pwd`        = '".up($_POST['pwd'])."'
                      WHERE id = ".intval($_GET['id']).";");
@@ -108,20 +109,31 @@ switch ($do) {
     break;
     default:
         $color = 0; $show_servers = '';
-        $qry = db("SELECT `id`,`ip`,`port`,`pwd`,`name`,`game`,`navi`,`custom_icon` FROM `".$db['server']."` ORDER BY id;");
+        $qry = db("SELECT * FROM `".$db['server']."` ORDER BY id;");
         while($get = _fetch($qry)) {
-            $gameicon = show(_gameicon, array("icon" => 'unknown.gif'));
+            $gameicon = show(_gameicon, array("icon" => 'unknown.gif')); $icon = false;
             if(!empty($get['custom_icon'])) {
                 if(file_exists(basePath.'/inc/images/gameicons/custom/'.$get['custom_icon'])) {
                     $gameicon = show(_gameicon, array('icon' => $get['custom_icon']));
+                    $icon = true;
                 }
             } else {
                 foreach($picformat AS $end) {
                     if(file_exists(basePath.'/inc/images/gameicons/'.$get['game'].'.'.$end)) {
                         $gameicon = show(_gameicon, array('icon' => $get['game'].'.'.$end));
+                        $icon = true;
                         break;
                     }
                 }
+            }
+            
+            //Get Icon from runned Server Query
+            if(!$icon && !empty($get['icon'])) {
+                $game_icon_inp = GameQ::search_game_icon(re($get['icon']),false);
+                if($game_icon_inp['found']) {
+                    $gameicon = show(_gameicon_blank, array('icon' => $game_icon_inp['image']));
+                }
+                unset($game_icon_inp);
             }
 
             $edit = show("page/button_edit_single", array("id" => $get['id'], "action" => "admin=server&amp;do=edit", "title" => _button_title_edit));
