@@ -1479,7 +1479,7 @@ select.teamswitch {
 /*---------------------------------------------
 Attributes of all icons (flags/email/hp/teamspeak,etc)
 ---------------------------------------------*/
-img.icon,img.helpicon,img.tsicon {
+img.icon,img.helpicon,img.tsicon,img.tsflag {
   vertical-align: middle;
 }
 /*
@@ -1491,7 +1491,11 @@ img.helpicon { cursor: help; }
 */
 img.tsicon {
   margin: 1px;
+  height: 16px;
+  width: 16px;
 }
+
+img.tsflag,img.tstrenner,img.tstoggle { margin: 1px; }
 /*---------------------------------------------
 Board Quotes
 ---------------------------------------------*/

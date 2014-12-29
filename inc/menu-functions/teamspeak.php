@@ -41,6 +41,7 @@ function teamspeak($js = 0) {
             else
                 $results = $cache->get('teamspeak_'.$cache_hash);
 
+            TS3Renderer::init();
             TS3Renderer::set_data($results,$get);
             TS3Renderer::setConfig('OnlyChannelsWithUsers',$get['showchannel']);
 

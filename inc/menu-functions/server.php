@@ -79,7 +79,7 @@ function server($serverID = 0) {
                 $image_secure = ($server['game_secure']['enable'] ? '<img src="../inc/images/'.$server['game_secure']['pic'].'.png" alt="" title="'.$server['game_secure']['name'].'" class="icon" />' : '');
 
                 //Image * Maps
-                $image_map = 'no_map.gif'; $pic_found = false; $flash_found = false;
+                $image_map = 'no_map.gif'; $pic_found = false;
                 foreach($picformat AS $end) {
                     if(file_exists(basePath.'/inc/images/maps/'.$server['game_map_pic_dir'].'/'.strtolower(str_ireplace(' ', '_', $server['game_map'])).'.'.$end)) {
                         $pic_found = true;

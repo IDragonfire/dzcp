@@ -12,6 +12,12 @@ class TS3Renderer {
     private static $nf_pic_ids = array();
     private static $showOnlyChannelsWithUsers = false;
     private static $AllowDownloadIcons = true;
+    public static $skin_pholder = array();
+    
+    public static function init() {
+        //-> Load Skin
+        self::loadskin();
+    }
 
     /**
      * Setzt einige Einstellungen für das Rendern
@@ -50,10 +56,10 @@ class TS3Renderer {
         if(!count($channels)) {
             return false;
         }
-
+        
         $style = ' style="text-indent:12px;"';
         $server_full = (self::$data['virtualserver_maxclients'] <= self::$data['virtualserver_clientsonline'] ? true : false); //Server Voll
-        $out = '<div class="tstree_left"'.$style.'><img src="../inc/images/tsviewer/'.($server_full ? 'server_full' : 'server_open').'.png" alt="" class="tsicon" /> <span class="fontBold">'.self::$data['virtualserver_name'].'</span></div>'."\n";
+        $out = '<div class="tstree_left"'.$style.'><img src="../inc/images/tsviewer/'.($server_full ? self::$skin_pholder['INFO'] : self::$skin_pholder['SERVER_GREEN']).'" alt="" class="tsicon" /> <span class="fontBold">'.self::$data['virtualserver_name'].'</span></div>'."\n";
         $out .= '<div class="tstree_right">'.self::icon(self::$data['virtualserver_icon_id']).'</div>'."\n";
         $out .= '<div class="tstree_clear"></div>'."\n";
         foreach($channels as $channel) {
@@ -102,7 +108,7 @@ class TS3Renderer {
 
                     $moreshow = ''; $style = 12; $div_first = ''; $div_sec = '';
                     if(!empty($players) || !empty($subchannel)) {
-                        $moreshow = "<img id=\"img_".($tpl ? 'page_' : 'box_')."cid".$sub_channel['cid']."\" src=\"../inc/images/toggle_normal.png\" alt=\"\" class=\"tsicons\" onclick=\"DZCP.fadetoggle('".($tpl ? 'page_' : 'box_')."cid".$sub_channel['cid']."')\" />";
+                        $moreshow = "<img id=\"img_".($tpl ? 'page_' : 'box_')."cid".$sub_channel['cid']."\" src=\"../inc/images/toggle_normal.png\" alt=\"\" class=\"tstoggle\" onclick=\"DZCP.fadetoggle('".($tpl ? 'page_' : 'box_')."cid".$sub_channel['cid']."')\" />";
                         $style = 0;
                         $div_first = "<div id=\"more_".($tpl ? 'page_' : 'box_')."cid".$sub_channel['cid']."\">\n";
                         $div_sec = "</div>";
@@ -110,7 +116,7 @@ class TS3Renderer {
 
                     $left = $i*20+$style;
                     $join_ts = $joints."/".$sub_channel['channel_name'];
-                    $out .= '<div class="tstree_left" style="text-indent:'.$left.'px;">'.$moreshow.'<img src="../inc/images/tsviewer/trenner.gif" alt="" class="tsicon" />'.
+                    $out .= '<div class="tstree_left" style="text-indent:'.$left.'px;">'.$moreshow.'<img src="../inc/images/tsviewer/trenner.gif" alt="" class="tstrenner" />'.
                             '<img src="'.self::channel_icon($sub_channel).'" alt="" class="tsicon" />'.self::channel_name($sub_channel,$tpl,$join_ts,$ebene).'</div>'."\n";
 
                     if($tpl) $out .= "<div class=\"tstree_right\">".self::renderFlags($sub_channel).self::icon($sub_channel['channel_icon_id'])."</div>\n";
@@ -133,12 +139,15 @@ class TS3Renderer {
      * @param string $channel
      * @return string | HTML Objekt
      */
+    
+            //self::$skin_pholder['MODERATED']
+    
     public static function renderFlags($channel) {
         $flags = array(); $out = "";
-        if($channel["channel_flag_default"] == 1) $flags[] = 'channel_flag_default.png';
-        if($channel["channel_needed_talk_power"] > 0) $flags[] = 'channel_flag_moderated.png';
-        if($channel["channel_flag_password"] == 1) $flags[] = 'channel_flag_password.png';
-        foreach ($flags as $flag) $out .= '<img src="../inc/images/tsviewer/' . $flag . '" alt="" class="icon" />';
+        if($channel["channel_flag_default"] == 1) $flags[] = self::$skin_pholder['DEFAULT'];
+        if($channel["channel_needed_talk_power"] > 0) $flags[] = self::$skin_pholder['MODERATED'];
+        if($channel["channel_flag_password"] == 1) $flags[] = self::$skin_pholder['REGISTER'];
+        foreach ($flags as $flag) { $out .= '<img src="../inc/images/tsviewer/' . $flag . '" alt="" class="tsicon" />'; }
         return $out;
     }
 
@@ -152,7 +161,7 @@ class TS3Renderer {
     public static function channel_name($channel=array(),$tpl=false,$joints='',$ebene=1,$cut=false) {
         if($cut) $channel['channel_name'] = (mb_strlen($channel['channel_name']) > (30 - ($ebene * 2)) ? cut($channel['channel_name'],(30 - ($ebene * 2)),true) : $channel['channel_name'] );
         return '<a href="javascript:DZCP.popup(\'../teamspeak/login.php?ts3&amp;cName='.rawurlencode($joints).'\', \'600\', \'100\')"
-        class="navTeamspeak" style="font-weight:bold;white-space:nowrap" title="'.$channel['channel_name'].'">'.self::rep($channel['channel_name']).'</a>'."\n";
+        class="navTeamspeak" style="font-weight:bold;white-space:nowrap" title="'.spChars($channel['channel_name']).'">'.self::rep($channel['channel_name']).'</a>'."\n";
     }
 
     /**
@@ -161,10 +170,10 @@ class TS3Renderer {
      * @return string
      */
     public static function channel_icon($channel=array()) {
-        $icon = "channel_open.png";
-        if($channel["channel_maxclients"] > -1 && ($channel["total_clients"] >= $channel["channel_maxclients"])) $icon = "channel_full.png";
-        else if($channel["channel_maxfamilyclients"] > -1 && ($channel["total_clients_family"] >= $channel["channel_maxfamilyclients"])) $icon = "channel_full.png";
-        else if($channel["channel_flag_password"] == 1) $icon = "channel_pass.png";
+        $icon = self::$skin_pholder['CHANNEL_GREEN_SUBSCRIBED'];
+        if($channel["channel_maxclients"] > -1 && ($channel["total_clients"] >= $channel["channel_maxclients"])) $icon = self::$skin_pholder['CHANNEL_RED_SUBSCRIBED'];
+        else if($channel["channel_maxfamilyclients"] > -1 && ($channel["total_clients_family"] >= $channel["channel_maxfamilyclients"])) $icon = self::$skin_pholder['CHANNEL_RED_SUBSCRIBED'];
+        else if($channel["channel_flag_password"]) $icon = self::$skin_pholder['CHANNEL_YELLOW_SUBSCRIBED'];
         return "../inc/images/tsviewer/".$icon;
     }
 
@@ -194,16 +203,16 @@ class TS3Renderer {
     private static function renderUserFlags($player,$i,$template) {
         $out = '';
         if(!$player["client_type"]) {
-            $player_status_icon = $player['client_is_channel_commander'] ? "client_cc_idle.png" : "client_idle.png";
-            $player_status_icon = $player['client_is_channel_commander'] && $player['client_flag_talking'] ? "client_cc_talk.png" : $player_status_icon;
-            $player_status_icon = $player['client_away'] ? "client_away.png" : $player_status_icon;
-            $player_status_icon = $player['client_flag_talking'] && !$player['client_is_channel_commander'] ? "client_talk.png" : $player_status_icon;
-            $player_status_icon = !$player['client_output_hardware'] ? "client_snd_disabled.png" : $player_status_icon;
-            $player_status_icon = $player['client_output_muted'] ? "client_snd_muted.png" : $player_status_icon;
-            $player_status_icon = !$player['client_input_hardware'] ? "client_mic_disabled.png" : $player_status_icon;
-            $player_status_icon = $player['client_input_muted'] ? "client_mic_muted.png" : $player_status_icon;
-            $priority_speaker = $player['client_is_priority_speaker'] ? '<img src="../inc/images/tsviewer/client_priority.png" alt="" class="tsicon" />' : '';
-            $out = '<div style="text-indent:'.((string)(!$i ? '0' : $i*20+12)).'px;float:left; width:80%;"><img src="../inc/images/tsviewer/trenner.gif" alt="" class="tsicon" /><img src="../inc/images/tsviewer/'.$player_status_icon.'" alt="" class="tsicon" /> '.$player['client_nickname'].'</div>'."\n";
+            $player_status_icon = $player['client_is_channel_commander'] ? self::$skin_pholder['PLAYER_COMMANDER_OFF'] : self::$skin_pholder['PLAYER_OFF'];
+            $player_status_icon = $player['client_is_channel_commander'] && $player['client_flag_talking'] ? self::$skin_pholder['PLAYER_COMMANDER_ON'] : $player_status_icon;
+            $player_status_icon = $player['client_away'] ? self::$skin_pholder['AWAY'] : $player_status_icon;
+            $player_status_icon = $player['client_flag_talking'] && !$player['client_is_channel_commander'] ? self::$skin_pholder['PLAYER_ON'] : $player_status_icon;
+            $player_status_icon = !$player['client_input_hardware'] ? self::$skin_pholder['HARDWARE_INPUT_MUTED'] : $player_status_icon;
+            $player_status_icon = $player['client_input_muted'] ? self::$skin_pholder['INPUT_MUTED'] : $player_status_icon;
+            $player_status_icon = !$player['client_output_hardware'] ? self::$skin_pholder['HARDWARE_OUTPUT_MUTED'] : $player_status_icon;
+            $player_status_icon = $player['client_output_muted'] ? self::$skin_pholder['OUTPUT_MUTED'] : $player_status_icon;
+            $priority_speaker = $player['client_is_priority_speaker'] ? '<img src="../inc/images/tsviewer/'.self::$skin_pholder['CAPTURE'].'" alt="" class="tsicon" />' : '';
+            $out = '<div style="text-indent:'.((string)(!$i ? '0' : $i*20+12)).'px;float:left; width:80%;"><img src="../inc/images/tsviewer/trenner.gif" alt="" class="tstrenner" /><img src="../inc/images/tsviewer/'.$player_status_icon.'" alt="" class="tsicon" /> '.$player['client_nickname'].'</div>'."\n";
             if($template) $out .= '<div style="float:right; width:20%; text-align:right;">'.$priority_speaker.self::user_groups_icons($player).'</div>'."\n";
             $out .= '<div style="clear:both;"></div>'."\n";
         }
@@ -252,7 +261,7 @@ class TS3Renderer {
             }
         }
 
-        return $out.'<img src="'.$country.'" alt="" class="tsicon" />';
+        return $out.'<img src="'.$country.'" alt="" class="tsflag" />';
     }
 
     /**
@@ -267,10 +276,10 @@ class TS3Renderer {
         if($id == 0) return ''; $image = '';
         if($id < 0) $id = $id+4294967296;
 
-        if(in_array($id, array('100','200','300','400','500','600')))
-            $image = "../inc/images/tsviewer/group_icon_".$id.".png";
-        else if(self::$AllowDownloadIcons) {
-            if(!$cache->isExisting('ts_icon_'.$id) && !in_array($id, self::$nf_pic_ids)) {
+        if(array_key_exists('GROUP_'.$id, self::$skin_pholder)) {
+            $image = "../inc/images/tsviewer/".self::$skin_pholder['GROUP_'.$id];
+        } else if(self::$AllowDownloadIcons) {
+            if(!$cache->isExisting('ts_icon_'.$id) && !array_key_exists($id, self::$nf_pic_ids)) {
                 // Sende Download-Anforderung zum TS3 Server
                 if(show_teamspeak_debug) {
                     DebugConsole::insert_info('TS3Renderer::icon()', 'Download Icon: "icon_'.$id.'"');
@@ -570,5 +579,74 @@ class TS3Renderer {
             if($data[$key] == $var) return $array[$id]; 
         } 
         return false;
+    }
+    
+    private static function loadskin() {
+        global $picformat;
+        
+        if(!dbc_index::issetIndex('ts3_skin')) {
+            self::$skin_pholder['AWAY'] = 'away.png';
+            self::$skin_pholder['CAPTURE'] = 'capture.png';
+            self::$skin_pholder['CHANNEL_GREEN_SUBSCRIBED'] = 'channel_green_subscribed.png';
+            self::$skin_pholder['CHANNEL_RED_SUBSCRIBED'] = 'channel_red_subscribed.png';
+            self::$skin_pholder['CHANNEL_YELLOW_SUBSCRIBED'] = 'channel_yellow_subscribed.png';
+            self::$skin_pholder['GROUP_100'] = 'group_100.png';
+            self::$skin_pholder['GROUP_200'] = 'group_200.png';
+            self::$skin_pholder['GROUP_300'] = 'group_300.png';
+            self::$skin_pholder['GROUP_400'] = 'group_400.png';
+            self::$skin_pholder['GROUP_500'] = 'group_500.png';
+            self::$skin_pholder['GROUP_600'] = 'group_600.png';
+            self::$skin_pholder['HARDWARE_INPUT_MUTED'] = 'hardware_input_muted.png';
+            self::$skin_pholder['HARDWARE_OUTPUT_MUTED'] = 'hardware_output_muted.png';
+            self::$skin_pholder['INPUT_MUTED'] = 'input_muted.png';
+            self::$skin_pholder['OUTPUT_MUTED'] = 'output_muted.png';
+            self::$skin_pholder['MODERATED'] = 'moderated.png';
+            self::$skin_pholder['PLAYER_COMMANDER_OFF'] = 'player_commander_off.png';
+            self::$skin_pholder['PLAYER_COMMANDER_ON'] = 'player_commander_on.png';
+            self::$skin_pholder['PLAYER_OFF'] = 'player_off.png';
+            self::$skin_pholder['PLAYER_ON'] = 'player_on.png';
+            self::$skin_pholder['REGISTER'] = 'register.png';
+            self::$skin_pholder['SERVER_GREEN'] = 'server_green.png';
+            self::$skin_pholder['DEFAULT'] = 'default.png';
+
+            $FALLBACK = array();
+            if(file_exists(basePath."/inc/images/tsviewer/".ts3viewer_skin."/settings.ini")) {
+                $ini_array = parse_ini_file(basePath."/inc/images/tsviewer/".ts3viewer_skin."/settings.ini",true);
+                foreach($ini_array['gfxfiles'] as $key => $var) {
+                    $dir_skin = 'inc/images/tsviewer/'.ts3viewer_skin;
+                    if(file_exists(basePath.'/'.$dir_skin.'/'.$var)) {
+                        self::$skin_pholder[$key] = ts3viewer_skin.'/'.$var;
+                    } else if ($ini_array['options']['FALLBACK']) {
+                        $FALLBACK[$key] = $var;
+                    } else {
+                        self::$skin_pholder[$key] = 'unknown.gif';
+                        if(show_teamspeak_debug) {
+                            DebugConsole::insert_warning('TS3Renderer::loadskin()', "File not found: ".'/'.$dir_skin.'/'.$var);
+                        }
+                    }
+                }
+            } else { $FALLBACK = self::$skin_pholder; }
+
+            if(count($FALLBACK) >= 1) {
+                foreach($FALLBACK as $key => $var) {
+                    $dir_default = 'inc/images/tsviewer/default';
+                    $pic_non_format = explode('.', $var); $found = false;
+                    foreach($picformat AS $end) {
+                        if(file_exists(basePath.'/'.$dir_default.'/'.$pic_non_format[0].'.'.$end)) {
+                            self::$skin_pholder[$key] = 'default/'.$pic_non_format[0].'.'.$end;
+                            unset($FALLBACK[$key]);
+                            $found = true;
+                            break;
+                        }
+                    }
+
+                    if(!$found) { self::$skin_pholder[$key] = 'unknown.gif'; }
+                }
+            }
+            
+            dbc_index::setIndex('ts3_skin', self::$skin_pholder);
+        } else {
+            self::$skin_pholder = dbc_index::getIndex('ts3_skin');
+        }
     }
 }

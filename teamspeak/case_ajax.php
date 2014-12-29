@@ -38,6 +38,7 @@ function teamspeak_show($sID = 0, $showID = 0) {
         $results = $cache->get('teamspeak_'.$cache_hash);
     
     //Put to Renderer
+    TS3Renderer::init();
     TS3Renderer::set_data($results,$get);
     TS3Renderer::setConfig('IconDownload',$get['customicon']);
     TS3Renderer::setConfig('OnlyChannelsWithUsers',$get['showchannel']);
@@ -45,17 +46,16 @@ function teamspeak_show($sID = 0, $showID = 0) {
     $userstats = ''; $users = 0; $color = 1;
     if(isset($results['ts3']['players']) && count($results['ts3']['players']) >= 1 && count($results['ts3']['channels']) >= 1) {
         foreach($results['ts3']['players'] AS $player) {
-            if(!$player["client_type"]) {
-                $users++;
-                $player_status_icon = $player['client_is_channel_commander'] ? "client_cc_idle.png" : "client_idle.png";
-                $player_status_icon = $player['client_is_channel_commander'] && $player['client_flag_talking'] ? "client_cc_talk.png" : $player_status_icon;
-                $player_status_icon = $player['client_away'] ? "client_away.png" : $player_status_icon;
-                $player_status_icon = $player['client_flag_talking'] && !$player['client_is_channel_commander'] ? "client_talk.png" : $player_status_icon;
-                $player_status_icon = !$player['client_output_hardware'] ? "client_snd_disabled.png" : $player_status_icon;
-                $player_status_icon = $player['client_output_muted'] ? "client_snd_muted.png" : $player_status_icon;
-                $player_status_icon = !$player['client_input_hardware'] ? "client_mic_disabled.png" : $player_status_icon;
-                $player_status_icon = $player['client_input_muted'] ? "client_mic_muted.png" : $player_status_icon;
-                $priority_speaker = $player['client_is_priority_speaker'] ? '<img src="../inc/images/tsviewer/client_priority.png" alt="" class="tsicon" />' : '';
+            if(!$player["client_type"]) { $users++;
+                $player_status_icon = $player['client_is_channel_commander'] ? TS3Renderer::$skin_pholder['PLAYER_COMMANDER_OFF'] : TS3Renderer::$skin_pholder['PLAYER_OFF'];
+                $player_status_icon = $player['client_is_channel_commander'] && $player['client_flag_talking'] ? TS3Renderer::$skin_pholder['PLAYER_COMMANDER_ON'] : $player_status_icon;
+                $player_status_icon = $player['client_away'] ? TS3Renderer::$skin_pholder['AWAY'] : $player_status_icon;
+                $player_status_icon = $player['client_flag_talking'] && !$player['client_is_channel_commander'] ? TS3Renderer::$skin_pholder['PLAYER_ON'] : $player_status_icon;
+                $player_status_icon = !$player['client_input_hardware'] ? TS3Renderer::$skin_pholder['HARDWARE_INPUT_MUTED'] : $player_status_icon;
+                $player_status_icon = $player['client_input_muted'] ? TS3Renderer::$skin_pholder['INPUT_MUTED'] : $player_status_icon;
+                $player_status_icon = !$player['client_output_hardware'] ? TS3Renderer::$skin_pholder['HARDWARE_OUTPUT_MUTED'] : $player_status_icon;
+                $player_status_icon = $player['client_output_muted'] ? TS3Renderer::$skin_pholder['OUTPUT_MUTED'] : $player_status_icon;
+                $priority_speaker = $player['client_is_priority_speaker'] ? '<img src="../inc/images/tsviewer/'.TS3Renderer::$skin_pholder['CAPTURE'].'" alt="" class="tsicon" />' : '';
                 $player['client_nickname'] = (mb_strlen(html_entity_decode($player['client_nickname'])) > 20 ? cut($player['client_nickname'],20,true) : $player['client_nickname'] );
                 $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
 

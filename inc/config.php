@@ -53,6 +53,7 @@ define('steam_infos_cache', true); //Sollen die Profil Daten zwischen gespeicher
 define('steam_only_proxy', false); //Sollen soll nur der Steam Proxy Server verwendet werden
 
 define('server_show_empty_players', false); //Alle Spieler anzeigen, die deren Namen nicht angezeigt werden können, User werden sonst entfernt.
+define('ts3viewer_skin', 'default_mono_2014'); //Verwendet TS3 Icons Sets die sich als Ordner im Verzeichniss 'inc\images\tsviewer\' befinden.
 
 define('captcha_case_sensitive', false); //Unterscheidet Groß und Kleinschreibung beim Captcha
 define('captcha_mathematic', true); //Stellt den Usern einfache Rechenaufgaben anstelle eines Captcha Codes
