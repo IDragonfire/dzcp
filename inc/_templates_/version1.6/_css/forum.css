@@ -1,10 +1,10 @@
-.forumBG {
+table.forumBG {
 	border: solid 1px #BBB;
 	border-top-color: #C8C8C8;
 	background: #F8F8F8;
 }
 
-.forumTH {
+th.forumTH {
 	color: #414141; 
 	font-size: 11px; 
 	font-weight: bold;
@@ -19,7 +19,7 @@
 	border-bottom: solid 1px #E0E0E0;
 }
 
-.forumRow {
+td.forumTD {
 	border-left: solid 1px #FFF;
 	border-right: solid 1px #E0E0E0;
 	border-top: solid 1px #FFF;
@@ -28,4 +28,18 @@
 	padding: 4px;
 	vertical-align:middle;
 	white-space: nowrap;
+}
+
+p.forumTopic{
+	margin: 1px 0px;
+}
+
+.genmed {
+	margin: 1px 1px;
+	font-size: 1.1em;
+}
+
+.gensmall {
+	margin: 1px 1px;
+	font-size: 1em;
 }
