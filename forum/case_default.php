@@ -54,6 +54,7 @@ if(defined('_Forum')) {
         $showt .= show($dir."/kats_show", array("topic" => re($gets['kattopic']),
                                                 "subtopic" => re($gets['subtopic']),
                                                 "lpost" => $lpost,
+                                                "frompic" => "forum_read.gif",
                                                 "new" => check_new($lpdate),
                                                 "threads" => $threads,
                                                 "posts" => $posts+$threads,
