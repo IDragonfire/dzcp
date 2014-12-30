@@ -1,6 +1,6 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1
+ * DZCP - deV!L`z ClanPortal 1.7.0
  * http://www.dzcp.de
  */
 
@@ -305,7 +305,7 @@ if($chkMe && $userid && !empty($_SESSION['ip'])) {
 }
 
 /*
- * DZCP V1.6.1
+ * DZCP V1.7.0
  * Aktualisiere die Client DNS & User Agent
  */
 if(session_id()) {
@@ -363,7 +363,7 @@ if(session_id()) {
 }
 
 /**
-* DZCP V1.6.1
+* DZCP V1.7.0
 * Erkennt bekannte Bots am User Agenten
 */
 function SearchBotDetect() { 
@@ -403,7 +403,7 @@ function SearchBotDetect() {
 }
 
 /**
-* DZCP V1.6.1
+* DZCP V1.7.0
 * Browser-Cache nicht verwenden -> Ajax
 */
 function addNoCacheHeaders() {
@@ -415,7 +415,7 @@ function addNoCacheHeaders() {
 }
 
 /**
-* DZCP V1.6.1
+* DZCP V1.7.0
 * Gibt die IP des Besuchers / Users zuruck
 * Forwarded IP Support
 */
@@ -1023,7 +1023,7 @@ function zitat($nick,$zitat) {
 }
 
 /**
- * DZCP V1.6.1
+ * DZCP V1.7.0
  * Decodiert Strings und Texte von UTF8.
  * Auslesen von Werten aus der Datenbank.
  *
@@ -1304,7 +1304,7 @@ function spChars($txt) {
 }
 
 /**
- * DZCP V1.6.1
+ * DZCP V1.7.0
  * Codiert Strings und Texte in UTF8.
  * Schreiben von Werten in die Datenbank.
  *
@@ -1316,7 +1316,7 @@ function up($txt = '') {
 }
 
 /**
- * DZCP V1.6.1
+ * DZCP V1.7.0
  * Gibt Informationen uber Server und Ausfuhrungsumgebung zuruck
  *
  * @param string $var
@@ -1794,7 +1794,7 @@ function gallery_size($img="") {
 }
 
 /**
-* DZCP V1.6.1
+* DZCP V1.7.0
 * CSS Basierend - Blaetterfunktion
 * [Previous][1][Next]
 * [Previous][1][2][3][4][Next]

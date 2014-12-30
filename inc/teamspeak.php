@@ -1,6 +1,6 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1
+ * DZCP - deV!L`z ClanPortal 1.7.0
  * http://www.dzcp.de
  *
  * This class is only Icon-Downloader, TSDNS & TS3 Tree Renderer

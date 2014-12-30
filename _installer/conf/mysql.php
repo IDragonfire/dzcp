@@ -1,6 +1,6 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1
+ * DZCP - deV!L`z ClanPortal 1.7.0
  * http://www.dzcp.de
  */
 
@@ -1563,7 +1563,7 @@ function update_mysql_1_6()
     }
 }
 
-function update_mysql_1_6_1() {
+function update_mysql_1_7() {
     global $db,$prev;
 
     db("ALTER TABLE `".$db['sponsoren']."` DROP `send`;",false,false,true);

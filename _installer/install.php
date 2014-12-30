@@ -1,6 +1,6 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1
+ * DZCP - deV!L`z ClanPortal 1.7.0
  * http://www.dzcp.de
  */
 
@@ -459,7 +459,7 @@ case 'database';
         update_mysql_1_5_2();
         update_mysql_1_5_4();
         update_mysql_1_6();
-        update_mysql_1_6_1();
+        update_mysql_1_7();
         header("Location: install.php?action=done");
     } else {
       echo '<table width="100%" cellpadding="1" cellspacing="1" class="error">

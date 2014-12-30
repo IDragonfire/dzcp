@@ -1,6 +1,6 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1
+ * DZCP - deV!L`z ClanPortal 1.7.0
  * http://www.dzcp.de
  */
 
@@ -105,7 +105,7 @@ function makeCryptkey($passwordLength=12,$specialcars=true) {
 }
 
 /**
- * DZCP V1.6.1
+ * DZCP V1.7.0
  * Codiert Strings und Texte in UTF8.
  * Schreiben von Werten in die Datenbank.
  *

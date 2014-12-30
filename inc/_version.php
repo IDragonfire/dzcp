@@ -1,10 +1,10 @@
 <?php
 /**
- * DZCP - deV!L`z ClanPortal 1.6.1
+ * DZCP - deV!L`z ClanPortal 1.7.0
  * http://www.dzcp.de
  */
 
-define('_version', '1.6.1.0');
-define('_release', '29.12.2014');
-define('_build', '1610.03.07');
+define('_version', '1.7.0.0');
+define('_release', '30.12.2014');
+define('_build', '1700.00.00');
 define('_edition', 'dev');
