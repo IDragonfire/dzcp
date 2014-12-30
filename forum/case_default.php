@@ -55,6 +55,7 @@ if(defined('_Forum')) {
                                                 "subtopic" => re($gets['subtopic']),
                                                 "lpost" => $lpost,
                                                 "frompic" => "forum_read.gif",
+                                                "subforum" => "",
                                                 "new" => check_new($lpdate),
                                                 "threads" => $threads,
                                                 "posts" => $posts+$threads,
