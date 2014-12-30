@@ -126,12 +126,15 @@ if(defined('_Forum')) {
     if(!$chkMe) $nick = "<center>"._forum_nobody_is_online."</center>";
     else                        $nick = "<center>"._forum_nobody_is_online2."</center>";
   }
+  
+  $stats = show($dir."/forum_stats", array());
 
   $online = show($dir."/online", array("nick" => $nick,
                                        "head" => _forum_online_head));
 
   $index = show($dir."/forum", array("head" => _forum_head,
                                      "threads" => $threads,
+                                     "stats" => $stats,
                                      "search" => _forum_searchlink,
                                      "posts" => $posts,
                                      "show" => $show,
