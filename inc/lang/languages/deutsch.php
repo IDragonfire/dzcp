@@ -37,6 +37,9 @@ define('_server_gtype', '<span class="fontBold">Gamemode:</span> [type]<br />');
 define('_server_bots', '<span class="fontBold">Bots:</span> [bots]<br />');
 define('_addons', 'Add-ons');
 
+//Forum
+define("_forum_last_post", 'Neuesten Beitrag anzeigen');
+
 //TS
 define('_ts_fport', 'File Port');
 define('_ts_port', 'Voice Port');
@@ -1021,7 +1024,7 @@ define('_forum_subkat_where', '<a href="../forum/">[mainkat]</a> <span class="fo
 define('_forum_head_skat_search', 'In dieser Kategorie suchen');
 define('_forum_head_threads', 'Themen');
 define('_forum_replys', 'Antworten');
-define('_forum_thread_lpost', 'von [nick]<br />am [date]');
+define("_forum_thread_lpost", '<p class="forumTopic">[date]</p><p class="forumTopic">[nick]<a href="[post_link]" title="[title]"><img src="[dir]/images/forum/[img]" border="0" height="9" width="9"></a>');
 define('_forum_new_thread_head', 'Neues Thema erstellen');
 define('_empty_topic', 'Du musst ein Topic angeben!');
 define('_forum_newthread_successful', 'Das Thema wurde erfolgreich ins Forum eingetragen!');
