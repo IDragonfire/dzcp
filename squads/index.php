@@ -58,6 +58,8 @@ $dir = "squads";
         if(!empty($getm['rlname']))
         {
           $real = explode(" ", re($getm['rlname']));
+	  if(!isset($real[1]))
+	    $real[1] = "";
           $nick = '<b>'.$real[0].' &#x93;</b> '.$nick.' <b>&#x94; '.$real[1].'</b>';
         }
 
