@@ -323,6 +323,14 @@ if(session_id()) {
             . "`bot_name` = '".up($bot['name'])."', `bot_fullname` = '".up($bot['fullname'])."';"); unset($bot);
         }
     }
+    
+    //-> Cleanup DNS DB
+    $qryDNS = db("SELECT `id` FROM `".$db['ip2dns']."` WHERE `time` <= ".time().";");
+    if(_rows($qryDNS) >= 1) {
+        while($getDNS = _fetch($qryDNS)) {
+            db("DELETE FROM `".$db['ip2dns']."` WHERE `id` = ".$getDNS['id'].";");
+        } unset($getDNS);
+    } unset($qryDNS);
 
     /*
      * Pruft ob mehrere Session IDs von der gleichen DNS kommen, sollte der Useragent keinen Bot Tag enthalten, wird ein Spambot angenommen.
@@ -352,14 +360,6 @@ if(session_id()) {
     }
     
     unset($get_sb,$get,$data_array,$bot);
-
-    //-> Cleanup DNS DB
-    $qryDNS = db("SELECT `id` FROM `".$db['ip2dns']."` WHERE `time` <= ".time().";");
-    if(_rows($qryDNS) >= 1) {
-        while($getDNS = _fetch($qryDNS)) {
-            db("DELETE FROM `".$db['ip2dns']."` WHERE `id` = ".$getDNS['id'].";");
-        } unset($getDNS);
-    } unset($qryDNS);
 }
 
 /**
