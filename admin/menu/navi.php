@@ -239,6 +239,10 @@ if(_adminMenu != 'true') exit;
 
         $show = info(_menukat_inserted, '?admin=navi');
       } else {
+	//default
+	$kat = "";
+	$show_ = "";
+
         $qry = db("SELECT s1.*, s2.name AS katname FROM ".$db['navi']." AS s1 LEFT JOIN ".$db['navi_kats']." AS s2 ON s1.kat = s2.placeholder ORDER BY s2.name, s1.kat,s1.pos");
         while($get = _fetch($qry))
         {
@@ -285,6 +289,8 @@ if(_adminMenu != 'true') exit;
                                                   "edit" => $edit,
                                                   "del" => $delete));
         }
+	//default
+	$show_kats = "";
 
         unset($color);
         $qry = db("SELECT * FROM ".$db['navi_kats']." ORDER BY `name` ASC");
