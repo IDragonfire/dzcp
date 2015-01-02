@@ -1976,7 +1976,8 @@ function update_mysql_1_7() {
     db("ALTER TABLE `".$db['server']."` CHANGE `name` `name` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '';",false,false,true);
     db("ALTER TABLE `".$db['server']."` DROP `status`;",false,false,true);
     db("ALTER TABLE `".$db['server']."` ADD `icon` VARCHAR(150) NOT NULL DEFAULT '' AFTER `custom_icon`;",false,false,true);
-    
+    db("ALTER TABLE `".$db['pos']."` ADD `color` VARCHAR(7) NOT NULL DEFAULT '#000000' AFTER `nletter`;",false,false,true);
+        
     db("DROP TABLE IF EXISTS `".$db['ts']."`;",false,false,true);
     db("CREATE TABLE IF NOT EXISTS `".$db['ts']."` (
       `id` int(11) NOT NULL AUTO_INCREMENT,
