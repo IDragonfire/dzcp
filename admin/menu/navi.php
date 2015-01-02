@@ -282,7 +282,6 @@ if(_adminMenu != 'true') exit;
                                                   "url" => cut($get['url'],34),
                                                   "kat" => re($get['katname']),
                                                   "shown" => $shown,
-                                                  "wichtig" => $wichtig,
                                                   "edit" => $edit,
                                                   "del" => $delete));
         }
@@ -326,7 +325,6 @@ if(_adminMenu != 'true') exit;
                                          "show_kats" => $show_kats,
                                          "url" => _navi_url,
                                          "intern" => _internal,
-                                         "standard" => _standard_link_do,
                                          "shown" => _navi_shown,
                                          "head" => _navi_head,
                                          "add" => _navi_add_head,
