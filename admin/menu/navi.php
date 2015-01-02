@@ -239,6 +239,11 @@ if(_adminMenu != 'true') exit;
 
         $show = info(_menukat_inserted, '?admin=navi');
       } else {
+	//default
+	$kat = "";
+	$show_ = "";
+	$color = 0;
+
         $qry = db("SELECT s1.*, s2.name AS katname FROM ".$db['navi']." AS s1 LEFT JOIN ".$db['navi_kats']." AS s2 ON s1.kat = s2.placeholder ORDER BY s2.name, s1.kat,s1.pos");
         while($get = _fetch($qry))
         {
@@ -282,13 +287,14 @@ if(_adminMenu != 'true') exit;
                                                   "url" => cut($get['url'],34),
                                                   "kat" => re($get['katname']),
                                                   "shown" => $shown,
-                                                  "wichtig" => $wichtig,
                                                   "edit" => $edit,
                                                   "del" => $delete));
         }
+	//default
+	$show_kats = "";
+        $color = 0;
 
-        unset($color);
-        $qry = db("SELECT * FROM ".$db['navi_kats']." ORDER BY `name` ASC");
+	$qry = db("SELECT * FROM ".$db['navi_kats']." ORDER BY `name` ASC");
         while($get = _fetch($qry)) {
           $class = ($color % 2) ? 'contentMainFirst' : 'contentMainSecond'; $color++;
 
@@ -326,7 +332,6 @@ if(_adminMenu != 'true') exit;
                                          "show_kats" => $show_kats,
                                          "url" => _navi_url,
                                          "intern" => _internal,
-                                         "standard" => _standard_link_do,
                                          "shown" => _navi_shown,
                                          "head" => _navi_head,
                                          "add" => _navi_add_head,
