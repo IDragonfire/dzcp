@@ -242,6 +242,7 @@ if(_adminMenu != 'true') exit;
 	//default
 	$kat = "";
 	$show_ = "";
+	$color = 0;
 
         $qry = db("SELECT s1.*, s2.name AS katname FROM ".$db['navi']." AS s1 LEFT JOIN ".$db['navi_kats']." AS s2 ON s1.kat = s2.placeholder ORDER BY s2.name, s1.kat,s1.pos");
         while($get = _fetch($qry))
@@ -291,9 +292,9 @@ if(_adminMenu != 'true') exit;
         }
 	//default
 	$show_kats = "";
+        $color = 0;
 
-        unset($color);
-        $qry = db("SELECT * FROM ".$db['navi_kats']." ORDER BY `name` ASC");
+	$qry = db("SELECT * FROM ".$db['navi_kats']." ORDER BY `name` ASC");
         while($get = _fetch($qry)) {
           $class = ($color % 2) ? 'contentMainFirst' : 'contentMainSecond'; $color++;
 
