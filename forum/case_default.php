@@ -122,8 +122,28 @@ if(defined('_Forum')) {
   
     $stats = show($dir."/forum_stats", array());
 
-    $online = show($dir."/online", array("nick" => $nick, "head" => _forum_online_head));
+    /* Wer ist online */
 
+    $sql = db('SELECT `position`,`color` FROM `dzcp_positions`'); $team_groups = '';
+    while ($get = _fetch($sql)) {
+        $team_groups .= show(_forum_team_groups, array('color' => re($get['color']), 'group' => re($get['position'])));
+    }
+
+    $online = show($dir."/online", array("nick" => $nick, "head" => _forum_online_head, 'groups' => $team_groups));
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /* Index */
     $index = show($dir."/forum", array("head" => _forum_head,
                                        "threads" => $threads,
                                        "stats" => $stats,

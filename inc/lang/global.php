@@ -19,6 +19,9 @@ define('_teamspeak_menu_icon_yes', '<a href="?admin=teamspeak&amp;do=menu&amp;id
 define('_teamspeak_menu_icon_no', '<a href="?admin=teamspeak&amp;do=menu&amp;id=[id]"><img src="../inc/images/server_yes.gif" alt="" class="icon" /></a>');
 define('_gameicon_blank', '<img alt="" src="[icon]" class="icon" />');
 
+//Forum
+define("_forum_team_groups", '[<a style="color:[color]" href="#">[group]</a>] ');
+
 ## ADDED / REDEFINED FOR 1.6
 define('_steamicon', '<a target="_blank" onmouseover="DZCP.showSteamBox(\'[username]\',\'[avatar_url]\',\'[text1]\',\'[text2]\',[status])" onmouseout="DZCP.hideInfo()" href="[profile_url]"><img height="16" width="16" src="../inc/images/steam.gif" alt="" class="icon" /> [username]</a>');
 define('_steamicon_nouser', '<a target="_blank" href="[profile_url]"><img height="16" width="16" src="../inc/images/steam.gif" alt="" class="icon" onmouseover="DZCP.showSteamBox(\'[username]\',\'[avatar_url]\',\'[text1]\',\'[text2]\',[status])" onmouseout="DZCP.hideInfo()" /></a>');
