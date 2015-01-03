@@ -4,11 +4,6 @@
  * http://www.dzcp.de
  */
 
-## Error Reporting ##
-if(!defined('DEBUG_LOADER'))
-    exit('<b>Die Debug-Console wurde nicht geladen!<p>
-    Bitte &Uuml;berpr&uuml;fen Sie ob die index.php einen "include(basePath."/inc/debugger.php");" Eintrag hat.</b>');
-
 ## INCLUDES/REQUIRES ##
 require_once(basePath.'/inc/crypt.php');
 require_once(basePath.'/inc/sessions.php');
@@ -83,12 +78,10 @@ $isSpider = isSpider();
 $subfolder = basename(dirname(dirname($_SERVER['PHP_SELF']).'../'));
 $httphost = $_SERVER['HTTP_HOST'].(empty($subfolder) ? '' : '/'.$subfolder);
 $domain = str_replace('www.','',$httphost);
-$pagetitle = settings('pagetitel');
-$sdir = settings('tmpdir');
+$pagetitle = re(settings('pagetitel'));
+$sdir = re(settings('tmpdir'));
 $useronline = 1800;
 $reload = 3600 * 24;
-$datum = time();
-$today = date("j.n.Y");
 $picformat = array("jpg", "gif", "png");
 $userip = visitorIp();
 $maxpicwidth = 90;
@@ -1426,12 +1419,13 @@ function highlight($word) {
 
 //-> Counter updaten
 function updateCounter() {
-    global $db,$reload,$today,$datum,$userip;
+    global $db,$reload,$userip;
+    $datum = time();
     $get_agent = db("SELECT `agent`,`bot` FROM `".$db['ip2dns']."` WHERE `ip` = '".up($userip)."';",false,true);
     if(!$get_agent['bot'] && !isSpider(re($get_agent['agent']))) {
         $ipcheck = db("SELECT `id`,`ip`,`datum` FROM `".$db['c_ips']."` WHERE `ip` = '".up($userip)."' AND FROM_UNIXTIME(datum,'%d.%m.%Y') = '".date("d.m.Y")."';");
         db("DELETE FROM `".$db['c_ips']."` WHERE datum+".$reload." <= ".time()." OR FROM_UNIXTIME(datum,'%d.%m.%Y') != '".date("d.m.Y")."';");
-        $count = db("SELECT `id`,`visitors`,`today` FROM `".$db['counter']."` WHERE `today` = '".$today."';");
+        $count = db("SELECT `id`,`visitors`,`today` FROM `".$db['counter']."` WHERE `today` = '".date("j.n.Y")."';");
         if(_rows($ipcheck)>=1) {
             $get = _fetch($ipcheck);
             $sperrzeit = $get['datum']+$reload;
@@ -1439,17 +1433,17 @@ function updateCounter() {
                 db("DELETE FROM `".$db['c_ips']."` WHERE `ip` = '".up($userip)."';");
 
                 if(_rows($count))
-                    db("UPDATE `".$db['counter']."` SET `visitors` = visitors+1 WHERE `today` = '".$today."';");
+                    db("UPDATE `".$db['counter']."` SET `visitors` = visitors+1 WHERE `today` = '".date("j.n.Y")."';");
                 else
-                    db("INSERT INTO `".$db['counter']."` SET `visitors` = '1', `today` = '".$today."';");
+                    db("INSERT INTO `".$db['counter']."` SET `visitors` = '1', `today` = '".date("j.n.Y")."';");
 
                 db("INSERT INTO `".$db['c_ips']."` SET `ip` = '".up($userip)."', `datum` = '".intval($datum)."';");
             }
         } else {
             if(_rows($count))
-                db("UPDATE `".$db['counter']."` SET `visitors` = visitors+1 WHERE `today` = '".$today."';");
+                db("UPDATE `".$db['counter']."` SET `visitors` = visitors+1 WHERE `today` = '".date("j.n.Y")."';");
             else
-                db("INSERT INTO `".$db['counter']."` SET `visitors` = '1', `today` = '".$today."';");
+                db("INSERT INTO `".$db['counter']."` SET `visitors` = '1', `today` = '".date("j.n.Y")."';");
             db("INSERT INTO `".$db['c_ips']."` SET `ip` = '".up($userip)."', `datum` = '".intval($datum)."';");
         }
     }
@@ -1457,11 +1451,11 @@ function updateCounter() {
 
 //-> Updatet die Maximalen User die gleichzeitig online sind
 function update_maxonline() {
-    global $db,$today;
+    global $db;
     $count = cnt($db['c_who']);
-    $get = db("SELECT `maxonline` FROM `".$db['counter']."` WHERE `today` = '".$today."';",false,true);
+    $get = db("SELECT `maxonline` FROM `".$db['counter']."` WHERE `today` = '".date("j.n.Y")."';",false,true);
     if($get['maxonline'] < $count)
-        db("UPDATE `".$db['counter']."` SET `maxonline` = ".$count." WHERE `today` = '".$today."';");
+        db("UPDATE `".$db['counter']."` SET `maxonline` = ".$count." WHERE `today` = '".date("j.n.Y")."';");
 }
 
 //-> Aktualisiert die Position der Gaste & User

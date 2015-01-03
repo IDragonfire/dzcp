@@ -5,7 +5,7 @@
  * Menu: User Counter
  */
 function counter($js=false) {
-    global $db,$today,$useronline,$where,$isSpider;
+    global $db,$useronline,$where,$isSpider;
     header('Content-Type: text/html; charset=iso-8859-1');
     if(!$js) {
         $counter = '<div style="width:100%;padding:10px 0;text-align:center"><img src="../inc/images/ajax_loading.gif" alt="" /></div>'.
@@ -13,7 +13,7 @@ function counter($js=false) {
     } else {
         if(!$isSpider) {
             $v_today = 0;
-            $qry2day = db("SELECT `visitors` FROM `".$db['counter']."` WHERE `today` = '".$today."';");
+            $qry2day = db("SELECT `visitors` FROM `".$db['counter']."` WHERE `today` = '".date("j.n.Y")."';");
             if(_rows($qry2day)) {
                 $get2day = _fetch($qry2day);
                 $v_today = $get2day['visitors'];

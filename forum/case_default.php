@@ -76,10 +76,12 @@ if(defined('_Forum')) {
     $show_top = '';
     while($gettp = _fetch($qrytp))
     {
-      $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-      $show_top .= show($dir."/top_posts_show", array("nick" => autor($gettp['user']),
-                                                      "posts" => $gettp['forumposts'],
-                                                      "class" => $class));
+        if($gettp['forumposts'] >= 1) {
+            $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+            $show_top .= show($dir."/top_posts_show", array("nick" => autor($gettp['user']),
+                                                            "posts" => $gettp['forumposts'],
+                                                            "class" => $class));
+        }
     } //end while
 
     $top_posts = show($dir."/top_posts", array("head" => _forum_top_posts,

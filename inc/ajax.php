@@ -10,10 +10,8 @@ ob_start();
 ob_implicit_flush(false);
     $ajaxJob = true;
 
-    ## INCLUDES ##
-    require(basePath."/inc/debugger.php");
-    require(basePath."/inc/config.php");
-    require(basePath."/inc/bbcode.php");
+    ## INCLUDES #
+    include(basePath."/inc/common.php");
 
     ## FUNCTIONS ##
     require_once(basePath."/inc/menu-functions/server.php");
