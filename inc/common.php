@@ -189,4 +189,6 @@ function show($tpl="", $array=array(), $array_lang_constant=array(), $array_bloc
 }
 
 require_once(basePath."/inc/database.php");
-require_once(basePath."/inc/bbcode.php");
+
+if(!$installation)
+    require_once(basePath."/inc/bbcode.php");
