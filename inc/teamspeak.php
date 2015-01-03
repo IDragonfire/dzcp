@@ -279,7 +279,16 @@ class TS3Renderer {
         if(array_key_exists('GROUP_'.$id, self::$skin_pholder)) {
             $image = "../inc/images/tsviewer/".self::$skin_pholder['GROUP_'.$id];
         } else if(self::$AllowDownloadIcons) {
-            if(!$cache->isExisting('ts_icon_'.$id) && !array_key_exists($id, self::$nf_pic_ids)) {
+            $svid = md5(self::$data['sql']['host_ip_dns'].self::$data['sql']['server_port']);
+            if(ts3viewer_icon_to_drive) {
+                if(file_exists(basePath.'/inc/images/tsviewer/custom_icons/'.$svid.'_'.$id.'.bin')) {
+                    self::$nf_pic_ids[$id] = true;
+                    $file_stream = file_get_contents(basePath.'/inc/images/tsviewer/custom_icons/'.$svid.'_'.$id.'.bin');
+                    $image = 'data:image/png;base64,'.base64_encode(hextobin($file_stream));
+                }
+            }
+            
+            if(!$cache->isExisting($svid.'_'.$id) && !array_key_exists($id, self::$nf_pic_ids) && empty($image)) {
                 // Sende Download-Anforderung zum TS3 Server
                 if(show_teamspeak_debug) {
                     DebugConsole::insert_info('TS3Renderer::icon()', 'Download Icon: "icon_'.$id.'"');
@@ -296,7 +305,10 @@ class TS3Renderer {
                         if(show_teamspeak_debug)
                             DebugConsole::insert_successful('TS3Renderer::icon()', 'Icon: "icon_'.$id.'" Downloaded');
 
-                        $cache->set('ts_icon_'.$id,bin2hex($file_stream),(24*60*60));//24h
+                        $cache->set($svid.'_'.$id,bin2hex($file_stream),(24*60*60));//24h
+                        if(ts3viewer_icon_to_drive)
+                            file_put_contents(basePath.'/inc/images/tsviewer/custom_icons/'.$svid.'_'.$id.'.bin', bin2hex($file_stream));
+                        
                         $image = 'data:image/png;base64,'.base64_encode($file_stream);
                         self::$nf_pic_ids[$id] = true;
                     } else
@@ -304,7 +316,9 @@ class TS3Renderer {
                 } else
                     self::$nf_pic_ids[$id] = true;
             } else {
-                $image = ($cache->isExisting('ts_icon_'.$id) ? 'data:image/png;base64,'.base64_encode(hextobin($cache->get('ts_icon_'.$id))) : '');
+                $image = ($cache->isExisting($svid.'_'.$id) ? 'data:image/png;base64,'.base64_encode(hextobin($cache->get($svid.'_'.$id))) : '');
+                if(ts3viewer_icon_to_drive)
+                    file_put_contents(basePath.'/inc/images/tsviewer/custom_icons/'.$svid.'_'.$id.'.bin', bin2hex($cache->get($svid.'_'.$id)));
             }
         }
 
