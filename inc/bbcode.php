@@ -343,6 +343,7 @@ if(session_id()) {
         }
     }
     
+    /* //BUGGGGGGGGGGGGGGGG
     $get = db("SELECT `bot`,`agent` FROM `".$db['ip2dns']."` WHERE `ip` = '".up($userip)."';",false,true);
     if(!$get['bot'] && stristr(re($get['agent']), 'Gecko/20100101')) {
         db("DELETE FROM `".$db['c_ips']."` WHERE `ip` = '".up($userip)."';");
@@ -350,7 +351,7 @@ if(session_id()) {
         db("DELETE FROM `".$db['ip2dns']."` WHERE `ip` = '".up($userip)."';");
         dzcp_session_destroy();
         exit('Die Verwendete Browser Version ist veraltet!<p>Sollte es sich um einen Bot handeln, bitte verwende einen Bot Tag im Useragenten!');
-    }
+    } */
     
     unset($get_sb,$get,$data_array,$bot);
 }
