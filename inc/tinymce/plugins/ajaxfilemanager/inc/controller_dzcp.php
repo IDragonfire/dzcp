@@ -8,9 +8,7 @@ define('basePath', '../../../..');
 
 ## INCLUDES ##
 $ajaxJob = true;
-include_once(basePath."/inc/debugger.php");
-include_once(basePath."/inc/config.php");
-include_once(basePath."/inc/bbcode.php");
+include(basePath."/inc/common.php");
 
 ## SETTINGS ##
 if(!permission("downloads") && !permission("news") && !permission('artikel')) {
