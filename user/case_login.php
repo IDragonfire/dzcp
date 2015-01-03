@@ -13,7 +13,7 @@ if(defined('_UserMenu')) {
             default: $securimage->namespace = 'default'; break;
         }
 
-        if(settings('securelogin') && (!isset($_POST['secure']) || !$securimage->check($_POST['secure'])))
+        if(config('securelogin') && (!isset($_POST['secure']) || !$securimage->check($_POST['secure'])))
             $index = error(captcha_mathematic ? _error_invalid_regcode_mathematic : _error_invalid_regcode);
         else {
             if(checkpwd($_POST['user'], md5($_POST['pwd']))) {
