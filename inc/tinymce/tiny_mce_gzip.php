@@ -14,9 +14,7 @@ ob_start();
 
 ## Require ##
 $ajaxJob = true;
-require_once(basePath."/inc/debugger.php");
-require_once(basePath."/inc/config.php");
-require_once(basePath."/inc/bbcode.php");
+include(basePath."/inc/common.php");
 
 // Handle incoming request if it's a script call
 if (TinyMCE_Compressor::getParam("js")) {
