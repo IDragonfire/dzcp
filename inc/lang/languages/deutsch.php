@@ -39,6 +39,14 @@ define('_addons', 'Add-ons');
 
 //Forum
 define("_forum_last_post", 'Neuesten Beitrag anzeigen');
+define("_forum_online_info0", 'Es [t_is] <b>[users]</b> Besucher online: <b>[regs]</b> [t_regs] und <b>[gast]</b> [t_gast] (Basierend auf den Besuchern der letzten [timer] Minuten)');
+define("_forum_online_info1", 'Registrierte User');
+define("_forum_gast", 'Gast');
+define("_forum_gaste", 'G&auml;ste');
+define("_forum_regs", 'Mitglieder');
+define("_forum_reg", 'Mitglied');
+define("_forum_ist", 'ist');
+define("_forum_sind", 'sind');
 
 //TS
 define('_ts_fport', 'File Port');

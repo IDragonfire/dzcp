@@ -123,13 +123,22 @@ if(defined('_Forum')) {
     $stats = show($dir."/forum_stats", array());
 
     /* Wer ist online */
-
     $sql = db('SELECT `position`,`color` FROM `dzcp_positions`'); $team_groups = '';
     while ($get = _fetch($sql)) {
         $team_groups .= show(_forum_team_groups, array('color' => re($get['color']), 'group' => re($get['position'])));
     }
 
-    $online = show($dir."/online", array("nick" => $nick, "head" => _forum_online_head, 'groups' => $team_groups));
+    $counter_users = online_reg('Forum'); $counter_gast = online_guests('Forum');
+    $total_users=($counter_users+$counter_gast);
+    $forum_user_stats = show(_forum_online_info0,array('users' => strval($total_users),
+                                                       't_gast' => ($counter_gast == 1 ? _forum_gast : _forum_gaste),
+                                                       'regs'  => strval($counter_users), 
+                                                       't_regs' => ($counter_users == 1 ? _forum_reg : _forum_regs),
+                                                       'gast'  => strval($counter_gast),
+                                                       't_is' => ($total_users == 1 ? _forum_ist : _forum_sind),
+                                                       'timer' => strval(($useronline/60/60))));
+    
+    $online = show($dir."/online", array("nick" => $nick, "forum_online_info0" => $forum_user_stats, 'groups' => $team_groups));
 
     
     

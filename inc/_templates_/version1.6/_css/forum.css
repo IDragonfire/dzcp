@@ -30,6 +30,10 @@ td.forumTD {
 	white-space: nowrap;
 }
 
+td.forumTD.warp {
+	white-space: normal;
+}
+
 p.forumTopic{
 	margin: 1px 0px;
 }

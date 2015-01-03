@@ -39,6 +39,14 @@ define('_addons', 'Add-ons');
 
 //Forum
 define(_forum_last_post, 'View the latest post');
+define(_forum_online_info0, 'In total there are <b>[users]</b> users online: <b>[regs]</b> registered and <b>[gast]</b> guests (based on users active over the past [timer] minutes)');
+define(_forum_online_info1, 'Registered users');
+define("_forum_gast", 'guests');
+define("_forum_gaste", 'guests');
+define("_forum_regs", 'registered');
+define("_forum_reg", 'registered');
+define("_forum_ist", ''); //Not used
+define("_forum_sind", ''); //Not used
 
 //TS
 define('_ts_fport', 'File Port');

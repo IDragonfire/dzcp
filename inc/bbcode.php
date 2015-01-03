@@ -1493,7 +1493,7 @@ function online_guests($where='') {
     global $db,$useronline,$isSpider;
     if(!$isSpider) {
         $whereami = (empty($where) ? '' : " AND `whereami` = '".$where."'");
-        return cnt($db['c_who']," WHERE online+".$useronline.">".time()."".$whereami." AND `login` = 0");
+        return cnt($db['c_who']," WHERE (online+".$useronline.")>".time()."".$whereami." AND `login` = 0");
     }
     
     return 0;
@@ -1504,7 +1504,7 @@ function online_reg($where='') {
     global $db,$useronline,$isSpider;
     if(!$isSpider) {
         $whereami = (empty($where) ? '' : " AND `whereami` = '".$where."'");
-        return cnt($db['users'], " WHERE time+".$useronline.">".time()."".$whereami." AND `online` = 1");
+        return cnt($db['users'], " WHERE (time+".$useronline.")>".time()."".$whereami." AND `online` = 1");
     }
     
     return 0;
@@ -2222,7 +2222,7 @@ function getrank($tid, $squad="", $profil=false) {
 function set_lastvisit() {
     global $db,$useronline,$userid;
     if($userid) {
-        if(!db("SELECT `id` FROM `".$db['users']."` WHERE `id` = ".intval($userid)." AND time+".$useronline.">".time().";",true)) {
+        if(!db("SELECT `id` FROM `".$db['users']."` WHERE `id` = ".intval($userid)." AND (time+".intval($useronline).")>".time().";",true)) {
             $_SESSION['lastvisit'] = data("time");
         }
     }
@@ -2238,7 +2238,7 @@ function onlinecheck($tid) {
     if(array_key_exists($tid, $users_id_index)) {
         $row = dbc_index::getIndexKey('onlinecheck', $tid);
     } else {
-        $row = db("SELECT `id` FROM `".$db['users']."` WHERE `id` = '".intval($tid)."' AND time+".$useronline.">".time()." AND `online` = 1;",true);
+        $row = db("SELECT `id` FROM `".$db['users']."` WHERE `id` = '".intval($tid)."' AND (time+".intval($useronline).")>".time()." AND `online` = 1;",true);
         $users_id_index[$tid] = $row;
         dbc_index::setIndex('onlinecheck', $users_id_index);
     }
