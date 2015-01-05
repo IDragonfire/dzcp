@@ -2518,7 +2518,7 @@ function getPermissions($checkID = 0, $pos = 0) {
 
 //-> interne Foren-Rechte abfragen
 function getBoardPermissions($checkID = 0, $pos = 0) {
-    global $db, $dir;
+    global $db;
 
     $break = 0; $i_forum = ''; $fkats = '';
     $qry = db("SELECT `id`,`name` FROM `".$db['f_kats']."` WHERE `intern` = 1 ORDER BY `kid` ASC;");

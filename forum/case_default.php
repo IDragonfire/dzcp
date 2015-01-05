@@ -91,14 +91,13 @@ if(defined('_Forum')) {
 
     $qryo = db("SELECT id FROM ".$db['users']."
                 WHERE whereami = 'Forum'
-                AND time+'".$useronline."'>'".time()."'
-                AND id != '".$userid."'");
+                AND time+'".$useronline."'>'".time()."'");
     
     if(_rows($qryo))
     {
         $i=0;
         $check = 1;
-        $cnto = cnt($db['users'], " WHERE time+'".$useronline."'>'".time()."' AND whereami = 'Forum' AND id != '".$userid."'");
+        $cnto = cnt($db['users'], " WHERE time+'".$useronline."'>'".time()."' AND whereami = 'Forum'");
         while($geto = _fetch($qryo))
         {
             if($i == 5)
@@ -125,6 +124,7 @@ if(defined('_Forum')) {
     $stats = show($dir."/forum_stats", array());
 
     /* Wer ist online */
+    update_online($where); //Update Stats
     $sql = db('SELECT `position`,`color` FROM `dzcp_positions`'); $team_groups = '';
     while ($get = _fetch($sql)) {
         $team_groups .= show(_forum_team_groups, array('color' => re($get['color']), 'group' => re($get['position'])));
