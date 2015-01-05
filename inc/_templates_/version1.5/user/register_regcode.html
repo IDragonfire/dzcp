@@ -4,9 +4,17 @@
 </tr>
 <tr>
   <td class="contentMainTop" width="25%"><span class="fontBold">[confirm_add]:</span> <span class="fontRed">*</span></td>
-  <td class="contentMainFirst" align="center">
-    <input type="text" name="confirm" class="inputField_dis_mid"
-    onfocus="this.className='inputField_en_mid';"
-    onblur="this.className='inputField_dis_mid';" style="text-align:center" required/>
+          <td class="contentMainFirst" align="center">
+                <table class="corner" style="background-color:#FFF; width:204px; border: 1px solid #000; border-color: #555 #555 #111 #111;">
+                  <tbody>
+                      <tr>
+                          <td colspan="2" style="width:195"><img class="corner" src="../inc/ajax.php?i=securimage&sid=[sid]" alt="CAPTCHA Image" name="siimage" hspace="0" vspace="0" id="siimage" style="border: 1px solid #000; border-color: #555 #555 #111 #111" /></td>
+                      </tr>
+                      <tr>
+                          <td><input type="text" name="secure" size="23" maxlength="25"/></td>
+                          <td><a tabindex="-1" style="border-style: none;" href="#" title="Refresh Image" onclick="document.getElementById('siimage').src = '../inc/ajax.php?i=securimage&sid=' + Math.random(); this.blur(); return false"><img src="../inc/images/securimage/refresh.png" alt="Reload Image" height="16" width="16" onclick="this.blur()" border="0" /></a></td>
+                      </tr>
+                  </tbody>
+              </table>
   </td>
 </tr>

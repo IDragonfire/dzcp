@@ -21,14 +21,14 @@
       <tr>
           <td class="contentMainTop" style="vertical-align:middle"><span class="fontBold">[lang_register_confirm]: </span><span class="fontRed">*</span></td>
           <td class="contentMainFirst" align="center">
-                <table class="corner" style="width:202px;border: 1px solid #000;">
+                <table class="corner" style="width:204px;border: 1px solid #d4d4d4;">
                   <tbody>
                       <tr>
-                          <td colspan="2" style="width:200"><img class="corner" src="../inc/ajax.php?i=securimage&sid=[sid]" alt="CAPTCHA Image" name="siimage" hspace="0" vspace="0" id="siimage" style="border: 1px solid #000; margin-right: 1px" /></td>
+                          <td colspan="2" style="width:195"><img class="corner" src="../inc/ajax.php?i=securimage&sid=[sid]" alt="CAPTCHA Image" name="siimage" hspace="0" vspace="0" id="siimage" style="border: 1px solid #d4d4d4; margin-right: 1px" /></td>
                       </tr>
                       <tr>
-                          <td><input type="text" name="secure" size="26" maxlength="12" /></td>
-                          <td><a tabindex="-1" style="border-style: none;" href="#" title="Refresh Image" onclick="document.getElementById('siimage').src = '../inc/ajax.php?i=securimage&sid=' + Math.random(); this.blur(); return false"><img src="[idir]/securimage/refresh.png" alt="Reload Image" height="16" width="16" onclick="this.blur()" border="0" /></a></td>
+                          <td><input type="text" name="secure" size="23" maxlength="25"/></td>
+                          <td><a tabindex="-1" style="border-style: none;" href="#" title="Refresh Image" onclick="document.getElementById('siimage').src = '../inc/ajax.php?i=securimage&sid=' + Math.random(); this.blur(); return false"><img src="../inc/images/securimage/refresh.png" alt="Reload Image" height="16" width="16" onclick="this.blur()" border="0" /></a></td>
                       </tr>
                   </tbody>
               </table>

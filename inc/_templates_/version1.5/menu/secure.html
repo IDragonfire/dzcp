@@ -1,17 +1,15 @@
 <tr>
-  <td style="vertical-align:middle;padding:5px">
-    <table class="hperc" cellspacing="0">
-      <tr>
-        <td style="width:1%;text-align:right;vertical-align:middle">
-          <input type="text" name="secure" class="inputField_dis_small" 
-           onfocus="this.className='inputField_en_small'"
-           onblur="this.className='inputField_dis_small'" />          
-        </td>
-        <td style="width:60px;text-align:center;vertical-align:middle">
-          <img src="../antispam.php?secure=login" alt="" class="icon" />
-        </td>
-        <td style="vertical-align:middle"> <img class="helpicon" src="[idir]/help.gif" onmouseover="DZCP.showInfo('[help]')" onmouseout="DZCP.hideInfo()" alt="" /></td>
-      </tr>
-    </table>
+  <td style="vertical-align:middle">
+        <table class="corner" style="background-color:#FFF; width:147px; border: 1px solid #000; border-color: #555 #555 #111 #111;">
+            <tbody>
+                <tr>
+                    <td colspan="2" style="width:147;"><img class="corner" src="../inc/ajax.php?i=securimage&namespace=menu_login&width=145&sid=[sid]" alt="CAPTCHA Image" name="siimage_menu_login" hspace="0" vspace="0" align="left" id="siimage_menu_shout" style="border: 1px solid #000; border-color: #555 #555 #111 #111" /></td>
+                </tr>
+                <tr>
+                    <td style="width:137;"><input type="text" name="secure" size="16" maxlength="25"/></td>
+                    <td style="width:16;"><a tabindex="-1" style="border-style: none;" href="#" title="Refresh Image" onclick="document.getElementById('siimage_menu_login').src = '../inc/ajax.php?i=securimage&namespace=menu_login&width=137&sid=' + Math.random(); this.blur(); return false"><img src="../inc/images/securimage/refresh.png" alt="Reload Image" height="16" width="16" onclick="this.blur()" align="left" border="0" /></a></td>
+                </tr>
+            </tbody>
+        </table>
   </td>
 </tr>
