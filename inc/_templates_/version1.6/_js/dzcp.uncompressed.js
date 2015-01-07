@@ -439,7 +439,7 @@ var DZCP = {
 
       var url = prevURL;
       $.post(url, $('#' + form).serialize() + addpars, function(req) {
-        $('#previewDIV').html(req);
+        $('#previewDIV').html(req).hide().fadeIn("fast");
       });
     },
 
