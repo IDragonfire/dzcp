@@ -7,7 +7,6 @@
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_impressum_head;
-      $wysiwyg = '_word';
 
       $qry = db("SELECT i_domain,i_autor FROM ".$db['settings']."");
       $get = _fetch($qry);

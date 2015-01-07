@@ -7,7 +7,7 @@
 $charset = 'iso-8859-1';
 header("Content-type: text/html; charset=".$charset);
 
-## ADDED / REDEFINED FOR 1.6.1 Final
+## ADDED / REDEFINED FOR 1.7.0
 define('_no_entrys', 'Keine Eintr&auml;ge');
 define('_profil_edit_almgr_link', '<a href="?action=editprofile&amp;show=almgr">Autologin editieren</a>');
 define('_almgrhead', 'Autologin verwalten');
@@ -36,6 +36,7 @@ define('_custom_game_icon_none', 'Kein Custom-Icon verwenden');
 define('_server_gtype', '<span class="fontBold">Gamemode:</span> [type]<br />');
 define('_server_bots', '<span class="fontBold">Bots:</span> [bots]<br />');
 define('_addons', 'Add-ons');
+define('_capcha_sound_info', 'Klicke um das Audio-CAPTCHA abspielen');
 
 //Forum
 define("_forum_last_post", 'Neuesten Beitrag anzeigen');

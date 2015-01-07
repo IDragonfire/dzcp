@@ -4,7 +4,7 @@
  * http://www.dzcp.de
  */
 
-## ADDED / REDEFINED FOR 1.6.1
+## ADDED / REDEFINED FOR 1.7.0
 define('_user_mailto_texttop', '<img src=\\"../inc/images/mailto.gif\\" align=\\"texttop\\"> <a href=\\"mailto:"+d+"\\" target=\\"_blank\\">"+d+"</a>');
 define('_email_navShout', '<a class=\\"navShout\\" href=\\"mailto:"+d+"\\" title=\\"[nick]\\">[nick_cut]</a>');
 define('_ipban_menu_icon_enable', '<a href="[action]" title="[lang_ipban_disable]" rel="[info]" class="confirm"><img src="../inc/images/admin_lock_closed.jpg" alt="" class="icon" /></a>');

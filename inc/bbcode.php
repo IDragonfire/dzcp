@@ -318,10 +318,11 @@ if(session_id()) {
     }
     
     //-> Cleanup DNS DB
-    $qryDNS = db("SELECT `id` FROM `".$db['ip2dns']."` WHERE `time` <= ".time().";");
+    $qryDNS = db("SELECT `id`,`ip` FROM `".$db['ip2dns']."` WHERE `time` <= ".time().";");
     if(_rows($qryDNS) >= 1) {
         while($getDNS = _fetch($qryDNS)) {
             db("DELETE FROM `".$db['ip2dns']."` WHERE `id` = ".$getDNS['id'].";");
+            db("DELETE FROM `".$db['c_who']."` WHERE `ip` = '".$getDNS['ip']."';");
         } unset($getDNS);
     } unset($qryDNS);
 
@@ -342,17 +343,7 @@ if(session_id()) {
             }
         }
     }
-    
-    /* //BUGGGGGGGGGGGGGGGG
-    $get = db("SELECT `bot`,`agent` FROM `".$db['ip2dns']."` WHERE `ip` = '".up($userip)."';",false,true);
-    if(!$get['bot'] && stristr(re($get['agent']), 'Gecko/20100101')) {
-        db("DELETE FROM `".$db['c_ips']."` WHERE `ip` = '".up($userip)."';");
-        db("DELETE FROM `".$db['c_who']."` WHERE `ip` = '".up($userip)."';");
-        db("DELETE FROM `".$db['ip2dns']."` WHERE `ip` = '".up($userip)."';");
-        dzcp_session_destroy();
-        exit('Die Verwendete Browser Version ist veraltet!<p>Sollte es sich um einen Bot handeln, bitte verwende einen Bot Tag im Useragenten!');
-    } */
-    
+
     unset($get_sb,$get,$data_array,$bot);
 }
 
@@ -414,9 +405,6 @@ function addNoCacheHeaders() {
 * Forwarded IP Support
 */
 function visitorIp() {
-    if(isset($_GET['ipset']))
-        return $_GET['ipset'];
-    
     $SetIP = '0.0.0.0';
     $ServerVars = array('REMOTE_ADDR','HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED',
     'HTTP_FORWARDED_FOR','HTTP_FORWARDED','HTTP_VIA','HTTP_X_COMING_FROM','HTTP_COMING_FROM');
@@ -1462,7 +1450,7 @@ function update_maxonline() {
 //-> Aktualisiert die Position der Gaste & User
 function update_online($where='') {
     global $db,$useronline,$userip,$chkMe,$isSpider,$userid;
-    if(!$isSpider && !empty($where)) {
+    if(!$isSpider && !empty($where) && !db("SELECT `id` FROM `".$db['ip2dns']."` WHERE `sessid` = '".session_id()."' AND `bot` = 1;",true)) {
         db("DELETE FROM `".$db['c_who']."` WHERE `online` < ".time().";");
         $sql = db("SELECT `id` FROM `".$db['c_who']."` WHERE `ip` = '".$userip."';");
         if(_rows($sql)) {
@@ -2047,8 +2035,8 @@ function sendMail($mailto,$subject,$content) {
 }
 
 function check_msg_emal() {
-    global $db,$httphost,$ajaxJob;
-    if(!$ajaxJob) {
+    global $db,$httphost,$ajaxJob,$isSpider;
+    if(!$ajaxJob && !$isSpider && !db("SELECT `id` FROM `".$db['ip2dns']."` WHERE `sessid` = '".session_id()."' AND `bot` = 1;",true)) {
         $qry = db("SELECT s1.`an`,s1.`page`,s1.`titel`,s1.`sendmail`,s1.`id` AS `mid`, "
                 . "s2.`id`,s2.`nick`,s2.`email`,s2.`pnmail` FROM `".$db['msg']."` AS `s1` "
                 . "LEFT JOIN `".$db['users']."` AS `s2` ON s2.`id` = s1.`an` WHERE `page` = 0 AND `sendmail` = 0;");
@@ -2424,7 +2412,7 @@ function isSpider($SetUserAgent=false) {
             }
         }
     }
-	
+    
     return false;
 }
 
@@ -2817,21 +2805,22 @@ if(file_exists(basePath.'/inc/menu-functions/navi.php'))
     include_once(basePath.'/inc/menu-functions/navi.php');
 
 //-> Ausgabe des Indextemplates
-function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index') {
+function page($index='',$title='',$where='',$index_templ='index') {
     global $db,$userid,$userip,$tmpdir,$chkMe,$charset,$mysql,$dir;
-    global $designpath,$language,$cp_color,$time_start;
+    global $designpath,$language,$time_start;
 
     // Timer Stop
     $time = round(generatetime() - $time_start,4);
 
-    // JS-Dateine einbinden
-    $lng = ($language=='deutsch')?'de':'en';
-    $edr = ($wysiwyg=='_word')?'advanced':'normal';
-    $lcolor = ($cp_color==1)?'lcolor=true;':'';
-    $java_vars = '<script language="javascript" type="text/javascript">var maxW = '.config('maxwidth').',lng = \''.$lng.'\',dzcp_editor = \''.$edr.'\';'.$lcolor.'</script>'."\n";
-
-    if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') && !strstr($_SERVER['HTTP_USER_AGENT'],'webOS'))
-        $java_vars .= '<script language="javascript" type="text/javascript" src="'.$designpath.'/_js/wysiwyg.js"></script>'."\n";;
+    // JS-Dateine einbinden * json *
+    // refresh interval of the shoutbox in ms
+    $json_encode_js = json_encode(array('lng' => ($language=='deutsch'?'de':'en'), 'maxW' => config('maxwidth'), 'shoutInterval' => 15000)); //Settings to JS
+    $java_vars = '<script language="javascript" type="text/javascript">var json = \''.$json_encode_js.'\', dzcp_config = JSON && JSON.parse(json) || $.parseJSON(json);</script>'."\n";
+    
+    //TODO: Old Code, implement function is_mobile()
+    if(!strstr($_SERVER['HTTP_USER_AGENT'],'Android') && !strstr($_SERVER['HTTP_USER_AGENT'],'webOS')) {
+        $java_vars .= '<script language="javascript" type="text/javascript" src="'.$designpath.'/_js/wysiwyg.js"></script>'."\n";
+    }
 
     if(settings("wmodus") && $chkMe != 4) {
         if(config('securelogin'))
@@ -2929,7 +2918,7 @@ function page($index='',$title='',$where='',$wysiwyg='',$index_templ='index') {
         $pholdervars = explode("^",$pholdervars);
         for($i=0;$i<=count($pholdervars)-1;$i++)
         { $arr[$pholdervars[$i]] = $$pholdervars[$i]; }
-        $arr['sid'] = (mt_rand(1,10) / 100);
+        $arr['sid'] = (float)rand()/(float)getrandmax(); //Math.random() like
 
         //index output
         $index = (file_exists(basePath."/inc/_templates_/".$tmpdir."/".$index_templ.".html") ? show($index_templ, $arr) : show("index", $arr));

@@ -6,7 +6,6 @@
 
 if(_adminMenu != 'true') exit;
 
-$wysiwyg = '_word';
 $where = $where.': '._editor_head;
 if($do == "add") {
     $qry = db("SELECT s2.*, s1.name AS katname, s1.placeholder FROM ".$db['navi_kats']." AS s1

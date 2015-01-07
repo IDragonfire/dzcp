@@ -2,28 +2,28 @@
 var doc = document, ie4 = document.all, opera = window.opera;
 var innerLayer, layer, x, y, doWheel = false, offsetX = 15, offsetY = 5;
 var tickerc = 0, mTimer = new Array(), tickerTo = new Array(), tickerSpeed = new Array();
-var shoutInterval = 15000; // refresh interval of the shoutbox in ms
-var teamspeakInterval = 15000; // refresh interval of the teamspeak viewer in ms
-var isIE  = (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;
-var isWin = (navigator.appVersion.toLowerCase().indexOf("win") != -1) ? true : false;
-var isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;
+var isIE = false, isWin = false, isOpera = false;
 
 // DZCP JAVASCRIPT LIBARY FOR JQUERY >= V1.9
 var DZCP = {
-
   //init
     init: function() {
-        doc.body.id = 'dzcp-engine-1.6';
+        doc.body.id = 'dzcp-engine-1.7';
+        
+        isIE  = (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;
+        isWin = (navigator.appVersion.toLowerCase().indexOf("win") != -1) ? true : false;
+        isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;
+        
         $('body').append('<div id="infoDiv"></div>');
 
         layer = $('#infoDiv')[0];
         doc.body.onmousemove = DZCP.trackMouse;
 
         // refresh shoutbox
-        if($('#navShout')[0]) window.setInterval("$('#navShout').load('../inc/ajax.php?i=shoutbox');", shoutInterval);
-
-        // refresh teamspeak
-        if($('#navTeamspeakContent')[0]) window.setInterval("$('#navTeamspeakContent').load('../inc/ajax.php?i=teamspeak');", teamspeakInterval);
+        if(dzcp_config.shoutInterval > 1) {
+            if($('#navShout')[0]) 
+                window.setInterval("$('#navShout').load('../inc/ajax.php?i=shoutbox');", dzcp_config.shoutInterval);
+        }
 
         // init lightbox
         DZCP.initLightbox();
@@ -46,14 +46,14 @@ var DZCP = {
       $('a[rel^=lightbox]').lightBox({
           fixedNavigation:      true,
           overlayBgColor:       '#000',
-             overlayOpacity:       0.8,
+            overlayOpacity:       0.8,
             imageLoading:         '../inc/images/lightbox/loading.gif',
-             imageBtnClose:        '../inc/images/lightbox/close.gif',
+            imageBtnClose:        '../inc/images/lightbox/close.gif',
             imageBtnPrev:         '../inc/images/lightbox/prevlabel.gif',
-             imageBtnNext:         '../inc/images/lightbox/nextlabel.gif',
+            imageBtnNext:         '../inc/images/lightbox/nextlabel.gif',
             containerResizeSpeed: 350,
-            txtImage:             (lng == 'de' ? 'Bild' : 'Image'),
-             txtOf:                (lng == 'de' ? 'von' : 'of'),
+            txtImage:             (dzcp_config.lng == 'de' ? 'Bild' : 'Image'),
+            txtOf:                (dzcp_config.lng == 'de' ? 'von' : 'of'),
             maxHeight: screen.height * 0.9,
             maxWidth: screen.width * 0.9
       });
@@ -124,14 +124,33 @@ var DZCP = {
 
     // init Ajax DynLoader
     initDynLoader: function(tag,menu,options) {
-        var request = $.ajax({ url: "../inc/ajax.php?i=" + menu + options, type: "GET", data: {}, cache:true, dataType: "html", contentType: "application/x-www-form-urlencoded; charset=iso-8859-1" });
+        var request = $.ajax({ url: "../inc/ajax.php?i=" + menu + options, type: "GET", data: {}, cache:true, dataType: "html", contentType: "application/x-www-form-urlencoded;" });
         request.done(function(msg) { $('#' + tag).html( msg ).hide().fadeIn("normal"); });
     },
     
     // init Ajax DynLoader Sides via Ajax
     initPageDynLoader: function(tag,url) {
-            var request = $.ajax({ url: url, type: "GET", data: {}, cache:true, dataType: "html", contentType: "application/x-www-form-urlencoded; charset=iso-8859-1" });
+            var request = $.ajax({ url: url, type: "GET", data: {}, cache:true, dataType: "html", contentType: "application/x-www-form-urlencoded;" });
             request.done(function(msg) { $('#' + tag).html( msg ).hide().fadeIn("normal"); });
+    },
+    
+    // init Ajax DynCaptcha
+    initDynCaptcha: function(tag,height,width,lines,namespace,length,sid) {
+        var url_input = "../inc/ajax.php?i=securimage";
+        if(height >  1) { url_input = url_input + "&height="+height; }
+        if(width > 1) { url_input = url_input + "&width="+width; }
+        if(lines >= 1) { url_input = url_input + "&lines="+lines; }
+        if(namespace.length > 1) { url_input = url_input + "&namespace="+namespace; }
+        if(length >= 1) { url_input = url_input + "&length="+length; }
+        if(sid > 0) { url_input = url_input + "&sid="+sid; } else { url_input = url_input + "&sid="+Math.random(); }
+        var request = $.ajax({ url: url_input, type: "GET", data: {}, cache:false, dataType: "html", contentType: "application/x-www-form-urlencoded;" });
+        request.done(function(msg) { $('#' + tag).attr("src",msg).hide().fadeIn("normal"); });
+    },
+
+    // Play Sound per JS-Audio
+    EvalSound: function(url) {
+        var audio = new Audio(url);
+        audio.play();
     },
 
     // submit shoutbox
@@ -325,15 +344,15 @@ var DZCP = {
             var imgW = d.width;
             var imgH = d.height;
 
-            if(maxW != 0 && imgW > maxW)
+            if(dzcp_config.maxW != 0 && imgW > dzcp_config.maxW)
           {
-                 d.width = maxW;
-                d.height = Math.round(imgH * (maxW / imgW));
+                 d.width = dzcp_config.maxW;
+                d.height = Math.round(imgH * (dzcp_config.maxW / imgW));
 
                 if(!DZCP.linkedImage(d))
             {
               var textLink = doc.createElement("span");
-                    var popupLink = doc.createElement("a");
+              var popupLink = doc.createElement("a");
 
               textLink.appendChild(doc.createElement("br"));
               textLink.setAttribute('class', 'resized');
@@ -344,10 +363,10 @@ var DZCP = {
               popupLink.appendChild(d.cloneNode(true));
 
               d.parentNode.appendChild(textLink);
-                    d.parentNode.replaceChild(popupLink, d);
+              d.parentNode.replaceChild(popupLink, d);
 
               DZCP.initLightbox();
-                }
+            }
           }
         }
         }
@@ -428,11 +447,8 @@ var DZCP = {
     del: function(txt) {
       txt = txt.replace(/\+/g, ' ');
       txt = txt.replace(/oe/g, 'ö');
-
       return confirm(txt + '?');
     },
-
-
 
   // forum search
     hideForumFirst: function() {

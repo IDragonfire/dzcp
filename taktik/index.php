@@ -138,8 +138,6 @@ case 'do':
   {
     $index = error(_error_wrong_permissions, 1);
   } else {
-    $wysiwyg = '_word';
-
     if($_GET['what'] == "new")
     {
       $qry = db("SELECT * FROM ".$db['taktik']."");

@@ -7,7 +7,7 @@
 $charset = 'iso-8859-1';
 header("Content-type: text/html; charset=".$charset);
 
-## ADDED / REDEFINED FOR 1.6.1 Final
+## ADDED / REDEFINED FOR 1.7.0
 define('_no_entrys', 'No entrys');
 define('_profil_edit_almgr_link', '<a href="?action=editprofile&amp;show=almgr">Autologin editieren</a>');
 define('_almgrhead', 'Autologin verwalten');
@@ -36,11 +36,12 @@ define('_custom_game_icon_none', 'Not use custom icon');
 define('_server_gtype', '<span class="fontBold">Gamemode:</span> [type]<br />');
 define('_server_bots', '<span class="fontBold">Bots:</span> [bots]<br />');
 define('_addons', 'Add-ons');
+define('_capcha_sound_info', 'Click for Play Audio-CAPTCHA');
 
 //Forum
-define(_forum_last_post, 'View the latest post');
-define(_forum_online_info0, 'In total there are <b>[users]</b> users online: <b>[regs]</b> registered and <b>[gast]</b> guests (based on users active over the past [timer] minutes)');
-define(_forum_online_info1, 'Registered users');
+define('_forum_last_post', 'View the latest post');
+define('_forum_online_info0', 'In total there are <b>[users]</b> users online: <b>[regs]</b> registered and <b>[gast]</b> guests (based on users active over the past [timer] minutes)');
+define('_forum_online_info1', 'Registered users');
 define("_forum_gast", 'guests');
 define("_forum_gaste", 'guests');
 define("_forum_regs", 'registered');

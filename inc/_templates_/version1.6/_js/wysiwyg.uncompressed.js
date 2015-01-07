@@ -1,4 +1,4 @@
-tinyMCE_GZ.init({ plugins : 'contextmenu,dzcp,advimage,paste,table,fullscreen,inlinepopups,spellchecker,searchreplace,insertdatetime,dzcp,media', themes : 'advanced', languages : (lng == 'de' ? lng : 'en'), disk_cache : true, debug : false });
+tinyMCE_GZ.init({ plugins : 'contextmenu,dzcp,advimage,paste,table,fullscreen,inlinepopups,spellchecker,searchreplace,insertdatetime,dzcp,media', themes : 'advanced', languages : (dzcp_config.lng == 'de' ? dzcp_config.lng : 'en'), disk_cache : true, debug : false });
 
 //default wysiwyg editor
 tinyMCE.init({
@@ -6,7 +6,7 @@ tinyMCE.init({
     mode                                : "specific_textareas",
     editor_selector                     : 'editorStyle',
     plugins                             : 'contextmenu,dzcp,inlinepopups,spellchecker,media',
-    language                            : (lng == 'de' ? lng : 'en'),
+    language                            : (dzcp_config.lng == 'de' ? dzcp_config.lng : 'en'),
     theme_advanced_buttons1: 'bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,link,unlink,|,image,youtube,forecolor,'
     + 'backcolor,|,smileys,flags,dzcpuser,|,spellchecker',
     theme_advanced_toolbar_location     : 'top',
@@ -28,7 +28,7 @@ tinyMCE.init({
     editor_selector                     : 'editorStyleMini',
     theme                               : 'advanced',
     plugins                             : 'contextmenu,dzcp,inlinepopups,media',
-    language                            : (lng == 'de' ? lng : 'en'),
+    language                            : (dzcp_config.lng == 'de' ? dzcp_config.lng : 'en'),
     theme_advanced_buttons1             : 'bold,italic,underline,|,link,unlink,|,image',
     theme_advanced_buttons2             : '',
     theme_advanced_buttons3             : '',
@@ -49,7 +49,7 @@ tinyMCE.init({
     editor_selector                     : 'editorStyleNewsletter',
     theme                               : 'advanced',
     plugins                             : 'contextmenu,dzcp,media',
-    language                            : (lng == 'de' ? lng : 'en'),
+    language                            : (dzcp_config.lng == 'de' ? dzcp_config.lng : 'en'),
     theme_advanced_buttons1             : 'bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,bullist,numlist,|,link,unlink,|,image,forecolor,backcolor',
     theme_advanced_buttons2             : '',
     theme_advanced_buttons3             : '',
@@ -73,7 +73,7 @@ tinyMCE.init({
     theme                             : 'advanced',
     elements                          : "ajaxfilemanager",
     plugins                           : 'contextmenu,dzcp,advimage,paste,table,fullscreen,inlinepopups,spellchecker,searchreplace,insertdatetime,media',
-    language                          : (lng == 'de' ? lng : 'en'),
+    language                          : (dzcp_config.lng == 'de' ? dzcp_config.lng : 'en'),
     theme_advanced_buttons1           : 'bold,italic,underline,|,justifyleft,justifycenter,justifyright,justifyfull,|,undo,redo,|,bullist,numlist,|,link,unlink,|,pastephp,|,forecolor,'
                                       + 'backcolor,|,smileys,flags,',
     theme_advanced_buttons2           : 'paste,pastetext,pasteword,|,search,replace,|,image,|,tablecontrols,|,dzcpuser,|,media',

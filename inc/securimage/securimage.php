@@ -425,8 +425,6 @@ class Securimage {
         if (is_null($this->ttf_file))
             $this->ttf_file = $this->securimage_path . '/AHGBold.ttf';
 
-        $this->signature_font = $this->ttf_file;
-
         if (is_null($this->wordlist_file))
             $this->wordlist_file = $this->securimage_path . '/words/words.txt';
 
@@ -521,10 +519,11 @@ class Securimage {
     public function show($background_image = '') {
         set_error_handler(array(&$this, 'errorHandler'));
 
-        if($background_image != '' && is_readable($background_image))
+        if($background_image != '' && is_readable($background_image)) {
             $this->bgimg = $background_image;
+        }
 
-        $this->doImage();
+        return $this->doImage();
     }
 
     /**
@@ -677,7 +676,7 @@ class Securimage {
             $this->addSignature();
         }
 
-        $this->output();
+        return $this->output();
     }
 
     /**
@@ -1006,34 +1005,21 @@ class Securimage {
      * Sends the appropriate image and cache headers and outputs image to the browser
      */
     protected function output() {
-        if ($this->canSendHeaders() || $this->send_headers == false) {
-            if ($this->send_headers) {
-                // only send the content-type headers if no headers have been output
-                // this will ease debugging on misconfigured servers where warnings
-                // may have been output which break the image and prevent easily viewing
-                // source to see the error.
-                header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-                header("Last-Modified: " . gmdate("D, d M Y H:i:s") . "GMT");
-                header("Cache-Control: no-store, no-cache, must-revalidate");
-                header("Cache-Control: post-check=0, pre-check=0", false);
-                header("Pragma: no-cache");
-            }
-
+        ob_start(); $error = false;
+        if ($this->canSendHeaders()) {
             switch ($this->image_type) {
                 case self::SI_IMAGE_JPEG:
-                    if ($this->send_headers) header("Content-Type: image/jpeg");
                     imagejpeg($this->im, null, 90);
-                    break;
+                break;
                 case self::SI_IMAGE_GIF:
-                    if ($this->send_headers) header("Content-Type: image/gif");
                     imagegif($this->im);
-                    break;
+                break;
                 default:
-                    if ($this->send_headers) header("Content-Type: image/png");
                     imagepng($this->im);
-                    break;
+                break;
             }
         } else {
+            $error = true;
             echo '<hr /><strong>'
                 .'Failed to generate captcha image, content has already been '
                 .'output.<br />This is most likely due to misconfiguration or '
@@ -1041,9 +1027,10 @@ class Securimage {
         }
 
         imagedestroy($this->im);
+        $imgData = ob_get_contents();
+        ob_end_clean();
         restore_error_handler();
-
-        if (!$this->no_exit) exit;
+        return array('error' => $error, 'data' => base64_encode($imgData));
     }
 
     /**
@@ -1172,7 +1159,7 @@ class Securimage {
                 $code_entered = strtolower($code_entered);
             }
 
-            if ($code == $code_entered) {
+            if ((string)$code == (string)$code_entered) {
                 $this->correct_code = true;
                 $this->clearCodeFromDatabase();
             }

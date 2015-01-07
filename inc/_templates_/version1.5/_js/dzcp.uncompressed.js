@@ -2,28 +2,28 @@
 var doc = document, ie4 = document.all, opera = window.opera;
 var innerLayer, layer, x, y, doWheel = false, offsetX = 15, offsetY = 5;
 var tickerc = 0, mTimer = new Array(), tickerTo = new Array(), tickerSpeed = new Array();
-var shoutInterval = 15000; // refresh interval of the shoutbox in ms
-var teamspeakInterval = 15000; // refresh interval of the teamspeak viewer in ms
-var isIE  = (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;
-var isWin = (navigator.appVersion.toLowerCase().indexOf("win") != -1) ? true : false;
-var isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;
+var isIE = false, isWin = false, isOpera = false;
 
 // DZCP JAVASCRIPT LIBARY FOR JQUERY >= V1.9
 var DZCP = {
-
   //init
     init: function() {
-        doc.body.id = 'dzcp-engine-1.6';
+        doc.body.id = 'dzcp-engine-1.7';
+        
+        isIE  = (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;
+        isWin = (navigator.appVersion.toLowerCase().indexOf("win") != -1) ? true : false;
+        isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;
+        
         $('body').append('<div id="infoDiv"></div>');
 
         layer = $('#infoDiv')[0];
         doc.body.onmousemove = DZCP.trackMouse;
 
         // refresh shoutbox
-        if($('#navShout')[0]) window.setInterval("$('#navShout').load('../inc/ajax.php?i=shoutbox');", shoutInterval);
-
-        // refresh teamspeak
-        if($('#navTeamspeakContent')[0]) window.setInterval("$('#navTeamspeakContent').load('../inc/ajax.php?i=teamspeak');", teamspeakInterval);
+        if(dzcp_config.shoutInterval > 1) {
+            if($('#navShout')[0]) 
+                window.setInterval("$('#navShout').load('../inc/ajax.php?i=shoutbox');", dzcp_config.shoutInterval);
+        }
 
         // init lightbox
         DZCP.initLightbox();
@@ -34,14 +34,14 @@ var DZCP = {
       $('a[rel^=lightbox]').lightBox({
           fixedNavigation:      true,
           overlayBgColor:       '#000',
-             overlayOpacity:       0.8,
+            overlayOpacity:       0.8,
             imageLoading:         '../inc/images/lightbox/loading.gif',
-             imageBtnClose:        '../inc/images/lightbox/close.gif',
+            imageBtnClose:        '../inc/images/lightbox/close.gif',
             imageBtnPrev:         '../inc/images/lightbox/prevlabel.gif',
-             imageBtnNext:         '../inc/images/lightbox/nextlabel.gif',
+            imageBtnNext:         '../inc/images/lightbox/nextlabel.gif',
             containerResizeSpeed: 350,
-            txtImage:             (lng == 'de' ? 'Bild' : 'Image'),
-             txtOf:                (lng == 'de' ? 'von' : 'of'),
+            txtImage:             (dzcp_config.lng == 'de' ? 'Bild' : 'Image'),
+            txtOf:                (dzcp_config.lng == 'de' ? 'von' : 'of'),
             maxHeight: screen.height * 0.9,
             maxWidth: screen.width * 0.9
       });
@@ -112,27 +112,33 @@ var DZCP = {
 
     // init Ajax DynLoader
     initDynLoader: function(tag,menu,options) {
-        var request = $.ajax({ url: "../inc/ajax.php?i=" + menu + options, type: "GET", data: {}, cache:true, dataType: "html", contentType: "application/x-www-form-urlencoded; charset=iso-8859-1" });
+        var request = $.ajax({ url: "../inc/ajax.php?i=" + menu + options, type: "GET", data: {}, cache:true, dataType: "html", contentType: "application/x-www-form-urlencoded;" });
         request.done(function(msg) { $('#' + tag).html( msg ).hide().fadeIn("normal"); });
     },
     
     // init Ajax DynLoader Sides via Ajax
     initPageDynLoader: function(tag,url) {
-        var request = $.ajax({ url: url, type: "GET", data: {}, cache:true, dataType: "html", contentType: "application/x-www-form-urlencoded; charset=iso-8859-1" });
-        request.done(function(msg) { $('#' + tag).html( msg ); });
+            var request = $.ajax({ url: url, type: "GET", data: {}, cache:true, dataType: "html", contentType: "application/x-www-form-urlencoded;" });
+            request.done(function(msg) { $('#' + tag).html( msg ).hide().fadeIn("normal"); });
     },
     
-    autocomplete: function(type,change) {
-        var selected_game = $('#status :selected').val();
-        $( document ).load('../inc/ajax.php?i=autocomplete&type='+type+'&game='+selected_game, function(data) {
-            var json = jQuery.parseJSON(data);
-            if(json.qport != '') {
-                if(change || $("#qport").val() == '') {
-                    $("#qport").val(json.qport);
-                    $("#autochanged").show();
-                }
-            }
-        });
+    // init Ajax DynCaptcha
+    initDynCaptcha: function(tag,height,width,lines,namespace,length,sid) {
+        var url_input = "../inc/ajax.php?i=securimage";
+        if(height >  1) { url_input = url_input + "&height="+height; }
+        if(width > 1) { url_input = url_input + "&width="+width; }
+        if(lines >= 1) { url_input = url_input + "&lines="+lines; }
+        if(namespace.length > 1) { url_input = url_input + "&namespace="+namespace; }
+        if(length >= 1) { url_input = url_input + "&length="+length; }
+        if(sid > 0) { url_input = url_input + "&sid="+sid; } else { url_input = url_input + "&sid="+Math.random(); }
+        var request = $.ajax({ url: url_input, type: "GET", data: {}, cache:false, dataType: "html", contentType: "application/x-www-form-urlencoded;" });
+        request.done(function(msg) { $('#' + tag).attr("src",msg).hide().fadeIn("normal"); });
+    },
+
+    // Play Sound per JS-Audio
+    EvalSound: function(url) {
+        var audio = new Audio(url);
+        audio.play();
     },
 
     // submit shoutbox
@@ -156,6 +162,19 @@ var DZCP = {
     tempswitch: function() {
       var url = doc.form.tempswitch.options[doc.form.tempswitch.selectedIndex].value;
       if(url != 'lazy') DZCP.goTo(url);
+    },
+    
+    autocomplete: function(type,change) {
+        var selected_game = $('#status :selected').val();
+        $( document ).load('../inc/ajax.php?i=autocomplete&type='+type+'&game='+selected_game, function(data) {
+            var json = jQuery.parseJSON(data);
+            if(json.qport != '') {
+                if(change || $("#qport").val() == '') {
+                    $("#qport").val(json.qport);
+                    $("#autochanged").show();
+                }
+            }
+        });
     },
 
   // go to defined url
@@ -274,31 +293,34 @@ var DZCP = {
       }
     },
 
-  // toggle object
+    // toggle object
     toggle: function(id) {
-      if(id == 0) return;
-      else {
+        if(id == 0) return;
+
         if($('#more' + id).css('display') == 'none')
         {
-            $('#more' + id).css('display', '');
+            $("#more" + id).fadeIn("normal");
             $('#img' + id).prop('src', '../inc/images/collapse.gif');
-        } else {
-            $('#more' + id).css('display', 'none');
-          $('#img' + id).prop('src', '../inc/images/expand.gif');
         }
-      }
+        else
+        {
+            $("#more" + id).fadeOut("normal");
+            $('#img' + id).prop('src', '../inc/images/expand.gif');
+        }
     },
-  // toggle with effect
-      fadetoggle: function(id) {
+
+    // toggle with effect *TS3
+    fadetoggle: function(id) {
+        if(id == 0) return;
+
         $("#more_"+id).fadeToggle("slow", "swing");
-        if($('#img_'+id).prop('alt') == "hidden") {
-            $('#img_'+id).prop({alt: 'normal',
-                                src: '../inc/images/toggle_normal.png'});
-        } else {
-            $('#img_'+id).prop({alt: 'hidden',
-                                src: '../inc/images/toggle_hidden.png'});
-        }
+
+        if($('#img_'+id).prop('alt') == "hidden")
+            $('#img_'+id).prop({alt: 'normal', src: '../inc/images/toggle_normal.png'});
+        else
+            $('#img_'+id).prop({alt: 'hidden', src: '../inc/images/toggle_hidden.png'});
     },
+    
   // resize images
     resizeImages: function() {
         for(var i=0;i<doc.images.length;i++)
@@ -310,15 +332,15 @@ var DZCP = {
             var imgW = d.width;
             var imgH = d.height;
 
-            if(maxW != 0 && imgW > maxW)
+            if(dzcp_config.maxW != 0 && imgW > dzcp_config.maxW)
           {
-                 d.width = maxW;
-                d.height = Math.round(imgH * (maxW / imgW));
+                 d.width = dzcp_config.maxW;
+                d.height = Math.round(imgH * (dzcp_config.maxW / imgW));
 
                 if(!DZCP.linkedImage(d))
             {
               var textLink = doc.createElement("span");
-                    var popupLink = doc.createElement("a");
+              var popupLink = doc.createElement("a");
 
               textLink.appendChild(doc.createElement("br"));
               textLink.setAttribute('class', 'resized');
@@ -329,10 +351,10 @@ var DZCP = {
               popupLink.appendChild(d.cloneNode(true));
 
               d.parentNode.appendChild(textLink);
-                    d.parentNode.replaceChild(popupLink, d);
+              d.parentNode.replaceChild(popupLink, d);
 
               DZCP.initLightbox();
-                }
+            }
           }
         }
         }
@@ -396,7 +418,6 @@ var DZCP = {
       $('#previewDIV').html('<div style="width:100%;text-align:center">'
                              + ' <img src="../inc/images/admin/loading.gif" alt="" />'
                              + '</div>');
-
       var addpars = "";
       if(form == 'cwForm') {
           $("input[type=file]").each(function() {
@@ -414,11 +435,8 @@ var DZCP = {
     del: function(txt) {
       txt = txt.replace(/\+/g, ' ');
       txt = txt.replace(/oe/g, 'ö');
-
       return confirm(txt + '?');
     },
-
-
 
   // forum search
     hideForumFirst: function() {
@@ -485,7 +503,7 @@ var DZCP = {
       if(tickerTo[subID] == 'h') thisObj.style.left = (parseInt(thisObj.style.left) <= (0-(width/2)+2)) ? 0 : parseInt(thisObj.style.left)-1 + 'px';
       else thisObj.style.top = (thisObj.style.top == '' || (parseInt(thisObj.style.top)<(0-(width/2)+6))) ? 0 : parseInt(thisObj.style.top)-1 + 'px';
     },
-
+    
     //TS3 Settings
     TS3Settings: function(id) {
         if(id == 3) {

@@ -6,7 +6,6 @@
 
 if(_adminMenu != 'true') exit;
 $where = $where.': '._news_admin_head;
-$wysiwyg = '_word';
 
 switch ($do) {
     case 'add':

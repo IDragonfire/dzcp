@@ -54,14 +54,7 @@ ob_implicit_flush(false);
                'text1' => $text_1,'text2' => $text_2,'status' => $status_set));
     }
 
-    //Hack for Audio Securimage
     $mod = isset($_GET['i']) ? $_GET['i'] : '';
-    $mod_exp = @explode('@', $mod);
-    if(count($mod_exp) >= 2 && $mod_exp[0] == 'securimage_audio') {
-        $audio_namespace = $mod_exp[1];
-        $mod = $mod_exp[0];
-    }
-
     if($mod != 'securimage' && $mod != 'securimage_audio')
         header("Content-Type: text/xml; charset=".(!defined('_charset') ? 'iso-8859-1' : _charset));
     else if($mod == 'server' || $mod == 'teamspeak')
@@ -107,7 +100,15 @@ ob_implicit_flush(false);
                 $securimage->num_lines    = isset($_GET['lines']) ? intval($_GET['lines']) : 2;
                 $securimage->namespace    = isset($_GET['namespace']) ? $_GET['namespace'] : 'default';
                 if(isset($_GET['length'])) $securimage->code_length = intval($_GET['length']);
-                die($securimage->show());
+                
+                $imgData = $securimage->show();
+                if(!$imgData['error']) {
+                    echo 'data:image/gif;base64,'.$imgData['data'];
+                } else {
+                    echo $imgData; 
+                }
+                
+                exit();
             }
             break;
         case 'securimage_audio':
@@ -115,7 +116,7 @@ ob_implicit_flush(false);
                 if(file_exists(basePath.'/inc/securimage/audio/en/0.wav'))
                     $securimage->audio_path = basePath.'/inc/securimage/audio/en/';
 
-                $securimage->namespace = isset($audio_namespace) ? $audio_namespace : 'default';
+                $securimage->namespace = isset($_GET['namespace']) ? $_GET['namespace'] : 'default';
                 die($securimage->outputAudioFile());
             }
             break;

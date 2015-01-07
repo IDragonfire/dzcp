@@ -19,7 +19,6 @@ $settingsmenu = null;
 $contentmenu = null;
 $addonsmenu = null;
 $amenu = array();
-$wysiwyg = false;
 $use_glossar = false;
 
 ## SECTIONS ##
@@ -146,4 +145,4 @@ else {
 
 ## INDEX OUTPUT ##
 $title = $pagetitle." - ".$where;
-page($index, $title, $where, $wysiwyg);
+page($index, $title, $where);
