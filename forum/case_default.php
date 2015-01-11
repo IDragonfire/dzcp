@@ -125,7 +125,7 @@ if(defined('_Forum')) {
 
     /* Wer ist online */
     update_online($where); //Update Stats
-    $sql = db('SELECT `position`,`color` FROM `dzcp_positions`'); $team_groups = '';
+    $sql = db('SELECT `position`,`color` FROM '.$db['pos']); $team_groups = '';
     while ($get = _fetch($sql)) {
         $team_groups .= show(_forum_team_groups, array('color' => re($get['color']), 'group' => re($get['position'])));
     }
