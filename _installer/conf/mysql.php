@@ -1945,7 +1945,7 @@ function update_mysql_1_7() {
     (113, 'AnyApexBot', '', '%.*AnyApexBot/([0-9.]*).*%i', 1, 1),
     (114, 'Arachmo', '', '%.*Arachmo.*%i', 0, 1),
     (115, 'YaCy', '', '%.*yacybot.*%i', 0, 1),
-    (115, 'Trident', '', '%Trident/([0-9.]*)%i', 0, 1);",false,false,true);
+    (116, 'Trident', '', '%Trident/([0-9.]*)%i', 0, 1);",false,false,true);
     
     db("ALTER TABLE `".$db['botlist']."` ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `regexpattern` (`regexpattern`);",false,false,true);
     db("ALTER TABLE `".$db['botlist']."` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=116;",false,false,true);
