@@ -94,6 +94,10 @@ if(defined('_Votes')) {
                                                 "stimmen" => $stimmen));
     }
 
+    if(empty($show)) {
+        $show = show(_no_entrys_yet, array("colspan" => "4"));
+    }
+    
     $index = show($dir."/votes", array("head" => _votes_head,
                                        "show" => $show,
                                        "titel" => _titel,

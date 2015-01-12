@@ -10,7 +10,7 @@ if(defined('_Votes')) {
             $index = error(_vote_no_answer);
         else {
             $get = db("SELECT * FROM ".$db['votes']." WHERE id = '".intval($_GET['id'])."'",false,true);
-            if($get['intern']) {
+            if($get['intern'] && $chkMe >= 1) {
                 if(!count_clicks('vote',$get['id']))
                     $index = error(_error_voted_again,1);
                 else if($get['closed'])
