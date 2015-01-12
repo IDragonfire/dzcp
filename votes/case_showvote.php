@@ -5,8 +5,8 @@
  */
 
 if(defined('_Votes')) {
-    $get = db("SELECT * FROM ".$db['votes']." WHERE id = '".intval($_GET['id'])."'",false,true);
-    if($get['intern']) {
+    $get = db("SELECT `intern`,`id` FROM `".$db['votes']."` WHERE id = ".intval($_GET['id']).";",false,true);
+    if(!$get['intern'] || $chkMe >= 1) {
         $qryv = db("SELECT user_id,time FROM ".$db['ipcheck']." WHERE what = 'vid_".$get['id']."' ORDER BY time DESC");
         while($getv = _fetch($qryv)) {
             $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
