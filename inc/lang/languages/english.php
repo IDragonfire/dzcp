@@ -1076,7 +1076,6 @@ define('_forum_search_kat_all' , 'all Categories');
 define('_forum_search_results' , 'Search results');
 define('_forum_online_head' , 'Browsing the board');
 define('_forum_nobody_is_online' , 'Right now no user is browsing the board!');
-define('_forum_nobody_is_online2' , 'Right now no user except you is browsing the board!');
 ## Gaestebuch ##
 define('_gb_delete_successful' , 'The entry was successfully deleted!');
 define('_gb_head' , 'Guestbook');

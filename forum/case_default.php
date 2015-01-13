@@ -97,7 +97,7 @@ if(defined('_Forum')) {
     if(_rows($qryo))
     {
         $i=0;
-        $check = 1;
+        $check = 1; $nick = '';
         $cnto = cnt($db['users'], " WHERE time+'".$useronline."'>'".time()."' AND whereami = 'Forum'");
         while($geto = _fetch($qryo))
         {
@@ -114,13 +114,10 @@ if(defined('_Forum')) {
             $nick .= autorcolerd($geto['id']).$end;
             $i++; $check++;
         } //end while
-    } 
-    else 
-    {
-        if(!$chkMe) $nick = "<center>"._forum_nobody_is_online."</center>";
-        else        $nick = "<center>"._forum_nobody_is_online2."</center>";
+    } else {
+        $nick = _forum_nobody_is_online;
     }
-  
+
     $stats = show($dir."/forum_stats", array());
 
     /* Wer ist online */

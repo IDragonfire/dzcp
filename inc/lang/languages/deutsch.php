@@ -1075,7 +1075,6 @@ define('_forum_search_kat_all', 'allen Kategorien');
 define('_forum_search_results', 'Suchergebnisse');
 define('_forum_online_head', 'Im Forum online:');
 define('_forum_nobody_is_online', 'Zur Zeit ist kein User im Forum online!');
-define('_forum_nobody_is_online2', 'Zur Zeit ist kein User au&szlig;er dir im Forum online!');
 ## Gaestebuch ##
 define('_gb_delete_successful', 'Der Eintrag wurde erfolgreich gel&ouml;scht!');
 define('_gb_head', 'G&auml;stebuch');

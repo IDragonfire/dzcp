@@ -1944,10 +1944,10 @@ function autorcolerd($uid, $class="", $cut="") {
     $get = _fetch($sql);
     $nickname = (!empty($cut)) ? cut(re(dbc_index::getIndexKey('user_'.intval($uid), 'nick')), $cut) : re(dbc_index::getIndexKey('user_'.intval($uid), 'nick'));
     return show(_user_link_colerd, array("id" => $uid,
-                                  "country" => flag(dbc_index::getIndexKey('user_'.intval($uid), 'country')),
-                                  "class" => $class,
-                                  "color" => re($get['color']),
-                                  "nick" => $nickname));
+                                         "country" => flag(dbc_index::getIndexKey('user_'.intval($uid), 'country')),
+                                         "class" => $class,
+                                         "color" => re($get['color']),
+                                         "nick" => $nickname));
 }
 
 function cleanautor($uid, $class="", $nick="", $email="", $cut="") {
