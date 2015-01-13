@@ -18,6 +18,7 @@ define('_teamspeak_default_icon_yes_no', '<img src="../inc/images/default_server
 define('_teamspeak_menu_icon_yes', '<a href="?admin=teamspeak&amp;do=menu&amp;id=[id]"><img src="../inc/images/server_no.gif" alt="" class="icon" /></a>');
 define('_teamspeak_menu_icon_no', '<a href="?admin=teamspeak&amp;do=menu&amp;id=[id]"><img src="../inc/images/server_yes.gif" alt="" class="icon" /></a>');
 define('_gameicon_blank', '<img alt="" src="[icon]" class="icon" />');
+define('_user_link_colerd', '[country] <a class="[class]" href="../user/?action=user&amp;id=[id]"><font color="[color]">[nick]</font></a>');
 
 //Forum
 define("_forum_team_groups", '[<a style="color:[color]" href="#">[group]</a>] ');

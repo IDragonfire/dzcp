@@ -5,6 +5,7 @@
  */
 
 if(defined('_Forum')) {
+    update_online($where); //Update Stats
     $qry = db("SELECT * FROM ".$db['f_kats']." ORDER BY kid");
     while($get = _fetch($qry)) 
     {
@@ -107,11 +108,10 @@ if(defined('_Forum')) {
             } 
             else 
             {
-                if($cnto == $check) $end = "";
-                else $end = ", ";
+                $end = ($cnto == $check ? "" : ", ");
             }
             
-            $nick .= autor($geto['id']).$end;
+            $nick .= autorcolerd($geto['id']).$end;
             $i++; $check++;
         } //end while
     } 
@@ -124,7 +124,6 @@ if(defined('_Forum')) {
     $stats = show($dir."/forum_stats", array());
 
     /* Wer ist online */
-    update_online($where); //Update Stats
     $sql = db('SELECT `position`,`color` FROM '.$db['pos']); $team_groups = '';
     while ($get = _fetch($sql)) {
         $team_groups .= show(_forum_team_groups, array('color' => re($get['color']), 'group' => re($get['position'])));

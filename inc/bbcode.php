@@ -1903,7 +1903,7 @@ function startpage() {
 }
 
 //-> Nickausgabe mit Profillink oder Emaillink (reg/nicht reg)
-function autor($uid, $class="", $nick="", $email="", $cut="",$add="") {
+function autor($uid, $class="", $nick="", $email="", $cut="", $add="") {
     global $db;
     if(!dbc_index::issetIndex('user_'.intval($uid))) {
         $qry = db("SELECT * FROM `".$db['users']."` WHERE `id` = ".intval($uid).";");
@@ -1921,6 +1921,32 @@ function autor($uid, $class="", $nick="", $email="", $cut="",$add="") {
                                   "country" => flag(dbc_index::getIndexKey('user_'.intval($uid), 'country')),
                                   "class" => $class,
                                   "get" => $add,
+                                  "nick" => $nickname));
+}
+
+//-> Nickausgabe mit Profillink (reg + position farbe)
+function autorcolerd($uid, $class="", $cut="") {
+    global $db;
+    if(!dbc_index::issetIndex('user_'.intval($uid))) {
+        $qry = db("SELECT * FROM `".$db['users']."` WHERE `id` = ".intval($uid).";");
+        if(_rows($qry)) {
+            $get = _fetch($qry);
+            dbc_index::setIndex('user_'.$get['id'], $get);
+        }
+    }
+
+    $position = dbc_index::getIndexKey('user_'.intval($uid), 'position');
+    $sql = db("SELECT `id`,`color` FROM `".$db['pos']."` WHERE `id` = ".$position);
+    if(!$position || !_rows($sql)) {
+        return autor($uid,$class,'','',$cut);
+    }
+    
+    $get = _fetch($sql);
+    $nickname = (!empty($cut)) ? cut(re(dbc_index::getIndexKey('user_'.intval($uid), 'nick')), $cut) : re(dbc_index::getIndexKey('user_'.intval($uid), 'nick'));
+    return show(_user_link_colerd, array("id" => $uid,
+                                  "country" => flag(dbc_index::getIndexKey('user_'.intval($uid), 'country')),
+                                  "class" => $class,
+                                  "color" => re($get['color']),
                                   "nick" => $nickname));
 }
 
