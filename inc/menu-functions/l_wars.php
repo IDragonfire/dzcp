@@ -15,6 +15,7 @@ function l_wars() {
     $lwars = '';
     if(_rows($qry)) {
         while($get = _fetch($qry)) {
+            $info = '';
             if(config('allowhover') == 1 || config('allowhover') == 2)
                 $info = 'onmouseover="DZCP.showInfo(\''.jsconvert(re($get['name'])).' vs. '.jsconvert(re($get['gegner'])).'\', \''._played_at.';'._cw_xonx.';'._result.';'._comments_head.'\', \''.date("d.m.Y H:i", $get['datum'])._uhr.';'.jsconvert(re($get['xonx'])).';'.cw_result_nopic_nocolor($get['punkte'],$get['gpunkte']).';'.cnt($db['cw_comments'], "WHERE cw = '".$get['id']."'").'\')" onmouseout="DZCP.hideInfo()"';
 

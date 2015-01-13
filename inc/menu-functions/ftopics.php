@@ -15,17 +15,11 @@ function ftopics() {
         while($get = _fetch($qry)) {
             if($f == config('m_ftopics'))  break;
 
-            if(fintern($get['kid']))
-            {
+            if(fintern($get['kid'])) {
                 $lp = cnt($db['f_posts'], " WHERE `sid` = '".$get['id']."'");
                 $pagenr = ceil($lp/config('m_fposts'));
-
-                if($pagenr == 0) $page = 1;
-                else $page = $pagenr;
-
-                if(config('allowhover') == 1)
-                $info = 'onmouseover="DZCP.showInfo(\''.jsconvert(re($get['topic'])).'\', \''._forum_kat.';'._forum_posts.';'._forum_lpost.'\', \''.re($get['kattopic']).';'.++$lp.';'.date("d.m.Y H:i", $get['lp'])._uhr.'\')" onmouseout="DZCP.hideInfo()"';
-
+                $page = !$pagenr ? 1 : $pagenr;
+                $info = !config('allowhover') == 1 ? '' : 'onmouseover="DZCP.showInfo(\''.jsconvert(re($get['topic'])).'\', \''._forum_kat.';'._forum_posts.';'._forum_lpost.'\', \''.re($get['kattopic']).';'.++$lp.';'.date("d.m.Y H:i", $get['lp'])._uhr.'\')" onmouseout="DZCP.hideInfo()"';
                 $ftopics .= show("menu/forum_topics", array("id" => $get['id'],
                                                             "pagenr" => $page,
                                                             "p" => $lp,

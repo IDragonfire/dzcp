@@ -1844,6 +1844,47 @@ function nav($entrys, $perpage, $urlpart='', $recall = 0) {
     return $pagination."</div>";
 }
 
+//-> Generiert die Infobox bei Fehlern oder Erfolg etc. / neuer Ersatz fur function info() & error()
+class notification {
+    static private $notification_index = array();
+    
+    public static function add_error($msg = '', $link = false, $time = 3) {
+        self::$notification_index[] = array('status' => 'error', 'msg' => $msg, 'link' => $link, 'time' => $time);
+    }
+    
+    public static function add_success($msg = '', $link = false, $time = 3) {
+        self::$notification_index[] = array('status' => 'success', 'msg' => $msg, 'link' => $link, 'time' => $time);
+    }
+    
+    public static function add_notice($msg = '', $link = false, $time = 3) {
+        self::$notification_index[] = array('status' => 'notice', 'msg' => $msg, 'link' => $link, 'time' => $time);
+    }
+    
+    public static function add_warning($msg = '', $link = false, $time = 3) {
+        self::$notification_index[] = array('status' => 'warning', 'msg' => $msg, 'link' => $link, 'time' => $time);
+    }
+    
+    public static function add_custom($status = 'custom', $msg = '', $link = false, $time = 3) {
+        self::$notification_index[] = array('status' => strtolower($status), 'msg' => $msg, 'link' => $link, 'time' => $time);
+    }
+
+    public static function get() {
+        $notification = '';
+        if(count(self::$notification_index) >= 1) {
+            foreach (self::$notification_index as $data) {
+                if($data['link']) {
+                    $data['link'] = '<script language="javascript" type="text/javascript">window.setTimeout("DZCP.goTo(\''.$data['link'].'\');", '.($data['time']*1000).');</script>'
+                    . '<noscript><meta http-equiv="refresh" content="'.$data['time'].';url='.$data['link'].'"></noscript>';
+                } else { $data['link'] = ''; } unset($data['time']);
+                $data['status_msg'] = (defined('_notification_'.$data['status']) ? constant('_notification_'.$data['status']) : $data['status']);
+                $notification .= show("page/notification_box",$data);
+            }
+        }
+        
+        return $notification;
+    }
+}
+
 //-> Startseite fur einen User abrufen
 function startpage() {
     global $db,$userid,$chkMe;
@@ -2863,6 +2904,7 @@ function page($index='',$title='',$where='',$index_templ='index') {
         $headtitle = show(_index_headtitle, array("clanname" => $clanname));
         $rss = $clanname;
         $title = re(strip_tags($title));
+        $notification = notification::get();
 
         if(check_internal_url())
             $index = error(_error_have_to_be_logged, 1);
@@ -2879,7 +2921,7 @@ function page($index='',$title='',$where='',$index_templ='index') {
 
         //filter placeholders
         $dir = $designpath; //after template index autodetect!!!
-        $blArr = array("[clanname]","[title]","[java_vars]","[login]","[template_switch]","[headtitle]","[index]","[time]","[rss]","[dir]","[charset]","[where]","[lang]");
+        $blArr = array("[clanname]","[title]","[java_vars]","[login]","[template_switch]","[headtitle]","[index]","[time]","[rss]","[dir]","[charset]","[where]","[lang]","[notification]");
         $pholdervars = '';
         for($i=0;$i<=count($blArr)-1;$i++) {
             if(preg_match("#".$blArr[$i]."#",$pholder))

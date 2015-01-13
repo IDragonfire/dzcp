@@ -37,6 +37,11 @@ define('_server_gtype', '<span class="fontBold">Gamemode:</span> [type]<br />');
 define('_server_bots', '<span class="fontBold">Bots:</span> [bots]<br />');
 define('_addons', 'Add-ons');
 define('_capcha_sound_info', 'Click for Play Audio-CAPTCHA');
+define("_notification_error", 'Error');
+define("_notification_success", 'Success');
+define("_notification_notice", 'Notice');
+define("_notification_warning", 'Warning');
+define("_notification_custom", 'Custom');
 
 //Forum
 define('_forum_last_post', 'View the latest post');
@@ -48,6 +53,10 @@ define("_forum_regs", 'registered');
 define("_forum_reg", 'registered');
 define("_forum_ist", ''); //Not used
 define("_forum_sind", ''); //Not used
+
+// Security Center
+define('_config_security', 'Security Center');
+define('_security_center_head', 'DZCP - Security Center');
 
 //TS
 define('_ts_fport', 'File Port');
