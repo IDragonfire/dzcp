@@ -1411,30 +1411,33 @@ function highlight($word) {
 function updateCounter() {
     global $db,$reload,$userip;
     $datum = time();
-    $get_agent = db("SELECT `agent`,`bot` FROM `".$db['ip2dns']."` WHERE `ip` = '".up($userip)."';",false,true);
-    if(!$get_agent['bot'] && !isSpider(re($get_agent['agent']))) {
-        $ipcheck = db("SELECT `id`,`ip`,`datum` FROM `".$db['c_ips']."` WHERE `ip` = '".up($userip)."' AND FROM_UNIXTIME(datum,'%d.%m.%Y') = '".date("d.m.Y")."';");
-        db("DELETE FROM `".$db['c_ips']."` WHERE datum+".$reload." <= ".time()." OR FROM_UNIXTIME(datum,'%d.%m.%Y') != '".date("d.m.Y")."';");
-        $count = db("SELECT `id`,`visitors`,`today` FROM `".$db['counter']."` WHERE `today` = '".date("j.n.Y")."';");
-        if(_rows($ipcheck)>=1) {
-            $get = _fetch($ipcheck);
-            $sperrzeit = $get['datum']+$reload;
-            if($sperrzeit <= time()) {
-                db("DELETE FROM `".$db['c_ips']."` WHERE `ip` = '".up($userip)."';");
+    $sql_agent = db("SELECT `id`,`agent`,`bot` FROM `".$db['ip2dns']."` WHERE `ip` = '".up($userip)."';");
+    if(_rows($sql_agent)) {
+        $get_agent = _fetch($sql_agent);
+        if(!$get_agent['bot'] && !isSpider(re($get_agent['agent']))) {
+            $ipcheck = db("SELECT `id`,`ip`,`datum` FROM `".$db['c_ips']."` WHERE `ip` = '".up($userip)."' AND FROM_UNIXTIME(datum,'%d.%m.%Y') = '".date("d.m.Y")."';");
+            db("DELETE FROM `".$db['c_ips']."` WHERE datum+".$reload." <= ".time()." OR FROM_UNIXTIME(datum,'%d.%m.%Y') != '".date("d.m.Y")."';");
+            $count = db("SELECT `id`,`visitors`,`today` FROM `".$db['counter']."` WHERE `today` = '".date("j.n.Y")."';");
+            if(_rows($ipcheck)>=1) {
+                $get = _fetch($ipcheck);
+                $sperrzeit = $get['datum']+$reload;
+                if($sperrzeit <= time()) {
+                    db("DELETE FROM `".$db['c_ips']."` WHERE `ip` = '".up($userip)."';");
 
+                    if(_rows($count))
+                        db("UPDATE `".$db['counter']."` SET `visitors` = visitors+1 WHERE `today` = '".date("j.n.Y")."';");
+                    else
+                        db("INSERT INTO `".$db['counter']."` SET `visitors` = '1', `today` = '".date("j.n.Y")."';");
+
+                    db("INSERT INTO `".$db['c_ips']."` SET `ip` = '".up($userip)."', `datum` = '".intval($datum)."';");
+                }
+            } else {
                 if(_rows($count))
                     db("UPDATE `".$db['counter']."` SET `visitors` = visitors+1 WHERE `today` = '".date("j.n.Y")."';");
                 else
                     db("INSERT INTO `".$db['counter']."` SET `visitors` = '1', `today` = '".date("j.n.Y")."';");
-
                 db("INSERT INTO `".$db['c_ips']."` SET `ip` = '".up($userip)."', `datum` = '".intval($datum)."';");
             }
-        } else {
-            if(_rows($count))
-                db("UPDATE `".$db['counter']."` SET `visitors` = visitors+1 WHERE `today` = '".date("j.n.Y")."';");
-            else
-                db("INSERT INTO `".$db['counter']."` SET `visitors` = '1', `today` = '".date("j.n.Y")."';");
-            db("INSERT INTO `".$db['c_ips']."` SET `ip` = '".up($userip)."', `datum` = '".intval($datum)."';");
         }
     }
 }
