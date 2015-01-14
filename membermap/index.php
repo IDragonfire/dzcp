@@ -20,8 +20,8 @@ if(!($level == 0 || $level == 1)) {
     $level = 0;
 }
 
-$mm_qry = db('SELECT u.`id`, u.`nick`, u.`city`, u.`gmaps_koord` FROM ' .  $db['users'] .
-             ' u WHERE u.`gmaps_koord` != "" AND u.`level` > ' . $level . ' ORDER BY u.gmaps_koord, u.id');
+$mm_qry = db('SELECT user.`id`, user.`nick`, user.`city`, user.`gmaps_koord` FROM `'.$db['users'].
+'` as user WHERE user.`gmaps_koord` != "" AND user.`level` > ' . $level . ' ORDER BY user.gmaps_koord, user.id');
 
 $mm_coords = ''; $mm_infos = "'<tr>"; $mm_markerIcon = '';$mm_lastCoord = ''; $i = 0; $mm_users = '';
 $realCount = 0;$markerCount = 0;$userListPic = '';$userListName = ''; $userListRank = '';$userListCity = '';
@@ -53,7 +53,7 @@ while($mm_get = _fetch($mm_qry)) {
     $i++;
 }
 
-$mm_qry = db('SELECT u.`id`, u.`nick`, u.`city` FROM ' .  $db['users'] . ' u WHERE u.`gmaps_koord` != "" AND u.`level` > ' . $level . ' ORDER BY u.gmaps_koord, u.id LIMIT '.($page - 1)*config('m_membermap').','.config('m_membermap'));
+$mm_qry = db('SELECT user.`id`, user.`nick`, user.`city` FROM ' .  $db['users'] . ' as user WHERE user.`gmaps_koord` != "" AND user.`level` > '.$level.' ORDER BY user.gmaps_koord, user.id LIMIT '.($page - 1)*config('m_membermap').','.config('m_membermap'));
 while($mm_user_get = _fetch($mm_qry)) {
     $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
     $mm_users .= show($dir.'/membermap_users',array('id' => $mm_user_get['id'],
