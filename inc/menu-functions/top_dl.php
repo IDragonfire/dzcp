@@ -7,7 +7,7 @@
 function top_dl() {
     global $db;
 
-    $qry = db("SELECT `id`,`kat`,`download`,`date`,`hits` FROM ".$db['downloads']." ".(permission('dlintern') ? "" : " WHERE `intern` = '0'")." ORDER BY hits DESC LIMIT ".config('m_topdl'));
+    $qry = db("SELECT `id`,`kat`,`download`,`date`,`hits` FROM `".$db['downloads']."` ".(permission('dlintern') ? "" : " WHERE `intern` = '0'")." ORDER BY hits ".(!config('m_topdl') ? "DESC LIMIT ".config('m_topdl') : ""));
     $top_dl = '';
     if(_rows($qry)) {
         while($get = _fetch($qry)) {
