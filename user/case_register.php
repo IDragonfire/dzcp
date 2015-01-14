@@ -31,7 +31,7 @@ if(defined('_UserMenu')) {
         $index = error(_error_user_already_in, 1);
 
 
-    if ($do == "add" && !$chkMe) {
+    if ($do == "add" && !$chkMe && isIP(visitorIp())) {
         $check_user = db_stmt("SELECT id FROM ".$db['users']." WHERE `user`= ?",
                       array('s', up($_POST['user'])),true);
 
@@ -106,6 +106,7 @@ if(defined('_UserMenu')) {
                 SET `user`     = '".up($_POST['user'])."',
                     `nick`     = '".up($_POST['nick'])."',
                     `email`    = '".up($_POST['email'])."',
+                    `ip`       = '".visitorIp()."',
                     `pwd`      = '".$pwd."',
                     `regdatum` = '".time()."',
                     `level`    = '1',

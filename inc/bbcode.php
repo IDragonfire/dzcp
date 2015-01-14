@@ -442,6 +442,7 @@ function detectIP($var) {
  * @return   boolean
  */
 function isIP($ip,$v6=false) {
+    if(!$v6 && $ip == "0.0.0.0") return false;
     if(!$v6 && substr_count($ip,":") < 1) {
         return filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4) ? true : false;
     }
