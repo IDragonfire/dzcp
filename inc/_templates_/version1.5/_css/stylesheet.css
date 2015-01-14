@@ -1222,6 +1222,8 @@ img.helpicon { cursor: help; }
 */
 img.tsicon {
   margin: 1px;
+  height: 16px;
+  width: 16px;
 }
 /*---------------------------------------------
 Board Quotes
