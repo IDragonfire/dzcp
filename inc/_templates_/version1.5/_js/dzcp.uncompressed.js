@@ -1,51 +1,53 @@
 // GLOBAL VARS
-  var doc = document, ie4 = document.all, opera = window.opera;
-  var innerLayer, layer, x, y, doWheel = false, offsetX = 15, offsetY = 5;
-  var tickerc = 0, mTimer = new Array(), tickerTo = new Array(), tickerSpeed = new Array();
-  var shoutInterval = 15000; // refresh interval of the shoutbox in ms
-  var teamspeakInterval = 15000; // refresh interval of the teamspeak viewer in ms
+var doc = document, ie4 = document.all, opera = window.opera;
+var innerLayer, layer, x, y, doWheel = false, offsetX = 15, offsetY = 5;
+var tickerc = 0, mTimer = new Array(), tickerTo = new Array(), tickerSpeed = new Array();
+var isIE = false, isWin = false, isOpera = false;
 
-// DZCP JAVASCRIPT LIBARY
-  var DZCP = {
-
+// DZCP JAVASCRIPT LIBARY FOR JQUERY >= V1.9
+var DZCP = {
   //init
     init: function() {
-      doc.body.id = 'dzcp-engine-1.5';
-      $('body').append('<div id="infoDiv"></div>');
-      
+        doc.body.id = 'dzcp-engine-1.7';
+        
+        isIE  = (navigator.appVersion.indexOf("MSIE") != -1) ? true : false;
+        isWin = (navigator.appVersion.toLowerCase().indexOf("win") != -1) ? true : false;
+        isOpera = (navigator.userAgent.indexOf("Opera") != -1) ? true : false;
+        
+        $('body').append('<div id="infoDiv"></div>');
 
-    	layer = $('#infoDiv')[0];
-    	doc.body.onmousemove = DZCP.trackMouse;
+        layer = $('#infoDiv')[0];
+        doc.body.onmousemove = DZCP.trackMouse;
 
-   // refresh shoutbox
-      if($('#navShout')[0]) window.setInterval("$('#navShout').load('../inc/ajax.php?i=shoutbox');", shoutInterval);
+        // refresh shoutbox
+        if(dzcp_config.shoutInterval > 1) {
+            if($('#navShout')[0]) 
+                window.setInterval("$('#navShout').load('../inc/ajax.php?i=shoutbox');", dzcp_config.shoutInterval);
+        }
 
-	// refresh teamspeak
-      if($('#navTeamspeakContent')[0]) window.setInterval("$('#navTeamspeakContent').load('../inc/ajax.php?i=teamspeak');", teamspeakInterval);
-
-  // init lightbox
-      DZCP.initLightbox();
+        // init lightbox
+        DZCP.initLightbox();
     },
-    
-  // init lightbox
+
+    // init lightbox
     initLightbox: function() {
       $('a[rel^=lightbox]').lightBox({
           fixedNavigation:      true,
           overlayBgColor:       '#000',
-         	overlayOpacity:       0.8,
-        	imageLoading:         '../inc/images/lightbox/loading.gif',
-         	imageBtnClose:        '../inc/images/lightbox/close.gif',
-        	imageBtnPrev:         '../inc/images/lightbox/prevlabel.gif',
-         	imageBtnNext:         '../inc/images/lightbox/nextlabel.gif',
-        	containerResizeSpeed: 350,
-        	txtImage:             (lng == 'de' ? 'Bild' : 'Image'),
-         	txtOf:                (lng == 'de' ? 'von' : 'of'),
-			maxHeight: screen.height * 0.9,
-        	maxWidth: screen.width * 0.9
+            overlayOpacity:       0.8,
+            imageLoading:         '../inc/images/lightbox/loading.gif',
+            imageBtnClose:        '../inc/images/lightbox/close.gif',
+            imageBtnPrev:         '../inc/images/lightbox/prevlabel.gif',
+            imageBtnNext:         '../inc/images/lightbox/nextlabel.gif',
+            containerResizeSpeed: 350,
+            txtImage:             (dzcp_config.lng == 'de' ? 'Bild' : 'Image'),
+            txtOf:                (dzcp_config.lng == 'de' ? 'von' : 'of'),
+            maxHeight: screen.height * 0.9,
+            maxWidth: screen.width * 0.9
       });
     },
 
-  // handle events
+    // handle events
     addEvent : function(obj, evType, fn) {
       if(obj.addEventListener)
       {
@@ -57,68 +59,94 @@
       } else return false;
     },
 
-  // track mouse
+    // track mouse
     trackMouse: function(e) {
-      innerLayer = $('#infoInnerLayer')[0];
-      if(typeof(layer) == 'object')
-      {
+        innerLayer = $('#infoInnerLayer')[0];
+        if(typeof(layer) == 'object') {
         var ie4 = doc.all;
         var ns6 = doc.getElementById && !doc.all;
         var mLeft = 5;
         var mTop = -15;
 
-      	x = (ns6) ? e.pageX-mLeft : window.event.clientX+doc.documentElement.scrollLeft - mLeft;
-      	y = (ns6) ? e.pageY-mTop  : window.event.clientY+doc.documentElement.scrollTop  - mTop;
+        x = (ns6) ? e.pageX-mLeft : window.event.clientX+doc.documentElement.scrollLeft - mLeft;
+        y = (ns6) ? e.pageY-mTop  : window.event.clientY+doc.documentElement.scrollTop  - mTop;
 
-        if(innerLayer)
-        {
-        	var layerW = ((ie4) ? innerLayer.offsetWidth : innerLayer.clientWidth) - 3;
+        if(innerLayer) {
+            var layerW = ((ie4) ? innerLayer.offsetWidth : innerLayer.clientWidth) - 3;
           var layerH = (ie4) ? innerLayer.offsetHeight : innerLayer.clientHeight;
 
         } else {
-        	var layerW = ((ie4) ? layer.clientWidth : layer.offsetWidth) - 3;
+            var layerW = ((ie4) ? layer.clientWidth : layer.offsetWidth) - 3;
           var layerH = (ie4) ? layer.clientHeight : layer.offsetHeight;
         }
-        	var winW   = (ns6) ? (window.innerWidth) + window.pageXOffset - 12
+            var winW   = (ns6) ? (window.innerWidth) + window.pageXOffset - 12
                      : doc.documentElement.clientWidth + doc.documentElement.scrollLeft;
 
-        	var winH   = (ns6) ? (window.innerHeight) + window.pageYOffset
+            var winH   = (ns6) ? (window.innerHeight) + window.pageYOffset
                      : doc.documentElement.clientHeight + doc.documentElement.scrollTop;
 
           layer.style.left = ((x + offsetX + layerW >= winW - offsetX) ? x - (layerW + offsetX) : x + offsetX) + 'px';
           layer.style.top  = (y + offsetY) + 'px';
       }
-    	return true;
+        return true;
     },
 
-  // handle popups
+    // handle popups
     popup: function(url, x, y) {
-      url = (url.indexOf('img=') == -1) ? url : '../popup.php?' + url;
-      x = parseInt(x); y = parseInt(y) + 50;
-
-      popup = window.open(url, 'Popup', "width=1,height=1,location=0,scrollbars=0,resizable=1,status=0");
-
-      popup.resizeTo(x, y);
-      popup.moveTo((screen.width - x) / 2, (screen.height-y) / 2);
-      popup.focus();
+        x = parseInt(x); y = parseInt(y) + 50;
+        popup = window.open(url, 'Popup', "width=1,height=1,location=0,scrollbars=0,resizable=1,status=0");
+        popup.resizeTo(x, y);
+        popup.moveTo((screen.width - x) / 2, (screen.height-y) / 2);
+        popup.focus();
     },
 
   // init Gameserver via Ajax
     initGameServer: function(serverID) {
-      $(function() { $('#navGameServer_' + serverID).load('../inc/ajax.php?i=server&serverID=' + serverID); });
+        DZCP.initDynLoader('navGameServer_' + serverID,'server','&serverID=' + serverID);
     },
 
   // init Teamspeakserver via Ajax
     initTeamspeakServer: function() {
-      $(function() { $('#navTeamspeakServer').load('../inc/ajax.php?i=teamspeak'); });
+        DZCP.initDynLoader('navTeamspeakServer','teamspeak','');
     },
 
-  // submit shoutbox
+    // init Ajax DynLoader
+    initDynLoader: function(tag,menu,options) {
+        var request = $.ajax({ url: "../inc/ajax.php?i=" + menu + options, type: "GET", data: {}, cache:true, dataType: "html", contentType: "application/x-www-form-urlencoded;" });
+        request.done(function(msg) { $('#' + tag).html( msg ).hide().fadeIn("normal"); });
+    },
+    
+    // init Ajax DynLoader Sides via Ajax
+    initPageDynLoader: function(tag,url) {
+            var request = $.ajax({ url: url, type: "GET", data: {}, cache:true, dataType: "html", contentType: "application/x-www-form-urlencoded;" });
+            request.done(function(msg) { $('#' + tag).html( msg ).hide().fadeIn("normal"); });
+    },
+    
+    // init Ajax DynCaptcha
+    initDynCaptcha: function(tag,height,width,lines,namespace,length,sid) {
+        var url_input = "../inc/ajax.php?i=securimage";
+        if(height >  1) { url_input = url_input + "&height="+height; }
+        if(width > 1) { url_input = url_input + "&width="+width; }
+        if(lines >= 1) { url_input = url_input + "&lines="+lines; }
+        if(namespace.length > 1) { url_input = url_input + "&namespace="+namespace; }
+        if(length >= 1) { url_input = url_input + "&length="+length; }
+        if(sid > 0) { url_input = url_input + "&sid="+sid; } else { url_input = url_input + "&sid="+Math.random(); }
+        var request = $.ajax({ url: url_input, type: "GET", data: {}, cache:false, dataType: "html", contentType: "application/x-www-form-urlencoded;" });
+        request.done(function(msg) { $('#' + tag).attr("src",msg).hide().fadeIn("normal"); });
+    },
+
+    // Play Sound per JS-Audio
+    EvalSound: function(url) {
+        var audio = new Audio(url);
+        audio.play();
+    },
+
+    // submit shoutbox
     shoutSubmit: function() {
       $.post('../shout/index.php?ajax', $('#shoutForm').serialize(),function(req) {
         if(req) alert(req.replace(/  /g, ' '));
         $('#navShout').load('../inc/ajax.php?i=shoutbox');
-        if(!req) $('#shouteintrag').attr('value', '');
+        if(!req) $('#shouteintrag').prop('value', '');
       });
 
       return false;
@@ -135,6 +163,19 @@
       var url = doc.form.tempswitch.options[doc.form.tempswitch.selectedIndex].value;
       if(url != 'lazy') DZCP.goTo(url);
     },
+    
+    autocomplete: function(type,change) {
+        var selected_game = $('#status :selected').val();
+        $( document ).load('../inc/ajax.php?i=autocomplete&type='+type+'&game='+selected_game, function(data) {
+            var json = jQuery.parseJSON(data);
+            if(json.qport != '') {
+                if(change || $("#qport").val() == '') {
+                    $("#qport").val(json.qport);
+                    $("#autochanged").show();
+                }
+            }
+        });
+    },
 
   // go to defined url
     goTo: function(url, n) {
@@ -144,35 +185,35 @@
 
   // limit text lenthn
     maxlength: function(field, countfield, max) {
-    	if(field.value.length > max) field.value = field.value.substring(0, max);
-    	else                         countfield.value = max - field.value.length;
+        if(field.value.length > max) field.value = field.value.substring(0, max);
+        else                         countfield.value = max - field.value.length;
     },
 
   // handle info layer
     showInfo: function(info, kats, text, img, width, height) {
       if(typeof(layer) == 'object')
       {
-		var output = '';
-		if(kats && text){
-			var kat=kats.split(";");
-			var texts=text.split(";");
-			var katout = "";
-        	for(var i=0; i<kat.length; ++i) {
-		  		katout = katout + '<tr><td>'+kat[i]+'</td><td>'+texts[i]+'</td></tr>';
-			}
-			output = '<tr><td class="infoTop" colspan="2">'+info+'</td></tr>'+katout+'';
-		}else if(kats && typeof(text)=="undefined"){
-			output = '<tr><td class="infoTop" colspan="2">'+info+'</td></tr><tr><td>'+kats+'</td></tr>';
-		}else{
-			output = '<tr><td>'+info+'</td></tr>';
-		}
+        var output = '';
+        if(kats && text){
+            var kat=kats.split(";");
+            var texts=text.split(";");
+            var katout = "";
+            for(var i=0; i<kat.length; ++i) {
+                  katout = katout + '<tr><td>'+kat[i]+'</td><td>'+texts[i]+'</td></tr>';
+            }
+            output = '<tr><td class="infoTop" colspan="2">'+info+'</td></tr>'+katout+'';
+        }else if(kats && typeof(text)=="undefined"){
+            output = '<tr><td class="infoTop" colspan="2">'+info+'</td></tr><tr><td>'+kats+'</td></tr>';
+        }else{
+            output = '<tr><td>'+info+'</td></tr>';
+        }
 
-		var userimg = "";
-		if(img){
-			userimg = '<tr><td colspan=2 align=center><img src="'+img+'" width="'+width+'" height="'+height+'" alt="" /></td></tr>';
-		}else{
-			userimg = '';
-		}
+        var userimg = "";
+        if(img){
+            userimg = '<tr><td colspan=2 align=center><img src="'+img+'" width="'+width+'" height="'+height+'" alt="" /></td></tr>';
+        }else{
+            userimg = '';
+        }
         layer.innerHTML =
           '<div id="hDiv">' +
           '  <table class="hperc" cellspacing="0" style="height:100%">' +
@@ -198,6 +239,52 @@
       }
     },
 
+    // handle Steam layer
+    showSteamBox: function(user, img, text, text2, status)
+    {
+        var class_state;
+        switch(status) {
+            case 1: class_state = 'online'; break; //Online
+            case 2: class_state = 'in-game'; break; //Ingame
+            default: class_state = 'offline'; break; //Offline
+        }
+
+        if(typeof(layer) == 'object')
+        {
+            layer.innerHTML =
+              '<div id="hDiv">' +
+              '  <table class="hperc" cellspacing="0" style="height:100%">' +
+              '    <tr>' +
+              '      <td style="vertical-align:middle">' +
+              '        <div id="infoInnerLayer">' +
+              '             <table class="steam_box_bg" border="0" cellspacing="0" cellpadding="0">' +
+              '              <tr>' +
+              '                <td>' +
+              '                   <div class="steam_box steam_box_user '+class_state+'">' +
+              '                     <div class="steam_box_avatar '+class_state+'"> <img src="'+img+'" /></div>' +
+              '                     <div class="steam_box_content">'+user+'<br />' +
+              '                     <span class="friendSmallText">'+text+'<br>'+text2+'</span></div>' +
+              '                   </div>' +
+              '                </td>' +
+              '              </tr>' +
+              '            </table>' +
+              '        </div>' +
+              '      </td>' +
+              '    </tr>' +
+              '  </table>' +
+              '</div>';
+
+            //IE Fix
+            if(ie4 && !opera)
+            {
+                layer.innerHTML += '<iframe id="ieFix" frameborder="0" width="' + $('#hDiv')[0].offsetWidth + '" height="' + $('#hDiv')[0].offsetHeight + '"></iframe>';
+                layer.style.display = 'block';
+            }
+            else
+                layer.style.display = 'block';
+        }
+    },
+
     hideInfo: function() {
       if(typeof(layer) == 'object')
       {
@@ -206,51 +293,54 @@
       }
     },
 
-  // toggle object
+    // toggle object
     toggle: function(id) {
-      if(id == 0) return;
-      else {
+        if(id == 0) return;
+
         if($('#more' + id).css('display') == 'none')
         {
-        	$('#more' + id).css('display', '');
-        	$('#img' + id).attr('src', '../inc/images/collapse.gif');
-        } else {
-        	$('#more' + id).css('display', 'none');
-          $('#img' + id).attr('src', '../inc/images/expand.gif');
+            $("#more" + id).fadeIn("normal");
+            $('#img' + id).prop('src', '../inc/images/collapse.gif');
         }
-      }
+        else
+        {
+            $("#more" + id).fadeOut("normal");
+            $('#img' + id).prop('src', '../inc/images/expand.gif');
+        }
     },
-  // toggle with effect
-  	fadetoggle: function(id) {
-		$("#more_"+id).fadeToggle("slow", "swing");
-		if($('#img_'+id).attr('alt') == "hidden") {
-			$('#img_'+id).attr({alt: 'normal',
-								src: '../inc/images/toggle_normal.png'});
-		} else {
-			$('#img_'+id).attr({alt: 'hidden',
-								src: '../inc/images/toggle_hidden.png'});
-		}
-	},
+
+    // toggle with effect *TS3
+    fadetoggle: function(id) {
+        if(id == 0) return;
+
+        $("#more_"+id).fadeToggle("slow", "swing");
+
+        if($('#img_'+id).prop('alt') == "hidden")
+            $('#img_'+id).prop({alt: 'normal', src: '../inc/images/toggle_normal.png'});
+        else
+            $('#img_'+id).prop({alt: 'hidden', src: '../inc/images/toggle_hidden.png'});
+    },
+    
   // resize images
     resizeImages: function() {
-    	for(var i=0;i<doc.images.length;i++)
+        for(var i=0;i<doc.images.length;i++)
       {
         var d = doc.images[i];
 
         if(d.className == 'content')
         {
-      	  var imgW = d.width;
-      	  var imgH = d.height;
+            var imgW = d.width;
+            var imgH = d.height;
 
-      	  if(maxW != 0 && imgW > maxW)
+            if(dzcp_config.maxW != 0 && imgW > dzcp_config.maxW)
           {
-       		  d.width = maxW;
-      		  d.height = Math.round(imgH * (maxW / imgW));
+                 d.width = dzcp_config.maxW;
+                d.height = Math.round(imgH * (dzcp_config.maxW / imgW));
 
-      		  if(!DZCP.linkedImage(d))
+                if(!DZCP.linkedImage(d))
             {
               var textLink = doc.createElement("span");
-      			  var popupLink = doc.createElement("a");
+              var popupLink = doc.createElement("a");
 
               textLink.appendChild(doc.createElement("br"));
               textLink.setAttribute('class', 'resized');
@@ -259,25 +349,25 @@
               popupLink.setAttribute('href', d.src);
               popupLink.setAttribute('rel', 'lightbox');
               popupLink.appendChild(d.cloneNode(true));
-              
+
               d.parentNode.appendChild(textLink);
-      			  d.parentNode.replaceChild(popupLink, d);
-              
+              d.parentNode.replaceChild(popupLink, d);
+
               DZCP.initLightbox();
-      		  }
+            }
           }
         }
-    	}
+        }
     },
 
     linkedImage: function(node) {
-    	do {
-    		node = node.parentNode;
-    		if (node.nodeName == 'A') return true;
-    	}
-    	while(node.nodeName != 'TD' && node.nodeName != 'BODY');
+        do {
+            node = node.parentNode;
+            if (node.nodeName == 'A') return true;
+        }
+        while(node.nodeName != 'TD' && node.nodeName != 'BODY');
 
-    	return false;
+        return false;
     },
 
   // ajax calendar switch
@@ -288,8 +378,7 @@
   // ajax team switch
     teamSwitch: function(obj) {
       clearTimeout(mTimer[1]);
-
-     $('#navTeam').load('../inc/ajax.php?i=teams&tID=' + obj, DZCP.initTicker('teams', 'h', 60));
+      $('#navTeam').load('../inc/ajax.php?i=teams&tID=' + obj, DZCP.initTicker('teams', 'h', 60));
     },
 
   // ajax vote
@@ -309,8 +398,8 @@
         $('#navFVote').html(req);
       });
 
-  	 return false;
-  	},
+       return false;
+      },
 
   // ajax preview
     ajaxPreview: function(form) {
@@ -322,16 +411,21 @@
         if(thisTag == "editorStyle" || thisTag == "editorStyleWord" || thisTag == "editorStyleNewsletter")
         {
           var inst = tinyMCE.getInstanceById(thisID);
-          $('#' + thisID).attr('value', inst.getBody().innerHTML);
+          $('#' + thisID).prop('value', inst.getBody().innerHTML);
         }
       }
 
       $('#previewDIV').html('<div style="width:100%;text-align:center">'
                              + ' <img src="../inc/images/admin/loading.gif" alt="" />'
                              + '</div>');
+      var addpars = "";
+      if(form == 'cwForm') {
+          $("input[type=file]").each(function() {
+              addpars = addpars + "&" + $(this).prop('name') + "=" + $(this).prop('value');
+          });
+      }
 
       var url = prevURL;
-      var addpars = (form == 'cwForm') ? '&s1=' + $('#screen1').attr('value') + '&s2=' + $('#screen2').attr('value') + '&s3=' + $('#screen3').attr('value') + '&s4=' + $('#screen4').attr('value') : '';
       $.post(url, $('#' + form).serialize() + addpars, function(req) {
         $('#previewDIV').html(req);
       });
@@ -341,32 +435,29 @@
     del: function(txt) {
       txt = txt.replace(/\+/g, ' ');
       txt = txt.replace(/oe/g, 'ö');
-
       return confirm(txt + '?');
     },
 
-
-
   // forum search
     hideForumFirst: function() {
-      $('#allkat').attr('checked', false);
+      $('#allkat').prop('checked', false);
     },
 
     hideForumAll: function() {
-    	for(var i = 0; i < doc.forms['search'].elements.length; i++)
-    	{
-    		var box = doc.forms['search'].elements[i];
+        for(var i = 0; i < doc.forms['search'].elements.length; i++)
+        {
+            var box = doc.forms['search'].elements[i];
 
         if(box.id.match(/k_/g))
-    		  box.checked = false;
-    	}
+              box.checked = false;
+        }
     },
 
   // disable submit button
     submitButton: function(id) {
       submitID = (id) ? id : 'contentSubmit';
 
-      $('#' + submitID).attr("disabled", true);
+      $('#' + submitID).prop("disabled", true);
       $('#' + submitID).css('color', '#909090');
       $('#' + submitID).css('cursor', 'default');
 
@@ -412,53 +503,17 @@
       if(tickerTo[subID] == 'h') thisObj.style.left = (parseInt(thisObj.style.left) <= (0-(width/2)+2)) ? 0 : parseInt(thisObj.style.left)-1 + 'px';
       else thisObj.style.top = (thisObj.style.top == '' || (parseInt(thisObj.style.top)<(0-(width/2)+6))) ? 0 : parseInt(thisObj.style.top)-1 + 'px';
     },
-
-  // ADD FLASH
-    addFlash: function() {
-      var ret = new Object(); ret.embedAttrs = new Object(); ret.params = new Object(); ret.objAttrs = new Object();
-      var def = new Array('menu|false', 'quality|high', 'wmode|transparent', 'classid|clsid:d27cdb6e-ae6d-11cf-96b8-444553540000', 'type|application/x-shockwave-flash');
-
-      for(var i=0; i<arguments.length; i=i+2)
-      {
-        ret.objAttrs[arguments[i]]   = arguments[i+1];
-        ret.embedAttrs[arguments[i]] = ret.params[arguments[i]] = arguments[i+1];
-        ret.params[arguments[i]]     = arguments[i+1];
-      }
-
-      for(var i=0; i<def.length; i++)
-      {
-        var s = def[i].split('|');
-        if(!ret.params[s[0]])
-        {
-          ret.objAttrs[s[0]]   = s[1];
-          ret.embedAttrs[s[0]] = s[1];
-          ret.params[s[0]]     = s[1];
+    
+    //TS3 Settings
+    TS3Settings: function(id) {
+        if(id == 3) {
+            $('#ts3settings').css('display', '');
+        } else {
+            $('#ts3settings').css('display', 'none');
         }
-      }
-
-      var c = '<object ';
-      for(var i in ret.objAttrs)   c += i + '="' + ret.objAttrs[i] + '" '; c += '>';
-      for(var i in ret.params)     c += '<param name="' + i + '" value="' + ret.params[i] + '" /> ';  c += '<embed ';
-      for(var i in ret.embedAttrs) c += i + '="' + ret.embedAttrs[i] + '" '; c += ' ></embed></object>';
-
-      doc.write(c);
-    },
-	//TS3 Settings
-	TS3Settings: function(id) {
-		if(id == 3) {
-			$('#ts3settings').css('display', '');
-		} else {
-			$('#ts3settings').css('display', 'none');
-		}
-	}
-  }
+    }
+}
 
 // load global events
-  $(document).ready(function() {
-    DZCP.init();
-  });
-// load global events
-  $(window).load(function() {
-    DZCP.resizeImages();
-  });
-
+$(document).ready(function() { DZCP.init(); });
+$(window).load(function() { DZCP.resizeImages(); });

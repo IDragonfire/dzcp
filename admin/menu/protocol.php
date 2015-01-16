@@ -1,45 +1,31 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       rootmenu
-// Rechte:    $chkMe == 4
-///////////////////////////////
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
-    $where = $where.': '._protocol;
-    if($chkMe == 4)
-    {
-      if($_GET['do'] == 'deletesingle')
-      {
-        $del = db("DELETE FROM ".$db['ipcheck']."
-                   WHERE id = '".$_GET['id']."'");
-				   
-        header("Location: ".$_SERVER['HTTP_REFERER']);
-      } elseif($_GET['do'] == 'delete') {
-        $del = db("DELETE FROM ".$db['ipcheck']."
-                   WHERE time != 0");
-        
-        $show = info(_protocol_deleted,'?admin=protocol');
-      } else {
-        if(!empty($_GET['sip'])) 
-        {
-          $search = "WHERE ip = '".$_GET['sip']."' AND time != 0 AND what NOT REGEXP 'vid_'";
-          $swhat = $_GET['sip'];
-        } else {
-          $search = "WHERE time != 0 AND what NOT REGEXP 'vid_'";
-          $swhat = _info_ip;
-        }
-        
-        $maxprot = 30;
-        $entrys = cnt($db['ipcheck'], $search);
-        if(isset($_GET['page'])) $page = $_GET['page'];
-        else $page = 1;
-      
-        $qry = db("SELECT * FROM ".$db['ipcheck']."
-                   ".$search."
-                   ORDER BY id DESC
-                   LIMIT ".($page - 1)*$maxprot.",".$maxprot."");
-        while($get = _fetch($qry))
-        {
+$where = $where.': '._protocol;
+if($do == 'deletesingle') {
+    db("DELETE FROM ".$db['ipcheck']." WHERE id = '".$_GET['id']."'");
+    header("Location: ".$_SERVER['HTTP_REFERER']);
+} elseif($do == 'delete') {
+    db("DELETE FROM ".$db['ipcheck']." WHERE time != 0");
+    $show = info(_protocol_deleted,'?admin=protocol');
+} else {
+    if(!empty($_GET['sip'])) {
+        $search = "WHERE ip = '".$_GET['sip']."' AND time != 0 AND what NOT REGEXP 'vid_'";
+        $swhat = $_GET['sip'];
+    } else {
+        $search = "WHERE time != 0 AND what NOT REGEXP 'vid_'";
+        $swhat = _info_ip;
+    }
+
+    $maxprot = 30;
+    $entrys = cnt($db['ipcheck'], $search);
+    $qry = db("SELECT * FROM ".$db['ipcheck']." ".$search." ORDER BY id DESC LIMIT ".($page - 1)*$maxprot.",".$maxprot."");
+    while($get = _fetch($qry)) {
           $action = "";
           $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
 
@@ -47,12 +33,12 @@ if(_adminMenu != 'true') exit;
           $delete = show("page/button_delete", array("id" => $get['id'],
                                                      "action" => "admin=protocol&amp;do=deletesingle",
                                                      "title" => _button_title_del));
-  
+
           if(preg_match("#\(#",$get['what']))
           {
             $a = preg_replace("#^(.*?)\((.*?)\)#is","$1",$get['what']);
             $wid = preg_replace("#^(.*?)\((.*?)\)#is","$2",$get['what']);
-          
+
             if($a == 'fid')
               $action = 'wrote in <b>board</b>';
             elseif($a == 'ncid')
@@ -67,16 +53,16 @@ if(_adminMenu != 'true') exit;
               $action = 'wrote <b>comment</b> in <b>clanwar</b> with <b>ID</b> '.$wid;
             elseif($a == 'createuser') {
               $ids = explode("_", $wid);
-              $action = '<b style="color:red">ADMIN</b> '.autor($ids[0]).' <b>added</b> user '.autor($ids[1]); 
+              $action = '<b style="color:red">ADMIN:</b> '.autor($ids[0]).' <b>added</b> user '.autor($ids[1]);
             } elseif($a == 'upduser') {
               $ids = explode("_", $wid);
-              $action = '<b style="color:red">ADMIN</b> '.autor($ids[0]).' <b>edited</b> user '.autor($ids[1]);
+              $action = '<b style="color:red">ADMIN:</b> '.autor($ids[0]).' <b>edited</b> user '.autor($ids[1]);
             } elseif($a == 'deluser') {
               $ids = explode("_", $wid);
-              $action = '<b style="color:red">ADMIN</b> '.autor($ids[0]).' <b>deleted</b> user';
-			} elseif($a == 'ident') {
+              $action = '<b style="color:red">ADMIN:</b> '.autor($ids[0]).' <b>deleted</b> user';
+            } elseif($a == 'ident') {
               $ids = explode("_", $wid);
-              $action = '<b style="color:red">ADMIN</b> '.autor($ids[0]).' took <b>identity</b> from user '.autor($ids[1]); 
+              $action = '<b style="color:red">ADMIN:</b> '.autor($ids[0]).' took <b>identity</b> from user '.autor($ids[1]);
             } elseif($a == 'logout')
               $action = autor($wid).' <b>logged out</b>';
             elseif($a == 'login')
@@ -89,6 +75,8 @@ if(_adminMenu != 'true') exit;
               $action = autor($wid).' <b>signed up</b>';
             elseif($a == 'trylogin')
               $action = 'failed to <b>login</b> in '.autor($wid).'`s account';
+            elseif($a == 'db_optimize')
+              $action = '<b style="color:blue">SYSTEM:</b> Database Optimize/Cleanup performed';
             else $action = '<b style="color:red">undefined:</b> <b>'.$a.'</b>';
           } else {
             if($get['what'] == 'gb')
@@ -97,7 +85,7 @@ if(_adminMenu != 'true') exit;
               $action = 'wrote in <b>shoutbox</b>';
             else $action = '<b style="color:red">undefined:</b> <b>'.$a.'</b>';
           }
-                                                     
+
           $show .= show($dir."/protocol_show", array("datum" => $date,
                                                      "class" => $class,
                                                      "delete" => $delete,
@@ -105,9 +93,11 @@ if(_adminMenu != 'true') exit;
                                                      "action" => $action
                                                     ));
         }
-        
-        if(!empty($_GET['sip'])) $sip = "&amp;sip=".$_GET['sip'];
-        
+
+        if(empty($show))
+            $show = '<tr><td colspan="3" class="contentMainSecond">'._no_entrys.'</td></tr>';
+
+        $sip = (isset($_GET['sip']) && !empty($_GET['sip'])) ? "&amp;sip=".$_GET['sip'] : "";
         $show = show($dir."/protocol", array("show" => $show,
                                              "date" => _datum,
                                              "del" => _button_title_del_protocol,
@@ -116,10 +106,5 @@ if(_adminMenu != 'true') exit;
                                              "user" => _info_ip,
                                              "value" => _button_value_search,
                                              "search" => $swhat,
-                                             "nav" => nav($entrys,$maxprot,"?admin=protocol".$sip)
-                                             ));
+                                             "nav" => nav($entrys,$maxprot,"?admin=protocol".$sip)));
       }
-    } else {
-      $show = error(_error_wrong_permissions, 1);
-    }
-?>

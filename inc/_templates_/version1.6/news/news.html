@@ -1,0 +1,19 @@
+[show_sticky]
+[show]
+</table>
+<table class="mainContent" cellspacing="1">
+<tr><td>
+<center>[nav]</center>
+<center style="padding-top: 5px;">
+    <script language="javascript" type="text/javascript">
+      function changeme(that)
+      {
+        document.location.href="index.php?kat=" + that.value;
+      }
+    </script>
+    <select name="kat" onchange="changeme(this)" class="dropdown">
+      <option value="lazy" class="dropdownKat">- [choose] -</option>
+      [kategorien]
+    </select>
+</center>
+</td></tr>

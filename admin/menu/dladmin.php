@@ -1,16 +1,13 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('downloads')
-///////////////////////////////
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._dl;
-    if(!permission("downloads"))
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
-      if($_GET['do'] == "new")
+      if($do == "new")
       {
         $qry = db("SELECT * FROM ".$db['dl_kat']."
                    ORDER BY name");
@@ -21,7 +18,7 @@ if(_adminMenu != 'true') exit;
                                              "sel" => ""));
         }
 
-        $files = get_files('../downloads/files/');
+        $files = get_files(basePath.'/downloads/files/',false,true);
         for($i=0; $i<count($files); $i++)
         {
           $dl .= show(_downloads_files_exists, array("dl" => $files[$i],
@@ -30,9 +27,9 @@ if(_adminMenu != 'true') exit;
 
         $show = show($dir."/form_dl", array("admin_head" => _downloads_admin_head,
                                             "ddownload" => "",
+                                            "dintern" => "",
                                              "durl" => "",
                                              "oder" => _or,
-                                             "lang" => $language,
                                              "file" => $dl,
                                              "nothing" => "",
                                              "nofile" => _downloads_nofile,
@@ -45,27 +42,29 @@ if(_adminMenu != 'true') exit;
                                              "kats" => $kats,
                                              "url" => _downloads_url,
                                              "beschreibung" => _beschreibung,
-                                             "download" => _downloads_name));
-      } elseif($_GET['do'] == "add") {
+                                             "download" => _downloads_name,
+                                             "intern" => _internal));
+      } elseif($do == "add") {
         if(empty($_POST['download']) || empty($_POST['url']))
         {
           if(empty($_POST['download'])) $show = error(_downloads_empty_download, 1);
           elseif(empty($_POST['url']))  $show = error(_downloads_empty_url, 1);
         } else {
-          
+
           if(preg_match("#^www#i",$_POST['url'])) $dl = links($_POST['url']);
           else                                    $dl = up($_POST['url']);
 
           $qry = db("INSERT INTO ".$db['downloads']."
                      SET `download`     = '".up($_POST['download'])."',
                          `url`          = '".$dl."',
-                         `date`         = '".((int)time())."',
-                         `beschreibung` = '".up($_POST['beschreibung'],1)."',
-                         `kat`          = '".((int)$_POST['kat'])."'");
+                         `date`         = '".time()."',
+                         `beschreibung` = '".up($_POST['beschreibung'])."',
+                         `kat`          = '".intval($_POST['kat'])."',
+                         `intern`          = '".intval($_POST['intern'])."'");
 
           $show = info(_downloads_added, "?admin=dladmin");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry  = db("SELECT * FROM ".$db['downloads']."
                     WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -74,7 +73,7 @@ if(_adminMenu != 'true') exit;
                     ORDER BY name");
         while($getk = _fetch($qryk))
         {
-          if($getk['id'] == $get['kat']) $sel = "selected=\"selected\"";
+          if($getk['id'] == $get['kat']) $sel = 'selected="selected"';
           else $sel = "";
 
           $kats .= show(_select_field, array("value" => $getk['id'],
@@ -84,6 +83,7 @@ if(_adminMenu != 'true') exit;
 
         $show = show($dir."/form_dl", array("admin_head" => _downloads_admin_head_edit,
                                             "ddownload" => re($get['download']),
+                                            "dintern" => $get['intern'] ? 'checked="checked"' : '',
                                             "durl" => re($get['url']),
                                             "file" => $dl,
                                             "lokal" => _downloads_lokal,
@@ -98,8 +98,9 @@ if(_adminMenu != 'true') exit;
                                             "kats" => $kats,
                                             "url" => _downloads_url,
                                             "beschreibung" => _beschreibung,
-                                            "download" => _downloads_name));
-      } elseif($_GET['do'] == "editdl") {
+                                            "download" => _downloads_name,
+                                            "intern" => _internal));
+      } elseif($do == "editdl") {
         if(empty($_POST['download']) || empty($_POST['url']))
         {
           if(empty($_POST['download'])) $show = error(_downloads_empty_download, 1);
@@ -111,14 +112,14 @@ if(_adminMenu != 'true') exit;
           $qry = db("UPDATE ".$db['downloads']."
                      SET `download`     = '".up($_POST['download'])."',
                          `url`          = '".$dl."',
-                         `beschreibung` = '".up($_POST['beschreibung'],1)."',
-                         `date`         = '".((int)time())."',
-                         `kat`          = '".((int)$_POST['kat'])."'
+                         `beschreibung` = '".up($_POST['beschreibung'])."',
+                         `kat`          = '".intval($_POST['kat'])."',
+                         `intern`          = '".intval($_POST['intern'])."'
                      WHERE id = '".intval($_GET['id'])."'");
 
           $show = info(_downloads_edited, "?admin=dladmin");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db['downloads']."
                    WHERE id = '".intval($_GET['id'])."'");
 
@@ -145,6 +146,9 @@ if(_adminMenu != 'true') exit;
                                                        ));
         }
 
+        if(empty($show_))
+            $show_ = '<tr><td colspan="3" class="contentMainSecond">'._no_entrys.'</td></tr>';
+
         $show = show($dir."/downloads", array("head" => _dl,
                                               "date" => _datum,
                                               "titel" => _dl_file,
@@ -152,5 +156,3 @@ if(_adminMenu != 'true') exit;
                                               "show" => $show_
                                               ));
       }
-    }
-?>

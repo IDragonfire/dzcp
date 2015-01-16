@@ -1,20 +1,15 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ: contentmenu
-// Rechte: permission('clanwars')
-///////////////////////////////
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._clanwars;
-    if(!permission("clanwars"))
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
-      if($_GET['do'] == "new")
+      if($do == "new")
       {
-        $qry = db("SELECT * FROM ".$db['squads']."
-WHERE status = '1'
-ORDER BY game ASC");
+        $qry = db("SELECT * FROM ".$db['squads']." WHERE status = '1' ORDER BY game ASC"); $squads = '';
         while($get = _fetch($qry))
         {
           $squads .= show(_cw_add_select_field_squads, array("name" => re($get['name']),
@@ -39,12 +34,8 @@ ORDER BY game ASC");
                                            "screen_info" => _cw_screens_info,
                                            "nothing" => "",
                                            "preview" => _preview,
-                                           "screenshot1" => _cw_screenshot." 1",
-                                           "screenshot2" => _cw_screenshot." 2",
-                                           "screenshot3" => _cw_screenshot." 3",
-                                           "screenshot4" => _cw_screenshot." 4",
                                            "screens" => _cw_screens,
-   "gametype" => _cw_head_gametype,
+                                           "gametype" => _cw_head_gametype,
                                            "url" => _url,
                                            "clantag" => _cw_admin_clantag,
                                            "lineup_info" => _cw_admin_lineup_info,
@@ -90,7 +81,7 @@ ORDER BY game ASC");
    "country" => _cw_admin_head_country,
    "countrys" => show_countrys(),
    "cw_gametype" => ""));
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
 
         $qry = db("SELECT * FROM ".$db['cw']."
 WHERE id = '".intval($_GET['id'])."'");
@@ -102,7 +93,7 @@ WHERE status = '1'
 ORDER BY game");
         while($gets = _fetch($qrym))
         {
-   if($get['squad_id'] == $gets['id']) $sel = "selected=\"selected\"";
+   if($get['squad_id'] == $gets['id']) $sel = 'selected="selected"';
           else $sel = "";
 
           $squads .= show(_cw_edit_select_field_squads, array("id" => $gets['id'],
@@ -126,10 +117,6 @@ ORDER BY game");
                                            "xonx" => _cw_head_xonx,
                                            "preview" => _preview,
                                            "nothing" => _cw_nothing,
-                                           "screenshot1" => _cw_new." "._cw_screenshot." 1",
-                                           "screenshot2" => _cw_new." "._cw_screenshot." 2",
-                                           "screenshot3" => _cw_new." "._cw_screenshot." 3",
-                                           "screenshot4" => _cw_new." "._cw_screenshot." 4",
                                            "screens" => _cw_screens,
                                            "liga" => _cw_head_liga,
                                            "screen_info" => _cw_screens_info,
@@ -182,7 +169,7 @@ ORDER BY game");
                                            "cw_liga" => re($get['liga']),
    "country" => _cw_admin_head_country,
    "cw_gametype" => re($get['gametype'])));
-      } elseif($_GET['do'] == "add") {
+      } elseif($do == "add") {
         if(empty($_POST['gegner']) || empty($_POST['clantag']) || empty($_POST['t']))
         {
           if(empty($_POST['gegner'])) $show = error(_cw_admin_empty_gegner, 1);
@@ -198,106 +185,58 @@ ORDER BY game");
    else $kid = "`gcountry` = '".$_POST['land']."',";
 
           $qry = db("INSERT INTO ".$db['cw']."
-SET ".$kid."
-".$xonx."
-`datum` = '".((int)$datum)."',
-`squad_id` = '".((int)$_POST['squad'])."',
-`clantag` = '".up($_POST['clantag'])."',
-`gegner` = '".up($_POST['gegner'])."',
-`url` = '".links($_POST['url'])."',
-`liga` = '".up($_POST['liga'])."',
-`gametype` = '".up($_POST['gametype'])."',
-`punkte` = '".((int)$_POST['punkte'])."',
-`gpunkte` = '".((int)$_POST['gpunkte'])."',
-`maps` = '".up($_POST['maps'])."',
-`serverip` = '".up($_POST['serverip'])."',
-`servername` = '".up($_POST['servername'])."',
-`serverpwd` = '".up($_POST['serverpwd'])."',
-`lineup` = '".up($_POST['lineup'])."',
-`glineup` = '".up($_POST['glineup'])."',
-`matchadmins` = '".up($_POST['match_admins'])."',
-`bericht` = '".up($_POST['bericht'],1)."'");
+            SET ".$kid."
+            ".$xonx."
+            `datum` = '".intval($datum)."',
+            `squad_id` = '".intval($_POST['squad'])."',
+            `clantag` = '".up($_POST['clantag'])."',
+            `gegner` = '".up($_POST['gegner'])."',
+            `url` = '".links($_POST['url'])."',
+            `liga` = '".up($_POST['liga'])."',
+            `gametype` = '".up($_POST['gametype'])."',
+            `punkte` = '".intval($_POST['punkte'])."',
+            `gpunkte` = '".intval($_POST['gpunkte'])."',
+            `maps` = '".up($_POST['maps'])."',
+            `serverip` = '".up($_POST['serverip'])."',
+            `servername` = '".up($_POST['servername'])."',
+            `serverpwd` = '".up($_POST['serverpwd'])."',
+            `lineup` = '".up($_POST['lineup'])."',
+            `glineup` = '".up($_POST['glineup'])."',
+            `matchadmins` = '".up($_POST['match_admins'])."',
+            `bericht` = '".up($_POST['bericht'])."'");
 
-          $cwid = mysql_insert_id();
+          $cwid = _insert_id();
 
-          $tmp = $_FILES['logo']['tmp_name'];
-          $type = $_FILES['logo']['type'];
-          $end = explode(".", $_FILES['logo']['name']);
-          $end = strtolower($end[count($end)-1]);
-          
-          if(!empty($tmp))
-          {
-            $img = @getimagesize($tmp);
-if($img1[0])
-            {
-              @copy($tmp, basePath."/inc/images/clanwars/".mysql_insert_id()."_logo.".strtolower($end));
-              @unlink($tmp);
+        //Logo Upload
+        $tmpname = $_FILES['logo']['tmp_name'];
+        $type = $_FILES['logo']['type'];
+        $end = explode(".", $_FILES['logo']['name']);
+        $end = strtolower($end[count($end)-1]);
+        if(!empty($tmpname)) {
+            $img = @getimagesize($tmpname);
+            if($img[0])
+                move_uploaded_file($tmpname, basePath."/inc/images/clanwars/".$cwid."_logo.".strtolower($end));
+        }
+
+        //Screenshot Upload
+        for ($zaehler = 1; $zaehler <= 20; $zaehler++) {
+            if(isset($_FILES['screen'.$zaehler])) {
+                $tmpname = $_FILES['screen'.$zaehler]['tmp_name'];
+                $type = $_FILES['screen'.$zaehler]['type'];
+                $end = explode(".", $_FILES['screen'.$zaehler]['name']);
+                $end = strtolower($end[count($end)-1]);
+                if(!empty($tmpname)) {
+                    $img = @getimagesize($tmpname);
+                    if($img[0])
+                        move_uploaded_file($tmpname, basePath."/inc/images/clanwars/".$cwid."_".$zaehler.".".strtolower($end));
+                }
             }
-          }
-
-          $tmp1 = $_FILES['screen1']['tmp_name'];
-          $type1 = $_FILES['screen1']['type'];
-          $end1 = explode(".", $_FILES['screen1']['name']);
-          $end1 = strtolower($end1[count($end1)-1]);
-          
-          if(!empty($tmp1))
-          {
-            $img1 = @getimagesize($tmp1);
-if($img1[0])
-            {
-              @copy($tmp1, basePath."/inc/images/clanwars/".mysql_insert_id()."_1.".strtolower($end1));
-              @unlink($tmp1);
-            }
-          }	
-
-          $tmp2 = $_FILES['screen2']['tmp_name'];
-          $type2 = $_FILES['screen2']['type'];
-          $end2 = explode(".", $_FILES['screen2']['name']);
-          $end2 = strtolower($end2[count($end2)-1]);
-          
-          if(!empty($tmp2))
-          {
-            $img2 = @getimagesize($tmp2);
-if($img2[0])
-            {
-              @copy($tmp2, basePath."/inc/images/clanwars/".mysql_insert_id()."_2.".strtolower($end2));
-              @unlink($tmp2);
-            }
-          }
-
-          $tmp3 = $_FILES['screen3']['tmp_name'];
-          $type3 = $_FILES['screen3']['type'];
-          $end3 = explode(".", $_FILES['screen3']['name']);
-          $end3 = strtolower($end3[count($end3)-1]);
-          
-          if(!empty($tmp3))
-          {
-            $img3 = @getimagesize($tmp3);
-if($img3[0])
-            {
-              @copy($tmp3, basePath."/inc/images/clanwars/".mysql_insert_id()."_3.".strtolower($end3));
-              @unlink($tmp3);
-            }
-          }
-
-          $tmp4 = $_FILES['screen4']['tmp_name'];
-          $type4 = $_FILES['screen4']['type'];
-          $end4 = explode(".", $_FILES['screen4']['name']);
-          $end4 = strtolower($end4[count($end4)-1]);
-          
-          if(!empty($tmp4))
-          {
-            $img4 = @getimagesize($tmp4);
-if($img4[0])
-            {
-              @copy($tmp4, basePath."/inc/images/clanwars/".mysql_insert_id()."_4.".strtolower($end4));
-              @unlink($tmp4);
-            }
-          }	
+            else break;
+        }
 
           $show = info(_cw_admin_added, "?admin=cw");
         }
-      } elseif($_GET['do'] == "editcw") {
+      } elseif($do == "editcw") {
 
         if(empty($_POST['gegner']) || empty($_POST['clantag']) || empty($_POST['t']))
         {
@@ -316,15 +255,15 @@ if($img4[0])
           $qry = db("UPDATE ".$db['cw']."
 SET ".$xonx."
 ".$kid."
-`datum` = '".((int)$datum)."',
-`squad_id` = '".((int)$_POST['squad'])."',
+`datum` = '".intval($datum)."',
+`squad_id` = '".intval($_POST['squad'])."',
 `clantag` = '".up($_POST['clantag'])."',
 `gegner` = '".up($_POST['gegner'])."',
 `url` = '".links($_POST['url'])."',
 `liga` = '".up($_POST['liga'])."',
 `gametype` = '".up($_POST['gametype'])."',
-`punkte` = '".((int)$_POST['punkte'])."',
-`gpunkte` = '".((int)$_POST['gpunkte'])."',
+`punkte` = '".intval($_POST['punkte'])."',
+`gpunkte` = '".intval($_POST['gpunkte'])."',
 `maps` = '".up($_POST['maps'])."',
 `serverip` = '".up($_POST['serverip'])."',
 `servername` = '".up($_POST['servername'])."',
@@ -332,130 +271,59 @@ SET ".$xonx."
 `lineup` = '".up($_POST['lineup'])."',
 `glineup` = '".up($_POST['glineup'])."',
 `matchadmins` = '".up($_POST['match_admins'])."',
-`bericht` = '".up($_POST['bericht'],1)."'
+`bericht` = '".up($_POST['bericht'])."'
 WHERE id = '".intval($_GET['id'])."'");
 
-          $cwid = $_GET['id'];
+        $cwid = intval($_GET['id']);
 
-          $tmp = $_FILES['logo']['tmp_name'];
-          $type = $_FILES['logo']['type'];
-          $end = explode(".", $_FILES['logo']['name']);
-          $end = strtolower($end[count($end)-1]);
-          
-          if(!empty($tmp))
-          {
-            $img = @getimagesize($tmp);
-foreach($picformat AS $end1)
-            {
-              if(file_exists(basePath.'/inc/images/clanwars/'.intval($_GET['id']).'_logo.'.$end1))
-              {
-                @unlink(basePath.'/inc/images/clanwars/'.intval($_GET['id']).'_logo.'.$end1);
-                break;
-              }
-            }
-            if($img[0])
-            {
-              copy($tmp, basePath."/inc/images/clanwars/".intval($_GET['id'])."_logo.".strtolower($end));
-              @unlink($tmp);
-            }
-          }
+        //Logo Upload
+        $tmpname = $_FILES['logo']['tmp_name'];
+        $type = $_FILES['logo']['type'];
+        $end = explode(".", $_FILES['logo']['name']);
+        $end = strtolower($end[count($end)-1]);
+        if(!empty($tmpname)) {
+            $img = @getimagesize($tmpname);
+            if($img[0]) {
+                foreach($picformat AS $end_del) {
+                    if(file_exists(basePath.'/inc/images/clanwars/'.$cwid.'_logo.'.$end_del)) {
+                        unlink(basePath.'/inc/images/clanwars/'.$cwid.'_logo.'.$end_del);
+                        break;
+                    }
+                }
 
-          $tmp1 = $_FILES['screen1']['tmp_name'];
-          $type1 = $_FILES['screen1']['type'];
-          $end1 = explode(".", $_FILES['screen1']['name']);
-          $end1 = strtolower($end1[count($end1)-1]);
-          
-          if(!empty($tmp1))
-          {
-            $img1 = @getimagesize($tmp1);
-foreach($picformat AS $endun1)
-            {
-              if(file_exists(basePath.'/inc/images/clanwars/'.intval($_GET['id']).'_1.'.$endun1))
-              {
-                @unlink(basePath.'/inc/images/clanwars/'.intval($_GET['id']).'_1.'.$endun1);
-                break;
-              }
+                move_uploaded_file($tmpname, basePath."/inc/images/clanwars/".$cwid."_logo.".strtolower($end));
             }
-
-            if($img1[0])
-            {
-              copy($tmp1, basePath."/inc/images/clanwars/".intval($_GET['id'])."_1.".strtolower($end1));
-              @unlink($tmp1);
-            }
-          }
-
-$tmp2 = $_FILES['screen2']['tmp_name'];
-          $type2 = $_FILES['screen2']['type'];
-          $end2 = explode(".", $_FILES['screen2']['name']);
-          $end2 = strtolower($end2[count($end2)-1]);
-          
-          if(!empty($tmp2))
-          {
-            $img2 = @getimagesize($tmp2);
-foreach($picformat AS $endun2)
-            {
-              if(file_exists(basePath.'/inc/images/clanwars/'.intval($_GET['id']).'_2.'.$endun2))
-              {
-                @unlink(basePath.'/inc/images/clanwars/'.intval($_GET['id']).'_2.'.$endun2);
-                break;
-              }
-            }
-            if($img2[0])
-            {
-              copy($tmp2, basePath."/inc/images/clanwars/".intval($_GET['id'])."_2.".strtolower($end2));
-              @unlink($tmp2);
-            }
-          }
-
-$tmp3 = $_FILES['screen3']['tmp_name'];
-          $type3 = $_FILES['screen3']['type'];
-          $end3 = explode(".", $_FILES['screen3']['name']);
-          $end3 = strtolower($end3[count($end3)-1]);
-          
-          if(!empty($tmp3))
-          {
-            $img3 = @getimagesize($tmp3);
-foreach($picformat AS $endun3)
-            {
-              if(file_exists(basePath.'/inc/images/clanwars/'.intval($_GET['id']).'_3.'.$endun3))
-              {
-                @unlink(basePath.'/inc/images/clanwars/'.intval($_GET['id']).'_3.'.$endun3);
-                break;
-              }
-            }
-            if($img3[0])
-            {
-              copy($tmp3, basePath."/inc/images/clanwars/".intval($_GET['id'])."_3.".strtolower($end3));
-              @unlink($tmp3);
-            }
-          }
-
-$tmp4 = $_FILES['screen4']['tmp_name'];
-          $type4 = $_FILES['screen4']['type'];
-          $end4 = explode(".", $_FILES['screen4']['name']);
-          $end4 = strtolower($end4[count($end4)-1]);
-          
-          if(!empty($tmp4))
-          {
-            $img4 = @getimagesize($tmp4);
-foreach($picformat AS $endun4)
-            {
-              if(file_exists(basePath.'/inc/images/clanwars/'.intval($_GET['id']).'_4.'.$endun4))
-              {
-                @unlink(basePath.'/inc/images/clanwars/'.intval($_GET['id']).'_4.'.$endun4);
-                break;
-              }
-            }
-            if($img4[0])
-            {
-              copy($tmp4, basePath."/inc/images/clanwars/".intval($_GET['id'])."_4.".strtolower($end4));
-              @unlink($tmp4);
-            }
-          }
-
-          $show = info(_cw_admin_edited, "?admin=cw");
         }
-      } elseif($_GET['do'] == "delete") {
+
+        //Screenshot Upload
+        for ($zaehler = 1; $zaehler <= 20; $zaehler++) {
+            if(isset($_FILES['screen'.$zaehler])) {
+                $tmpname = $_FILES['screen'.$zaehler]['tmp_name'];
+                $type = $_FILES['screen'.$zaehler]['type'];
+                $end = explode(".", $_FILES['screen'.$zaehler]['name']);
+                $end = strtolower($end[count($end)-1]);
+                if(!empty($tmpname)) {
+                    $img = @getimagesize($tmpname);
+                    if($img[0]) {
+                        foreach($picformat AS $end_del) {
+                            if(file_exists(basePath.'/inc/images/clanwars/'.$cwid.'_'.$zaehler.'.'.$end_del)) {
+                                  unlink(basePath.'/inc/images/clanwars/'.$cwid.'_'.$zaehler.'.'.$end_del);
+                                  break;
+                            }
+                        }
+
+                        move_uploaded_file($tmpname, basePath."/inc/images/clanwars/".$cwid."_".$zaehler.".".strtolower($end));
+                    }
+                }
+            }
+            else break;
+        }
+
+        $show = info(_cw_admin_edited, "?admin=cw");
+    }
+}
+elseif($do == "delete")
+{
         $qry = db("DELETE FROM ".$db['cw']."
 WHERE id = '".intval($_GET['id'])."'");
 
@@ -463,17 +331,15 @@ WHERE id = '".intval($_GET['id'])."'");
 WHERE cw = '".intval($_GET['id'])."'");
 
         $show = info(_cw_admin_deleted, "?admin=cw");
-      } elseif($_GET['do'] == "top") {
+      } elseif($do == "top") {
         $qry = db("UPDATE ".$db['cw']."
 SET `top` = '".intval($_GET['set'])."'
 WHERE id = '".intval($_GET['id'])."'");
-                   
+
         $show = info((empty($_GET['set']) ? _cw_admin_top_unsetted : _cw_admin_top_setted), "?admin=cw");
       } else {
-        if(isset($_GET['page'])) $page = $_GET['page'];
-        else $page = 1;
 
-if(is_numeric($_GET['squad']))	{
+if(is_numeric($_GET['squad']))    {
 $whereqry = ' WHERE squad_id = '.$_GET['squad'].' ';
 }
 
@@ -522,6 +388,9 @@ if($gets['id'] == $_GET['squad']) { $sel = ' class="dropdownKat"'; } else { $sel
                                                       ));
         }
 
+        if(empty($show_))
+            $show_ = '<tr><td colspan="5" class="contentMainSecond">'._no_entrys.'</td></tr>';
+
         $show = show($dir."/clanwars", array("head" => _clanwars,
                                              "add" => _cw_admin_head,
                                              "date" => _datum,
@@ -533,5 +402,3 @@ if($gets['id'] == $_GET['squad']) { $sel = ' class="dropdownKat"'; } else { $sel
                                              "navi" => nav($entrys,$maxadmincw,"?admin=cw&amp;squad=".$_GET['squad']."")
                                              ));
       }
-    }
-?>

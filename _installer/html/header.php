@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>deV!L`z Clanportal - Installation</title>
-    <link rel="stylesheet" href="html/css.css" type="text/css">  
+    <link rel="stylesheet" href="html/css.css" type="text/css">
   </head>
   <body bgcolor="#ced3d6" leftmargin="0" topmargin="0" marginwidth="0" marginheight="0">
   <div class="main" align="center">
@@ -16,7 +16,7 @@
             </tr>
           </table>
         </td>
-      </tr>      
+      </tr>
       <tr>
         <td valign="top">
           <table width="100%" cellpadding="0" cellspacing="0">
@@ -32,55 +32,66 @@
                         <tr>
                           <td width="38"></td>
                           <td>
-                          <?php   
-                            if(isset($_GET['action']) && $_GET['action'] == "")
+                          <?php
+                            if($action == "")
                               echo _link_start;
                             else
-                              echo _link_start_1; 
+                              echo _link_start_1;
                           ?>
                           </td>
                         </tr>
                         <tr>
                           <td></td>
                           <td>
-                          <?php   
-                            if(isset($_GET['action']) && $_GET['action'] == "prepare")
+                          <?php
+                            if($action == "require")
+                              echo _link_require;
+                            else
+                              echo _link_require_1;
+                          ?>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td></td>
+                          <td>
+                          <?php
+                            if($action == "prepare")
                               echo _link_prepare;
                             else
-                              echo _link_prepare_1; 
+                              echo _link_prepare_1;
                           ?>
                           </td>
                         </tr>
                         <tr>
                           <td></td>
                           <td>
-                          <?php   
-                            if(isset($_GET['action']) && $_GET['action'] == "install")
+                          <?php
+                            if($action == "install")
                               echo _link_install;
                             else
-                              echo _link_install_1; 
+                              echo _link_install_1;
                           ?>
                           </td>
                         </tr>
                         <tr>
                           <td></td>
                           <td>
-                          <?php   
-                            if(isset($_GET['action']) && $_GET['action'] == "database")
+                          <?php
+                            if($action == "database")
                               echo _link_db;
                             else
-                              echo _link_db_1; 
+                              echo _link_db_1;
                           ?>
                           </td>
                         </tr>
                         <tr>
                           <td></td>
                           <td>
-                          <?php   
-                            if(isset($_GET['action']) && $_GET['action'] == "done")
+                          <?php
+                            if($action == "done")
                               echo _link_done;
                             else
-                              echo _link_done_1; 
+                              echo _link_done_1;
                           ?>
                           </td>
                         </tr>
@@ -101,6 +112,9 @@
                   </tr>
                   <tr>
                     <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Released:</b> <?php echo _release; ?></td>
+                  </tr>
+                  <tr>
+                    <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Build:</b> <?php echo _build; ?></td>
                   </tr>
                   <tr>
                     <td height="255"></td>

@@ -1,96 +1,97 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 // Start session if no headers were sent
-  if(!headers_sent())
-  {
-    @session_start();
-  # Patch by David Vieira-Kurz of majorsecurity.de
-    #@session_regenerate_id();
-    if(!isset($_SESSION['PHPSESSID']) || !isset($_COOKIE['PHPSESSID']))
-    {
-      @session_destroy();
-      @session_start();
-     # @session_regenerate_id();
-      $_SESSION['PHPSESSID'] = true;
-      $_COOKIE['PHPSESSID']  = true;
+if(!headers_sent()) {
+    /** Start Sessions */
+    if(sessions_backend != 'php') {
+        $session = new session();
+        if(!$session->init())
+            die('PHP-Sessions not started!');
+        unset($session);
+    } else {
+        if(!session_start())
+            die('PHP-Sessions not started!');
     }
-  }
-/*
-// prevent network traffic flooding
-  if(!isset($_SESSION['time']) || empty($_SESSION['time'])) $_SESSION['time'] = round(mtime(),1);
-  else {
-    if(round(mtime(),1) == $_SESSION['time']) die(header('HTTP/1.1 404 Not Found'));
-    else $_SESSION['time'] = round(mtime(),1);
-  }
-*/
-// functions needed
-  function mtime()
-  {
+
+    if(!isset($_SESSION['PHPSESSID']))
+        $_SESSION['PHPSESSID'] = true;
+}
+
+function mtime() {
     list($usec, $sec) = explode(" ", microtime());
     return ((float)$usec + (float)$sec);
-  }
-  function secure($string)
-  {
+}
+
+function secure($string) {
     $string = trim($string);
     $string = str_replace("#","&#35;",$string);
     $string = str_replace("(","&#40;",$string);
     $string = str_replace(")","&#41;",$string);
     $string = str_replace("<","&#60;",$string);
-    $string = str_replace(">","&#62;",$string);
+    return str_replace(">","&#62;",$string);
+}
 
-    return $string;
-  }
-// filter the $_GET var
-  for(reset($_GET);list($key,$value)=each($_GET);)
-    $_GET[$key] = secure($value);
 // set a backslash before a quote in $_POST, $_GET and $_COOKIE var, if magic_quotes_gpc is disabled in php.ini
-  if(!get_magic_quotes_gpc())
-  {
-    foreach($_GET AS $key => $value)
-      $_GET[$key]    = addslashes($value);
-    foreach($_POST AS $key => $value)
-    {
-      if(is_array($_POST[$key]))
-      {
-        foreach($_POST[$key] AS $key1 => $value1)
-          $_POST[$key][$key1] = addslashes($value1);
-      } else $_POST[$key] = addslashes($value);
-    }
-    foreach($_COOKIE AS $key => $value)
-    {
-      if(is_array($_COOKIE[$key]))
-      {
-        foreach($_COOKIE[$key] AS $key1 => $value1)
-          $_COOKIE[$key][$key1] = addslashes($value1);
-      } else $_COOKIE[$key] = addslashes($value);
-    }
-  }
+if (function_exists('get_magic_quotes_gpc') && get_magic_quotes_gpc()) {
+    add_stripslashes($_REQUEST);
+    add_stripslashes($_GET);
+    add_stripslashes($_POST);
+    add_stripslashes($_COOKIE);
 
-// checks validation of uploaded files (only images are allowed!)
-  for(reset($_FILES);list($key,$value)=each($_FILES);)
-  {
-    if(!empty($value['tmp_name']))
-    {
-      $end  = explode(".", $value['name']);
-      $end  = strtolower($end[count($end)-1]);
-      $info = getimagesize($value['tmp_name']);
-      
-      if($end != 'rar' && $end != 'zip')
-      {
-        if(
-           ($info[2] == 1 || $info[2] == 2 || $info[2] == 3)
-           &&
-           ($end == 'jpg' || $end == 'jpeg' || $end == 'gif' || $end == 'png')
-           &&
-           $value['error'] == 0
-        ) $_FILES[$key] = $value;
-        else {
-          @unlink($value['tmp_name']);
-          $_FILES[$key] = 'notvalid';
+    if (is_array($_FILES)) {
+        foreach ($_FILES AS $key => $val) {
+            $_FILES["$key"]['tmp_name'] = str_replace('\\', '\\\\', $val['tmp_name']);
+
+            // checks validation of uploaded files (only images are allowed!)
+            if(!empty($val['tmp_name'])) {
+                $end  = explode(".", $val['name']);
+                $end  = strtolower($end[count($end)-1]);
+                $info = getimagesize($val['tmp_name']);
+
+                if($end != 'rar' && $end != 'zip') {
+                    if(($info[2] == 1 || $info[2] == 2 || $info[2] == 3)
+                    &&
+                    ($end == 'jpg' || $end == 'jpeg' || $end == 'gif' || $end == 'png')
+                    &&
+                    $value['error'] == 0)
+                        $_FILES[$key] = $val;
+                    else {
+                        @unlink($val['tmp_name']);
+                        $_FILES[$key] = 'notvalid';
+                    }
+                }
+            }
         }
-      }
+
+        add_stripslashes($_FILES);
     }
-  }
-  
-// won't needed any more, will get back empty return in case of incompatibility
-  function safe(){ return; }
-?>
+}
+
+if(function_exists('set_magic_quotes_runtime')
+   && version_compare(PHP_VERSION, '5.3.0', '<')) {
+    @set_magic_quotes_runtime(0);
+    @ini_set('magic_quotes_sybase', 0);
+}
+
+foreach (array('_GET', '_POST') AS $arrayname) {
+    if (isset($GLOBALS["$arrayname"]['do']))
+        $GLOBALS["$arrayname"]['do'] = trim($GLOBALS["$arrayname"]['do']);
+
+    if (isset($GLOBALS["$arrayname"]['action']))
+        $GLOBALS["$arrayname"]['action'] = trim($GLOBALS["$arrayname"]['action']);
+}
+
+function add_stripslashes(&$value, $depth = 0) {
+    if (is_array($value)) {
+        foreach ($value AS $key => $val) {
+            if (is_string($val))
+                $value["$key"] = stripslashes(secure($val));
+            else if (is_array($val) AND $depth < 10)
+                add_stripslashes($value["$key"], $depth + 1);
+        }
+    }
+}

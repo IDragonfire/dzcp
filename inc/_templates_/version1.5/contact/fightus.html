@@ -11,7 +11,7 @@
   <td class="contentMainTop" width="25%"><span class="fontBold">[nick]: <span class="fontWichtig">*</span></span></td>
   <td class="contentMainFirst" width="75%" align="center">
     <input type="text" name="nick" class="inputField_dis"
-    onfocus="this.className='inputField_en';" 
+    onfocus="this.className='inputField_en';"
     onblur="this.className='inputField_dis';" />
   </td>
 </tr>
@@ -19,7 +19,7 @@
   <td class="contentMainTop" width="25%"><span class="fontBold">[email]: <span class="fontWichtig">*</span></span></td>
   <td class="contentMainFirst" width="75%" align="center">
     <input type="text" name="email" class="inputField_dis"
-    onfocus="this.className='inputField_en';" 
+    onfocus="this.className='inputField_en';"
     onblur="this.className='inputField_dis';" />
   </td>
 </tr>
@@ -27,7 +27,23 @@
   <td class="contentMainTop" width="25%"><span class="fontBold">[icq]:</span></td>
   <td class="contentMainFirst" width="75%" align="center">
     <input type="text" name="icq" class="inputField_dis"
-    onfocus="this.className='inputField_en';" 
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[skype]:</span></td>
+  <td class="contentMainFirst" width="75%" align="center">
+    <input type="text" name="skype" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[steam]:</span></td>
+  <td class="contentMainFirst" width="75%" align="center">
+    <input type="text" name="steam" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
     onblur="this.className='inputField_dis';" />
   </td>
 </tr>
@@ -49,7 +65,7 @@
   <td class="contentMainTop" width="25%"><span class="fontBold">[clan]: <span class="fontWichtig">*</span></span></td>
   <td class="contentMainFirst" width="75%" align="center">
     <input type="text" name="clan" class="inputField_dis"
-    onfocus="this.className='inputField_en';" 
+    onfocus="this.className='inputField_en';"
     onblur="this.className='inputField_dis';" />
   </td>
 </tr>
@@ -57,7 +73,7 @@
   <td class="contentMainTop" width="25%"><span class="fontBold">[hp]:</span></td>
   <td class="contentMainFirst" width="75%" align="center">
     <input type="text" name="hp" class="inputField_dis"
-    onfocus="this.className='inputField_en';" 
+    onfocus="this.className='inputField_en';"
     onblur="this.className='inputField_dis';" />
   </td>
 </tr>
@@ -65,10 +81,10 @@
   <td class="contentMainTop" width="25%"><span class="fontBold">[vs]:</span></td>
   <td class="contentMainFirst" width="75%" align="center">
     <input type="text" name="us" size="3" class="inputField_dis_small"
-    onfocus="this.className='inputField_en_small';" 
-    onblur="this.className='inputField_dis_small';" /> : 
+    onfocus="this.className='inputField_en_small';"
+    onblur="this.className='inputField_dis_small';" /> :
     <input type="text" name="to" size="3" class="inputField_dis_small"
-    onfocus="this.className='inputField_en_small';" 
+    onfocus="this.className='inputField_en_small';"
     onblur="this.className='inputField_dis_small';" />
   </td>
 </tr>
@@ -76,7 +92,7 @@
   <td class="contentMainTop" width="25%"><span class="fontBold">[maps]: <span class="fontWichtig">*</span></span></td>
   <td class="contentMainFirst" width="75%" align="center">
     <input type="text" name="maps" class="inputField_dis"
-    onfocus="this.className='inputField_en';" 
+    onfocus="this.className='inputField_en';"
     onblur="this.className='inputField_dis';" />
   </td>
 </tr>
@@ -90,26 +106,29 @@
   <td class="contentMainTop" width="25%" valign="top"><span class="fontBold">[nachricht]:</span></td>
   <td class="contentMainFirst" align="center" width="75%">
     <textarea name="text" class="inputField_dis"
-    onfocus="this.className='inputField_en';" 
+    onfocus="this.className='inputField_en';"
     onblur="this.className='inputField_dis';" cols="8" rows="auto"></textarea>
   </td>
 </tr>
-<tr> 
-   <td class="contentMainTop"><span class="fontBold">[security]:</span></td>
-   <td class="contentMainFirst" align="center">
-     <table class="hperc" cellspacing="0">
-       <tr>
-         <td style="text-align:right"><img src="../antispam.php?secure=fightus&amp;num=5" alt="" class="icon" /></td>
-         <td>&nbsp;</td>
-         <td style="width:50%;vertical-align:middle">
-           <input class="inputField_dis_mid" type="text" name="secure" 
-           onfocus="this.className='inputField_en_mid'"
-           onblur="this.className='inputField_dis_mid'" style="text-align:center" />
-        </td>
-      </tr>
-    </table>
-  </td>
+<logged_out>
+<tr>
+    <td class="contentMainTop" style="vertical-align:middle"><span class="fontBold">[lang_register_confirm]:</span></td>
+    <td class="contentMainFirst" align="center">
+        <table class="corner" style="background-color:#FFF; width:204px; border: 1px solid #000; border-color: #555 #555 #111 #111;">
+            <tbody>
+                <tr>
+                    <td colspan="2" style="width:195"><img class="corner" onmouseover="DZCP.showInfo('[lang_capcha_sound_info]')" onmouseout="DZCP.hideInfo()" onClick="DZCP.EvalSound('../inc/ajax.php?i=securimage_audio')" src="../inc/images/ajax_loading.gif" alt="CAPTCHA Image" name="siimage_fightus" hspace="0" vspace="0" id="siimage_fightus" style="border: 1px solid #000; border-color: #555 #555 #111 #111" /></td>
+                    <script language="javascript" type="text/javascript">DZCP.initDynCaptcha('siimage_fightus',0,195,0,'',0,'[sid]');</script></td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="secure" size="23" maxlength="25" /></td>
+                    <td><a tabindex="-1" style="border-style: none;" href="#" title="Refresh Image" onclick="DZCP.initDynCaptcha('siimage_fightus',0,195,0,'',0,''); this.blur(); return false"><img src="../inc/images/securimage/refresh.png" alt="Reload Image" height="16" width="16" onclick="this.blur()" border="0" /></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </td>
 </tr>
+</logged_out>
 <tr>
   <td class="contentMainTop" colspan="2" align="center">[pflicht]</td>
 </tr>

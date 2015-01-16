@@ -1,0 +1,60 @@
+</table>
+<table class="hperc" cellspacing="0">
+<tr>
+  <td>
+    <script language="javascript" type="text/javascript">
+      var prevURL = '../user/?action=preview[ed]';
+    </script>
+    <form id="usergbForm" name="usergbForm" action="?action=usergb&amp;do=[whaturl]&amp;id=[id]" method="post" onsubmit="return(DZCP.submitButton())">
+    <input type="hidden" name="reg" value="[reg]" />
+      <table class="mainContent" cellspacing="1">
+        <tr>
+          <td class="contentHead" colspan="2"><span class="fontBold">[add_head]</span><a name="eintragen"></a></td>
+        </tr>
+        [error]
+        [form]
+        <tr>
+          <td class="contentMainFirst" align="center" colspan="2">
+            <textarea id="eintrag" name="eintrag" cols="0" rows="0" class="editorStyle">[posteintrag]</textarea>
+          </td>
+        </tr>
+        <logged_out>
+        <tr>
+            <td class="contentMainTop" style="vertical-align:middle"><span class="fontBold">[lang_register_confirm]:</span></td>
+            <td class="contentMainFirst" align="center">
+                <table class="corner" style="width:204px;border: 1px solid #d4d4d4;">
+                    <tbody>
+                        <tr>
+                            <td colspan="2" style="width:195"><img class="corner" onmouseover="DZCP.showInfo('[lang_capcha_sound_info]')" onmouseout="DZCP.hideInfo()" onClick="DZCP.EvalSound('../inc/ajax.php?i=securimage_audio')" src="../inc/images/ajax_loading.gif" alt="CAPTCHA Image" name="siimage" hspace="0" vspace="0" id="siimage" style="border: 1px solid #d4d4d4; margin-right: 1px" />
+                            <script language="javascript" type="text/javascript">DZCP.initDynCaptcha('siimage',0,0,0,'',0,'[sid]');</script></td>
+                        </tr>
+                        <tr>
+                            <td><input type="text" name="secure" size="23" maxlength="25"/></td>
+                            <td><a tabindex="-1" style="border-style: none;" href="#" title="Refresh Image" onclick="DZCP.initDynCaptcha('siimage',0,0,0,'',0,''); this.blur(); return false"><img src="../inc/images/securimage/refresh.png" alt="Reload Image" height="16" width="16" onclick="this.blur()" border="0" /></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+        </logged_out>
+        <tr>
+          <td class="contentMainTop" colspan="2" align="center">[ip]</td>
+        </tr>
+        <tr>
+          <td class="contentBottom" colspan="2"><input id="contentSubmit" class="submit" type="submit" value="[what]" /> <input type="button"  value="[preview]" class="submit" onclick="DZCP.ajaxPreview('usergbForm')" /></td>
+        </tr>
+      </table>
+    </form>
+  </td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+</tr>
+<tr>
+  <td>
+    <div id="previewDIV"></div>
+  </td>
+</tr>
+<tr>
+  <td>&nbsp;</td>
+</tr>

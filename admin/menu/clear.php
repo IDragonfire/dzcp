@@ -1,16 +1,13 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       rootmenu
-// Rechte:    $chkMe == 4
-///////////////////////////////
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._clear_head;
-    if($chkMe != 4)
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
-      if($_GET['do'] == "clear")
+      if($do == "clear")
       {
         if(empty($_POST['days']))
         {
@@ -47,7 +44,7 @@ if(_adminMenu != 'true') exit;
       } else {
         $show = show($dir."/clear", array("head" => _clear_head,
                                           "away" => _clear_away,
-										  "news" => _clear_news,
+                                          "news" => _clear_news,
                                           "forum" => _clear_forum,
                                           "value" => _button_value_clear,
                                           "misc" => _clear_misc,
@@ -56,5 +53,3 @@ if(_adminMenu != 'true') exit;
                                           "c_days" => "",
                                           "forum_info" => _clear_forum_info));
       }
-    }
-?>

@@ -1,0 +1,49 @@
+table.forumBG {
+	border: solid 1px #BBB;
+	border-top-color: #C8C8C8;
+	background: #F8F8F8;
+}
+
+th.forumTH {
+	color: #414141; 
+	font-size: 11px; 
+	font-weight: bold;
+	background: #FFF url(../images/forum/th.gif) top left repeat-x;
+	white-space: nowrap;
+	padding: 0 5px;
+	text-align: center;
+	height: 26px;
+	border-left: solid 1px #FFF;
+	border-right: solid 1px #E0E0E0;
+	border-top: solid 1px #FFF;
+	border-bottom: solid 1px #E0E0E0;
+}
+
+td.forumTD {
+	border-left: solid 1px #FFF;
+	border-right: solid 1px #E0E0E0;
+	border-top: solid 1px #FFF;
+	border-bottom: solid 1px #E0E0E0;
+	background: #F8F8F8 url(../images/forum/cell.gif) top left repeat-x;
+	padding: 4px;
+	vertical-align:middle;
+	white-space: nowrap;
+}
+
+td.forumTD.warp {
+	white-space: normal;
+}
+
+p.forumTopic{
+	margin: 1px 0px;
+}
+
+.genmed {
+	margin: 1px 1px;
+	font-size: 1.1em;
+}
+
+.gensmall {
+	margin: 1px 1px;
+	font-size: 1em;
+}

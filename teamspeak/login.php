@@ -1,53 +1,60 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
-include(basePath."/inc/config.php");
-include(basePath."/inc/bbcode.php");
+include(basePath."/inc/common.php");
+
 ## SECTIONS ##
-    
-	$uip 		= $settings['ts_ip'];	
-	$tPort 	= $settings['ts_sport'];
-	$port 	= $settings['ts_port'];	
-	$version 	= $settings['ts_version'];	
-  
-	if($_POST) {
-		$ok = false; 
-	  	$nickname	= $_POST['nickname'];
-	  	$reg = $_POST['reg'];
-	
-    	if($reg=="re") $loginname	= $_POST['loginname'];
-	  	else $loginname	= "";
-   	
-    	$password	= $_POST['password'];
-	  	$channel  = $_POST['channel'];
-	 	$channel  = str_replace("¶","'",$channel);
-   		$channelpassword = $_POST['channelpassword'];
-   		$time = time(); 
-   
-   		$cookie_data =  $nickname.'¶'.$reg.'¶'.$loginname.'¶'.$password;
-    	set_cookie($prev."Teamspeakdata",$cookie_data);
-  	} elseif($_GET) {
-	  	$ok = true; 
-	  	$channel = $_GET['cName'];
-	  	$nickname	= "";
-	  	$reg = "";
-   		$loginname = ""; 
-   		$password = "";
-		if(isset($_COOKIE[$prev."Teamspeakdata"])) {
-			$cookie_info = explode("¶", $_COOKIE[$prev.'Teamspeakdata']);
-			$nickname = $cookie_info[0]; 
-			$reg = $cookie_info[1]; 
-			$loginname = $cookie_info[2]; 
-			$password = $cookie_info[3];
-		}
-	} else {
-		$ok = false;
-  	}
+    $uip         = settings('ts_ip');
+    $tPort     = settings('ts_sport');
+    $port     = settings('ts_port');
+    $version     = settings('ts_version');
+
+    if($_POST) {
+        $ok = false;
+          $nickname    = $_POST['nickname'];
+          $reg = $_POST['reg'];
+
+        if($reg=="re") $loginname    = $_POST['loginname'];
+          else $loginname    = "";
+
+        $password    = $_POST['password'];
+        $channel  = $_POST['channel'];
+        $channel  = str_replace("Â¶","'",$channel);
+        $channelpassword = $_POST['channelpassword'];
+        $time = time();
+
+           $cookie_data =  $nickname.'Â¶'.$reg.'Â¶'.$loginname.'Â¶'.$password;
+           cookie::put('Teamspeakdata', $cookie_data);
+           cookie::save(); //Save Cookie
+      } elseif($_GET) {
+          $ok = true;
+          $channel = $_GET['cName'];
+          $nickname    = "";
+          $reg = "";
+           $loginname = "";
+           $password = "";
+        $cookie_data = cookie::get('Teamspeakdata');
+        if( !empty($cookie_data)) {
+            $cookie_info = explode("Â¶", $cookie_data);
+            $nickname = $cookie_info[0];
+            $reg = $cookie_info[1];
+            $loginname = $cookie_info[2];
+            $password = $cookie_info[3];
+        }
+    } else {
+        $ok = false;
+      }
 ?>
 <html>
 <head>
-	<title>Teamspeak Login</title>	
+    <title>Teamspeak Login</title>
   <link rel="stylesheet" type="text/css" href="../inc/_templates_/<?php echo $tmpdir?>/_css/stylesheet.css">
 </head>
 <?php
@@ -64,8 +71,8 @@ if($_POST) {
           tID.disabled = true;
           tID.style.color = "#888";
           tID.style.cursor = "default";
-          
-    	document.frm.submit();
+
+        document.frm.submit();
     }
     function resizeMe()
     {
@@ -81,98 +88,98 @@ if($_POST) {
         winB = smDiv.offsetWidth+20;
         winH = smDiv.offsetHeight+20;
       }
-  
+
       window.resizeTo(winB + 20,winH + 70);
     }
 </script>
 <body onLoad="resizeMe()">
 <table id="tslogin" class="hperc" cellspacing="1">
 <tr>
-	<td>
+    <td>
     <form name="frm" action="" method="post">
-  	<input type="hidden" name="autoLog" value="false">
-  	<input type="hidden" name="channel" value="<?php echo $channel?>">
-	<table class="hperc" cellspacing="1">
-	<?php if($ok) { ?>
+      <input type="hidden" name="autoLog" value="false">
+      <input type="hidden" name="channel" value="<?php echo $channel?>">
+    <table class="hperc" cellspacing="1">
+    <?php if($ok) { ?>
   <tr>
     <td class="contentHead" colspan="2"><span class="fontBold">Channel: <?php echo rawurldecode($_GET['cName'])?></span></td>
   </tr>
-	<tr>
-		<td class="contentMainTop"><span class="fontBold">Nickname:</span></td>	
-		<td class="contentMainFirst" style="text-align:center">
+    <tr>
+        <td class="contentMainTop"><span class="fontBold">Nickname:</span></td>
+        <td class="contentMainFirst" style="text-align:center">
       <input type="text" name="nickname" class="inputField_dis"
        onfocus="this.className='inputField_en';"
-       onblur="this.className='inputField_dis';" 
+       onblur="this.className='inputField_dis';"
        style="width:180px;" value="<?php echo $nickname?>" />
     </td>
-	</tr>
+    </tr>
     <?php if($version == 2) { ?>
-	<tr>
-		<td colspan="2" class="contentMainTop">
-		<table class="hperc" cellspacing="0">
-		<tr>
-			<td width="1%">
-			<?php if($reg == "an" || $reg == "") { ?>
-			<input type="radio" id="reg1" name="reg" value="an" checked="checked" class="checkbox" />
-			<?php } else { ?>
-			<input type="radio" id="reg1" name="reg" value="an" class="checkbox" />
-			<?php } ?>
-			</td>
-			<td style="vertical-align:middle"><label for="reg1">Anonymous</label></td>
-			<td width="1%">
-			<?php if($reg == "an" || $reg == "") { ?>
-			<input type="radio" id="reg2" name="reg" value="re" class="checkbox" />
-			<?php } else { ?>
-			<input type="radio" id="reg2" name="reg" value="re" checked="checked" class="checkbox" />
-			<?php } ?>
-			</td>
-			<td style="vertical-align:middle"><label for="reg2">Registered</label></td>
-		</tr>
-		</table>
-		</td>
-	</tr>
-	<tr>
-		<td class="contentMainTop"><span class="fontBold">Login name:</span></td>	
-		<td class="contentMainFirst" style="text-align:center">
-      <input type="text" name="loginname" class="inputField_dis" 
+    <tr>
+        <td colspan="2" class="contentMainTop">
+        <table class="hperc" cellspacing="0">
+        <tr>
+            <td width="1%">
+            <?php if($reg == "an" || $reg == "") { ?>
+            <input type="radio" id="reg1" name="reg" value="an" checked="checked" class="checkbox" />
+            <?php } else { ?>
+            <input type="radio" id="reg1" name="reg" value="an" class="checkbox" />
+            <?php } ?>
+            </td>
+            <td style="vertical-align:middle"><label for="reg1">Anonymous</label></td>
+            <td width="1%">
+            <?php if($reg == "an" || $reg == "") { ?>
+            <input type="radio" id="reg2" name="reg" value="re" class="checkbox" />
+            <?php } else { ?>
+            <input type="radio" id="reg2" name="reg" value="re" checked="checked" class="checkbox" />
+            <?php } ?>
+            </td>
+            <td style="vertical-align:middle"><label for="reg2">Registered</label></td>
+        </tr>
+        </table>
+        </td>
+    </tr>
+    <tr>
+        <td class="contentMainTop"><span class="fontBold">Login name:</span></td>
+        <td class="contentMainFirst" style="text-align:center">
+      <input type="text" name="loginname" class="inputField_dis"
        onfocus="this.className='inputField_en';"
-       onblur="this.className='inputField_dis';" 
+       onblur="this.className='inputField_dis';"
        style="width:180px;" value="<?php echo $loginname?>" />
     </td>
-	</tr>
-	<tr>
-		<td class="contentMainTop"><span class="fontBold">Password:</span></td>	
-		<td class="contentMainFirst" style="text-align:center">
-      <input type="password" name="password" class="inputField_dis" 
+    </tr>
+    <tr>
+        <td class="contentMainTop"><span class="fontBold">Password:</span></td>
+        <td class="contentMainFirst" style="text-align:center">
+      <input type="password" name="password" class="inputField_dis"
        onfocus="this.className='inputField_en';"
-       onblur="this.className='inputField_dis';" 
+       onblur="this.className='inputField_dis';"
        style="width:180px;" value="<?php echo $password?>" />
     </td>
-	</tr>
+    </tr>
     <?php } if($version == 2 || ($_GET['pw'] == 1 && $version == 3)) { ?>
-	<tr>
-		<td class="contentMainTop"><span class="fontBold">Channel password:</span></td>	
-		<td class="contentMainFirst" style="text-align:center">
-      <input type="password" name="channelpassword" class="inputField_dis" 
+    <tr>
+        <td class="contentMainTop"><span class="fontBold">Channel password:</span></td>
+        <td class="contentMainFirst" style="text-align:center">
+      <input type="password" name="channelpassword" class="inputField_dis"
        onfocus="this.className='inputField_en';"
-       onblur="this.className='inputField_dis';" 
+       onblur="this.className='inputField_dis';"
        style="width:180px;" />
     </td>
-	</tr>
+    </tr>
     <?php } ?>
-	<tr>
-		<td colspan="2" class="contentBottom">
+    <tr>
+        <td colspan="2" class="contentBottom">
       <input id="tsSubmit" type="button" onClick="javascript:doSubmit();" value="Connect" class="submit" />
     </td>
   </tr>
-	</form>
-	<?php } else { ?>
+    </form>
+    <?php } else { ?>
   <script language="javascript" type="text/javascript">
     javascript:window.close();
   </script>
-	<?php } ?>
-	</table>	
-	</td>
+    <?php } ?>
+    </table>
+    </td>
 </tr>
 </table>
 </body>

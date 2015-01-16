@@ -1,16 +1,13 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('rankings')
-///////////////////////////////
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_rankings;
-    if(!permission("rankings"))
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
-      if($_GET['do'] == "add")
+      if($do == "add")
       {
         $qrys = db("SELECT * FROM ".$db['squads']."
                     WHERE status = '1'
@@ -18,7 +15,7 @@ if(_adminMenu != 'true') exit;
         while($gets = _fetch($qrys))
         {
           $squads .= show(_select_field_ranking_add, array("what" => re($gets['name']),
-  		              									                     "value" => $gets['id'],
+                                                                                 "value" => $gets['id'],
                                                            "icon" => $gets['icon'],
                                                            "sel" => ""));
         }
@@ -33,7 +30,7 @@ if(_adminMenu != 'true') exit;
                                                   "e_rank" => "",
                                                   "e_url" => "",
                                                   "url" => _rankings_teamlink));
-      } elseif($_GET['do'] == "addranking") {
+      } elseif($do == "addranking") {
         if(empty($_POST['league']) || empty($_POST['url']) || empty($_POST['rank']))
         {
           if(empty($_POST['league']))   $show = error(_error_empty_league,1);
@@ -44,12 +41,12 @@ if(_adminMenu != 'true') exit;
                      SET `league`   = '".up($_POST['league'])."',
                          `squad`    = '".up($_POST['squad'])."',
                          `url`      = '".links($_POST['url'])."',
-                         `rank`     = '".((int)$_POST['rank'])."',
-                         `postdate` = '".((int)time())."'");
+                         `rank`     = '".intval($_POST['rank'])."',
+                         `postdate` = '".time()."'");
 
           $show = info(_ranking_added, "?admin=rankings");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry = db("SELECT * FROM ".$db['rankings']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -59,10 +56,10 @@ if(_adminMenu != 'true') exit;
                     ORDER BY game ASC");
         while($gets = _fetch($qrys))
         {
-          if($get['squad'] == $gets['id']) $sel = "selected=\"selected\"";
+          if($get['squad'] == $gets['id']) $sel = 'selected="selected"';
           else $sel = "";
           $squads .= show(_select_field_ranking_add, array("what" => re($gets['name']),
-  		              									                     "value" => $gets['id'],
+                                                                                 "value" => $gets['id'],
                                                            "icon" => $gets['icon'],
                                                            "sel" => $sel));
         }
@@ -77,7 +74,7 @@ if(_adminMenu != 'true') exit;
                                                   "e_rank" => $get['rank'],
                                                   "e_url" => re($get['url']),
                                                   "url" => _rankings_teamlink));
-      } elseif($_GET['do'] == "editranking") {
+      } elseif($do == "editranking") {
         if(empty($_POST['league']) || empty($_POST['url']) || empty($_POST['rank']))
         {
           if(empty($_POST['league']))   $show = error(_error_empty_league,1);
@@ -92,23 +89,23 @@ if(_adminMenu != 'true') exit;
                      SET `league`       = '".up($_POST['league'])."',
                          `squad`        = '".up($_POST['squad'])."',
                          `url`          = '".links($_POST['url'])."',
-                         `rank`         = '".((int)$_POST['rank'])."',
-                         `lastranking`  = '".((int)$get['rank'])."',
-                         `postdate`     = '".((int)time())."'
+                         `rank`         = '".intval($_POST['rank'])."',
+                         `lastranking`  = '".intval($get['rank'])."',
+                         `postdate`     = '".time()."'
                      WHERE id = '".intval($_GET['id'])."'");
 
           $show = info(_ranking_edited, "?admin=rankings");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $del = db("DELETE FROM ".$db['rankings']."
                    WHERE id = '".intval($_GET['id'])."'");
 
         $show = info(_ranking_deleted, "?admin=rankings");
       } else {
-      $qry = db("SELECT s1.*,s2.name,s2.id AS sqid FROM ".$db['rankings']." AS s1
-                 LEFT JOIN ".$db['squads']." AS s2
-                 ON s1.squad = s2.id
-                 ORDER BY s1.postdate DESC");
+        $qry = db("SELECT s1.*,s2.name,s2.id AS sqid FROM ".$db['rankings']." AS s1
+                   LEFT JOIN ".$db['squads']." AS s2
+                   ON s1.squad = s2.id
+                   ".orderby_sql(array('name','league'), 'ORDER BY s1.postdate DESC'));
         while($get = _fetch($qry))
         {
           $edit = show("page/button_edit_single", array("id" => $get['id'],
@@ -133,8 +130,8 @@ if(_adminMenu != 'true') exit;
                                              "league" => _cw_head_liga,
                                              "squad" => _cw_head_squad,
                                              "show" => $show_,
+                                             "order_squad" => orderby('name'),
+                                             "order_league" => orderby('league'),
                                              "add" => _rankings_add_head
                                              ));
       }
-    }
-?>

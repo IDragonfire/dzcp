@@ -9,7 +9,7 @@
     <input type="hidden" name="reg" value="[reg]" />
       <table class="mainContent" cellspacing="1">
         <tr>
-          <td class="contentHead" colspan="2"><span class="fontBold">[add_head]</span><a name="eintragen"></a></td> 
+          <td class="contentHead" colspan="2"><span class="fontBold">[add_head]</span><a name="eintragen"></a></td>
         </tr>
         [error]
         [form]
@@ -18,24 +18,25 @@
             <textarea id="eintrag" name="eintrag" cols="0" rows="0" class="editorStyle">[posteintrag]</textarea>
           </td>
         </tr>
-        [b1]
-        <tr> 
-          <td class="contentMainTop"><span class="fontBold">[security]:</span></td>
+        <logged_out>
+        <tr>
+          <td class="contentMainTop" style="vertical-align:middle"><span class="fontBold">[lang_register_confirm]:</span></td>
           <td class="contentMainFirst" align="center">
-            <table class="hperc" cellspacing="0">
-              <tr>
-                <td style="text-align:right;vertical-align:middle"><img src="../antispam.php?secure=user&amp;num=5" alt="" class="icon" /></td>
-                <td style="width:2%">&nbsp;</td>
-                <td style="width:50%">
-                  <input class="inputField_dis_mid" type="text" name="secure" 
-                  onfocus="this.className='inputField_en_mid'"
-                  onblur="this.className='inputField_dis_mid'" style="text-align:center" />
-                </td>
-              </tr>
-            </table>
+                <table class="corner" style="background-color:#FFF; width:204px; border: 1px solid #000; border-color: #555 #555 #111 #111;">
+                  <tbody>
+                      <tr>
+                          <td colspan="2" style="width:195"><img class="corner" onmouseover="DZCP.showInfo('[lang_capcha_sound_info]')" onmouseout="DZCP.hideInfo()" onClick="DZCP.EvalSound('../inc/ajax.php?i=securimage_audio')" src="../inc/images/ajax_loading.gif" alt="CAPTCHA Image" name="siimage" hspace="0" vspace="0" id="siimage" style="border: 1px solid #000; border-color: #555 #555 #111 #111" />
+                          <script language="javascript" type="text/javascript">DZCP.initDynCaptcha('siimage',0,0,0,'',0,'[sid]');</script></td>
+                      </tr>
+                      <tr>
+                          <td><input type="text" name="secure" size="23" maxlength="25"/></td>
+                          <td><a tabindex="-1" style="border-style: none;" href="#" title="Refresh Image" onclick="DZCP.initDynCaptcha('siimage',0,0,0,'',0,''); this.blur(); return false"><img src="../inc/images/securimage/refresh.png" alt="Reload Image" height="16" width="16" onclick="this.blur()" border="0" /></a></td>
+                      </tr>
+                  </tbody>
+              </table>
           </td>
-        </tr>
-        [b2]
+      </tr>
+      </logged_out>
         <tr>
           <td class="contentMainTop" colspan="2" align="center">[ip]</td>
         </tr>

@@ -1,0 +1,43 @@
+
+<tr>
+  <td>
+    <form name="sendmsg" action="?action=msg&amp;do=send" method="post" onsubmit="return(DZCP.submitButton())">
+    <input type="hidden" name="von" value="[von]" />
+    <table class="hperc" cellspacing="1">
+      <tr>
+        <td class="contentHead" colspan="3" align="center"><span class="fontBold">[titel]</span></td> 
+      </tr>
+      [error]
+      <tr> 
+        <td class="contentMainTop"><span class="fontBold">[an]:</span></td>
+        <td class="contentMainFirst" align="center" colspan="2">
+          <select name="buddys" class="dropdown">
+            <option value="-" class="dropdownKat">- Buddy- </option>
+            [buddys]
+          </select> [or]
+          <select name="users" class="dropdown">
+            <option value="-" class="dropdownKat">- User -</option>
+            [users]                                   
+          </select>
+        </td>
+      </tr>
+      <tr> 
+        <td class="contentMainTop"><span class="fontBold">[titelhead]:</span></td>
+        <td class="contentMainFirst" align="center" colspan="2">
+          <input type="text" name="titel" value="[posttitel]" class="inputField_dis"
+          onfocus="this.className='inputField_en';"
+          onblur="this.className='inputField_dis';" />
+        </td>
+      </tr>
+      <tr>
+        <td class="contentMainFirst" align="center" colspan="3">
+          <textarea id="eintrag" name="eintrag" cols="0" rows="0" class="editorStyle">[posteintrag]</textarea>
+        </td>
+      </tr>
+      <tr>
+      <td class="contentBottom" colspan="3"><input id="contentSubmit" type="submit" value="[value]" class="submit" name="send" /></td>
+      </tr>
+    </table>
+    </form>
+  </td>
+</tr>

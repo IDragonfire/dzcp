@@ -1,0 +1,58 @@
+<tr>
+  <td class="contentHead" colspan="2" align="center"><span class="fontBold">[head]</span></td>
+</tr>
+<tr>
+<td>
+<form name="awards" action="?admin=awards&amp;do=[do]" method="post" onsubmit="return(DZCP.submitButton())">
+<table class="hperc" cellspacing="1">
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[squad]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <select name="squad" class="dropdown">
+      [squads]
+    </select>
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[date]:</span></td> 
+  <td class="contentMainFirst" align="center">[dropdown_date]</td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[event]:</span></td> 
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="event" value="[award_event]" class="inputField_dis"
+    onfocus="this.className='inputField_en';" 
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[url]:</span></td> 
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="url" value="[award_url]" class="inputField_dis"
+    onfocus="this.className='inputField_en';" 
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[place]:</span></td> 
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="place" value="[award_place]" class="inputField_dis_small"
+    onfocus="this.className='inputField_en_small';" 
+    onblur="this.className='inputField_dis_small';" /><span class="fontText">.</span>
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[prize]:</span></td> 
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="prize" value="[award_prize]" class="inputField_dis"
+    onfocus="this.className='inputField_en';" 
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[what]" class="submit" /></td>
+</tr>
+</table>
+</form>
+</td>
+</tr>

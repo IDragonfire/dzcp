@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<settings>
+	<Menu>settingsmenu</Menu>
+	<Rights>impressum</Rights>
+	<Only_Admin>0</Only_Admin>
+	<Only_Root>0</Only_Root>
+</settings>

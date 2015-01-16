@@ -1,17 +1,13 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('votesadmin')
-///////////////////////////////
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._votes_head;
-    if(!permission("votesadmin"))
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
-
-      if($_GET['do'] == 'new')
+      if($do == 'new')
       {
         $show = show($dir."/form_vote", array("head" => _votes_admin_head,
                                               "value" => _button_value_add,
@@ -35,16 +31,16 @@ if(_adminMenu != 'true') exit;
                                               "interna" => _votes_admin_intern,
                                               "question" => _votes_admin_question,
                                               "answer" => _votes_admin_answer));
-      } elseif($_GET['do'] == "add") {
-    	  if(empty($_POST['question']) || empty($_POST['a1']) || empty($_POST['a2']))
-  		  {
-  		    if(empty($_POST['question'])) $error = _empty_votes_question;
-  		    elseif(empty($_POST['a1']))   $error = _empty_votes_answer;
-  		    elseif(empty($_POST['a2']))   $error = _empty_votes_answer;
+      } elseif($do == "add") {
+          if(empty($_POST['question']) || empty($_POST['a1']) || empty($_POST['a2']))
+            {
+              if(empty($_POST['question'])) $error = _empty_votes_question;
+              elseif(empty($_POST['a1']))   $error = _empty_votes_answer;
+              elseif(empty($_POST['a2']))   $error = _empty_votes_answer;
 
-  	  	  $error = show("errors/errortable", array("error" => $error));
+              $error = show("errors/errortable", array("error" => $error));
 
-          if($_POST['intern']) $intern = "checked=\"checked\"";
+          if($_POST['intern']) $intern = 'checked="checked"';
 
           $show = show($dir."/form_vote", array("head" => _votes_admin_head,
                                                 "value" => _button_value_add,
@@ -70,104 +66,102 @@ if(_adminMenu != 'true') exit;
                                                 "answer" => _votes_admin_answer));
         } else {
           $qry = db("INSERT INTO ".$db['votes']."
-                     SET `datum`  = '".((int)time())."',
+                     SET `datum`  = '".time()."',
                          `titel`  = '".up($_POST['question'])."',
-                         `intern` = '".((int)$_POST['intern'])."',
-                         `von`    = '".((int)$userid)."'");
+                         `intern` = '".intval($_POST['intern'])."',
+                         `von`    = '".intval($userid)."'");
 
-          $vid = mysql_insert_id();
+          $vid = _insert_id();
 
           $qry = db("INSERT INTO ".$db['vote_results']."
-                    SET `vid`   = '".((int)$vid)."',
+                    SET `vid`   = '".intval($vid)."',
                         `what`  = 'a1',
                         `sel`   = '".up($_POST['a1'])."'");
 
           $qry = db("INSERT INTO ".$db['vote_results']."
-                     SET `vid`  = '".((int)$vid)."',
+                     SET `vid`  = '".intval($vid)."',
                          `what` = 'a2',
                          `sel`  = '".up($_POST['a2'])."'");
 
           if(!empty($_POST['a3']))
           {
             $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
+                       SET `vid`  = '".intval($vid)."',
                            `what` = 'a3',
                            `sel`  = '".up($_POST['a3'])."'");
           }
           if(!empty($_POST['a4']))
           {
             $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
+                       SET `vid`  = '".intval($vid)."',
                            `what` = 'a4',
                            `sel`  = '".up($_POST['a4'])."'");
           }
           if(!empty($_POST['a5']))
           {
             $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
+                       SET `vid`  = '".intval($vid)."',
                            `what` = 'a5',
                            `sel`  = '".up($_POST['a5'])."'");
           }
           if(!empty($_POST['a6']))
           {
             $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
+                       SET `vid`  = '".intval($vid)."',
                            `what` = 'a6',
                            `sel`  = '".up($_POST['a6'])."'");
           }
           if(!empty($_POST['a7']))
           {
             $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
+                       SET `vid`  = '".intval($vid)."',
                            `what` = 'a7',
                            `sel`  = '".up($_POST['a7'])."'");
           }
           if(!empty($_POST['a8']))
           {
             $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
+                       SET `vid`  = '".intval($vid)."',
                            `what` = 'a8',
                            `sel`  = '".up($_POST['a8'])."'");
           }
           if(!empty($_POST['a9']))
           {
             $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
+                       SET `vid`  = '".intval($vid)."',
                            `what` = 'a9',
                            `sel`  = '".up($_POST['a9'])."'");
           }
           if(!empty($_POST['a10']))
           {
             $qry = db("INSERT INTO ".$db['vote_results']."
-                       SET `vid`  = '".((int)$vid)."',
+                       SET `vid`  = '".intval($vid)."',
                            `what` = 'a10',
                            `sel`  = '".up($_POST['a10'])."'");
           }
 
           $show = info(_vote_admin_successful, "?admin=votes");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db['votes']."
                    WHERE id = '".intval($_GET['id'])."'");
 
         $qry = db("DELETE FROM ".$db['vote_results']."
                    WHERE vid = '".intval($_GET['id'])."'");
 
-        $vid = "vid_".$_GET['id'];
-        $qry = db("DELETE FROM ".$db['ipcheck']."
-                   WHERE what = '".$vid."'");
+        db("DELETE FROM ".$db['ipcheck']." WHERE what = 'vid_".$_GET['id']."'");
 
         $show = info(_vote_admin_delete_successful, "?admin=votes");
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry = db("SELECT * FROM ".$db['votes']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
 
-        if($get['intern'] == "1") $intern = "checked=\"checked\"";
-        if($get['closed'] == "1") $isclosed = "checked=\"checked\"";
+        if($get['intern'] == "1") $intern = 'checked="checked"';
+        if($get['closed'] == "1") $isclosed = 'checked="checked"';
 
         $what = "&amp;do=editvote&amp;id=".$_GET['id']."";
-        
+
         $show = show($dir."/form_vote", array("head" => _votes_admin_edit_head,
                                               "value" => "edit",
                                               "id" => $_GET['id'],
@@ -193,15 +187,15 @@ if(_adminMenu != 'true') exit;
                                               "interna" => _votes_admin_intern,
                                               "question" => _votes_admin_question,
                                               "answer" => _votes_admin_answer));
-      } elseif($_GET['do'] == "editvote") {
+      } elseif($do == "editvote") {
         $qry = db("SELECT * FROM ".$db['vote_results']."
                   WHERE vid = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
 
         $upd = db("UPDATE ".$db['votes']."
                    SET `titel`  = '".up($_POST['question'])."',
-                       `intern` = '".((int)$_POST['intern'])."',
-                       `closed` = '".((int)$_POST['closed'])."'
+                       `intern` = '".intval($_POST['intern'])."',
+                       `closed` = '".intval($_POST['closed'])."'
                    WHERE id = '".intval($_GET['id'])."'");
 
         $upd1 = db("UPDATE ".$db['vote_results']."
@@ -241,7 +235,7 @@ if(_adminMenu != 'true') exit;
         }
 
         $show = info(_vote_admin_successful_edited, "?admin=votes");
-      } elseif($_GET['do'] == "menu") {
+      } elseif($do == "menu") {
         $qryv = db("SELECT intern FROM ".$db['votes']."
                     WHERE id = '".intval($_GET['id'])."'
                     AND intern = 1");
@@ -272,7 +266,7 @@ if(_adminMenu != 'true') exit;
         }
       } else {
         $qry = db("SELECT * FROM ".$db['votes']."
-		           WHERE forum = 0
+                   WHERE forum = 0
                    ORDER BY datum DESC");
         while($get = _fetch($qry))
         {
@@ -309,5 +303,3 @@ if(_adminMenu != 'true') exit;
                                           "legendemenu" => _vote_legendemenu,
                                           "show" => $show_));
       }
-    }
-?>

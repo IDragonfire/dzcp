@@ -1,16 +1,13 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('links')
-///////////////////////////////
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_links;
-    if(!permission("links"))
-    {
-      $index = error(_error_wrong_permissions, 1);
-    } else {
-      if($_GET['do'] == "new")
+      if($do == "new")
       {
         $linktyp = '
 <tr>
@@ -35,8 +32,8 @@ if(_adminMenu != 'true') exit;
                                                "linktyp" => $linktyp,
                                                "text" => _links_admin_textlink,
                                                "banner" => _links_admin_bannerlink,
-                                               "bchecked" => "checked=\"checked\"",
-											   "bnone" => "",
+                                               "bchecked" => 'checked="checked"',
+                                               "bnone" => "",
                                                "tchecked" => "",
                                                "llink" => "",
                                                "lbeschreibung" => "",
@@ -44,7 +41,7 @@ if(_adminMenu != 'true') exit;
                                                "ltext" => "",
                                                "what" => _button_value_add,
                                                "do" => "add"));
-      } elseif($_GET['do'] == "add") {
+      } elseif($do == "add") {
         if(empty($_POST['link']) || empty($_POST['beschreibung']) || (isset($_POST['banner']) && empty($_POST['text'])))
         {
           if(empty($_POST['link']))             $show = error(_links_empty_link, 1);
@@ -55,23 +52,23 @@ if(_adminMenu != 'true') exit;
                      SET `url`          = '".links($_POST['link'])."',
                          `text`         = '".up($_POST['text'])."',
                          `banner`       = '".up($_POST['banner'])."',
-                         `beschreibung` = '".up($_POST['beschreibung'], 1)."'");
+                         `beschreibung` = '".up($_POST['beschreibung'])."'");
 
           $show = info(_link_added, "?admin=links");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
 
         $qry = db("SELECT * FROM ".$db[$_GET['type']]."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
 
         if($get['banner'] == 1){
-			 $bchecked = "checked=\"checked\"";
-			 $bnone = "";
-        }else{ 
-			$tchecked = "checked=\"checked\"";
-			$bnone = "display:none";
-		}
+             $bchecked = 'checked="checked"';
+             $bnone = "";
+        }else{
+            $tchecked = 'checked="checked"';
+            $bnone = "display:none";
+        }
 
         $linktyp = '<input type="hidden" name="type" value="'.$_GET['type'].'" />';
 
@@ -84,14 +81,14 @@ if(_adminMenu != 'true') exit;
                                                "banner" => _links_admin_bannerlink,
                                                "bchecked" => $bchecked,
                                                "tchecked" => $tchecked,
-											   "bnone" => $bnone,
+                                               "bnone" => $bnone,
                                                "llink" => $get['url'],
                                                "lbeschreibung" => re($get['beschreibung']),
                                                "btext" => _links_text,
                                                "ltext" => re($get['text']),
                                                "what" => _button_value_edit,
                                                "do" => "editlink&amp;id=".$_GET['id'].""));
-      } elseif($_GET['do'] == "editlink") {
+      } elseif($do == "editlink") {
         if(empty($_POST['link']) || empty($_POST['beschreibung']) || (isset($_POST['banner']) && empty($_POST['text'])))
         {
           if(empty($_POST['link']))             $show = error(_links_empty_link, 1);
@@ -102,12 +99,12 @@ if(_adminMenu != 'true') exit;
                        SET `url`          = '".links($_POST['link'])."',
                            `text`         = '".up($_POST['text'])."',
                            `banner`       = '".up($_POST['banner'])."',
-                           `beschreibung` = '".up($_POST['beschreibung'],1)."'
+                           `beschreibung` = '".up($_POST['beschreibung'])."'
                        WHERE id = '".intval($_GET['id'])."'");
 
           $show = info(_link_edited, "?admin=links");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db[$_GET['type']]."
                    WHERE id = '".intval($_GET['id'])."'");
 
@@ -135,6 +132,9 @@ if(_adminMenu != 'true') exit;
                                                    ));
         }
 
+        if(empty($show1))
+            $show1 = '<tr><td colspan="3" class="contentMainSecond">'._no_entrys.'</td></tr>';
+
         $show = show($dir."/links", array("head1" => _links_head,
                                           "head2" => _sponsor_head,
                                           "titel" => _link,
@@ -142,5 +142,3 @@ if(_adminMenu != 'true') exit;
                                           "add" => _links_admin_head
                                           ));
       }
-    }
-?>

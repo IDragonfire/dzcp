@@ -1,30 +1,27 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       settingsmenu
-// Rechte:    $chkMe == 4
-///////////////////////////////
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._smileys_head;
-    if($chkMe != 4)
-    {
-      $show = error(_error_wrong_permissions,1);
-    } else {
-      if($_GET['do'] == "add")
+      if($do == "add")
       {
         $show = show($dir."/form_smileys", array("head" => _smileys_head_add,
                                                  "what" => _button_value_add,
                                                  "do" => "addsmiley",
                                                  "smiley" => _smileys_smiley,
                                                  "bbcode" => _smileys_bbcode));
-      } elseif($_GET['do'] == "addsmiley") {
+      } elseif($do == "addsmiley") {
         $tmpname = $_FILES['smiley']['tmp_name'];
         $name = $_FILES['smiley']['name'];
         $type = $_FILES['smiley']['type'];
         $size = $_FILES['smiley']['size'];
         $imageinfo = getimagesize($tmpname);
         $spfad = "../inc/images/smileys/";
-        
+
         if(!$tmpname || empty($_POST['bbcode']) || $type == "image/pjpeg" || $type == "image/jpeg" || !$imageinfo[0] || preg_match("#[[:punct:]]|[[:space:]]#",$_POST['bbcode']) || file_exists($spfad.$_POST['bbcode'].".gif"))
         {
           if(!$tmpname)                                                    $show = error(_smileys_error_file, 1);
@@ -38,11 +35,11 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_smileys_added, "?admin=smileys");
         }
-      } elseif($_GET['do'] == "delete")
+      } elseif($do == "delete")
       {
         @unlink(basePath."/inc/images/smileys/".$_GET['id']."");
         $show = info(_smileys_deleted, "?admin=smileys");
-      } elseif($_GET['do'] == "edit")
+      } elseif($do == "edit")
       {
         $akt = preg_replace("#.gif#Uis","",$_GET['id']);
         $show = show($dir."/form_smileys_edit", array("head" => _smileys_head_edit,
@@ -50,7 +47,7 @@ if(_adminMenu != 'true') exit;
                                                       "id" => $_GET['id'],
                                                       "value" => _button_value_edit,
                                                       "akt" => $akt));
-      } elseif($_GET['do'] == "editsmiley"){
+      } elseif($do == "editsmiley"){
         if(empty($_POST['bbcode']))
         {
           $show = error(_smileys_error_bbcode);
@@ -65,7 +62,7 @@ if(_adminMenu != 'true') exit;
           }
         }
       } else {
-        $files = get_files('../inc/images/smileys');
+        $files = get_files(basePath.'/inc/images/smileys',false,true);
         for($i=0; $i<count($files); $i++)
         {
           if($files[$i] != '^^.gif')
@@ -100,5 +97,3 @@ if(_adminMenu != 'true') exit;
                                             "add" => _smileys_head_add,
                                             "smiley" => _smileys_smiley));
       }
-    }
-?>

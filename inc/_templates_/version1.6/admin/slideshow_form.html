@@ -1,0 +1,74 @@
+<form enctype="multipart/form-data" name="slideradmin" action="?admin=slideshow&amp;do=[do]" method="post" onsubmit="return(DZCP.submitButton())">
+  <tr>
+    <td colspan="2" class="contentHead" style="text-align:center"><span class="fontBold">[head]</span></td>
+  </tr>
+  [error]
+  <tr>
+    <td width="25%" class="contentMainTop"><span class="fontBold">[lang_slider_bezeichnung]:</span></td>
+    <td class="contentMainFirst" align="center">
+      <input type="text" name="bez" value="[v_bezeichnung]" class="inputField_dis"
+      onfocus="this.className='inputField_en';"
+      onblur="this.className='inputField_dis';" />
+    </td>
+  </tr>
+  <tr>
+    <td width="25%" class="contentMainTop"><span class="fontBold">[lang_slider_position]:</span></td>
+    <td class="contentMainFirst" align="center">
+      <select name="position" class="dropdown">
+        [v_pos_none]
+        <option value="1">[lang_slider_position_first]</option>
+        [v_position]
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td width="25%" class="contentMainTop"><span class="fontBold">[lang_slider_url]:</span></td>
+    <td class="contentMainFirst" align="center">
+      <input type="text" name="url" value="[v_url]" class="inputField_dis"
+      onfocus="this.className='inputField_en';"
+      onblur="this.className='inputField_dis';" />
+    </td>
+  </tr>
+  <tr>
+    <td width="25%" class="contentMainTop"><span class="fontBold">[lang_slider_new_window]:</span></td>
+    <td class="contentMainFirst" align="center">
+      <select name="target" class="dropdown">
+        <option value="0">[lang_no]</option>
+        <option value="1" [selected]>[lang_yes]</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td width="25%" class="contentMainTop"><span class="fontBold">[lang_slider_show_title]:</span></td>
+    <td class="contentMainFirst" align="center">
+      <select name="showbez" class="dropdown">
+        <option value="0">[lang_no]</option>
+        <option value="1" [selected_txt]>[lang_yes]</option>
+      </select>
+    </td>
+  </tr>
+  <tr>
+    <td width="25%" style="vertical-align:middel;" class="contentMainTop"><span class="fontBold">[lang_slider_pic]:</span></td>
+    <td class="contentMainFirst" align="center">
+      [v_pic]
+      <input type="file" name="bild">
+    </td>
+  </tr>
+  <tr>
+    <td width="25%" class="contentMainTop"><span class="fontBold">[lang_slider_desc]:</span></td>
+    <td class="contentMainFirst" align="center">
+      <textarea rows="0" cols="0" class="shoutTextfield_dis" id="slidedesc" name="desc"
+    onkeydown="DZCP.maxlength(this.form.desc,this.form.l,120);"
+    onkeyup="DZCP.maxlength(this.form.desc,this.form.l,120);"
+    onblur="this.className='shoutTextfield_dis';" onfocus="this.className='shoutTextfield_en';" [dis]>[tdesc]</textarea>
+    <br />
+    [lang_noch] <input type="text" id="l" name="l" value="120" class="shoutLength" readonly="readonly" /> [lang_zeichen]
+    </td>
+  </tr>
+  <tr>
+    <td colspan="4" class="contentBottom">
+      <input type="hidden" name="id" value="[id]" />
+      <input id="contentSubmit" type="submit" value="[value]" class="submit" />
+    </td>
+  </tr>
+</form>

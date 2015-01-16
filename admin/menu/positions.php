@@ -1,15 +1,12 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       settingsmenu
-// Rechte:    $chkMe == 4
-///////////////////////////////
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._admin_pos;
-    if($chkMe != 4)
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
       $qry = db("SELECT * FROM ".$db['pos']."
                  ORDER BY pid");
       while($get = _fetch($qry))
@@ -38,7 +35,7 @@ if(_adminMenu != 'true') exit;
                                          "edit" => _editicon_blank,
                                          "delete" => _deleteicon_blank));
 
-      if($_GET['do'] == "edit")
+      if($do == "edit")
       {
         $qry1 = db("SELECT * FROM ".$db['pos']."
                     ORDER BY pid");
@@ -65,16 +62,16 @@ if(_adminMenu != 'true') exit;
                                              "nothing" => _nothing,
                                              "what" => _button_value_edit,
                                              "dlkat" => _admin_download_kat));
-      } elseif($_GET['do'] == "editpos") {
+      } elseif($do == "editpos") {
         if(empty($_POST['kat']))
         {
           $show = error(_pos_empty_kat,1);
         } else {
           if($_POST['pos'] == "lazy")
-		      {
-		  		  $pid = "";
-		      } else {
-		  		  $pid = ",`pid` = '".((int)$_POST['pos'])."'";
+              {
+                    $pid = "";
+              } else {
+                    $pid = ",`pid` = '".intval($_POST['pos'])."'";
 
             if($_POST['pos'] == "1" || "2") $sign = ">= ";
             else $sign = "> ";
@@ -82,7 +79,7 @@ if(_adminMenu != 'true') exit;
             $posi = db("UPDATE ".$db['pos']."
                         SET `pid` = pid+1
                         WHERE pid ".$sign." '".intval($_POST['pos'])."'");
-		      }
+              }
 
           $qry = db("UPDATE ".$db['pos']."
                      SET `position` = '".up($_POST['kat'])."'
@@ -94,11 +91,11 @@ if(_adminMenu != 'true') exit;
           {
             foreach($_POST['perm'] AS $v => $k) $p .= "`".substr($v, 2)."` = '".intval($k)."',";
                                   if(!empty($p))$p = ', '.substr($p, 0, strlen($p) - 1);
-                                      
+
             db("INSERT INTO ".$db['permissions']." SET `pos` = '".intval($_GET['id'])."'".$p);
           }
     ////////////////////
-    
+
     // internal boardpermissions
           db("DELETE FROM ".$db['f_access']." WHERE `pos` = '".intval($_GET['id'])."'");
           if(!empty($_POST['board']))
@@ -110,13 +107,13 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_pos_admin_edited, "?admin=positions");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         db("DELETE FROM ".$db['pos']." WHERE id = '".intval($_GET['id'])."'");
         db("DELETE FROM ".$db['permissions']." WHERE pos = '".intval($_GET['id'])."'");
 
         $show = info(_pos_admin_deleted, "?admin=positions");
 
-      } elseif($_GET['do'] == "new") {
+      } elseif($do == "new") {
         $qry = db("SELECT * FROM ".$db['pos']."
                    ORDER BY pid");
         while($get = _fetch($qry))
@@ -137,7 +134,7 @@ if(_adminMenu != 'true') exit;
                                              "kat" => "",
                                              "what" => _button_value_add,
                                              "dlkat" => _admin_download_kat));
-      } elseif($_GET['do'] == "add") {
+      } elseif($do == "add") {
         if(empty($_POST['kat']))
         {
           $show = error(_pos_empty_kat,1);
@@ -150,16 +147,16 @@ if(_adminMenu != 'true') exit;
                       WHERE pid ".$sign." '".intval($_POST['pos'])."'");
 
           $qry = db("INSERT INTO ".$db['pos']."
-                     SET `pid`        = '".((int)$_POST['pos'])."',
+                     SET `pid`        = '".intval($_POST['pos'])."',
                          `position`  = '".up($_POST['kat'])."'");
-          $posID = mysql_insert_id();
+          $posID = _insert_id();
     // permissions
           foreach($_POST['perm'] AS $v => $k) $p .= "`".substr($v, 2)."` = '".intval($k)."',";
                                 if(!empty($p))$p = ', '.substr($p, 0, strlen($p) - 1);
-                                    
+
           db("INSERT INTO ".$db['permissions']." SET `pos` = '".$posID."'".$p);
     ////////////////////
-    
+
     // internal boardpermissions
           if(!empty($_POST['board']))
           {
@@ -167,9 +164,7 @@ if(_adminMenu != 'true') exit;
               db("INSERT INTO ".$db['f_access']." SET `pos` = '".$posID."', `forum` = '".$v."'");
           }
     ////////////////////
-    
+
           $show = info(_pos_admin_added, "?admin=positions");
         }
       }
-    }
-?>

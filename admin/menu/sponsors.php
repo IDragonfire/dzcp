@@ -1,16 +1,13 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    $chkMe == 4
-///////////////////////////////
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._config_sponsors;
-    if(!permission("links"))
-    {
-      $index = error(_error_wrong_permissions, 1);
-    } else {
-      if($_GET['do'] == "new")
+      if($do == "new")
       {
 
         $qry = db("SELECT * FROM ".$db['sponsoren']."
@@ -20,135 +17,135 @@ if(_adminMenu != 'true') exit;
           $positions .= show(_select_field, array("value" => $get['pos']+1,
                                                   "sel" => "",
                                                   "what" => _nach.' '.re($get['name'])));
-		  $posname = $get['name'];
-		}
+          $posname = $get['name'];
+        }
 
         $show = show($dir."/form_sponsors", array("head" => _sponsors_admin_head,
-                        												  "error" => "",
-                                               	  "name" => _sponsors_admin_name,
-                        												  "sname" => "",
-                        												  "link" => _links_link,
-                        												  "slink" => "",
-                        												  "beschreibung" => _beschreibung,
-                        												  "sbeschreibung" => "",
-                        												  "site" => _sponsors_admin_site,
-                        												  "addsite" => _sponsors_admin_addsite,
-                        												  "schecked" => "",
-                        												  "snone" => "none",
-                        												  "add_site" => _sponsors_admin_add_site,
-                        												  "upload" => _sponsors_admin_upload,
-                        												  "url" => _sponsors_admin_url,
-                        												  "site_link" => "",
-                        												  "sitepic" => "",
-																									"banner" => _sponsors_admin_banner,
-                        												  "addbanner" => _sponsors_admin_addbanner,
-                        												  "bchecked" => "",
-                        												  "bnone" => "none",
-                        												  "add_banner" => _sponsors_admin_add_banner,
-                        												  "banner_link" => "",
-                        												  "bannerpic" => "",
-																									"box" => _sponsors_admin_box,
-                        												  "addbox" => _sponsors_admin_addbox,
-                        												  "xchecked" => "",
-                        												  "xnone" => "none",
-                        												  "add_box" => _sponsors_admin_add_box,
-                        												  "box_link" => "",
-                        												  "boxpic" => "",
-																									"pos" => _position,
-                        												  "first" => _admin_first,
-                        												  "positions" => $positions,
-                        												  "posname" => $posname,
-                        												  "what" => _button_value_add,
-                                               	  "do" => "add"));
-      } elseif($_GET['do'] == "add") {
+                                                                          "error" => "",
+                                                     "name" => _sponsors_admin_name,
+                                                                          "sname" => "",
+                                                                          "link" => _links_link,
+                                                                          "slink" => "",
+                                                                          "beschreibung" => _beschreibung,
+                                                                          "sbeschreibung" => "",
+                                                                          "site" => _sponsors_admin_site,
+                                                                          "addsite" => _sponsors_admin_addsite,
+                                                                          "schecked" => "",
+                                                                          "snone" => "none",
+                                                                          "add_site" => _sponsors_admin_add_site,
+                                                                          "upload" => _sponsors_admin_upload,
+                                                                          "url" => _sponsors_admin_url,
+                                                                          "site_link" => "",
+                                                                          "sitepic" => "",
+                                                                                                    "banner" => _sponsors_admin_banner,
+                                                                          "addbanner" => _sponsors_admin_addbanner,
+                                                                          "bchecked" => "",
+                                                                          "bnone" => "none",
+                                                                          "add_banner" => _sponsors_admin_add_banner,
+                                                                          "banner_link" => "",
+                                                                          "bannerpic" => "",
+                                                                                                    "box" => _sponsors_admin_box,
+                                                                          "addbox" => _sponsors_admin_addbox,
+                                                                          "xchecked" => "",
+                                                                          "xnone" => "none",
+                                                                          "add_box" => _sponsors_admin_add_box,
+                                                                          "box_link" => "",
+                                                                          "boxpic" => "",
+                                                                                                    "pos" => _position,
+                                                                          "first" => _admin_first,
+                                                                          "positions" => $positions,
+                                                                          "posname" => $posname,
+                                                                          "what" => _button_value_add,
+                                                     "do" => "add"));
+      } elseif($do == "add") {
         if(empty($_POST['name']) || empty($_POST['link']) || empty($_POST['beschreibung']))
         {
           if(empty($_POST['beschreibung'])) $error = show("errors/errortable", array("error" => _sponsors_empty_beschreibung));
-    		  if(empty($_POST['link']))         $error = show("errors/errortable", array("error" => _sponsors_empty_link));
-    		  if(empty($_POST['name']))         $error = show("errors/errortable", array("error" => _sponsors_empty_name));
+              if(empty($_POST['link']))         $error = show("errors/errortable", array("error" => _sponsors_empty_link));
+              if(empty($_POST['name']))         $error = show("errors/errortable", array("error" => _sponsors_empty_name));
 
-		  $pos = db("SELECT pos,name FROM ".$db['sponsoren']."
-					 ORDER BY pos");
-		  while($getpos = _fetch($pos))
-		  {
-			if($getpos['name'] != $_POST['posname'])
-			{
-			  $mpos = db("SELECT pos FROM ".$db['sponsoren']."
-						  WHERE name != '".$_POST['posname']."'
-						  AND pos = '".intval(($_POST['position']-1))."'");
-			  $mp = _fetch($mpos);
+          $pos = db("SELECT pos,name FROM ".$db['sponsoren']."
+                     ORDER BY pos");
+          while($getpos = _fetch($pos))
+          {
+            if($getpos['name'] != $_POST['posname'])
+            {
+              $mpos = db("SELECT pos FROM ".$db['sponsoren']."
+                          WHERE name != '".$_POST['posname']."'
+                          AND pos = '".intval(($_POST['position']-1))."'");
+              $mp = _fetch($mpos);
 
-			  if($getpos['pos'] == $mp['pos']) $sel = "selected=\"selected\"";
-			  else $sel = '';
-	
-			  $positions .= show(_select_field, array("value" => $getpos['pos']+1,
-													  "what" => _nach.' '.re($getpos['name']),
-													  "sel" => $sel));
-			}
-		  }
+              if($getpos['pos'] == $mp['pos']) $sel = 'selected="selected"';
+              else $sel = '';
 
-			if(isset($_POST['site'])) 
-			{ 
-			  $schecked = "checked=\"checked\""; 
-			  $snone = "";
-			} else {
-			  $schecked = ""; 
-			  $snone = "none";
-			}   
-			if(isset($_POST['banner'])) 
-			{
-			  $bchecked = "checked=\"checked\"";
-			  $bnine = "";
-			} else { 
-			  $bchecked = "";
-			  $bnone = "none";
-			}
-			if(isset($_POST['box']))
-			{
-			  $xchecked = "checked=\"checked\"";
-			  $xnone = "";
-			} else {
-			  $xchecked = "";
-			  $xnone = "none";
-			}
+              $positions .= show(_select_field, array("value" => $getpos['pos']+1,
+                                                      "what" => _nach.' '.re($getpos['name']),
+                                                      "sel" => $sel));
+            }
+          }
 
-			$show = show($dir."/form_sponsors", array("head" => _sponsors_admin_head,
-												   	  "error" => $error,
-												      "name" => _sponsors_admin_name,
-												      "sname" => $_POST['name'],
-												      "link" => _links_link,
-												      "slink" => $_POST['link'],
-												      "beschreibung" => _beschreibung,
-												      "sbeschreibung" => re($_POST['beschreibung']),
-												      "site" => _sponsors_admin_site,
-												      "addsite" => _sponsors_admin_addsite,
-												      "schecked" => $schecked,
-												      "snone" => $snone,
-												      "add_site" => _sponsors_admin_add_site,
-												      "upload" => _sponsors_admin_upload,
-												      "url" => _sponsors_admin_url,
-												      "site_link" => $_POST['slink'],
-												      "sitepic" => "",
-															"banner" => _sponsors_admin_banner,
-												      "addbanner" => _sponsors_admin_addbanner,
-												      "bchecked" => $bchecked,
-												      "bnone" => $bnone,
-												      "add_banner" => _sponsors_admin_add_banner,
-												      "banner_link" => $_POST['blink'],
-												      "bannerpic" => "",
-															"box" => _sponsors_admin_box,
-												      "addbox" => _sponsors_admin_addbox,
-												      "xchecked" => $xchecked,
-												      "xnone" => $xnone,
-												      "add_box" => _sponsors_admin_add_box,
-												      "box_link" => $_POST['xlink'],
-													    "boxpic" => "",
-															"pos" => _position,
-												  	  "first" => _admin_first,
-												  	  "positions" => $positions,
-													    "posname" => $_POST['posname'],
-												      "what" => _button_value_add,
-												      "do" => "add"));
+            if(isset($_POST['site']))
+            {
+              $schecked = 'checked="checked"';
+              $snone = "";
+            } else {
+              $schecked = "";
+              $snone = "none";
+            }
+            if(isset($_POST['banner']))
+            {
+              $bchecked = 'checked="checked"';
+              $bnine = "";
+            } else {
+              $bchecked = "";
+              $bnone = "none";
+            }
+            if(isset($_POST['box']))
+            {
+              $xchecked = 'checked="checked"';
+              $xnone = "";
+            } else {
+              $xchecked = "";
+              $xnone = "none";
+            }
+
+            $show = show($dir."/form_sponsors", array("head" => _sponsors_admin_head,
+                                                         "error" => $error,
+                                                      "name" => _sponsors_admin_name,
+                                                      "sname" => $_POST['name'],
+                                                      "link" => _links_link,
+                                                      "slink" => $_POST['link'],
+                                                      "beschreibung" => _beschreibung,
+                                                      "sbeschreibung" => re($_POST['beschreibung']),
+                                                      "site" => _sponsors_admin_site,
+                                                      "addsite" => _sponsors_admin_addsite,
+                                                      "schecked" => $schecked,
+                                                      "snone" => $snone,
+                                                      "add_site" => _sponsors_admin_add_site,
+                                                      "upload" => _sponsors_admin_upload,
+                                                      "url" => _sponsors_admin_url,
+                                                      "site_link" => $_POST['slink'],
+                                                      "sitepic" => "",
+                                                            "banner" => _sponsors_admin_banner,
+                                                      "addbanner" => _sponsors_admin_addbanner,
+                                                      "bchecked" => $bchecked,
+                                                      "bnone" => $bnone,
+                                                      "add_banner" => _sponsors_admin_add_banner,
+                                                      "banner_link" => $_POST['blink'],
+                                                      "bannerpic" => "",
+                                                            "box" => _sponsors_admin_box,
+                                                      "addbox" => _sponsors_admin_addbox,
+                                                      "xchecked" => $xchecked,
+                                                      "xnone" => $xnone,
+                                                      "add_box" => _sponsors_admin_add_box,
+                                                      "box_link" => $_POST['xlink'],
+                                                        "boxpic" => "",
+                                                            "pos" => _position,
+                                                        "first" => _admin_first,
+                                                        "positions" => $positions,
+                                                        "posname" => $_POST['posname'],
+                                                      "what" => _button_value_add,
+                                                      "do" => "add"));
 
 
         } else {
@@ -161,35 +158,35 @@ if(_adminMenu != 'true') exit;
 
           $qry = db("INSERT INTO ".$db['sponsoren']."
                      SET `name`         = '".up($_POST['name'])."',
-            						 `link`         = '".links($_POST['link'])."',
-            						 `beschreibung` = '".up($_POST['beschreibung'],1)."',
-            						 `site`         = '".((int)$_POST['site'])."',
-            						 `slink`        = '".links($_POST['slink'])."',
-            						 `banner`       = '".((int)$_POST['banner'])."',
-                         `blink`        = '".links($_POST['blink'])."',
-                         `box`       	= '".((int)$_POST['box'])."',
-                         `xlink` 		= '".up($_POST['xlink'])."',
-            						 `pos`    		= '".((int)$_POST['position'])."'");
+                                     `link`         = '".links($_POST['link'])."',
+                                     `beschreibung` = '".up($_POST['beschreibung'])."',
+                                     `site`         = '".intval($_POST['site'])."',
+                                     `slink`        = '".$_POST['slink']."',
+                                     `banner`       = '".intval($_POST['banner'])."',
+                         `blink`        = '".$_POST['blink']."',
+                         `box`           = '".intval($_POST['box'])."',
+                         `xlink`         = '".up($_POST['xlink'])."',
+                                     `pos`            = '".intval($_POST['position'])."'");
 
-          $id = mysql_insert_id();
-		  
+          $id = _insert_id();
+
           $tmp1 = $_FILES['sdata']['tmp_name'];
           $type1 = $_FILES['sdata']['type'];
           $end1 = explode(".", $_FILES['sdata']['name']);
           $end1 = strtolower($end1[count($end1)-1]);
-          
+
           if(!empty($tmp1))
           {
             $img1 = getimagesize($tmp1);
-						if($type1 == "image/gif" || $type1 == "image/png" || $type1 == "image/jpeg" || !$img1[0])
+                        if($type1 == "image/gif" || $type1 == "image/png" || $type1 == "image/jpeg" || !$img1[0])
             {
               @copy($tmp1, basePath."/banner/sponsors/site_".$id.".".strtolower($end1));
               @unlink($_FILES['sdata']['tmp_name']);
             }
-					db("UPDATE ".$db['sponsoren']." SET `send` = '".$end1."' WHERE id = '".intval($id)."'");
+                    db("UPDATE ".$db['sponsoren']." SET `send` = '".$end1."' WHERE id = '".intval($id)."'");
           }
-          
-		  		$tmp2 = $_FILES['bdata']['tmp_name'];
+
+                  $tmp2 = $_FILES['bdata']['tmp_name'];
           $type2 = $_FILES['bdata']['type'];
           $end2 = explode(".", $_FILES['bdata']['name']);
           $end2 = strtolower($end2[count($end2)-1]);
@@ -201,34 +198,34 @@ if(_adminMenu != 'true') exit;
               @copy($tmp2, basePath."/banner/sponsors/banner_".$id.".".strtolower($end2));
               @unlink($_FILES['bdata']['tmp_name']);
             }
-					db("UPDATE ".$db['sponsoren']." SET `bend` = '".$end2."' WHERE id = '".intval($id)."'");
+                    db("UPDATE ".$db['sponsoren']." SET `bend` = '".$end2."' WHERE id = '".intval($id)."'");
           }
-		  
-		  		$tmp3 = $_FILES['xdata']['tmp_name'];
+
+                  $tmp3 = $_FILES['xdata']['tmp_name'];
           $type3 = $_FILES['xdata']['type'];
           $end3 = explode(".", $_FILES['xdata']['name']);
           $end3 = strtolower($end3[count($end3)-1]);
-          
+
           if(!empty($tmp3))
           {
             $img3 = getimagesize($tmp3);
-						if($type3 == "image/gif" || $type3 == "image/png" || $type3 == "image/jpeg" || !$img3[0])
+                        if($type3 == "image/gif" || $type3 == "image/png" || $type3 == "image/jpeg" || !$img3[0])
             {
               @copy($tmp3, basePath."/banner/sponsors/box_".$id.".".strtolower($end3));
               @unlink($_FILES['xdata']['tmp_name']);
             }
-					db("UPDATE ".$db['sponsoren']." SET `xend` = '".$end3."' WHERE id = '".intval($id)."'");
-          }		  
+                    db("UPDATE ".$db['sponsoren']." SET `xend` = '".$end3."' WHERE id = '".intval($id)."'");
+          }
 
           $show = info(_sponsor_added, "?admin=sponsors");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
 
         $qry = db("SELECT * FROM ".$db['sponsoren']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
 
-		  $pos = db("SELECT pos,name FROM ".$db['sponsoren']."
+          $pos = db("SELECT pos,name FROM ".$db['sponsoren']."
                      ORDER BY pos");
           while($getpos = _fetch($pos))
           {
@@ -239,226 +236,226 @@ if(_adminMenu != 'true') exit;
                           AND pos = '".intval(($get['pos']-1))."'");
               $mp = _fetch($mpos);
 
-              if($getpos['pos'] == $mp['pos']) $sel = "selected=\"selected\"";
+              if($getpos['pos'] == $mp['pos']) $sel = 'selected="selected"';
               else $sel = '';
 
               $positions .= show(_select_field, array("value" => $getpos['pos']+1,
                                                       "what" => _nach.' '.re($getpos['name']),
                                                       "sel" => $sel));
-			  $posname = $getpos['name'];
+              $posname = $getpos['name'];
             }
           }
 
-        if($get['site'] == 1) 
-		{ 
-		  $schecked = "checked=\"checked\""; 
-		  $snone = "";
-		} else {
-		  $schecked = ""; 
-		  $snone = "none";
-		}   
-		if($get['banner'] == 1) 
-		{
-		  $bchecked = "checked=\"checked\"";
-		  $bnone = "";
-		} else { 
-		  $bchecked = "";
-		  $bnone = "none";
-		}
-		if($get['box'] == 1)
-		{
-		  $xchecked = "checked=\"checked\"";
-		  $xnone = "";
-		} else {
-		  $xchecked = "";
-		  $xnone = "none";
-		}
+        if($get['site'] == 1)
+        {
+          $schecked = 'checked="checked"';
+          $snone = "";
+        } else {
+          $schecked = "";
+          $snone = "none";
+        }
+        if($get['banner'] == 1)
+        {
+          $bchecked = 'checked="checked"';
+          $bnone = "";
+        } else {
+          $bchecked = "";
+          $bnone = "none";
+        }
+        if($get['box'] == 1)
+        {
+          $xchecked = 'checked="checked"';
+          $xnone = "";
+        } else {
+          $xchecked = "";
+          $xnone = "none";
+        }
 
     foreach($picformat AS $end)
     {
-      if(file_exists(basePath.'/banner/sponsors/site_'.$get['id'].'.'.$end)) 
-			{
-				$sitepic = '<img src="../banner/sponsors/site_'.$get['id'].'.'.$end.'" alt="" width="50%" />';
-      	break;
-			}
+      if(file_exists(basePath.'/banner/sponsors/site_'.$get['id'].'.'.$end))
+            {
+                $sitepic = '<img src="../banner/sponsors/site_'.$get['id'].'.'.$end.'" alt="" width="50%" />';
+          break;
+            }
     }
-		
+
     foreach($picformat AS $end)
     {
-			if(file_exists(basePath.'/banner/sponsors/banner_'.$get['id'].'.'.$end))
-			{
-				$bannerpic = '<img src="../banner/sponsors/banner_'.$get['id'].'.'.$end.'" alt="" width="50%" />';
-				break;
-			}
+            if(file_exists(basePath.'/banner/sponsors/banner_'.$get['id'].'.'.$end))
+            {
+                $bannerpic = '<img src="../banner/sponsors/banner_'.$get['id'].'.'.$end.'" alt="" width="50%" />';
+                break;
+            }
     }
-		
+
     foreach($picformat AS $end)
     {
-			if(file_exists(basePath.'/banner/sponsors/box_'.$get['id'].'.'.$end))
-			{
-				$boxpic = '<img src="../banner/sponsors/box_'.$get['id'].'.'.$end.'" alt="" width="50%" />';
-				break;
-			}
-    }		
+            if(file_exists(basePath.'/banner/sponsors/box_'.$get['id'].'.'.$end))
+            {
+                $boxpic = '<img src="../banner/sponsors/box_'.$get['id'].'.'.$end.'" alt="" width="50%" />';
+                break;
+            }
+    }
 
          $show = show($dir."/form_sponsors", array("head" => _sponsors_admin_head,
-												   "error" => "",
-												   "name" => _sponsors_admin_name,
-												   "sname" => $get['name'],
-												   "link" => _links_link,
-												   "slink" => $get['link'],
-												   "beschreibung" => _beschreibung,
-												   "sbeschreibung" => re($get['beschreibung']),
-												   "site" => _sponsors_admin_site,
-												   "addsite" => _sponsors_admin_addsite,
-												   "schecked" => $schecked,
-												   "snone" => $snone,
-												   "add_site" => _sponsors_admin_add_site,
-												   "upload" => _sponsors_admin_upload,
-												   "url" => _sponsors_admin_url,
-												   "site_link" => $get['slink'],
-												   "sitepic" => $sitepic,
-													 "banner" => _sponsors_admin_banner,
-												   "addbanner" => _sponsors_admin_addbanner,
-												   "bchecked" => $bchecked,
-												   "bnone" => $bnone,
-												   "add_banner" => _sponsors_admin_add_banner,
-												   "banner_link" => $get['blink'],
-												   "bannerpic" => $bannerpic,
-													 "box" => _sponsors_admin_box,
-												   "addbox" => _sponsors_admin_addbox,
-												   "xchecked" => $xchecked,
-												   "xnone" => $xnone,
-												   "add_box" => _sponsors_admin_add_box,
-												   "box_link" => $get['xlink'],
-													 "boxpic" => $boxpic,
-												   "pos" => _position,
-												   "first" => _admin_first,
-												   "positions" => $positions,
-												   "posname" => $posname,
-												   "what" => _button_value_edit,
-												   "do" => "editsponsor&amp;id=".$_GET['id'].""));
-      } elseif($_GET['do'] == "editsponsor") {
+                                                   "error" => "",
+                                                   "name" => _sponsors_admin_name,
+                                                   "sname" => $get['name'],
+                                                   "link" => _links_link,
+                                                   "slink" => $get['link'],
+                                                   "beschreibung" => _beschreibung,
+                                                   "sbeschreibung" => re($get['beschreibung']),
+                                                   "site" => _sponsors_admin_site,
+                                                   "addsite" => _sponsors_admin_addsite,
+                                                   "schecked" => $schecked,
+                                                   "snone" => $snone,
+                                                   "add_site" => _sponsors_admin_add_site,
+                                                   "upload" => _sponsors_admin_upload,
+                                                   "url" => _sponsors_admin_url,
+                                                   "site_link" => $get['slink'],
+                                                   "sitepic" => $sitepic,
+                                                     "banner" => _sponsors_admin_banner,
+                                                   "addbanner" => _sponsors_admin_addbanner,
+                                                   "bchecked" => $bchecked,
+                                                   "bnone" => $bnone,
+                                                   "add_banner" => _sponsors_admin_add_banner,
+                                                   "banner_link" => $get['blink'],
+                                                   "bannerpic" => $bannerpic,
+                                                     "box" => _sponsors_admin_box,
+                                                   "addbox" => _sponsors_admin_addbox,
+                                                   "xchecked" => $xchecked,
+                                                   "xnone" => $xnone,
+                                                   "add_box" => _sponsors_admin_add_box,
+                                                   "box_link" => $get['xlink'],
+                                                     "boxpic" => $boxpic,
+                                                   "pos" => _position,
+                                                   "first" => _admin_first,
+                                                   "positions" => $positions,
+                                                   "posname" => $posname,
+                                                   "what" => _button_value_edit,
+                                                   "do" => "editsponsor&amp;id=".$_GET['id'].""));
+      } elseif($do == "editsponsor") {
       if(empty($_POST['name']) || empty($_POST['link']) || empty($_POST['beschreibung']))
       {
       if(empty($_POST['beschreibung'])) $error = show("errors/errortable", array("error" => _sponsors_empty_beschreibung));
-		  if(empty($_POST['link']))         $error = show("errors/errortable", array("error" => _sponsors_empty_link));
-		  if(empty($_POST['name']))         $error = show("errors/errortable", array("error" => _sponsors_empty_name));
+          if(empty($_POST['link']))         $error = show("errors/errortable", array("error" => _sponsors_empty_link));
+          if(empty($_POST['name']))         $error = show("errors/errortable", array("error" => _sponsors_empty_name));
 
-		  $qry = db("SELECT * FROM ".$db['sponsoren']."
-				     WHERE id = '".intval($_GET['id'])."'");
-		  $get = _fetch($qry);
-	
-		  $pos = db("SELECT pos,name FROM ".$db['sponsoren']."
-					 ORDER BY pos");
-		  while($getpos = _fetch($pos))
-		  {
-			if($getpos['name'] != $get['name'])
-			{
-			  $mpos = db("SELECT pos FROM ".$db['sponsoren']."
-						  WHERE name != '".$get['name']."'
-						  AND pos = '".intval(($_POST['position']-1))."'");
-			  $mp = _fetch($mpos);
-	
-			  if($getpos['pos'] == $mp['pos']) $sel = "selected=\"selected\"";
-			  else $sel = '';
-	
-			  $positions .= show(_select_field, array("value" => $getpos['pos']+1,
-													  "what" => _nach.' '.re($getpos['name']),
-													  "sel" => $sel));
-			  $posname = $getpos['name'];
-			}
-		  }
+          $qry = db("SELECT * FROM ".$db['sponsoren']."
+                     WHERE id = '".intval($_GET['id'])."'");
+          $get = _fetch($qry);
 
-			if(isset($_POST['site'])) 
-			{ 
-			  $schecked = "checked=\"checked\""; 
-			  $snone = "";
-			} else {
-			  $schecked = ""; 
-			  $snone = "none";
-			}   
-			if(isset($_POST['banner'])) 
-			{
-			  $bchecked = "checked=\"checked\"";
-			  $bnone = "";
-			} else { 
-			  $bchecked = "";
-			  $bnine = "none";
-			}
-			if(isset($_POST['box']))
-			{
-			  $xchecked = "checked=\"checked\"";
-			  $xnone = "";
-			} else {
-			  $xchecked = "";
-			  $xnone = "none";
-			}
+          $pos = db("SELECT pos,name FROM ".$db['sponsoren']."
+                     ORDER BY pos");
+          while($getpos = _fetch($pos))
+          {
+            if($getpos['name'] != $get['name'])
+            {
+              $mpos = db("SELECT pos FROM ".$db['sponsoren']."
+                          WHERE name != '".$get['name']."'
+                          AND pos = '".intval(($_POST['position']-1))."'");
+              $mp = _fetch($mpos);
 
-			foreach($picformat AS $end)
-			{
-				if(file_exists(basePath.'/banner/sponsors/site_'.$get['id'].'.'.$end)) 
-				{
-					$sitepic = '<img src="../banner/sponsors/site_'.$get['id'].'.'.$end.'" alt="" width="50%" />';
-					break;
-				}
-			}
-			
-			foreach($picformat AS $end)
-			{
-				if(file_exists(basePath.'/banner/sponsors/banner_'.$get['id'].'.'.$end))
-				{
-					$bannerpic = '<img src="../banner/sponsors/banner_'.$get['id'].'.'.$end.'" alt="" width="50%" />';
-					break;
-				}
-			}
-			
-			foreach($picformat AS $end)
-			{
-				if(file_exists(basePath.'/banner/sponsors/box_'.$get['id'].'.'.$end))
-				{
-					$boxpic = '<img src="../banner/sponsors/box_'.$get['id'].'.'.$end.'" alt="" width="50%" />';
-					break;
-				}
-			}	
+              if($getpos['pos'] == $mp['pos']) $sel = 'selected="selected"';
+              else $sel = '';
 
-			 $show = show($dir."/form_sponsors", array("head" => _sponsors_admin_head,
-													   "error" => $error,
-													   "name" => _sponsors_admin_name,
-													   "sname" => $_POST['name'],
-													   "link" => _links_link,
-													   "slink" => $_POST['link'],
-													   "beschreibung" => _beschreibung,
-													   "sbeschreibung" => re($_POST['beschreibung']),
-													   "site" => _sponsors_admin_site,
-													   "addsite" => _sponsors_admin_addsite,
-													   "schecked" => $schecked,
-													   "snone" => $snone,
-													   "add_site" => _sponsors_admin_add_site,
-													   "upload" => _sponsors_admin_upload,
-													   "url" => _sponsors_admin_url,
-													   "site_link" => $_POST['slink'],
-													   "sitepic" => $sitepic,
-														 "banner" => _sponsors_admin_banner,
-													   "addbanner" => _sponsors_admin_addbanner,
-													   "bchecked" => $bchecked,
-													   "bnone" => $bnone,
-													   "add_banner" => _sponsors_admin_add_banner,
-													   "banner_link" => $_POST['blink'],
-													   "bannerpic" => $bannerpic,
-														 "box" => _sponsors_admin_box,
-													   "addbox" => _sponsors_admin_addbox,
-													   "xchecked" => $xchecked,
-													   "xnone" => $xnone,
-													   "add_box" => _sponsors_admin_add_box,
-													   "box_link" => $_POST['xlink'],
-													   "boxpic" => $boxpic,
-														 "pos" => _position,
-												   	 "first" => _admin_first,
-												   	 "positions" => $positions,
-													   "posname" => $_POST['posname'],
-													   "what" => _button_value_edit,
-													   "do" => "editsponsor&amp;id=".$_GET['id'].""));
+              $positions .= show(_select_field, array("value" => $getpos['pos']+1,
+                                                      "what" => _nach.' '.re($getpos['name']),
+                                                      "sel" => $sel));
+              $posname = $getpos['name'];
+            }
+          }
+
+            if(isset($_POST['site']))
+            {
+              $schecked = 'checked="checked"';
+              $snone = "";
+            } else {
+              $schecked = "";
+              $snone = "none";
+            }
+            if(isset($_POST['banner']))
+            {
+              $bchecked = 'checked="checked"';
+              $bnone = "";
+            } else {
+              $bchecked = "";
+              $bnine = "none";
+            }
+            if(isset($_POST['box']))
+            {
+              $xchecked = 'checked="checked"';
+              $xnone = "";
+            } else {
+              $xchecked = "";
+              $xnone = "none";
+            }
+
+            foreach($picformat AS $end)
+            {
+                if(file_exists(basePath.'/banner/sponsors/site_'.$get['id'].'.'.$end))
+                {
+                    $sitepic = '<img src="../banner/sponsors/site_'.$get['id'].'.'.$end.'" alt="" width="50%" />';
+                    break;
+                }
+            }
+
+            foreach($picformat AS $end)
+            {
+                if(file_exists(basePath.'/banner/sponsors/banner_'.$get['id'].'.'.$end))
+                {
+                    $bannerpic = '<img src="../banner/sponsors/banner_'.$get['id'].'.'.$end.'" alt="" width="50%" />';
+                    break;
+                }
+            }
+
+            foreach($picformat AS $end)
+            {
+                if(file_exists(basePath.'/banner/sponsors/box_'.$get['id'].'.'.$end))
+                {
+                    $boxpic = '<img src="../banner/sponsors/box_'.$get['id'].'.'.$end.'" alt="" width="50%" />';
+                    break;
+                }
+            }
+
+             $show = show($dir."/form_sponsors", array("head" => _sponsors_admin_head,
+                                                       "error" => $error,
+                                                       "name" => _sponsors_admin_name,
+                                                       "sname" => $_POST['name'],
+                                                       "link" => _links_link,
+                                                       "slink" => $_POST['link'],
+                                                       "beschreibung" => _beschreibung,
+                                                       "sbeschreibung" => re($_POST['beschreibung']),
+                                                       "site" => _sponsors_admin_site,
+                                                       "addsite" => _sponsors_admin_addsite,
+                                                       "schecked" => $schecked,
+                                                       "snone" => $snone,
+                                                       "add_site" => _sponsors_admin_add_site,
+                                                       "upload" => _sponsors_admin_upload,
+                                                       "url" => _sponsors_admin_url,
+                                                       "site_link" => $_POST['slink'],
+                                                       "sitepic" => $sitepic,
+                                                         "banner" => _sponsors_admin_banner,
+                                                       "addbanner" => _sponsors_admin_addbanner,
+                                                       "bchecked" => $bchecked,
+                                                       "bnone" => $bnone,
+                                                       "add_banner" => _sponsors_admin_add_banner,
+                                                       "banner_link" => $_POST['blink'],
+                                                       "bannerpic" => $bannerpic,
+                                                         "box" => _sponsors_admin_box,
+                                                       "addbox" => _sponsors_admin_addbox,
+                                                       "xchecked" => $xchecked,
+                                                       "xnone" => $xnone,
+                                                       "add_box" => _sponsors_admin_add_box,
+                                                       "box_link" => $_POST['xlink'],
+                                                       "boxpic" => $boxpic,
+                                                         "pos" => _position,
+                                                        "first" => _admin_first,
+                                                        "positions" => $positions,
+                                                       "posname" => $_POST['posname'],
+                                                       "what" => _button_value_edit,
+                                                       "do" => "editsponsor&amp;id=".$_GET['id'].""));
 
 
         } else {
@@ -476,96 +473,96 @@ if(_adminMenu != 'true') exit;
                         WHERE pos ".$sign." '".intval($_POST['position'])."'");
           }
 
-		  if($_POST['position'] == "lazy") $newpos = "";
-		  else $newpos = "`pos` = '".((int)$_POST['position'])."'";
+          if($_POST['position'] == "lazy") $newpos = "";
+          else $newpos = "`pos` = '".intval($_POST['position'])."'";
 
             $qry = db("UPDATE ".$db['sponsoren']."
-                       SET 	 `name`         = '".up($_POST['name'])."',
-							 `link`         = '".links($_POST['link'])."',
-							 `beschreibung` = '".up($_POST['beschreibung'],1)."',
-							 `site`         = '".((int)$_POST['site'])."',
-							 `slink`        = '".links($_POST['slink'])."',
-							 `banner`       = '".((int)$_POST['banner'])."',
-							 `blink`        = '".links($_POST['blink'])."',
-							 `box`       	= '".((int)$_POST['box'])."',
-							 `xlink` 		= '".up($_POST['xlink'])."',
-							 ".$newpos."
+                       SET      `name`         = '".up($_POST['name'])."',
+                             `link`         = '".links($_POST['link'])."',
+                             `beschreibung` = '".up($_POST['beschreibung'])."',
+                             `site`         = '".intval($_POST['site'])."',
+                             `slink`        = '".$_POST['slink']."',
+                             `banner`       = '".intval($_POST['banner'])."',
+                             `blink`        = '".$_POST['blink']."',
+                             `box`           = '".intval($_POST['box'])."',
+                             `xlink`         = '".up($_POST['xlink'])."',
+                             ".$newpos."
                        WHERE id = '".intval($_GET['id'])."'");
 
           $id = intval($_GET['id']);
-		  
-		  		$tmp1 = $_FILES['sdata']['tmp_name'];
+
+                  $tmp1 = $_FILES['sdata']['tmp_name'];
           $type1 = $_FILES['sdata']['type'];
           $end1 = explode(".", $_FILES['sdata']['name']);
           $end1 = strtolower($end1[count($end1)-1]);
-          
+
           if(!empty($tmp1))
           {
             $img1 = getimagesize($tmp1);
-						if($type1 == "image/gif" || $type1 == "image/png" || $type1 == "image/jpeg" || !$img1[0])
+                        if($type1 == "image/gif" || $type1 == "image/png" || $type1 == "image/jpeg" || !$img1[0])
             {
-			  			if(file_exists(basePath."/banner/sponsors/site_".$id.".gif"))
+                          if(file_exists(basePath."/banner/sponsors/site_".$id.".gif"))
                 @unlink(basePath."/banner/sponsors/site_".$id.".gif");
               elseif(file_exists(basePath."/banner/sponsors/site_".$id.".jpg"))
                 @unlink(basePath."/banner/sponsors/site_".$id.".jpg");
-			  			elseif(file_exists(basePath."/banner/sponsors/site_".$id.".png"))
+                          elseif(file_exists(basePath."/banner/sponsors/site_".$id.".png"))
                 @unlink(basePath."/banner/sponsors/site_".$id.".png");
-				
+
               @copy($tmp1, basePath."/banner/sponsors/site_".$id.".".strtolower($end1));
               @unlink($_FILES['sdata']['tmp_name']);
             }
-					db("UPDATE ".$db['sponsoren']." SET `send` = '".$end1."' WHERE id = '".intval($id)."'");
+                    db("UPDATE ".$db['sponsoren']." SET `send` = '".$end1."' WHERE id = '".intval($id)."'");
           }
-          
-		  		$tmp2 = $_FILES['bdata']['tmp_name'];
+
+                  $tmp2 = $_FILES['bdata']['tmp_name'];
           $type2 = $_FILES['bdata']['type'];
           $end2 = explode(".", $_FILES['bdata']['name']);
           $end2 = strtolower($end2[count($end2)-1]);
-          
+
           if(!empty($tmp2))
           {
             $img2 = getimagesize($tmp2);
-						if($type2 == "image/gif" || $type2 == "image/png" || $type2 == "image/jpeg" || !$img2[0])
+                        if($type2 == "image/gif" || $type2 == "image/png" || $type2 == "image/jpeg" || !$img2[0])
             {
               if(file_exists(basePath."/banner/sponsors/banner_".$id.".gif"))
                 @unlink(basePath."/banner/sponsors/banner_".$id.".gif");
               elseif(file_exists(basePath."/banner/sponsors/banner_".$id.".jpg"))
                 @unlink(basePath."/banner/sponsors/banner_".$id.".jpg");
-			  			elseif(file_exists(basePath."/banner/sponsors/banner_".$id.".png"))
+                          elseif(file_exists(basePath."/banner/sponsors/banner_".$id.".png"))
                 @unlink(basePath."/banner/sponsors/banner_".$id.".png");
-			  
-			  			@copy($tmp2, basePath."/banner/sponsors/banner_".$id.".".strtolower($end2));
+
+                          @copy($tmp2, basePath."/banner/sponsors/banner_".$id.".".strtolower($end2));
               @unlink($_FILES['bdata']['tmp_name']);
             }
-					db("UPDATE ".$db['sponsoren']." SET `bend` = '".$end2."' WHERE id = '".intval($id)."'");
+                    db("UPDATE ".$db['sponsoren']." SET `bend` = '".$end2."' WHERE id = '".intval($id)."'");
           }
-		  
-		  		$tmp3 = $_FILES['xdata']['tmp_name'];
+
+                  $tmp3 = $_FILES['xdata']['tmp_name'];
           $type3 = $_FILES['xdata']['type'];
           $end3 = explode(".", $_FILES['xdata']['name']);
           $end3 = strtolower($end3[count($end3)-1]);
-          
+
           if(!empty($tmp3))
           {
             $img3 = getimagesize($tmp3);
-						if($type3 == "image/gif" || $type3 == "image/png" || $type3 == "image/jpeg" || !$img3[0])
+                        if($type3 == "image/gif" || $type3 == "image/png" || $type3 == "image/jpeg" || !$img3[0])
             {
               if(file_exists(basePath."/banner/sponsors/box_".$id.".gif"))
                 @unlink(basePath."/banner/sponsors/box_".$id.".gif");
               elseif(file_exists(basePath."/banner/sponsors/box_".$id.".jpg"))
                 @unlink(basePath."/banner/sponsors/box_".$id.".jpg");
-			  			elseif(file_exists(basePath."/banner/sponsors/box_".$id.".png"))
+                          elseif(file_exists(basePath."/banner/sponsors/box_".$id.".png"))
                 @unlink(basePath."/banner/sponsors/box_".$id.".png");
-			  
-			  			@copy($tmp3, basePath."/banner/sponsors/box_".$id.".".strtolower($end3));
+
+                          @copy($tmp3, basePath."/banner/sponsors/box_".$id.".".strtolower($end3));
               @unlink($_FILES['xdata']['tmp_name']);
             }
-					db("UPDATE ".$db['sponsoren']." SET `xend` = '".$end3."' WHERE id = '".intval($id)."'");
-          }	
+                    db("UPDATE ".$db['sponsoren']." SET `xend` = '".$end3."' WHERE id = '".intval($id)."'");
+          }
 
           $show = info(_sponsor_edited, "?admin=sponsors");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db['sponsoren']."
                    WHERE id = '".intval($_GET['id'])."'");
 
@@ -586,17 +583,15 @@ if(_adminMenu != 'true') exit;
           $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
 
           $show .= show($dir."/sponsors_show", array("link" => cut(re($get['link']),40),
-                                                  	 "class" => $class,
-                                                  	 "name" => $get['name'],
-                                                  	 "edit" => $edit,
-                                                  	 "delete" => $delete));
+                                                       "class" => $class,
+                                                       "name" => $get['name'],
+                                                       "edit" => $edit,
+                                                       "delete" => $delete));
         }
 
         $show = show($dir."/sponsors", array("head" => _sponsor_head,
-                                          	 "show" => $show,
-											 "sname" => _sponsor_name,
-											 "slink" => _links_link,
-                                          	 "add" => _sponsors_admin_add));
+                                               "show" => $show,
+                                             "sname" => _sponsor_name,
+                                             "slink" => _links_link,
+                                               "add" => _sponsors_admin_add));
       }
-    }
-?>

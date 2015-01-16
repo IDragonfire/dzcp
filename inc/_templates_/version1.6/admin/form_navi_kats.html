@@ -1,0 +1,43 @@
+<tr>
+<td>
+<form name="navi" method="post" action="?admin=navi&amp;do=[do]" onsubmit="return(DZCP.submitButton())">
+<table class="hperc" cellspacing="1">
+<tr>
+  <td class="contentHead" colspan="2" align="center"><span class="fontBold">[head]</span></td>
+</tr>
+<tr>
+  <td class="contentMainTop" colspan="2" align="center">[menu_kat_info]</td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[name]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="name" value="[n_name]" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[placeholder]:</span></td>
+  <td class="contentMainFirst" align="center">
+    [nav_ <input type="text" name="placeholder" value="[n_placeholder]" class="inputField_dis" style="width:100px" /> ]
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[visible]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <select name="level" class="dropdown">
+      <option value="0">[guest]</option>
+      <option value="1"[sel_user]>[user]</option>
+      <option value="2"[sel_trial]>[trial]</option>
+      <option value="3"[sel_member]>[member]</option>
+      <option value="4"[sel_admin]>[admin]</option>
+    </select>
+  </td>
+</tr>
+<tr>
+  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[what]" class="submit" /></td>
+</tr>
+</table>
+</form>
+</td>
+</tr>

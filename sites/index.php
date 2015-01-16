@@ -1,17 +1,19 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
-## INCLUDES ##
-include(basePath."/inc/config.php");
-include(basePath."/inc/bbcode.php");
-## SETTINGS ##
-$time_start = generatetime();
-lang($language);
-$dir = "sites";
-## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
 
+## INCLUDES ##
+include(basePath."/inc/common.php");
+
+## SETTINGS ##
+$dir = "sites";
+
+## SECTIONS ##
 switch ($action):
 default:
   $qry = db("SELECT s1.*,s2.internal FROM ".$db['sites']." AS s1
@@ -22,15 +24,14 @@ default:
 
   if(_rows($qry))
   {
-    if($get['internal'] == 1 && ($chkMe == 1 || $chkMe == "unlogged"))
+    if($get['internal'] == 1 && ($chkMe == 1 || !$chkMe))
       $index = error(_error_wrong_permissions, 1);
     else {
       $where = re($get['titel']);
-      $title = $pagetitle." - ".$where."";
-  
+
       if($get['html'] == "1") $inhalt = bbcode_html($get['text']);
       else $inhalt = bbcode($get['text']);
-  
+
       $index = show($dir."/sites", array("titel" => re($get['titel']),
                                          "inhalt" => $inhalt));
     }
@@ -38,20 +39,21 @@ default:
 break;
 case 'preview';
   header("Content-type: text/html; charset=utf-8");
-  if($_POST['html'] == "1") $inhalt = bbcode_html($_POST['inhalt'],1);
-  else $inhalt = bbcode($_POST['inhalt'],1);
+  if($_POST['html'] == "1") $inhalt = bbcode_html(re($_POST['inhalt']),1);
+  else $inhalt = bbcode(re($_POST['inhalt']),true);
 
   $index = show($dir."/sites", array("titel" => re($_POST['titel']),
                                      "inhalt" => $inhalt));
-                                     
-  echo '<table class="mainContent" cellspacing="1"'.$index.'</table>';
-  exit;
+
+  echo utf8_encode('<table class="mainContent" cellspacing="1"'.$index.'</table>');
+
+  if(!mysqli_persistconns)
+      $mysql->close(); //MySQL
+
+  exit();
 break;
 endswitch;
-## SETTINGS ##
-$time_end = generatetime();
-$time = round($time_end - $time_start,4);
-page($index, $title, $where,$time);
-## OUTPUT BUFFER END ##
-gz_output();
-?>
+
+## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
+page($index, $title, $where);

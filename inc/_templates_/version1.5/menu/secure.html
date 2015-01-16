@@ -1,17 +1,16 @@
 <tr>
-  <td style="vertical-align:middle;padding:5px">
-    <table class="hperc" cellspacing="0">
-      <tr>
-        <td style="width:1%;text-align:right;vertical-align:middle">
-          <input type="text" name="secure" class="inputField_dis_small" 
-           onfocus="this.className='inputField_en_small'"
-           onblur="this.className='inputField_dis_small'" />          
-        </td>
-        <td style="width:60px;text-align:center;vertical-align:middle">
-          <img src="../antispam.php?secure=login" alt="" class="icon" />
-        </td>
-        <td style="vertical-align:middle"> <img class="helpicon" src="../inc/images/help.gif" onmouseover="DZCP.showInfo('[help]')" onmouseout="DZCP.hideInfo()" alt="" /></td>
-      </tr>
-    </table>
+  <td style="vertical-align:middle">
+        <table class="corner" style="background-color:#FFF; width:147px; border: 1px solid #000; border-color: #555 #555 #111 #111;">
+            <tbody>
+                <tr>
+                    <td colspan="2" style="width:147;"><img class="corner" onmouseover="DZCP.showInfo('[lang_capcha_sound_info]')" onmouseout="DZCP.hideInfo()" onClick="DZCP.EvalSound('../inc/ajax.php?i=securimage_audio&namespace=menu_login')" src="../inc/images/ajax_loading.gif" alt="CAPTCHA Image" name="siimage_menu_login" hspace="0" vspace="0" align="left" id="siimage_menu_shout" style="border: 1px solid #000; border-color: #555 #555 #111 #111" />
+                    <script language="javascript" type="text/javascript">DZCP.initDynCaptcha('siimage_menu_login',0,147,0,'menu_login',0,'[sid]');</script></td>
+                </tr>
+                <tr>
+                    <td style="width:137;"><input type="text" name="secure" size="16" maxlength="25"/></td>
+                    <td style="width:16;"><a tabindex="-1" style="border-style: none;" href="#" title="Refresh Image" onclick="DZCP.initDynCaptcha('siimage_menu_login',0,195,0,'menu_login',0,''); this.blur(); return false"><img src="../inc/images/securimage/refresh.png" alt="Reload Image" height="16" width="16" onclick="this.blur()" align="left" border="0" /></a></td>
+                </tr>
+            </tbody>
+        </table>
   </td>
 </tr>

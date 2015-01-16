@@ -1,10 +1,13 @@
 <?php
-//-> Begrüßung nach Tageszeit
-function welcome()
-{
-  global $chkMe,$userid;
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ * Menu: Begrüßung nach Tageszeit
+ */
+function welcome() {
+    global $chkMe,$userid;
 
-  $return = "<script language=\"javascript\" type=\"text/javascript\">
+    $return = "<script language=\"javascript\" type=\"text/javascript\">
                <!--
                  date = new Date();
                  hour = date.getHours();
@@ -16,7 +19,8 @@ function welcome()
                //-->
              </script>";
 
-  if($chkMe == 'unlogged') return $return.' '._welcome_guest;
-  else                     return $return.' '.autor($userid, "welcome");
+    if(!$chkMe)
+        return $return.' '._welcome_guest;
+
+    return $return.' '.autor($userid, "welcome");
 }
-?>

@@ -1,8 +1,10 @@
-<?php 
-  define('_version', '1.6');
-  define('_release', '??.06.2012');
-  
-  $cp_color = '#FFFFFF';  ###########################################################################
-                           # Hex Farbcode der Hintergrundfarbe Copyrightlinks am Ende der Homepage #
-                          ###########################################################################
-?>
+<?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
+define('_version', '1.7.0.0');
+define('_release', '14.01.2015');
+define('_build', '1700.00.33');
+define('_edition', 'dev');

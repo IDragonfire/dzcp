@@ -1,0 +1,35 @@
+.notification-box {
+	color:#555;
+	font-family:Tahoma,Geneva,Arial,sans-serif;font-size:11px;
+	padding:10px 30px;
+}
+
+.notification-box span {
+	font-weight:bold;
+	text-transform:uppercase;
+}
+
+.error {
+	background:#ffecec url('../images/notification/error.png') no-repeat 10px 50%;
+	border:1px solid #f5aca6;
+}
+
+.success {
+	background:#e9ffd9 url('../images/notification/success.png') no-repeat 10px 50%;
+	border:1px solid #a6ca8a;
+}
+
+.warning {
+	background:#fff8c4 url('../images/notification/warning.png') no-repeat 10px 50%;
+	border:1px solid #f2c779;
+}
+
+.notice {
+	background:#e3f7fc url('../images/notification/notice.png') no-repeat 10px 50%;
+	border:1px solid #8ed9f6;
+}
+
+.custom {
+	background:#e3f7fc url('../images/notification/custom.png') no-repeat 10px 50%;
+	border:1px solid #8ed9f6;
+}

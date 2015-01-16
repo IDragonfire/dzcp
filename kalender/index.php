@@ -1,32 +1,36 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
-## INCLUDES ##
-include(basePath."/inc/config.php");
-include(basePath."/inc/bbcode.php");
-## SETTINGS ##
-$time_start = generatetime();
-lang($language);
-$where = _site_kalender;
-$title = $pagetitle." - ".$where."";
-$dir = "kalender";
-## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
 
+## INCLUDES ##
+include(basePath."/inc/common.php");
+
+## SETTINGS ##
+$where = _site_kalender;
+$dir = "kalender";
+
+## SECTIONS ##
 switch ($action):
 default:
-  if(isset($_POST['monat'])) $monat = $_POST['monat'];
-  elseif(isset($_GET['m']))  $monat = $_GET['m'];
+  if(isset($_POST['monat'])) $monat = intval($_POST['monat']);
+  elseif(isset($_GET['m']))  $monat = intval($_GET['m']);
   else $monat = date("m");
 
-  if(isset($_POST['jahr'])) $jahr = $_POST['jahr'];
-  elseif(isset($_GET['y'])) $jahr = $_GET['y'];
+  $monat = str_pad($monat, 2 ,'0', STR_PAD_LEFT);
+
+  if(isset($_POST['jahr'])) $jahr = intval($_POST['jahr']);
+  elseif(isset($_GET['y'])) $jahr = intval($_GET['y']);
   else $jahr = date("Y");
-    
+
+  $month = '';
   for($i = 1; $i <= 12; $i++)
   {
-    if($monat == $i) $sel = "selected=\"selected\"";
+    if($monat == $i) $sel = 'selected="selected"';
     else $sel = "";
 
     $mname = array("1" => _jan,
@@ -47,9 +51,10 @@ default:
                                         "what" => $mname[$i]));
   }
 
+  $year = '';
   for( $i = date("Y")-5; $i < date("Y")+3; $i++)
   {
-    if($jahr == $i) $sel = "selected=\"selected\"";
+    if($jahr == $i) $sel = 'selected="selected"';
     else $sel = "";
 
     $year .= show(_select_field, array("value" => $i,
@@ -61,7 +66,7 @@ default:
   $i = 1;
   while($i <= 31 && checkdate($monat, $i, $jahr))
   {
-    unset($data);
+    $data = '';
     for($iw = 1; $iw <= 7; $iw++)
     {
       unset($bdays, $cws, $infoBday, $infoCW, $infoEvent);
@@ -75,46 +80,49 @@ default:
       {
         $data .= '<td class="calDay"></td>';
       } else {
-        $qry = db("SELECT id,bday,nick FROM ".$db['users']."
-                   WHERE bday LIKE '".cal($i).".".$monat.".____"."'");
-        if(_rows($qry))
-        {
-          while($get = _fetch($qry)) $infoBday .= jsconvert(_kal_birthday.rawautor($get['id']));
-          
-          $info = ' onmouseover="DZCP.showInfo(\''.$infoBday.'\')" onmouseout="DZCP.hideInfo()"';
-          $bdays = '<a href="../user/?action=userlist&amp;show=bday&amp;time='.$datum.'"'.$info.'><img src="../inc/images/bday.gif" alt="" /></a>';
-        } else {
-          $bdays = "";
+        $infoBday = ''; $bdays = ""; $CountBday = 0;
+        $qry = db("SELECT id,bday,nick FROM ".$db['users']." WHERE bday != 0");
+        while($get = _fetch($qry)) {
+            if(date("d.m",$get['bday']) == cal($i).".".$monat) {
+                $infoBday .='&lt;img src=../inc/images/bday.gif class=icon alt= /&gt;'.'&nbsp;'.jsconvert(_kal_birthday.rawautor($get['id'])).'<br />';
+                $CountBday++;
+            }
         }
-        
+
+        if($CountBday >= 1) {
+            $info = ' onmouseover="DZCP.showInfo(\''.$infoBday.'\')" onmouseout="DZCP.hideInfo()"';
+            $bdays = '<a href="../user/?action=userlist&amp;show=bday&amp;time='.$datum.'"'.$info.'><img src="../inc/images/bday.gif" alt="" /></a>';
+        }
+
           $qry = db("SELECT datum,gegner FROM ".$db['cw']."
                      WHERE DATE_FORMAT(FROM_UNIXTIME(datum), '%d.%m.%Y') = '".cal($i).".".$monat.".".$jahr."'");
         if(_rows($qry))
         {
-          while($get = _fetch($qry)) $infoCW .= jsconvert(_kal_cw.re($get['gegner']));
+          $infoCW = '';
+          while($get = _fetch($qry)) $infoCW .= '&lt;img src=../inc/images/cw.gif class=icon alt= /&gt;'.'&nbsp;'.jsconvert(_kal_cw.re($get['gegner'])).'<br />';
 
           $info = ' onmouseover="DZCP.showInfo(\''.$infoCW.'\')" onmouseout="DZCP.hideInfo()"';
           $cws = '<a href="../clanwars/?action=kalender&amp;time='.$datum.'"'.$info.'><img src="../inc/images/cw.gif" alt="" /></a>';
         } else {
           $cws = "";
         }
-        
+
         $qry = db("SELECT datum,title FROM ".$db['events']."
                    WHERE DATE_FORMAT(FROM_UNIXTIME(datum), '%d.%m.%Y') = '".cal($i).".".$monat.".".$jahr."'");
         if(_rows($qry))
         {
-          while($get = _fetch($qry)) $infoEvent .= jsconvert(_kal_event.re($get['title']));
-          
+          $infoEvent = '';
+          while($get = _fetch($qry)) $infoEvent .='&lt;img src=../inc/images/event.png class=icon alt= /&gt;'.'&nbsp;'.jsconvert(_kal_event.re($get['title'])).'<br />';
+
           $info = ' onmouseover="DZCP.showInfo(\''.$infoEvent.'\')" onmouseout="DZCP.hideInfo()"';
-          $event = '<a href="?action=show&amp;time='.$datum.'"'.$info.'><img src="../inc/images/event.gif" alt="" /></a>';
+          $event = '<a href="?action=show&amp;time='.$datum.'"'.$info.'><img src="../inc/images/event.png" alt="" /></a>';
         } else {
           $event = "";
         }
-        
-        $events = $bdays." ".$cws." ".$event;
-        
 
-        if($_GET['hl'] == $i) $day = '<span class="fontMarked">'.cal($i).'</span>';
+        $events = $bdays." ".$cws." ".$event;
+
+        if(isset($_GET['hl']) && $_GET['hl'] == $i) $day = '<span class="fontMarked">'.cal($i).'</span>';
         else $day = cal($i);
 
         if(!checkdate($monat, $i, $jahr))
@@ -179,10 +187,7 @@ case 'admin';
   header("Location: ../admin/?admin=kalender&do=edit&id=".$_GET['id']);
 break;
 endswitch;
-## SETTINGS ##
-$time_end = generatetime();
-$time = round($time_end - $time_start,4);
-page($index, $title, $where,$time);
-## OUTPUT BUFFER END ##
-gz_output();
-?>
+
+## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
+page($index, $title, $where);

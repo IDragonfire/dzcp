@@ -1,13 +1,12 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    permission('links')
-///////////////////////////////
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
-    if(permission('links'))
-    {
-      if($_GET['do'] == "new")
+      if($do == "new")
       {
         $show = show($dir."/form_linkus", array("head" => _linkus_admin_head,
                                                 "link" => _linkus_link,
@@ -15,7 +14,7 @@ if(_adminMenu != 'true') exit;
                                                 "art" => _linkus_art,
                                                 "text" => _linkus_admin_textlink,
                                                 "banner" => _linkus_admin_bannerlink,
-                                                "bchecked" => "checked=\"checked\"",
+                                                "bchecked" => 'checked="checked"',
                                                 "tchecked" => "",
                                                 "llink" => _linkus_bsp_target,
                                                 "lbeschreibung" => _linkus_bsp_desc,
@@ -23,7 +22,7 @@ if(_adminMenu != 'true') exit;
                                                 "ltext" => _linkus_bsp_bannerurl,
                                                 "what" => _button_value_add,
                                                 "do" => "add"));
-      } elseif($_GET['do'] == "add") {
+      } elseif($do == "add") {
         if(empty($_POST['link']) || empty($_POST['beschreibung']) || empty($_POST['text']))
         {
           if(empty($_POST['link']))             $show = error(_linkus_empty_link, 1);
@@ -35,10 +34,10 @@ if(_adminMenu != 'true') exit;
                          `text`         = '".up($_POST['text'])."',
                          `banner`       = '".up($_POST['banner'])."',
                          `beschreibung` = '".up($_POST['beschreibung'])."'");
-  
+
           $show = info(_linkus_added, "?admin=linkus");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry = db("SELECT * FROM ".$db['linkus']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
@@ -55,7 +54,7 @@ if(_adminMenu != 'true') exit;
                                                 "ltext" => $get['text'],
                                                 "what" => _button_value_edit,
                                                 "do" => "editlink&amp;id=".$_GET['id'].""));
-      } elseif($_GET['do'] == "editlink") {
+      } elseif($do == "editlink") {
         if(empty($_POST['link']) || empty($_POST['beschreibung']) || empty($_POST['text']))
         {
           if(empty($_POST['link']))             $show = error(_linkus_empty_link, 1);
@@ -68,13 +67,13 @@ if(_adminMenu != 'true') exit;
                          `banner`       = '".up($_POST['banner'])."',
                          `beschreibung` = '".up($_POST['beschreibung'])."'
                      WHERE id = '".intval($_GET['id'])."'");
-  
+
           $show = info(_linkus_edited, "?admin=linkus");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $qry = db("DELETE FROM ".$db['linkus']."
                    WHERE id = '".intval($_GET['id'])."'");
-  
+
         $show = info(_linkus_deleted, "?admin=linkus");
       } else {
         $qry = db("SELECT * FROM ".$db['linkus']."
@@ -83,7 +82,7 @@ if(_adminMenu != 'true') exit;
         while($get = _fetch($qry))
         {
           $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
-    
+
           $banner = show(_linkus_bannerlink, array("id" => $get['id'],
                                                    "banner" => re($get['text'])));
 
@@ -101,15 +100,15 @@ if(_adminMenu != 'true') exit;
                                                     "cnt" => $cnt,
                                                     "banner" => $banner,
                                                     "besch" => re($get['beschreibung']),
-    									    		                      "url" => $get['url']));
+                                                                          "url" => $get['url']));
           $cnt++;
         }
+
+        if(empty($show_))
+            $show_ = '<tr><td class="contentMainSecond">'._no_entrys.'</td></tr>';
+
 
         $show = show($dir."/linkus", array("head" => _linkus_head,
                                            "show" => $show_,
                                            "add" => _linkus_admin_head));
       }
-    } else {
-      $show = error(_error_wrong_permissions, 1);
-    }
-?>

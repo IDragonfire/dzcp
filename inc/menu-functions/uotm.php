@@ -1,30 +1,27 @@
 <?php
-//User of the Moment
-function uotm()
-{
-  global $db, $allowHover;
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ * Menu: User of the Moment
+ */
+function uotm() {
+    global $db,$picformat;
+    $files = get_files(basePath.'/inc/images/uploads/userpics',false,true,$picformat,false,array(),'minimize'); $uotm = '';
+    if(count($files) >= 1 && $files) {
+        shuffle($files);
+        $userid = intval($files[mt_rand(0, count($files) - 1)]);
+        $qry = db("SELECT `id`,`bday` FROM ".$db['users']." WHERE `id` = '".$userid."'");
+        if(_rows($qry)) {
+            $get = _fetch($qry);
+            if(config('allowhover') == 1)
+                $info = 'onmouseover="DZCP.showInfo(\''.fabo_autor($get['id']).'\', \''._age.'\', \''.getAge($get['bday']).'\', \''.hoveruserpic($get['id']).'\')" onmouseout="DZCP.hideInfo()"';
 
-    $imgFiles = array();
-    $folder = get_files('../inc/images/uploads/userpics');
-    foreach($folder AS $file) array_push($imgFiles, $file);
 
-    if(count($imgFiles) != 0)
-    {
-      $userid = intval($imgFiles[rand(0, count($imgFiles) - 1)]);
-      $get = _fetch(db("SELECT id,nick,country,bday FROM ".$db['users']." WHERE id = '".$userid."'"));
-
-      if(!empty($get))
-      {
-        if($allowHover == 1)
-          $info = 'onmouseover="DZCP.showInfo(\''.fabo_autor($get['id']).'\', \''._age.'\', \''.getAge($get['bday']).'\', \''.hoveruserpic($get['id']).'\')" onmouseout="DZCP.hideInfo()"';
-  
-  
-        $uotm = show("menu/uotm", array("uid" => $userid,
-                                        "upic" => userpic($get['id'], 130, 161),
-                                        "info" => $info));
-      }
+            $uotm = show("menu/uotm", array("uid" => $userid,
+                                            "upic" => userpic($get['id'], 130, 161),
+                                            "info" => $info));
+        }
     }
 
-  return empty($uotm) ? '' : '<table class="navContent" cellspacing="0">'.$uotm.'</table>';
+    return empty($uotm) ? '<center style="margin:2px 0">'._no_entrys.'</center>' : '<table class="navContent" cellspacing="0">'.$uotm.'</table>';
 }
-?>

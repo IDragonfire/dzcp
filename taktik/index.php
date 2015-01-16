@@ -1,28 +1,29 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
-## INCLUDES ##
-include(basePath."/inc/config.php");
-include(basePath."/inc/bbcode.php");
-## SETTINGS ##
-$time_start = generatetime();
-lang($language);
-$where = _site_taktiken;
-$title = $pagetitle." - ".$where."";
-$dir = "taktik";
-## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
 
+## INCLUDES ##
+include(basePath."/inc/common.php");
+
+## SETTINGS ##
+$where = _site_taktiken;
+$dir = "taktik";
+
+## SECTIONS ##
 switch ($action):
 default:
-  if($chkMe == "unlogged" || $chkMe < 2)
+  if(!$chkMe || $chkMe < 2)
   {
     $index = error(_error_wrong_permissions, 1);
   } else {
       $qry = db("SELECT id,datum,map,spart,sparct,standardt,standardct,autor
                  FROM ".$db['taktik']."
-                 ORDER BY id DESC");
+                 ".orderby_sql(array("map","autor"), 'ORDER BY id DESC'));
       while ($get = _fetch($qry))
       {
         if($get['sparct'] != "") $sparct = show(_taktik_spar_ct, array("id" => $get['id']));
@@ -44,7 +45,7 @@ default:
                                                           "action" => "action=do&amp;what=delete",
                                                           "title" => _button_title_del,
                                                           "del" => convSpace(_confirm_del_taktik)));
-        
+
         $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
         $show .= show($dir."/taktiken_show", array("map" => re($get['map']),
                                                    "id" => $get['id'],
@@ -67,6 +68,8 @@ default:
                                            "delete" => _deleteicon_blank,
                                            "t" => _taktik_t,
                                            "ct" => _taktik_ct,
+                                           "order_map" => orderby('map'),
+                                           "order_autor" => orderby('autor'),
                                            "autor" => _autor));
   }
 break;
@@ -135,14 +138,12 @@ case 'do':
   {
     $index = error(_error_wrong_permissions, 1);
   } else {
-    $wysiwyg = '_word';
-    
     if($_GET['what'] == "new")
     {
       $qry = db("SELECT * FROM ".$db['taktik']."");
       $get = _fetch($qry);
 
-      $files = get_files("../inc/images/uploads/taktiken/");
+      $files = get_files(basePath."/inc/images/uploads/taktiken/",false,true,$picformat,false,array(),'minimize');
       for($i=0; $i<count($files); $i++)
       {
         $screen .= show(_member_admin_select_icons, array("iconimg" => $files[$i]));
@@ -170,13 +171,13 @@ case 'do':
         $index = error(_error_taktik_empty_map, 1);
       } else {
         $qry = db("INSERT INTO ".$db['taktik']."
-                   SET `datum`      = '".((int)time())."',
+                   SET `datum`      = '".time()."',
                        `map`        = '".up($_POST['map'])."',
-                       `spart`      = '".up($_POST['spart'], 1)."',
-                       `sparct`     = '".up($_POST['sparct'], 1)."',
-                       `standardt`  = '".up($_POST['standardt'], 1)."',
-                       `standardct` = '".up($_POST['standardct'], 1)."',
-                       `autor`      = '".((int)$userid)."'");
+                       `spart`      = '".up($_POST['spart'])."',
+                       `sparct`     = '".up($_POST['sparct'])."',
+                       `standardt`  = '".up($_POST['standardt'])."',
+                       `standardct` = '".up($_POST['standardct'])."',
+                       `autor`      = '".intval($userid)."'");
 
         $index = info(_taktik_added, "../taktik/");
       }
@@ -189,8 +190,8 @@ case 'do':
       $qry = db("SELECT * FROM ".$db['taktik']."
                  WHERE id = ".intval($_GET['id']));
       $get = _fetch($qry);
-      
-      $files = get_files("../inc/images/uploads/taktiken/");
+
+      $files = get_files(basePath."/inc/images/uploads/taktiken/",false,true,$picformat,false,array(),'minimize');
       for($i=0; $i<count($files); $i++)
       {
         $screen .= show(_member_admin_select_icons, array("iconimg" => $files[$i]));
@@ -223,10 +224,10 @@ case 'do':
       } else {
         $qry = db("UPDATE ".$db['taktik']."
                    SET `map`        = '".up($_POST['map'])."',
-                       `sparct`     = '".up($_POST['sparct'], 1)."',
-                       `spart`      = '".up($_POST['spart'], 1)."',
-                       `standardct` = '".up($_POST['standardct'], 1)."',
-                       `standardt`  = '".up($_POST['standardt'], 1)."'
+                       `sparct`     = '".up($_POST['sparct'])."',
+                       `spart`      = '".up($_POST['spart'])."',
+                       `standardct` = '".up($_POST['standardct'])."',
+                       `standardt`  = '".up($_POST['standardt'])."'
                    WHERE id = ".intval($_POST['id']));
 
         $index = info(_error_taktik_edited, "../taktik/");
@@ -235,11 +236,7 @@ case 'do':
   }
 break;
 endswitch;
-## SETTINGS ##
-$time_end = generatetime();
-$time = round($time_end - $time_start,4);
-page($index, $title, $where,$time,$wysiwyg);
-## OUTPUT BUFFER END ##
-gz_output();
-?>
 
+## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
+page($index, $title, $where);

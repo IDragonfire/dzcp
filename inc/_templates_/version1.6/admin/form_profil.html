@@ -1,0 +1,38 @@
+<tr>
+<td>
+<form name="profil" method="post" action="?admin=profile&amp;do=addprofile" onsubmit="return(DZCP.submitButton())">
+<table class="hperc" cellspacing="1">
+<tr>
+  <td class="contentHead" colspan="2" align="center"><span class="fontBold">[head]</span></td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[name]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <input type="text" name="name" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[kat]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <select name="kat" class="dropdown">
+		  [form_kat]
+    </select>
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop"><span class="fontBold">[type]:</span></td>
+  <td class="contentMainFirst" align="center">
+    <select name="type" class="dropdown">
+      [form_type] 
+    </select>
+  </td>
+</tr>
+<tr>
+  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[value]" class="submit" /></td>
+</tr>
+</table>
+</form>
+</td>
+</tr>

@@ -1,26 +1,27 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 ## OUTPUT BUFFER START ##
 include("../inc/buffer.php");
+
 ## INCLUDES ##
-include("../inc/config.php");
-include("../inc/bbcode.php");
+include(basePath."/inc/common.php");
+
 ## SETTINGS ##
-$time_start = generatetime();
-lang($language);
 $dir = "search";
 $where = /*_search_head*/_forum_search_head;
-$title = $pagetitle." - ".$where."";
-## SECTIONS ##
-if(!isset($_GET['action'])) $action = "";
-else $action = $_GET['action'];
 
+## SECTIONS ##
 switch ($action):
 default:
 //check $_GET var
-  if($_GET['area'] == 'topic') $acheck2 = "checked=\"checked\"";
-  else                         $acheck1 = "checked=\"checked\"";
-  if($_GET['type'] == 'autor') $tcheck2 = "checked=\"checked\"";
-  else                         $tcheck1 = "checked=\"checked\"";
+  if($_GET['area'] == 'topic') $acheck2 = 'checked="checked"';
+  else                         $acheck1 = 'checked="checked"';
+  if($_GET['type'] == 'autor') $tcheck2 = 'checked="checked"';
+  else                         $tcheck1 = 'checked="checked"';
 
   $i=0;
   for(reset($_GET);list($key,$value)=each($_GET);$i++)
@@ -29,10 +30,10 @@ default:
     if($i == 0) $sep = '?';
     else        $sep = '&';
     $getstr .= $sep.$key.'='.$value;
-    
+
     if(preg_match("#k_#",$key))
       $strkat .= $key.'|';
-  }      
+  }
 
   if(permission("intforum"))
   {
@@ -58,34 +59,32 @@ default:
                   AND forum = '".$gets['id']."'");
       if($get['intern'] == 0 || (($get['intern'] == 1 && _rows($intF)) || $chkMe == 4))
       {
-        if(preg_match("#k_".$gets['id']."\|#",$strkat)) $kcheck = "checked=\"checked\"";
+        if(preg_match("#k_".$gets['id']."\|#",$strkat)) $kcheck = 'checked="checked"';
         else  $kcheck = '';
-        
+
         $fkats .= '<li><label class="search" for="k_'.$gets['id'].'"><input type="checkbox" class="chksearch" name="k_'.$gets['id'].'" id="k_'.$gets['id'].'" '.$kcheck.' onclick="DZCP.hideForumFirst()" value="true" />&nbsp;&nbsp;'.re($gets['kattopic']).'</label></li>';
       }
     }
   }
-  
-//Auswertung  
-  if($_GET['do'] == 'search')
+
+//Auswertung
+  if($do == 'search')
   {
-    if(isset($_GET['page'])) $page = $_GET['page'];
-    else $page = 1;
     $maxfsearch = 20;
-   
+
     if($_GET['si_board'] == true)
-    {      
+    {
       $_SESSION['search_con'] = $_GET['con'];
-      
-      if($_GET['type'] == 'autor') 
+
+      if($_GET['type'] == 'autor')
       {
         $_SESSION['search_type'] = 'autor';
         if($_GET['con'] == 'or')
         {
           $suche = explode(" ",$_GET['search']);
           for($x=0;$x<count($suche);$x++)
-          {     
-            $z=0;   
+          {
+            $z=0;
             $qryu = db("SELECT id,nick FROM ".$db['users']."
                         WHERE nick LIKE '%".trim($suche[$x])."%'");
             if(_rows($qryu))
@@ -94,16 +93,16 @@ default:
               {
                 if($z == 0) $c = 'WHERE (';
                 else        $c = 'OR ';
-                
+
                 $dosearch .= $c."s1.t_reg = '".$getu['id']."' OR s2.reg = '".$getu['id']."' ";
               }
               $z++;
             }
           }
-          
+
           $suche = explode(" ",$_GET['search']);
           for($x=0;$x<count($suche);$x++)
-          {  
+          {
             if($z == 0) $b = 'WHERE (';
             else        $b = 'OR ';
             $dosearch .= $b."s1.t_nick LIKE '%".trim($suche[$x])."%' OR s2.nick LIKE '%".trim($suche[$x])."%' ";
@@ -119,7 +118,7 @@ default:
             {
               if($x == 0) $c = 'WHERE (';
               else        $c = 'OR ';
-              
+
               $dosearch .= $c."s1.t_reg = '".$getu['id']."' OR s2.reg = '".$getu['id']."' ";
               $x++;
             }
@@ -135,7 +134,7 @@ default:
         {
           $suche = explode(" ",$_GET['search']);
           for($x=0;$x<count($suche);$x++)
-          {        
+          {
             if($x == 0) $c = 'WHERE (';
             else        $c = 'OR ';
             if($_GET['area'] != 'topic')
@@ -149,13 +148,13 @@ default:
         }
         $dosearch .= ')';
       }
-      
-      if(!empty($strkat)) 
+
+      if(!empty($strkat))
       {
         $dosearch .= ' AND (';
         $kat = explode("|",$strkat);
         for($y=0;$y<count($kat)-1;$y++)
-        {     
+        {
           if($y == 0) $d = '';
           else        $d = 'OR ';
           $k = $kat[$y];
@@ -164,8 +163,8 @@ default:
         }
         $dosearch .= ')';
       }
-      
-      if(!permission("intforum")) $dosearch .= ' AND s4.intern = 0';
+
+      $dosearch = (!permission("intforum")) ? 'AND s4.intern = 0' : 'AND s4.intern = 1';
 
       $qry = db("SELECT s1.id,s1.topic,s1.kid,s1.t_reg,s1.t_email,s1.t_nick,s1.hits,s4.intern,s3.id AS subid
                  FROM ".$db['f_threads']." AS s1
@@ -179,7 +178,7 @@ default:
                  GROUP by s1.id
                  ORDER BY s1.lp DESC
                  LIMIT ".($page - 1)*$maxfsearch.",".$maxfsearch."");
-                   
+
       $qrye = db("SELECT s1.id
                  FROM ".$db['f_threads']." AS s1
                  LEFT JOIN ".$db['f_posts']." AS s2
@@ -192,7 +191,7 @@ default:
                  ".$dosearch."
                  GROUP by s1.id");
        $entrys = _rows($qrye);
-  
+
         while($get = _fetch($qry))
         {
           $intF = db("SELECT * FROM ".$db['f_access']."
@@ -203,42 +202,42 @@ default:
           {
             if($get['sticky'] == 1) $sticky = _forum_sticky;
             else $sticky = "";
-    
+
             if($get['closed'] == 1) $closed = _closedicon;
             else $closed = "";
-    
+
             $cntpage = cnt($db['f_posts'], " WHERE sid = ".$get['id']);
             if($cntpage == 0) $pagenr = 1;
-            else $pagenr = ceil($cntpage/$maxfposts);
-    
-      
+            else $pagenr = ceil($cntpage/config('m_ftopics'));
+
+
             $qrylp = db("SELECT date,nick,reg,email FROM ".$db['f_posts']."
                          WHERE sid = '".$get['id']."'
-                         ORDER BY date DESC");   
+                         ORDER BY date DESC");
             if(_rows($qrylp))
             {
               $getlp = _fetch($qrylp);
-              $lpost = show(_forum_thread_lpost, array("nick" => autor($getlp['reg'], '', $getlp['nick'], $getlp['email']),
+              $lpost = show(_forum_thread_lpost, array("nick" => autor($getlp['reg'], '', $getlp['nick'], re($getlp['email'])),
                                                        "date" => date("d.m.y H:i", $getlp['date'])._uhr));
               $lpdate = $getlp['date'];
             } else {
               $lpost = "-";
               $lpdate = "";
             }
-      
-            $threadlink = show(_forum_thread_search_link, array("topic" => cut(re($get['topic']),$lforumtopic),
+
+            $threadlink = show(_forum_thread_search_link, array("topic" => cut(re($get['topic']),config('l_forumtopic')),
                                                                 "id" => $get['id'],
                                                                 "sticky" => $sticky,
                                                                 "hl" => $_GET['search'],
                                                                 "closed" => $closed,
                                                                 "lpid" => $cntpage+1,
                                                                 "page" => $pagenr));
-                                                                
-            $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;	
-    
+
+            $class = ($color % 2) ? "contentMainSecond" : "contentMainFirst"; $color++;
+
             $results .= show($dir."/forum_search_results", array("new" => check_new($get['lp']),
                                                                  "topic" => $threadlink,
-                                                                 "subtopic" => cut(re($get['subtopic']),$lforumsubtopic),
+                                                                 "subtopic" => cut(re($get['subtopic']),config('l_forumsubtopic')),
                                                                  "hits" => $get['hits'],
                                                                  "replys" => cnt($db['f_posts'], " WHERE sid = '".$get['id']."'"),
                                                                  "class" => $class,
@@ -246,7 +245,7 @@ default:
                                                                  "autor" => autor($get['t_reg'], '', $get['t_nick'], $get['t_email'])));
           }
         }
-        
+
         $nav = nav($entrys,$maxfsearch,$getstr);
         $show = show($dir."/forum_search_show", array("head" => _forum_search_results,
                                                       "autor" => _autor,
@@ -257,20 +256,20 @@ default:
                                                       "replys" => _forum_replys,
                                                       "hits" => _hits));
     }
-  } 
+  }
 //Diverse Abfragen
   if($_GET['searchplugin'] == true)
   {
     $onclick = 'onclick="more(1)" style="cursor:pointer"';
     $img = '<img id="img1" src="../inc/images/expand.gif" alt="" />';
     $style = 'style="display:none"';
-    
-    if($_GET['si_board'] == true) $si_board = "checked=\"checked\"";
-    if(empty($strkat)) $all_board = "checked=\"checked\"";
-    if($_GET['con'] == 'or') $chk_con = "selected=\"selected\"";
+
+    if($_GET['si_board'] == true) $si_board = 'checked="checked"';
+    if(empty($strkat)) $all_board = 'checked="checked"';
+    if($_GET['con'] == 'or') $chk_con = 'selected="selected"';
   } else {
-    $si_board = "checked=\"checked\"";
-    $all_board = "checked=\"checked\"";
+    $si_board = 'checked="checked"';
+    $all_board = 'checked="checked"';
   }
 
   $index = show($dir."/search", array("head" => /*_search_head*/_forum_search_head,
@@ -304,7 +303,7 @@ default:
                                       ));
 break;
 case 'site';
-    $qry = db("SELECT * FROM ".$db['news']." 
+    $qry = db("SELECT * FROM ".$db['news']."
              WHERE (titel LIKE '%".up($_GET['searchword'])."%' AND titel != '') OR (text LIKE '%".up($_GET['searchword'])."%' AND `text` != '')
              ORDER BY titel ASC");
   while($get = _fetch($qry))
@@ -316,9 +315,9 @@ case 'site';
                                                "titel" => re($get['titel'])
                                               ));
   }
-  
+
   unset($class);
-  $qry = db("SELECT * FROM ".$db['artikel']." 
+  $qry = db("SELECT * FROM ".$db['artikel']."
              WHERE (titel LIKE '%".up($_GET['searchword'])."%' AND titel != '') OR (text LIKE '%".up($_GET['searchword'])."%' AND `text` != '')
              ORDER BY titel ASC");
   while($get = _fetch($qry))
@@ -333,7 +332,7 @@ case 'site';
   }
 
   unset($class);
-  $qry = db("SELECT * FROM ".$db['sites']." 
+  $qry = db("SELECT * FROM ".$db['sites']."
              WHERE (titel LIKE '%".up($_GET['searchword'])."%' AND titel != '') OR (text LIKE '%".up($_GET['searchword'])."%' AND `text` != '')
              ORDER BY titel ASC");
   while($get = _fetch($qry))
@@ -350,7 +349,7 @@ case 'site';
   if(!empty($shownews)) $shownews = '<tr><td class="contentMainTop"><b>'._news.'</b></td></tr>'.$shownews;
   if(!empty($showartikel)) $showartikel = '<tr><td class="contentMainTop"><b>'._artikel.'</b></td></tr>'.$showartikel;
   if(!empty($showsites)) $showsites = '<tr><td class="contentMainTop"><b>'._search_sites.'</b></td></tr>'.$showsites;
-  
+
   $index = show($dir."/search_global", array("shownews" => $shownews,
                                              "showartikel" => $showartikel,
                                              "showsites" => $showsites,
@@ -358,10 +357,7 @@ case 'site';
                                   ));
 break;
 endswitch;
-## SETTINGS ##
-$time_end = generatetime();
-$time = round($time_end - $time_start,4);
-page($index, $title, $where,$time);
-## OUTPUT BUFFER END ##
-gz_output();
-?>
+
+## INDEX OUTPUT ##
+$title = $pagetitle." - ".$where;
+page($index, $title, $where);

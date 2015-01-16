@@ -1,0 +1,27 @@
+<tr>
+  <td class="contentHead" colspan="5" align="center"><span class="fontBold">[head]</span></td>
+</tr>
+<tr>
+  <td class="contentMainFirst" colspan="5" align="center">
+      <form name="formChange" action="">
+          <select name="changeme" onChange="DZCP.switchuser()" class="dropdown">
+             <option selected="selected" value="" class="dropdownKat">[sort]</option>
+               [squads]
+          </select> [navi]
+      </form>  
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" style="width:140px"><span class="fontBold">[date]</span></td>
+  <td class="contentMainTop" colspan="4"><span class="fontBold">[titel]</span></td>
+</tr>
+[show]
+<tr>
+  <td class="contentBottom" colspan="5">
+    <form action="" method="get" onsubmit="return(DZCP.submitButton())">
+      <input type="hidden" name="admin" value="cw" />
+      <input type="hidden" name="do" value="new" />
+      <input id="contentSubmit" type="submit" class="submit" value="[add]" />
+    </form>
+  </td>
+</tr>

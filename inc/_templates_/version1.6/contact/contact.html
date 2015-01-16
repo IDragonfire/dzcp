@@ -1,0 +1,86 @@
+<tr>
+  <td class="contentHead" colspan="2" align="center"><span class="fontBold">[head]</span></td>
+</tr>
+</table>
+<form name="contact" action="?action=do&amp;what=[what]" method="post" onsubmit="return(DZCP.submitButton())">
+<table class="mainContent" cellspacing="1">
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[nick]: <span class="fontWichtig">*</span></span></td>
+  <td class="contentMainFirst" width="75%" align="center">
+    <input type="text" name="nick" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[email]: <span class="fontWichtig">*</span></span></td>
+  <td class="contentMainFirst" width="75%" align="center">
+    <input type="text" name="email" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[icq]:</span></td>
+  <td class="contentMainFirst" width="75%" align="center">
+    <input type="text" name="icq" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[skype]:</span></td>
+  <td class="contentMainFirst" width="75%" align="center">
+    <input type="text" name="skype" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+<tr>
+  <td class="contentMainTop" width="25%"><span class="fontBold">[steam]:</span></td>
+  <td class="contentMainFirst" width="75%" align="center">
+    <input type="text" name="steam" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" />
+  </td>
+</tr>
+[joinus]
+<tr>
+  <td class="contentMainTop" width="25%" valign="top"><span class="fontBold">[nachricht]: <span class="fontWichtig">*</span></span><br />[why]</td>
+  <td class="contentMainFirst" align="center" width="75%">
+    <textarea name="text" class="inputField_dis"
+    onfocus="this.className='inputField_en';"
+    onblur="this.className='inputField_dis';" cols="8" rows="auto"></textarea>
+  </td>
+</tr>
+<logged_out>
+<tr>
+    <td class="contentMainTop" style="vertical-align:middle"><span class="fontBold">[lang_register_confirm]:</span></td>
+    <td class="contentMainFirst" align="center">
+        <table class="corner" style="width:204px;border: 1px solid #d4d4d4;">
+            <tbody>
+                <tr>
+                    <td colspan="2" style="width:195"><img class="corner" onmouseover="DZCP.showInfo('[lang_capcha_sound_info]')" onmouseout="DZCP.hideInfo()" onClick="DZCP.EvalSound('../inc/ajax.php?i=securimage_audio')" src="../inc/images/ajax_loading.gif" alt="CAPTCHA Image" name="siimage_contact" hspace="0" vspace="0" id="siimage_contact" style="background-color:#FFF; border: 1px solid #d4d4d4; margin-right: 1px" />
+                    <script language="javascript" type="text/javascript">DZCP.initDynCaptcha('siimage_contact',0,0,0,'',0,'[sid]');</script></td>
+                </tr>
+                <tr>
+                    <td><input type="text" name="secure" size="23" maxlength="25" /></td>
+                    <td><a tabindex="-1" style="border-style: none;" href="#" title="Refresh Image" onclick="DZCP.initDynCaptcha('siimage_contact',0,0,0,'',0,''); this.blur(); return false"><img src="../inc/images/securimage/refresh.png" alt="Reload Image" height="16" width="16" onclick="this.blur()" border="0" /></a></td>
+                </tr>
+            </tbody>
+        </table>
+    </td>
+</tr>
+</logged_out>
+<tr>
+  <td class="contentMainTop" colspan="2" align="center">[pflicht]</td>
+</tr>
+<tr>
+  <td class="contentBottom" colspan="2"><input id="contentSubmit" type="submit" value="[value]" class="submit" name="send" /></td>
+</tr>
+</table>
+</form>
+<table class="mainContent" cellspacing="1">
+  <tr>
+    <td class="contentBottom" colspan="2">&nbsp;</td>
+  </tr>

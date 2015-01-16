@@ -1,18 +1,15 @@
 <?php
-/////////// ADMINNAVI \\\\\\\\\
-// Typ:       contentmenu
-// Rechte:    $chkMe == 4
-///////////////////////////////
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 if(_adminMenu != 'true') exit;
 
     $where = $where.': '._partners_head;
-    if($chkMe != 4)
-    {
-      $show = error(_error_wrong_permissions, 1);
-    } else {
-      if($_GET['do'] == "add")
+      if($do == "add")
       {
-        $files = get_files('../banner/partners/');
+        $files = get_files(basePath.'/banner/partners/',false,true);
         for($i=0; $i<count($files); $i++)
         {
           $banners .= show(_partners_select_icons, array("icon" => $files[$i],
@@ -29,7 +26,7 @@ if(_adminMenu != 'true') exit;
                                                   "textlink" => _partnerbuttons_textlink,
                                                   "banners" => $banners,
                                                   "what" => _button_value_add));
-      } elseif($_GET['do'] == "addbutton") {
+      } elseif($do == "addbutton") {
         if(empty($_POST['link']))
         {
           $show = error(_empty_url, 1);
@@ -41,15 +38,15 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_partners_added, "?admin=partners");
         }
-      } elseif($_GET['do'] == "edit") {
+      } elseif($do == "edit") {
         $qry = db("SELECT * FROM ".$db['partners']."
                    WHERE id = '".intval($_GET['id'])."'");
         $get = _fetch($qry);
 
-        $files = get_files('../banner/partners/');
+        $files = get_files(basePath.'/banner/partners/',false,true);
         for($i=0; $i<count($files); $i++)
         {
-          if(re($get['banner']) == $files[$i]) $sel = "selected=\"selected\"";
+          if(re($get['banner']) == $files[$i]) $sel = 'selected="selected"';
           else $sel = "";
 
           $banners .= show(_partners_select_icons, array("icon" => $files[$i],
@@ -66,7 +63,7 @@ if(_adminMenu != 'true') exit;
                                                   "textlink" => _partnerbuttons_textlink,
                                                   "banners" => $banners,
                                                   "what" => _button_value_edit));
-      } elseif($_GET['do'] == "editbutton") {
+      } elseif($do == "editbutton") {
         if(empty($_POST['link']))
         {
           $show = error(_empty_url, 1);
@@ -79,7 +76,7 @@ if(_adminMenu != 'true') exit;
 
           $show = info(_partners_edited, "?admin=partners");
         }
-      } elseif($_GET['do'] == "delete") {
+      } elseif($do == "delete") {
         $del = db("DELETE FROM ".$db['partners']."
                    WHERE id = '".intval($_GET['id'])."'");
 
@@ -116,5 +113,3 @@ if(_adminMenu != 'true') exit;
                                              "link" => _link,
                                              "button" => _partners_button));
       }
-    }
-?>

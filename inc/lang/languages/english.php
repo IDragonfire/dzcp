@@ -1,16 +1,261 @@
 <?php
+/**
+ * DZCP - deV!L`z ClanPortal 1.7.0
+ * http://www.dzcp.de
+ */
+
 $charset = 'iso-8859-1';
 header("Content-type: text/html; charset=".$charset);
+
+## ADDED / REDEFINED FOR 1.7.0
+define('_no_entrys', 'No entrys');
+define('_profil_edit_almgr_link', '<a href="?action=editprofile&amp;show=almgr">Autologin editieren</a>');
+define('_almgrhead', 'Autologin verwalten');
+define('_almgr_host', 'Host');
+define('_almgr_ip', 'IP-Adresse');
+define('_almgr_create', 'Angelegt');
+define('_almgr_lused', 'Verwendet');
+define('_almgr_expires', 'G&uuml;ltig bis');
+define('_almgr_name', 'Ger&auml;tename');
+define('_almgr_edit_head', 'Autologin bearbeiten');
+define('_almgr_ssid', 'Session-ID');
+define('_almgr_pkey', 'Permanent-Key');
+define('_almgr_editd', 'Autologin erfolgreich bearbeitet');
+define('_almgr_add', '<a href="?action=editprofile&amp;show=almgr&amp;do=self_add">Dieses Ger&auml;t hinzuf&uuml;gen</a>');
+define('_almgr_remove', '<a href="?action=editprofile&amp;show=almgr&amp;do=self_remove">Dieses Ger&auml;t entfernen</a>');
+define('_info_almgr_deletet', 'Automatische Anmeldung wurde erfolgreich entfernt');
+define('_info_almgr_self_deletet', 'Dieses Ger&auml;t wurde erfolgreich entfernt');
+define('_info_almgr_self_added', 'Dieses Ger&auml;t wurde erfolgreich eingetragen');
+define('_profile_access_error', 'This profile is accessible only to members');
+define('_pedit_visibility_profile', 'My Profile');
+define('_paginator_previous', 'Previous');
+define('_paginator_next', 'Next');
+define('_admin_bezeichnung', 'Description');
+define('_custom_game_icon', 'Custom-Icon');
+define('_custom_game_icon_none', 'Not use custom icon');
+define('_server_gtype', '<span class="fontBold">Gamemode:</span> [type]<br />');
+define('_server_bots', '<span class="fontBold">Bots:</span> [bots]<br />');
+define('_addons', 'Add-ons');
+define('_capcha_sound_info', 'Click for Play Audio-CAPTCHA');
+define("_notification_error", 'Error');
+define("_notification_success", 'Success');
+define("_notification_notice", 'Notice');
+define("_notification_warning", 'Warning');
+define("_notification_custom", 'Custom');
+
+//Forum
+define('_forum_last_post', 'View the latest post');
+define('_forum_online_info0', 'In total there are <b>[users]</b> users online: <b>[regs]</b> registered and <b>[gast]</b> guests (based on users active over the past [timer] minutes)');
+define('_forum_online_info1', 'Registered users');
+define("_forum_gast", 'guests');
+define("_forum_gaste", 'guests');
+define("_forum_regs", 'registered');
+define("_forum_reg", 'registered');
+define("_forum_ist", ''); //Not used
+define("_forum_sind", ''); //Not used
+
+// Security Center
+define('_config_security', 'Security Center');
+define('_security_center_head', 'DZCP - Security Center');
+
+//TS
+define('_ts_fport', 'File Port');
+define('_ts_port', 'Voice Port');
+define('_ts_version', 'Version');
+define('_ts_ip_dns', 'IP oder DNS');
+define('_ts_sport', 'Query Port');
+define('_config_teamspeak', 'Teamspeak');
+define('_perm_editteamspeak', 'Teamspeak Server management');
+define('_teamspekadmin_head', 'Teamspeak Server');
+define('_ts_head_extra', 'Teamspeak 3 Zusatzeinstellungen');
+define('_teamspeak_admin_head', 'Teamspeak Server');
+define('_ts_empty_fport', 'Du hast keinen Server File Port angegeben!');
+define('_ts_empty_port', 'Du hast keinen Server Voice Port angegeben!');
+define('_ts_empty_qport', 'Du hast keinen Server Query Port angegeben!');
+define('_ts_empty_ip_dns', 'IP oder DNS fehlt!');
+define('_ts_settings_default_server', 'Standard Server');
+define('_ts_settings_default_server_desc', 'Diesen Server als Standard eintragen, der aktuelle Standard Server wird mit dem neuen &uuml;berschrieben.');
+define('_teamspeak_legendemenu', 'Server ist im Menu eingetragen? (auf das Icon klicken um den Status zu &auml;ndern)');
+define('_teamspeak_default_legendemenu', 'Server als Standard eingetragen? (auf das Icon klicken um den Status zu &auml;ndern)');
+define('_config_ts_updated', 'Der Teamspeak Server wurde erfogreich editiert!');
+define('_config_ts_added', 'Der Teamspeak Server wurde erfogreich eingetragen!');
+define('_no_ts_page', 'Es ist kein Teamspeak 3 Server eingetragen');
+define('_no_connect_to_ts', 'Teamspeak 3 Server is offline!');
+
+//Startpage
+define('_profil_startpage', 'Startseite');
+define('_config_startpage', 'Startseiten');
+define('_admin_startpage', 'Startseiten');
+define('_perm_startpage', 'Startseiten verwalten');
+define('_admin_startpage_url', 'Ziel URL');
+define('_admin_startpage_level', 'Sichtbar ab Level');
+define('_admin_startpage_name', 'Name');
+define('_admin_startpage_add_head', 'Neue Startseite anlegen');
+define('_admin_startpage_edit', 'Startseite bearbeiten');
+define('_admin_startpage_added', 'Startseite wurde erfogreich eingetragen');
+define('_admin_startpage_deleted', 'Startseite wurde erfogreich gel&ouml;scht');
+define('_admin_startpage_editd', 'Startseite wurde erfogreich editiert');
+define('_admin_startpage_no_name', 'Du hast keinen Namen eingegeben');
+define('_admin_startpage_no_url', 'Du hast keine URL eingegeben');
+define('_admin_startpage_add', 'Neue Startseite hinzufügen');
+
+//IP Blocker
+define('_ipban_admin_head', 'IP Blocker');
+define('_config_ipban', 'IP Blocker');
+define('_confirm_del_ipban', 'Delete Record');
+define('_confirm_enable_ipban', 'Should the IP Ban for [ip] be reactivated');
+define('_confirm_disable_ipban', 'Should the IP Ban for [ip] be deactivated');
+define('_ipban_admin_deleted', 'The IP Ban has been successfully deleted!');
+define('_ipban_new_head', 'Add new IP Ban');
+define('_ipban_admin_added', ' The IP Ban has been successfully added');
+define('_ipban_edit_head', 'Edit IP Ban');
+define('_ipban_admin_edited', 'IP Ban has been successfully edited');
+define('_ipban_dis', 'Reason / Description');
+define('_ipban_add_new', 'New Record');
+define('_ipban_assuredness', 'Reliability');
+define('_ipban_reports', 'Reports');
+define('_ipban_lastten_global', 'Last 10 banned IPs by Stopforumspam.com ');
+define('_ipban_lastten_user', ' Last 10 banned IPs by User ');
+define('_ipban_search', 'IP Search');
+define('_ipban_error_pip', 'You cant ban private IP Addresses');
+define('_ipban_disable', 'Disable IP Ban');
+define('_ipban_enable', 'Enable IP Ban');
+define('_ip_empty', 'The IP is missing');
+define('_total_bans', 'Total Bans');
+define('_ipban_head_admin', 'IP-Bans');
+define('_perm_ipban', 'Manage IP-Bans');
+
+## Navigation / Server ##
+define('_navi_gsv_players_online', 'Online');
+define('_navi_gsv_on_the_game', 'Players');
+define('_navi_gsv_view_players', 'View Players');
+define('_navi_gsv_game', 'Game');
+define('_navi_gsv_no_name_available', 'no Name available');
+define('_navi_gsv_no_players_available', 'no Players online');
+define('_navi_gsv_password', 'Password');
+
+## ADDED / REDEFINED FOR 1.6.0 Final
+define('_txt_navi_main', 'Main Navigation');
+define('_txt_navi_clan', 'Clan Navigation');
+define('_txt_navi_server', 'Server Navigation');
+define('_txt_navi_misc', 'Misc Navigation');
+define('_txt_userarea', 'Userarea');
+define('_txt_vote', 'Vote');
+define('_txt_partners', 'Partners');
+define('_txt_sponsors', 'Sponsors');
+define('_txt_counter', 'Counter');
+define('_txt_l_news', 'News');
+define('_txt_ftopics', 'Topics');
+define('_txt_l_wars', 'Last Wars');
+define('_txt_n_wars', 'Next Wars');
+define('_txt_teams', 'Teams');
+define('_txt_gallerie', 'Our Gallerys');
+define('_txt_top_match', 'Top Match');
+define('_txt_shout', 'Shoutbox');
+define('_txt_template_switch', 'Switch Template');
+define('_txt_events', 'Events');
+define('_txt_kalender', 'Calendar');
+define('_txt_l_artikel', 'Articles');
+define('_txt_l_reg', 'new Users');
+define('_txt_motm', 'Member of the Moment');
+define('_txt_random_gallery', 'random Gallerypic');
+define('_txt_server', 'Server');
+define('_txt_teamspeak', 'Teamspeak');
+define('_txt_top_dl', 'Top Downloads');
+define('_txt_uotm', 'User of the Moment');
+
+define('_gal_pics', 'Pics in Gallery');
+define('_config_slideshow', 'Slideshow');
+define('_perm_slideshow', 'Manage Slideshow Pics');
+define('_slider', 'Slideshow');
+define('_slider_admin_add', 'Add new Slideshowpicture');
+define('_slider_admin_add_done', 'Slideshowpicture successfully added');
+define('_slider_admin_del', 'Realy Delete this Slideshowpicture?');
+define('_slider_admin_del_done', 'Slideshowpicture successfully deleted');
+define('_slider_admin_edit', 'edit Slideshowpicture');
+define('_slider_admin_edit_done', 'Slideshowpicture successfully edited!');
+define('_slider_admin_error_empty_bezeichnung', 'you have to enter a title');
+define('_slider_admin_error_empty_url', 'you have to enter a link');
+define('_slider_admin_error_nopic', 'You have to upload a picture');
+define('_slider_bezeichnung', 'Title');
+define('_slider_new_window', 'new Window?');
+define('_slider_pic', 'Picture');
+define('_slider_desc', 'Description');
+define('_slider_position', 'Position');
+define('_slider_position_first', 'first');
+define('_slider_position_lazy', '<option value="lazy">- no change -</option>');
+define('_slider_url', 'URL');
+define('_slider_show_title', 'Show title');
+define('_forum_kat', 'Categorie');
+
+define('_artikel_userimage', 'Own Articlepicture');
+define('_artikelpic_del', 'delete Articlepicture?');
+define('_artikelpic_deleted', 'Articlepicture successfully deleted');
+
+define('_news_userimage', 'Own Newspicture');
+define('_newspic_del', 'delete Newspicture?');
+define('_newspic_deleted', 'Newspicture successfully deleted');
+define('_max', 'max.');
+
+define('_cw_screenshot_deleted', 'Screenshot successfully deleted');
+
+define('_perm_galleryintern','View internal Gallery');
+define('_perm_dlintern','View internal Downloads');
+
+define('_config_url_linked_head', "URLs linking");
+define('_config_c_m_membermap', 'Membermap');
+define('_ts_settings_customicon', 'custom icons downloading');
+define('_ts_settings_showchannels', 'Only show channels with user');
+define('_ts_settings_showchannels_desc', 'If this is on, they will only show channels there are users.');
+
+define('_upload_error', 'Failed to upload the file!');
+define('_login_banned', 'Your account has been banned by administrator!');
+define('_lobby_no_mymessages', '<a href="../user/?action=msg">You have no new messages!</a>');
+
+define('_perm_smileys', 'manage smileys');
+define('_perm_protocol', 'can see admin protocol');
+define('_perm_support', 'can see support page');
+define('_perm_backup', 'manage SQL-Backups');
+define('_perm_clear', 'clean database');
+define('_perm_forumkats', 'manage forums categories');
+define('_perm_impressum', 'manage impressum');
+define('_perm_config', 'manage configuration page');
+define('_perm_positions', 'manage user ranks');
+define('_perm_partners', 'manage partner');
+define('_perm_profile', 'manage profile fields');
+
+define('_dzcp_vcheck', 'The DZCP Version Checker will inform you about new DZCP updates and shows you whether your version is up to date.<br><br><span class=fontBold>Description:</span><br><font color=#17D427>Green:</font>Up to Date!<br><font color=#FFFF00>Yellow:</font> Could not connect to Server</br><font color=#FF0000>Red:</font>A new update available!');
+define('_cw_dont_exist', 'The specified clanwar ID does not exist!');
+
+//Steam
+define('_steam', 'Steam');
+define('_steam_online', 'Online');
+define('_steam_offline', 'Last online: [time]');
+define('_steam_offline_simple', 'Offline.');
+define('_steam_in_game', 'In Game');
+define('_config_steam_apikey', 'Steam API-Key');
+define('_steam_apikey_info', 'Registering a Steam API Key: <a href="http://steamcommunity.com/dev/apikey/" target="_blank">steamcommunity.com</a>');
+
+define('_years', 'Years');
+define('_year', 'Year');
+define('_months', 'Months');
+define('_month', 'Month');
+define('_weeks', 'Weeks');
+define('_week', 'Week');
+define('_days', 'Days');
+define('_day', 'Day');
+define('_hours', 'Hours');
+define('_hour', 'Hour');
+define('_minutes', 'Minutes');
+define('_minute', 'Minute');
+define('_seconds', 'Seconds');
+define('_second', 'Second');
 
 ## ADDED / REDEFINED FOR 1.5 Final
 define('_side_membermap', 'Membermap');
 define('_id_dont_exist', 'The requested ID does not exist!');
 define('_perm_editts', 'manage teamspeak server');
 define('_perm_receivecws', 'receive fight us form');
-define('_config_url_linked_head', "URLs linking");
-define('_ts_settings_customicon', 'custom icons downloading');
-define('_ts_settings_showchannels', 'Only show channels with user');
-define('_ts_settings_showchannels_desc', 'If this is on, they will only show channels there are users.');
 
 ## ADDED / REDEFINED FOR 1.5.2
 define('_button_title_del_account' , 'User-Account delete');
@@ -22,13 +267,6 @@ define('_news_get_timeshift' , "Timeshift News?");
 define('_news_timeshift_from', 'Show news from:');
 define('_config_gb_activ' , 'Guestbook');
 define('_config_gb_activ_info' , '<center>Here you can specify whether an item will only be released by an admin must.</center>');
-define('_legend_map_download' , 'Download map screenshots from dzcp.de');
-define('_map_download_success' , 'The screenshots has been successfully downloaded and saved!');
-define('_mapdl_download' , 'Should I search and download map screenshots for this server?');
-define('_error_mapdl_nomap' , 'For this game, no map screenshot is available right now.<br />If you want to share maps for this game with the community, please mail them to webmaster@dzcp.de.');
-define('_error_mapdl_connection' , 'No connection to the gameserver could be established.');
-define('_error_mapdl_server' , 'This gameserver does not exist!');
-define('_mapdl_loading' , 'Loading maps from dzcp.de');
 define('_placeholder' , 'Template Placeholder');
 define('_menu_kats_head' , 'Menu Categories');
 define('_menu_add_kat' , 'Add new menu category');
@@ -43,7 +281,6 @@ define('_admin_sqauds_roster' , 'Team-Roster');
 define('_admin_squads_nav_info' , 'This will put a direct link in the navigation, which target to full size of the Team.');
 define('_admin_squads_teams' , 'Team-Show');
 define('_admin_squads_no_navi' , 'Don\'t show');
-define('_seconds' , 'Seconds');
 define('_config_cache_info' , 'here you can set intervals, when teamspeak and gamserver will be reloaded. Outherwise the informations will be read from the cache.');
 define('_config_direct_refresh' , 'Direct Forward');
 define('_config_direct_refresh_info' , 'If activated, the site will be forwarded directly, instead of showing the status information.');
@@ -203,14 +440,14 @@ define('_msg_sendnews_user' , '
       <input type="hidden" name="action" value="msg" />
       <input type="hidden" name="do" value="sendnewsdone" />
       <input type="hidden" name="id" value="[id]" />
-	  <input type="hidden" name="datum" value="[datum]" />
+      <input type="hidden" name="datum" value="[datum]" />
       <input id="contentSubmit" type="submit" class="submit" value="Submit" />
     </form>
   </td>
 </tr>');
 define('_msg_sendnews_done' , '
 <tr>
-  <td align="center" class="contentMainTop"><span class="fontRed">	
+  <td align="center" class="contentMainTop"><span class="fontRed">
 This news is / was made from the [user] edited!!!</span></td>
 </tr>');
 define('_send_news_done' , 'Thank you for your news!');
@@ -276,9 +513,6 @@ define('_clankasse_new' , '<form action="" method="get" onsubmit="return(DZCP.su
     </form>');
 define('_config_c_floods_what' , 'Here you can adjust the time in secontds which a user have to wait<br />to write something new in this area');;
 define('_confirm_del_shout' , 'You really want to delete this shoutbox entry');
-## ADDED FOR 1.4.9.3
-define('_ergebnisticker_more' , 'More Results');
-define('_site_ergebnisticker' , 'ESL Pro Series - Resultticker');
 ## ADDED FOR 1.4.5
 define('_admin_smiley_exists' , 'There is already a smiley with this name!');
 ## ADDED FOR 1.4.3
@@ -303,10 +537,12 @@ define('_admin_gmaps_who' , 'Membermap');
 define('_gmaps_who_all' , 'Show all user');
 define('_gmaps_who_mem' , 'Show members only');
 define('_urls_linked_info', 'Convert text links into clickable hyperlinks');
-define('_config_gmaps_key' , 'Google Maps Key');
-define('_gmaps_key_info' , 'Needed for the membermap.<br />The key can be registered for free <a href="http://www.google.com/apis/maps/signup.html" target="_blank">here</a>!');
-define('_gmaps_no_key' , 'The membermap isn`t activated yet!');
-define('_membermap' , 'Membermap');
+define('_membermap', 'Membermap');
+define('_membermap_user', 'Membermap User');
+define('_membermap_pic', 'Userpic');
+define('_membermap_nick', 'Nick');
+define('_membermap_rank', 'Position');
+define('_membermap_city', 'City');
 define('_sponsoren' , 'Sponsors');
 define('_downloads' , 'Downloads');
 define('_cw' , 'Clanwars');
@@ -384,11 +620,9 @@ define('_aktiv_icon' , '<img src="../inc/images/active.gif" alt="" class="icon" 
 define('_inaktiv_icon' , '<img src="../inc/images/inactive.gif" alt="" class="icon" />');
 define('_pn_write_forum' , '<a href="../user/?action=msg&amp;do=pn&amp;id=[id]"><img src="../inc/images/forum_pn.gif" alt="" title="write [nick] a message" class="icon" /></a>');
 define('_uhr' , 'h');
-define('_admin_editor' , 'Admin: Site administration');
 define('_kalender_admin_head' , 'Calendar - Events');
 define('_smileys_specialchar' , 'No special chars or empty space can be indicated in the bbcode!');
 define('_award' , 'Award');
-define('_month' , 'Month');
 define('_preview' , 'Preview');
 define('_error_edit_post' , 'You are not allowed to edit this entry!');
 define('_nletter_prev_head' , 'Newsletter preview');
@@ -399,13 +633,12 @@ define('_content' , 'Content');
 define('_rootadmin' , 'Siteadmin');
 define('_gb_edit_head' , 'Edit guestbook entry');
 define('_gb_edited' , 'The guestbook entry was successfully edited!');
-define('_day' , 'Day');
-define('_year' , 'Year');
 define('_nletter' , 'Newsletter');
 define('_subject' , 'Subject');
 define('_server_admin_qport' , 'Optionally: queryport');
 define('_admin_server_nostatus' , 'No live status');
 define('_nletter_head' , 'Write newsletter');
+define('_squad', 'Team');
 define('_confirm_del_cw' , 'You really want to delete this clanwar');
 define('_confirm_del_vote' , 'You really want to delete this vote');
 define('_confirm_del_dl' , 'You really want to deletethis download');
@@ -429,7 +662,6 @@ define('_confirm_del_kalender' , 'You really want to delete this event');
 define('_confirm_del_taktik' , 'SYou really want to delete this tactic');
 define('_link_type' , 'Link type');
 define('_sponsor' , 'Sponsor');
-define('_config_fileeditor_head' , 'File editor');
 //-----------------------------------------------
 define('_main_info' , 'Here you can set global settings like default language, default template, title of the site, etc...');
 define('_admin_eml_head' , 'Emailtemplates');
@@ -443,18 +675,8 @@ define('_admin_nletter' , 'Template for newsletter');
 define('_result' , 'Result');
 define('_opponent' , 'Opponent');
 define('_played_at' , 'Played at');
-define('_ulist_usuche' , 'Search user');
 define('_login_secure_help' , 'To verify, put the two-digit number code in the inputfield.');
 define('_online_head_guests' , 'Guests online');
-define('_back_3' , '<a href="javascript: history.go(-3)" class="files">back</a>');
-define('_filebrowser_head' , 'DZCP filebrowser');
-define('_allowed_files' , 'Editable files');
-define('_filebrowser_info_saved' , 'The file <b>[file]</b> was successfully stored!');
-define('_filebrowser_info_restored' , 'The file <b>[file]</b> was successfully restored!');
-define('_filebrowser_info_deleted' , 'The file <b>[file]</b> was successfully deleted!');
-define('_legend_del' , 'Delete file');
-define('_legend_ed' , 'Edit file');
-define('_legend_res' , 'Restore file');
 define('_admin_first' , 'at first');
 define('_admin_squads_nav' , 'Navigation');
 define('_admin_squad_show_info' , 'Defined weather a team in the team overview is shown or not shown by default.');
@@ -474,12 +696,10 @@ define('_config_serverliste' , 'Serverlist');
 define('_config_squads' , 'Teams');
 define('_config_backup' , 'Backup database');
 define('_config_news' , 'News-/Article categories');
-define('_config_positions' , 'Positions');
 define('_config_allgemein' , 'Configuration');
 define('_config_impressum' , 'Imprint');
 define('_config_clankasse' , 'Clan Cash');
 define('_config_downloads' , 'Download categories');
-define('_config_dl' , 'Downloads');
 define('_config_newsadmin' , 'News');
 define('_config_filebrowser' , 'Filebrowser');
 define('_config_navi' , 'Navigation');
@@ -500,7 +720,6 @@ define('_forum_searchlink' , '- <a href="../search/">Board search</a> -');
 define('_msg_deleted' , 'The message was successfully deleted!');
 define('_info_reg_valid' , 'You successfully registered on this page!<br />
 Your password were send to your e-mail adress [email]');
-define('_server_ftp_file' , '<span class="fontBold">Target file:</span>');
 define('_edited_by' , '<br /><br /><i>last edited by [autor] at [time]</i>');
 define('_linkus_empty_text' , 'You have to indicate an url of the banner!');
 define('_gb_titel' , '<span class="fontBold">#[postid]</span> from [nick] [email] [hp] at [datum] on [zeit][uhr] [edit] [delete] [comment] [public]');
@@ -515,15 +734,14 @@ define('_forum_lastpost' , '<a href="?action=showthread&amp;id=[tid]&amp;page=[p
 define('_forum_addpost' , '<a href="?action=post&amp;do=add&amp;kid=[kid]&amp;id=[id]"><img src="../inc/images/forum_reply.gif" alt="" title="New entry" class="icon" /></a>');
 define('_pn_write' , '<a href="../user/?action=msg&amp;do=pn&amp;id=[id]"><img src="../inc/images/pn.gif" alt="" title="Write [nick] a new message" class="icon" /></a>');
 define('_forum_new_thread' , '<a href="?action=thread&amp;do=add&amp;kid=[id]"><img src="../inc/images/forum_new.gif" alt="" title="Insert thread" class="icon" /></a>');
-define('_anm_head' , 'Note');
-define('_anm_info' , 'Just editable files will be shown!');
 //--------------------------------------------\\
 define('_error_invalid_regcode' , 'The entered safety code does not agree with the character sequence indicated in the diagram!');
+define('_error_invalid_regcode_mathematic', 'Your calculation result from security code is not correct!');
 define('_welcome_guest' , ' <img src="../inc/images/flaggen/nocountry.gif" alt="" class="icon" /> <a class="welcome" href="../user/?action=register">Guest</a>');
 define('_online_head' , 'User online');
 define('_online_whereami' , 'Area');
 define('_back' , '<a href="javascript: history.go(-1)" class="files">back</a>');
-define('_contact_text_fightus' , '	
+define('_contact_text_fightus' , '
 Someone filled out the fightus contactform!<br />
 Each clanwar admin received this message!<br /><br />
 <span class="fontBold">Team:</span> [squad]<br /><br />
@@ -572,7 +790,7 @@ define('_editor_from' , 'From');
 define('intern' , '<span class="fontWichtig">Internal</span>');
 define('_comments_head' , 'Comments');
 define('_click_close' , 'close');
-## Begrüßungen ##
+## Begruessungen ##
 define('_welcome_18' , 'Good evening,');
 define('_welcome_13' , 'Good day,');
 define('_welcome_11' , 'Good lunch,');
@@ -761,7 +979,7 @@ define('_country_list' , '
 <option value="yu"> Yugoslavia</option>
 <option value="ye"> Yemen</option>
 <option value="zm"> Zambia</option>');
-## Globale Userränge ##
+## Globale Userraenge ##
 define('_status_banned' , 'banned');
 define('_status_unregged' , 'unregistered');
 define('_status_user' , 'User');
@@ -825,7 +1043,7 @@ define('_forum_subkat_where' , '<a href="../forum/">[mainkat]</a> <span class="f
 define('_forum_head_skat_search' , 'Search in this category');
 define('_forum_head_threads' , 'Threads');
 define('_forum_replys' , 'Answers');
-define('_forum_thread_lpost' , 'from [nick]<br />at [date]');
+define("_forum_thread_lpost", '<p class="forumTopic">[date]</p><p class="forumTopic">[nick]<a href="[post_link]" title="[title]"><img src="[dir]/images/forum/[img]" border="0" height="9" width="9"></a>');
 define('_forum_new_thread_head' , 'Insert thread');
 define('_empty_topic' , 'You have to indicate a topic!');
 define('_forum_newthread_successful' , 'The thread was successfully registered to the board!');
@@ -858,8 +1076,7 @@ define('_forum_search_kat_all' , 'all Categories');
 define('_forum_search_results' , 'Search results');
 define('_forum_online_head' , 'Browsing the board');
 define('_forum_nobody_is_online' , 'Right now no user is browsing the board!');
-define('_forum_nobody_is_online2' , 'Right now no user except you is browsing the board!');
-## Gästebuch ##
+## Gaestebuch ##
 define('_gb_delete_successful' , 'The entry was successfully deleted!');
 define('_gb_head' , 'Guestbook');
 define('_gb_add_head' , 'Insert entry');
@@ -896,7 +1113,6 @@ define('_kalender_deleted' , 'The event was successfully deleted!');
 ## Umfragen ##
 define('_error_vote_closed' , 'This vote is closed!');
 define('_votes_admin_closed' , 'Close vote');
-define('_vote_menu_no_vote' , '<tr><td align="center"><span class="fontBold">No vote registered</span></td></tr>');
 define('_votes_head' , 'Votes');
 define('_votes_stimmen' , 'Voted');
 define('_votes_intern' , '<span class="fontWichtig">Internal:</span> ');
@@ -1024,12 +1240,10 @@ define('_cw_head_details_show' , 'Details');
 define('_cw_head_page' , 'Site: ');
 define('_cw_head_legende' , 'Legend');
 define('_cw_nothing' , '<option value="lazy" class="" class="dropdownKat">--- change nothing ---</option>');
-define('_cw_screenshot' , 'Screen');
 define('_cw_screens' , 'Screenshots');
 define('_cw_new' , 'New');
 define('_cw_screens_info' , 'jpg, gif and png files only!');
 define('_clanwars_no_show' , 'No registered clanwar yet!');
-define('_cw_screens' , 'Screenshots');
 define('_cw_show_all' , '
 <tr>
   <td class="contentMainFirst" colspan="8" align="center"><a href="../clanwars/?action=showall&amp;id=[id]">Show all clanwars of this team</a></td>
@@ -1090,27 +1304,13 @@ define('_slist_serverip' , 'Serverip');
 define('_slist_slots' , 'Slots');
 define('_slist_add' , 'Insert server');
 define('_slist_serverport' , 'Serverport');
+define('_slist_added_msg' , 'New entry in the serverlist!');
+define('_slist_title' , 'Serverlist');
 define('_server_password' , 'Serverpassword');
 define('_error_server_saved' , 'Your server was successfully registered!<br /> An admin will proof this entry soon.');
 define('_error_empty_slots' , 'You have to indicate the amount of your slots!');
 define('_error_empty_ip' , 'You have to indicate your serverip!');
 define('_error_empty_port' , 'You have to indicate your serverport!');
-define('_slist_added_msg' , 'New entry in the serverlist!');
-define('_slist_title' , 'Serverlist');
-define('_gt_search' , 'Search for');
-define('_gt_server' , 'Server');
-define('_gt_maps' , 'Maps');
-define('_gt_map' , 'Map');
-define('_gt_player' , 'Player');
-define('_gt_addip' , 'Click in the serverip to add it to hlsw.');
-define('_gt_addname' , 'Click on the server name to add it to hlsw');
-define('_gt_not_found' , '<tr><td class="contentMainFirst" colspan="8" align="center">- no result -</td></tr>');
-define('_gt_psearchhead' , 'Player searc');
-define('_gt_sip' , 'Serverip');
-define('_gt_found' , 'Results:');
-define('_gt_msearchhead' , 'Map search');
-define('_gt_server_ip' , 'Servername');
-define('_gt_ssearchhead' , 'Server search');
 define('_gallery_head' , 'Galleries');
 define('_subgallery_head' , 'Gallery');
 define('_gallery_images' , 'Pictures');
@@ -1136,7 +1336,9 @@ define('_contact_text' , '
 Somebody filled out the contact form!<br /><br />
 <span class="fontBold">Nick:</span> [nick]<br />
 <span class="fontBold">Email:</span> [email]<br />
-<span class="fontBold">ICQ-Nr.:</span> [icq]<br /><br />
+<span class="fontBold">ICQ-Nr.:</span> [icq]<br />
+<span class="fontBold">Skype:</span> [skype]<br />
+<span class="fontBold">Steam:</span> [steam]<br /><br />
 <span class="fontUnder"><span class="fontBold">Message:</span></span><br />[text]');
 define('_contact_joinus' , 'Joinus-Text');
 define('_contact_joinus_why' , 'Describe shortly, why you want to join our clan.');
@@ -1146,8 +1348,12 @@ Somebody filled out the joinus form!<br /><br />
 <span class="fontBold">Nick:</span> [nick]<br />
 <span class="fontBold">Age:</span> [age]<br />
 <span class="fontBold">Email:</span> [email]<br />
-<span class="fontBold">ICQ-Nr.:</span> [icq]<br /><br />
+<span class="fontBold">ICQ-Nr.:</span> [icq]<br />
+<span class="fontBold">Skype:</span> [skype]<br />
+<span class="fontBold">Steam:</span> [steam]<br /><br />
+<span class="fontBold">Team:</span> [squad]<br /><br />
 <span class="fontUnder"><span class="fontBold">Message:</span></span><br />[text]');
+define('_contact_joinus_no_squad_aviable', 'No team aviable');
 define('_contact_joinus_sended' , 'Your inquiry was successfully sent to the site`s admin!');
 define('_contact_fightus' , 'Comment');
 define('_contact_title_fightus' , 'Fightus form');
@@ -1200,7 +1406,6 @@ define('_stats_dl_traffic' , 'Totally caused traffic');
 define('_stats_dl_hits' , 'Totally downloaded');
 ## User ##
 define('_profil_head' , '<span class="fontBold">Userprofile from [nick]</span> [[profilhits] times viewed]');
-define('_user_noposi' , '<option value="lazy" class="dropdownKat">no position</option>');
 define('_login_head' , 'Login');
 define('_new_pwd' , 'new password');
 define('_register_head' , 'Registration');
@@ -1254,6 +1459,16 @@ define('_profil_logins' , 'Logins');
 define('_profil_registered' , 'Date of registration');
 define('_profil_last_visit' , 'Last page visit');
 define('_profil_pagehits' , 'Pagehits');
+define('_pedit_visibility', 'Visibility/Permissions');
+define('_pedit_visibility_gb', 'Guestbook Posts');
+define('_pedit_visibility_gallery', 'Gallery');
+define('_pedit_perm_public', 'Public');
+define('_pedit_perm_user', 'User only');
+define('_pedit_perm_member', 'Member only');
+define('_pedit_perm_admin', 'Admin only');
+define('_pedit_perm_allow', '<option value="1" selected="selected">Allow</option><option value="0">Deny</option>');
+define('_pedit_perm_deny', '<option value="1">Allow</option><option value="0" selected="selected">Deny</option>');
+define('_gallery_no_perm', '<div align="center">'+"<br/>You don't have permissions for this gallery</div>");
 define('_profil_cws' , 'participated cw`s');
 define('_profil_edit_pic' , '<a href="../upload/?action=userpic">upload</a>');
 define('_profil_delete_pic' , '<a href="../upload/?action=userpic&amp;do=deletepic">delete</a>');
@@ -1378,7 +1593,7 @@ define('_lobby_votes' , 'Votes');
 define('_new_vote_1' , 'new Vote');
 define('_new_vote_2' , 'new Votes');
 define('_lobby_cw' , 'Clanwars');
-define('_user_new_cw' , '<tr><td style="width:22px;text-align:center"><img src="../inc/images/gameicons/[icon]" class="icon" alt="" /></td><td style="vertical-align:middle"><a href="../clanwars/?action=details&amp;id=[id]">Clanwar at <span class="fontWichtig">[datum]</span> againstgen <span class="fontWichtig">[gegner]</span></a></td></tr>');
+define('_user_new_cw' , '<tr><td style="width:22px;text-align:center"><img src="../inc/images/gameicons/custom/[icon]" class="icon" alt="" /></td><td style="vertical-align:middle"><a href="../clanwars/?action=details&amp;id=[id]">Clanwar at <span class="fontWichtig">[datum]</span> againstgen <span class="fontWichtig">[gegner]</span></a></td></tr>');
 define('_user_delete_verify' , '
 <tr>
   <td class="contentHead"><span class="fontBold">Delete user</span></td>
@@ -1386,15 +1601,17 @@ define('_user_delete_verify' , '
 <tr>
   <td class="contentMainFirst" align="center">
     Are you sure to delete the user [user]?<br />
-    <span class="fontUnder">Every</span> activities from this user will be deleted, too!<br /><br /> 
+    <span class="fontUnder">Every</span> activities from this user will be deleted, too!<br /><br />
     <a href="?action=admin&amp;do=delete&verify=yes&amp;id=[id]">Yes, delete [user]!</a>
   </td>
 </tr>');
+define('_hlswid', 'XFire Name');
+define('_hlswstatus', 'XFire');
 define('_user_deleted' , 'The user successfully was deleted!');
 define('_admin_user_shoutbox' , 'Admin: Shoutbox');
 define('_admin_user_awards' , 'Admin: Awards');
-define('_userlobby_kal_today' , 'Next event is <a href="../kalender/?action=show&time=[time]"><span class="fontWichtig">today</span></a>');
-define('_userlobby_kal_not_today' , 'Next event is at <a href="../kalender/?action=show&time=[time]"><span class="fontUnder">[date]</span></a>');
+define('_userlobby_kal_today' , 'Next event is <a href="../kalender/?action=show&time=[time]"><span class="fontWichtig">today - [event]</span></a>');
+define('_userlobby_kal_not_today' , 'Next event is at <a href="../kalender/?action=show&time=[time]"><span class="fontUnder">[date] - [event]</span></a>');
 define('_profil_country' , 'Country');
 define('_lobby_awards' , 'Awards');
 define('_new_awards_1' , 'new award');
@@ -1496,7 +1713,6 @@ define('_nav_freitag' , 'Fr');
 define('_nav_samstag' , 'Sa');
 define('_nav_sonntag' , 'Su');
 define('_age' , 'Age');
-define('_years' , 'Years');
 define('_error_empty_age' , 'You have to indicate your actual age!');
 define('_member_admin_intforums' , 'internal board authorisation');
 define('_access' , 'Authorisation');
@@ -1506,19 +1722,19 @@ define('_ulist_bday' , 'Birthday');
 define('_ulist_last_login' , 'Last login');
 ## Taktiken ##
 define('_taktik_head' , 'Internal: Tactics');
-define('_taktik_standard_t' , '<a href="?action=standard&amp;what=t&amp;id=[id]">Standard</a>');
-define('_taktik_standard_ct' , '<a href="?action=standard&amp;what=ct&amp;id=[id]">Standard</a>');
-define('_taktik_spar_t' , '<a href="?action=spar&amp;what=t&amp;id=[id]">Eco</a>');
-define('_taktik_spar_ct' , '<a href="?action=spar&amp;what=ct&amp;id=[id]">Eco</a>');
+define('_taktik_standard_t' , '<a href="?action=standard&amp;what=t&amp;id=[id]">Defence</a>');
+define('_taktik_standard_ct' , '<a href="?action=standard&amp;what=ct&amp;id=[id]">Defence</a>');
+define('_taktik_spar_t' , '<a href="?action=spar&amp;what=t&amp;id=[id]">Attack</a>');
+define('_taktik_spar_ct' , '<a href="?action=spar&amp;what=ct&amp;id=[id]">Attack</a>');
 define('_taktik_upload' , 'Upload tactic screen');
-define('_taktik_t' , 'Terrorists');
-define('_taktik_ct' , 'Antiterrorists');
+define('_taktik_t' , 'Team 2');
+define('_taktik_ct' , 'Team 1');
 define('_taktik_posted' , 'posted by <span class="fontBold">[autor]</span> - [datum]');
 define('_taktik_headline' , '<span class="fontBold">Map:</span> [map] - <span class="fontBold">Tactic:</span> [what]');
-define('_taktik_tstandard_t' , 'Terrorists -> Standard');
-define('_taktik_tstandard_ct' , 'Antiterrorists -> Standard');
-define('_taktik_tspar_t' , 'Terrorists -> Eco');
-define('_taktik_tspar_ct' , 'Antiterrorists -> Eco');
+define('_taktik_tstandard_t' , 'Team 2 -> Defence');
+define('_taktik_tstandard_ct' , 'Team 1 -> Defence');
+define('_taktik_tspar_t' , 'Team 2 -> Attack');
+define('_taktik_tspar_ct' , 'Team 1 -> Attack');
 define('_error_taktik_empty_map' , 'You have to indicate a map!');
 define('_taktik_new' , 'Insert new tactic');
 define('_taktik_added' , 'The tactic was successfully registered!');
@@ -1544,7 +1760,7 @@ or partly or completely deleted by the author without separate announcement.
 <br /><br />
 <h2><span class="fontBold">2. Referrals and links</span></h2>
 <br />
-The author is not responsible for any contents linked or referred to from his pages - unless he has full knowledge of illegal contents and would be able to prevent the visitors of his site fromviewing those pages. 
+The author is not responsible for any contents linked or referred to from his pages - unless he has full knowledge of illegal contents and would be able to prevent the visitors of his site fromviewing those pages.
 If any damage occurs by the use of information presented there, only the author of the respective pages might be liable, not the one who has linked to these pages. Furthermore the author is not liable for any postings or messages published by users of discussion boards, guestbooks or mailinglists provided on his page.
 <br /><br />
 <h2><span class="fontBold">3. Copyright</span></h2>
@@ -1552,7 +1768,7 @@ If any damage occurs by the use of information presented there, only the author 
 The author intended not to use any copyrighted material for the publication or, if not possible, to indicate the copyright of the respective object.
 <br />
 The copyright for any material created by the author is reserved. Any duplication or use of objects such as images, diagrams, sounds or texts in other
-electronic or printed publications is not permitted without the author\'s agreement. 
+electronic or printed publications is not permitted without the author\'s agreement.
 <br /><br />
 <h2><span class="fontBold">4. Privacy policy<</span></h2>
 <br />
@@ -1649,10 +1865,6 @@ define('_admin_server_new' , 'Insert server');
 define('_server_admin_added' , 'The server was successfully registered!');
 define('_empty_game' , 'You have to choose an icon!');
 define('_empty_servername' , 'You have to choose a server`s name!');
-define('_server_admin_ftp_head' , 'Gameserver ftp data for the banlist (Steam only)');
-define('_server_admin_ftp_url' , 'Host');
-define('_server_admin_ftp_login' , 'Loginname');
-define('_config_server_ftp_updated' , 'The ftp data were successfully updated!');
 define('_admin_dlkat' , 'Download categories');
 define('_admin_download_kat' , 'Description');
 define('_dl_add_new' , '<a href="?admin=dl&amp;do=new">Insert new category</a>');
@@ -1663,7 +1875,7 @@ define('_dl_admin_added' , 'The download category was successfully registered!')
 define('_dl_admin_deleted' , 'The download category was successfully deleted!');
 define('_dl_edit_head' , 'Edit download category');
 define('_dl_admin_edited' , 'The download category was successfully edited!');
-define('_config_global_head' , 'Configurationn');
+define('_config_global_head' , 'Configuration');
 define('_config_c_limits' , 'Limits');
 define('_config_c_limits_what' , 'Here you can adjust the amount of entrys which will be maximum shown');
 define('_config_c_usergb' , 'User guestbook');
@@ -1697,13 +1909,11 @@ define('_config_c_main' , 'General configuration');
 define('_config_c_clanname' , 'Clan`s name');
 define('_config_c_pagetitel' , 'Site title');
 define('_config_c_language' , 'Default language');
-define('_config_c_gametiger' , 'Gametiger Search option');
 define('_config_c_upicsize' , 'Global: Pictureupload Size');
 define('_config_c_gallerypics' , 'User: Usergallery');
 define('_config_c_upicsize_what' , 'allowed filesize of the pictures in KB (Newspicture, Userpicture etc.)');
 define('_config_c_regcode' , 'Reg: Securitycodee');
 define('_config_c_regcode_what' , 'User have to enter a securitycode during the registration');
-define('_admin_pos' , 'Position labels');
 define('_pos_add_new' , '<a href="?admin=positions&amp;do=new">Insert position</a>');
 define('_pos_new_head' , 'Insert position');
 define('_pos_edit_head' , 'Edit position');
@@ -1718,15 +1928,9 @@ define('_clankasse_kat_edited' , 'The in-/outpayment label was successfully edit
 define('_clankasse_kat_deleted' , 'The in-/outpayment label was successfully deleted!');
 define('_config_c_gallery' , 'Gallery ');
 define('_config_info_gallery' , 'Amount of pictures which will be maximum shown in a row');
-define('_config_server_ts_updated' , 'The teamspeak`s ip was successfully updated!');
-define('_ts_sport' , 'Server queryport');
-define('_server_admin_ftp_path' , 'Path to banned.cfg');
 define('_config_c_awards' , 'Awards');
 define('_counter_start' , 'Counter');
 define('_counter_start_info' , 'Here you can enter a number which will be added to the counter.');
-define('_config_balken_cw' , 'Clanwar statistic');
-define('_config_balken_vote_head' , 'Vote statistic');
-define('_config_balken_vote_menu_head' , 'Menu: Vote statistic');
 define('_admin_nc' , 'Newscomments');
 define('_admin_reg_info' , 'Here you can djust, if users have to be registered to do stuff (write comments, download things, etc)');
 define('_admin_reg_head' , 'Registration required');
@@ -1757,6 +1961,8 @@ define('_editor_head' , 'Insert site');
 define('_editor_name' , 'Site description');
 define('_editor_add_head' , 'Insert site');
 define('_inhalt' , 'Content');
+define('_allow', 'Allow');
+define('_deny', 'Deny');
 define('_editor_allow_html' , 'allow HTML?');
 define('_empty_editor_inhalt' , 'You have to indicate a text!');
 define('_site_added' , 'The site was successfully registered!');
@@ -1812,8 +2018,6 @@ define('_admin_artikel' , 'Admin: Article');
 define('_c_l_shoutnick' , 'Menu: Shoutbox: Nick');
 define('_config_c_martikel' , 'Article');
 define('_config_c_madminartikel' , 'Articleadmin');
-define('_admin_squadtemplate' , 'Teamlayouts');
-define('_admin_squadtemplate_info' , 'Here you can adjust several team layouts!');
 define('_reg_artikel' , 'Articlecomments');
 define('_cw_comments' , 'Clanwarcomments');
 define('_on' , 'on');
@@ -1824,7 +2028,6 @@ define('_config_lreg' , 'Menu: Last reg. user');
 define('_config_mailfrom' , 'Email mailfrom');
 define('_config_mailfrom_info' , 'This email address will be used for sent emails like newsletter, registration, etc!');
 define('_profile_del_confirm' , 'Caution! All user`s entrys for this field will be lost. Do you really want to delete this field?');
-define('_profile_del_confirm_link' , '<a href="?admin=profile&amp;do=delete&amp;id=[id]&confirm=yes">Delete field</a> - <a href="javascript:history.go(-1)">back</a>');
 define('_profile_about' , 'About me');
 define('_profile_clan' , 'Clan');
 define('_profile_contact' , 'Contact');
@@ -1909,6 +2112,7 @@ define('_error_invalid_email' , 'The indicated email address is invalid!');
 define('_error_invalid_url' , 'The indicated homepage isn`t reachable!');
 define('_error_nick_exists' , 'The indicated nickname is already in use!');
 define('_error_user_exists' , 'The indicated loginname is already in use!');
+define('_error_passwords_dont_match', "Passwords don't match!");
 define('_error_email_exists' , 'The indicated email address is already in use!');
 define('_info_edit_profile_done_pwd' , 'Your profile was successfully edited!');
 define('_error_select_buddy' , 'You didn`t selected an user!');
@@ -1928,13 +2132,10 @@ define('_empty_user' , 'You have to indicate a loginname!');
 define('_empty_to' , 'You have to indicate a receiver!');
 define('_empty_url' , 'You have to indicate an url!');
 define('_empty_datum' , 'You have to indicate a date!');
-define('_site_loading' , 'preloading site');
-define('_site_wait' , 'please wait');
 define('_index_headtitle' , '[clanname]');
 define('_site_sponsor' , 'Sponsors');
 define('_site_user' , 'User');
 define('_site_online' , 'Visitors online');
-define('_site_gametiger' , 'Gametiger');
 define('_site_member' , 'Member');
 define('_site_serverlist' , 'Serverlist');
 define('_site_rankings' , 'Rankings');
@@ -1974,7 +2175,6 @@ define('_rankings' , 'Rankings');
 define('_gallery' , 'Gallery');
 define('_news' , 'News');
 define('_newsarchiv' , 'Newsarchive');
-define('_gametiger' , 'Gametiger');
 define('_serverliste' , 'Serverlist');
 define('_banned' , 'Banlist');
 define('_links' , 'Links');
@@ -1987,14 +2187,14 @@ define('_votes' , 'Votes');
 define('_forum' , 'Board');
 define('_gb' , 'Guestbook');
 define('_squads' , 'Teams');
+define('_squads_joinus', 'Team-JoinUs');
+define('_squads_fightus', 'Team-FightUs');
 define('_server' , 'Server');
 define('_editprofil' , 'Edit profile');
 define('_logout' , 'Logout');
 define('_msg' , 'Messages');
 define('_lobby' , 'Lobby');
 define('_buddys' , 'Buddies');
-define('_mem_clankasse' , 'Clan cash');
-define('_mem_taktiken' , 'Tacticsken');
 define('_admin_config' , 'Admin');
 define('_head_online' , 'Online');
 define('_head_visits' , 'Visitors');
@@ -2029,9 +2229,18 @@ define('_info' , 'Info');
 define('_error' , 'Error');
 define('_datum' , 'Date');
 define('_legende' , 'Legend');
-define('_hlswid' , 'XFire Name');
-define('_hlswstatus' , 'XFire');
-define('_steamid' , 'Steam-ID');
+define('_steamid', 'Steam Community-ID');
+define('_xboxid', 'Xbox Live');
+define('_xboxstatus', 'Xbox Live');
+define('_xboxuserpic', 'Xbox Live Avatar:');
+define('_psnid', 'Playstation Network');
+define('_psnstatus', 'Playstation Network');
+define('_skypeid', 'Skype Name');
+define('_skypestatus', 'Skype');
+define('_originid', 'Origin');
+define('_originstatus', 'Origin');
+define('_battlenetid', 'Battlenet');
+define('_battlenetstatus', 'Battlenet');
 define('_link' , 'Link');
 define('_linkname' , 'Linkname');
 define('_url' , 'URL');
@@ -2048,14 +2257,11 @@ define('_admin_user_get_identy' , 'You was successfully took the identity of [ni
 define('_comment_added' , 'The comment was successfully registered!');
 define('_comment_deleted' , 'The comment was successfullydeleted!');
 define('_stichwort' , 'Keyword');
-define('_language_set' , 'You just set another language!');
-define('_language_set_uk' , 'Unknown language');
 define('_eintragen_titel' , 'insert');
 define('_titel' , 'Title');
 define('_bbcode' , 'BBCode');
 define('_answer' , 'Answer');
 define('_eintrag' , 'Entry');
-define('_ftp_server_not_reachable' , 'The FTP isn`t reachable yet. Try it again later!');
 define('_weiter' , 'forward');
 define('_site_teamspeak' , 'Teamspeak');
 define('_teamspeak' , 'Teamspeak');
@@ -2064,13 +2270,11 @@ define('_site_joinus' , 'Joinus - Contact form');
 define('_site_fightus' , 'Fightus - Contact form');
 define('_joinus' , 'Joinus');
 define('_fightus' , 'Fightus');
-define('_site_msg_new' , 'You have new messages!<br />
-                         Click <a href="../user/?action=msg">here</a> to go to the message center!');
+define('_site_msg_new' , 'You have new messages!<br />Click <a href="../user/?action=msg">here</a> to go to the message center!');
 define('_site_kalender' , 'Calendar');
 define('_login_permanent' , ' Autologin');
 define('_msg_del' , 'Delete marked');
-define('_wartungsmodus' , 'This website is closed in case of maintenance work!<br />
-Please try it again later!');
+define('_wartungsmodus' , 'This website is closed in case of maintenance work!<br />Please try it again later!');
 define('_wartungsmodus_head' , 'Maintenance modes');
 define('_kalender' , 'Calender');
 define('_ts_head' , 'Teamspeak');
@@ -2087,7 +2291,6 @@ define('_ts_idletime' , 'AFK since');
 define('_ts_channel_head' , 'Channel Informations');
 define('_taktik_choose' , ' - Please choose - ');
 define('_config_tmpdir' , 'Standardtemplate');
-define('_template_set' , 'You choose a new template!');
 define('_rankings_head' , 'Rankings');
 define('_rankings_league' , 'League');
 define('_rankings_place' , 'Place old/new');
@@ -2101,9 +2304,7 @@ define('_ranking_empty_league' , 'You have to indicate a league!');
 define('_ranking_empty_url' , 'You have to indicate the website of the league!');
 define('_ranking_empty_rank' , 'You have to indicate a rank!');
 define('_rankings_add_head' , 'Insert ranking');
-define('_admin_rankings' , 'Admin: Rankings');
 define('_navi_info' , 'Every link names shown in "_" (like _admin_) are placeholders, which will be used for the several languages!');
-define('_shout_delete_successful' , 'The entry was successfully deleted from the shoutbox!');
 define('_member_admin_intnews' , 'View internal news');
 define('_news_admin_intern' , 'Internal News?');
 define('_news_sticky' , '<span class="fontWichtig">Announcment:</span>');
@@ -2112,7 +2313,6 @@ define('_news_sticky_till' , 'until:');
 define('_cw_xonx' , 'XonX');
 define('_forum_lp_head' , 'Last post');
 define('_forum_previews' , 'Preview');
-define('_download_size' , 'Filesize:');
 define('_site_awards' , 'Awards');
 define('_error_unregistered_nc' , '
 <tr>
@@ -2120,20 +2320,10 @@ define('_error_unregistered_nc' , '
     <span class="fontBold">You have to be registered to write a comment!</span>
   </td>
 </tr>');
-define('_no_server_navi' , '
-<tr>
-  <td align="center"><span class="fontBold">No server yet</span></td>
-</tr>');
-define('_server_menu_austragen' , 'The server was successfully unset from the menu!');
-define('_server_menu_eintragen' , 'The server was successfully set into the menu!');
 define('_server_legendemenu' , 'Server is set into menu? (Click icon to change the status)<br />(Multiple entrys are possible!)');
 define('_config_c_servernavi' , 'Menu: Serverstatus');
 define('_upload_partners_head' , 'Partnerbuttons');
 define('_upload_partners_info' , 'Only jpg, gif or png files. Recommended dimensions: 88px * 31px');
-define('_user_banned' , 'Account banned');
 define('_select_field_ranking_add' , '<option value="[value]" [sel]>[what]</option>');
-define('_member_squad_wars' , '<a href="../clanwars/?action=showall&amp;id=[id]">Clanwars</a>');
-define('_member_squad_awards' , '<a href="../awards/?action=showall&amp;id=[id]">Awards</a>');
 define('_user_list_ck' , 'List in clan cash?');
 define('_fightus_squad' , 'Wanted team');
-?>

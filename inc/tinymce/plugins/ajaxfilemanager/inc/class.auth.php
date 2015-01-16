@@ -3,7 +3,6 @@
 	{
 		die('Permission denied');
 	}
-?><?php 
 /**
  * the purpose I added this class is to make the file system much flexible 
  * for customization.
@@ -21,7 +20,9 @@
 		 */
 		function isLoggedIn()
 		{
-			return (!empty($_SESSION[$this->__loginIndexInSession])?true:false);
+                    global $userid,$chkMe;
+                    return ($chkMe >= 1 && $userid >= 1 ? true:false);
+		    #return (!empty($_SESSION[$this->__loginIndexInSession])?true:false);
 		}
 		/**
 		 * validate the username & password
