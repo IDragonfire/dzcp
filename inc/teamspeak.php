@@ -542,7 +542,7 @@ class TS3Renderer {
     }
 
     private static function get_tsdns($dns) {
-        if(!ping_port($dns,41144,1)) {
+        if(!ts3viewer_dns_dissolve || !ping_port($dns,41144,1)) {
             return false;
         }
 

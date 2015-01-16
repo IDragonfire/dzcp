@@ -56,6 +56,7 @@ define('server_show_empty_players', false); //Alle Spieler anzeigen, die deren N
 
 define('ts3viewer_skin', 'default'); //Verwendet TS3 Icons Sets die sich als Ordner im Verzeichniss 'inc\images\tsviewer\' befinden.
 define('ts3viewer_icon_to_drive', false); //Sollen Custom Icons vom Teamspeak 3 Server dauerhaft gespeichert werden
+define('ts3viewer_dns_dissolve', true); //Prufen ob ein TS3 DNS Server zur verfugung steht, IP & Port vom DNS Server abrufen. 
 
 define('captcha_case_sensitive', false); //Unterscheidet Groﬂ und Kleinschreibung beim Captcha
 define('captcha_mathematic', true); //Stellt den Usern einfache Rechenaufgaben anstelle eines Captcha Codes
